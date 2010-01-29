@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Textures>
+	<Texture alias="spectator" file="spectator.pvr" />
+	<Texture alias="craft" file="craft.pvr" />
+	<Texture alias="palm" file="palm.pvr" />
+	<Texture alias="land_grass" file="texture0.pvr" />
+	<Texture alias="land_sand" file="texture1.pvr" />
+</Textures>
+<Meshes>
+	<Mesh alias="spectator" file="spectator.POD" texture="spectator" />
+	<Mesh alias="craft" file="craft.POD" texture="craft" />
+	<Mesh alias="palm" file="palm.POD" texture="palm" />
+</Meshes>
+<Models>
+	<Model alias="spectator" mesh="spectator" texture="spectator" />
+	<Model alias="craft" mesh="craft" texture="craft" />
+	<Model alias="palm" mesh="palm" texture="palm" />
+</Models>
+<Terrains>
+	<Terrain alias="main" file="hm_128x128.raw" />
+</Terrains>
