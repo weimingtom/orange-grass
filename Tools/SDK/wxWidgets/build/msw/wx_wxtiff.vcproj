@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="wxtiff"
 	ProjectGUID="{1B8ED247-6F14-4D88-8FEF-7F3A6E965150}"
 	TargetFrameworkVersion="0"
@@ -780,7 +780,7 @@
 				AdditionalIncludeDirectories="..\..\src\zlib,..\..\src\jpeg"
 				PreprocessorDefinitions="WIN32;_LIB;_DEBUG"
 				MinimalRebuild="true"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
 				PrecompiledHeaderFile=".\vc_mswd\wxtiff/wx_wxtiff.pch"
 				AssemblerListingLocation=".\vc_mswd\wxtiff/"

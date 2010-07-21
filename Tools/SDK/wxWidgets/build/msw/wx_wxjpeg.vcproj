@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="wxjpeg"
 	ProjectGUID="{0692891D-87A4-45CF-8029-18F4AC9DFBFB}"
 	TargetFrameworkVersion="0"
@@ -854,7 +854,7 @@
 				AdditionalIncludeDirectories="..\..\lib\vc_lib\mswd"
 				PreprocessorDefinitions="WIN32;_LIB;_DEBUG"
 				MinimalRebuild="true"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
 				PrecompiledHeaderFile=".\vc_mswd\wxjpeg/wx_wxjpeg.pch"
 				AssemblerListingLocation=".\vc_mswd\wxjpeg/"

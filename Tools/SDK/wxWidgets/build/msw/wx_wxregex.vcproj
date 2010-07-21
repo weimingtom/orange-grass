@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="wxregex"
 	ProjectGUID="{95275C55-28B7-4FD7-B28B-4ACE7A182F89}"
 	TargetFrameworkVersion="0"
@@ -1082,7 +1082,7 @@
 				AdditionalIncludeDirectories="..\..\include,..\..\lib\vc_lib\mswd"
 				PreprocessorDefinitions="WIN32;_LIB;_DEBUG;__WXMSW__"
 				MinimalRebuild="true"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
 				PrecompiledHeaderFile=".\vc_mswd\wxregex/wx_wxregex.pch"
 				AssemblerListingLocation=".\vc_mswd\wxregex/"
@@ -1966,90 +1966,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath="..\..\include\wx\msw\setup.h"
-				>
-				<FileConfiguration
-					Name="Unicode Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_lib\mswu\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\mswu\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_lib\mswu\wx\setup.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DLL Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_dll\msw\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\msw\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_dll\msw\wx\setup.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_lib\msw\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\msw\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_lib\msw\wx\setup.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DLL Unicode Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_dll\mswu\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswu\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_dll\mswu\wx\setup.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DLL Unicode Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_dll\mswud\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswud\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_dll\mswud\wx\setup.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Unicode Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_lib\mswud\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\mswud\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_lib\mswud\wx\setup.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DLL Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_dll\mswd\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswd\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_dll\mswd\wx\setup.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_lib\mswd\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\mswd\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_lib\mswd\wx\setup.h"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\include\wx\univ\setup.h"
 				>
 				<FileConfiguration
@@ -2130,6 +2046,90 @@
 						Description="Creating ..\..\lib\vc_dll\mswunivud\wx\setup.h"
 						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswunivud\wx\setup.h&#x0D;&#x0A;"
 						Outputs="..\..\lib\vc_dll\mswunivud\wx\setup.h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\include\wx\msw\setup.h"
+				>
+				<FileConfiguration
+					Name="Unicode Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_lib\mswu\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\mswu\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_lib\mswu\wx\setup.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_dll\msw\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\msw\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_dll\msw\wx\setup.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_lib\msw\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\msw\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_lib\msw\wx\setup.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL Unicode Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_dll\mswu\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswu\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_dll\mswu\wx\setup.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL Unicode Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_dll\mswud\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswud\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_dll\mswud\wx\setup.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Unicode Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_lib\mswud\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\mswud\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_lib\mswud\wx\setup.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_dll\mswd\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswd\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_dll\mswd\wx\setup.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_lib\mswd\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\mswd\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_lib\mswd\wx\setup.h"
 					/>
 				</FileConfiguration>
 			</File>

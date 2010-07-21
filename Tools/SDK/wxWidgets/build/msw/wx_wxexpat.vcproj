@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="wxexpat"
 	ProjectGUID="{483BCC4F-4850-48E1-9F92-D1945FE47F1A}"
 	TargetFrameworkVersion="0"
@@ -1148,7 +1148,7 @@
 				AdditionalIncludeDirectories="..\..\lib\vc_lib"
 				PreprocessorDefinitions="WIN32;_LIB;_DEBUG;COMPILED_FROM_DSP"
 				MinimalRebuild="true"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
 				PrecompiledHeaderFile=".\vc_mswd\wxexpat/wx_wxexpat.pch"
 				AssemblerListingLocation=".\vc_mswd\wxexpat/"

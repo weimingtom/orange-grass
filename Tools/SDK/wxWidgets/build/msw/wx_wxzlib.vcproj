@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="wxzlib"
 	ProjectGUID="{061B4312-50DC-441E-96EE-3AC00C2773A4}"
 	TargetFrameworkVersion="0"
@@ -552,7 +552,7 @@
 				Optimization="0"
 				PreprocessorDefinitions="WIN32;_LIB;_DEBUG"
 				MinimalRebuild="true"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
 				PrecompiledHeaderFile=".\vc_mswd\wxzlib/wx_wxzlib.pch"
 				AssemblerListingLocation=".\vc_mswd\wxzlib/"

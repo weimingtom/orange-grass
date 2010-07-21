@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
-	Version="9.00"
+	Version="9,00"
 	Name="base"
 	ProjectGUID="{F6B88FE2-C09D-4AC6-A9C0-FA7A809BE5F0}"
 	TargetFrameworkVersion="0"
@@ -1181,7 +1181,7 @@
 				AdditionalIncludeDirectories="..\..\lib\vc_lib\mswd,..\..\include,..\..\src\tiff,..\..\src\jpeg,..\..\src\png,..\..\src\zlib,..\..\src\regex,..\..\src\expat\lib"
 				PreprocessorDefinitions="WIN32;_LIB;_DEBUG;__WXMSW__;__WXDEBUG__;wxUSE_GUI=0;wxUSE_BASE=1"
 				MinimalRebuild="true"
-				RuntimeLibrary="3"
+				RuntimeLibrary="1"
 				RuntimeTypeInfo="true"
 				UsePrecompiledHeader="2"
 				PrecompiledHeaderThrough="wx/wxprec.h"
@@ -14794,90 +14794,6 @@
 			Name="Setup Headers"
 			>
 			<File
-				RelativePath="..\..\include\wx\univ\setup.h"
-				>
-				<FileConfiguration
-					Name="DLL Universal Unicode Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_dll\mswunivud\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswunivud\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_dll\mswunivud\wx\setup.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Universal Unicode Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_lib\mswunivud\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\mswunivud\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_lib\mswunivud\wx\setup.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Universal Unicode Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_lib\mswunivu\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\mswunivu\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_lib\mswunivu\wx\setup.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Universal Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_lib\mswunivd\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\mswunivd\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_lib\mswunivd\wx\setup.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="Universal Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_lib\mswuniv\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\mswuniv\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_lib\mswuniv\wx\setup.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DLL Universal Debug|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_dll\mswunivd\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswunivd\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_dll\mswunivd\wx\setup.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DLL Universal Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_dll\mswuniv\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswuniv\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_dll\mswuniv\wx\setup.h"
-					/>
-				</FileConfiguration>
-				<FileConfiguration
-					Name="DLL Universal Unicode Release|Win32"
-					>
-					<Tool
-						Name="VCCustomBuildTool"
-						Description="Creating ..\..\lib\vc_dll\mswunivu\wx\setup.h"
-						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswunivu\wx\setup.h&#x0D;&#x0A;"
-						Outputs="..\..\lib\vc_dll\mswunivu\wx\setup.h"
-					/>
-				</FileConfiguration>
-			</File>
-			<File
 				RelativePath="..\..\include\wx\msw\setup.h"
 				>
 				<FileConfiguration
@@ -14958,6 +14874,90 @@
 						Description="Creating ..\..\lib\vc_dll\mswud\wx\setup.h"
 						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswud\wx\setup.h&#x0D;&#x0A;"
 						Outputs="..\..\lib\vc_dll\mswud\wx\setup.h"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath="..\..\include\wx\univ\setup.h"
+				>
+				<FileConfiguration
+					Name="DLL Universal Unicode Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_dll\mswunivud\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswunivud\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_dll\mswunivud\wx\setup.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Universal Unicode Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_lib\mswunivud\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\mswunivud\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_lib\mswunivud\wx\setup.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Universal Unicode Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_lib\mswunivu\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\mswunivu\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_lib\mswunivu\wx\setup.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Universal Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_lib\mswunivd\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\mswunivd\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_lib\mswunivd\wx\setup.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Universal Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_lib\mswuniv\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_lib\mswuniv\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_lib\mswuniv\wx\setup.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL Universal Debug|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_dll\mswunivd\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswunivd\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_dll\mswunivd\wx\setup.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL Universal Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_dll\mswuniv\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswuniv\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_dll\mswuniv\wx\setup.h"
+					/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="DLL Universal Unicode Release|Win32"
+					>
+					<Tool
+						Name="VCCustomBuildTool"
+						Description="Creating ..\..\lib\vc_dll\mswunivu\wx\setup.h"
+						CommandLine="copy &quot;$(InputPath)&quot; ..\..\lib\vc_dll\mswunivu\wx\setup.h&#x0D;&#x0A;"
+						Outputs="..\..\lib\vc_dll\mswunivu\wx\setup.h"
 					/>
 				</FileConfiguration>
 			</File>
