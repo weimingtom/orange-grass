@@ -30,7 +30,7 @@ COGSprite::~COGSprite()
 void COGSprite::Init (IOGTexture* _pTexture)
 {
 	m_pTexture = _pTexture;
-	MatrixOrthoRH(m_mOrthoProj, 320, 480, -1, 1, 1);
+	MatrixOrthoRH(m_mOrthoProj, SCR_HEIGHT, SCR_WIDTH, -1, 1, 1);
 }
 
 

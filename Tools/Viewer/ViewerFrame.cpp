@@ -70,7 +70,7 @@ CViewerFrame::CViewerFrame( wxWindow *parent,
     m_pToolFrame = new CViewerToolFrame (this, _T("Tools"), wxDefaultPosition, wxSize(80, 395));
     m_pToolFrame->Show(true);
 
-    m_pOutputFrame = new CViewerOutputFrame (this, _T("3D View"), wxPoint(125, 0), wxSize(495, 395));
+    m_pOutputFrame = new CViewerOutputFrame (this, _T("3D View"), wxPoint(125, 0), wxSize(480, 320));
     m_pOutputFrame->Show(true);
 }
 

@@ -30,7 +30,6 @@ END_EVENT_TABLE()
 MATRIX	m_mProjection;
 MATRIX	m_mView;
 IOGModel*	m_pCurModel = NULL;
-IOGMesh*	m_pCurMesh = NULL;
 IOGTerrain*	m_pCurTerrain = NULL;
 IOGSprite*	m_pCurSprite = NULL;
 
@@ -86,19 +85,12 @@ void CViewerCanvas::Render()
     {
         InitGL();
 		GetResourceMgr()->Init("resources.xml");
-		m_pLoadProgressDlg = new wxProgressDialog (wxT("Loading resources"), wxT("Loading..."), 100, this->GetParent());
-		m_pLoadProgressDlg->Show();
 		m_init = true;
     }
 
 	if (!m_bLoaded)
 	{
-	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glFlush();
-		SwapBuffers();
 		LoadNextResource();
-		this->Refresh();
-		return;
 	}
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -128,20 +120,8 @@ void CViewerCanvas::Render()
 		m_pCurModel->Render(m_mView);
 	if (m_pCurTerrain)
 		m_pCurTerrain->Render(m_mView);
-	if (m_pCurMesh)
-	{
-		glDisable(GL_TEXTURE_2D);
-		//glPolygonMode(GL_FRONT, GL_LINE);
-		//glPolygonMode(GL_BACK, GL_LINE);
-		m_pCurMesh->Render(m_mView);
-		glEnable(GL_TEXTURE_2D);
-		//glPolygonMode(GL_FRONT, GL_FILL);
-		//glPolygonMode(GL_BACK, GL_FILL);
-	}
 	if (m_pCurSprite)
-	{
 		m_pCurSprite->Render();
-	}
 
     RenderHelpers();
 
@@ -176,6 +156,10 @@ void CViewerCanvas::OnSize(wxSizeEvent& event)
         SetCurrent();
         glViewport(0, 0, m_ResX, m_ResY);
 		MatrixPerspectiveFovRH(m_mProjection, 1.0f, float(m_ResX)/float(m_ResY), 4.0f, 2500.0f, true);
+		if (m_pCurSprite)
+		{
+			m_pCurSprite->SetPosition (0, 0, 480.f, 320.f);
+		}
     }
 }
 
@@ -204,18 +188,14 @@ void CViewerCanvas::InitGL()
 /// @return false if finished loading.
 bool CViewerCanvas::LoadNextResource()
 {
-	if (GetResourceMgr()->LoadNext())
+	while (GetResourceMgr()->LoadNext())
 	{
 		IOGResourceInfo resInfo;
 		int progress = (int)(GetResourceMgr()->GetLoadProgress(resInfo));
-		wxString msg(wxT("Loading: "));
-		msg += resInfo.m_pResource;
-		m_pLoadProgressDlg->Update (progress, msg);
 
 		CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
 		cmd.SetEventCustomData(ResLoadEventData(wxT(resInfo.m_pResource), wxT(resInfo.m_pResourceGroup), wxT(resInfo.m_pResourceIcon)));
         GetEventHandlersTable()->FireEvent(EVENTID_RESLOAD, &cmd);
-		return true;
 	}
 	m_bLoaded = true;
 	return false;
@@ -282,14 +262,6 @@ void CViewerCanvas::OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& even
 	case RESTYPE_MODEL:
 		m_pCurModel = GetResourceMgr()->GetModel(evtData.m_Resource);
 		m_pCurTerrain = NULL;
-		m_pCurMesh = NULL;
-		delete m_pCurSprite; m_pCurSprite = NULL;
-		break;
-
-	case RESTYPE_MESH:
-		m_pCurModel = NULL;
-		m_pCurTerrain = NULL;
-		m_pCurMesh = GetResourceMgr()->GetMesh(evtData.m_Resource);
 		delete m_pCurSprite; m_pCurSprite = NULL;
 		break;
 
@@ -297,11 +269,10 @@ void CViewerCanvas::OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& even
 		{
 			m_pCurModel = NULL;
 			m_pCurTerrain = NULL;
-			m_pCurMesh = NULL;
 			if (m_pCurSprite) delete m_pCurSprite;
 			m_pCurSprite = CreateSprite(evtData.m_Resource);
 			int SprSize = (m_ResX < m_ResY) ? m_ResX : m_ResY;
-			m_pCurSprite->SetPosition (0, 0, m_ResX, m_ResY);
+			m_pCurSprite->SetPosition (0, 0, 480.f, 320.f);
 		}
 		break;
 	}
@@ -359,10 +330,6 @@ void CViewerCanvas::RenderHelpers()
 		if (m_pCurModel)
 		{
 			DrawAABB (m_pCurModel->GetAABB());
-		}
-		if (m_pCurMesh)
-		{
-			DrawAABB (m_pCurMesh->GetAABB());
 		}
 	}
 

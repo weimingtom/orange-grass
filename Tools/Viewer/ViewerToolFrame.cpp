@@ -26,7 +26,6 @@ CViewerToolFrame::CViewerToolFrame( wxMDIParentFrame *parent,
     m_pTree->AddRoot(_T("Resources"));
 
 	AddResourceGroup (RESTYPE_TEXTURE, wxT("Textures"));
-	AddResourceGroup (RESTYPE_MESH, wxT("Meshes"));
 	AddResourceGroup (RESTYPE_MODEL, wxT("Models"));
 
 	m_pTree->Expand(m_pTree->GetRootItem());

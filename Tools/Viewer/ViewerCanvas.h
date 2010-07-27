@@ -115,7 +115,7 @@ private:
 	int		m_ResX;
 	int		m_ResY;
 
-	wxProgressDialog*	m_pLoadProgressDlg;
+	//wxProgressDialog*	m_pLoadProgressDlg;
     wxTimer             m_timer;
 
 	bool	m_bShowGrid;
