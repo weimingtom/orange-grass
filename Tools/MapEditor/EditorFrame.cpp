@@ -1,4 +1,5 @@
 #include <wx/wx.h>
+#include <wx/gdicmn.h>
 #include "EditorFrame.h"
 #include <ToolFramework.h>
 #include "sample.xpm"
@@ -31,7 +32,12 @@ END_EVENT_TABLE()
 /// @return Pointer to a created frame.
 CEditorFrame* CEditorFrame::Create()
 {
-    CEditorFrame* pFrame = new CEditorFrame(NULL, wxT("OG Level Editor"), wxDefaultPosition, wxSize(840, 640));
+    int w, h;
+    wxDisplaySize(&w, &h);
+
+    wxSize appSize = wxSize(w*0.8, h*0.8);
+    wxPoint appPos = wxPoint((w-w*0.8)/2, (h-h*0.8)/2);
+    CEditorFrame* pFrame = new CEditorFrame(NULL, wxT("OG Level Editor"), appPos, appSize);
 
     wxMenuBar* pMenuBar = new wxMenuBar ();
     wxMenu* pWindowMenu = new wxMenu ();

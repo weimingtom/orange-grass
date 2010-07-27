@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Model alias = "level_01"/>
+<Mesh alias = "level_01"/>
+<Material texture = "level_01" />
+<Editor icon = "Models\Level\level_01_ed.bmp" />

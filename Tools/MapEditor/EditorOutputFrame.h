@@ -18,7 +18,7 @@ public:
                             const wxString& title, 
                             const wxPoint& pos,
                             const wxSize& size, 
-                            long style = wxDEFAULT_FRAME_STYLE);
+                            long style = wxCAPTION);
 
 private:
 

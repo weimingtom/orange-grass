@@ -1,4 +1,5 @@
 #include <wx/wx.h>
+#include <wx/gdicmn.h>
 #include "ViewerFrame.h"
 #include <ToolFramework.h>
 #include "sample.xpm"
@@ -27,7 +28,11 @@ CViewerFrame* CViewerFrame::Create()
 {
     wxString str = wxT("OG Model Viewer");
 
-    CViewerFrame* pFrame = new CViewerFrame(NULL, str, wxDefaultPosition, wxSize(640, 480));
+    int w, h;
+    wxDisplaySize(&w, &h);
+    wxSize appSize = wxSize(w*0.8, h*0.8);
+    wxPoint appPos = wxPoint((w-w*0.8)/2, (h-h*0.8)/2);
+    CViewerFrame* pFrame = new CViewerFrame(NULL, str, appPos, appSize);
 
     wxMenuBar* pMenuBar = new wxMenuBar ();
     wxMenu* pWindowMenu = new wxMenu ();

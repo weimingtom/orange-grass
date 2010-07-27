@@ -4,6 +4,7 @@
 #include "wx/image.h"
 #include "wx/imaglist.h"
 #include "wx/bmpcbox.h"
+#include "wx/htmllbox.h"
 #include <ToolFramework.h>
 #include <vector>
 
@@ -35,7 +36,8 @@ private:
 	DECLARE_EVENT_TABLE()
 
     wxPanel*    m_pPanel;
-	wxBitmapComboBox*	m_pObjectsList;
+	//wxBitmapComboBox*	m_pObjectsList;
+    wxSimpleHtmlListBox*    m_pObjectsList;
 };
 
 #endif

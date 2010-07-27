@@ -23,11 +23,8 @@ CEditorObjectsFrame::CEditorObjectsFrame(	wxMDIParentFrame *parent,
     SetIcon(wxIcon(sample_xpm));
     m_pPanel = new wxPanel(this);
 
-    m_pObjectsList = new wxBitmapComboBox();
-    m_pObjectsList->Create(m_pPanel, wxID_ANY, wxEmptyString,
-                       wxDefaultPosition, wxDefaultSize,
-                       0, NULL,
-                       wxCB_READONLY);
+    m_pObjectsList = new wxSimpleHtmlListBox();
+    m_pObjectsList->Create(m_pPanel, wxID_ANY, wxDefaultPosition, wxSize(180, 280), 0, NULL, 0);
 
 	GetEventHandlersTable()->AddEventHandler(EVENTID_RESLOAD, this);
 }
@@ -39,11 +36,10 @@ void CEditorObjectsFrame::OnLoadResource ( CommonToolEvent<ResLoadEventData>& ev
 	const ResLoadEventData& evtData = event.GetEventCustomData();
     wxString resourceText = evtData.m_Resource;
 	wxString resourceGroupText = evtData.m_ResourceGroup;
-	wxString resourceIconText = evtData.m_ResourceIcon;
+	wxString resourceIconText = wxString::Format(_T("<img src=\"%s\" />"), evtData.m_ResourceIcon);
 
 	if (resourceGroupText.CmpNoCase(_T("Models")) == 0)
 	{
-		wxBitmap bmp = wxBitmap (resourceIconText, wxBITMAP_TYPE_BMP);
-		m_pObjectsList->Append (resourceText, bmp);
+		m_pObjectsList->Append (resourceIconText);
 	}
 }
