@@ -10,6 +10,9 @@ public:
 	// destructor
 	virtual ~IOGSceneGraph () {}
 
+	// Create scene graph node
+	virtual IOGSgNode* CreateNode (IOGRenderable* _pRenderable) = 0;
+
 	// Add scene graph node
 	virtual void AddNode (IOGSgNode* _pNode) = 0;
 

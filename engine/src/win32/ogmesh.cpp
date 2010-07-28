@@ -7,6 +7,7 @@
  *
  */
 #include "ogmesh.h"
+#include "IOGMath.h"
 
 
 COGMesh::COGMesh () :	m_pVBO (NULL),
@@ -73,6 +74,7 @@ bool COGMesh::Load ()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 	CalculateBounds();
+    CalculateGeometry();
 
 	m_LoadState = OG_RESSTATE_LOADED;
 
@@ -220,6 +222,44 @@ void COGMesh::CalculateBounds ()
 }
 
 
+// calculate geometry
+void COGMesh::CalculateGeometry ()
+{
+	MATRIX mModel;
+    Vec3 v;
+
+    m_Faces.reserve(4096);
+    for (unsigned int i=0; i<m_pScene->nNumMesh; ++i)
+	{
+		SPODNode* pNode = &m_pScene->pNode[i];
+		m_pScene->GetWorldMatrix(mModel, *pNode);
+
+        SPODMesh& Mesh = m_pScene->pMesh[i];
+
+        Vec3* pPtr = (Vec3*)Mesh.pInterleaved;
+		if(Mesh.sFaces.pData)
+        {
+			unsigned int numIndices = PVRTModelPODCountIndices(Mesh);
+            for (unsigned int n = 0; n < numIndices; n+=3)
+            {
+                OGFace face;
+                for (int k = 0; k < 3; ++k)
+                {
+                    unsigned short ind = *(((unsigned short*)Mesh.sFaces.pData) + n + k);
+                    face.vertices[k] = *((Vec3*)((unsigned char*)(pPtr)+Mesh.sVertex.nStride * ind));
+
+                    VECTOR4 v_in, v_out;
+                    v_in.x = face.vertices[k].x; v_in.y = face.vertices[k].y; v_in.z = face.vertices[k].z; v_in.w = 1.0f;
+                    MatrixVec4Multiply(v_out, v_in, mModel);
+                    face.vertices[k].x = v_out.x; face.vertices[k].y = v_out.y; face.vertices[k].z = v_out.z;
+                }
+                m_Faces.push_back(face);
+            }
+        }
+	}
+}
+
+
 // Get number of parts
 int COGMesh::GetNumParts () const
 {
@@ -238,4 +278,26 @@ const IOGAabb& COGMesh::GetAABB () const
 const IOGAabb& COGMesh::GetAABB ( int _part ) const
 {
 	return m_AABBs[_part];
+}
+
+
+// Get ray intersection
+bool COGMesh::GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos)
+{
+	float t, u, v;
+	bool bIntersected = false;
+    unsigned int numFaces = m_Faces.size();
+	for (unsigned int i = 0; i < numFaces; ++i)
+	{
+        Vec3 p0 = m_Faces[i].vertices[0];
+        Vec3 p1 = m_Faces[i].vertices[1];
+        Vec3 p2 = m_Faces[i].vertices[2];
+		bIntersected = CheckTriangleIntersection (_vRayPos, _vRayDir, p0, p1, p2, &t, &u, &v );
+		if (bIntersected)
+		{
+			*_pOutPos = Barycentric2World(u, v, p0, p1, p2);
+			return true;
+		}
+	}
+	return false;
 }

@@ -1,5 +1,7 @@
 #include "OpenGL2.h"
 #include "IOGGraphicsHelpers.h"
+#include "IOGMesh.h"
+#include <vector>
 
 
 // Draw AABB
@@ -91,4 +93,22 @@ void DrawPatchGrid (int _NumPatchVerts, const Vec3* _pGridData)
 
 	glPointSize(1.0f);
 	glDisable(GL_POINT_SMOOTH);
+}
+
+
+// Draw geometry grid
+void DrawGeometryGrid (const std::vector<OGFace>& _GridData)
+{
+    unsigned int numFaces = _GridData.size();
+    for (unsigned int i = 0; i < numFaces; ++i)
+    {
+        glBegin(GL_LINE_LOOP);
+            glColor3f(0.9f, 0.4f, 0.4f);
+            glVertex3f(_GridData[i].vertices[0].x, _GridData[i].vertices[0].y, _GridData[i].vertices[0].z);
+            glColor3f(0.9f, 0.4f, 0.4f);
+            glVertex3f(_GridData[i].vertices[1].x, _GridData[i].vertices[1].y, _GridData[i].vertices[1].z);
+            glColor3f(0.9f, 0.4f, 0.4f);
+            glVertex3f(_GridData[i].vertices[2].x, _GridData[i].vertices[2].y, _GridData[i].vertices[2].z);
+        glEnd();
+    }
 }

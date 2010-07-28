@@ -88,8 +88,13 @@ void COGModel::UpdateAnimation (int _ElapsedTime)
 // Render mesh.
 void COGModel::Render (const MATRIX& _mView)
 {
-	glBindTexture(GL_TEXTURE_2D, m_pTexture->GetTextureId());
+    glEnable (GL_BLEND); 
+    glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    
+    glBindTexture(GL_TEXTURE_2D, m_pTexture->GetTextureId());
 	m_pMesh->Render (_mView);
+
+    glDisable(GL_BLEND);
 }
 
 

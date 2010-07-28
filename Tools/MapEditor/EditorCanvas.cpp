@@ -32,10 +32,12 @@ END_EVENT_TABLE()
 MATRIX	m_mProjection;
 MATRIX	m_mView;
 IOGTerrain*	m_pCurTerrain = NULL;
+IOGSgNode*  m_pCurNode = NULL;
 bool	m_bIntersectionFound;
 Vec3	m_vIntersection;
 Vec3	m_vPatchGrid[512];
 int		m_NumPatchVerts = 0;
+std::string m_CurModelAlias("palm");
 
 bool bRmb = false;
 bool bLmb = false;
@@ -132,6 +134,7 @@ void CEditorCanvas::Render()
 
 	if (m_pCurTerrain)
 		m_pCurTerrain->Render(m_mView);
+    GetSceneGraph()->Render(m_mView);
 
     RenderHelpers();
 
@@ -146,46 +149,30 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 {
 	if (bRmb || bLmb || m_bMouseMoved)
 	{
-		//ToolSettings* pTool = GetToolSettings();
-		//Vec3 vPick = GetPickRay (mouse_x, mouse_y);
-		//Vec3 vPos = GetCamera()->GetPosition();
-		//Vec3 vVec = vPick - vPos;
-		//vVec.normalize();
-		//if (m_pCurTerrain && pTool->GetEditMode() != EDITMODE_NO)
-		//{
-		//	m_bIntersectionFound = m_pCurTerrain->GetRayIntersection(vPos, vVec, &m_vIntersection);
-		//	if (m_bIntersectionFound)
-		//	{
-		//		if (bRmb || bLmb)
-		//		{
-		//			switch (pTool->GetEditMode())
-		//			{
-		//			case EDITMODE_HEIGHT:
-		//				EditHeightmap (bLmb ? 1 : -1);
-		//				break;
-
-		//			case EDITMODE_COLOR:
-		//				EditColor (bLmb);
-		//				break;
-		//			}
-		//		}
-		//		int brushSize = 0;
-		//		switch (pTool->GetEditMode())
-		//		{
-		//		case EDITMODE_HEIGHT:
-		//			brushSize = pTool->GetHeightmapBrushSize();
-		//			break;
-
-		//		case EDITMODE_COLOR:
-		//			brushSize = pTool->GetColorBrushSize();
-		//			break;
-		//		}
-		//		m_NumPatchVerts = m_pCurTerrain->GetPatch(m_vIntersection, brushSize, &m_vPatchGrid[0]);
-		//		m_bMouseMoved = false;
-		//		m_bRedrawPatch = true;
-		//		Refresh();
-		//	}
-		//}
+		ToolSettings* pTool = GetToolSettings();
+		Vec3 vPick = GetPickRay (mouse_x, mouse_y);
+		Vec3 vPos = GetCamera()->GetPosition();
+		Vec3 vVec = vPick - vPos;
+		vVec.normalize();
+		if (m_pCurTerrain && pTool->GetEditMode() != EDITMODE_NO)
+		{
+			m_bIntersectionFound = m_pCurTerrain->GetRayIntersection(vPos, vVec, &m_vIntersection);
+			if (m_bIntersectionFound)
+			{
+				if (bRmb || bLmb)
+				{
+                    IOGSgNode* pNode = GetSceneGraph()->CreateNode(GetResourceMgr()->GetModel(m_CurModelAlias.c_str()));
+                    GetSceneGraph()->AddNode(pNode);
+                    pNode->SetWorldTransform(m_vIntersection, Vec3());
+				}
+				m_NumPatchVerts = 1;
+                m_vPatchGrid[0] = m_vIntersection;
+                m_pCurNode->SetWorldTransform(m_vIntersection, Vec3());
+				m_bMouseMoved = false;
+				m_bRedrawPatch = true;
+				Refresh();
+			}
+		}
 	}
 }
 
@@ -258,6 +245,9 @@ bool CEditorCanvas::LoadNextResource()
 
 	// Temporary level auto-loading
 	m_pCurTerrain = GetLevelManager()->GetTerrain(0);
+    m_pCurNode = GetSceneGraph()->CreateNode(GetResourceMgr()->GetModel(m_CurModelAlias.c_str()));
+    GetSceneGraph()->AddNode(m_pCurNode);
+    m_pCurNode->SetWorldTransform(Vec3(), Vec3());
 
 	return true;
 }
@@ -366,6 +356,11 @@ void CEditorCanvas::RenderHelpers()
 		DrawPatchGrid (m_NumPatchVerts, &m_vPatchGrid[0]);
 		m_bRedrawPatch = false;
 	}
+
+    //if (m_pCurTerrain)
+    //{
+    //    DrawGeometryGrid(m_pCurTerrain->GetGeometry());
+    //}
 
     glEnable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);

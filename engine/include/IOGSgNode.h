@@ -16,6 +16,9 @@ public:
 	// set world transform.
 	virtual void SetWorldTransform (const MATRIX& _mT) = 0;
 
+	// set world transform.
+	virtual void SetWorldTransform (const Vec3& _vPos, const Vec3& _vRot) = 0;
+
 	// get renderable.
 	virtual IOGRenderable* GetRenderable () = 0;
 };

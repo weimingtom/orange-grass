@@ -92,3 +92,14 @@ void COGTerrain::Render (const MATRIX& _mView)
 	glBindTexture(GL_TEXTURE_2D, m_pTexture->GetTextureId());
 	m_pMesh->Render (_mView);
 }
+
+
+// Get ray intersection
+bool COGTerrain::GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos)
+{
+    if (m_pMesh)
+    {
+        return m_pMesh->GetRayIntersection(_vRayPos, _vRayDir, _pOutPos);
+    }
+    return false;
+}

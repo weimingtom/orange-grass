@@ -11,6 +11,14 @@
 
 #include "Mathematics.h"
 #include "IOGAabb.h"
+#include <vector>
+
+
+struct OGFace
+{
+    Vec3 vertices[3];
+    Vec3 normal;
+};
 
 
 class IOGMesh
@@ -32,6 +40,12 @@ public:
 
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const = 0;
+
+    // Get ray intersection
+    virtual bool GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos) = 0;
+
+    // Get mesh geometry
+    virtual const std::vector<OGFace>& GetGeometry () const = 0;
 };
 
 

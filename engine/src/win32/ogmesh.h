@@ -41,6 +41,12 @@ public:
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const;
 
+    // Get ray intersection
+    virtual bool GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos);
+
+    // Get mesh geometry
+    virtual const std::vector<OGFace>& GetGeometry () const {return m_Faces;}
+
 private:
 	
 	// render sub-mesh
@@ -48,6 +54,9 @@ private:
 
 	// calculate bounds
 	void CalculateBounds ();
+
+	// calculate geometry
+	void CalculateGeometry ();
 
 private:
 	
@@ -61,6 +70,10 @@ private:
 	// Bounds
 	std::vector<IOGAabb>	m_AABBs;
 	IOGAabb					m_CombinedAABB;
+
+    // Geometry (for mapeditor mostly)
+	std::vector<OGFace>     m_Faces;
+
 };
 
 

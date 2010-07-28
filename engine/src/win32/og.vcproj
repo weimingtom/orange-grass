@@ -167,6 +167,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ogeditableterrain.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ogeditableterrain.h"
+				>
+			</File>
+			<File
 				RelativePath=".\oggraphicshelpers.cpp"
 				>
 			</File>
@@ -219,6 +227,22 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ogscenegraph.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ogscenegraph.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ogsgnode.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ogsgnode.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ogsprite.cpp"
 				>
 			</File>
@@ -232,14 +256,6 @@
 			</File>
 			<File
 				RelativePath=".\ogterrain.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ogeditableterrain.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ogeditableterrain.h"
 				>
 			</File>
 			<File
@@ -270,6 +286,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\IOGCoreHelpers.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\IOGEditableTerrain.h"
 				>
 			</File>
 			<File
@@ -318,10 +338,6 @@
 			</File>
 			<File
 				RelativePath="..\..\include\IOGTerrain.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGEditableTerrain.h"
 				>
 			</File>
 			<File

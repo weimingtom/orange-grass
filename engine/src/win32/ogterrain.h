@@ -33,6 +33,12 @@ public:
 
 	// Get type of the renderable.
 	virtual RenderableType GetRenderableType () const { return OG_RENDERABLE_TERRAIN; }
+
+    // Get ray intersection
+    virtual bool GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos);
+
+    // Get mesh geometry
+    virtual const std::vector<OGFace>& GetGeometry () const {return m_pMesh->GetGeometry(); }
 	
 private:
 

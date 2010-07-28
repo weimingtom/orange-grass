@@ -1,12 +1,14 @@
 #include "OrangeGrass.h"
 #include "ogresourcemgr.h"
 #include "oglevelmanager.h"
+#include "ogscenegraph.h"
 #include "ogcamera.h"
 #include "ogsprite.h"
 
 
 static IOGResourceMgr* g_pResourceMgr = NULL;
 static IOGLevelManager* g_pLevelMgr = NULL;
+static IOGSceneGraph* g_pSg = NULL;
 static IOGCamera* g_pCamera = NULL;
 
 
@@ -27,6 +29,16 @@ IOGLevelManager* GetLevelManager ()
 		g_pLevelMgr = new COGLevelManager ();
 	}
 	return g_pLevelMgr;
+}
+
+
+IOGSceneGraph* GetSceneGraph ()
+{
+	if (g_pSg == NULL)
+	{
+		g_pSg = new COGSceneGraph ();
+	}
+	return g_pSg;
 }
 
 
