@@ -256,6 +256,9 @@ bool CEditorCanvas::LoadNextResource()
 	}
 	m_bLoaded = true;
 
+	// Temporary level auto-loading
+	m_pCurTerrain = GetLevelManager()->GetTerrain(0);
+
 	return true;
 }
 
