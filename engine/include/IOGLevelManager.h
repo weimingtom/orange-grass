@@ -16,10 +16,7 @@ public:
     virtual const char* GetLevelPath () const = 0;
 	
 	// get terrain.
-	virtual IOGTerrain* GetEditableTerrain (int _level) = 0;
-	
-	// save terrain.
-	virtual bool SaveEditableTerrain (int _level) = 0;
+	virtual IOGTerrain* GetTerrain (int _level) = 0;
 };
 
 #endif

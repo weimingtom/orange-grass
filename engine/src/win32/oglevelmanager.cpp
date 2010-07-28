@@ -8,7 +8,7 @@
 COGLevelManager::COGLevelManager ()
 {
 	GetResourcePathASCII(m_LevelsRootPath, 2048);
-	sprintf(m_LevelsRootPath, "%sLevels", m_LevelsRootPath);
+	sprintf(m_LevelsRootPath, "%sGameResources/Levels", m_LevelsRootPath);
 	memset(m_LevelList, 0, sizeof(m_LevelList));
 }
 
@@ -60,7 +60,7 @@ const char* COGLevelManager::GetLevelPath () const
 
 
 // get terrain.
-IOGTerrain* COGLevelManager::GetEditableTerrain (int _level)
+IOGTerrain* COGLevelManager::GetTerrain (int _level)
 {
 	COGTerrain* pLevel = (COGTerrain*)(m_LevelList[_level]);
 	if (pLevel)
@@ -69,25 +69,7 @@ IOGTerrain* COGLevelManager::GetEditableTerrain (int _level)
 		{
 			pLevel->SetWorldPosition (Vec3(0, 0, 0));
 			pLevel->Load ();
-			pLevel->SetTexture(GetResourceMgr()->GetTexture("land"));
 		}
 	}
 	return pLevel;
-}
-
-	
-// save terrain.
-bool COGLevelManager::SaveEditableTerrain (int _level)
-{
-	COGTerrain* pLevel = (COGTerrain*)(m_LevelList[_level]);
-	if (pLevel)
-	{
-		if (pLevel->GetLoadState() == OG_RESSTATE_LOADED)
-		{
-			char file_path[2048];
-			sprintf(file_path, "%s/Level_%d", m_LevelsRootPath, _level);
-			pLevel->Save (file_path);
-		}
-	}
-	return true;
 }

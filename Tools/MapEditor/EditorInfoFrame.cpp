@@ -22,11 +22,11 @@ CEditorInfoFrame::CEditorInfoFrame(	wxMDIParentFrame *parent,
     SetIcon(wxIcon(sample_xpm));
     m_pPanel = new wxPanel(this);
 
-	wxSizer *sizerDown = new wxStaticBoxSizer(new wxStaticBox( m_pPanel, wxID_ANY, _T("&Log window"), wxPoint(1, 1), wxSize(670, 90)), wxVERTICAL);
+	wxSizer *sizerDown = new wxStaticBoxSizer(new wxStaticBox( m_pPanel, wxID_ANY, _T("&Log window"), wxPoint(1, 1), wxSize(size.GetWidth()-20, size.GetHeight()-50)), wxVERTICAL);
 
-    m_pLogBox = new wxListBox(m_pPanel, wxID_ANY, wxPoint(10, 20), wxSize(660, 70));
+	m_pLogBox = new wxListBox(m_pPanel, wxID_ANY, wxPoint(10, 20), wxSize(size.GetWidth()-40, size.GetHeight()-80));
     sizerDown->Add(m_pLogBox, 1, wxGROW | wxALL, 5);
-    sizerDown->SetMinSize(660, 70);
+    sizerDown->SetMinSize(wxSize(size.GetWidth()-40, 70));
     ListBoxLogger* m_logTarget = new ListBoxLogger(m_pLogBox, wxLog::GetActiveTarget());
     wxLog::SetActiveTarget(m_logTarget);
 }

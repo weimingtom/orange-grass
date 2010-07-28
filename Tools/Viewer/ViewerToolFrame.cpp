@@ -22,7 +22,7 @@ CViewerToolFrame::CViewerToolFrame( wxMDIParentFrame *parent,
 {
     SetIcon(wxIcon(sample_xpm));
     m_pPanel = new wxPanel(this);
-    m_pTree = new wxTreeCtrl(m_pPanel, wxID_ANY, wxDefaultPosition, wxSize(107, 358));
+	m_pTree = new wxTreeCtrl(m_pPanel, wxID_ANY, wxDefaultPosition, wxSize(size.GetWidth(), size.GetHeight()));
     m_pTree->AddRoot(_T("Resources"));
 
 	AddResourceGroup (RESTYPE_TEXTURE, wxT("Textures"));

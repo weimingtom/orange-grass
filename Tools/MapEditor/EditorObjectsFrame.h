@@ -24,7 +24,7 @@ public:
 							const wxString& title, 
 							const wxPoint& pos,
 							const wxSize& size, 
-							long style = wxDEFAULT_FRAME_STYLE);
+							long style = wxCAPTION);
 
 private:
 
@@ -36,7 +36,6 @@ private:
 	DECLARE_EVENT_TABLE()
 
     wxPanel*    m_pPanel;
-	//wxBitmapComboBox*	m_pObjectsList;
     wxSimpleHtmlListBox*    m_pObjectsList;
 };
 

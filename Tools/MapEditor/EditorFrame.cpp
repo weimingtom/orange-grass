@@ -7,8 +7,6 @@
 
 #define ID_DEF_ABOUT		10000
 #define ID_DEF_AABB			10002
-#define ID_DEF_HEIGHTMAP	10003
-#define ID_DEF_COLOR		10004
 #define ID_DEF_OBJECTS		10005
 
 const int ID_TOOLBAR = 500;
@@ -21,8 +19,6 @@ BEGIN_EVENT_TABLE(CEditorFrame, wxMDIParentFrame)
     EVT_MENU (wxID_OPEN,		CEditorFrame::OnOpenLevel)
     EVT_MENU (wxID_SAVE,		CEditorFrame::OnSaveLevel)
     EVT_MENU (ID_DEF_ABOUT,		CEditorFrame::OnAboutDlg)
-    EVT_MENU (ID_DEF_HEIGHTMAP,	CEditorFrame::OnHeightmapDlg)
-    EVT_MENU (ID_DEF_COLOR,		CEditorFrame::OnColorDlg)
     EVT_MENU (ID_DEF_OBJECTS,	CEditorFrame::OnObjectsDlg)
     EVT_MENU (ID_DEF_AABB,		CEditorFrame::OnBounds)
 END_EVENT_TABLE()
@@ -76,20 +72,22 @@ CEditorFrame::CEditorFrame( wxWindow *parent,
     m_pToolBar = CreateToolBar(style, ID_TOOLBAR);
     PopulateToolbar(m_pToolBar);
 
-    m_pInfoFrame = new CEditorInfoFrame (this, wxT("Info"), wxPoint(0, 395), wxSize(820, 140));
+	wxSize ifSize = wxSize(size.GetWidth()*0.99, size.GetHeight()*0.19);
+	wxPoint ifPos = wxPoint(0, size.GetHeight()*0.7);
+    m_pInfoFrame = new CEditorInfoFrame (this, wxT("Info"), ifPos, ifSize);
     m_pInfoFrame->Show(true);
 
-    m_pOutputFrame = new CEditorOutputFrame (this, wxT("3D View"), wxPoint(0, 0), wxSize(620, 395));
+	wxSize ofSize = wxSize(size.GetWidth() - 185, size.GetHeight()*0.7);
+    wxPoint ofPos = wxPoint(172, 0);
+    m_pOutputFrame = new CEditorOutputFrame (this, wxT("3D View"), ofPos, ofSize);
     m_pOutputFrame->Show(true);
 
-    m_pHeightFrame = new CEditorHeightmapFrame (this, wxT("Heightmap"), wxPoint(620, 0), wxSize(200, 395));
-    m_pHeightFrame->Show(false);
+	wxSize tfSize = wxSize(170, size.GetHeight()*0.7);
+    wxPoint tfPos = wxPoint(0, 0);
+    m_pObjectsFrame = new CEditorObjectsFrame (this, wxT("Objects"), tfPos, tfSize);
+    m_pObjectsFrame->Show(true);
 
-    m_pColorFrame = new CEditorColorFrame (this, wxT("Color"), wxPoint(620, 0), wxSize(200, 395));
-    m_pColorFrame->Show(false);
-
-    m_pObjectsFrame = new CEditorObjectsFrame (this, wxT("Objects"), wxPoint(620, 0), wxSize(200, 395));
-    m_pObjectsFrame->Show(false);
+	GetToolSettings()->SetEditMode(EDITMODE_OBJECTS);
 }
 
 
@@ -128,8 +126,6 @@ void CEditorFrame::PopulateToolbar(wxToolBarBase* toolBar)
         Tool_open,
         Tool_save,
         Tool_help,
-        Tool_ed_hm,
-        Tool_ed_color,
         Tool_ed_obj,
         Tool_Max
     };
@@ -139,8 +135,6 @@ void CEditorFrame::PopulateToolbar(wxToolBarBase* toolBar)
     toolBarBitmaps[Tool_open] = wxBitmap(wxT("Resources\\open.bmp"), wxBITMAP_TYPE_BMP);
     toolBarBitmaps[Tool_save] = wxBitmap(wxT("Resources\\save.bmp"), wxBITMAP_TYPE_BMP);
     toolBarBitmaps[Tool_help] = wxBitmap(wxT("Resources\\help.bmp"), wxBITMAP_TYPE_BMP);
-    toolBarBitmaps[Tool_ed_hm] = wxBitmap(wxT("Resources\\ed_hm.bmp"), wxBITMAP_TYPE_BMP);
-    toolBarBitmaps[Tool_ed_color] = wxBitmap(wxT("Resources\\ed_color.bmp"), wxBITMAP_TYPE_BMP);
     toolBarBitmaps[Tool_ed_obj] = wxBitmap(wxT("Resources\\ed_obj.bmp"), wxBITMAP_TYPE_BMP);
 
     int w = toolBarBitmaps[Tool_open].GetWidth();
@@ -151,32 +145,8 @@ void CEditorFrame::PopulateToolbar(wxToolBarBase* toolBar)
     toolBar->AddTool(wxID_OPEN, wxT("Open"), toolBarBitmaps[Tool_open], wxT("Open level"), wxITEM_NORMAL);
     toolBar->AddTool(wxID_SAVE, wxT("Save"), toolBarBitmaps[Tool_save], wxT("Save level"), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    toolBar->AddTool(ID_DEF_HEIGHTMAP, wxT("Heightmap"), toolBarBitmaps[Tool_ed_hm], wxT("Heightmap"), wxITEM_NORMAL);
-    toolBar->AddTool(ID_DEF_COLOR, wxT("Color"), toolBarBitmaps[Tool_ed_color], wxT("Color"), wxITEM_NORMAL);
     toolBar->AddTool(ID_DEF_OBJECTS, wxT("Objects"), toolBarBitmaps[Tool_ed_obj], wxT("Objects"), wxITEM_NORMAL);
     toolBar->Realize();
-}
-
-
-/// @brief Heightmap dialog handler.
-/// @param event - event structute.
-void CEditorFrame::OnHeightmapDlg(wxCommandEvent& event)
-{
-    m_pHeightFrame->Show(true);
-    m_pColorFrame->Show(false);
-    m_pObjectsFrame->Show(false);
-	GetToolSettings()->SetEditMode(EDITMODE_HEIGHT);
-}
-
-
-/// @brief Color dialog handler.
-/// @param event - event structute.
-void CEditorFrame::OnColorDlg(wxCommandEvent& event)
-{
-    m_pHeightFrame->Show(false);
-    m_pColorFrame->Show(true);
-    m_pObjectsFrame->Show(false);
-	GetToolSettings()->SetEditMode(EDITMODE_COLOR);
 }
 
 
@@ -184,8 +154,6 @@ void CEditorFrame::OnColorDlg(wxCommandEvent& event)
 /// @param event - event structute.
 void CEditorFrame::OnObjectsDlg(wxCommandEvent& event)
 {
-    m_pHeightFrame->Show(false);
-    m_pColorFrame->Show(false);
     m_pObjectsFrame->Show(true);
 	GetToolSettings()->SetEditMode(EDITMODE_OBJECTS);
 }

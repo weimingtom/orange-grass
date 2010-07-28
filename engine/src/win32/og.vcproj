@@ -235,6 +235,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ogeditableterrain.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ogeditableterrain.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ogtexture.cpp"
 				>
 			</File>
@@ -310,6 +318,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\IOGTerrain.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\IOGEditableTerrain.h"
 				>
 			</File>
 			<File

@@ -2,8 +2,6 @@
 #define EDITORFRAME_H_
 
 #include "EditorOutputFrame.h"
-#include "EditorHeightmapFrame.h"
-#include "EditorColorFrame.h"
 #include "EditorObjectsFrame.h"
 #include "EditorInfoFrame.h"
 
@@ -47,14 +45,6 @@ private:
     /// @param toolBar - toolbar.
     void PopulateToolbar(wxToolBarBase* toolBar);
 
-    /// @brief Heightmap dialog handler.
-    /// @param event - event structute.
-    void OnHeightmapDlg(wxCommandEvent& event);
-
-    /// @brief Color dialog handler.
-    /// @param event - event structute.
-    void OnColorDlg(wxCommandEvent& event);
-
     /// @brief Objects dialog handler.
     /// @param event - event structute.
     void OnObjectsDlg(wxCommandEvent& event);
@@ -72,8 +62,6 @@ private:
     DECLARE_EVENT_TABLE()
 
     CEditorOutputFrame*		m_pOutputFrame;
-    CEditorHeightmapFrame*	m_pHeightFrame;
-    CEditorColorFrame*		m_pColorFrame;
     CEditorObjectsFrame*	m_pObjectsFrame;
     CEditorInfoFrame*		m_pInfoFrame;
     wxToolBar*				m_pToolBar;

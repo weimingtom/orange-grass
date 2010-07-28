@@ -96,8 +96,6 @@ void CEditorCanvas::Render()
         InitGL();
 		GetResourceMgr()->Init("resources.xml");
 		GetLevelManager()->Init("levels.xml");
-		m_pLoadProgressDlg = new wxProgressDialog (wxT("Loading resources"), wxT("Loading..."), 100, this->GetParent());
-		m_pLoadProgressDlg->Show();
 		m_init = true;
     }
 
@@ -107,8 +105,6 @@ void CEditorCanvas::Render()
 		glFlush();
 		SwapBuffers();
 		LoadNextResource();
-		this->Refresh();
-		return;
 	}
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -150,46 +146,46 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 {
 	if (bRmb || bLmb || m_bMouseMoved)
 	{
-		ToolSettings* pTool = GetToolSettings();
-		Vec3 vPick = GetPickRay (mouse_x, mouse_y);
-		Vec3 vPos = GetCamera()->GetPosition();
-		Vec3 vVec = vPick - vPos;
-		vVec.normalize();
-		if (m_pCurTerrain && pTool->GetEditMode() != EDITMODE_NO)
-		{
-			m_bIntersectionFound = m_pCurTerrain->GetRayIntersection(vPos, vVec, &m_vIntersection);
-			if (m_bIntersectionFound)
-			{
-				if (bRmb || bLmb)
-				{
-					switch (pTool->GetEditMode())
-					{
-					case EDITMODE_HEIGHT:
-						EditHeightmap (bLmb ? 1 : -1);
-						break;
+		//ToolSettings* pTool = GetToolSettings();
+		//Vec3 vPick = GetPickRay (mouse_x, mouse_y);
+		//Vec3 vPos = GetCamera()->GetPosition();
+		//Vec3 vVec = vPick - vPos;
+		//vVec.normalize();
+		//if (m_pCurTerrain && pTool->GetEditMode() != EDITMODE_NO)
+		//{
+		//	m_bIntersectionFound = m_pCurTerrain->GetRayIntersection(vPos, vVec, &m_vIntersection);
+		//	if (m_bIntersectionFound)
+		//	{
+		//		if (bRmb || bLmb)
+		//		{
+		//			switch (pTool->GetEditMode())
+		//			{
+		//			case EDITMODE_HEIGHT:
+		//				EditHeightmap (bLmb ? 1 : -1);
+		//				break;
 
-					case EDITMODE_COLOR:
-						EditColor (bLmb);
-						break;
-					}
-				}
-				int brushSize = 0;
-				switch (pTool->GetEditMode())
-				{
-				case EDITMODE_HEIGHT:
-					brushSize = pTool->GetHeightmapBrushSize();
-					break;
+		//			case EDITMODE_COLOR:
+		//				EditColor (bLmb);
+		//				break;
+		//			}
+		//		}
+		//		int brushSize = 0;
+		//		switch (pTool->GetEditMode())
+		//		{
+		//		case EDITMODE_HEIGHT:
+		//			brushSize = pTool->GetHeightmapBrushSize();
+		//			break;
 
-				case EDITMODE_COLOR:
-					brushSize = pTool->GetColorBrushSize();
-					break;
-				}
-				m_NumPatchVerts = m_pCurTerrain->GetPatch(m_vIntersection, brushSize, &m_vPatchGrid[0]);
-				m_bMouseMoved = false;
-				m_bRedrawPatch = true;
-				Refresh();
-			}
-		}
+		//		case EDITMODE_COLOR:
+		//			brushSize = pTool->GetColorBrushSize();
+		//			break;
+		//		}
+		//		m_NumPatchVerts = m_pCurTerrain->GetPatch(m_vIntersection, brushSize, &m_vPatchGrid[0]);
+		//		m_bMouseMoved = false;
+		//		m_bRedrawPatch = true;
+		//		Refresh();
+		//	}
+		//}
 	}
 }
 
@@ -249,24 +245,18 @@ void CEditorCanvas::InitGL()
 /// @return false if finished loading.
 bool CEditorCanvas::LoadNextResource()
 {
-	if (GetResourceMgr()->LoadNext())
+	while (GetResourceMgr()->LoadNext())
 	{
 		IOGResourceInfo resInfo;
-		int progress = (int)(GetResourceMgr()->GetLoadProgress(resInfo));
-		wxString msg(wxT("Loading: "));
-		msg += resInfo.m_pResource;
-		m_pLoadProgressDlg->Update (progress, msg);
+		GetResourceMgr()->GetLoadProgress(resInfo);
 
 		CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
 		cmd.SetEventCustomData(ResLoadEventData(wxT(resInfo.m_pResource), wxT(resInfo.m_pResourceGroup), wxT(resInfo.m_pResourceIcon)));
         GetEventHandlersTable()->FireEvent(EVENTID_RESLOAD, &cmd);
-		return true;
 	}
 	m_bLoaded = true;
 
-	m_pLoadProgressDlg->Show(false);
-
-	return false;
+	return true;
 }
 
 
@@ -274,8 +264,8 @@ bool CEditorCanvas::LoadNextResource()
 /// @param event - event structute.
 void CEditorCanvas::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& event )
 {
-	m_pCurTerrain = GetLevelManager()->GetEditableTerrain(0);
-	GetLevelManager()->SaveEditableTerrain(0);
+	m_pCurTerrain = GetLevelManager()->GetTerrain(0);
+	this->Refresh();
 }
 
 
@@ -459,10 +449,10 @@ void CEditorCanvas::OnMouseWheel(wxMouseEvent& event)
 /// @param _Dir - editing direction.
 void CEditorCanvas::EditHeightmap(int _Dir)
 {
-	ToolSettings* pTool = GetToolSettings();
-    float fAdd = pTool->GetHeightmapAddValue() * _Dir;
-	m_pCurTerrain->AddHeight(m_vIntersection, pTool->GetHeightmapBrushSize(), 
-		fAdd, pTool->GetHeightmapSmoothing());
+	//ToolSettings* pTool = GetToolSettings();
+	//float fAdd = pTool->GetHeightmapAddValue() * _Dir;
+	//m_pCurTerrain->AddHeight(m_vIntersection, pTool->GetHeightmapBrushSize(), 
+	//	fAdd, pTool->GetHeightmapSmoothing());
 }
 
 
@@ -470,8 +460,8 @@ void CEditorCanvas::EditHeightmap(int _Dir)
 /// @param _bPrimary - primary or secondary color.
 void CEditorCanvas::EditColor(bool _bPrimary)
 {
-	ToolSettings* pTool = GetToolSettings();
-	const wxColor& curColor = _bPrimary ? pTool->GetPrimaryColor() : pTool->GetSecondaryColor();
-	Vec3 vColor ((float)curColor.Red()/255.0f, (float)curColor.Green()/255.0f, (float)curColor.Blue()/255.0f);
-	m_pCurTerrain->ChangeColor(m_vIntersection, pTool->GetColorBrushSize(), vColor);
+	//ToolSettings* pTool = GetToolSettings();
+	//const wxColor& curColor = _bPrimary ? pTool->GetPrimaryColor() : pTool->GetSecondaryColor();
+	//Vec3 vColor ((float)curColor.Red()/255.0f, (float)curColor.Green()/255.0f, (float)curColor.Blue()/255.0f);
+	//m_pCurTerrain->ChangeColor(m_vIntersection, pTool->GetColorBrushSize(), vColor);
 }

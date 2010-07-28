@@ -72,10 +72,14 @@ CViewerFrame::CViewerFrame( wxWindow *parent,
     m_pToolBar = CreateToolBar(style, ID_TOOLBAR);
     PopulateToolbar(m_pToolBar);
 
-    m_pToolFrame = new CViewerToolFrame (this, _T("Tools"), wxDefaultPosition, wxSize(80, 395));
+	wxSize tfSize = wxSize(size.GetWidth()*0.2, size.GetHeight()*0.9);
+    wxPoint tfPos = wxPoint(0, 0);
+    m_pToolFrame = new CViewerToolFrame (this, _T("Tools"), tfPos, tfSize);
     m_pToolFrame->Show(true);
 
-    m_pOutputFrame = new CViewerOutputFrame (this, _T("3D View"), wxPoint(125, 0), wxSize(480, 320));
+	wxSize ofSize = wxSize(size.GetWidth()*0.79, size.GetHeight()*0.9);
+	wxPoint ofPos = wxPoint(tfPos.x + tfSize.GetWidth(), 0);
+    m_pOutputFrame = new CViewerOutputFrame (this, _T("3D View"), ofPos, ofSize);
     m_pOutputFrame->Show(true);
 }
 

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Terrains>
-	<Terrain alias="level_0" map="map.raw" />
+	<Terrain alias="level_0" map="level_0.xml" />
 </Terrains>
