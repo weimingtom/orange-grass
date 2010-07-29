@@ -25,6 +25,9 @@ public:
 	
 	// load from file.
 	virtual bool Load ();
+		
+	// apply texture
+	virtual void Apply () const;
 	
 	// get gl texture id
 	virtual unsigned int GetTextureId () const { return m_TextureId; }

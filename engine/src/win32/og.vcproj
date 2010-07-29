@@ -195,6 +195,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ogmaterial.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ogmaterial.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ogmesh.cpp"
 				>
 			</File>
@@ -302,6 +310,10 @@
 			</File>
 			<File
 				RelativePath="..\..\include\IOGLight.h"
+				>
+			</File>
+			<File
+				RelativePath="..\..\include\IOGMaterial.h"
 				>
 			</File>
 			<File

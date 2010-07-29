@@ -9,11 +9,13 @@
 
 #include "orangegrass.h"
 #include "ogmodel.h"
+#include "ogmaterial.h"
 #include "tinyxml.h"
 
 
 COGModel::COGModel() :	m_pMesh(NULL),
-						m_pTexture(NULL)
+						m_pTexture(NULL),
+                        m_pMaterial(NULL)
 {
 }
 
@@ -22,6 +24,8 @@ COGModel::~COGModel()
 {
 	m_pMesh = NULL;
 	m_pTexture = NULL;	
+    delete m_pMaterial;
+    m_pMaterial = NULL;
 }
 
 
@@ -41,6 +45,7 @@ bool COGModel::Load ()
     const char* model_alias = NULL;
     const char* model_mesh_alias = NULL;
 	const char* model_texture_alias = NULL;
+	const char* model_material_type = NULL;
 	const char* model_icon = NULL;
 
 	TiXmlHandle modHandle = hDoc->FirstChild ("Model");
@@ -60,6 +65,7 @@ bool COGModel::Load ()
     {
         TiXmlElement* pElement = mtlHandle.Element();
         model_texture_alias = pElement->Attribute ("texture");
+        model_material_type = pElement->Attribute ("type");
     }
     TiXmlHandle edtHandle = hDoc->FirstChild ("Editor");
     if (edtHandle.Node())
@@ -71,6 +77,12 @@ bool COGModel::Load ()
 	SetResourceIcon (model_icon);
 	m_pMesh = GetResourceMgr()->GetMesh(model_mesh_alias);
 	m_pTexture = GetResourceMgr()->GetTexture(model_texture_alias);
+    OGMaterialType mattype = COGMaterial::ParseMaterialType(model_material_type);
+    if (mattype != OG_MAT_NONE)
+    {
+        m_pMaterial = new COGMaterial(mattype);
+        return false;
+    }
 
 	m_LoadState = OG_RESSTATE_LOADED;
 
@@ -88,13 +100,9 @@ void COGModel::UpdateAnimation (int _ElapsedTime)
 // Render mesh.
 void COGModel::Render (const MATRIX& _mView)
 {
-    glEnable (GL_BLEND); 
-    glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-    
-    glBindTexture(GL_TEXTURE_2D, m_pTexture->GetTextureId());
+    m_pMaterial->Apply();
+    m_pTexture->Apply();
 	m_pMesh->Render (_mView);
-
-    glDisable(GL_BLEND);
 }
 
 

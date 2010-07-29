@@ -11,6 +11,7 @@
 
 #include "OpenGL2.h"
 #include "IOGTerrain.h"
+#include "IOGMaterial.h"
 #include "Geometry.h"
 #include "Mathematics.h"
 #include "ogresource.h"
@@ -42,9 +43,10 @@ public:
 	
 private:
 
-	IOGMesh*	m_pMesh;	
-	IOGTexture*	m_pTexture;
-	Vec3		m_vPosition;
+	IOGMesh*	    m_pMesh;	
+	IOGTexture*	    m_pTexture;
+    IOGMaterial*    m_pMaterial;
+	Vec3		    m_vPosition;
 };
 
 

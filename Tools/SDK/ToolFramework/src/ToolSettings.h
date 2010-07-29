@@ -3,11 +3,12 @@
 
 #include <wx\colour.h>
 
+
 enum TerrainEditMode
 {
 	EDITMODE_NO,
-	EDITMODE_HEIGHT,
-	EDITMODE_COLOR,
+	EDITMODE_ADJUST,
+	EDITMODE_SETTINGS,
 	EDITMODE_OBJECTS
 };
 
@@ -27,68 +28,53 @@ public:
 	/// @brief Set edit mode.
 	void SetEditMode (TerrainEditMode _mode) {m_EditMode = _mode;}
 
-	/// @brief Get primary color.
-	const wxColor& GetPrimaryColor () const {return m_PrimaryColor;}
+	/// @brief Get object x position.
+	float GetPosX () const {return m_PosX;}
 
-	/// @brief Set primary color.
-	void SetPrimaryColor (const wxColor& _color) {m_PrimaryColor = _color;}
+	/// @brief Set object x position.
+	void SetPosX (float _PosX) {m_PosX = _PosX;}
 
-	/// @brief Get secondary color.
-	const wxColor& GetSecondaryColor () const {return m_SecondaryColor;}
+	/// @brief Get object y position.
+	float GetPosY () const {return m_PosY;}
 
-	/// @brief Set secondary color.
-	void SetSecondaryColor (const wxColor& _color) {m_SecondaryColor = _color;}
+	/// @brief Set object y position.
+	void SetPosY (float _PosY) {m_PosY = _PosY;}
 
-	/// @brief Get color brush size.
-	int GetColorBrushSize () const {return m_BrushSize;}
+	/// @brief Get object z position.
+	float GetPosZ () const {return m_PosZ;}
 
-	/// @brief Get color brush size min and max values.
-	void GetColorBrushSizeMinMax (int& _min, int& _max) const;
+	/// @brief Set object z position.
+	void SetPosZ (float _PosZ) {m_PosZ = _PosZ;}
 
-	/// @brief Set color brush size.
-	void SetColorBrushSize (int _size) {m_BrushSize = _size;}
+	/// @brief Get object yaw.
+	float GetYaw () const {return m_Yaw;}
 
-	/// @brief Get heightmap brush size.
-	int GetHeightmapBrushSize () const {return m_HeightBrushSize;}
+	/// @brief Set object yaw.
+	void SetYaw (float _Yaw) {m_Yaw = _Yaw;}
 
-	/// @brief Get heightmap brush size min and max values.
-	void GetHeightmapBrushSizeMinMax (int& _min, int& _max) const;
+	/// @brief Get object pitch.
+	float GetPitch () const {return m_Pitch;}
 
-	/// @brief Set heightmap brush size.
-	void SetHeightmapBrushSize (int _size) {m_HeightBrushSize = _size;}
+	/// @brief Set object pitch.
+	void SetPitch (float _Pitch) {m_Pitch = _Pitch;}
 
-	/// @brief Get heightmap extrude strength value.
-	float GetHeightmapAddValue () const {return m_fHeightAddValue;}
+	/// @brief Get object Roll.
+	float GetRoll () const {return m_Roll;}
 
-	/// @brief Get heightmap extrude strength min and max values.
-	void GetHeightmapAddMinMax (float& _min, float& _max) const;
-
-	/// @brief Set heightmap extrude strength value.
-	void SetHeightmapAddValue (float _val) {m_fHeightAddValue = _val;}
-
-	/// @brief Get heighmap smoothing.
-	bool GetHeightmapSmoothing () const {return m_bHeightSmoothing;}
-
-	/// @brief Get heighmap smoothing.
-	void SetHeightmapSmoothing (bool _bSmoothing) {m_bHeightSmoothing = _bSmoothing;}
+	/// @brief Set object Roll.
+	void SetRoll (float _Roll) {m_Roll = _Roll;}
 
 private:
 
 	TerrainEditMode	m_EditMode;
 
-	wxColor			m_PrimaryColor;
-	wxColor			m_SecondaryColor;
-	int				m_BrushSize;
-	int				m_BrushSizeMin;
-	int				m_BrushSizeMax;
-	
-	int				m_HeightBrushSize;
-	int				m_HeightBrushSizeMin;
-	int				m_HeightBrushSizeMax;
-	float			m_fHeightAddValue;
-	float			m_fHeightAddMin;
-	float			m_fHeightAddMax;
-	bool			m_bHeightSmoothing;
+    float   m_PosX;
+    float   m_PosY;
+    float   m_PosZ;
+
+    float   m_Yaw;
+    float   m_Pitch;
+    float   m_Roll;
 };
 
 

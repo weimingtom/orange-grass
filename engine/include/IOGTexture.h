@@ -17,6 +17,9 @@ public:
 		
 	// get gl texture id
 	virtual unsigned int GetTextureId () const = 0;
+		
+	// apply texture
+	virtual void Apply () const = 0;
 };
 
 #endif

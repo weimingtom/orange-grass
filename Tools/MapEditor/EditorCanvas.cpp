@@ -138,11 +138,18 @@ void CEditorCanvas::Render()
 
     GetSceneGraph()->Render(m_mView);
 
-    if (m_pCurNode)
+    switch (GetToolSettings()->GetEditMode())
     {
-        MATRIX mModelView = m_pCurNode->GetWorldTransform();
-        MatrixMultiply(mModelView, mModelView, m_mView);
-        m_pCurNode->GetRenderable()->Render(mModelView);
+    case EDITMODE_OBJECTS:
+        {
+            if (m_pCurNode)
+            {
+                MATRIX mModelView = m_pCurNode->GetWorldTransform();
+                MatrixMultiply(mModelView, mModelView, m_mView);
+                m_pCurNode->GetRenderable()->Render(mModelView);
+            }
+        }
+        break;
     }
 
     RenderHelpers();
@@ -163,7 +170,7 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 		Vec3 vPos = GetCamera()->GetPosition();
 		Vec3 vVec = vPick - vPos;
 		vVec.normalize();
-		if (m_pCurTerrain && pTool->GetEditMode() != EDITMODE_NO)
+		if (m_pCurTerrain && pTool->GetEditMode() == EDITMODE_OBJECTS)
 		{
 			m_bIntersectionFound = m_pCurTerrain->GetRayIntersection(vPos, vVec, &m_vIntersection);
 			if (m_bIntersectionFound)

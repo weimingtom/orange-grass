@@ -46,3 +46,10 @@ bool COGTexture::Load ()
 	
 	return true;
 }
+
+
+// apply texture
+void COGTexture::Apply () const
+{
+	glBindTexture(GL_TEXTURE_2D, m_TextureId);
+}

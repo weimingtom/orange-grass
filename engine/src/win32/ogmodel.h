@@ -10,6 +10,7 @@
 #define OGMODEL_H_
 
 #include "IOGModel.h"
+#include "IOGMaterial.h"
 #include "ogresource.h"
 
 
@@ -42,8 +43,9 @@ public:
 
 public:
 
-	IOGMesh*	m_pMesh;	
-	IOGTexture*	m_pTexture;
+	IOGMesh*	    m_pMesh;	
+	IOGTexture*	    m_pTexture;
+    IOGMaterial*    m_pMaterial;
 };
 
 

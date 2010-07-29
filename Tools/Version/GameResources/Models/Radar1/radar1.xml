@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Model alias = "radar1" />
 <Mesh alias = "radar1" />
-<Material texture = "radar1" />
+<Material texture = "radar1" type = "solid" />
 <Editor icon = "Models\Radar1\radar1_ed.bmp" />

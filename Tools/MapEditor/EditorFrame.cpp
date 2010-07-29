@@ -7,6 +7,8 @@
 
 #define ID_DEF_ABOUT		10000
 #define ID_DEF_AABB			10002
+#define ID_DEF_ADJUST		10003
+#define ID_DEF_SETTINGS		10004
 #define ID_DEF_OBJECTS		10005
 
 const int ID_TOOLBAR = 500;
@@ -20,6 +22,8 @@ BEGIN_EVENT_TABLE(CEditorFrame, wxMDIParentFrame)
     EVT_MENU (wxID_SAVE,		CEditorFrame::OnSaveLevel)
     EVT_MENU (ID_DEF_ABOUT,		CEditorFrame::OnAboutDlg)
     EVT_MENU (ID_DEF_OBJECTS,	CEditorFrame::OnObjectsDlg)
+    EVT_MENU (ID_DEF_ADJUST,	CEditorFrame::OnAdjustDlg)
+    EVT_MENU (ID_DEF_SETTINGS,	CEditorFrame::OnSettingsDlg)
     EVT_MENU (ID_DEF_AABB,		CEditorFrame::OnBounds)
 END_EVENT_TABLE()
 
@@ -87,6 +91,16 @@ CEditorFrame::CEditorFrame( wxWindow *parent,
     m_pObjectsFrame = new CEditorObjectsFrame (this, wxT("Objects"), tfPos, tfSize);
     m_pObjectsFrame->Show(true);
 
+	wxSize afSize = wxSize(170, size.GetHeight()*0.7);
+    wxPoint afPos = wxPoint(0, 0);
+    m_pAdjustFrame = new CEditorAdjustFrame (this, wxT("Adjust"), afPos, afSize);
+    m_pAdjustFrame->Show(false);
+
+	wxSize sfSize = wxSize(170, size.GetHeight()*0.7);
+    wxPoint sfPos = wxPoint(0, 0);
+    m_pSettingsFrame = new CEditorSettingsFrame (this, wxT("Settings"), sfPos, sfSize);
+    m_pSettingsFrame->Show(false);
+
 	GetToolSettings()->SetEditMode(EDITMODE_OBJECTS);
 }
 
@@ -127,6 +141,8 @@ void CEditorFrame::PopulateToolbar(wxToolBarBase* toolBar)
         Tool_save,
         Tool_help,
         Tool_ed_obj,
+        Tool_ed_adj,
+        Tool_ed_set,
         Tool_Max
     };
 
@@ -136,6 +152,8 @@ void CEditorFrame::PopulateToolbar(wxToolBarBase* toolBar)
     toolBarBitmaps[Tool_save] = wxBitmap(wxT("Resources\\save.bmp"), wxBITMAP_TYPE_BMP);
     toolBarBitmaps[Tool_help] = wxBitmap(wxT("Resources\\help.bmp"), wxBITMAP_TYPE_BMP);
     toolBarBitmaps[Tool_ed_obj] = wxBitmap(wxT("Resources\\ed_obj.bmp"), wxBITMAP_TYPE_BMP);
+    toolBarBitmaps[Tool_ed_adj] = wxBitmap(wxT("Resources\\ed_adj.bmp"), wxBITMAP_TYPE_BMP);
+    toolBarBitmaps[Tool_ed_set] = wxBitmap(wxT("Resources\\ed_set.bmp"), wxBITMAP_TYPE_BMP);
 
     int w = toolBarBitmaps[Tool_open].GetWidth();
     int h = toolBarBitmaps[Tool_open].GetHeight();
@@ -146,6 +164,8 @@ void CEditorFrame::PopulateToolbar(wxToolBarBase* toolBar)
     toolBar->AddTool(wxID_SAVE, wxT("Save"), toolBarBitmaps[Tool_save], wxT("Save level"), wxITEM_NORMAL);
     toolBar->AddSeparator();
     toolBar->AddTool(ID_DEF_OBJECTS, wxT("Objects"), toolBarBitmaps[Tool_ed_obj], wxT("Objects"), wxITEM_NORMAL);
+    toolBar->AddTool(ID_DEF_ADJUST, wxT("Adjust"), toolBarBitmaps[Tool_ed_adj], wxT("Adjust"), wxITEM_NORMAL);
+    toolBar->AddTool(ID_DEF_SETTINGS, wxT("Settings"), toolBarBitmaps[Tool_ed_set], wxT("Settings"), wxITEM_NORMAL);
     toolBar->Realize();
 }
 
@@ -155,7 +175,31 @@ void CEditorFrame::PopulateToolbar(wxToolBarBase* toolBar)
 void CEditorFrame::OnObjectsDlg(wxCommandEvent& event)
 {
     m_pObjectsFrame->Show(true);
+    m_pAdjustFrame->Show(false);
+    m_pSettingsFrame->Show(false);
 	GetToolSettings()->SetEditMode(EDITMODE_OBJECTS);
+}
+
+
+/// @brief Adjust dialog handler.
+/// @param event - event structute.
+void CEditorFrame::OnAdjustDlg(wxCommandEvent& event)
+{
+    m_pObjectsFrame->Show(false);
+    m_pAdjustFrame->Show(true);
+    m_pSettingsFrame->Show(false);
+	GetToolSettings()->SetEditMode(EDITMODE_ADJUST);
+}
+
+
+/// @brief Settings dialog handler.
+/// @param event - event structute.
+void CEditorFrame::OnSettingsDlg(wxCommandEvent& event)
+{
+    m_pObjectsFrame->Show(false);
+    m_pAdjustFrame->Show(false);
+    m_pSettingsFrame->Show(true);
+	GetToolSettings()->SetEditMode(EDITMODE_SETTINGS);
 }
 
 

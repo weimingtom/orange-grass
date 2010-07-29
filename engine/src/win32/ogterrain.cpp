@@ -10,12 +10,13 @@
 #include "orangegrass.h"
 #include "ogterrain.h"
 #include "IOGMath.h"
-#include "ogmodel.h"
+#include "ogmaterial.h"
 #include "tinyxml.h"
 
 
 COGTerrain::COGTerrain () :	m_pMesh(NULL),
-							m_pTexture(NULL)
+							m_pTexture(NULL),
+                            m_pMaterial(NULL)
 {
 }
 
@@ -24,6 +25,8 @@ COGTerrain::~COGTerrain()
 {
 	m_pMesh = NULL;
 	m_pTexture = NULL;	
+    delete m_pMaterial;
+    m_pMaterial = NULL;
 }
 
 
@@ -73,6 +76,7 @@ bool COGTerrain::Load ()
 	SetResourceIcon (model_icon);
 	m_pMesh = GetResourceMgr()->GetMesh(model_mesh_alias);
 	m_pTexture = GetResourceMgr()->GetTexture(model_texture_alias);
+    m_pMaterial = new COGMaterial(OG_MAT_SOLID);
 
 	m_LoadState = OG_RESSTATE_LOADED;
 	return true;
@@ -89,7 +93,8 @@ void COGTerrain::SetWorldPosition (const Vec3& _vPos)
 // Render terrain.
 void COGTerrain::Render (const MATRIX& _mView)
 {
-	glBindTexture(GL_TEXTURE_2D, m_pTexture->GetTextureId());
+    m_pMaterial->Apply();
+    m_pTexture->Apply();
 	m_pMesh->Render (_mView);
 }
 

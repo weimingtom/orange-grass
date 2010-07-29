@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Model alias = "spectator" />
 <Mesh alias = "spectator" />
-<Material texture = "spectator" />
+<Material texture = "spectator" type = "solid" />
 <Editor icon = "Models\Spectator\spectator_ed.bmp" />

@@ -3,6 +3,8 @@
 
 #include "EditorOutputFrame.h"
 #include "EditorObjectsFrame.h"
+#include "EditorAdjustFrame.h"
+#include "EditorSettingsFrame.h"
 #include "EditorInfoFrame.h"
 
 
@@ -49,6 +51,14 @@ private:
     /// @param event - event structute.
     void OnObjectsDlg(wxCommandEvent& event);
 
+    /// @brief Adjust dialog handler.
+    /// @param event - event structute.
+    void OnAdjustDlg(wxCommandEvent& event);
+
+    /// @brief Settings dialog handler.
+    /// @param event - event structute.
+    void OnSettingsDlg(wxCommandEvent& event);
+
     /// @brief Level open handler.
     /// @param event - event structute.
     void OnOpenLevel(wxCommandEvent& event);
@@ -63,6 +73,8 @@ private:
 
     CEditorOutputFrame*		m_pOutputFrame;
     CEditorObjectsFrame*	m_pObjectsFrame;
+    CEditorAdjustFrame*	    m_pAdjustFrame;
+    CEditorSettingsFrame*	m_pSettingsFrame;
     CEditorInfoFrame*		m_pInfoFrame;
     wxToolBar*				m_pToolBar;
 };
