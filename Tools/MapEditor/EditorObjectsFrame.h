@@ -31,6 +31,9 @@ private:
 	/// @brief Resource loading event handler
 	void OnLoadResource ( CommonToolEvent<ResLoadEventData>& event );
 
+	/// @brief Resource switching event handler
+	void OnResourceSwitch ( wxCommandEvent& event );
+
 private:
 
 	DECLARE_EVENT_TABLE()

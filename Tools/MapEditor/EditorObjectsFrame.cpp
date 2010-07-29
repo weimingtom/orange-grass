@@ -26,6 +26,7 @@ CEditorObjectsFrame::CEditorObjectsFrame(	wxMDIParentFrame *parent,
     m_pObjectsList = new wxSimpleHtmlListBox();
 	m_pObjectsList->Create(m_pPanel, wxID_ANY, wxDefaultPosition, wxSize(size.GetWidth()*0.9, size.GetHeight()*0.8), 0, NULL, 0);
 
+	m_pObjectsList->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( CEditorObjectsFrame::OnResourceSwitch ), NULL, this);
 	GetEventHandlersTable()->AddEventHandler(EVENTID_RESLOAD, this);
 }
 
@@ -42,4 +43,11 @@ void CEditorObjectsFrame::OnLoadResource ( CommonToolEvent<ResLoadEventData>& ev
 	{
 		m_pObjectsList->Append (resourceIconText);
 	}
+}
+
+
+/// @brief Resource switching event handler
+void CEditorObjectsFrame::OnResourceSwitch ( wxCommandEvent& event )
+{
+	return;
 }
