@@ -2,21 +2,28 @@
 <Textures>
 	<Texture alias="spectator" file="Models\Spectator\spectator.pvr" />
 	<Texture alias="craft" file="Models\Craft\craft.pvr" />
-	<Texture alias="palm" file="Models\Palm\palm.pvr" />
 	<Texture alias="palm1" file="Models\Palm1\palm1.pvr" />
-	<Texture alias="land" file="Textures\Land\land.pvr" />
+	<Texture alias="palm2" file="Models\Palm2\palm2.pvr" />
+	<Texture alias="radar1" file="Models\Radar1\radar1.pvr" />
+	<Texture alias="tank1" file="Models\Tank1\tank1.pvr" />
+	<Texture alias="tank2" file="Models\Tank1\tank2.pvr" />
 	<Texture alias="level_0" file="Levels\Level_0\level_0.pvr" />
 </Textures>
 <Meshes>
 	<Mesh alias="spectator" file="Models\Spectator\spectator.POD"/>
 	<Mesh alias="craft" file="Models\Craft\craft.POD"/>
-	<Mesh alias="palm" file="Models\Palm\palm.POD"/>
 	<Mesh alias="palm1" file="Models\Palm1\palm1.POD"/>
+	<Mesh alias="palm2" file="Models\Palm2\palm2.POD"/>
+	<Mesh alias="radar1" file="Models\Radar1\radar1.POD"/>
+	<Mesh alias="tank1" file="Models\Tank1\tank1.POD"/>
 	<Mesh alias="level_0" file="Levels\Level_0\level_0.POD"/>
 </Meshes>
 <Models>
 	<Model alias="spectator" file="Models\Spectator\spectator.xml"/>
 	<Model alias="craft" file="Models\Craft\craft.xml"/>
-	<Model alias="palm" file="Models\Palm\palm.xml"/>
 	<Model alias="palm1" file="Models\Palm1\palm1.xml"/>
+	<Model alias="palm2" file="Models\Palm2\palm2.xml"/>
+	<Model alias="radar1" file="Models\Radar1\radar1.xml"/>
+	<Model alias="tank1" file="Models\Tank1\tank1.xml"/>
+	<Model alias="tank2" file="Models\Tank1\tank2.xml"/>
 </Models>

@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<Model alias = "palm" />
-<Mesh alias = "palm" />
-<Material texture = "palm" />
-<Editor icon = "Models\Palm\palm_ed.bmp" />

@@ -18,6 +18,7 @@ BEGIN_EVENT_TABLE(CEditorCanvas, wxGLCanvas)
     EVT_ENTER_WINDOW( CEditorCanvas::OnEnterWindow )
 	EVT_TOOLCMD( wxID_ANY, CEditorCanvas::OnToolCmdEvent )
 	EVT_LEVELLOAD( wxID_ANY, CEditorCanvas::OnLevelLoadEvent )
+	EVT_RESSWITCH( wxID_ANY, CEditorCanvas::OnResourceSwitch )
 	EVT_ENTER_WINDOW( CEditorCanvas::OnMouseEnter )
 	EVT_LEAVE_WINDOW( CEditorCanvas::OnMouseLeave )
 	EVT_MOTION( CEditorCanvas::OnMouseMove )
@@ -37,7 +38,7 @@ bool	m_bIntersectionFound;
 Vec3	m_vIntersection;
 Vec3	m_vPatchGrid[512];
 int		m_NumPatchVerts = 0;
-std::string m_CurModelAlias("palm");
+std::string m_CurModelAlias("palm1");
 
 bool bRmb = false;
 bool bLmb = false;
@@ -134,7 +135,15 @@ void CEditorCanvas::Render()
 
 	if (m_pCurTerrain)
 		m_pCurTerrain->Render(m_mView);
+
     GetSceneGraph()->Render(m_mView);
+
+    if (m_pCurNode)
+    {
+        MATRIX mModelView = m_pCurNode->GetWorldTransform();
+        MatrixMultiply(mModelView, mModelView, m_mView);
+        m_pCurNode->GetRenderable()->Render(mModelView);
+    }
 
     RenderHelpers();
 
@@ -246,7 +255,6 @@ bool CEditorCanvas::LoadNextResource()
 	// Temporary level auto-loading
 	m_pCurTerrain = GetLevelManager()->GetTerrain(0);
     m_pCurNode = GetSceneGraph()->CreateNode(GetResourceMgr()->GetModel(m_CurModelAlias.c_str()));
-    GetSceneGraph()->AddNode(m_pCurNode);
     m_pCurNode->SetWorldTransform(Vec3(), Vec3());
 
 	return true;
@@ -443,23 +451,22 @@ void CEditorCanvas::OnMouseWheel(wxMouseEvent& event)
 }
 
 
-/// @brief Edit heightmap.
-/// @param _Dir - editing direction.
-void CEditorCanvas::EditHeightmap(int _Dir)
+/// @brief Resource switching event handler
+/// @param event - event structute.
+void CEditorCanvas::OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& event )
 {
-	//ToolSettings* pTool = GetToolSettings();
-	//float fAdd = pTool->GetHeightmapAddValue() * _Dir;
-	//m_pCurTerrain->AddHeight(m_vIntersection, pTool->GetHeightmapBrushSize(), 
-	//	fAdd, pTool->GetHeightmapSmoothing());
-}
+	const ResSwitchEventData& evtData = event.GetEventCustomData();
+	switch (evtData.m_ResourceType)
+	{
+	case RESTYPE_MODEL:
+        {
+            delete m_pCurNode;
+            m_CurModelAlias = std::string(evtData.m_Resource);
+            m_pCurNode = GetSceneGraph()->CreateNode(GetResourceMgr()->GetModel(m_CurModelAlias.c_str()));
+            m_pCurNode->SetWorldTransform(Vec3(), Vec3());
+        }
+		break;
+	}
 
-
-/// @brief Edit terrain color.
-/// @param _bPrimary - primary or secondary color.
-void CEditorCanvas::EditColor(bool _bPrimary)
-{
-	//ToolSettings* pTool = GetToolSettings();
-	//const wxColor& curColor = _bPrimary ? pTool->GetPrimaryColor() : pTool->GetSecondaryColor();
-	//Vec3 vColor ((float)curColor.Red()/255.0f, (float)curColor.Green()/255.0f, (float)curColor.Blue()/255.0f);
-	//m_pCurTerrain->ChangeColor(m_vIntersection, pTool->GetColorBrushSize(), vColor);
+	Refresh();
 }

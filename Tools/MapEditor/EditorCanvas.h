@@ -116,14 +116,9 @@ private:
     /// @param event - event structute.
     void OnMouseWheel(wxMouseEvent& event);
 
-    /// @brief Edit heightmap.
-    /// @param _vPos - editing position.
-    /// @param _Dir - editing direction.
-    void EditHeightmap(int _Dir);
-
-    /// @brief Edit terrain color.
-    /// @param _bPrimary - primary or secondary color.
-    void EditColor(bool _bPrimary);
+    /// @brief Resource switching event handler
+    /// @param event - event structute.
+    void OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& event );
 
 private:
 

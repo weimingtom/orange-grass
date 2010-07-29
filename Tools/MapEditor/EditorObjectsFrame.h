@@ -40,6 +40,7 @@ private:
 
     wxPanel*    m_pPanel;
     wxSimpleHtmlListBox*    m_pObjectsList;
+    std::map<int, ResourceItem*> m_ItemList;
 };
 
 #endif
