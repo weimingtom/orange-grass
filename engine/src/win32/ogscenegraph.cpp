@@ -10,6 +10,7 @@
 #include "ogscenegraph.h"
 #include "ogsgnode.h"
 #include "IOGMath.h"
+#include <algorithm>
 
 
 COGSceneGraph::COGSceneGraph ()
@@ -19,6 +20,12 @@ COGSceneGraph::COGSceneGraph ()
 
 COGSceneGraph::~COGSceneGraph ()
 {
+    std::vector<IOGSgNode*>::iterator iter = m_NodesList.begin();
+    for (; iter != m_NodesList.end(); ++iter)
+    {
+		OG_SAFE_DELETE((*iter));
+	}
+	m_NodesList.clear();
 }
 
 
@@ -34,6 +41,18 @@ IOGSgNode* COGSceneGraph::CreateNode (IOGRenderable* _pRenderable)
 void COGSceneGraph::AddNode (IOGSgNode* _pNode)
 {
     m_NodesList.push_back(_pNode);
+}
+
+
+// Remove scene graph node
+void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
+{
+	std::vector<IOGSgNode*>::iterator iter = std::find(m_NodesList.begin(), m_NodesList.end(), _pNode);
+	if (iter != m_NodesList.end())
+	{
+		m_NodesList.erase(iter);
+		OG_SAFE_DELETE((*iter));	
+	}
 }
 
 

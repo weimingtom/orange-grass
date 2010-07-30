@@ -25,11 +25,11 @@ public:
 	// Get number of parts
 	virtual int GetNumParts () const = 0;
 
-	// Get AABB for the specified part
-	virtual const IOGAabb& GetAABB ( int _part ) const = 0;
-
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const = 0;
+
+	// Get AABB for the specified part
+	virtual const IOGAabb& GetAABB ( int _part ) const = 0;
 };
 
 

@@ -30,15 +30,15 @@ CEditorAdjustFrame::CEditorAdjustFrame(	wxMDIParentFrame *parent,
 	
 	ToolSettings* pTool = GetToolSettings();
 
-	wxStaticBox* YawDesc = new wxStaticBox(m_pPanel, wxID_ANY, _T("Set object Yaw:"), wxPoint(10, 10), wxSize(140, 70));
-	m_pYawSlider = new wxSlider(m_pPanel, CTRLID_YAWSLIDER,
-		0, 0, 360, wxPoint(20, 30), wxSize(120, 40), wxSL_LABELS);
+	//wxStaticBox* YawDesc = new wxStaticBox(m_pPanel, wxID_ANY, _T("Set object Yaw:"), wxPoint(10, 10), wxSize(140, 70));
+	//m_pYawSlider = new wxSlider(m_pPanel, CTRLID_YAWSLIDER,
+	//	0, 0, 360, wxPoint(20, 30), wxSize(120, 40), wxSL_LABELS);
 
-	wxStaticBox* PitchDesc = new wxStaticBox(m_pPanel, wxID_ANY, _T("Set object Pitch:"), wxPoint(10, 90), wxSize(140, 70));
-	m_pPitchSlider = new wxSlider(m_pPanel, CTRLID_PITCHSLIDER,
-		0, 0, 360, wxPoint(20, 110), wxSize(120, 40), wxSL_LABELS);
+	//wxStaticBox* PitchDesc = new wxStaticBox(m_pPanel, wxID_ANY, _T("Set object Pitch:"), wxPoint(10, 90), wxSize(140, 70));
+	//m_pPitchSlider = new wxSlider(m_pPanel, CTRLID_PITCHSLIDER,
+	//	0, 0, 360, wxPoint(20, 110), wxSize(120, 40), wxSL_LABELS);
 
-    m_pSmoothenCheck = new wxCheckBox(m_pPanel, CTRLID_HMSMOOTHCHECK, _T("Enable smooting"), wxPoint(20, 170));
+	//m_pSmoothenCheck = new wxCheckBox(m_pPanel, CTRLID_HMSMOOTHCHECK, _T("Enable smooting"), wxPoint(20, 170));
 }
 
 

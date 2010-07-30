@@ -25,8 +25,7 @@ COGTerrain::~COGTerrain()
 {
 	m_pMesh = NULL;
 	m_pTexture = NULL;	
-    delete m_pMaterial;
-    m_pMaterial = NULL;
+    OG_SAFE_DELETE(m_pMaterial);
 }
 
 
@@ -107,4 +106,11 @@ bool COGTerrain::GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir,
         return m_pMesh->GetRayIntersection(_vRayPos, _vRayDir, _pOutPos);
     }
     return false;
+}
+
+
+// Get combined AABB
+const IOGAabb& COGTerrain::GetAABB () const
+{
+	return m_pMesh->GetAABB();
 }

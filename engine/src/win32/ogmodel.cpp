@@ -24,8 +24,7 @@ COGModel::~COGModel()
 {
 	m_pMesh = NULL;
 	m_pTexture = NULL;	
-    delete m_pMaterial;
-    m_pMaterial = NULL;
+    OG_SAFE_DELETE(m_pMaterial);
 }
 
 

@@ -6,8 +6,9 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-
+#include "OpenGL2.h"
 #include "oglight.h"
+
 
 COGLight::COGLight ()
 {
@@ -19,15 +20,26 @@ COGLight::~COGLight ()
 }
 
 
-// set light source position.
-void COGLight::SetPosition (const VECTOR3& _vPosition)
+// set light color.
+void COGLight::SetColor (const Vec4& _vColor)
 {
-	m_vPosition = _vPosition;
+	m_vColor = _vColor;
 }
 
 
 // set light direction.
-void COGLight::SetDirection (const VECTOR3& _vDirection)
+void COGLight::SetDirection (const Vec4& _vDirection)
 {
 	m_vDirection = _vDirection;
+}
+
+		
+// apply lighting.
+void COGLight::Apply ()
+{
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	glLightfv(GL_LIGHT0, GL_POSITION, (VERTTYPE*)&m_vDirection);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, (VERTTYPE*)&m_vColor);
+	glLightfv(GL_LIGHT0, GL_AMBIENT, (VERTTYPE*)&m_vColor);
 }

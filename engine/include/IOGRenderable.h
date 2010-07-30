@@ -1,7 +1,7 @@
 #ifndef IOGRENDERABLE_H_
 #define IOGRENDERABLE_H_
 
-#include "Mathematics.h"
+#include "IOGAabb.h"
 
 
 // Type of the renderables
@@ -21,6 +21,9 @@ public:
 
 	// Render.
 	virtual void Render (const MATRIX& _mView) = 0;
+
+	// Get combined AABB
+	virtual const IOGAabb& GetAABB () const = 0;
 
 	// Get type of the renderable.
 	virtual RenderableType GetRenderableType () const = 0;

@@ -120,6 +120,9 @@ private:
     /// @param event - event structute.
     void OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& event );
 
+    /// @brief Setup new current node for placement.
+    void SetNewCurrentNodeForPlacement(const char* _pModelAlias);
+
 private:
 
     bool	m_init;

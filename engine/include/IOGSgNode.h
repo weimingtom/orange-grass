@@ -19,6 +19,12 @@ public:
 	// set world transform.
 	virtual void SetWorldTransform (const Vec3& _vPos, const Vec3& _vRot) = 0;
 
+	// Update transforms.
+	virtual void Update (int _ElapsedTime) = 0;
+
+	// Get transformed AABB
+	virtual const IOGAabb& GetTransformedAABB () const = 0;
+
 	// get renderable.
 	virtual IOGRenderable* GetRenderable () = 0;
 };

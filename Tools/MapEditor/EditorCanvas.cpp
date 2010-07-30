@@ -30,19 +30,18 @@ BEGIN_EVENT_TABLE(CEditorCanvas, wxGLCanvas)
 END_EVENT_TABLE()
 
 
-MATRIX	m_mProjection;
-MATRIX	m_mView;
+MATRIX		m_mProjection;
+MATRIX		m_mView;
 IOGTerrain*	m_pCurTerrain = NULL;
 IOGSgNode*  m_pCurNode = NULL;
-bool	m_bIntersectionFound;
-Vec3	m_vIntersection;
-Vec3	m_vPatchGrid[512];
-int		m_NumPatchVerts = 0;
-std::string m_CurModelAlias("palm1");
+bool		m_bIntersectionFound = false;
+Vec3		m_vIntersection;
+std::string m_CurModelAlias;
+bool		bRmb = false;
+bool		bLmb = false;
+int			mouse_x = 0; 
+int			mouse_y = 0;
 
-bool bRmb = false;
-bool bLmb = false;
-int  mouse_x = 0, mouse_y = 0;
 
 /// @brief Constructor.
 /// @param parent - parent window.
@@ -118,20 +117,6 @@ void CEditorCanvas::Render()
 	glMatrixMode(GL_MODELVIEW);
 	m_mView = GetCamera()->Update();
 	glLoadMatrixf(m_mView.f);
-	VECTOR4 vDiffuse;
-	vDiffuse.x = 1.0f;
-	vDiffuse.y = 1.0f;
-	vDiffuse.z = 1.0f;
-	vDiffuse.w = 1.0f;
-	VECTOR4 vLightDirection;
-	vLightDirection.x = 0.0f;
-	vLightDirection.y = 1.0f;
-	vLightDirection.z = 0.0f;
-	vLightDirection.w = 0;
-	glLightfv(GL_LIGHT0, GL_POSITION, (VERTTYPE*)&vLightDirection);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, (VERTTYPE*)&vDiffuse);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, (VERTTYPE*)&vDiffuse);
-	glEnable(GL_NORMALIZE);
 
 	if (m_pCurTerrain)
 		m_pCurTerrain->Render(m_mView);
@@ -165,30 +150,52 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 {
 	if (bRmb || bLmb || m_bMouseMoved)
 	{
-		ToolSettings* pTool = GetToolSettings();
 		Vec3 vPick = GetPickRay (mouse_x, mouse_y);
 		Vec3 vPos = GetCamera()->GetPosition();
 		Vec3 vVec = vPick - vPos;
 		vVec.normalize();
-		if (m_pCurTerrain && pTool->GetEditMode() == EDITMODE_OBJECTS)
+
+		ToolSettings* pTool = GetToolSettings();
+		switch (pTool->GetEditMode())
 		{
-			m_bIntersectionFound = m_pCurTerrain->GetRayIntersection(vPos, vVec, &m_vIntersection);
-			if (m_bIntersectionFound)
+		case EDITMODE_OBJECTS:
 			{
-				if (bRmb || bLmb)
+				if (m_pCurTerrain)
 				{
-                    IOGSgNode* pNode = GetSceneGraph()->CreateNode(GetResourceMgr()->GetModel(m_CurModelAlias.c_str()));
-                    GetSceneGraph()->AddNode(pNode);
-                    pNode->SetWorldTransform(m_vIntersection, Vec3());
+					m_bIntersectionFound = m_pCurTerrain->GetRayIntersection(vPos, vVec, &m_vIntersection);
+					if (m_bIntersectionFound)
+					{
+						if (bLmb)
+						{
+							MATRIX mWorld;
+							WorldMatrixFromTransforms(mWorld, m_vIntersection, Vec3());
+							GetActorManager()->CreateStaticActor(m_CurModelAlias.c_str(), mWorld);
+						}
+						if (m_pCurNode)
+						{
+							m_pCurNode->SetWorldTransform(m_vIntersection, Vec3());
+						}
+						m_bRedrawPatch = true;
+					}
 				}
-				m_NumPatchVerts = 1;
-                m_vPatchGrid[0] = m_vIntersection;
-                m_pCurNode->SetWorldTransform(m_vIntersection, Vec3());
-				m_bMouseMoved = false;
-				m_bRedrawPatch = true;
-				Refresh();
 			}
+			break;
+
+		case EDITMODE_ADJUST:
+			{
+			}
+			break;
+
+		case EDITMODE_SETTINGS:
+			{
+			}
+			break;
 		}
+
+		GetActorManager()->Update(10);
+
+		m_bMouseMoved = false;
+		Refresh();
 	}
 }
 
@@ -238,9 +245,11 @@ void CEditorCanvas::InitGL()
 
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
+	glEnable(GL_NORMALIZE);
 
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
+	GetLight()->SetDirection(Vec4(0.0f, 0.0f, 1.0f, 0.0f));
+	GetLight()->SetColor(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	GetLight()->Apply();
 }
 
 
@@ -261,8 +270,8 @@ bool CEditorCanvas::LoadNextResource()
 
 	// Temporary level auto-loading
 	m_pCurTerrain = GetLevelManager()->GetTerrain(0);
-    m_pCurNode = GetSceneGraph()->CreateNode(GetResourceMgr()->GetModel(m_CurModelAlias.c_str()));
-    m_pCurNode->SetWorldTransform(Vec3(), Vec3());
+
+	SetNewCurrentNodeForPlacement(NULL);
 
 	return true;
 }
@@ -337,6 +346,21 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 	case CMD_AABB:
 		m_bShowAABB = evtData.m_bSwitcher;
 		break;
+
+	case CMD_EDITMODE_OBJECTS:
+		if (m_CurModelAlias.empty())
+			SetNewCurrentNodeForPlacement(NULL);
+		else
+			SetNewCurrentNodeForPlacement(m_CurModelAlias.c_str());
+		break;
+
+	case CMD_EDITMODE_ADJUST:
+		SetNewCurrentNodeForPlacement(NULL);
+		break;
+
+	case CMD_EDITMODE_SETTINGS:
+		SetNewCurrentNodeForPlacement(NULL);
+		break;
 	}
 	Refresh ();
 }
@@ -366,9 +390,9 @@ void CEditorCanvas::RenderHelpers()
 	{
 	}
 
-	if (m_NumPatchVerts > 0 && m_bRedrawPatch)
+	if (m_bIntersectionFound && m_bRedrawPatch)
 	{
-		DrawPatchGrid (m_NumPatchVerts, &m_vPatchGrid[0]);
+		DrawPatchGrid (1, &m_vIntersection);
 		m_bRedrawPatch = false;
 	}
 
@@ -467,13 +491,23 @@ void CEditorCanvas::OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& even
 	{
 	case RESTYPE_MODEL:
         {
-            delete m_pCurNode;
-            m_CurModelAlias = std::string(evtData.m_Resource);
-            m_pCurNode = GetSceneGraph()->CreateNode(GetResourceMgr()->GetModel(m_CurModelAlias.c_str()));
-            m_pCurNode->SetWorldTransform(Vec3(), Vec3());
+			SetNewCurrentNodeForPlacement(evtData.m_Resource);
         }
 		break;
 	}
 
 	Refresh();
+}
+
+
+/// @brief Setup new current node for placement.
+void CEditorCanvas::SetNewCurrentNodeForPlacement(const char* _pModelAlias)
+{
+	OG_SAFE_DELETE(m_pCurNode);
+	if (_pModelAlias != NULL)
+	{
+		m_CurModelAlias = std::string(_pModelAlias);
+		m_pCurNode = GetSceneGraph()->CreateNode(GetResourceMgr()->GetModel(_pModelAlias));
+		m_pCurNode->SetWorldTransform(Vec3(), Vec3());
+	}
 }

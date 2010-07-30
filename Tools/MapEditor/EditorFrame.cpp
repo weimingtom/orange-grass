@@ -178,6 +178,11 @@ void CEditorFrame::OnObjectsDlg(wxCommandEvent& event)
     m_pAdjustFrame->Show(false);
     m_pSettingsFrame->Show(false);
 	GetToolSettings()->SetEditMode(EDITMODE_OBJECTS);
+
+    CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
+    ToolCmdEventData cmdData (CMD_EDITMODE_OBJECTS, true);
+    cmd.SetEventCustomData(cmdData);
+	GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
 }
 
 
@@ -189,6 +194,11 @@ void CEditorFrame::OnAdjustDlg(wxCommandEvent& event)
     m_pAdjustFrame->Show(true);
     m_pSettingsFrame->Show(false);
 	GetToolSettings()->SetEditMode(EDITMODE_ADJUST);
+
+    CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
+    ToolCmdEventData cmdData (CMD_EDITMODE_ADJUST, true);
+    cmd.SetEventCustomData(cmdData);
+	GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
 }
 
 
@@ -200,6 +210,11 @@ void CEditorFrame::OnSettingsDlg(wxCommandEvent& event)
     m_pAdjustFrame->Show(false);
     m_pSettingsFrame->Show(true);
 	GetToolSettings()->SetEditMode(EDITMODE_SETTINGS);
+
+    CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
+    ToolCmdEventData cmdData (CMD_EDITMODE_SETTINGS, true);
+    cmd.SetEventCustomData(cmdData);
+	GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
 }
 
 

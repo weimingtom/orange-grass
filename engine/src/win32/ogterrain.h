@@ -40,6 +40,9 @@ public:
 
     // Get mesh geometry
     virtual const std::vector<OGFace>& GetGeometry () const {return m_pMesh->GetGeometry(); }
+
+	// Get combined AABB
+	virtual const IOGAabb& GetAABB () const;
 	
 private:
 

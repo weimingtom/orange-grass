@@ -16,6 +16,9 @@ public:
 	// Add scene graph node
 	virtual void AddNode (IOGSgNode* _pNode) = 0;
 
+	// Remove scene graph node
+	virtual void RemoveNode (IOGSgNode* _pNode) = 0;
+
 	// Render.
 	virtual void Render (const MATRIX& _mView) = 0;
 };

@@ -27,6 +27,9 @@ public:
 
     // Get mesh geometry
     virtual const std::vector<OGFace>& GetGeometry () const = 0;
+
+	// Get combined AABB
+	virtual const IOGAabb& GetAABB () const = 0;
 };
 
 

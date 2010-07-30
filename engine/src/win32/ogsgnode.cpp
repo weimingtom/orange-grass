@@ -44,7 +44,23 @@ void COGSgNode::SetWorldTransform (const MATRIX& _mT)
 // set world transform.
 void COGSgNode::SetWorldTransform (const Vec3& _vPos, const Vec3& _vRot)
 {
-    MatrixTranslation(m_mWorld, _vPos.x, _vPos.y, _vPos.z);
+    WorldMatrixFromTransforms(m_mWorld, _vPos, _vRot);
+}
+
+
+// Get transformed AABB
+const IOGAabb& COGSgNode::GetTransformedAABB () const
+{
+	return m_TransformedAabb;
+}
+
+
+// Update transforms.
+void COGSgNode::Update (int _ElapsedTime)
+{
+	const IOGAabb& origAABB = m_pRenderable->GetAABB();
+	m_TransformedAabb.SetMinMax(origAABB.GetMin(), origAABB.GetMax());
+	m_TransformedAabb.UpdateTransform(m_mWorld);
 }
 
 

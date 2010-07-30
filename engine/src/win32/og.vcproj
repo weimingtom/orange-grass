@@ -151,6 +151,22 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\ogactor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ogactor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ogactormanager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ogactormanager.h"
+				>
+			</File>
+			<File
 				RelativePath=".\oganimatedmesh.cpp"
 				>
 			</File>
@@ -285,81 +301,109 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath="..\..\include\IOGAabb.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGCamera.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\include\IOGCoreHelpers.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGEditableTerrain.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGGraphicsHelpers.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGLevelManager.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGLight.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGMaterial.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGMath.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGMesh.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGModel.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGRenderable.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGResourceMgr.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGSceneGraph.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGSgNode.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGSprite.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGTerrain.h"
-				>
-			</File>
-			<File
-				RelativePath="..\..\include\IOGTexture.h"
 				>
 			</File>
 			<File
 				RelativePath="..\..\include\OrangeGrass.h"
 				>
 			</File>
+			<Filter
+				Name="Graphics"
+				>
+				<File
+					RelativePath="..\..\include\IOGEditableTerrain.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGGraphicsHelpers.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGLight.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGMaterial.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGMesh.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGModel.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGRenderable.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGSprite.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGTerrain.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGTexture.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="SceneGraph"
+				>
+				<File
+					RelativePath="..\..\include\IOGSceneGraph.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGSgNode.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="GameLogic"
+				>
+				<File
+					RelativePath="..\..\include\IOGActor.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGActorManager.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Math"
+				>
+				<File
+					RelativePath="..\..\include\IOGAabb.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGCamera.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGMath.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Resources"
+				>
+				<File
+					RelativePath="..\..\include\IOGLevelManager.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGResourceMgr.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

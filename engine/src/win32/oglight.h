@@ -20,21 +20,25 @@ public:
 	COGLight ();
 	virtual ~COGLight ();
 
-	// set light source position.
-	virtual void SetPosition (const VECTOR3& _vPosition);
+	// set light color.
+	virtual void SetColor (const Vec4& _vColor);
 	
-	// get light source position.
-	virtual const VECTOR3& GetPosition () const { return m_vPosition; }
+	// get light color.
+	virtual const Vec4& GetColor () const { return m_vColor; }
 	
 	// set light direction.
-	virtual void SetDirection (const VECTOR3& _vDirection);
+	virtual void SetDirection (const Vec4& _vDirection);
 	
 	// get light direction.
-	virtual const VECTOR3& GetDirection () const { return m_vDirection; }
+	virtual const Vec4& GetDirection () const { return m_vDirection; }
+		
+	// apply lighting.
+	virtual void Apply ();
 	
 private:
-	VECTOR3		m_vPosition;
-	VECTOR3		m_vDirection;
+
+	Vec4		m_vDirection;
+	Vec4		m_vColor;
 };
 
 #endif
