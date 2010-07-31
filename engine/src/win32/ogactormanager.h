@@ -35,6 +35,11 @@ public:
 	// Update actors.
 	virtual void Update (int _ElapsedTime);
 
+	// Get nearest intersected actor.
+	virtual IOGActor* GetNearestIntersectedActor (
+        const Vec3& _LineStart, 
+        const Vec3& _LineEnd );
+
 private:
 
     std::vector<IOGActor*>	m_ActorsList;

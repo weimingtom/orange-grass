@@ -85,3 +85,39 @@ void COGActorManager::Update (int _ElapsedTime)
 		(*iter)->Update(_ElapsedTime);
     }
 }
+
+
+// Get nearest intersected actor.
+IOGActor* COGActorManager::GetNearestIntersectedActor (
+    const Vec3& _LineStart, 
+    const Vec3& _LineEnd )
+{
+    std::vector<IOGActor*> IntersectedList;
+    std::vector<IOGActor*>::iterator iter = m_ActorsList.begin();
+    for (; iter != m_ActorsList.end(); ++iter)
+    {
+        if ((*iter)->CheckIntersection_AABB(_LineStart, _LineEnd))
+            IntersectedList.push_back(*iter);
+    }
+    if (IntersectedList.empty())
+        return NULL;
+
+    if (IntersectedList.size() == 1)
+        return *IntersectedList.begin();
+
+    std::vector<IOGActor*>::iterator inters_iter = IntersectedList.begin();
+    IOGActor* pNearest = *inters_iter;
+    float fDist = Dist3D(_LineStart, pNearest->GetSgNode()->GetTransformedAABB().GetCenter());
+    ++iter;
+    for (; inters_iter != IntersectedList.end(); ++inters_iter)
+    {
+        IOGActor* pCur = *inters_iter;
+        float curDist = Dist3D(_LineStart, pCur->GetSgNode()->GetTransformedAABB().GetCenter());
+        if (curDist < fDist)
+        {
+            fDist = curDist;
+            pNearest = pCur;
+        }
+    }
+    return pNearest;
+}

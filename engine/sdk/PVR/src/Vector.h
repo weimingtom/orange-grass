@@ -586,6 +586,28 @@ struct Vec3 : public VECTOR3
 		return *this;
 	}
 
+/*!***************************************************************************
+ @Function			[] - r/o
+ @Input				index
+ @Returns			component value
+ @Description		Get components by index
+****************************************************************************/
+    VERTTYPE operator [] ( int _ComponentIndex ) const
+    {
+	    return ( (VERTTYPE *)this) [ _ComponentIndex ];
+    }
+
+/*!***************************************************************************
+ @Function			[] - w
+ @Input				index
+ @Returns			component value
+ @Description		Set components by index
+****************************************************************************/
+    VERTTYPE& operator [] ( int _ComponentIndex )
+    {
+	    return ( (VERTTYPE *)this) [ _ComponentIndex ];
+    }
+
 	// FUNCTIONS
 /*!***************************************************************************
  @Function			lenSqr

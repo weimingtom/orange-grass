@@ -30,6 +30,14 @@ public:
 
 	// Get actor type.
 	virtual OGActorType GetType () const = 0;
+
+	// Get scene graph node.
+	virtual IOGSgNode* GetSgNode () = 0;
+
+	// Check actor's AABB intersection with line segment.
+	virtual bool CheckIntersection_AABB (
+        const Vec3& _vLineStart,
+        const Vec3& _vLineEnd ) = 0;
 };
 
 

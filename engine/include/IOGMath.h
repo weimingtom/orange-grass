@@ -2,6 +2,14 @@
 #define IOGMATH_H_
 
 #include <math.h>
+#include "Mathematics.h"
+
+// floating point macros
+#define FP_BITS(fp)			(*(unsigned long*)&(fp))
+#define FP_ABS_BITS(fp)		(FP_BITS(fp)&0x7FFFFFFF)
+#define FP_SIGN_BIT(fp)		(FP_BITS(fp)&0x80000000)
+#define FP_ONE_BITS			0x3F800000
+#define	FP_SIGN_BIT_SHIFT	31
 
 
 // Get distance between two points
@@ -10,6 +18,16 @@ static float Dist ( int _x1, int _y1, int _x2, int _y2 )
 	float xdiff = (float)(_x1 - _x2);
 	float ydiff = (float)(_y1 - _y2);
 	return sqrtf (xdiff*xdiff + ydiff*ydiff);
+}
+
+
+// Get distance between two points
+static float Dist3D ( const Vec3& _p1, const Vec3& _p2 )
+{
+	float xdiff = (float)(_p1.x - _p2.x);
+	float ydiff = (float)(_p1.y - _p2.y);
+	float zdiff = (float)(_p1.z - _p2.z);
+	return sqrtf (xdiff*xdiff + ydiff*ydiff + zdiff*zdiff);
 }
 
 
@@ -116,6 +134,43 @@ static Vec3 Vec3Lerp (float _fFactor, const Vec3& _p0, const Vec3& _p1)
 static void WorldMatrixFromTransforms (MATRIX& _mWorld, const Vec3& _vPos, const Vec3& _vRot)
 {
     MatrixTranslation(_mWorld, _vPos.x, _vPos.y, _vPos.z);
+}
+
+
+// Clips the segment by the given axis
+// Returns  negative value if no intersection
+//			0 if front-side intersection
+//			1 if rear-side intersection
+inline int ClipAxialLine ( 
+                          Vec3& _Vec0, 
+                          Vec3& _Vec1, 
+                          int	_Sign,
+                          int	_Axis,
+                          float	_BoxCoordValue
+                          )
+{
+    // calculate the distance to the point
+    float d0 = _Vec0[ _Axis ] * _Sign - _BoxCoordValue;
+    float d1 = _Vec1[ _Axis ] * _Sign - _BoxCoordValue;
+
+    // get the sign
+    unsigned long sign0 = FP_SIGN_BIT ( d0 );
+    unsigned long sign1 = FP_SIGN_BIT ( d1 );
+
+    // on the same side
+    if ( sign0 == sign1 )
+    {
+        return - ( (int) ( sign0 >> FP_SIGN_BIT_SHIFT ) + 1 );
+    }
+
+    // on the different sides
+    sign0 >>= FP_SIGN_BIT_SHIFT;
+    if (sign0 == 0)
+        _Vec0 = Vec3Lerp ( d0 / ( d0 - d1 ), _Vec0, _Vec1 );
+    else
+        _Vec1 = Vec3Lerp ( d0 / ( d0 - d1 ), _Vec0, _Vec1 );
+
+    return sign0;	
 }
 
 

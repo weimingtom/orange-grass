@@ -87,3 +87,18 @@ OGActorType COGActor::GetType () const
 {
 	return m_Type;
 }
+
+
+// Get scene graph node.
+IOGSgNode* COGActor::GetSgNode ()
+{
+    return m_pNode;
+}
+
+
+// Check actor's AABB intersection with line segment.
+bool COGActor::CheckIntersection_AABB (const Vec3& _vLineStart,
+                                       const Vec3& _vLineEnd )
+{
+    return m_pNode->GetTransformedAABB().CheckIntersection (_vLineStart, _vLineEnd);
+}

@@ -34,6 +34,7 @@ MATRIX		m_mProjection;
 MATRIX		m_mView;
 IOGTerrain*	m_pCurTerrain = NULL;
 IOGSgNode*  m_pCurNode = NULL;
+IOGActor*   m_pPickedActor = NULL;
 bool		m_bIntersectionFound = false;
 Vec3		m_vIntersection;
 std::string m_CurModelAlias;
@@ -129,6 +130,7 @@ void CEditorCanvas::Render()
         {
             if (m_pCurNode)
             {
+                m_pCurNode->Update(10);
                 MATRIX mModelView = m_pCurNode->GetWorldTransform();
                 MatrixMultiply(mModelView, mModelView, m_mView);
                 m_pCurNode->GetRenderable()->Render(mModelView);
@@ -183,6 +185,8 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 
 		case EDITMODE_ADJUST:
 			{
+                if (bLmb)
+                    m_pPickedActor = GetActorManager()->GetNearestIntersectedActor(vPos, vVec*FLT_MAX);
 			}
 			break;
 
@@ -348,6 +352,7 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 		break;
 
 	case CMD_EDITMODE_OBJECTS:
+        m_pPickedActor = NULL;
 		if (m_CurModelAlias.empty())
 			SetNewCurrentNodeForPlacement(NULL);
 		else
@@ -355,10 +360,12 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 		break;
 
 	case CMD_EDITMODE_ADJUST:
+        m_pPickedActor = NULL;
 		SetNewCurrentNodeForPlacement(NULL);
 		break;
 
 	case CMD_EDITMODE_SETTINGS:
+        m_pPickedActor = NULL;
 		SetNewCurrentNodeForPlacement(NULL);
 		break;
 	}
@@ -388,7 +395,16 @@ void CEditorCanvas::RenderHelpers()
 
 	if (m_bShowAABB)
 	{
+        if (m_pCurNode)
+        {
+            DrawAABB(m_pCurNode->GetTransformedAABB());
+        }
 	}
+
+    if (m_pPickedActor)
+    {
+        DrawAABB(m_pPickedActor->GetSgNode()->GetTransformedAABB());
+    }
 
 	if (m_bIntersectionFound && m_bRedrawPatch)
 	{
