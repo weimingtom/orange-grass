@@ -18,16 +18,13 @@ public:
 	COGActorManager ();
 	virtual ~COGActorManager ();
 
-	// Create static actor
-	virtual IOGActor* CreateStaticActor (
-		const char* _pModelAlias,
-		const MATRIX& _mWorld);
-
-	// Create bot actor
-	virtual IOGActor* CreateBotActor (
+	// Create actor
+	virtual IOGActor* CreateActor (
+		OGActorType _Type,
 		const char* _pModelAlias,
 		const Vec3& _vPos,
-		const Vec3& _vRot);
+		const Vec3& _vRot,
+        const Vec3& _vScale);
 
 	// Destroy actor and remove from list.
 	virtual void DestroyActor (IOGActor* _pActor);

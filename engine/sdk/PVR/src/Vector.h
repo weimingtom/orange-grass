@@ -101,7 +101,7 @@ struct Vec2
 		@Function			Vec2
 		@Description		Blank constructor.
 		*****************************************************************************/
-	Vec2() {}
+	Vec2() {x = y = 0;}
 	/*!***************************************************************************
 		@Function			Vec2
 		@Input				fX	X component of vector
@@ -373,7 +373,7 @@ struct Vec3 : public VECTOR3
  @Function			Vec3
  @Description		Blank constructor.
 *****************************************************************************/
-	Vec3(){}
+    Vec3() { x = y = z = 0; }
 /*!***************************************************************************
  @Function			Vec3
  @Input				fX	X component of vector
@@ -739,7 +739,7 @@ struct Vec4 : public VECTOR4
  @Function			Vec4
  @Description		Blank constructor.
 *****************************************************************************/
-	Vec4(){}
+	Vec4(){x = y = z = w = 0;}
 
 /*!***************************************************************************
  @Function			Vec3

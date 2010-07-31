@@ -18,16 +18,13 @@ public:
 	// destructor
 	virtual ~IOGActorManager () {}
 
-	// Create static actor
-	virtual IOGActor* CreateStaticActor (
-		const char* _pModelAlias,
-		const MATRIX& _mWorld) = 0;
-
-	// Create bot actor
-	virtual IOGActor* CreateBotActor (
+	// Create actor
+	virtual IOGActor* CreateActor (
+		OGActorType _Type,
 		const char* _pModelAlias,
 		const Vec3& _vPos,
-		const Vec3& _vRot) = 0;
+		const Vec3& _vRot,
+        const Vec3& _vScale) = 0;
 
 	// Destroy actor and remove from list.
 	virtual void DestroyActor (IOGActor* _pActor) = 0;

@@ -36,7 +36,8 @@ COGActor::~COGActor()
 // Create actor.
 bool COGActor::Create (const char* _pModelAlias,
 					   const Vec3& _vPos,
-					   const Vec3& _vRot)
+					   const Vec3& _vRot,
+                       const Vec3& _vScale)
 {
 	if (m_Type == OG_ACTOR_NONE)
 		return false;
@@ -49,26 +50,7 @@ bool COGActor::Create (const char* _pModelAlias,
 	if (!m_pNode)
 		return false;
 	
-	m_pNode->SetWorldTransform(_vPos, _vRot);
-	GetSceneGraph()->AddNode(m_pNode);
-
-	return true;
-}
-
-
-// Create actor.
-bool COGActor::Create (const char* _pModelAlias,
-					   const MATRIX& _mWorld)
-{
-	IOGModel* pModel = GetResourceMgr()->GetModel(_pModelAlias);
-	if (!pModel)
-		return false;
-
-	m_pNode = GetSceneGraph()->CreateNode(pModel);
-	if (!m_pNode)
-		return false;
-	
-	m_pNode->SetWorldTransform(_mWorld);
+	m_pNode->SetWorldTransform(_vPos, _vRot, _vScale);
 	GetSceneGraph()->AddNode(m_pNode);
 
 	return true;

@@ -37,6 +37,8 @@ IOGSgNode*  m_pCurNode = NULL;
 IOGActor*   m_pPickedActor = NULL;
 bool		m_bIntersectionFound = false;
 Vec3		m_vIntersection;
+Vec3		m_vCurRotation;
+Vec3		m_vCurScaling(1);
 std::string m_CurModelAlias;
 bool		bRmb = false;
 bool		bLmb = false;
@@ -119,6 +121,8 @@ void CEditorCanvas::Render()
 	m_mView = GetCamera()->Update();
 	glLoadMatrixf(m_mView.f);
 
+    GetActorManager()->Update(10);
+
 	if (m_pCurTerrain)
 		m_pCurTerrain->Render(m_mView);
 
@@ -169,13 +173,16 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 					{
 						if (bLmb)
 						{
-							MATRIX mWorld;
-							WorldMatrixFromTransforms(mWorld, m_vIntersection, Vec3());
-							GetActorManager()->CreateStaticActor(m_CurModelAlias.c_str(), mWorld);
+							GetActorManager()->CreateActor(
+                                OG_ACTOR_STATIC, 
+                                m_CurModelAlias.c_str(), 
+                                m_vIntersection, 
+                                m_vCurRotation, 
+                                m_vCurScaling);
 						}
 						if (m_pCurNode)
 						{
-							m_pCurNode->SetWorldTransform(m_vIntersection, Vec3());
+							m_pCurNode->SetWorldTransform(m_vIntersection, m_vCurRotation, m_vCurScaling);
 						}
 						m_bRedrawPatch = true;
 					}
@@ -325,6 +332,141 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
 		mouse_x = event.GetX();
 		mouse_y = event.GetY();
 		m_bMouseMoved = true;
+		this->Refresh();
+        break;
+
+    case 'D':
+        if (m_pCurNode)
+        {
+            m_vCurRotation.y += 0.02f;
+            m_pCurNode->SetRotation(m_vCurRotation);
+        }
+        if (m_pPickedActor)
+        {
+            Vec3 vRot = m_pPickedActor->GetSgNode()->GetRotation();
+            vRot.y += 0.02f;
+            m_pPickedActor->GetSgNode()->SetRotation(vRot);
+        }
+		this->Refresh();
+        break;
+
+    case 'A':
+        if (m_pCurNode)
+        {
+            m_vCurRotation.y -= 0.02f;
+            m_pCurNode->SetRotation(m_vCurRotation);
+        }
+        if (m_pPickedActor)
+        {
+            Vec3 vRot = m_pPickedActor->GetSgNode()->GetRotation();
+            vRot.y -= 0.02f;
+            m_pPickedActor->GetSgNode()->SetRotation(vRot);
+        }
+		this->Refresh();
+        break;
+
+    case 'W':
+        if (m_pCurNode)
+        {
+            m_vCurRotation.x += 0.02f;
+            m_pCurNode->SetRotation(m_vCurRotation);
+        }
+        if (m_pPickedActor)
+        {
+            Vec3 vRot = m_pPickedActor->GetSgNode()->GetRotation();
+            vRot.x += 0.02f;
+            m_pPickedActor->GetSgNode()->SetRotation(vRot);
+        }
+		this->Refresh();
+        break;
+
+    case 'S':
+        if (m_pCurNode)
+        {
+            m_vCurRotation.x -= 0.02f;
+            m_pCurNode->SetRotation(m_vCurRotation);
+        }
+        if (m_pPickedActor)
+        {
+            Vec3 vRot = m_pPickedActor->GetSgNode()->GetRotation();
+            vRot.x -= 0.02f;
+            m_pPickedActor->GetSgNode()->SetRotation(vRot);
+        }
+		this->Refresh();
+        break;
+
+    case 'E':
+        if (m_pCurNode)
+        {
+            m_vCurRotation.z += 0.02f;
+            m_pCurNode->SetRotation(m_vCurRotation);
+        }
+        if (m_pPickedActor)
+        {
+            Vec3 vRot = m_pPickedActor->GetSgNode()->GetRotation();
+            vRot.z += 0.02f;
+            m_pPickedActor->GetSgNode()->SetRotation(vRot);
+        }
+		this->Refresh();
+        break;
+
+    case 'Q':
+        if (m_pCurNode)
+        {
+            m_vCurRotation.z -= 0.02f;
+            m_pCurNode->SetRotation(m_vCurRotation);
+        }
+        if (m_pPickedActor)
+        {
+            Vec3 vRot = m_pPickedActor->GetSgNode()->GetRotation();
+            vRot.z -= 0.02f;
+            m_pPickedActor->GetSgNode()->SetRotation(vRot);
+        }
+		this->Refresh();
+        break;
+
+    case 'Z':
+        if (m_pCurNode)
+        {
+            m_vCurScaling -= 0.02f;
+            m_pCurNode->SetScaling(m_vCurScaling);
+        }
+        if (m_pPickedActor)
+        {
+            Vec3 vScale = m_pPickedActor->GetSgNode()->GetScaling();
+            vScale -= 0.02f;
+            m_pPickedActor->GetSgNode()->SetScaling(vScale);
+        }
+		this->Refresh();
+        break;
+
+    case 'X':
+        if (m_pCurNode)
+        {
+            m_vCurScaling += 0.02f;
+            m_pCurNode->SetScaling(m_vCurScaling);
+        }
+        if (m_pPickedActor)
+        {
+            Vec3 vScale = m_pPickedActor->GetSgNode()->GetScaling();
+            vScale += 0.02f;
+            m_pPickedActor->GetSgNode()->SetScaling(vScale);
+        }
+		this->Refresh();
+        break;
+
+    case 'C':
+        if (m_pCurNode)
+        {
+            m_vCurScaling.x = m_vCurScaling.y = m_vCurScaling.z = 1;
+            m_vCurRotation.x = m_vCurRotation.y = m_vCurRotation.z = 0;
+            m_pCurNode->SetWorldTransform(m_vIntersection, m_vCurRotation, m_vCurScaling);
+        }
+        if (m_pPickedActor)
+        {
+            Vec3 vPos = m_pPickedActor->GetSgNode()->GetPosition();
+            m_pPickedActor->GetSgNode()->SetWorldTransform(vPos, Vec3(0, 0, 0), Vec3(1, 1, 1));
+        }
 		this->Refresh();
         break;
     }
@@ -524,6 +666,6 @@ void CEditorCanvas::SetNewCurrentNodeForPlacement(const char* _pModelAlias)
 	{
 		m_CurModelAlias = std::string(_pModelAlias);
 		m_pCurNode = GetSceneGraph()->CreateNode(GetResourceMgr()->GetModel(_pModelAlias));
-		m_pCurNode->SetWorldTransform(Vec3(), Vec3());
+		m_pCurNode->SetWorldTransform(Vec3(0,0,0), Vec3(0,0,0), Vec3(1, 1, 1));
 	}
 }

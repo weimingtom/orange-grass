@@ -24,12 +24,8 @@ public:
 	virtual bool Create (
 		const char* _pModelAlias,
 		const Vec3& _vPos,
-		const Vec3& _vRot);
-
-	// Create actor.
-	virtual bool Create (
-		const char* _pModelAlias,
-		const MATRIX& _mWorld);
+		const Vec3& _vRot,
+        const Vec3& _vScale);
 
 	// Update actor.
 	virtual void Update (int _ElapsedTime);

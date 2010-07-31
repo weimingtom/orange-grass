@@ -29,31 +29,16 @@ COGActorManager::~COGActorManager ()
 }
 
 
-// Create static actor
-IOGActor* COGActorManager::CreateStaticActor (
-	const char* _pModelAlias,
-	const MATRIX& _mWorld)
-{
-	COGActor* pActor = new COGActor(OG_ACTOR_STATIC);
-	if (pActor->Create(_pModelAlias, _mWorld) == NULL)
-	{
-		OG_SAFE_DELETE(pActor);
-		return NULL;
-	}
-
-	m_ActorsList.push_back(pActor);
-	return pActor;
-}
-
-
-// Create bot actor
-IOGActor* COGActorManager::CreateBotActor (
+// Create actor
+IOGActor* COGActorManager::CreateActor (
+	OGActorType _Type,
 	const char* _pModelAlias,
 	const Vec3& _vPos,
-	const Vec3& _vRot)
+	const Vec3& _vRot,
+    const Vec3& _vScale)
 {
-	COGActor* pActor = new COGActor(OG_ACTOR_LANDBOT);
-	if (pActor->Create(_pModelAlias, _vPos, _vRot) == NULL)
+	COGActor* pActor = new COGActor(_Type);
+	if (pActor->Create(_pModelAlias, _vPos, _vRot, _vScale) == NULL)
 	{
 		OG_SAFE_DELETE(pActor);
 		return NULL;
@@ -108,7 +93,7 @@ IOGActor* COGActorManager::GetNearestIntersectedActor (
     std::vector<IOGActor*>::iterator inters_iter = IntersectedList.begin();
     IOGActor* pNearest = *inters_iter;
     float fDist = Dist3D(_LineStart, pNearest->GetSgNode()->GetTransformedAABB().GetCenter());
-    ++iter;
+    ++inters_iter;
     for (; inters_iter != IntersectedList.end(); ++inters_iter)
     {
         IOGActor* pCur = *inters_iter;

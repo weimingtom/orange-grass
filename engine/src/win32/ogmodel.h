@@ -32,12 +32,6 @@ public:
 	// Get type of the renderable.
 	virtual RenderableType GetRenderableType () const { return OG_RENDERABLE_MODEL; }
 
-	// Get number of parts
-	virtual int GetNumParts () const;
-
-	// Get AABB for the specified part
-	virtual const IOGAabb& GetAABB ( int _part ) const;
-
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const;
 

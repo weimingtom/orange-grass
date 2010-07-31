@@ -105,20 +105,6 @@ void COGModel::Render (const MATRIX& _mView)
 }
 
 
-// Get number of parts
-int COGModel::GetNumParts () const
-{
-	return m_pMesh->GetNumParts();
-}
-
-
-// Get AABB for the specified part
-const IOGAabb& COGModel::GetAABB ( int _part ) const
-{
-	return m_pMesh->GetAABB(_part);
-}
-
-
 // Get combined AABB
 const IOGAabb& COGModel::GetAABB () const
 {

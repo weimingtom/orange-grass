@@ -260,24 +260,10 @@ void COGMesh::CalculateGeometry ()
 }
 
 
-// Get number of parts
-int COGMesh::GetNumParts () const
-{
-	return m_AABBs.size();
-}
-
-
 // Get combined AABB
 const IOGAabb& COGMesh::GetAABB () const
 {
 	return m_CombinedAABB;
-}
-
-
-// Get AABB for the specified part
-const IOGAabb& COGMesh::GetAABB ( int _part ) const
-{
-	return m_AABBs[_part];
 }
 
 

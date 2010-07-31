@@ -14,10 +14,25 @@ public:
 	virtual const MATRIX& GetWorldTransform () const = 0;
 
 	// set world transform.
-	virtual void SetWorldTransform (const MATRIX& _mT) = 0;
+	virtual void SetWorldTransform (const Vec3& _vPos, const Vec3& _vRot, const Vec3& _vScale) = 0;
 
-	// set world transform.
-	virtual void SetWorldTransform (const Vec3& _vPos, const Vec3& _vRot) = 0;
+	// get position.
+	virtual const Vec3& GetPosition () const = 0;
+
+	// get rotation.
+	virtual const Vec3& GetRotation () const = 0;
+
+	// get scaling.
+	virtual const Vec3& GetScaling () const = 0;
+
+	// set position.
+	virtual void SetPosition (const Vec3& _vPos) = 0;
+
+	// set rotation.
+	virtual void SetRotation (const Vec3& _vRot) = 0;
+
+	// set scaling.
+	virtual void SetScaling (const Vec3& _vScale) = 0;
 
 	// Update transforms.
 	virtual void Update (int _ElapsedTime) = 0;

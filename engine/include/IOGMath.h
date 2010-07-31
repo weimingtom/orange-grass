@@ -131,9 +131,18 @@ static Vec3 Vec3Lerp (float _fFactor, const Vec3& _p0, const Vec3& _p1)
 }
 
 
-static void WorldMatrixFromTransforms (MATRIX& _mWorld, const Vec3& _vPos, const Vec3& _vRot)
+static void WorldMatrixFromTransforms (MATRIX& _mWorld, const Vec3& _vPos, const Vec3& _vRot, const Vec3& _vScale)
 {
-    MatrixTranslation(_mWorld, _vPos.x, _vPos.y, _vPos.z);
+    MATRIX mX, mY, mZ, mS, mT;
+    MatrixTranslation(mT, _vPos.x, _vPos.y, _vPos.z);
+    MatrixRotationX(mX, _vRot.x);
+    MatrixRotationY(mY, _vRot.y);
+    MatrixRotationZ(mZ, _vRot.z);
+    MatrixScaling(mS, _vScale.x, _vScale.y, _vScale.z);
+    MatrixMultiply(_mWorld, mS, mY);
+    MatrixMultiply(_mWorld, _mWorld, mZ);
+    MatrixMultiply(_mWorld, _mWorld, mX);
+    MatrixMultiply(_mWorld, _mWorld, mT);
 }
 
 
