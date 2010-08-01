@@ -2,6 +2,9 @@ Tools: ver. 0.04, 01-Aug-2010
 
 ChangeList:
 
+0.05:
+- [OG] added level layer, terrain functionality moved to resource manager
+
 0.04:
 - [MapEditor] added object picking (click on adjust button to switch to 'actor adjust' mode and click on a object on the scene, the picked object will be surrounded with the bounding box);
 - [MapEditor] added object rotation ('A' and 'D' rotates it around Y axis, 'W' and 'S' rotates it around X axis, 'Q' and 'E' rotates it around Z axis);

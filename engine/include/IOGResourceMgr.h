@@ -35,19 +35,19 @@ public:
     virtual const char* GetResourcePath () const = 0;
 
 	// load next resource.
-	virtual bool LoadNext () = 0;
+	virtual bool LoadNext (IOGResourceInfo& _resInfo) = 0;
 		
 	// get texture.
 	virtual IOGTexture* GetTexture (const char* _pAlias) = 0;
 		
 	// get mesh.
 	virtual IOGMesh* GetMesh (const char* _pAlias) = 0;
-		
+
 	// get model.
 	virtual IOGModel* GetModel (const char* _pAlias) = 0;
-	
-	// get load progress.
-	virtual float GetLoadProgress (IOGResourceInfo& _resInfo) = 0;
+
+	// get terrain.
+	virtual IOGTerrain* GetTerrain (const char* _pAlias) = 0;
 };
 
 #endif

@@ -14,10 +14,12 @@
 COGResourceMgr::COGResourceMgr () :	m_bTexturesLoaded(false),
 									m_bMeshesLoaded(false),
 									m_bModelsLoaded(false),
+									m_bTerrainsLoaded(false),
 									m_LoadIndex(0),
 									m_NumTextures(0),
 									m_NumMeshes(0),
-									m_NumModels(0)
+									m_NumModels(0),
+									m_NumTerrains(0)
 {
 	GetResourcePathASCII(m_ResPath, 2048);
 	sprintf(m_ResPath, "%sGameResources", m_ResPath);
@@ -42,6 +44,12 @@ COGResourceMgr::~COGResourceMgr ()
 	for( ; model_iter != m_ModelList.end(); ++model_iter )
 	{
 		OG_SAFE_DELETE (model_iter->second);
+	}
+	
+	std::map<std::string, COGTerrain*>::iterator terra_iter = m_TerrainList.begin();
+	for( ; terra_iter != m_TerrainList.end(); ++terra_iter )
+	{
+		OG_SAFE_DELETE (terra_iter->second);
 	}
 }
 
@@ -72,6 +80,7 @@ bool COGResourceMgr::Init (const char* _pResourceFile)
 	m_NumTextures = GetNumElements ("Textures", "Texture");
 	m_NumMeshes = GetNumElements ("Meshes", "Mesh");
 	m_NumModels = GetNumElements ("Models", "Model");
+	m_NumTerrains = GetNumElements ("Terrains", "Terrain");
 
 	return true;
 }
@@ -84,37 +93,14 @@ const char* COGResourceMgr::GetResourcePath () const
 }
 
 
-// get load progress.
-float COGResourceMgr::GetLoadProgress (IOGResourceInfo& _resInfo)
-{
-	_resInfo = m_LoadedResourceInfo;
-
-	if (!m_bTexturesLoaded)
-	{
-		float fPercent = (float)m_LoadIndex / (float)(m_NumTextures);
-		return fPercent * 40.0f;
-	}
-	if (!m_bMeshesLoaded)
-	{
-		float fPercent = (float)m_LoadIndex / (float)(m_NumMeshes);
-		return fPercent * 40.0f + 40.0f;
-	}
-	if (!m_bModelsLoaded)
-	{
-		float fPercent = (float)m_LoadIndex / (float)(m_NumModels);
-		return fPercent * 10.0f + 90.0f;
-	}
-	return 100.0f;
-}
-
-
 // load resource.
-bool COGResourceMgr::LoadNext ()
+bool COGResourceMgr::LoadNext (IOGResourceInfo& _resInfo)
 {
 	if (!m_bTexturesLoaded)
 	{
 		if (LoadNextTexture(m_LoadIndex))
 		{
+        	_resInfo = m_LoadedResourceInfo;
 			++m_LoadIndex;
 			return true;
 		}
@@ -128,6 +114,7 @@ bool COGResourceMgr::LoadNext ()
 	{
 		if (LoadNextMesh(m_LoadIndex))
 		{
+        	_resInfo = m_LoadedResourceInfo;
 			++m_LoadIndex;
 			return true;
 		}
@@ -141,6 +128,7 @@ bool COGResourceMgr::LoadNext ()
 	{
 		if (LoadNextModel(m_LoadIndex))
 		{
+        	_resInfo = m_LoadedResourceInfo;
 			++m_LoadIndex;
 			return true;
 		}
@@ -150,8 +138,22 @@ bool COGResourceMgr::LoadNext ()
 			m_LoadIndex = 0;
 		}
 	}
+	if (!m_bTerrainsLoaded)
+	{
+		if (LoadNextTerrain(m_LoadIndex))
+		{
+        	_resInfo = m_LoadedResourceInfo;
+			++m_LoadIndex;
+			return true;
+		}
+		else
+		{
+			m_bTerrainsLoaded = true;
+			m_LoadIndex = 0;
+		}
+	}
 	
-	if (m_bTexturesLoaded && m_bMeshesLoaded && m_bModelsLoaded)
+	if (m_bTexturesLoaded && m_bMeshesLoaded && m_bModelsLoaded && m_bTerrainsLoaded)
 	{
 		m_LoadIndex = 0;
 		delete m_hDoc;
@@ -238,6 +240,30 @@ bool COGResourceMgr::LoadNextModel (int _Iteration)
 }
 
 
+// load next terrain resource.
+bool COGResourceMgr::LoadNextTerrain (int _Iteration)
+{
+	char file_path[256];
+	TiXmlHandle hTerrainsRoot = m_hDoc->FirstChild ( "Terrains" );
+	TiXmlHandle TerrainHandle = hTerrainsRoot.Child ( "Terrain", _Iteration );
+	if (TerrainHandle.Node ())
+	{
+		TiXmlElement* pElement = TerrainHandle.Element();
+		const char* terrain_alias = pElement->Attribute ("alias");
+		const char* terrain_file = pElement->Attribute ("file");
+		sprintf(file_path, "%s\\%s", m_ResPath, terrain_file);
+		COGTerrain* pTerrain = new COGTerrain ();
+		pTerrain->Init (terrain_alias, file_path);
+		m_TerrainList[terrain_alias] = pTerrain;
+		sprintf(m_LoadedResourceInfo.m_pResource, terrain_alias);
+		sprintf(m_LoadedResourceInfo.m_pResourceGroup, "Terrains");
+        sprintf(m_LoadedResourceInfo.m_pResourceIcon, "%s\\%s", m_ResPath, pTerrain->GetResourceIcon());
+		return true;
+	}
+	return false;
+}
+
+
 // get texture
 IOGTexture* COGResourceMgr::GetTexture (const char* _pAlias)
 {
@@ -256,6 +282,21 @@ IOGMesh* COGResourceMgr::GetMesh (const char* _pAlias)
 IOGModel* COGResourceMgr::GetModel (const char* _pAlias)
 {
 	return m_ModelList[_pAlias];
+}
+
+
+// get terrain.
+IOGTerrain* COGResourceMgr::GetTerrain (const char* _pAlias)
+{
+	COGTerrain* pTerrain = m_TerrainList[_pAlias];
+    if (pTerrain)
+    {
+        pTerrain->SetWorldPosition (Vec3(0, 0, 0));
+        if (pTerrain->Load() == NULL)
+            return NULL;
+        return pTerrain;
+    }
+    return NULL;
 }
 
 

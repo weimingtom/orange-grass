@@ -188,11 +188,9 @@ void CViewerCanvas::InitGL()
 /// @return false if finished loading.
 bool CViewerCanvas::LoadNextResource()
 {
-	while (GetResourceMgr()->LoadNext())
+    IOGResourceInfo resInfo;
+	while (GetResourceMgr()->LoadNext(resInfo))
 	{
-		IOGResourceInfo resInfo;
-		int progress = (int)(GetResourceMgr()->GetLoadProgress(resInfo));
-
 		CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
 		cmd.SetEventCustomData(ResLoadEventData(wxT(resInfo.m_pResource), wxT(resInfo.m_pResourceGroup), wxT(resInfo.m_pResourceIcon)));
         GetEventHandlersTable()->FireEvent(EVENTID_RESLOAD, &cmd);

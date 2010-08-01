@@ -27,3 +27,6 @@
 	<Model alias="tank1" file="Models\Tank1\tank1.xml"/>
 	<Model alias="tank2" file="Models\Tank1\tank2.xml"/>
 </Models>
+<Terrains>
+	<Terrain alias="level_0" file="Levels\Level_0\level_0.xml" />
+</Terrains>

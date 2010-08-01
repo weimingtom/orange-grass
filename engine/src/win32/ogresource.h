@@ -16,6 +16,7 @@ enum OGResourceTypes
     OG_RES_ANIMATEDMESH,
     OG_RES_MODEL,
     OG_RES_TERRAIN,
+    OG_RES_LEVEL,
 };
 
 

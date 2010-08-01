@@ -195,6 +195,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\oglevel.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\oglevel.h"
+				>
+			</File>
+			<File
 				RelativePath=".\oglevelmanager.cpp"
 				>
 			</File>
@@ -399,6 +407,10 @@
 			<Filter
 				Name="Resources"
 				>
+				<File
+					RelativePath="..\..\include\IOGLevel.h"
+					>
+				</File>
 				<File
 					RelativePath="..\..\include\IOGLevelManager.h"
 					>

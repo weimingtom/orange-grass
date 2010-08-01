@@ -1,7 +1,15 @@
+/*
+ *  IOGLevelManager.h
+ *  OrangeGrass
+ *
+ *  Created by Viacheslav Bogdanov on 11.11.09.
+ *  Copyright 2009 __MyCompanyName__. All rights reserved.
+ *
+ */
 #ifndef IOGLEVELMGR_H_
 #define IOGLEVELMGR_H_
 
-#include "IOGTerrain.h"
+#include "IOGLevel.h"
 
 
 class IOGLevelManager
@@ -11,12 +19,9 @@ public:
 		
 	// load from config file.
 	virtual bool Init (const char* _pLevelCfgFile) = 0;
-
-    // get level path
-    virtual const char* GetLevelPath () const = 0;
 	
-	// get terrain.
-	virtual IOGTerrain* GetTerrain (int _level) = 0;
+	// load level.
+	virtual IOGLevel* LoadLevel (const char* _pAlias) = 0;
 };
 
 #endif

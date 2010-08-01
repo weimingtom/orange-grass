@@ -32,7 +32,7 @@ END_EVENT_TABLE()
 
 MATRIX		m_mProjection;
 MATRIX		m_mView;
-IOGTerrain*	m_pCurTerrain = NULL;
+IOGLevel*	m_pCurLevel = NULL;
 IOGSgNode*  m_pCurNode = NULL;
 IOGActor*   m_pPickedActor = NULL;
 bool		m_bIntersectionFound = false;
@@ -123,8 +123,8 @@ void CEditorCanvas::Render()
 
     GetActorManager()->Update(10);
 
-	if (m_pCurTerrain)
-		m_pCurTerrain->Render(m_mView);
+	if (m_pCurLevel)
+        m_pCurLevel->GetTerrain()->Render(m_mView);
 
     GetSceneGraph()->Render(m_mView);
 
@@ -166,9 +166,9 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 		{
 		case EDITMODE_OBJECTS:
 			{
-				if (m_pCurTerrain)
+                if (m_pCurLevel)
 				{
-					m_bIntersectionFound = m_pCurTerrain->GetRayIntersection(vPos, vVec, &m_vIntersection);
+					m_bIntersectionFound = m_pCurLevel->GetTerrain()->GetRayIntersection(vPos, vVec, &m_vIntersection);
 					if (m_bIntersectionFound)
 					{
 						if (m_pCurNode)
@@ -257,11 +257,9 @@ void CEditorCanvas::InitGL()
 /// @return false if finished loading.
 bool CEditorCanvas::LoadNextResource()
 {
-	while (GetResourceMgr()->LoadNext())
+    IOGResourceInfo resInfo;
+	while (GetResourceMgr()->LoadNext(resInfo))
 	{
-		IOGResourceInfo resInfo;
-		GetResourceMgr()->GetLoadProgress(resInfo);
-
 		CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
 		cmd.SetEventCustomData(ResLoadEventData(wxT(resInfo.m_pResource), wxT(resInfo.m_pResourceGroup), wxT(resInfo.m_pResourceIcon)));
         GetEventHandlersTable()->FireEvent(EVENTID_RESLOAD, &cmd);
@@ -269,7 +267,8 @@ bool CEditorCanvas::LoadNextResource()
 	m_bLoaded = true;
 
 	// Temporary level auto-loading
-	m_pCurTerrain = GetLevelManager()->GetTerrain(0);
+	//m_pCurTerrain = GetLevelManager()->GetTerrain(0);
+    m_pCurLevel = GetLevelManager()->LoadLevel("level_0");
 
 	SetNewCurrentNodeForPlacement(NULL);
 
@@ -281,7 +280,7 @@ bool CEditorCanvas::LoadNextResource()
 /// @param event - event structute.
 void CEditorCanvas::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& event )
 {
-	m_pCurTerrain = GetLevelManager()->GetTerrain(0);
+    m_pCurLevel = GetLevelManager()->LoadLevel("level_0");
 	this->Refresh();
 }
 
@@ -613,9 +612,9 @@ void CEditorCanvas::OnLMBUp(wxMouseEvent& event)
     {
     case EDITMODE_OBJECTS:
         {
-            if (m_pCurTerrain)
+            if (m_pCurLevel)
             {
-                m_bIntersectionFound = m_pCurTerrain->GetRayIntersection(vPos, vVec, &m_vIntersection);
+                m_bIntersectionFound = m_pCurLevel->GetTerrain()->GetRayIntersection(vPos, vVec, &m_vIntersection);
                 if (m_bIntersectionFound)
                 {
                     GetActorManager()->CreateActor(
