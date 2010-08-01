@@ -1,5 +1,5 @@
 /*
- *  mesh.h
+ *  ogmesh.h
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 06.11.09.

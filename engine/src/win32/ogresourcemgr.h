@@ -6,7 +6,6 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-
 #ifndef OGRESOURCEMGR_H_
 #define OGRESOURCEMGR_H_
 

@@ -1,3 +1,11 @@
+/*
+ *  IOGGraphicsHelpers.h
+ *  OrangeGrass
+ *
+ *  Created by Viacheslav Bogdanov on 12.11.09.
+ *  Copyright 2009 __MyCompanyName__. All rights reserved.
+ *
+ */
 #ifndef IOGGRAPHICSHELPERS_H_
 #define IOGGRAPHICSHELPERS_H_
 

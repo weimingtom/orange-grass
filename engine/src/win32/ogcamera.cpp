@@ -1,5 +1,5 @@
 /*
- *  camera.mm
+ *  ogcamera.mm
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 14.11.09.

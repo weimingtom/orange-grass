@@ -1,3 +1,11 @@
+/*
+ *  ogsgnode.h
+ *  OrangeGrass
+ *
+ *  Created by Viacheslav Bogdanov on 12.11.09.
+ *  Copyright 2009 __MyCompanyName__. All rights reserved.
+ *
+ */
 #ifndef OGSGNODE_H_
 #define OGSGNODE_H_
 

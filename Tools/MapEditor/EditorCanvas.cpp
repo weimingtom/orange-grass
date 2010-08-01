@@ -40,10 +40,6 @@ Vec3		m_vIntersection;
 Vec3		m_vCurRotation;
 Vec3		m_vCurScaling(1);
 std::string m_CurModelAlias;
-bool		bRmb = false;
-bool		bLmb = false;
-int			mouse_x = 0; 
-int			mouse_y = 0;
 
 
 /// @brief Constructor.
@@ -67,7 +63,10 @@ CEditorCanvas::CEditorCanvas (  wxWindow *parent,
 	GetEventHandlersTable()->AddEventHandler(EVENTID_TOOLCMD, this);
 	GetEventHandlersTable()->AddEventHandler(EVENTID_LEVELLOAD, this);
     m_timer.Start(100);
-	m_fCameraDistance = 600.0f;
+	m_fCameraDistance = 400.0f;
+
+    bRmb = bLmb = false;
+    mouse_x = mouse_y = 0;
 
 	m_bShowAABB = false;
 	m_bMouseInWindow = true;
@@ -267,7 +266,6 @@ bool CEditorCanvas::LoadNextResource()
 	m_bLoaded = true;
 
 	// Temporary level auto-loading
-	//m_pCurTerrain = GetLevelManager()->GetTerrain(0);
     m_pCurLevel = GetLevelManager()->LoadLevel("level_0");
 
 	SetNewCurrentNodeForPlacement(NULL);
@@ -521,12 +519,11 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 /// @brief Setup camera.
 void CEditorCanvas::SetupCamera()
 {
-	Vec3 vTarget (0, 0, 0);
+    Vec3 vTarget (200, 0, -100);
 	Vec3 vDir (0, 1.0f, 0.4f);
 	vDir = vDir.normalize();
 	Vec3 vUp = vDir.cross (Vec3(0, 1, 0));
-
-	GetCamera()->Setup (vDir * m_fCameraDistance, vTarget, vUp);
+	GetCamera()->Setup (vTarget + (vDir* m_fCameraDistance), vTarget, vUp);
 }
 
 
@@ -542,7 +539,6 @@ void CEditorCanvas::RenderHelpers()
 	{
         if (m_pCurNode)
         {
-            //DrawAABB(m_pCurNode->GetTransformedAABB());
             DrawOBB(m_pCurNode->GetOBB());
         }
 	}
@@ -550,7 +546,6 @@ void CEditorCanvas::RenderHelpers()
     if (m_pPickedActor)
     {
         DrawOBB(m_pPickedActor->GetSgNode()->GetOBB());
-        //DrawAABB(m_pPickedActor->GetSgNode()->GetTransformedAABB());
     }
 
 	if (m_bIntersectionFound && m_bRedrawPatch)
@@ -558,11 +553,6 @@ void CEditorCanvas::RenderHelpers()
 		DrawPatchGrid (1, &m_vIntersection);
 		m_bRedrawPatch = false;
 	}
-
-    //if (m_pCurTerrain)
-    //{
-    //    DrawGeometryGrid(m_pCurTerrain->GetGeometry());
-    //}
 
     glEnable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);

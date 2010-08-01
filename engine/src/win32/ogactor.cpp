@@ -1,5 +1,5 @@
 /*
- *  ogscenegraph.mm
+ *  ogactor.mm
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 12.11.09.

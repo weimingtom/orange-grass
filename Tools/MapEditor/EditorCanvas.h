@@ -140,6 +140,11 @@ private:
 	bool	m_bMouseMoved;
 	bool	m_bRedrawPatch;
 
+    bool	bRmb;
+    bool	bLmb;
+    int		mouse_x; 
+    int		mouse_y;
+
     DECLARE_EVENT_TABLE()
 };
 
