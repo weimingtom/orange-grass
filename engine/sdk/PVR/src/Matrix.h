@@ -103,6 +103,20 @@ void MatrixIdentity(MATRIX& mOut);
 
 
 //=============================================================================
+// Returns the zero-point
+// outputs the zero-point vector
+//=============================================================================
+void MatrixGetOrg(VECTOR3& vOut, const MATRIX& mIn);
+
+
+//=============================================================================
+// Returns the basis vectors
+// outputs the basis vectors
+//=============================================================================
+void MatrixGetBasis(VECTOR3& vOutX, VECTOR3& vOutY, VECTOR3& vOutZ, const MATRIX& mIn);
+
+
+//=============================================================================
 // Multiply mA by mB and assign the result to mOut
 // (mOut = p1 * p2). A copy of the result matrix is done in
 // the function because mOut can be a parameter mA or mB.
@@ -116,6 +130,11 @@ void MatrixMultiply( MATRIX& mOut, const MATRIX& mA, const MATRIX& mB);
 //=============================================================================
 void MatrixVec4Multiply( VECTOR4& vOut, const VECTOR4& vIn, const MATRIX& mIn);
 
+//=============================================================================
+// Multiply vector vIn by matrix mIn and assign result to vOut.
+// Copies result vector, so vIn and vOut can be the same.
+//=============================================================================
+void MatrixVecMultiply( VECTOR3& vOut, const VECTOR3& vIn, const MATRIX& mIn);
 
 //=============================================================================
 // Build a translation matrix mOut using fX, fY and fZ.

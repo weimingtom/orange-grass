@@ -78,9 +78,9 @@ IOGSgNode* COGActor::GetSgNode ()
 }
 
 
-// Check actor's AABB intersection with line segment.
-bool COGActor::CheckIntersection_AABB (const Vec3& _vLineStart,
-                                       const Vec3& _vLineEnd )
+// Check actor's OBB intersection with ray.
+bool COGActor::CheckIntersection (const Vec3& _vRayStart,
+                                  const Vec3& _vRayDir ) const
 {
-    return m_pNode->GetTransformedAABB().CheckIntersection (_vLineStart, _vLineEnd);
+    return m_pNode->GetOBB().CheckIntersection (_vRayStart, _vRayDir);
 }

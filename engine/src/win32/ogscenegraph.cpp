@@ -50,8 +50,8 @@ void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
 	std::vector<IOGSgNode*>::iterator iter = std::find(m_NodesList.begin(), m_NodesList.end(), _pNode);
 	if (iter != m_NodesList.end())
 	{
+		OG_SAFE_DELETE((*iter));
 		m_NodesList.erase(iter);
-		OG_SAFE_DELETE((*iter));	
 	}
 }
 

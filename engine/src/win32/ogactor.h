@@ -36,10 +36,10 @@ public:
 	// Get scene graph node.
 	virtual IOGSgNode* GetSgNode ();
 
-    // Check actor's AABB intersection with line segment.
-	virtual bool CheckIntersection_AABB (
-        const Vec3& _vLineStart,
-        const Vec3& _vLineEnd );
+	// Check actor's OBB intersection with ray.
+	virtual bool CheckIntersection (
+        const Vec3& _vRayStart,
+        const Vec3& _vRayDir ) const;
 
 private:
 

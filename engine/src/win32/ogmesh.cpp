@@ -73,7 +73,6 @@ bool COGMesh::Load ()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	CalculateBounds();
     CalculateGeometry();
 
 	m_LoadState = OG_RESSTATE_LOADED;
@@ -163,70 +162,13 @@ void COGMesh::RenderObject(unsigned int _id)
 }
 
 
-// calculate bounds
-void COGMesh::CalculateBounds ()
-{
-	MATRIX mModel;
-    Vec3 v, vMinCorner, vMaxCorner, vAABBMin, vAABBMax;
-
-	m_AABBs.clear ();
-	m_AABBs.reserve (m_pScene->nNumMesh);
-
-	for (unsigned int i=0; i<m_pScene->nNumMesh; ++i)
-	{
-		SPODMesh& Mesh = m_pScene->pMesh[i];
-
-        Vec3* pPtr = (Vec3*)Mesh.pInterleaved;
-		vMinCorner.x = vMaxCorner.x = pPtr->x; 
-		vMinCorner.y = vMaxCorner.y = pPtr->y; 
-		vMinCorner.z = vMaxCorner.z = pPtr->z;
-
-        for (unsigned int j = 1; j < Mesh.nNumVertex; j++)
-		{
-			pPtr = (Vec3*)( (unsigned char*)(pPtr)+Mesh.sVertex.nStride);
-            v.x = pPtr->x; v.y = pPtr->y; v.z = pPtr->z;
-
-			if (v.x < vMinCorner.x) vMinCorner.x = v.x;
-			if (v.y < vMinCorner.y) vMinCorner.y = v.y;
-			if (v.z < vMinCorner.z) vMinCorner.z = v.z;
-			if (v.x > vMaxCorner.x) vMaxCorner.x = v.x;
-			if (v.y > vMaxCorner.y) vMaxCorner.y = v.y;
-			if (v.z > vMaxCorner.z) vMaxCorner.z = v.z;
-		}
-
-		SPODNode* pNode = &m_pScene->pNode[i];
-		m_pScene->GetWorldMatrix(mModel, *pNode);
-		IOGAabb aabb (vMinCorner, vMaxCorner);
-		aabb.UpdateTransform (mModel);
-		m_AABBs.push_back (aabb);
-
-		if (i==0)
-		{
-			vAABBMin = aabb.GetMin (); 
-			vAABBMax = aabb.GetMax ();
-		}
-		else
-		{
-			const Vec3 vMin = aabb.GetMin ();
-			const Vec3 vMax = aabb.GetMax ();
-			if (vMin.x < vAABBMin.x) vAABBMin.x = vMin.x;
-			if (vMin.y < vAABBMin.y) vAABBMin.y = vMin.y;
-			if (vMin.z < vAABBMin.z) vAABBMin.z = vMin.z;
-			if (vMax.x > vAABBMax.x) vAABBMax.x = vMax.x;
-			if (vMax.y > vAABBMax.y) vAABBMax.y = vMax.y;
-			if (vMax.z > vAABBMax.z) vAABBMax.z = vMax.z;
-		}
-	}
-
-	m_CombinedAABB.SetMinMax (vAABBMin, vAABBMax);
-}
-
-
 // calculate geometry
 void COGMesh::CalculateGeometry ()
 {
 	MATRIX mModel;
-    Vec3 v;
+    Vec3 v, vMinCorner, vMaxCorner;
+
+    bool bFirstVertexProcessed = false;
 
     m_Faces.reserve(4096);
     for (unsigned int i=0; i<m_pScene->nNumMesh; ++i)
@@ -237,6 +179,17 @@ void COGMesh::CalculateGeometry ()
         SPODMesh& Mesh = m_pScene->pMesh[i];
 
         Vec3* pPtr = (Vec3*)Mesh.pInterleaved;
+		
+        if (!bFirstVertexProcessed)
+        {
+            vMinCorner.x = vMaxCorner.x = pPtr->x; 
+            vMinCorner.y = vMaxCorner.y = pPtr->y; 
+            vMinCorner.z = vMaxCorner.z = pPtr->z;
+            MatrixVecMultiply(vMinCorner, vMinCorner, mModel);
+            MatrixVecMultiply(vMaxCorner, vMaxCorner, mModel);
+            bFirstVertexProcessed = true;
+        }
+
 		if(Mesh.sFaces.pData)
         {
 			unsigned int numIndices = PVRTModelPODCountIndices(Mesh);
@@ -252,18 +205,27 @@ void COGMesh::CalculateGeometry ()
                     v_in.x = face.vertices[k].x; v_in.y = face.vertices[k].y; v_in.z = face.vertices[k].z; v_in.w = 1.0f;
                     MatrixVec4Multiply(v_out, v_in, mModel);
                     face.vertices[k].x = v_out.x; face.vertices[k].y = v_out.y; face.vertices[k].z = v_out.z;
+
+			        if (v_out.x < vMinCorner.x) vMinCorner.x = v_out.x;
+			        if (v_out.y < vMinCorner.y) vMinCorner.y = v_out.y;
+			        if (v_out.z < vMinCorner.z) vMinCorner.z = v_out.z;
+			        if (v_out.x > vMaxCorner.x) vMaxCorner.x = v_out.x;
+			        if (v_out.y > vMaxCorner.y) vMaxCorner.y = v_out.y;
+			        if (v_out.z > vMaxCorner.z) vMaxCorner.z = v_out.z;
                 }
                 m_Faces.push_back(face);
             }
         }
 	}
+
+    m_AABB.SetMinMax (vMinCorner, vMaxCorner);
 }
 
 
 // Get combined AABB
 const IOGAabb& COGMesh::GetAABB () const
 {
-	return m_CombinedAABB;
+	return m_AABB;
 }
 
 

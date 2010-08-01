@@ -154,7 +154,7 @@ void CEditorCanvas::Render()
 /// @param event - event structute.
 void CEditorCanvas::OnTimer(wxTimerEvent& event)
 {
-	if (bRmb || bLmb || m_bMouseMoved)
+	if (m_bMouseMoved)
 	{
 		Vec3 vPick = GetPickRay (mouse_x, mouse_y);
 		Vec3 vPos = GetCamera()->GetPosition();
@@ -171,18 +171,9 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 					m_bIntersectionFound = m_pCurTerrain->GetRayIntersection(vPos, vVec, &m_vIntersection);
 					if (m_bIntersectionFound)
 					{
-						if (bLmb)
-						{
-							GetActorManager()->CreateActor(
-                                OG_ACTOR_STATIC, 
-                                m_CurModelAlias.c_str(), 
-                                m_vIntersection, 
-                                m_vCurRotation, 
-                                m_vCurScaling);
-						}
 						if (m_pCurNode)
 						{
-							m_pCurNode->SetWorldTransform(m_vIntersection, m_vCurRotation, m_vCurScaling);
+							m_pCurNode->SetPosition(m_vIntersection);
 						}
 						m_bRedrawPatch = true;
 					}
@@ -192,8 +183,6 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 
 		case EDITMODE_ADJUST:
 			{
-                if (bLmb)
-                    m_pPickedActor = GetActorManager()->GetNearestIntersectedActor(vPos, vVec*FLT_MAX);
 			}
 			break;
 
@@ -332,6 +321,15 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
 		mouse_x = event.GetX();
 		mouse_y = event.GetY();
 		m_bMouseMoved = true;
+		this->Refresh();
+        break;
+
+    case WXK_DELETE:
+        if (m_pPickedActor)
+        {
+            GetActorManager()->DestroyActor(m_pPickedActor);
+            m_pPickedActor = NULL;
+        }
 		this->Refresh();
         break;
 
@@ -495,6 +493,8 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 
 	case CMD_EDITMODE_OBJECTS:
         m_pPickedActor = NULL;
+        m_vCurRotation = Vec3(0, 0, 0);
+        m_vCurScaling = Vec3(1, 1, 1);
 		if (m_CurModelAlias.empty())
 			SetNewCurrentNodeForPlacement(NULL);
 		else
@@ -502,11 +502,15 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 		break;
 
 	case CMD_EDITMODE_ADJUST:
+        m_vCurRotation = Vec3(0, 0, 0);
+        m_vCurScaling = Vec3(1, 1, 1);
         m_pPickedActor = NULL;
 		SetNewCurrentNodeForPlacement(NULL);
 		break;
 
 	case CMD_EDITMODE_SETTINGS:
+        m_vCurRotation = Vec3(0, 0, 0);
+        m_vCurScaling = Vec3(1, 1, 1);
         m_pPickedActor = NULL;
 		SetNewCurrentNodeForPlacement(NULL);
 		break;
@@ -539,13 +543,15 @@ void CEditorCanvas::RenderHelpers()
 	{
         if (m_pCurNode)
         {
-            DrawAABB(m_pCurNode->GetTransformedAABB());
+            //DrawAABB(m_pCurNode->GetTransformedAABB());
+            DrawOBB(m_pCurNode->GetOBB());
         }
 	}
 
     if (m_pPickedActor)
     {
-        DrawAABB(m_pPickedActor->GetSgNode()->GetTransformedAABB());
+        DrawOBB(m_pPickedActor->GetSgNode()->GetOBB());
+        //DrawAABB(m_pPickedActor->GetSgNode()->GetTransformedAABB());
     }
 
 	if (m_bIntersectionFound && m_bRedrawPatch)
@@ -596,6 +602,48 @@ void CEditorCanvas::OnLMBUp(wxMouseEvent& event)
 {
 	mouse_x = event.GetX();
 	mouse_y = event.GetY();
+
+    Vec3 vPick = GetPickRay (mouse_x, mouse_y);
+    Vec3 vPos = GetCamera()->GetPosition();
+    Vec3 vVec = vPick - vPos;
+    vVec.normalize();
+
+    ToolSettings* pTool = GetToolSettings();
+    switch (pTool->GetEditMode())
+    {
+    case EDITMODE_OBJECTS:
+        {
+            if (m_pCurTerrain)
+            {
+                m_bIntersectionFound = m_pCurTerrain->GetRayIntersection(vPos, vVec, &m_vIntersection);
+                if (m_bIntersectionFound)
+                {
+                    GetActorManager()->CreateActor(
+                        OG_ACTOR_STATIC, 
+                        m_CurModelAlias.c_str(), 
+                        m_vIntersection, 
+                        m_vCurRotation, 
+                        m_vCurScaling);
+                }
+            }
+        }
+        break;
+
+    case EDITMODE_ADJUST:
+        {
+            m_pPickedActor = GetActorManager()->GetNearestIntersectedActor(vPos, vVec);
+        }
+        break;
+
+    case EDITMODE_SETTINGS:
+        {
+        }
+        break;
+    }
+
+    GetActorManager()->Update(10);
+    Refresh();
+
 	bLmb = false;
 }
 

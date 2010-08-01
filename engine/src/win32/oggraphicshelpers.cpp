@@ -52,6 +52,50 @@ void DrawAABB (const IOGAabb& _aabb)
 }
 
 
+// Draw OBB
+void DrawOBB (const IOGObb& _obb)
+{
+    Vec3 vMin = _obb.m_vMin;
+    Vec3 vMax = _obb.m_vMax;
+
+    Vec3 vA = _obb.VectorConvertToWorld ( Vec3 ( vMin.x, vMin.y, vMin.z) );
+	Vec3 vB = _obb.VectorConvertToWorld ( Vec3 ( vMin.x, vMin.y, vMax.z) );
+	Vec3 vC = _obb.VectorConvertToWorld ( Vec3 ( vMax.x, vMin.y, vMax.z) );
+	Vec3 vD = _obb.VectorConvertToWorld ( Vec3 ( vMax.x, vMin.y, vMin.z) );
+	Vec3 vE = _obb.VectorConvertToWorld ( Vec3 ( vMin.x, vMax.y, vMin.z) );
+	Vec3 vF = _obb.VectorConvertToWorld ( Vec3 ( vMin.x, vMax.y, vMax.z) );
+	Vec3 vG = _obb.VectorConvertToWorld ( Vec3 ( vMax.x, vMax.y, vMax.z) );
+	Vec3 vH = _obb.VectorConvertToWorld ( Vec3 ( vMax.x, vMax.y, vMin.z) );
+
+	DrawLine ( vA, vB );
+	DrawLine ( vB, vC );
+	DrawLine ( vC, vD );
+	DrawLine ( vD, vA );
+
+	DrawLine ( vE, vF );
+	DrawLine ( vF, vG );
+	DrawLine ( vG, vH );
+	DrawLine ( vH, vE );
+
+	DrawLine ( vA, vE );
+	DrawLine ( vB, vF );
+	DrawLine ( vC, vG );
+	DrawLine ( vD, vH );
+}
+
+
+// Draw line
+void DrawLine (const Vec3& _vStart, const Vec3& _vEnd)
+{
+    glBegin(GL_LINES);
+        glColor3f(0.9f, 0.4f, 0.4f);
+        glVertex3f(_vStart.x, _vStart.y, _vStart.z);
+        glColor3f(0.9f, 0.4f, 0.4f);
+        glVertex3f(_vEnd.x, _vEnd.y, _vEnd.z);
+	glEnd();
+}
+
+
 // Draw coordiantes grid
 void DrawCoordGrid (int _Bounds, int _Step, int _MajorStep)
 {

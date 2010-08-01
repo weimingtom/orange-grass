@@ -46,9 +46,6 @@ private:
 	// render sub-mesh
 	void RenderObject(unsigned int _id);
 
-	// calculate bounds
-	void CalculateBounds ();
-
 	// calculate geometry
 	void CalculateGeometry ();
 
@@ -62,8 +59,7 @@ private:
 	CPVRTModelPOD*	m_pScene;
 
 	// Bounds
-	std::vector<IOGAabb>	m_AABBs;
-	IOGAabb					m_CombinedAABB;
+	IOGAabb			m_AABB;
 
     // Geometry (for mapeditor mostly)
 	std::vector<OGFace>     m_Faces;

@@ -43,6 +43,9 @@ public:
 	// Get transformed AABB
 	virtual const IOGAabb& GetTransformedAABB () const;
 
+	// Get OBB
+	virtual const IOGObb& GetOBB () const;
+
 	// get renderable.
 	virtual IOGRenderable* GetRenderable ();
 
@@ -54,6 +57,7 @@ private:
     Vec3            m_vRotation;
     Vec3            m_vScaling;
 	IOGAabb			m_TransformedAabb;
+	IOGObb			m_Obb;
 };
 
 #endif

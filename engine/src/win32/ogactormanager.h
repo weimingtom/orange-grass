@@ -34,8 +34,8 @@ public:
 
 	// Get nearest intersected actor.
 	virtual IOGActor* GetNearestIntersectedActor (
-        const Vec3& _LineStart, 
-        const Vec3& _LineEnd );
+        const Vec3& _RayStart, 
+        const Vec3& _RayDir );
 
 private:
 

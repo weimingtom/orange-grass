@@ -699,7 +699,7 @@ struct Vec3 : public VECTOR3
  @Returns			scalar product
  @Description		calculate the scalar product of two VECTOR3s
 ****************************************************************************/
-	VERTTYPE dot(const Vec3& rhs)
+	VERTTYPE dot(const Vec3& rhs) const
 	{
 		return VERTTYPEMUL(x,rhs.x)+VERTTYPEMUL(y,rhs.y)+VERTTYPEMUL(z,rhs.z);
 	}
@@ -709,7 +709,7 @@ struct Vec3 : public VECTOR3
  @Returns			scalar product
  @Description		calculate the scalar product of two VECTOR3s
 ****************************************************************************/
-	Vec3 cross(const Vec3& rhs)
+	Vec3 cross(const Vec3& rhs) const
 	{
 		Vec3 out;
 		out.x = VERTTYPEMUL(y,rhs.z)-VERTTYPEMUL(z,rhs.y);

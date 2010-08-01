@@ -8,8 +8,8 @@
 
 
 // Min/max
-#define OG_MAX(a, b)            (((a) > (b)) ? (a) : (b))
-#define OG_MIN(a, b)            (((a) < (b)) ? (a) : (b))
+#define OG_MAX(a, b)            (((a) >= (b)) ? (a) : (b))
+#define OG_MIN(a, b)            (((a) <= (b)) ? (a) : (b))
 
 
 // Clamping value to the range

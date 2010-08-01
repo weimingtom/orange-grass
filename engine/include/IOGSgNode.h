@@ -2,6 +2,7 @@
 #define IOGSGNODE_H_
 
 #include "Mathematics.h"
+#include "IOGObb.h"
 
 
 class IOGSgNode
@@ -39,6 +40,9 @@ public:
 
 	// Get transformed AABB
 	virtual const IOGAabb& GetTransformedAABB () const = 0;
+
+	// Get OBB
+	virtual const IOGObb& GetOBB () const = 0;
 
 	// get renderable.
 	virtual IOGRenderable* GetRenderable () = 0;

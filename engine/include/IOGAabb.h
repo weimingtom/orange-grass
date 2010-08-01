@@ -1,3 +1,11 @@
+/*
+ *  IOGAabb.h
+ *  OrangeGrass
+ *
+ *  Created by Viacheslav Bogdanov on 14.11.09.
+ *  Copyright 2009 __MyCompanyName__. All rights reserved.
+ *
+ */
 #ifndef IOGAABB_H_
 #define IOGAABB_H_
 

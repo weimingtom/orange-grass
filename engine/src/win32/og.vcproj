@@ -391,6 +391,10 @@
 					RelativePath="..\..\include\IOGMath.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\include\IOGObb.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Resources"

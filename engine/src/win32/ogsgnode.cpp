@@ -19,6 +19,7 @@ COGSgNode::COGSgNode () : m_pRenderable(NULL)
 COGSgNode::COGSgNode (IOGRenderable* _pRenderable) : m_pRenderable(_pRenderable)
 {
     m_vScaling = Vec3(1);
+    m_Obb.Create (_pRenderable->GetAABB());
 }
 
 
@@ -92,6 +93,13 @@ const IOGAabb& COGSgNode::GetTransformedAABB () const
 }
 
 
+// Get OBB
+const IOGObb& COGSgNode::GetOBB () const
+{
+    return m_Obb;
+}
+
+
 // Update transforms.
 void COGSgNode::Update (int _ElapsedTime)
 {
@@ -100,6 +108,8 @@ void COGSgNode::Update (int _ElapsedTime)
 	const IOGAabb& origAABB = m_pRenderable->GetAABB();
 	m_TransformedAabb.SetMinMax(origAABB.GetMin(), origAABB.GetMax());
 	m_TransformedAabb.UpdateTransform(m_mWorld);
+
+    m_Obb.UpdateTransform(m_mWorld);
 }
 
 

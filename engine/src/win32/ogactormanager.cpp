@@ -55,8 +55,8 @@ void COGActorManager::DestroyActor (IOGActor* _pActor)
 	std::vector<IOGActor*>::iterator iter = std::find(m_ActorsList.begin(), m_ActorsList.end(), _pActor);
 	if (iter != m_ActorsList.end())
 	{
+		OG_SAFE_DELETE((*iter));
 		m_ActorsList.erase(iter);
-		OG_SAFE_DELETE((*iter));	
 	}
 }
 
@@ -74,14 +74,14 @@ void COGActorManager::Update (int _ElapsedTime)
 
 // Get nearest intersected actor.
 IOGActor* COGActorManager::GetNearestIntersectedActor (
-    const Vec3& _LineStart, 
-    const Vec3& _LineEnd )
+    const Vec3& _RayStart, 
+    const Vec3& _RayDir )
 {
     std::vector<IOGActor*> IntersectedList;
     std::vector<IOGActor*>::iterator iter = m_ActorsList.begin();
     for (; iter != m_ActorsList.end(); ++iter)
     {
-        if ((*iter)->CheckIntersection_AABB(_LineStart, _LineEnd))
+        if ((*iter)->CheckIntersection(_RayStart, _RayDir))
             IntersectedList.push_back(*iter);
     }
     if (IntersectedList.empty())
@@ -92,12 +92,12 @@ IOGActor* COGActorManager::GetNearestIntersectedActor (
 
     std::vector<IOGActor*>::iterator inters_iter = IntersectedList.begin();
     IOGActor* pNearest = *inters_iter;
-    float fDist = Dist3D(_LineStart, pNearest->GetSgNode()->GetTransformedAABB().GetCenter());
+    float fDist = Dist3D(_RayStart, pNearest->GetSgNode()->GetOBB().m_vCenter);
     ++inters_iter;
     for (; inters_iter != IntersectedList.end(); ++inters_iter)
     {
         IOGActor* pCur = *inters_iter;
-        float curDist = Dist3D(_LineStart, pCur->GetSgNode()->GetTransformedAABB().GetCenter());
+        float curDist = Dist3D(_RayStart, pCur->GetSgNode()->GetOBB().m_vCenter);
         if (curDist < fDist)
         {
             fDist = curDist;
