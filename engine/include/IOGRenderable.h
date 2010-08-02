@@ -30,6 +30,12 @@ public:
 	// Render.
 	virtual void Render (const MATRIX& _mView) = 0;
 
+	// Render.
+	virtual void Render (const MATRIX& _mView, unsigned int _Part) = 0;
+
+    // Get num renderable parts.
+	virtual unsigned int GetNumRenderables () const = 0;
+
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const = 0;
 

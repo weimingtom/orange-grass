@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Levels>
 	<Level terrain="level_0" scene_file="Levels\Level_0\level_0.scn" />
+	<Level terrain="level_1" scene_file="Levels\Level_1\level_1.scn" />
 </Levels>

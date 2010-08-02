@@ -19,6 +19,15 @@ class IOGModel : public IOGRenderable
 public:
 	virtual ~IOGModel() {}
 
+	// Render mesh.
+	virtual void Render (const MATRIX& _mView) = 0;
+
+	// Render.
+	virtual void Render (const MATRIX& _mView, unsigned int _Part) = 0;
+
+    // Get num renderable parts.
+	virtual unsigned int GetNumRenderables () const = 0;
+
 	// Update mesh animation.
 	virtual void UpdateAnimation (int _ElapsedTime) = 0;
 

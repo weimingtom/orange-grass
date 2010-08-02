@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Terrain alias = "level_1"/>
+<Mesh alias = "level_1"/>
+<Material>
+	<Texture alias = "level_1_01" />
+	<Texture alias = "level_1_02" />
+	<Texture alias = "level_1_03" />
+	<Texture alias = "level_1_04" />
+</Material>
+<Editor icon = "Levels\Level_1\level_1_ed.bmp" />

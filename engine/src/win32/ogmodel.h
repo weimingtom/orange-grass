@@ -25,9 +25,15 @@ public:
 		
 	// Update mesh animation.
 	virtual void UpdateAnimation (int _ElapsedTime);
-		
+
 	// Render mesh.
 	virtual void Render (const MATRIX& _mView);
+
+	// Render.
+	virtual void Render (const MATRIX& _mView, unsigned int _Part);
+
+    // Get num renderable parts.
+	virtual unsigned int GetNumRenderables () const;
 
 	// Get type of the renderable.
 	virtual RenderableType GetRenderableType () const { return OG_RENDERABLE_MODEL; }

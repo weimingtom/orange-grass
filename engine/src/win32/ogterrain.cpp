@@ -15,16 +15,18 @@
 
 
 COGTerrain::COGTerrain () :	m_pMesh(NULL),
-							m_pTexture(NULL),
                             m_pMaterial(NULL)
 {
+    for (int i = 0; i < MAX_TERRAIN_PARTS; ++i)
+        m_pTexture[i] = NULL;
 }
 
 
 COGTerrain::~COGTerrain()
 {
+    for (int i = 0; i < MAX_TERRAIN_PARTS; ++i)
+        m_pTexture[i] = NULL;
 	m_pMesh = NULL;
-	m_pTexture = NULL;	
     OG_SAFE_DELETE(m_pMaterial);
 }
 
@@ -44,7 +46,6 @@ bool COGTerrain::Load ()
 
     const char* model_alias = NULL;
     const char* model_mesh_alias = NULL;
-	const char* model_texture_alias = NULL;
 	const char* model_icon = NULL;
 
 	TiXmlHandle modHandle = hDoc->FirstChild ("Terrain");
@@ -60,10 +61,14 @@ bool COGTerrain::Load ()
         model_mesh_alias = pElement->Attribute ("alias");
     }
 	TiXmlHandle mtlHandle = hDoc->FirstChild ("Material");
-    if (mtlHandle.Node())
-    {
-        TiXmlElement* pElement = mtlHandle.Element();
-        model_texture_alias = pElement->Attribute ("texture");
+	int index = 0;
+    TiXmlHandle TxHandle = mtlHandle.Child ( "Texture", index );
+	while (TxHandle.Node ())
+	{
+		TiXmlElement* pElement = TxHandle.Element();
+		const char* alias = pElement->Attribute ("alias");
+        m_pTexture[index] = GetResourceMgr()->GetTexture(alias);
+        TxHandle = mtlHandle.Child ( "Texture", ++index );
     }
     TiXmlHandle edtHandle = hDoc->FirstChild ("Editor");
     if (edtHandle.Node())
@@ -74,7 +79,6 @@ bool COGTerrain::Load ()
 
 	SetResourceIcon (model_icon);
 	m_pMesh = GetResourceMgr()->GetMesh(model_mesh_alias);
-	m_pTexture = GetResourceMgr()->GetTexture(model_texture_alias);
     m_pMaterial = new COGMaterial(OG_MAT_SOLID);
 
 	m_LoadState = OG_RESSTATE_LOADED;
@@ -93,8 +97,28 @@ void COGTerrain::SetWorldPosition (const Vec3& _vPos)
 void COGTerrain::Render (const MATRIX& _mView)
 {
     m_pMaterial->Apply();
-    m_pTexture->Apply();
-	m_pMesh->Render (_mView);
+    unsigned int numParts = m_pMesh->GetNumRenderables();
+    for (unsigned int i = 0; i < numParts; ++i)
+    {
+        m_pTexture[i]->Apply();
+        m_pMesh->Render (_mView, i);
+    }
+}
+
+
+// Render.
+void COGTerrain::Render (const MATRIX& _mView, unsigned int _Part)
+{
+    m_pMaterial->Apply();
+    m_pTexture[_Part]->Apply();
+	m_pMesh->Render (_mView, _Part);
+}
+
+
+// Get num renderable parts.
+unsigned int COGTerrain::GetNumRenderables () const
+{
+    return m_pMesh->GetNumRenderables();
 }
 
 

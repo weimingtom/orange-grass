@@ -8,6 +8,10 @@
 	<Texture alias="tank1" file="Models\Tank1\tank1.pvr" />
 	<Texture alias="tank2" file="Models\Tank1\tank2.pvr" />
 	<Texture alias="level_0" file="Levels\Level_0\level_0.pvr" />
+	<Texture alias="level_1_01" file="Levels\Level_1\level_1_01.pvr" />
+	<Texture alias="level_1_02" file="Levels\Level_1\level_1_02.pvr" />
+	<Texture alias="level_1_03" file="Levels\Level_1\level_1_03.pvr" />
+	<Texture alias="level_1_04" file="Levels\Level_1\level_1_04.pvr" />
 </Textures>
 <Meshes>
 	<Mesh alias="spectator" file="Models\Spectator\spectator.POD"/>
@@ -17,6 +21,7 @@
 	<Mesh alias="radar1" file="Models\Radar1\radar1.POD"/>
 	<Mesh alias="tank1" file="Models\Tank1\tank1.POD"/>
 	<Mesh alias="level_0" file="Levels\Level_0\level_0.POD"/>
+	<Mesh alias="level_1" file="Levels\Level_1\level_1.POD"/>
 </Meshes>
 <Models>
 	<Model alias="spectator" file="Models\Spectator\spectator.xml"/>
@@ -29,4 +34,5 @@
 </Models>
 <Terrains>
 	<Terrain alias="level_0" file="Levels\Level_0\level_0.xml" />
+	<Terrain alias="level_1" file="Levels\Level_1\level_1.xml" />
 </Terrains>

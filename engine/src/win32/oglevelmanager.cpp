@@ -40,7 +40,7 @@ bool COGLevelManager::Init (const char* _pLevelCfgFile)
     int index = 0;
 	TiXmlHandle hTerrainsRoot = hDoc->FirstChild ( "Levels" );
 	TiXmlHandle TerrainHandle = hTerrainsRoot.Child ( "Level", index );
-	if (TerrainHandle.Node ())
+	while (TerrainHandle.Node ())
 	{
 		TiXmlElement* pElement = TerrainHandle.Element();
 		const char* level_alias = pElement->Attribute ("terrain");

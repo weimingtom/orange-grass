@@ -3,7 +3,8 @@ Tools: ver. 0.04, 01-Aug-2010
 ChangeList:
 
 0.05:
-- [OG] added level layer, terrain functionality moved to resource manager
+- [OG] added level layer, terrain functionality moved to resource manager;
+- [OG] added multi-zone terrain support;
 - [MapEditor] small camera adjustments;
 
 0.04:

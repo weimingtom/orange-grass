@@ -16,6 +16,8 @@
 #include "Mathematics.h"
 #include "ogresource.h"
 
+#define MAX_TERRAIN_PARTS   8
+
 
 class COGTerrain : public IOGTerrain, public COGResource
 {
@@ -32,6 +34,12 @@ public:
 	// Render terrain.
 	virtual void Render (const MATRIX& _mView);
 
+	// Render.
+	virtual void Render (const MATRIX& _mView, unsigned int _Part);
+
+    // Get num renderable parts.
+	virtual unsigned int GetNumRenderables () const;
+
 	// Get type of the renderable.
 	virtual RenderableType GetRenderableType () const { return OG_RENDERABLE_TERRAIN; }
 
@@ -47,7 +55,7 @@ public:
 private:
 
 	IOGMesh*	    m_pMesh;	
-	IOGTexture*	    m_pTexture;
+	IOGTexture*	    m_pTexture[MAX_TERRAIN_PARTS];
     IOGMaterial*    m_pMaterial;
 	Vec3		    m_vPosition;
 };

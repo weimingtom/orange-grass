@@ -109,6 +109,43 @@ void COGMesh::Render (const MATRIX& _mView)
 }
 
 
+// Render.
+void COGMesh::Render (const MATRIX& _mView, unsigned int _Part)
+{
+    if (_Part > GetNumRenderables() || _Part < 0)
+        return;
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_NORMAL_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+    SPODNode* pNode = &m_pScene->pNode[_Part];
+
+    // Gets the node model matrix
+    MATRIX mWorld;
+    m_pScene->GetWorldMatrix(mWorld, *pNode);
+
+    // Multiply the view matrix by the model matrix to get the model-view matrix
+    MATRIX mModelView;
+    MatrixMultiply(mModelView, mWorld, _mView);
+    glLoadMatrixf(mModelView.f);
+
+    RenderObject(pNode->nIdx);
+
+	glDisableClientState(GL_VERTEX_ARRAY);
+	glDisableClientState(GL_NORMAL_ARRAY);
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+}
+
+
+// Get num renderable parts.
+unsigned int COGMesh::GetNumRenderables () const
+{
+    return m_pScene->nNumMesh;
+}
+
+
+// Render the particular sub-object
 void COGMesh::RenderObject(unsigned int _id)
 {
 	SPODMesh& Mesh = m_pScene->pMesh[_id];

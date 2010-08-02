@@ -104,6 +104,22 @@ void COGModel::Render (const MATRIX& _mView)
 	m_pMesh->Render (_mView);
 }
 
+		
+// Render.
+void COGModel::Render (const MATRIX& _mView, unsigned int _Part)
+{
+    m_pMaterial->Apply();
+    m_pTexture->Apply();
+	m_pMesh->Render (_mView, _Part);
+}
+
+
+// Get num renderable parts.
+unsigned int COGModel::GetNumRenderables () const
+{
+    return m_pMesh->GetNumRenderables();
+}
+
 
 // Get combined AABB
 const IOGAabb& COGModel::GetAABB () const
