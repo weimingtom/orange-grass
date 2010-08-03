@@ -6,8 +6,10 @@ ChangeList:
 - [OG] added level layer, terrain functionality moved to resource manager;
 - [OG] added multi-zone terrain support;
 - [MapEditor] small camera adjustments;
+- [MapEditor] added fine and coarse rotation support, now fine object rotation (+-2 deg.) is available on A,D,S,W,Q,E keys as before, coarse rotation (+-45 deg.) is on the same keys + Ctrl pressed;
+- [MapEditor] tool icons are now much more verbose (thanks to 3ds max designers :D).
 
-0.04:
+0.04 (01-Aug-2010):
 - [MapEditor] added object picking (click on adjust button to switch to 'actor adjust' mode and click on a object on the scene, the picked object will be surrounded with the bounding box);
 - [MapEditor] added object rotation ('A' and 'D' rotates it around Y axis, 'W' and 'S' rotates it around X axis, 'Q' and 'E' rotates it around Z axis);
 - [MapEditor] added object scaling ('Z' and 'X' performs uniform scaling);

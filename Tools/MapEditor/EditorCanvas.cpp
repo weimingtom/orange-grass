@@ -68,6 +68,9 @@ CEditorCanvas::CEditorCanvas (  wxWindow *parent,
     bRmb = bLmb = false;
     mouse_x = mouse_y = 0;
 
+    m_fFineAngleStep = TO_RADIAN(2.0f);
+    m_fCoarseAngleStep = TO_RADIAN(45.0f);
+
 	m_bShowAABB = false;
 	m_bMouseInWindow = true;
 	m_bMouseMoved = false;
@@ -333,13 +336,13 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
     case 'D':
         if (m_pCurNode)
         {
-            m_vCurRotation.y += 0.02f;
+            m_vCurRotation.y += event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
             m_pCurNode->SetRotation(m_vCurRotation);
         }
         if (m_pPickedActor)
         {
             Vec3 vRot = m_pPickedActor->GetSgNode()->GetRotation();
-            vRot.y += 0.02f;
+            vRot.y += event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
             m_pPickedActor->GetSgNode()->SetRotation(vRot);
         }
 		this->Refresh();
@@ -348,13 +351,13 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
     case 'A':
         if (m_pCurNode)
         {
-            m_vCurRotation.y -= 0.02f;
+            m_vCurRotation.y -= event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
             m_pCurNode->SetRotation(m_vCurRotation);
         }
         if (m_pPickedActor)
         {
             Vec3 vRot = m_pPickedActor->GetSgNode()->GetRotation();
-            vRot.y -= 0.02f;
+            vRot.y -= event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
             m_pPickedActor->GetSgNode()->SetRotation(vRot);
         }
 		this->Refresh();
@@ -363,13 +366,13 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
     case 'W':
         if (m_pCurNode)
         {
-            m_vCurRotation.x += 0.02f;
+            m_vCurRotation.x += event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
             m_pCurNode->SetRotation(m_vCurRotation);
         }
         if (m_pPickedActor)
         {
             Vec3 vRot = m_pPickedActor->GetSgNode()->GetRotation();
-            vRot.x += 0.02f;
+            vRot.x += event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
             m_pPickedActor->GetSgNode()->SetRotation(vRot);
         }
 		this->Refresh();
@@ -378,13 +381,13 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
     case 'S':
         if (m_pCurNode)
         {
-            m_vCurRotation.x -= 0.02f;
+            m_vCurRotation.x -= event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
             m_pCurNode->SetRotation(m_vCurRotation);
         }
         if (m_pPickedActor)
         {
             Vec3 vRot = m_pPickedActor->GetSgNode()->GetRotation();
-            vRot.x -= 0.02f;
+            vRot.x -= event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
             m_pPickedActor->GetSgNode()->SetRotation(vRot);
         }
 		this->Refresh();
@@ -393,13 +396,13 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
     case 'E':
         if (m_pCurNode)
         {
-            m_vCurRotation.z += 0.02f;
+            m_vCurRotation.z += event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
             m_pCurNode->SetRotation(m_vCurRotation);
         }
         if (m_pPickedActor)
         {
             Vec3 vRot = m_pPickedActor->GetSgNode()->GetRotation();
-            vRot.z += 0.02f;
+            vRot.z += event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
             m_pPickedActor->GetSgNode()->SetRotation(vRot);
         }
 		this->Refresh();
@@ -408,13 +411,13 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
     case 'Q':
         if (m_pCurNode)
         {
-            m_vCurRotation.z -= 0.02f;
+            m_vCurRotation.z -= event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
             m_pCurNode->SetRotation(m_vCurRotation);
         }
         if (m_pPickedActor)
         {
             Vec3 vRot = m_pPickedActor->GetSgNode()->GetRotation();
-            vRot.z -= 0.02f;
+            vRot.z -= event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
             m_pPickedActor->GetSgNode()->SetRotation(vRot);
         }
 		this->Refresh();
@@ -423,7 +426,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
     case 'Z':
         if (m_pCurNode)
         {
-            m_vCurScaling -= 0.02f;
+            m_vCurScaling -= event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
             m_pCurNode->SetScaling(m_vCurScaling);
         }
         if (m_pPickedActor)
@@ -438,7 +441,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
     case 'X':
         if (m_pCurNode)
         {
-            m_vCurScaling += 0.02f;
+            m_vCurScaling += event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
             m_pCurNode->SetScaling(m_vCurScaling);
         }
         if (m_pPickedActor)

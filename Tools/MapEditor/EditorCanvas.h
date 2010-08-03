@@ -145,6 +145,9 @@ private:
     int		mouse_x; 
     int		mouse_y;
 
+    float   m_fFineAngleStep;
+    float   m_fCoarseAngleStep;
+
     DECLARE_EVENT_TABLE()
 };
 

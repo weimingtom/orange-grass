@@ -19,6 +19,9 @@
 #define FP_ONE_BITS			0x3F800000
 #define	FP_SIGN_BIT_SHIFT	31
 
+#define TO_RADIAN(degree)   ((degree) * (PI / 180.0f))
+#define TO_DEGREE(radian)   ((radian) * (180.0f / PI))
+
 
 // Get distance between two points
 static float Dist ( int _x1, int _y1, int _x2, int _y2 )
