@@ -419,6 +419,10 @@
 					RelativePath="..\..\include\IOGResourceMgr.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\include\IOGSerializer.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 	</Files>
