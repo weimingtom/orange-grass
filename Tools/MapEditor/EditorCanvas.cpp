@@ -102,7 +102,7 @@ void CEditorCanvas::Render()
     {
         InitGL();
 		GetResourceMgr()->Init("resources.xml");
-		GetLevelManager()->Init("levels.xml");
+		GetLevelManager()->Init("levels.yaml");
 		m_init = true;
     }
 
@@ -269,7 +269,7 @@ bool CEditorCanvas::LoadNextResource()
 	m_bLoaded = true;
 
 	// Temporary level auto-loading
-    m_pCurLevel = GetLevelManager()->LoadLevel("level_0");
+    m_pCurLevel = GetLevelManager()->LoadLevel("level_1");
 
 	SetNewCurrentNodeForPlacement(NULL);
 
@@ -281,7 +281,7 @@ bool CEditorCanvas::LoadNextResource()
 /// @param event - event structute.
 void CEditorCanvas::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& event )
 {
-    m_pCurLevel = GetLevelManager()->LoadLevel("level_0");
+    m_pCurLevel = GetLevelManager()->LoadLevel("level_1");
 	this->Refresh();
 }
 

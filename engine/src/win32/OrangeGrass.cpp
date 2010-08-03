@@ -14,6 +14,8 @@
 #include "ogcamera.h"
 #include "oglight.h"
 #include "ogsprite.h"
+#include "ogyamlserializer.h"
+#include "ogyamldeserializer.h"
 
 
 static IOGResourceMgr* g_pResourceMgr = NULL;
@@ -89,4 +91,28 @@ IOGSprite* CreateSprite (const char* _pAlias)
 	COGSprite* pSpr = new COGSprite ();
 	pSpr->Init (GetResourceMgr()->GetTexture(_pAlias));
 	return pSpr;
+}
+
+
+IOGSerializer* GetSerializer (const char* _pFilename)
+{
+    COGYamlSerializer* ptr = new COGYamlSerializer();
+    if (ptr->Open (_pFilename))
+    {
+        return ptr;
+    }
+    OG_SAFE_DELETE (ptr);
+    return NULL;
+}
+
+
+IOGDeserializer* GetDeserializer (const char* _pFilename)
+{
+    COGYamlDeserializer* ptr = new COGYamlDeserializer();
+    if (ptr->Open (_pFilename))
+    {
+        return ptr;
+    }
+    OG_SAFE_DELETE (ptr);
+    return NULL;
 }

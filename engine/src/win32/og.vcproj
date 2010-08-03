@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\include;..\..\sdk\PVR\include;..\..\sdk\OpenGL2\include;..\..\sdk\tinyxml\include;..\..\sdk\yaml\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
+				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;YAML_DECLARE_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -299,6 +299,22 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ogyamldeserializer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ogyamldeserializer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ogyamlserializer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ogyamlserializer.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OrangeGrass.cpp"
 				>
 			</File>
@@ -407,6 +423,10 @@
 			<Filter
 				Name="Resources"
 				>
+				<File
+					RelativePath="..\..\include\IOGDeserializer.h"
+					>
+				</File>
 				<File
 					RelativePath="..\..\include\IOGLevel.h"
 					>

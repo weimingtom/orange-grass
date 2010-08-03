@@ -18,6 +18,8 @@
 #include "IOGSprite.h"
 #include "IOGCamera.h"
 #include "IOGLight.h"
+#include "IOGSerializer.h"
+#include "IOGDeserializer.h"
 
 
 IOGResourceMgr* GetResourceMgr ();
@@ -27,5 +29,7 @@ IOGActorManager* GetActorManager ();
 IOGCamera* GetCamera ();
 IOGLight* GetLight ();
 IOGSprite* CreateSprite (const char* _pAlias);
+IOGSerializer* GetSerializer (const char* _pFilename);
+IOGDeserializer* GetDeserializer (const char* _pFilename);
 
 #endif
