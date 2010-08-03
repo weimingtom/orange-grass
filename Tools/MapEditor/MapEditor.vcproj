@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\SDK\wxWidgets\include;..\..\engine\include;..\..\engine\SDK\PVR\include;..\..\engine\sdk\OpenGL2\include;..\SDK\ToolFramework\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;wxUSE_GUI=1;_WXDEBUG_;WXDEBUG=1;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;wxUSE_GUI=1;_WXDEBUG_;WXDEBUG=1;YAML_DECLARE_STATIC"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -62,9 +62,9 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib glew32.lib wxbase28d.lib wxmsw28d_core.lib wxmsw28d_gl.lib wxmsw28d_adv.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexd.lib wxexpatd.lib wxmsw28d_html.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib pvr.lib og.lib tinyxml.lib toolframework.lib"
+				AdditionalDependencies="opengl32.lib glu32.lib glew32.lib wxbase28d.lib wxmsw28d_core.lib wxmsw28d_gl.lib wxmsw28d_adv.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexd.lib wxexpatd.lib wxmsw28d_html.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib pvr.lib og.lib tinyxml.lib yaml.lib toolframework.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\SDK\wxWidgets\lib\vc_lib;..\..\engine\lib;..\..\engine\sdk\PVR\lib;..\..\engine\sdk\tinyxml\lib;..\..\engine\sdk\OpenGL2\lib;..\SDK\ToolFramework\lib"
+				AdditionalLibraryDirectories="..\SDK\wxWidgets\lib\vc_lib;..\..\engine\lib;..\..\engine\sdk\PVR\lib;..\..\engine\sdk\tinyxml\lib;..\..\engine\sdk\OpenGL2\lib;..\SDK\ToolFramework\lib;..\..\engine\sdk\yaml\lib"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(IntDir)$(TargetName).pdb"
 				SubSystem="2"
