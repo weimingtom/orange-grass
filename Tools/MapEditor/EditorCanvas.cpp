@@ -102,7 +102,7 @@ void CEditorCanvas::Render()
     {
         InitGL();
 		GetResourceMgr()->Init("resources.xml");
-		GetLevelManager()->Init("levels.yaml");
+		GetLevelManager()->Init("levels.xml");
 		m_init = true;
     }
 

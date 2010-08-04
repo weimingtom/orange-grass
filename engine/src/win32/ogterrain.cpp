@@ -39,82 +39,47 @@ bool COGTerrain::Load ()
 		return false;
 	}
 
-    IOGDeserializer* pDS = GetDeserializer(m_pResourceFile);
-    std::string val, model_alias, mesh_alias, model_icon;
-    pDS->StartDoc();
-        pDS->StartMap();
-            pDS->ReadValue(val);
-            pDS->StartMap();
-                pDS->ReadPair(std::string("alias"), model_alias);
-                pDS->ReadPair(std::string("mesh"), mesh_alias);
-                pDS->ReadValue(std::string("material"));
-                if (pDS->StartSeq())
-                {
-                    std::string texture;
-                    int index = 0;
-                    while (pDS->StartMap())
-                    {
-                        if (pDS->ReadPair(std::string("texture"), texture))
-                        {
-                            m_pTexture[index++] = GetResourceMgr()->GetTexture(texture.c_str());
-                        }
-                        pDS->FinishMap();
-                    }
-                }
-                pDS->ReadPair(std::string("icon"), model_icon);
-            pDS->FinishMap();
-        pDS->FinishMap();
-    pDS->FinishDoc();
-    
-    pDS->Close();
-    OG_SAFE_DELETE(pDS);
+    TiXmlDocument* pXmlSettings = new TiXmlDocument ( m_pResourceFile );
+    if (!pXmlSettings->LoadFile (m_pResourceFile))
+        return false;
+    TiXmlHandle* hDoc = new TiXmlHandle (pXmlSettings);
 
-    SetResourceIcon (model_icon.c_str());
-    m_pMesh = GetResourceMgr()->GetMesh(mesh_alias.c_str());
+    const char* model_alias = NULL;
+    const char* model_mesh_alias = NULL;
+    const char* model_icon = NULL;
+
+    TiXmlHandle modHandle = hDoc->FirstChild ("Terrain");
+    if (modHandle.Node())
+    {
+        TiXmlElement* pElement = modHandle.Element();
+        model_alias = pElement->Attribute ("alias");
+    }
+    TiXmlHandle meshHandle = hDoc->FirstChild ("Mesh");
+    if (meshHandle.Node())
+    {
+        TiXmlElement* pElement = meshHandle.Element();
+        model_mesh_alias = pElement->Attribute ("alias");
+    }
+    TiXmlHandle mtlHandle = hDoc->FirstChild ("Material");
+    int index = 0;
+    TiXmlHandle TxHandle = mtlHandle.Child ( "Texture", index );
+    while (TxHandle.Node ())
+    {
+        TiXmlElement* pElement = TxHandle.Element();
+        const char* alias = pElement->Attribute ("alias");
+        m_pTexture[index] = GetResourceMgr()->GetTexture(alias);
+        TxHandle = mtlHandle.Child ( "Texture", ++index );
+    }
+    TiXmlHandle edtHandle = hDoc->FirstChild ("Editor");
+    if (edtHandle.Node())
+    {
+        TiXmlElement* pElement = edtHandle.Element();
+        model_icon = pElement->Attribute ("icon");
+    }
+
+    SetResourceIcon (model_icon);
+    m_pMesh = GetResourceMgr()->GetMesh(model_mesh_alias);
     m_pMaterial = new COGMaterial(OG_MAT_SOLID);
-
-
-    //TiXmlDocument* pXmlSettings = new TiXmlDocument ( m_pResourceFile );
-    //if (!pXmlSettings->LoadFile (m_pResourceFile))
-    //    return false;
-    //TiXmlHandle* hDoc = new TiXmlHandle (pXmlSettings);
-
-    //const char* model_alias = NULL;
-    //const char* model_mesh_alias = NULL;
-    //const char* model_icon = NULL;
-
-    //TiXmlHandle modHandle = hDoc->FirstChild ("Terrain");
-    //if (modHandle.Node())
-    //{
-    //    TiXmlElement* pElement = modHandle.Element();
-    //    model_alias = pElement->Attribute ("alias");
-    //}
-    //TiXmlHandle meshHandle = hDoc->FirstChild ("Mesh");
-    //if (meshHandle.Node())
-    //{
-    //    TiXmlElement* pElement = meshHandle.Element();
-    //    model_mesh_alias = pElement->Attribute ("alias");
-    //}
-    //TiXmlHandle mtlHandle = hDoc->FirstChild ("Material");
-    //int index = 0;
-    //TiXmlHandle TxHandle = mtlHandle.Child ( "Texture", index );
-    //while (TxHandle.Node ())
-    //{
-    //    TiXmlElement* pElement = TxHandle.Element();
-    //    const char* alias = pElement->Attribute ("alias");
-    //    m_pTexture[index] = GetResourceMgr()->GetTexture(alias);
-    //    TxHandle = mtlHandle.Child ( "Texture", ++index );
-    //}
-    //TiXmlHandle edtHandle = hDoc->FirstChild ("Editor");
-    //if (edtHandle.Node())
-    //{
-    //    TiXmlElement* pElement = edtHandle.Element();
-    //    model_icon = pElement->Attribute ("icon");
-    //}
-
-    //SetResourceIcon (model_icon);
-    //m_pMesh = GetResourceMgr()->GetMesh(model_mesh_alias);
-    //m_pMaterial = new COGMaterial(OG_MAT_SOLID);
 
 	m_LoadState = OG_RESSTATE_LOADED;
 	return true;
