@@ -4,6 +4,11 @@
 	<Texture alias="craft" file="Models\Craft\craft.pvr" />
 	<Texture alias="palm1" file="Models\Palm1\palm1.pvr" />
 	<Texture alias="palm2" file="Models\Palm2\palm2.pvr" />
+	<Texture alias="palm3_0" file="Models\Palm3\palm3_0.pvr" />
+	<Texture alias="palm3_1" file="Models\Palm3\palm3_1.pvr" />
+	<Texture alias="palm4" file="Models\Palm4\palm4.pvr" />
+	<Texture alias="stone1" file="Models\Stone1\stone1.pvr" />
+	<Texture alias="stone2" file="Models\Stone2\stone2.pvr" />
 	<Texture alias="radar1" file="Models\Radar1\radar1.pvr" />
 	<Texture alias="tank1" file="Models\Tank1\tank1.pvr" />
 	<Texture alias="tank2" file="Models\Tank1\tank2.pvr" />
@@ -18,6 +23,10 @@
 	<Mesh alias="craft" file="Models\Craft\craft.POD"/>
 	<Mesh alias="palm1" file="Models\Palm1\palm1.POD"/>
 	<Mesh alias="palm2" file="Models\Palm2\palm2.POD"/>
+	<Mesh alias="palm3" file="Models\Palm3\palm3.POD"/>
+	<Mesh alias="palm4" file="Models\Palm4\palm4.POD"/>
+	<Mesh alias="stone1" file="Models\Stone1\stone1.POD"/>
+	<Mesh alias="stone2" file="Models\Stone2\stone2.POD"/>
 	<Mesh alias="radar1" file="Models\Radar1\radar1.POD"/>
 	<Mesh alias="tank1" file="Models\Tank1\tank1.POD"/>
 	<Mesh alias="level_0" file="Levels\Level_0\level_0.POD"/>
@@ -28,6 +37,11 @@
 	<Model alias="craft" file="Models\Craft\craft.xml"/>
 	<Model alias="palm1" file="Models\Palm1\palm1.xml"/>
 	<Model alias="palm2" file="Models\Palm2\palm2.xml"/>
+	<Model alias="palm3_0" file="Models\Palm3\palm3_0.xml"/>
+	<Model alias="palm3_1" file="Models\Palm3\palm3_1.xml"/>
+	<Model alias="palm4" file="Models\Palm4\palm4.xml"/>
+	<Model alias="stone1" file="Models\Stone1\stone1.xml"/>
+	<Model alias="stone2" file="Models\Stone2\stone2.xml"/>
 	<Model alias="radar1" file="Models\Radar1\radar1.xml"/>
 	<Model alias="tank1" file="Models\Tank1\tank1.xml"/>
 	<Model alias="tank2" file="Models\Tank1\tank2.xml"/>

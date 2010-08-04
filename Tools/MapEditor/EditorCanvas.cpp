@@ -271,7 +271,7 @@ bool CEditorCanvas::LoadNextResource()
 	m_bLoaded = true;
 
 	// Temporary level auto-loading
-    m_pCurLevel = GetLevelManager()->LoadLevel("level_1");
+    m_pCurLevel = GetLevelManager()->LoadLevel("level_0");
 
 	SetNewCurrentNodeForPlacement(NULL);
 
@@ -283,7 +283,7 @@ bool CEditorCanvas::LoadNextResource()
 /// @param event - event structute.
 void CEditorCanvas::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& event )
 {
-    m_pCurLevel = GetLevelManager()->LoadLevel("level_1");
+    m_pCurLevel = GetLevelManager()->LoadLevel("level_0");
 	this->Refresh();
 }
 

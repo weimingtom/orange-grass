@@ -3,6 +3,7 @@
 #include "EditorFrame.h"
 #include <ToolFramework.h>
 #include "sample.xpm"
+#include "..\include\Pathes.h"
 
 
 #define ID_DEF_ABOUT		10000
@@ -222,7 +223,11 @@ void CEditorFrame::OnSettingsDlg(wxCommandEvent& event)
 /// @param event - event structute.
 void CEditorFrame::OnOpenLevel(wxCommandEvent& event)
 {
-    wxDirDialog dialog(this, _T("Select level folder"), _T(""), wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
+    char ResPath[2048];
+	GetResourcePathASCII(ResPath, 2048);
+	sprintf(ResPath, "%sGameResources\\Levels", ResPath);
+
+    wxDirDialog dialog(this, _T("Select level folder"), _T(ResPath), wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
     if (dialog.ShowModal() == wxID_OK)
     {
         wxLogMessage(_T("Selected path: %s"), dialog.GetPath().c_str());

@@ -1,8 +1,0 @@
----
-terrain:
- alias: level_0
- mesh: level_0
- material:
-  - texture: level_0
- icon: Levels\Level_0\level_0_ed.bmp
-...

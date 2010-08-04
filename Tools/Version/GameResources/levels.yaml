@@ -1,7 +1,0 @@
----
-levels:
- - terrain: level_0
-   scene_file: Levels\Level_0\level_0.scn
- - terrain: level_1
-   scene_file: Levels\Level_1\level_1.scn
-...

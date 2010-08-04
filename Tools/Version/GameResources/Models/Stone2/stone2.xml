@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Model alias = "stone2" />
+<Mesh alias = "stone2" />
+<Material texture = "stone2" type = "solid"/>
+<Editor icon = "Models\Stone2\stone2_ed.bmp" />
