@@ -89,6 +89,13 @@ OGPhysicsType COGPhysicalObject::GetPhysicsType () const
 }
 
 
+// get OBB.
+const IOGObb& COGPhysicalObject::GetOBB () const
+{
+    return m_Obb;
+}
+
+
 // Update transforms.
 void COGPhysicalObject::Update (int _ElapsedTime)
 {

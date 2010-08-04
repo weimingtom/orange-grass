@@ -26,6 +26,9 @@ public:
 		const Vec3& _vRot,
         const Vec3& _vScale);
 
+	// Add actor to the list.
+	virtual void AddActor (IOGActor* _pActor);
+
 	// Destroy actor and remove from list.
 	virtual void DestroyActor (IOGActor* _pActor);
 
@@ -36,6 +39,9 @@ public:
 	virtual IOGActor* GetNearestIntersectedActor (
         const Vec3& _RayStart, 
         const Vec3& _RayDir );
+
+	// Get actors list.
+    virtual const std::vector<IOGActor*>& GetActorsList () const;
 
 private:
 

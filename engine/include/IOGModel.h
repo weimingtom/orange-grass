@@ -33,6 +33,9 @@ public:
 
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const = 0;
+
+	// Get model alias
+	virtual const char* GetAlias () const = 0;
 };
 
 

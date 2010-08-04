@@ -51,6 +51,9 @@ public:
 	// get physics type.
 	virtual OGPhysicsType GetPhysicsType () const;
 
+	// get OBB.
+	virtual const IOGObb& GetOBB () const;
+
 	// Update transforms.
 	virtual void Update (int _ElapsedTime);
 

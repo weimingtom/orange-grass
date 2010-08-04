@@ -22,7 +22,7 @@ public:
 		
 	// Load model.
 	virtual bool Load ();
-		
+
 	// Update mesh animation.
 	virtual void UpdateAnimation (int _ElapsedTime);
 
@@ -40,6 +40,9 @@ public:
 
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const;
+
+	// Get model alias
+	virtual const char* GetAlias () const;
 
 public:
 

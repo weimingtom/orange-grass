@@ -10,6 +10,7 @@
 #define IOGACTOR_H_
 
 #include "IOGSgNode.h"
+#include "IOGPhysicalObject.h"
 
 
 enum OGActorType
@@ -28,11 +29,20 @@ public:
 	// Update actor.
 	virtual void Update (int _ElapsedTime) = 0;
 
+	// Adding to actor manager event handler.
+	virtual void OnAddedToManager () = 0;
+
 	// Get actor type.
 	virtual OGActorType GetType () const = 0;
 
 	// Get scene graph node.
 	virtual IOGSgNode* GetSgNode () = 0;
+
+	// Get physical object.
+	virtual IOGPhysicalObject* GetPhysicalObject () = 0;
+
+	// Get model alias
+	virtual const char* GetAlias () const = 0;
 
 	// Check actor's OBB intersection with ray.
 	virtual bool CheckIntersection (

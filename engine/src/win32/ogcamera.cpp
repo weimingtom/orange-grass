@@ -6,8 +6,8 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-
 #include "ogcamera.h"
+
 
 COGCamera::COGCamera ()
 {

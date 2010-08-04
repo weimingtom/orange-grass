@@ -43,9 +43,15 @@ IOGActor* COGActorManager::CreateActor (
 		OG_SAFE_DELETE(pActor);
 		return NULL;
 	}
-
-	m_ActorsList.push_back(pActor);
 	return pActor;
+}
+
+
+// Add actor to the list.
+void COGActorManager::AddActor (IOGActor* _pActor)
+{
+    _pActor->OnAddedToManager();
+	m_ActorsList.push_back(_pActor);
 }
 
 
@@ -105,4 +111,11 @@ IOGActor* COGActorManager::GetNearestIntersectedActor (
         }
     }
     return pNearest;
+}
+
+
+// Get actors list.
+const std::vector<IOGActor*>& COGActorManager::GetActorsList () const
+{
+    return m_ActorsList;
 }

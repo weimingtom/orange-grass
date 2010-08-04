@@ -126,3 +126,10 @@ const IOGAabb& COGModel::GetAABB () const
 {
 	return m_pMesh->GetAABB();
 }
+
+
+// Get model alias
+const char* COGModel::GetAlias () const
+{
+    return &m_pResourceAlias[0];
+}

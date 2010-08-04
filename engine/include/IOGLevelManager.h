@@ -11,17 +11,25 @@
 
 #include "IOGLevel.h"
 
+#define LEVEL_VERSION   1
+
 
 class IOGLevelManager
 {
 public:
 	virtual ~IOGLevelManager () {}
-		
+
 	// load from config file.
 	virtual bool Init (const char* _pLevelCfgFile) = 0;
-	
+
 	// load level.
 	virtual IOGLevel* LoadLevel (const char* _pAlias) = 0;
+
+	// save level.
+	virtual bool SaveLevel (IOGLevel* _pLevel) = 0;
+
+	// get version.
+	virtual unsigned int GetVersion () const = 0;
 };
 
 #endif

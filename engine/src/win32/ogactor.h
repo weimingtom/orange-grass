@@ -30,11 +30,20 @@ public:
 	// Update actor.
 	virtual void Update (int _ElapsedTime);
 
+	// Adding to actor manager event handler.
+	virtual void OnAddedToManager ();
+
 	// Get actor type.
 	virtual OGActorType GetType () const;
 
 	// Get scene graph node.
 	virtual IOGSgNode* GetSgNode ();
+
+	// Get physical object.
+	virtual IOGPhysicalObject* GetPhysicalObject ();
+
+	// Get model alias
+	virtual const char* GetAlias () const;
 
 	// Check actor's OBB intersection with ray.
 	virtual bool CheckIntersection (
@@ -43,8 +52,11 @@ public:
 
 private:
 
-	IOGSgNode*	m_pNode;
-	OGActorType	m_Type;
+	IOGSgNode*	        m_pNode;
+	IOGModel*	        m_pModel;
+    IOGPhysicalObject*  m_pPhysicalObject;
+	OGActorType	        m_Type;
+    bool                m_bAdded;
 };
 
 

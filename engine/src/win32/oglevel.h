@@ -25,6 +25,9 @@ public:
 
 	// get associated terrain.
 	virtual IOGTerrain* GetTerrain ();
+	
+	// save level.
+	virtual bool Save ();
 
 private:
 

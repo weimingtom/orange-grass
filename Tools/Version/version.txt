@@ -5,9 +5,12 @@ ChangeList:
 0.05:
 - [OG] added level layer, terrain functionality moved to resource manager;
 - [OG] added multi-zone terrain support;
+- [OG] added level saving-loading (ver.1);
+- [OG] added simple physics system, some Sg functionality moved to physics;
 - [MapEditor] small camera adjustments;
 - [MapEditor] added fine and coarse rotation support, now fine object rotation (+-2 deg.) is available on A,D,S,W,Q,E keys as before, coarse rotation (+-45 deg.) is on the same keys + Ctrl pressed;
-- [MapEditor] tool icons are now much more verbose (thanks to 3ds max designers :D).
+- [MapEditor] tool icons are now much more verbose (thanks to 3ds max designers :D);
+- [MapEditor] added level saving functionality.
 
 0.04 (01-Aug-2010):
 - [MapEditor] added object picking (click on adjust button to switch to 'actor adjust' mode and click on a object on the scene, the picked object will be surrounded with the bounding box);

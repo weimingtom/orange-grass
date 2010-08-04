@@ -239,4 +239,8 @@ void CEditorFrame::OnOpenLevel(wxCommandEvent& event)
 /// @param event - event structute.
 void CEditorFrame::OnSaveLevel(wxCommandEvent& event)
 {
+    CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
+    ToolCmdEventData cmdData (CMD_LEVEL_SAVE, true);
+    cmd.SetEventCustomData(cmdData);
+	GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
 }

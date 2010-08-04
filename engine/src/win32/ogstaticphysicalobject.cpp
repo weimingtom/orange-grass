@@ -25,4 +25,5 @@ void COGStaticPhysicalObject::Create (const IOGAabb& _Aabb)
 {
 	m_Type = OG_PHYSICS_STATIC;
 	m_Aabb = _Aabb;
+    m_Obb.Create(m_Aabb);
 }

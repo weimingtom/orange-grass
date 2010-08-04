@@ -72,3 +72,10 @@ IOGLevel* COGLevelManager::LoadLevel (const char* _pAlias)
 
     return pLevel;
 }
+
+	
+// save level.
+bool COGLevelManager::SaveLevel (IOGLevel* _pLevel)
+{
+    return _pLevel->Save();
+}

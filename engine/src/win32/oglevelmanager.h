@@ -26,6 +26,12 @@ public:
 	
 	// load level.
 	virtual IOGLevel* LoadLevel (const char* _pAlias);
+	
+	// save level.
+	virtual bool SaveLevel (IOGLevel* _pLevel);
+
+	// get version.
+    virtual unsigned int GetVersion () const { return LEVEL_VERSION; }
 
 private:
 

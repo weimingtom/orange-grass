@@ -10,6 +10,7 @@
 #define IOGPHYSICALOBJECT_H_
 
 #include "IOGMath.h"
+#include "IOGObb.h"
 
 
 enum OGPhysicsType
@@ -54,6 +55,9 @@ public:
 
 	// get physics type.
 	virtual OGPhysicsType GetPhysicsType () const = 0;
+
+	// get OBB.
+	virtual const IOGObb& GetOBB () const = 0;
 
 	// Update transforms.
 	virtual void Update (int _ElapsedTime) = 0;
