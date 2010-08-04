@@ -10,6 +10,8 @@
 #define IOGSCENEGRAPH_H_
 
 #include "IOGSgNode.h"
+#include "IOGCamera.h"
+#include "IOGLight.h"
 
 
 class IOGSceneGraph
@@ -29,6 +31,12 @@ public:
 
 	// Render.
 	virtual void Render (const MATRIX& _mView) = 0;
+
+	// Get scene camera.
+	virtual IOGCamera* GetCamera () = 0;
+
+	// Get scene light.
+	virtual IOGLight* GetLight () = 0;
 };
 
 #endif

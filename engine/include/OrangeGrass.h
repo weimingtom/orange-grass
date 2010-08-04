@@ -16,18 +16,17 @@
 #include "IOGSceneGraph.h"
 #include "IOGActorManager.h"
 #include "IOGSprite.h"
-#include "IOGCamera.h"
-#include "IOGLight.h"
 #include "IOGSerializer.h"
 #include "IOGDeserializer.h"
+#include "IOGPhysics.h"
 
 
 IOGResourceMgr* GetResourceMgr ();
 IOGLevelManager* GetLevelManager ();
 IOGSceneGraph* GetSceneGraph ();
 IOGActorManager* GetActorManager ();
-IOGCamera* GetCamera ();
-IOGLight* GetLight ();
+IOGPhysics* GetPhysics ();
+
 IOGSprite* CreateSprite (const char* _pAlias);
 IOGSerializer* GetSerializer (const char* _pFilename);
 IOGDeserializer* GetDeserializer (const char* _pFilename);

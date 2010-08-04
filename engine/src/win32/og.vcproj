@@ -318,6 +318,34 @@
 				RelativePath=".\OrangeGrass.cpp"
 				>
 			</File>
+			<Filter
+				Name="Physics"
+				>
+				<File
+					RelativePath=".\ogphysicalobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogphysicalobject.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogphysics.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogphysics.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogstaticphysicalobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogstaticphysicalobject.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Interface"
@@ -441,6 +469,18 @@
 				</File>
 				<File
 					RelativePath="..\..\include\IOGSerializer.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Physics"
+				>
+				<File
+					RelativePath="..\..\include\IOGPhysicalObject.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGPhysics.h"
 					>
 				</File>
 			</Filter>

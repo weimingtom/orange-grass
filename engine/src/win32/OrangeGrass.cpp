@@ -11,8 +11,7 @@
 #include "oglevelmanager.h"
 #include "ogscenegraph.h"
 #include "ogactormanager.h"
-#include "ogcamera.h"
-#include "oglight.h"
+#include "ogphysics.h"
 #include "ogsprite.h"
 #include "ogyamlserializer.h"
 #include "ogyamldeserializer.h"
@@ -22,8 +21,7 @@ static IOGResourceMgr* g_pResourceMgr = NULL;
 static IOGLevelManager* g_pLevelMgr = NULL;
 static IOGSceneGraph* g_pSg = NULL;
 static IOGActorManager* g_pActorMgr = NULL;
-static IOGCamera* g_pCamera = NULL;
-static IOGLight* g_pLight = NULL;
+static IOGPhysics* g_pPhysics = NULL;
 
 
 IOGResourceMgr* GetResourceMgr ()
@@ -66,23 +64,13 @@ IOGActorManager* GetActorManager ()
 }
 
 
-IOGCamera* GetCamera ()
+IOGPhysics* GetPhysics ()
 {
-	if (g_pCamera == NULL)
+	if (g_pPhysics == NULL)
 	{
-		g_pCamera = new COGCamera ();
+		g_pPhysics = new COGPhysics ();
 	}
-	return g_pCamera;
-}
-
-
-IOGLight* GetLight ()
-{
-	if (g_pLight == NULL)
-	{
-		g_pLight = new COGLight ();
-	}
-	return g_pLight;
+	return g_pPhysics;
 }
 
 

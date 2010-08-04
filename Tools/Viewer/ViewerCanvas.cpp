@@ -99,22 +99,8 @@ void CViewerCanvas::Render()
 	glLoadMatrixf(m_mProjection.f);
 	
 	glMatrixMode(GL_MODELVIEW);
-	m_mView = GetCamera()->Update();
+	m_mView = GetSceneGraph()->GetCamera()->Update();
 	glLoadMatrixf(m_mView.f);
-	VECTOR4 vDiffuse;
-	vDiffuse.x = 1.0f;
-	vDiffuse.y = 1.0f;
-	vDiffuse.z = 1.0f;
-	vDiffuse.w = 1.0f;
-	VECTOR4 vLightDirection;
-	vLightDirection.x = 0.0f;
-	vLightDirection.y = 1.0f;
-	vLightDirection.z = 0.0f;
-	vLightDirection.w = 0;
-	glLightfv(GL_LIGHT0, GL_POSITION, (VERTTYPE*)&vLightDirection);
-	glLightfv(GL_LIGHT0, GL_DIFFUSE, (VERTTYPE*)&vDiffuse);
-	glLightfv(GL_LIGHT0, GL_AMBIENT, (VERTTYPE*)&vDiffuse);
-	glEnable(GL_NORMALIZE);
 
 	if (m_pCurModel)
 		m_pCurModel->Render(m_mView);
@@ -178,9 +164,11 @@ void CViewerCanvas::InitGL()
 
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
+	glEnable(GL_NORMALIZE);
 
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
+	GetSceneGraph()->GetLight()->SetDirection(Vec4(0.0f, 0.0f, 1.0f, 0.0f));
+	GetSceneGraph()->GetLight()->SetColor(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	GetSceneGraph()->GetLight()->Apply();
 }
 
 
@@ -209,7 +197,7 @@ void CViewerCanvas::OnKeyDown( wxKeyEvent& event )
     case WXK_UP:
 		if (m_pCurTerrain)
 		{
-			GetCamera()->Strafe(5.5f, Vec3(0, 0, -1));
+			GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(0, 0, -1));
 			this->Refresh();
 		}
         break;
@@ -217,7 +205,7 @@ void CViewerCanvas::OnKeyDown( wxKeyEvent& event )
 	case WXK_DOWN:
 		if (m_pCurTerrain)
 		{
-			GetCamera()->Strafe(5.5f, Vec3(0, 0, 1));
+			GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(0, 0, 1));
 			this->Refresh();
 		}
         break;
@@ -225,7 +213,7 @@ void CViewerCanvas::OnKeyDown( wxKeyEvent& event )
 	case WXK_LEFT:
 		if (m_pCurTerrain)
 		{
-			GetCamera()->Strafe(5.5f, Vec3(-1, 0, 0));
+			GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(-1, 0, 0));
 			this->Refresh();
 		}
         break;
@@ -233,7 +221,7 @@ void CViewerCanvas::OnKeyDown( wxKeyEvent& event )
 	case WXK_RIGHT:
 		if (m_pCurTerrain)
 		{
-			GetCamera()->Strafe(5.5f, Vec3(1, 0, 0));
+			GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(1, 0, 0));
 			this->Refresh();
 		}
         break;
@@ -308,7 +296,7 @@ void CViewerCanvas::SetupCamera()
 	vDir = vDir.normalize();
 	Vec3 vUp = vDir.cross (Vec3(0, 1, 0));
 
-	GetCamera()->Setup (vDir * fDist, vTarget, vUp);
+	GetSceneGraph()->GetCamera()->Setup (vDir * fDist, vTarget, vUp);
 }
 
 

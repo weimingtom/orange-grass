@@ -31,9 +31,17 @@ public:
 	// Render.
 	virtual void Render (const MATRIX& _mView);
 
+	// Get scene camera.
+	virtual IOGCamera* GetCamera ();
+
+	// Get scene light.
+	virtual IOGLight* GetLight ();
+
 private:
 
     std::vector<IOGSgNode*> m_NodesList;
+	IOGCamera*				m_pCamera;
+	IOGLight*				m_pLight;
 };
 
 #endif

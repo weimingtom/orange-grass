@@ -9,17 +9,25 @@
 #include "orangegrass.h"
 #include "ogscenegraph.h"
 #include "ogsgnode.h"
+#include "ogcamera.h"
+#include "oglight.h"
 #include "IOGMath.h"
 #include <algorithm>
 
 
-COGSceneGraph::COGSceneGraph ()
+COGSceneGraph::COGSceneGraph () :	m_pCamera(NULL),
+									m_pLight(NULL)
 {
+	m_pCamera = new COGCamera ();
+	m_pLight = new COGLight ();
 }
 
 
 COGSceneGraph::~COGSceneGraph ()
 {
+	OG_SAFE_DELETE(m_pCamera);
+	OG_SAFE_DELETE(m_pLight);
+
     std::vector<IOGSgNode*>::iterator iter = m_NodesList.begin();
     for (; iter != m_NodesList.end(); ++iter)
     {
@@ -68,4 +76,18 @@ void COGSceneGraph::Render (const MATRIX& _mView)
         MatrixMultiply(mModelView, mModelView, _mView);
         (*iter)->GetRenderable()->Render(mModelView);
     }
+}
+
+
+// Get scene camera.
+IOGCamera* COGSceneGraph::GetCamera ()
+{
+	return m_pCamera;
+}
+
+
+// Get scene light.
+IOGLight* COGSceneGraph::GetLight ()
+{
+	return m_pLight;
 }

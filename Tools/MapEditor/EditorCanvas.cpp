@@ -120,7 +120,7 @@ void CEditorCanvas::Render()
 	glLoadMatrixf(m_mProjection.f);
 	
 	glMatrixMode(GL_MODELVIEW);
-	m_mView = GetCamera()->Update();
+	m_mView = GetSceneGraph()->GetCamera()->Update();
 	glLoadMatrixf(m_mView.f);
 
     GetActorManager()->Update(10);
@@ -159,7 +159,7 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 	if (m_bMouseMoved)
 	{
 		Vec3 vPick = GetPickRay (mouse_x, mouse_y);
-		Vec3 vPos = GetCamera()->GetPosition();
+		Vec3 vPos = GetSceneGraph()->GetCamera()->GetPosition();
 		Vec3 vVec = vPick - vPos;
 		vVec.normalize();
 
@@ -249,9 +249,9 @@ void CEditorCanvas::InitGL()
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);
 
-	GetLight()->SetDirection(Vec4(0.0f, 0.0f, 1.0f, 0.0f));
-	GetLight()->SetColor(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	GetLight()->Apply();
+	GetSceneGraph()->GetLight()->SetDirection(Vec4(0.0f, 0.0f, 1.0f, 0.0f));
+	GetSceneGraph()->GetLight()->SetColor(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	GetSceneGraph()->GetLight()->Apply();
 }
 
 
@@ -293,7 +293,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
     switch (event.GetKeyCode())
     {
     case WXK_UP:
-		GetCamera()->Strafe(5.5f, Vec3(0, 0, -1));
+		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(0, 0, -1));
 		mouse_x = event.GetX();
 		mouse_y = event.GetY();
 		m_bMouseMoved = true;
@@ -301,7 +301,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
         break;
 
 	case WXK_DOWN:
-		GetCamera()->Strafe(5.5f, Vec3(0, 0, 1));
+		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(0, 0, 1));
 		mouse_x = event.GetX();
 		mouse_y = event.GetY();
 		m_bMouseMoved = true;
@@ -309,7 +309,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
         break;
 
 	case WXK_LEFT:
-		GetCamera()->Strafe(5.5f, Vec3(-1, 0, 0));
+		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(-1, 0, 0));
 		mouse_x = event.GetX();
 		mouse_y = event.GetY();
 		m_bMouseMoved = true;
@@ -317,7 +317,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
         break;
 
 	case WXK_RIGHT:
-		GetCamera()->Strafe(5.5f, Vec3(1, 0, 0));
+		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(1, 0, 0));
 		mouse_x = event.GetX();
 		mouse_y = event.GetY();
 		m_bMouseMoved = true;
@@ -526,7 +526,7 @@ void CEditorCanvas::SetupCamera()
 	Vec3 vDir (0, 1.0f, 0.4f);
 	vDir = vDir.normalize();
 	Vec3 vUp = vDir.cross (Vec3(0, 1, 0));
-	GetCamera()->Setup (vTarget + (vDir* m_fCameraDistance), vTarget, vUp);
+	GetSceneGraph()->GetCamera()->Setup (vTarget + (vDir* m_fCameraDistance), vTarget, vUp);
 }
 
 
@@ -596,7 +596,7 @@ void CEditorCanvas::OnLMBUp(wxMouseEvent& event)
 	mouse_y = event.GetY();
 
     Vec3 vPick = GetPickRay (mouse_x, mouse_y);
-    Vec3 vPos = GetCamera()->GetPosition();
+    Vec3 vPos = GetSceneGraph()->GetCamera()->GetPosition();
     Vec3 vVec = vPick - vPos;
     vVec.normalize();
 
@@ -675,7 +675,7 @@ void CEditorCanvas::OnRMBDown(wxMouseEvent& event)
 void CEditorCanvas::OnMouseWheel(wxMouseEvent& event)
 {
 	int delta = event.GetWheelRotation();
-	GetCamera()->Move ((float)delta / 10.0f);
+	GetSceneGraph()->GetCamera()->Move ((float)delta / 10.0f);
 	Refresh ();
 }
 
