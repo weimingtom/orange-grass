@@ -7,6 +7,8 @@ ChangeList:
 - [OG] added multi-zone terrain support;
 - [OG] added level saving-loading (ver.1);
 - [OG] added simple physics system, some Sg functionality moved to physics;
+- [OG] resource management strategy changed - delayed loading is used for all resources;
+- [OG] char*-s are replaced with std::strings all over the project;
 - [MapEditor] small camera adjustments;
 - [MapEditor] added fine and coarse rotation support, now fine object rotation (+-2 deg.) is available on A,D,S,W,Q,E keys as before, coarse rotation (+-45 deg.) is on the same keys + Ctrl pressed;
 - [MapEditor] tool icons are now much more verbose (thanks to 3ds max designers :D);
