@@ -19,6 +19,8 @@
 #include "IOGSerializer.h"
 #include "IOGDeserializer.h"
 #include "IOGPhysics.h"
+#include <vector>
+#include <string>
 
 
 IOGResourceMgr* GetResourceMgr ();

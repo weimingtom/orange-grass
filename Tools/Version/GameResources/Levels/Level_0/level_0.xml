@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<Terrain alias = "level_0"/>
 <Mesh alias = "level_0"/>
 <Material>
 	<Texture alias = "level_0" />
 </Material>
-<Editor icon = "Levels\Level_0\level_0_ed.bmp" />

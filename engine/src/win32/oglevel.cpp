@@ -18,10 +18,7 @@ COGLevel::COGLevel () : m_pTerrain(NULL)
 
 COGLevel::~COGLevel ()
 {
-    if (m_pTerrain)
-    {
-    }
-    m_pTerrain = NULL;
+	Unload();
 }
 
 
@@ -33,11 +30,11 @@ bool COGLevel::Load ()
 		return false;
 	}
 
-    m_pTerrain = GetResourceMgr()->GetTerrain(m_pResourceAlias);
+    m_pTerrain = GetResourceMgr()->GetTerrain(m_ResourceAlias);
     if (m_pTerrain == NULL)
         return false;
 
-    FILE* pIn = fopen(m_pResourceFile, "rb");
+    FILE* pIn = fopen(m_ResourceFile.c_str(), "rb");
     if (pIn == NULL)
     {
 	    m_LoadState = OG_RESSTATE_LOADED;
@@ -112,7 +109,7 @@ bool COGLevel::Load ()
         fread(&vScale.y, sizeof(float), 1, pIn);
         fread(&vScale.z, sizeof(float), 1, pIn);
 
-        IOGActor* pActor = GetActorManager()->CreateActor(type, pAlias, vPos, vRot, vScale);
+		IOGActor* pActor = GetActorManager()->CreateActor(type, std::string(pAlias), vPos, vRot, vScale);
         GetActorManager()->AddActor(pActor);
     }
 
@@ -120,6 +117,24 @@ bool COGLevel::Load ()
 
 	m_LoadState = OG_RESSTATE_LOADED;
     return true;    
+}
+
+
+// Unload resource.
+void COGLevel::Unload ()
+{
+	if (m_LoadState != OG_RESSTATE_LOADED)
+	{
+		return;
+	}
+
+	GetResourceMgr()->ReleaseTerrain(m_pTerrain);
+	m_pTerrain = NULL;
+	GetActorManager()->Clear();
+	GetSceneGraph()->Clear();
+	GetPhysics()->Clear();
+
+	m_LoadState = OG_RESSTATE_DEFINED;
 }
 
 	
@@ -131,7 +146,7 @@ bool COGLevel::Save ()
         return false;
     }
 
-    FILE* pOut = fopen(m_pResourceFile, "wb");
+    FILE* pOut = fopen(m_ResourceFile.c_str(), "wb");
     
     // Prolog: "SCN" + version
     fwrite("SCN", sizeof(char), 3, pOut);
@@ -165,10 +180,10 @@ bool COGLevel::Save ()
     for (unsigned int i = 0; i < numActors; ++i)
     {
         // actor's model alias
-        const char* pAlias = actors[i]->GetAlias();
-        unsigned int AliasLen = strlen(pAlias);
+		const std::string& Alias = actors[i]->GetAlias();
+		unsigned int AliasLen = Alias.length();
         fwrite(&AliasLen, sizeof(unsigned int), 1, pOut);
-        fwrite(pAlias, sizeof(char), strlen(pAlias), pOut);
+		fwrite(Alias.c_str(), sizeof(char), AliasLen, pOut);
 
         // type
         OGActorType type = actors[i]->GetType();

@@ -18,10 +18,13 @@ public:
 	COGActorManager ();
 	virtual ~COGActorManager ();
 
+	// Clear actors manager
+	virtual void Clear ();
+
 	// Create actor
 	virtual IOGActor* CreateActor (
 		OGActorType _Type,
-		const char* _pModelAlias,
+		const std::string& _ModelAlias,
 		const Vec3& _vPos,
 		const Vec3& _vRot,
         const Vec3& _vScale);

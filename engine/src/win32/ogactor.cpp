@@ -51,7 +51,7 @@ COGActor::~COGActor()
 
 
 // Create actor.
-bool COGActor::Create (const char* _pModelAlias,
+bool COGActor::Create (const std::string& _ModelAlias,
 					   const Vec3& _vPos,
 					   const Vec3& _vRot,
                        const Vec3& _vScale)
@@ -59,7 +59,7 @@ bool COGActor::Create (const char* _pModelAlias,
 	if (m_Type == OG_ACTOR_NONE)
 		return false;
 
-	m_pModel = GetResourceMgr()->GetModel(_pModelAlias);
+	m_pModel = GetResourceMgr()->GetModel(_ModelAlias);
 	if (!m_pModel)
 		return false;
 
@@ -114,7 +114,7 @@ IOGPhysicalObject* COGActor::GetPhysicalObject ()
 
 
 // Get model alias
-const char* COGActor::GetAlias () const
+const std::string& COGActor::GetAlias () const
 {
     return m_pModel->GetAlias();
 }

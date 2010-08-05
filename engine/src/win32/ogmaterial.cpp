@@ -61,17 +61,17 @@ void COGMaterial::Apply ()
 
 
 // parse material type
-OGMaterialType COGMaterial::ParseMaterialType (const char* _pType)
+OGMaterialType COGMaterial::ParseMaterialType (const std::string& _Type)
 {
-    if (strcmp(_pType, "solid") == 0)
+	if (_Type.compare(std::string("solid")) == 0)
     {
         return OG_MAT_SOLID;
     }
-    else if (strcmp(_pType, "alpha_test") == 0)
+    else if (_Type.compare(std::string("alpha_test")) == 0)
     {
         return OG_MAT_ALPHATEST;
     }
-    else if (strcmp(_pType, "tex_alpha") == 0)
+    else if (_Type.compare(std::string("tex_alpha")) == 0)
     {
         return OG_MAT_TEXTUREALPHABLEND;
     }

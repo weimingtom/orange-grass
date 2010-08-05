@@ -42,7 +42,7 @@ public:
 	virtual IOGPhysicalObject* GetPhysicalObject () = 0;
 
 	// Get model alias
-	virtual const char* GetAlias () const = 0;
+	virtual const std::string& GetAlias () const = 0;
 
 	// Check actor's OBB intersection with ray.
 	virtual bool CheckIntersection (

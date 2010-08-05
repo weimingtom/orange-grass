@@ -11,6 +11,7 @@
 
 #include "IOGActor.h"
 #include <vector>
+#include <string>
 
 
 class IOGActorManager
@@ -19,10 +20,13 @@ public:
 	// destructor
 	virtual ~IOGActorManager () {}
 
+	// Clear actors manager
+	virtual void Clear () = 0;
+
 	// Create actor
 	virtual IOGActor* CreateActor (
 		OGActorType _Type,
-		const char* _pModelAlias,
+		const std::string& _ModelAlias,
 		const Vec3& _vPos,
 		const Vec3& _vRot,
         const Vec3& _vScale) = 0;

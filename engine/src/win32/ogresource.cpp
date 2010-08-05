@@ -16,18 +16,15 @@
 COGResource::COGResource ()
 {
     m_LoadState = OG_RESSTATE_UNKNOWN;
-	memset(m_pResourceIcon, 0, OG_MAX_PATH);
-	memset(m_pResourceAlias, 0, OG_MAX_PATH);
-	memset(m_pResourceFile, 0, OG_MAX_PATH);
 }
 
 
 // Initialize
-void COGResource::Init (const char* _pAlias, const char* _pFile)
+void COGResource::Init (const std::string& _Alias, const std::string& _File)
 {
     m_LoadState = OG_RESSTATE_DEFINED;
-    sprintf(m_pResourceAlias, _pAlias);
-    sprintf(m_pResourceFile, _pFile);
+    m_ResourceAlias = _Alias;
+    m_ResourceFile = _File;
 }
 
 
@@ -39,30 +36,16 @@ COGResource::~COGResource ()
 
 
 // get resource file name
-const char* COGResource::GetResourceFile () const
+const std::string& COGResource::GetResourceFile () const
 {
-    return m_pResourceFile;
+    return m_ResourceFile;
 }
 
 
 // get resource alias
-const char* COGResource::GetResourceAlias () const
+const std::string& COGResource::GetResourceAlias () const
 {
-    return m_pResourceAlias;
-}
-
-
-// get resource icon
-const char* COGResource::GetResourceIcon () const
-{
-    return m_pResourceIcon;
-}
-
-
-// set resource icon
-void COGResource::SetResourceIcon (const char* _pIcon)
-{
-    sprintf(m_pResourceIcon, _pIcon);
+    return m_ResourceAlias;
 }
 
 

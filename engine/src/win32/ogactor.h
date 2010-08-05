@@ -10,6 +10,7 @@
 #define OGACTOR_H_
 
 #include "IOGActor.h"
+#include <string>
 
 
 class COGActor : public IOGActor
@@ -22,7 +23,7 @@ public:
 
 	// Create actor.
 	virtual bool Create (
-		const char* _pModelAlias,
+		const std::string& _ModelAlias,
 		const Vec3& _vPos,
 		const Vec3& _vRot,
         const Vec3& _vScale);
@@ -43,7 +44,7 @@ public:
 	virtual IOGPhysicalObject* GetPhysicalObject ();
 
 	// Get model alias
-	virtual const char* GetAlias () const;
+	virtual const std::string& GetAlias () const;
 
 	// Check actor's OBB intersection with ray.
 	virtual bool CheckIntersection (

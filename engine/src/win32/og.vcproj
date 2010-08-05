@@ -167,27 +167,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\oganimatedmesh.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\oganimatedmesh.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ogcamera.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\ogcamera.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ogeditableterrain.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ogeditableterrain.h"
 				>
 			</File>
 			<File
@@ -363,10 +347,6 @@
 			<Filter
 				Name="Graphics"
 				>
-				<File
-					RelativePath="..\..\include\IOGEditableTerrain.h"
-					>
-				</File>
 				<File
 					RelativePath="..\..\include\IOGGraphicsHelpers.h"
 					>

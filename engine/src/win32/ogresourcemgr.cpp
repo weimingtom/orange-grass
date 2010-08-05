@@ -7,22 +7,16 @@
  *
  */
 #define _CRT_SECURE_NO_WARNINGS
+#include "OrangeGrass.h"
 #include "ogresourcemgr.h"
 #include "Pathes.h"
 
 
-COGResourceMgr::COGResourceMgr () :	m_bTexturesLoaded(false),
-									m_bMeshesLoaded(false),
-									m_bModelsLoaded(false),
-									m_bTerrainsLoaded(false),
-									m_LoadIndex(0),
-									m_NumTextures(0),
-									m_NumMeshes(0),
-									m_NumModels(0),
-									m_NumTerrains(0)
+COGResourceMgr::COGResourceMgr ()
 {
-	GetResourcePathASCII(m_ResPath, 2048);
-	sprintf(m_ResPath, "%sGameResources", m_ResPath);
+	char path[OG_MAX_PATH];
+	GetResourcePathASCII(path, OG_MAX_PATH);
+	m_ResPath = std::string(path) + std::string("GameResources");
 }
 
 
@@ -55,261 +49,316 @@ COGResourceMgr::~COGResourceMgr ()
 
 
 // load from file.
-bool COGResourceMgr::Init (const char* _pResourceFile)
+bool COGResourceMgr::Init ()
 {
-	char file_path[2048];
-
 	COGTexture* pLoadScr = new COGTexture ();
-	sprintf(file_path, "%s\\GUI\\load.pvr", m_ResPath);
-	pLoadScr->Init ("load_scr", file_path);
-	pLoadScr->Load ();
+	pLoadScr->Init ("load_scr", m_ResPath + std::string("\\GUI\\load.pvr"));
+	if (!pLoadScr->Load ())
+	{
+		OG_SAFE_DELETE(pLoadScr);
+		return false;
+	}
 	m_TextureList["load_scr"] = pLoadScr;
 
 	COGTexture* pLoadProgress = new COGTexture ();
-	sprintf(file_path, "%s\\GUI\\load_progress.pvr", m_ResPath);
-	pLoadProgress->Init ("load_progress", file_path);
-	pLoadProgress->Load ();
-	m_TextureList["load_progress"] = pLoadProgress;
-	
-	m_pXmlSettings = new TiXmlDocument ( "resources.xml" );
-	sprintf(file_path, "%s\\%s", m_ResPath, _pResourceFile);
-	if (!m_pXmlSettings->LoadFile (file_path))
+	pLoadProgress->Init ("load_progress", m_ResPath + std::string("\\GUI\\load_progress.pvr"));
+	if (!pLoadProgress->Load ())
+	{
+		OG_SAFE_DELETE(pLoadProgress);
 		return false;
-	m_hDoc = new TiXmlHandle (m_pXmlSettings);
-	
-	m_NumTextures = GetNumElements ("Textures", "Texture");
-	m_NumMeshes = GetNumElements ("Meshes", "Mesh");
-	m_NumModels = GetNumElements ("Models", "Model");
-	m_NumTerrains = GetNumElements ("Terrains", "Terrain");
+	}
+	m_TextureList["load_progress"] = pLoadProgress;
 
 	return true;
 }
 
 
 // get resource path
-const char* COGResourceMgr::GetResourcePath () const
+const std::string& COGResourceMgr::GetResourcePath () const
 {
     return m_ResPath;
 }
 
 
-// load resource.
-bool COGResourceMgr::LoadNext (IOGResourceInfo& _resInfo)
+// load resources.
+bool COGResourceMgr::Load (std::vector<IOGResourceInfo>& _resInfo)
 {
-	if (!m_bTexturesLoaded)
+	Cfg cfg;
+	if (!LoadConfig(cfg))
 	{
-		if (LoadNextTexture(m_LoadIndex))
-		{
-        	_resInfo = m_LoadedResourceInfo;
-			++m_LoadIndex;
-			return true;
-		}
-		else
-		{
-			m_bTexturesLoaded = true;
-			m_LoadIndex = 0;
-		}
+		return false;
 	}
-	if (!m_bMeshesLoaded)
+
+	std::vector<Cfg::ResourceCfg>::const_iterator iter;
+
+	for (iter = cfg.texture_cfg_list.begin(); iter != cfg.texture_cfg_list.end(); ++iter)
 	{
-		if (LoadNextMesh(m_LoadIndex))
-		{
-        	_resInfo = m_LoadedResourceInfo;
-			++m_LoadIndex;
-			return true;
-		}
-		else
-		{
-			m_bMeshesLoaded = true;
-			m_LoadIndex = 0;
-		}
+		COGTexture* pTexture = new COGTexture ();
+		pTexture->Init ((*iter).alias, (*iter).file);
+		m_TextureList[(*iter).alias] = pTexture;
+		IOGResourceInfo inf;
+		inf.m_Resource = (*iter).alias;
+		inf.m_ResourceGroup = std::string("Textures");
+		_resInfo.push_back(inf);
 	}
-	if (!m_bModelsLoaded)
+
+	for (iter = cfg.mesh_cfg_list.begin(); iter != cfg.mesh_cfg_list.end(); ++iter)
 	{
-		if (LoadNextModel(m_LoadIndex))
-		{
-        	_resInfo = m_LoadedResourceInfo;
-			++m_LoadIndex;
-			return true;
-		}
-		else
-		{
-			m_bModelsLoaded = true;
-			m_LoadIndex = 0;
-		}
+		COGMesh* pMesh = new COGMesh ();
+		pMesh->Init ((*iter).alias, (*iter).file);
+		m_MeshList[(*iter).alias] = pMesh;
+		IOGResourceInfo inf;
+		inf.m_Resource = (*iter).alias;
+		inf.m_ResourceGroup = std::string("Meshes");
+		_resInfo.push_back(inf);
 	}
-	if (!m_bTerrainsLoaded)
+
+	for (iter = cfg.model_cfg_list.begin(); iter != cfg.model_cfg_list.end(); ++iter)
 	{
-		if (LoadNextTerrain(m_LoadIndex))
-		{
-        	_resInfo = m_LoadedResourceInfo;
-			++m_LoadIndex;
-			return true;
-		}
-		else
-		{
-			m_bTerrainsLoaded = true;
-			m_LoadIndex = 0;
-		}
+		COGModel* pModel = new COGModel ();
+		pModel->Init ((*iter).alias, (*iter).file);
+		m_ModelList[(*iter).alias] = pModel;
+		IOGResourceInfo inf;
+		inf.m_Resource = (*iter).alias;
+		inf.m_ResourceGroup = std::string("Models");
+		inf.m_ResourceIcon = (*iter).icon;
+		_resInfo.push_back(inf);
 	}
-	
-	if (m_bTexturesLoaded && m_bMeshesLoaded && m_bModelsLoaded && m_bTerrainsLoaded)
+
+	for (iter = cfg.terrain_cfg_list.begin(); iter != cfg.terrain_cfg_list.end(); ++iter)
 	{
-		m_LoadIndex = 0;
-		delete m_hDoc;
-		m_hDoc = NULL;
-		delete m_pXmlSettings;
-		m_pXmlSettings = NULL;
+		COGTerrain* pTerrain = new COGTerrain ();
+		pTerrain->Init ((*iter).alias, (*iter).file);
+		m_TerrainList[(*iter).alias] = pTerrain;
+		IOGResourceInfo inf;
+		inf.m_Resource = (*iter).alias;
+		inf.m_ResourceGroup = std::string("Terrains");
+		inf.m_ResourceIcon = (*iter).icon;
+		_resInfo.push_back(inf);
 	}
-	return false;
+
+	return true;
 }
 
 
-// load next texture resource.
-bool COGResourceMgr::LoadNextTexture (int _Iteration)
+// Load resource manager configuration
+bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
 {
-	char file_path[2048];
-	TiXmlHandle hTexturesRoot = m_hDoc->FirstChild ( "Textures" );
-	TiXmlHandle TextureHandle = hTexturesRoot.Child ( "Texture", _Iteration );
-	if (TextureHandle.Node ())
+	int index = 0;
+	std::string file_path;
+	file_path = GetResourceMgr()->GetResourcePath() + std::string("\\resources.xml");
+
+    TiXmlDocument* pXmlSettings = new TiXmlDocument ("resources.xml");
+	if (!pXmlSettings->LoadFile (file_path.c_str()))
+	{
+		OG_SAFE_DELETE(pXmlSettings);
+        return false;
+	}
+    TiXmlHandle* hDoc = new TiXmlHandle (pXmlSettings);
+
+	TiXmlHandle hTexturesRoot = hDoc->FirstChild ( "Textures" );
+	index = 0;
+	TiXmlHandle TextureHandle = hTexturesRoot.Child ( "Texture", index );
+	while (TextureHandle.Node ())
 	{
 		TiXmlElement* pElement = TextureHandle.Element();
-		const char* texture_alias = pElement->Attribute ("alias");
-		const char* texture_file = pElement->Attribute ("file");
-		sprintf(file_path, "%s/%s", m_ResPath, texture_file);
-		COGTexture* pTexture = new COGTexture ();
-		pTexture->Init (texture_alias, file_path);
-		pTexture->Load ();
-		m_TextureList[texture_alias] = pTexture;
-		sprintf(m_LoadedResourceInfo.m_pResource, texture_alias);
-		sprintf(m_LoadedResourceInfo.m_pResourceGroup, "Textures");
-		sprintf(m_LoadedResourceInfo.m_pResourceIcon, "");
-		return true;
+
+		Cfg::ResourceCfg rescfg;
+		rescfg.alias = std::string(pElement->Attribute ("alias"));
+		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
+		_cfg.texture_cfg_list.push_back(rescfg);
+
+		TextureHandle = hTexturesRoot.Child ( "Texture", ++index );
 	}
-	return false;
-}
 
-
-// load next mesh resource.
-bool COGResourceMgr::LoadNextMesh (int _Iteration)
-{
-	char file_path[2048];
-	TiXmlHandle hMeshesRoot = m_hDoc->FirstChild ( "Meshes" );
-	TiXmlHandle MeshHandle = hMeshesRoot.Child ( "Mesh", _Iteration );
-	if (MeshHandle.Node ())
+	TiXmlHandle hMeshesRoot = hDoc->FirstChild ( "Meshes" );
+	index = 0;
+	TiXmlHandle MeshHandle = hMeshesRoot.Child ( "Mesh", index );
+	while (MeshHandle.Node ())
 	{
 		TiXmlElement* pElement = MeshHandle.Element();
-		const char* mesh_alias = pElement->Attribute ("alias");
-		const char* mesh_file = pElement->Attribute ("file");
-		sprintf(file_path, "%s/%s", m_ResPath, mesh_file);
-		COGMesh* pMesh = new COGMesh ();
-		pMesh->Init (mesh_alias, file_path);
-		pMesh->Load ();
-		m_MeshList[mesh_alias] = pMesh;
-		sprintf(m_LoadedResourceInfo.m_pResource, mesh_alias);
-		sprintf(m_LoadedResourceInfo.m_pResourceGroup, "Meshes");
-		sprintf(m_LoadedResourceInfo.m_pResourceIcon, "");
-		return true;
+
+		Cfg::ResourceCfg rescfg;
+		rescfg.alias = std::string(pElement->Attribute ("alias"));
+		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
+		_cfg.mesh_cfg_list.push_back(rescfg);
+
+		MeshHandle = hMeshesRoot.Child ( "Mesh", ++index );
 	}
-	return false;
-}
 
-
-// load next model resource.
-bool COGResourceMgr::LoadNextModel (int _Iteration)
-{
-	char file_path[256];
-	TiXmlHandle hModelsRoot = m_hDoc->FirstChild ( "Models" );
-	TiXmlHandle ModelHandle = hModelsRoot.Child ( "Model", _Iteration );
-	if (ModelHandle.Node ())
+	TiXmlHandle hModelsRoot = hDoc->FirstChild ( "Models" );
+	index = 0;
+	TiXmlHandle ModelHandle = hModelsRoot.Child ( "Model", index );
+	while (ModelHandle.Node ())
 	{
 		TiXmlElement* pElement = ModelHandle.Element();
-		const char* model_alias = pElement->Attribute ("alias");
-		const char* model_file = pElement->Attribute ("file");
-		sprintf(file_path, "%s\\%s", m_ResPath, model_file);
-		COGModel* pModel = new COGModel ();
-		pModel->Init (model_alias, file_path);
-		pModel->Load ();
-		m_ModelList[model_alias] = pModel;
-		sprintf(m_LoadedResourceInfo.m_pResource, model_alias);
-		sprintf(m_LoadedResourceInfo.m_pResourceGroup, "Models");
-		sprintf(m_LoadedResourceInfo.m_pResourceIcon, "%s\\%s", m_ResPath, pModel->GetResourceIcon());
-		return true;
+
+		Cfg::ResourceCfg rescfg;
+		rescfg.alias = std::string(pElement->Attribute ("alias"));
+		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
+		rescfg.icon = m_ResPath + std::string("\\") + std::string(pElement->Attribute ("icon"));
+		_cfg.model_cfg_list.push_back(rescfg);
+
+		ModelHandle = hModelsRoot.Child ( "Model", ++index );
 	}
-	return false;
-}
 
-
-// load next terrain resource.
-bool COGResourceMgr::LoadNextTerrain (int _Iteration)
-{
-	char file_path[256];
-	TiXmlHandle hTerrainsRoot = m_hDoc->FirstChild ( "Terrains" );
-	TiXmlHandle TerrainHandle = hTerrainsRoot.Child ( "Terrain", _Iteration );
-	if (TerrainHandle.Node ())
+	TiXmlHandle hTerrainsRoot = hDoc->FirstChild ( "Terrains" );
+	index = 0;
+	TiXmlHandle TerrainHandle = hTerrainsRoot.Child ( "Terrain", index );
+	while (TerrainHandle.Node ())
 	{
 		TiXmlElement* pElement = TerrainHandle.Element();
-		const char* terrain_alias = pElement->Attribute ("alias");
-		const char* terrain_file = pElement->Attribute ("file");
-		sprintf(file_path, "%s\\%s", m_ResPath, terrain_file);
-		COGTerrain* pTerrain = new COGTerrain ();
-		pTerrain->Init (terrain_alias, file_path);
-		m_TerrainList[terrain_alias] = pTerrain;
-		sprintf(m_LoadedResourceInfo.m_pResource, terrain_alias);
-		sprintf(m_LoadedResourceInfo.m_pResourceGroup, "Terrains");
-        sprintf(m_LoadedResourceInfo.m_pResourceIcon, "%s\\%s", m_ResPath, pTerrain->GetResourceIcon());
-		return true;
+
+		Cfg::ResourceCfg rescfg;
+		rescfg.alias = std::string(pElement->Attribute ("alias"));
+		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
+		rescfg.icon = m_ResPath + std::string("\\") + std::string(pElement->Attribute ("icon"));
+		_cfg.terrain_cfg_list.push_back(rescfg);
+
+		TerrainHandle = hTerrainsRoot.Child ( "Terrain", ++index );
 	}
-	return false;
+
+	OG_SAFE_DELETE(hDoc);
+	OG_SAFE_DELETE(pXmlSettings);
+	return true;
 }
 
 
 // get texture
-IOGTexture* COGResourceMgr::GetTexture (const char* _pAlias)
+IOGTexture* COGResourceMgr::GetTexture (const std::string& _Alias)
 {
-	return m_TextureList[_pAlias];
-}
-
-
-// get mesh
-IOGMesh* COGResourceMgr::GetMesh (const char* _pAlias)
-{
-	return m_MeshList[_pAlias];
-}
-
-
-// get model
-IOGModel* COGResourceMgr::GetModel (const char* _pAlias)
-{
-	return m_ModelList[_pAlias];
-}
-
-
-// get terrain.
-IOGTerrain* COGResourceMgr::GetTerrain (const char* _pAlias)
-{
-	COGTerrain* pTerrain = m_TerrainList[_pAlias];
-    if (pTerrain)
+	COGTexture* pTexture = m_TextureList[_Alias];
+    if (pTexture)
     {
-        pTerrain->SetWorldPosition (Vec3(0, 0, 0));
-        if (pTerrain->Load() == NULL)
-            return NULL;
-        return pTerrain;
+		switch (pTexture->GetLoadState())
+		{
+			case OG_RESSTATE_LOADED:
+				return pTexture;
+
+			case OG_RESSTATE_DEFINED:
+				if (pTexture->Load() == NULL)
+					return NULL;
+				return pTexture;
+
+			default:
+				return NULL;
+		}
     }
     return NULL;
 }
 
 
-// get number of elements
-int COGResourceMgr::GetNumElements (const char* _pNodeName, const char* _pElementName)
+// get mesh
+IOGMesh* COGResourceMgr::GetMesh (const std::string& _Alias)
 {
-	int Index = 0;
-	TiXmlHandle hEntryRoot = m_hDoc->FirstChild (_pNodeName);
-	TiXmlHandle entryHandle = hEntryRoot.Child ( _pElementName, Index );
-	while (entryHandle.Node ())
+	COGMesh* pMesh = m_MeshList[_Alias];
+    if (pMesh)
+    {
+		switch (pMesh->GetLoadState())
+		{
+			case OG_RESSTATE_LOADED:
+				return pMesh;
+
+			case OG_RESSTATE_DEFINED:
+				if (pMesh->Load() == NULL)
+					return NULL;
+				return pMesh;
+
+			default:
+				return NULL;
+		}
+    }
+    return NULL;
+}
+
+
+// get model
+IOGModel* COGResourceMgr::GetModel (const std::string& _Alias)
+{
+	COGModel* pModel = m_ModelList[_Alias];
+    if (pModel)
+    {
+		switch (pModel->GetLoadState())
+		{
+			case OG_RESSTATE_LOADED:
+				return pModel;
+
+			case OG_RESSTATE_DEFINED:
+				if (pModel->Load() == NULL)
+					return NULL;
+				return pModel;
+
+			default:
+				return NULL;
+		}
+    }
+    return NULL;
+}
+
+
+// get terrain.
+IOGTerrain* COGResourceMgr::GetTerrain (const std::string& _Alias)
+{
+	COGTerrain* pTerrain = m_TerrainList[_Alias];
+    if (pTerrain)
+    {
+		switch (pTerrain->GetLoadState())
+		{
+			case OG_RESSTATE_LOADED:
+				return pTerrain;
+
+			case OG_RESSTATE_DEFINED:
+				if (pTerrain->Load() == NULL)
+					return NULL;
+				return pTerrain;
+
+			default:
+				return NULL;
+		}
+    }
+    return NULL;
+}
+
+
+// release texture.
+void COGResourceMgr::ReleaseTexture (IOGTexture* _pTexture)
+{
+	COGTexture* pTexture = (COGTexture*)_pTexture;
+	if (pTexture)
 	{
-		++Index;
-		entryHandle = hEntryRoot.Child ( _pElementName, Index );
+		pTexture->Unload();
 	}
-	return Index;
+}
+
+
+// release mesh.
+void COGResourceMgr::ReleaseMesh (IOGMesh* _pMesh)
+{
+	COGMesh* pMesh = (COGMesh*)_pMesh;
+	if (pMesh)
+	{
+		pMesh->Unload();
+	}
+}
+
+
+// release model.
+void COGResourceMgr::ReleaseModel (IOGModel* _pModel)
+{
+	COGModel* pModel = (COGModel*)_pModel;
+	if (pModel)
+	{
+		pModel->Unload();
+	}
+}
+
+
+// release terrain.
+void COGResourceMgr::ReleaseTerrain (IOGTerrain* _pTerrain)
+{
+	COGTerrain* pTerrain = (COGTerrain*)_pTerrain;
+	if (pTerrain)
+	{
+		pTerrain->Unload();
+	}
 }

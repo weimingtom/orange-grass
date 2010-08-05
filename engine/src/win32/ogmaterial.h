@@ -10,6 +10,7 @@
 #define OGMATERIAL_H_
 
 #include "IOGMaterial.h"
+#include <string>
 
 
 class COGMaterial : public IOGMaterial
@@ -29,7 +30,7 @@ public:
 public:
 
     // parse material type
-    static OGMaterialType ParseMaterialType (const char* _pType);
+	static OGMaterialType ParseMaterialType (const std::string& _Type);
 
 private:
 

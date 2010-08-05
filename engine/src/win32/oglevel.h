@@ -23,6 +23,9 @@ public:
 	// load scene from file.
 	virtual bool Load ();
 
+	// Unload resource.
+	virtual void Unload ();
+
 	// get associated terrain.
 	virtual IOGTerrain* GetTerrain ();
 	

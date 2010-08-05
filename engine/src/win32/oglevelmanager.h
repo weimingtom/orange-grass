@@ -22,16 +22,35 @@ public:
 	virtual ~COGLevelManager ();
 
 	// load from config file.
-	virtual bool Init (const char* _pLevelCfgFile);
+	virtual bool Init ();
 	
 	// load level.
-	virtual IOGLevel* LoadLevel (const char* _pAlias);
+	virtual IOGLevel* LoadLevel (const std::string& _Alias);
+
+	// unload level.
+	virtual void UnloadLevel (IOGLevel* _pLevel);
 	
 	// save level.
 	virtual bool SaveLevel (IOGLevel* _pLevel);
 
 	// get version.
     virtual unsigned int GetVersion () const { return LEVEL_VERSION; }
+
+private:
+
+	struct Cfg
+	{
+		struct LevelCfg
+		{
+			std::string level_alias;
+			std::string level_file;
+		};
+
+		std::vector<LevelCfg> level_cfg_list;
+	};
+
+	// Load level manager configuration
+	bool LoadConfig (COGLevelManager::Cfg& _cfg);
 
 private:
 

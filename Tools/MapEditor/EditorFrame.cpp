@@ -1,5 +1,6 @@
 #include <wx/wx.h>
 #include <wx/gdicmn.h>
+#include <wx/choicdlg.h>
 #include "EditorFrame.h"
 #include <ToolFramework.h>
 #include "sample.xpm"
@@ -223,20 +224,17 @@ void CEditorFrame::OnSettingsDlg(wxCommandEvent& event)
 /// @param event - event structute.
 void CEditorFrame::OnOpenLevel(wxCommandEvent& event)
 {
-    char ResPath[2048];
-	GetResourcePathASCII(ResPath, 2048);
-	sprintf(ResPath, "%sGameResources\\Levels", ResPath);
-
-    wxDirDialog dialog(this, _T("Select level folder"), _T(ResPath), wxDD_DEFAULT_STYLE | wxDD_DIR_MUST_EXIST);
-    if (dialog.ShowModal() == wxID_OK)
-    {
-        wxLogMessage(_T("Selected path: %s"), dialog.GetPath().c_str());
-
+	wxArrayString level_aliases;
+	level_aliases.Add(wxString(_T("level_0")));
+	level_aliases.Add(wxString(_T("level_1")));
+	wxString n = wxGetSingleChoice(wxString(_T("Select level")), wxString(_T("Levels")), level_aliases, this);
+	if (!n.empty())
+	{
 		CommonToolEvent<LevelLoadEventData> cmd(EVENTID_LEVELLOAD);
-	    LevelLoadEventData cmdData (dialog.GetPath());
+		LevelLoadEventData cmdData (n);
 		cmd.SetEventCustomData(cmdData);
 		GetEventHandlersTable()->FireEvent(EVENTID_LEVELLOAD, &cmd);
-    }
+	}
 }
 
 

@@ -36,56 +36,69 @@ bool COGModel::Load ()
 		return false;
 	}
 
-	TiXmlDocument* pXmlSettings = new TiXmlDocument ( m_pResourceFile );
-    if (!pXmlSettings->LoadFile (m_pResourceFile))
-        return false;
-    TiXmlHandle* hDoc = new TiXmlHandle (pXmlSettings);
+	Cfg modelcfg;
+	if (!LoadConfig(modelcfg))
+	{
+		return false;
+	}
 
-    const char* model_alias = NULL;
-    const char* model_mesh_alias = NULL;
-	const char* model_texture_alias = NULL;
-	const char* model_material_type = NULL;
-	const char* model_icon = NULL;
-
-	TiXmlHandle modHandle = hDoc->FirstChild ("Model");
-    if (modHandle.Node())
+	m_pMesh = GetResourceMgr()->GetMesh(modelcfg.mesh_alias);
+	m_pTexture = GetResourceMgr()->GetTexture(modelcfg.texture_alias);
+    OGMaterialType mattype = COGMaterial::ParseMaterialType(modelcfg.material_type);
+    if (mattype == OG_MAT_NONE)
     {
-        TiXmlElement* pElement = modHandle.Element();
-        model_alias = pElement->Attribute ("alias");
+        return false;
     }
+
+	m_pMaterial = new COGMaterial(mattype);
+
+	m_LoadState = OG_RESSTATE_LOADED;
+    return true;
+}
+
+
+// Load model configuration
+bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
+{
+	TiXmlDocument* pXmlSettings = new TiXmlDocument(m_ResourceFile.c_str());
+    if (!pXmlSettings->LoadFile(m_ResourceFile.c_str()))
+	{
+		OG_SAFE_DELETE(pXmlSettings);
+        return false;
+	}
+
+	TiXmlHandle* hDoc = new TiXmlHandle(pXmlSettings);
 	TiXmlHandle meshHandle = hDoc->FirstChild ("Mesh");
     if (meshHandle.Node())
     {
         TiXmlElement* pElement = meshHandle.Element();
-        model_mesh_alias = pElement->Attribute ("alias");
+		_cfg.mesh_alias = std::string(pElement->Attribute ("alias"));
     }
 	TiXmlHandle mtlHandle = hDoc->FirstChild ("Material");
     if (mtlHandle.Node())
     {
         TiXmlElement* pElement = mtlHandle.Element();
-        model_texture_alias = pElement->Attribute ("texture");
-        model_material_type = pElement->Attribute ("type");
-    }
-    TiXmlHandle edtHandle = hDoc->FirstChild ("Editor");
-    if (edtHandle.Node())
-    {
-        TiXmlElement* pElement = edtHandle.Element();
-        model_icon = pElement->Attribute ("icon");
+        _cfg.texture_alias = std::string(pElement->Attribute ("texture"));
+        _cfg.material_type = std::string(pElement->Attribute ("type"));
     }
 
-	SetResourceIcon (model_icon);
-	m_pMesh = GetResourceMgr()->GetMesh(model_mesh_alias);
-	m_pTexture = GetResourceMgr()->GetTexture(model_texture_alias);
-    OGMaterialType mattype = COGMaterial::ParseMaterialType(model_material_type);
-    if (mattype != OG_MAT_NONE)
-    {
-        m_pMaterial = new COGMaterial(mattype);
-        return false;
-    }
+	OG_SAFE_DELETE(hDoc);
+	OG_SAFE_DELETE(pXmlSettings);
+	return true;
+}
 
-	m_LoadState = OG_RESSTATE_LOADED;
 
-    return true;
+// Unload resource.
+void COGModel::Unload ()
+{
+	if (m_LoadState != OG_RESSTATE_LOADED)
+	{
+		return;
+	}
+
+	OG_SAFE_DELETE(m_pMaterial);
+
+	m_LoadState = OG_RESSTATE_DEFINED;
 }
 
 
@@ -129,7 +142,7 @@ const IOGAabb& COGModel::GetAABB () const
 
 
 // Get model alias
-const char* COGModel::GetAlias () const
+const std::string& COGModel::GetAlias () const
 {
-    return &m_pResourceAlias[0];
+    return m_ResourceAlias;
 }

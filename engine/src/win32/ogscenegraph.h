@@ -19,6 +19,9 @@ public:
 	COGSceneGraph ();
 	virtual ~COGSceneGraph ();
 
+	// Clear scene graph
+	virtual void Clear ();
+
 	// Create scene graph node
 	virtual IOGSgNode* CreateNode (IOGRenderable* _pRenderable);
 

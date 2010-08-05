@@ -40,7 +40,7 @@ bool COGMesh::Load ()
 		return false;
 	}
 
-	if (!m_pScene->ReadFromFile(m_pResourceFile))
+	if (!m_pScene->ReadFromFile(m_ResourceFile.c_str()))
 	{
 		return false;
 	}
@@ -81,6 +81,26 @@ bool COGMesh::Load ()
 }
 
 
+// Unload resource.
+void COGMesh::Unload ()
+{
+	if (m_LoadState != OG_RESSTATE_LOADED)
+	{
+		return;
+	}
+
+	memset(m_pScene, 0, sizeof(CPVRTModelPOD));
+	m_Faces.clear();
+	m_AABB.SetMinMax(Vec3(0,0,0), Vec3(0,0,0));
+
+	OG_SAFE_DELETE_ARRAY (m_pVBO);
+	OG_SAFE_DELETE_ARRAY (m_pIndexVBO);
+
+	m_LoadState = OG_RESSTATE_DEFINED;
+}
+
+
+// Render.
 void COGMesh::Render (const MATRIX& _mView)
 {
 	glEnableClientState(GL_VERTEX_ARRAY);

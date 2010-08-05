@@ -20,6 +20,9 @@ public:
 	// destructor
 	virtual ~IOGSceneGraph () {}
 
+	// Clear scene graph
+	virtual void Clear () = 0;
+
 	// Create scene graph node
 	virtual IOGSgNode* CreateNode (IOGRenderable* _pRenderable) = 0;
 

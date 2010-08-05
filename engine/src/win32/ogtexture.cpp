@@ -37,7 +37,7 @@ bool COGTexture::Load ()
 		return false;
 	}
 
-	if(!m_pTexture->LoadTextureFromPVR(m_pResourceFile, &m_TextureId))
+	if(!m_pTexture->LoadTextureFromPVR(m_ResourceFile.c_str(), &m_TextureId))
 	{
 		return false;
 	}
@@ -45,6 +45,21 @@ bool COGTexture::Load ()
 	m_LoadState = OG_RESSTATE_LOADED;
 	
 	return true;
+}
+
+
+// Unload resource.
+void COGTexture::Unload ()
+{
+	if (m_LoadState != OG_RESSTATE_LOADED)
+	{
+		return;
+	}
+
+	memset(m_pTexture, 0, sizeof(CTexture));
+	m_TextureId = 0;
+
+	m_LoadState = OG_RESSTATE_DEFINED;
 }
 
 

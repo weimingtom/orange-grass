@@ -10,6 +10,7 @@
 #define OGRESOURCE_H_
 
 #include "IOGCoreHelpers.h"
+#include <string>
 
 
 // maximal path length
@@ -49,22 +50,19 @@ public:
     virtual ~COGResource ();
 
     // Initialize
-    void Init (const char* _pAlias, const char* _pFile);
+    void Init (const std::string& _Alias, const std::string& _File);
 
     // Load resource (actual loading goes here)
     virtual bool Load () = 0;
 
+	// Unload resource.
+	virtual void Unload () = 0;
+
     // get resource file name
-    const char* GetResourceFile () const;
+    const std::string& GetResourceFile () const;
 
     // get resource alias
-    const char* GetResourceAlias () const;
-
-    // get resource icon
-    const char* GetResourceIcon () const;
-
-    // set resource icon
-    void SetResourceIcon (const char* _pIcon);
+    const std::string& GetResourceAlias () const;
 
     // get resource load state
     OGResourceState GetLoadState () const;
@@ -74,9 +72,8 @@ public:
 
 protected:
 
-    char	m_pResourceFile[OG_MAX_PATH];
-    char	m_pResourceAlias[OG_MAX_PATH];
-    char	m_pResourceIcon[OG_MAX_PATH];
+    std::string		m_ResourceFile;
+    std::string		m_ResourceAlias;
     OGResourceTypes m_ResourceType;
     OGResourceState m_LoadState;
 };

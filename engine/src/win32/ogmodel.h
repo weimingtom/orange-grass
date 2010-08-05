@@ -23,6 +23,9 @@ public:
 	// Load model.
 	virtual bool Load ();
 
+	// Unload resource.
+	virtual void Unload ();
+
 	// Update mesh animation.
 	virtual void UpdateAnimation (int _ElapsedTime);
 
@@ -42,9 +45,21 @@ public:
 	virtual const IOGAabb& GetAABB () const;
 
 	// Get model alias
-	virtual const char* GetAlias () const;
+	virtual const std::string& GetAlias () const;
 
-public:
+private:
+
+	struct Cfg
+	{
+		std::string mesh_alias;
+		std::string texture_alias;
+		std::string material_type;
+	};
+
+	// Load model configuration
+	bool LoadConfig (COGModel::Cfg& _cfg);
+
+private:
 
 	IOGMesh*	    m_pMesh;	
 	IOGTexture*	    m_pTexture;

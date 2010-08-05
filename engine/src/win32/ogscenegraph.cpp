@@ -28,6 +28,13 @@ COGSceneGraph::~COGSceneGraph ()
 	OG_SAFE_DELETE(m_pCamera);
 	OG_SAFE_DELETE(m_pLight);
 
+	Clear();
+}
+
+
+// Clear scene graph
+void COGSceneGraph::Clear ()
+{
     std::vector<IOGSgNode*>::iterator iter = m_NodesList.begin();
     for (; iter != m_NodesList.end(); ++iter)
     {

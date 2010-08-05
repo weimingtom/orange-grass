@@ -18,6 +18,9 @@ public:
 	// destructor
 	virtual ~IOGPhysics () {}
 
+	// Clear scene graph
+	virtual void Clear () = 0;
+
 	// Create object
 	virtual IOGPhysicalObject* CreateObject (
 		OGPhysicsType _Type,

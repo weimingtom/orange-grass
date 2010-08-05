@@ -25,7 +25,10 @@ public:
 	
 	// load from file.
 	virtual bool Load ();
-		
+
+	// Unload resource.
+	virtual void Unload ();
+
 	// apply texture
 	virtual void Apply () const;
 	

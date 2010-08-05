@@ -1,5 +1,3 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<Model alias = "palm3_1" />
 <Mesh alias = "palm3" />
 <Material texture = "palm3_1" type = "alpha_test"/>
-<Editor icon = "Models\Palm3\palm3_1_ed.bmp" />

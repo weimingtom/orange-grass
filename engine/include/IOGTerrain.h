@@ -19,7 +19,7 @@ class IOGTerrain : public IOGRenderable
 public:
 	virtual ~IOGTerrain() {}
 
-	// Render mesh.
+	// Render.
 	virtual void Render (const MATRIX& _mView) = 0;
 
 	// Render.
@@ -27,9 +27,6 @@ public:
 
     // Get num renderable parts.
 	virtual unsigned int GetNumRenderables () const = 0;
-	
-	// Set terrain position.
-	virtual void SetWorldPosition (const Vec3& _vPos) = 0;
 
     // Get ray intersection
     virtual bool GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos) = 0;

@@ -28,42 +28,57 @@ public:
 	virtual ~COGResourceMgr ();
 	
 	// load from file.
-	virtual bool Init (const char* _pResourceFile);
+	virtual bool Init ();
 
     // get resource path
-    virtual const char* GetResourcePath () const;
+    virtual const std::string& GetResourcePath () const;
 
-	// load next resource.
-	virtual bool LoadNext (IOGResourceInfo& _resInfo);
+	// load resources.
+	virtual bool Load (std::vector<IOGResourceInfo>& _resInfo);
 
 	// get texture.
-	virtual IOGTexture* GetTexture (const char* _pAlias);
+	virtual IOGTexture* GetTexture (const std::string& _pAlias);
 	
 	// get mesh.
-	virtual IOGMesh* GetMesh (const char* _pAlias);
+	virtual IOGMesh* GetMesh (const std::string& _pAlias);
 	
 	// get model.
-	virtual IOGModel* GetModel (const char* _pAlias);
+	virtual IOGModel* GetModel (const std::string& _pAlias);
 
 	// get terrain.
-	virtual IOGTerrain* GetTerrain (const char* _pAlias);
+	virtual IOGTerrain* GetTerrain (const std::string& _pAlias);
+
+	// release texture.
+	virtual void ReleaseTexture (IOGTexture* _pTexture);
+		
+	// release mesh.
+	virtual void ReleaseMesh (IOGMesh* _pMesh);
+		
+	// release model.
+	virtual void ReleaseModel (IOGModel* _pModel);
+		
+	// release terrain.
+	virtual void ReleaseTerrain (IOGTerrain* _pTerrain);
 	
 private:
-		
-	// load next texture resource.
-	bool LoadNextTexture (int _Iteration);
-	
-	// load next mesh resource.
-	bool LoadNextMesh (int _Iteration);
 
-	// load next model resource.
-	bool LoadNextModel (int _Iteration);
+	struct Cfg
+	{
+		struct ResourceCfg
+		{
+			std::string alias;
+			std::string file;
+			std::string icon;
+		};
 
-	// load next terrain resource.
-	bool LoadNextTerrain (int _Iteration);
-	
-	// get number of elements
-	int GetNumElements (const char* _pNodeName, const char* _pElementName);
+		std::vector<ResourceCfg> texture_cfg_list;
+		std::vector<ResourceCfg> mesh_cfg_list;
+		std::vector<ResourceCfg> model_cfg_list;
+		std::vector<ResourceCfg> terrain_cfg_list;
+	};
+
+	// Load resource manager configuration
+	bool LoadConfig (COGResourceMgr::Cfg& _cfg);
 	
 private:
 
@@ -71,19 +86,7 @@ private:
 	std::map<std::string, COGMesh*>		m_MeshList;
 	std::map<std::string, COGModel*>	m_ModelList;
 	std::map<std::string, COGTerrain*>	m_TerrainList;
-	char								m_ResPath[2048];
-	bool								m_bTexturesLoaded;
-	bool								m_bMeshesLoaded;
-	bool								m_bModelsLoaded;
-	bool								m_bTerrainsLoaded;
-	int									m_LoadIndex;
-	TiXmlHandle*						m_hDoc;
-	TiXmlDocument*						m_pXmlSettings;
-	int									m_NumTextures;
-	int									m_NumMeshes;
-	int									m_NumModels;
-	int									m_NumTerrains;
-	IOGResourceInfo						m_LoadedResourceInfo;
+	std::string							m_ResPath;
 };
 
 #endif

@@ -17,15 +17,11 @@
 COGTerrain::COGTerrain () :	m_pMesh(NULL),
                             m_pMaterial(NULL)
 {
-    for (int i = 0; i < MAX_TERRAIN_PARTS; ++i)
-        m_pTexture[i] = NULL;
 }
 
 
 COGTerrain::~COGTerrain()
 {
-    for (int i = 0; i < MAX_TERRAIN_PARTS; ++i)
-        m_pTexture[i] = NULL;
 	m_pMesh = NULL;
     OG_SAFE_DELETE(m_pMaterial);
 }
@@ -39,26 +35,43 @@ bool COGTerrain::Load ()
 		return false;
 	}
 
-    TiXmlDocument* pXmlSettings = new TiXmlDocument ( m_pResourceFile );
-    if (!pXmlSettings->LoadFile (m_pResourceFile))
+	Cfg cfg;
+	if (!LoadConfig(cfg))
+	{
+		return false;
+	}
+
+    m_pMesh = GetResourceMgr()->GetMesh(cfg.mesh_alias);
+    m_pMaterial = new COGMaterial(OG_MAT_SOLID);
+
+	std::vector<Cfg::TextureCfg>::const_iterator iter;
+	for (iter = cfg.texture_cfg_list.begin(); iter != cfg.texture_cfg_list.end(); ++iter)
+	{
+		IOGTexture* pTexture = GetResourceMgr()->GetTexture((*iter).alias);
+		m_TextureList.push_back(pTexture);
+	}
+
+	m_LoadState = OG_RESSTATE_LOADED;
+	return true;
+}
+
+
+// Load terrain configuration
+bool COGTerrain::LoadConfig (COGTerrain::Cfg& _cfg)
+{
+    TiXmlDocument* pXmlSettings = new TiXmlDocument(m_ResourceFile.c_str());
+    if (!pXmlSettings->LoadFile(m_ResourceFile.c_str()))
+	{
+		OG_SAFE_DELETE(pXmlSettings);
         return false;
+	}
     TiXmlHandle* hDoc = new TiXmlHandle (pXmlSettings);
 
-    const char* model_alias = NULL;
-    const char* model_mesh_alias = NULL;
-    const char* model_icon = NULL;
-
-    TiXmlHandle modHandle = hDoc->FirstChild ("Terrain");
-    if (modHandle.Node())
-    {
-        TiXmlElement* pElement = modHandle.Element();
-        model_alias = pElement->Attribute ("alias");
-    }
     TiXmlHandle meshHandle = hDoc->FirstChild ("Mesh");
     if (meshHandle.Node())
     {
         TiXmlElement* pElement = meshHandle.Element();
-        model_mesh_alias = pElement->Attribute ("alias");
+		_cfg.mesh_alias = std::string(pElement->Attribute ("alias"));
     }
     TiXmlHandle mtlHandle = hDoc->FirstChild ("Material");
     int index = 0;
@@ -66,30 +79,32 @@ bool COGTerrain::Load ()
     while (TxHandle.Node ())
     {
         TiXmlElement* pElement = TxHandle.Element();
-        const char* alias = pElement->Attribute ("alias");
-        m_pTexture[index] = GetResourceMgr()->GetTexture(alias);
-        TxHandle = mtlHandle.Child ( "Texture", ++index );
-    }
-    TiXmlHandle edtHandle = hDoc->FirstChild ("Editor");
-    if (edtHandle.Node())
-    {
-        TiXmlElement* pElement = edtHandle.Element();
-        model_icon = pElement->Attribute ("icon");
+		
+		Cfg::TextureCfg txcfg;
+		txcfg.alias = std::string(pElement->Attribute ("alias"));
+		_cfg.texture_cfg_list.push_back(txcfg);
+
+		TxHandle = mtlHandle.Child ( "Texture", ++index );
     }
 
-    SetResourceIcon (model_icon);
-    m_pMesh = GetResourceMgr()->GetMesh(model_mesh_alias);
-    m_pMaterial = new COGMaterial(OG_MAT_SOLID);
-
-	m_LoadState = OG_RESSTATE_LOADED;
+	OG_SAFE_DELETE(hDoc);
+	OG_SAFE_DELETE(pXmlSettings);
 	return true;
 }
 
 
-// Set terrain position.
-void COGTerrain::SetWorldPosition (const Vec3& _vPos)
+// Unload terrain.
+void COGTerrain::Unload ()
 {
-	m_vPosition = _vPos;
+	if (m_LoadState != OG_RESSTATE_LOADED)
+	{
+		return;
+	}
+
+	OG_SAFE_DELETE(m_pMaterial);
+	m_TextureList.clear();
+
+	m_LoadState = OG_RESSTATE_DEFINED;
 }
 
 
@@ -100,7 +115,7 @@ void COGTerrain::Render (const MATRIX& _mView)
     unsigned int numParts = m_pMesh->GetNumRenderables();
     for (unsigned int i = 0; i < numParts; ++i)
     {
-        m_pTexture[i]->Apply();
+        m_TextureList[i]->Apply();
         m_pMesh->Render (_mView, i);
     }
 }
@@ -110,7 +125,7 @@ void COGTerrain::Render (const MATRIX& _mView)
 void COGTerrain::Render (const MATRIX& _mView, unsigned int _Part)
 {
     m_pMaterial->Apply();
-    m_pTexture[_Part]->Apply();
+    m_TextureList[_Part]->Apply();
 	m_pMesh->Render (_mView, _Part);
 }
 

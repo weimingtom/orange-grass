@@ -25,6 +25,9 @@ public:
 	
 	// Load mesh.
 	virtual bool Load ();
+
+	// Unload resource.
+	virtual void Unload ();
 	
 	// Update mesh animation.
 	virtual void UpdateAnimation (int _ElapsedTime) {}

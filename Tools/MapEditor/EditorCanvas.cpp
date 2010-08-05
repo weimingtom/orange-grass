@@ -102,8 +102,8 @@ void CEditorCanvas::Render()
     if (!m_init)
     {
         InitGL();
-		GetResourceMgr()->Init("resources.xml");
-		GetLevelManager()->Init("levels.xml");
+		GetResourceMgr()->Init();
+		GetLevelManager()->Init();
 		m_init = true;
     }
 
@@ -261,18 +261,19 @@ void CEditorCanvas::InitGL()
 /// @return false if finished loading.
 bool CEditorCanvas::LoadNextResource()
 {
-    IOGResourceInfo resInfo;
-	while (GetResourceMgr()->LoadNext(resInfo))
+	std::vector<IOGResourceInfo> resInfo;
+	if (GetResourceMgr()->Load(resInfo))
 	{
-		CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
-		cmd.SetEventCustomData(ResLoadEventData(wxT(resInfo.m_pResource), wxT(resInfo.m_pResourceGroup), wxT(resInfo.m_pResourceIcon)));
-        GetEventHandlersTable()->FireEvent(EVENTID_RESLOAD, &cmd);
+		std::vector<IOGResourceInfo>::const_iterator iter = resInfo.begin();
+		for (; iter != resInfo.end(); ++iter)
+		{
+			CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
+			cmd.SetEventCustomData(ResLoadEventData(wxT((*iter).m_Resource), wxT((*iter).m_ResourceGroup), wxT((*iter).m_ResourceIcon)));
+			GetEventHandlersTable()->FireEvent(EVENTID_RESLOAD, &cmd);
+		}
 	}
+
 	m_bLoaded = true;
-
-	// Temporary level auto-loading
-    m_pCurLevel = GetLevelManager()->LoadLevel("level_0");
-
 	SetNewCurrentNodeForPlacement(NULL);
 
 	return true;
@@ -283,7 +284,11 @@ bool CEditorCanvas::LoadNextResource()
 /// @param event - event structute.
 void CEditorCanvas::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& event )
 {
-    m_pCurLevel = GetLevelManager()->LoadLevel("level_0");
+	if (m_pCurLevel)
+	{
+		GetLevelManager()->UnloadLevel(m_pCurLevel);
+	}
+	m_pCurLevel = GetLevelManager()->LoadLevel(std::string(event.GetEventCustomData().m_Path));
 	this->Refresh();
 }
 

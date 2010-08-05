@@ -19,6 +19,13 @@ COGPhysics::COGPhysics ()
 
 COGPhysics::~COGPhysics ()
 {
+	Clear();
+}
+
+
+// Clear scene graph
+void COGPhysics::Clear ()
+{
     std::vector<IOGPhysicalObject*>::iterator iter = m_ObjList.begin();
     for (; iter != m_ObjList.end(); ++iter)
     {

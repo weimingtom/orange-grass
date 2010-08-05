@@ -19,6 +19,9 @@ public:
 	COGPhysics ();
 	virtual ~COGPhysics ();
 
+	// Clear scene graph
+	virtual void Clear ();
+
 	// Create object
 	virtual IOGPhysicalObject* CreateObject (
 		OGPhysicsType _Type,

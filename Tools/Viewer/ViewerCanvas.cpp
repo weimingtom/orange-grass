@@ -84,7 +84,7 @@ void CViewerCanvas::Render()
     if (!m_init)
     {
         InitGL();
-		GetResourceMgr()->Init("resources.xml");
+		GetResourceMgr()->Init();
 		m_init = true;
     }
 
@@ -176,12 +176,16 @@ void CViewerCanvas::InitGL()
 /// @return false if finished loading.
 bool CViewerCanvas::LoadNextResource()
 {
-    IOGResourceInfo resInfo;
-	while (GetResourceMgr()->LoadNext(resInfo))
+	std::vector<IOGResourceInfo> resInfo;
+	if (GetResourceMgr()->Load(resInfo))
 	{
-		CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
-		cmd.SetEventCustomData(ResLoadEventData(wxT(resInfo.m_pResource), wxT(resInfo.m_pResourceGroup), wxT(resInfo.m_pResourceIcon)));
-        GetEventHandlersTable()->FireEvent(EVENTID_RESLOAD, &cmd);
+		std::vector<IOGResourceInfo>::const_iterator iter = resInfo.begin();
+		for (; iter != resInfo.end(); ++iter)
+		{
+			CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
+			cmd.SetEventCustomData(ResLoadEventData(wxT((*iter).m_Resource), wxT((*iter).m_ResourceGroup), wxT((*iter).m_ResourceIcon)));
+			GetEventHandlersTable()->FireEvent(EVENTID_RESLOAD, &cmd);
+		}
 	}
 	m_bLoaded = true;
 	return false;
@@ -246,7 +250,7 @@ void CViewerCanvas::OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& even
 	switch (evtData.m_ResourceType)
 	{
 	case RESTYPE_MODEL:
-		m_pCurModel = GetResourceMgr()->GetModel(evtData.m_Resource);
+		m_pCurModel = GetResourceMgr()->GetModel(std::string(evtData.m_Resource));
 		m_pCurTerrain = NULL;
 		delete m_pCurSprite; m_pCurSprite = NULL;
 		break;

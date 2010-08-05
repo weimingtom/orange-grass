@@ -20,6 +20,13 @@ COGActorManager::COGActorManager ()
 
 COGActorManager::~COGActorManager ()
 {
+	Clear();
+}
+
+
+// Clear actors manager
+void COGActorManager::Clear ()
+{
     std::vector<IOGActor*>::iterator iter = m_ActorsList.begin();
     for (; iter != m_ActorsList.end(); ++iter)
     {
@@ -32,13 +39,13 @@ COGActorManager::~COGActorManager ()
 // Create actor
 IOGActor* COGActorManager::CreateActor (
 	OGActorType _Type,
-	const char* _pModelAlias,
+	const std::string& _ModelAlias,
 	const Vec3& _vPos,
 	const Vec3& _vRot,
     const Vec3& _vScale)
 {
 	COGActor* pActor = new COGActor(_Type);
-	if (pActor->Create(_pModelAlias, _vPos, _vRot, _vScale) == NULL)
+	if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == NULL)
 	{
 		OG_SAFE_DELETE(pActor);
 		return NULL;

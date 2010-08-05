@@ -16,8 +16,6 @@
 #include "Mathematics.h"
 #include "ogresource.h"
 
-#define MAX_TERRAIN_PARTS   8
-
 
 class COGTerrain : public IOGTerrain, public COGResource
 {
@@ -28,8 +26,8 @@ public:
 	// Load terrain.
 	virtual bool Load ();
 
-	// Set terrain position.
-	virtual void SetWorldPosition (const Vec3& _vPos);
+	// Unload terrain.
+	virtual void Unload ();
 
 	// Render terrain.
 	virtual void Render (const MATRIX& _mView);
@@ -51,13 +49,28 @@ public:
 
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const;
+
+private:
+
+	struct Cfg
+	{
+		struct TextureCfg
+		{
+			std::string alias;
+		};
+
+		std::string mesh_alias;
+		std::vector<TextureCfg> texture_cfg_list;
+	};
+
+	// Load terrain configuration
+	bool LoadConfig (COGTerrain::Cfg& _cfg);
 	
 private:
 
-	IOGMesh*	    m_pMesh;	
-	IOGTexture*	    m_pTexture[MAX_TERRAIN_PARTS];
-    IOGMaterial*    m_pMaterial;
-	Vec3		    m_vPosition;
+	IOGMesh*					m_pMesh;	
+	std::vector<IOGTexture*>	m_TextureList;
+    IOGMaterial*				m_pMaterial;
 };
 
 
