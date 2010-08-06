@@ -21,6 +21,9 @@ public:
 						const wxSize& size, 
 						long style = wxDEFAULT_FRAME_STYLE);
 
+	/// @brief Destructor
+	virtual ~CEditorInfoFrame();
+
 private:
 
     DECLARE_EVENT_TABLE()

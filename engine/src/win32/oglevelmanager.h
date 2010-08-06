@@ -33,6 +33,9 @@ public:
 	// save level.
 	virtual bool SaveLevel (IOGLevel* _pLevel);
 
+	// get level list (for editor).
+	virtual void GetLevelList (std::vector<std::string>& _LevelList) const;
+
 	// get version.
     virtual unsigned int GetVersion () const { return LEVEL_VERSION; }
 

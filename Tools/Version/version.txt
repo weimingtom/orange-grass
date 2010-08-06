@@ -1,6 +1,9 @@
-Tools: ver. 0.04, 01-Aug-2010
+Tools: ver. 0.05, 06-Aug-2010
 
 ChangeList:
+
+0.06:
+- [OG] cleaned up code;
 
 0.05:
 - [OG] added level layer, terrain functionality moved to resource manager;

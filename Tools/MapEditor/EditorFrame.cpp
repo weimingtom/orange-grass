@@ -1,3 +1,4 @@
+#include "OrangeGrass.h"
 #include <wx/wx.h>
 #include <wx/gdicmn.h>
 #include <wx/choicdlg.h>
@@ -225,8 +226,14 @@ void CEditorFrame::OnSettingsDlg(wxCommandEvent& event)
 void CEditorFrame::OnOpenLevel(wxCommandEvent& event)
 {
 	wxArrayString level_aliases;
-	level_aliases.Add(wxString(_T("level_0")));
-	level_aliases.Add(wxString(_T("level_1")));
+	std::vector<std::string> LevelList;
+	GetLevelManager()->GetLevelList(LevelList);
+	std::vector<std::string>::iterator iter = LevelList.begin();
+	for (; iter != LevelList.end(); ++iter)
+	{
+		level_aliases.Add(wxString((*iter)));
+	}
+
 	wxString n = wxGetSingleChoice(wxString(_T("Select level")), wxString(_T("Levels")), level_aliases, this);
 	if (!n.empty())
 	{

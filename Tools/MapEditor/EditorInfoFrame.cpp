@@ -30,3 +30,9 @@ CEditorInfoFrame::CEditorInfoFrame(	wxMDIParentFrame *parent,
     ListBoxLogger* m_logTarget = new ListBoxLogger(m_pLogBox, wxLog::GetActiveTarget());
     wxLog::SetActiveTarget(m_logTarget);
 }
+
+
+/// @brief Destructor
+CEditorInfoFrame::~CEditorInfoFrame()
+{
+}
