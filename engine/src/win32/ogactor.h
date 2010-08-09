@@ -26,7 +26,7 @@ public:
 		const std::string& _ModelAlias,
 		const Vec3& _vPos,
 		const Vec3& _vRot,
-        const Vec3& _vScale);
+        const Vec3& _vScale) = 0;
 
 	// Update actor.
 	virtual void Update (int _ElapsedTime);
@@ -51,7 +51,7 @@ public:
         const Vec3& _vRayStart,
         const Vec3& _vRayDir ) const;
 
-private:
+protected:
 
 	IOGSgNode*	        m_pNode;
 	IOGModel*	        m_pModel;

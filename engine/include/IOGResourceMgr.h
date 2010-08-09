@@ -21,6 +21,7 @@ struct IOGResourceInfo
 	std::string m_Resource;
 	std::string m_ResourceIcon;
 	std::string m_ResourceGroup;
+	std::string m_ResourceActorType;
 };
 
 

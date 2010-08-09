@@ -7,14 +7,16 @@
 struct ResSwitchEventData
 {
     ResSwitchEventData () {}
-    ResSwitchEventData (const wxString& _res, const ResourceType& _type)
+    ResSwitchEventData (const wxString& _res, const ResourceType& _type, const wxString& _actortype)
     {
         m_Resource = _res;
         m_ResourceType = _type;
+        m_ResourceActorType = _actortype;
     }
 
     wxString		m_Resource;
     ResourceType	m_ResourceType;
+    wxString		m_ResourceActorType;
 };
 
 

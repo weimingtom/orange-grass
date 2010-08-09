@@ -56,7 +56,7 @@ void CViewerToolFrame::OnLoadResource ( CommonToolEvent<ResLoadEventData>& event
 	{
 		if (resourceGroupText.CmpNoCase((*iter).name) == 0)
 		{
-			m_pTree->AppendItem((*iter).item, resourceText, -1, -1, new ResourceItem((*iter).type, resourceText) );
+			m_pTree->AppendItem((*iter).item, resourceText, -1, -1, new ResourceItem((*iter).type, resourceText, evtData.m_ResourceActorType) );
 		}
 	}
 }
@@ -72,7 +72,7 @@ void CViewerToolFrame::OnResourceSwitch ( wxTreeEvent& event )
 	if(pData)
 	{
 		CommonToolEvent<ResSwitchEventData> cmd(EVENTID_RESSWITCH);
-		cmd.SetEventCustomData(ResSwitchEventData(pData->name, pData->type));
+		cmd.SetEventCustomData(ResSwitchEventData(pData->name, pData->type, pData->actortype));
 		GetEventHandlersTable()->FireEvent(EVENTID_RESSWITCH, &cmd);
 	}
 }

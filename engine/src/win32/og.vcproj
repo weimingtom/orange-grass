@@ -151,22 +151,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\ogactor.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ogactor.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ogactormanager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ogactormanager.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ogcamera.cpp"
 				>
 			</File>
@@ -327,6 +311,34 @@
 				</File>
 				<File
 					RelativePath=".\ogstaticphysicalobject.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="GameLogic"
+				>
+				<File
+					RelativePath=".\ogactor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactormanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactormanager.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactorstatic.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactorstatic.h"
 					>
 				</File>
 			</Filter>

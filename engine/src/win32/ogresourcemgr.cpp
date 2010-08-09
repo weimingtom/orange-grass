@@ -122,6 +122,7 @@ bool COGResourceMgr::Load (std::vector<IOGResourceInfo>& _resInfo)
 		inf.m_Resource = (*iter).alias;
 		inf.m_ResourceGroup = std::string("Models");
 		inf.m_ResourceIcon = (*iter).icon;
+		inf.m_ResourceActorType = (*iter).actor_type;
 		_resInfo.push_back(inf);
 	}
 
@@ -195,6 +196,7 @@ bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
 
 		Cfg::ResourceCfg rescfg;
 		rescfg.alias = std::string(pElement->Attribute ("alias"));
+		rescfg.actor_type = std::string(pElement->Attribute ("actor_type"));
 		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
 		rescfg.icon = m_ResPath + std::string("\\") + std::string(pElement->Attribute ("icon"));
 		_cfg.model_cfg_list.push_back(rescfg);

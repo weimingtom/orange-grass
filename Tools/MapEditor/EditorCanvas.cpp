@@ -39,6 +39,7 @@ bool		m_bIntersectionFound = false;
 Vec3		m_vIntersection;
 Vec3		m_vCurRotation;
 Vec3		m_vCurScaling(1);
+OGActorType	m_CurActorType = OG_ACTOR_NONE;
 std::string m_CurModelAlias;
 
 
@@ -268,13 +269,16 @@ bool CEditorCanvas::LoadNextResource()
 		for (; iter != resInfo.end(); ++iter)
 		{
 			CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
-			cmd.SetEventCustomData(ResLoadEventData(wxT((*iter).m_Resource), wxT((*iter).m_ResourceGroup), wxT((*iter).m_ResourceIcon)));
+			cmd.SetEventCustomData(ResLoadEventData(wxT((*iter).m_Resource), 
+				wxT((*iter).m_ResourceGroup), 
+				wxT((*iter).m_ResourceIcon),
+				wxT((*iter).m_ResourceActorType)));
 			GetEventHandlersTable()->FireEvent(EVENTID_RESLOAD, &cmd);
 		}
 	}
 
 	m_bLoaded = true;
-	SetNewCurrentNodeForPlacement(NULL);
+	SetNewCurrentNodeForPlacement(NULL, OG_ACTOR_NONE);
 
 	return true;
 }
@@ -503,23 +507,23 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
         m_vCurRotation = Vec3(0, 0, 0);
         m_vCurScaling = Vec3(1, 1, 1);
 		if (m_CurModelAlias.empty())
-			SetNewCurrentNodeForPlacement(NULL);
+			SetNewCurrentNodeForPlacement(NULL, OG_ACTOR_NONE);
 		else
-			SetNewCurrentNodeForPlacement(m_CurModelAlias.c_str());
+			SetNewCurrentNodeForPlacement(m_CurModelAlias.c_str(), m_CurActorType);
 		break;
 
 	case CMD_EDITMODE_ADJUST:
         m_vCurRotation = Vec3(0, 0, 0);
         m_vCurScaling = Vec3(1, 1, 1);
         m_pPickedActor = NULL;
-		SetNewCurrentNodeForPlacement(NULL);
+		SetNewCurrentNodeForPlacement(NULL, OG_ACTOR_NONE);
 		break;
 
 	case CMD_EDITMODE_SETTINGS:
         m_vCurRotation = Vec3(0, 0, 0);
         m_vCurScaling = Vec3(1, 1, 1);
         m_pPickedActor = NULL;
-		SetNewCurrentNodeForPlacement(NULL);
+		SetNewCurrentNodeForPlacement(NULL, OG_ACTOR_NONE);
 		break;
 
     case CMD_LEVEL_SAVE:
@@ -700,7 +704,15 @@ void CEditorCanvas::OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& even
 	{
 	case RESTYPE_MODEL:
         {
-			SetNewCurrentNodeForPlacement(evtData.m_Resource);
+			OGActorType actor_type = GetActorManager()->ParseActorType(std::string(evtData.m_ResourceActorType));
+			if (actor_type != OG_ACTOR_NONE)
+			{
+				SetNewCurrentNodeForPlacement(evtData.m_Resource, (int)actor_type);
+			}
+			else
+			{
+				SetNewCurrentNodeForPlacement(NULL, (int)OG_ACTOR_NONE);
+			}
         }
 		break;
 	}
@@ -710,18 +722,21 @@ void CEditorCanvas::OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& even
 
 
 /// @brief Setup new current node for placement.
-void CEditorCanvas::SetNewCurrentNodeForPlacement(const char* _pModelAlias)
+void CEditorCanvas::SetNewCurrentNodeForPlacement(const char* _pModelAlias, int _ActorType)
 {
 	OG_SAFE_DELETE(m_pCurActor);
-	if (_pModelAlias != NULL)
+	m_CurActorType = OG_ACTOR_NONE;
+
+	if (_pModelAlias != NULL && _ActorType != (int)OG_ACTOR_NONE)
 	{
         m_vCurScaling.x = m_vCurScaling.y = m_vCurScaling.z = 1;
         m_vCurRotation.x = m_vCurRotation.y = m_vCurRotation.z = 0;
-
+		m_CurActorType = (OGActorType)_ActorType;
 		m_CurModelAlias = std::string(_pModelAlias);
-        m_pCurActor = GetActorManager()->CreateActor(
-            OG_ACTOR_STATIC, 
-            _pModelAlias, 
+
+		m_pCurActor = GetActorManager()->CreateActor(
+            m_CurActorType, 
+            m_CurModelAlias,
             Vec3(0,0,0), 
             Vec3(0,0,0), 
             Vec3(1,1,1));

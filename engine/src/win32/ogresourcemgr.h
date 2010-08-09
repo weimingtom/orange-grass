@@ -69,6 +69,7 @@ private:
 			std::string alias;
 			std::string file;
 			std::string icon;
+			std::string actor_type;
 		};
 
 		std::vector<ResourceCfg> texture_cfg_list;

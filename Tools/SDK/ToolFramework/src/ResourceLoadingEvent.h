@@ -6,16 +6,18 @@
 struct ResLoadEventData
 {
     ResLoadEventData () {}
-    ResLoadEventData (const wxString& _res, const wxString& _group, const wxString& _icon)
+    ResLoadEventData (const wxString& _res, const wxString& _group, const wxString& _icon, const wxString& _actortype)
     {
         m_Resource = _res;
         m_ResourceGroup = _group;
         m_ResourceIcon = _icon;
+        m_ResourceActorType = _actortype;
     }
 
     wxString	m_Resource;
     wxString	m_ResourceGroup;
     wxString	m_ResourceIcon;
+    wxString	m_ResourceActorType;
 };
 
 

@@ -28,14 +28,16 @@ struct ResourceGroup
 
 struct ResourceItem : public wxTreeItemData
 {
-	ResourceItem (ResourceType _type, const wxString& _name)
+	ResourceItem (ResourceType _type, const wxString& _name, const wxString& _actortype)
 	{
-		name = _name;
 		type = _type;
+		name = _name;
+		actortype = _actortype;
 	}
 
-	wxString		name;
 	ResourceType	type;
+	wxString		name;
+	wxString		actortype;
 };
 
 #endif

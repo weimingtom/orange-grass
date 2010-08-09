@@ -121,7 +121,7 @@ private:
     void OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& event );
 
     /// @brief Setup new current node for placement.
-    void SetNewCurrentNodeForPlacement(const char* _pModelAlias);
+    void SetNewCurrentNodeForPlacement(const char* _pModelAlias, int _ActorType);
 
 private:
 

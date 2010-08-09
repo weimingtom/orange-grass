@@ -183,7 +183,10 @@ bool CViewerCanvas::LoadNextResource()
 		for (; iter != resInfo.end(); ++iter)
 		{
 			CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
-			cmd.SetEventCustomData(ResLoadEventData(wxT((*iter).m_Resource), wxT((*iter).m_ResourceGroup), wxT((*iter).m_ResourceIcon)));
+			cmd.SetEventCustomData(ResLoadEventData(wxT((*iter).m_Resource), 
+				wxT((*iter).m_ResourceGroup), 
+				wxT((*iter).m_ResourceIcon),
+				wxT((*iter).m_ResourceActorType)));
 			GetEventHandlersTable()->FireEvent(EVENTID_RESLOAD, &cmd);
 		}
 	}

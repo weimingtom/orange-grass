@@ -47,6 +47,9 @@ public:
 	virtual IOGActor* GetNearestIntersectedActor (
         const Vec3& _RayStart, 
         const Vec3& _RayDir ) = 0;
+
+	// Parse the actor type string and convert it to internal type
+	virtual OGActorType ParseActorType (const std::string& _ActorTypeStr) = 0;
 };
 
 #endif

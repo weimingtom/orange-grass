@@ -8,7 +8,7 @@
  */
 #include "orangegrass.h"
 #include "ogactormanager.h"
-#include "ogactor.h"
+#include "ogactorstatic.h"
 #include "IOGMath.h"
 #include <algorithm>
 
@@ -44,13 +44,28 @@ IOGActor* COGActorManager::CreateActor (
 	const Vec3& _vRot,
     const Vec3& _vScale)
 {
-	COGActor* pActor = new COGActor(_Type);
-	if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == NULL)
+	switch (_Type)
 	{
-		OG_SAFE_DELETE(pActor);
-		return NULL;
+	case OG_ACTOR_STATIC:
+	case OG_ACTOR_LANDBOT:
+	case OG_ACTOR_AIRBOT:
+		{
+			COGActorStatic* pActor = new COGActorStatic(_Type);
+			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == NULL)
+			{
+				OG_SAFE_DELETE(pActor);
+				return NULL;
+			}
+			return pActor;
+		}
+		break;
+
+	case OG_ACTOR_NONE:
+	default:
+		break;
 	}
-	return pActor;
+
+	return NULL;
 }
 
 
@@ -125,4 +140,24 @@ IOGActor* COGActorManager::GetNearestIntersectedActor (
 const std::vector<IOGActor*>& COGActorManager::GetActorsList () const
 {
     return m_ActorsList;
+}
+
+
+// Parse the actor type string and convert it to internal type
+OGActorType COGActorManager::ParseActorType (const std::string& _ActorTypeStr)
+{
+	if (_ActorTypeStr.compare(std::string("static")) == 0)
+    {
+        return OG_ACTOR_STATIC;
+    }
+    else if (_ActorTypeStr.compare(std::string("land_bot")) == 0)
+    {
+        return OG_ACTOR_LANDBOT;
+    }
+    else if (_ActorTypeStr.compare(std::string("air_bot")) == 0)
+    {
+        return OG_ACTOR_AIRBOT;
+    }
+
+    return OG_ACTOR_NONE;
 }
