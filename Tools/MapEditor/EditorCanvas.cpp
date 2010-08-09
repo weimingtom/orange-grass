@@ -41,6 +41,7 @@ Vec3		m_vCurRotation;
 Vec3		m_vCurScaling(1);
 OGActorType	m_CurActorType = OG_ACTOR_NONE;
 std::string m_CurModelAlias;
+float       m_fAirBotHeight = 80.0f;
 
 
 /// @brief Constructor.
@@ -180,6 +181,10 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 					{
 						if (m_pCurActor)
 						{
+                            if (m_CurActorType == OG_ACTOR_AIRBOT)
+                            {
+                                m_vIntersection.y = m_fAirBotHeight;
+                            }
                             m_pCurActor->GetPhysicalObject()->SetPosition(m_vIntersection);
 						}
 						m_bRedrawPatch = true;
@@ -625,6 +630,10 @@ void CEditorCanvas::OnLMBUp(wxMouseEvent& event)
                 m_bIntersectionFound = m_pCurLevel->GetTerrain()->GetRayIntersection(vPos, vVec, &m_vIntersection);
                 if (m_bIntersectionFound && m_pCurActor)
                 {
+                    if (m_CurActorType == OG_ACTOR_AIRBOT)
+                    {
+                        m_vIntersection.y = m_fAirBotHeight;
+                    }
                     GetActorManager()->AddActor (m_pCurActor);
                     m_pCurActor = GetActorManager()->CreateActor(
                         OG_ACTOR_STATIC, 

@@ -9,6 +9,8 @@
 #include "orangegrass.h"
 #include "ogactormanager.h"
 #include "ogactorstatic.h"
+#include "ogactorlandbot.h"
+#include "ogactorairbot.h"
 #include "IOGMath.h"
 #include <algorithm>
 
@@ -47,10 +49,32 @@ IOGActor* COGActorManager::CreateActor (
 	switch (_Type)
 	{
 	case OG_ACTOR_STATIC:
-	case OG_ACTOR_LANDBOT:
-	case OG_ACTOR_AIRBOT:
 		{
 			COGActorStatic* pActor = new COGActorStatic(_Type);
+			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == NULL)
+			{
+				OG_SAFE_DELETE(pActor);
+				return NULL;
+			}
+			return pActor;
+		}
+		break;
+
+	case OG_ACTOR_LANDBOT:
+		{
+			COGActorLandBot* pActor = new COGActorLandBot(_Type);
+			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == NULL)
+			{
+				OG_SAFE_DELETE(pActor);
+				return NULL;
+			}
+			return pActor;
+		}
+		break;
+
+	case OG_ACTOR_AIRBOT:
+		{
+			COGActorAirBot* pActor = new COGActorAirBot(_Type);
 			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == NULL)
 			{
 				OG_SAFE_DELETE(pActor);

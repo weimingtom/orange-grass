@@ -290,6 +290,22 @@
 				Name="Physics"
 				>
 				<File
+					RelativePath=".\ogairphysicalobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogairphysicalobject.h"
+					>
+				</File>
+				<File
+					RelativePath=".\oglandphysicalobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\oglandphysicalobject.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogphysicalobject.cpp"
 					>
 				</File>
@@ -323,6 +339,22 @@
 				</File>
 				<File
 					RelativePath=".\ogactor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactorairbot.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactorairbot.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactorlandbot.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactorlandbot.h"
 					>
 				</File>
 				<File

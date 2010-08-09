@@ -9,6 +9,8 @@
 #include "orangegrass.h"
 #include "ogphysics.h"
 #include "ogstaticphysicalobject.h"
+#include "ogairphysicalobject.h"
+#include "oglandphysicalobject.h"
 #include <algorithm>
 
 
@@ -45,6 +47,22 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 	case OG_PHYSICS_STATIC:
 		{
 			COGStaticPhysicalObject* pObj = new COGStaticPhysicalObject();
+			pObj->Create (_Aabb);
+			return pObj;
+		}
+		break;
+
+	case OG_PHYSICS_LANDBOT:
+		{
+			COGLandPhysicalObject* pObj = new COGLandPhysicalObject();
+			pObj->Create (_Aabb);
+			return pObj;
+		}
+		break;
+
+	case OG_PHYSICS_AIRBOT:
+		{
+			COGAirPhysicalObject* pObj = new COGAirPhysicalObject();
 			pObj->Create (_Aabb);
 			return pObj;
 		}

@@ -5,6 +5,7 @@ ChangeList:
 0.06:
 - [OG] code clean-up;
 - [OG] added support for different actor types in resource manager (actor_type property in 'Model' entries);
+- [OG] added simple physical objects for land bot and air bot;
 - [MapEditor] level list is loaded from the levels.xml, not hard-coded as before;
 
 0.05 (06-Aug-2010):
