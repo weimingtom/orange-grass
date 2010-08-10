@@ -52,7 +52,7 @@ COGResourceMgr::~COGResourceMgr ()
 bool COGResourceMgr::Init ()
 {
 	COGTexture* pLoadScr = new COGTexture ();
-	pLoadScr->Init ("load_scr", m_ResPath + std::string("\\GUI\\load.pvr"));
+	pLoadScr->Init ("load_scr", m_ResPath + std::string("\\Textures\\UI\\load.pvr"));
 	if (!pLoadScr->Load ())
 	{
 		OG_SAFE_DELETE(pLoadScr);
@@ -61,7 +61,7 @@ bool COGResourceMgr::Init ()
 	m_TextureList["load_scr"] = pLoadScr;
 
 	COGTexture* pLoadProgress = new COGTexture ();
-	pLoadProgress->Init ("load_progress", m_ResPath + std::string("\\GUI\\load_progress.pvr"));
+	pLoadProgress->Init ("load_progress", m_ResPath + std::string("\\Textures\\UI\\load_progress.pvr"));
 	if (!pLoadProgress->Load ())
 	{
 		OG_SAFE_DELETE(pLoadProgress);

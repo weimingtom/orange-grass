@@ -199,6 +199,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ToolFramework", "SDK\ToolFr
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "yaml", "..\engine\sdk\yaml\src\yaml.vcproj", "{5CE8051A-3F0C-4C39-B1C0-3338E48BA60F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AirAssault", "..\game\src\AirAssault.vcproj", "{63A6813A-AD96-41D2-8E64-0A05C442C270}"
+	ProjectSection(ProjectDependencies) = postProject
+		{5CE8051A-3F0C-4C39-B1C0-3338E48BA60F} = {5CE8051A-3F0C-4C39-B1C0-3338E48BA60F}
+		{62848574-5733-4E61-9FED-FBC64E02D50C} = {62848574-5733-4E61-9FED-FBC64E02D50C}
+		{8D9287B3-0AC5-434C-BDD4-F78B40254471} = {8D9287B3-0AC5-434C-BDD4-F78B40254471}
+		{758886E9-155C-4D71-B472-928B522E5E35} = {758886E9-155C-4D71-B472-928B522E5E35}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -1051,6 +1059,38 @@ Global
 		{5CE8051A-3F0C-4C39-B1C0-3338E48BA60F}.Universal Unicode Debug|Win32.Build.0 = Debug|Win32
 		{5CE8051A-3F0C-4C39-B1C0-3338E48BA60F}.Universal Unicode Release|Win32.ActiveCfg = Release|Win32
 		{5CE8051A-3F0C-4C39-B1C0-3338E48BA60F}.Universal Unicode Release|Win32.Build.0 = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Debug|Win32.ActiveCfg = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Debug|Win32.Build.0 = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Debug|Win32.ActiveCfg = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Debug|Win32.Build.0 = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Release|Win32.ActiveCfg = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Release|Win32.Build.0 = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Unicode Debug|Win32.ActiveCfg = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Unicode Debug|Win32.Build.0 = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Unicode Release|Win32.ActiveCfg = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Unicode Release|Win32.Build.0 = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Universal Debug|Win32.ActiveCfg = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Universal Debug|Win32.Build.0 = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Universal Release|Win32.ActiveCfg = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Universal Release|Win32.Build.0 = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Universal Unicode Debug|Win32.ActiveCfg = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Universal Unicode Debug|Win32.Build.0 = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Universal Unicode Release|Win32.ActiveCfg = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.DLL Universal Unicode Release|Win32.Build.0 = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Release|Win32.ActiveCfg = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Release|Win32.Build.0 = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Unicode Debug|Win32.ActiveCfg = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Unicode Debug|Win32.Build.0 = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Unicode Release|Win32.ActiveCfg = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Unicode Release|Win32.Build.0 = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Universal Debug|Win32.ActiveCfg = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Universal Debug|Win32.Build.0 = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Universal Release|Win32.ActiveCfg = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Universal Release|Win32.Build.0 = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Universal Unicode Debug|Win32.ActiveCfg = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Universal Unicode Debug|Win32.Build.0 = Debug|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Universal Unicode Release|Win32.ActiveCfg = Release|Win32
+		{63A6813A-AD96-41D2-8E64-0A05C442C270}.Universal Unicode Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

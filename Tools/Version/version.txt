@@ -9,6 +9,7 @@ ChangeList:
 - [OG] added support for different actor types in resource manager (actor_type property in 'Model' entries);
 - [OG] added simple physical objects for land bot and air bot;
 - [MapEditor] level list is loaded from the levels.xml, not hard-coded as before;
+- [Game] win32 game first draft;
 
 0.05 (06-Aug-2010):
 - [OG] added level layer, terrain functionality moved to resource manager;
