@@ -1,18 +1,16 @@
-Tools: ver. 0.07, 10-Aug-2010
+Tools: ver. 0.06, 11-Aug-2010
 
 ChangeList:
 
-0.07:
-- [OG] fixed sprite rendering;
-- [Game] added game management code;
-- [Game] added game and loading screens;
-
-0.06 (10-Aug-2010):
+0.06 (11-Aug-2010):
 - [OG] code clean-up;
 - [OG] added support for different actor types in resource manager (actor_type property in 'Model' entries);
 - [OG] added simple physical objects for land bot and air bot;
+- [OG] fixed sprite rendering;
 - [MapEditor] level list is loaded from the levels.xml, not hard-coded as before;
 - [Game] win32 game first draft;
+- [Game] added game management code;
+- [Game] added game and loading screens;
 
 0.05 (06-Aug-2010):
 - [OG] added level layer, terrain functionality moved to resource manager;
