@@ -8,9 +8,6 @@
 #include <string>
 #include <OpenGL2.h>
 
-#define SCR_WIDTH   480
-#define SCR_HEIGHT  320
-
 
 HINSTANCE			shInstance = NULL;
 HWND				shWnd = NULL;

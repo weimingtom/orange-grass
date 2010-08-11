@@ -76,6 +76,10 @@ bool COGLevel::Load ()
     fread(&vLightDir.y, sizeof(float), 1, pIn);
     fread(&vLightDir.z, sizeof(float), 1, pIn);
 
+    GetSceneGraph()->GetLight()->SetDirection(Vec4(vLightDir.x, vLightDir.y, vLightDir.z, 0.0f));
+    GetSceneGraph()->GetLight()->SetColor(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    GetSceneGraph()->GetLight()->Apply();
+
     unsigned int numActors = 0;
     fread(&numActors, sizeof(unsigned int), 1, pIn);
     for (unsigned int i = 0; i < numActors; ++i)
@@ -156,13 +160,13 @@ bool COGLevel::Save ()
     Vec3 vVec;
 
     // Level start position
-    vVec = Vec3(200,0,-100);
+    vVec = Vec3(150,0,-100);
     fwrite(&vVec.x, sizeof(float), 1, pOut);
     fwrite(&vVec.y, sizeof(float), 1, pOut);
     fwrite(&vVec.z, sizeof(float), 1, pOut);
 
     // Level finish position
-    vVec = Vec3(200,0,-3000);
+    vVec = Vec3(150,0,-3000);
     fwrite(&vVec.x, sizeof(float), 1, pOut);
     fwrite(&vVec.y, sizeof(float), 1, pOut);
     fwrite(&vVec.z, sizeof(float), 1, pOut);

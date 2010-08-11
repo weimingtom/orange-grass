@@ -1,12 +1,9 @@
 #include "main.h"
-#include <OrangeGrass.h>
-#include <IOGGraphicsHelpers.h>
-#include <IOGMath.h>
+#include "..\GameSystem.h"
+#include "..\common.h"
 
 
-MATRIX		m_mProjection;
-MATRIX		m_mView;
-IOGLevel*	m_pCurLevel = NULL;
+CGameSystem*    pGameSystem = NULL;
 
 
 /// Application initialization.
@@ -29,67 +26,31 @@ void Initialize ()
     glewInit();
 
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
-    MatrixPerspectiveFovRH(m_mProjection, 1.0f, float(SCR_WIDTH)/float(SCR_HEIGHT), 4.0f, 4500.0f, true);
 
-    Vec3 vTarget (150, 0, -100);
-	Vec3 vDir (0, 0.4f, 0.6f);
-	vDir = vDir.normalize();
-	Vec3 vUp = vDir.cross (Vec3(0, 1, 0));
-	GetSceneGraph()->GetCamera()->Setup (vTarget + (vDir* 200.0f), vTarget, vUp);
-
-    glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
-	glEnable(GL_TEXTURE_2D);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
-	glEnable(GL_NORMALIZE);
-
-	GetSceneGraph()->GetLight()->SetDirection(Vec4(0.0f, 0.0f, 1.0f, 0.0f));
-	GetSceneGraph()->GetLight()->SetColor(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	GetSceneGraph()->GetLight()->Apply();
-
-    GetResourceMgr()->Init();
-    GetLevelManager()->Init();
-
-	std::vector<IOGResourceInfo> resInfo;
-	if (GetResourceMgr()->Load(resInfo))
-	{
-	}
-
-    m_pCurLevel = GetLevelManager()->LoadLevel(std::string("level_0"));
+    pGameSystem = new CGameSystem();
 }
 
 
 /// Application shutdown.
 void Shutdown()
 {
+    PostQuitMessage(0);
 }
 
 
 /// Application main cycle.
 void Run ()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(m_mProjection.f);
-	
-	glMatrixMode(GL_MODELVIEW);
-	m_mView = GetSceneGraph()->GetCamera()->Update();
-	glLoadMatrixf(m_mView.f);
-
-    GetPhysics()->Update(10);
-    GetActorManager()->Update(10);
-
-	if (m_pCurLevel)
-        m_pCurLevel->GetTerrain()->Render(m_mView);
-
-    GetSceneGraph()->Render(m_mView);
+    pGameSystem->Update(10);
+    pGameSystem->Draw();
 
     glFlush();
     SwapBuffers(shDC);
+
+    if (pGameSystem->GetControllerState() == SYSSTATE_EXIT)
+    {
+        Shutdown();
+    }
 }
 
 
@@ -99,38 +60,38 @@ LRESULT CALLBACK WndProc ( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 	switch ( message )
 	{
 		case WM_DESTROY:
-			PostQuitMessage ( 0 );
+			Shutdown();
      		break;
 
 		case WM_KEYDOWN:
+            pGameSystem->OnKeyDown(0);
 			break;
 
 		case WM_KEYUP:
+            pGameSystem->OnKeyUp(0);
 			break;
 
 		case WM_LBUTTONUP:
         {
 			sMouseX = (SHORT)LOWORD(lParam);
-			sMouseX = (SHORT)HIWORD(lParam);
+			sMouseY = (SHORT)HIWORD(lParam);
+            pGameSystem->OnPointerUp(sMouseX, sMouseY);
         }
         break;
 
 		case WM_LBUTTONDOWN:
         {
 			sMouseX = (SHORT)LOWORD(lParam);
-			sMouseX = (SHORT)HIWORD(lParam);
+			sMouseY = (SHORT)HIWORD(lParam);
+            pGameSystem->OnPointerDown(sMouseX, sMouseY);
         }
         break;
 
 		case WM_MOUSEMOVE:
 		{
-			if ( wParam & MK_LBUTTON )
-			{
-                sMouseX = (SHORT)LOWORD(lParam);
-                sMouseX = (SHORT)HIWORD(lParam);
-			}
-			else
-				return DefWindowProc ( hWnd, message, wParam, lParam );
+            sMouseX = (SHORT)LOWORD(lParam);
+            sMouseY = (SHORT)HIWORD(lParam);
+            pGameSystem->OnPointerMove(sMouseX, sMouseY);
 		}
 		break;
 
@@ -166,10 +127,13 @@ BOOL InitInstance ( HINSTANCE hInstance, int nCmdShow )
     wc.lpszClassName	= L"AirAssault.MainWindow";
 	RegisterClass ( &wc );
 	
+    int wndSizeX = SCR_WIDTH + (GetSystemMetrics(SM_CXBORDER) * 2);
+    int wndSizeY = SCR_HEIGHT + GetSystemMetrics(SM_CYSIZE) + GetSystemMetrics(SM_CYBORDER);
+
 	shWnd = CreateWindow (	L"AirAssault.MainWindow", L"AirAssault", WS_SYSMENU|WS_OVERLAPPED,
-							(GetSystemMetrics(SM_CXSCREEN)-SCR_WIDTH)/2, 
-							(GetSystemMetrics(SM_CYSCREEN)-SCR_HEIGHT)/2, 
-							SCR_WIDTH, SCR_HEIGHT, NULL, NULL, hInstance, NULL);
+							(GetSystemMetrics(SM_CXSCREEN)-wndSizeX)/2, 
+							(GetSystemMetrics(SM_CYSCREEN)-wndSizeY)/2, 
+							wndSizeX, wndSizeY, NULL, NULL, hInstance, NULL);
 	if ( !shWnd )
 		return FALSE;
 
