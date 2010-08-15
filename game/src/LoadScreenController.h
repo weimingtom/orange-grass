@@ -10,9 +10,9 @@
 #define LOADSCREENCONTROLLER_H_
 
 #include "IScreenController.h"
-#include <IOGSprite.h>
-#include <IOGResourceMgr.h>
-#include <IOGLevel.h>
+#include "IOGSprite.h"
+#include "IOGResourceMgr.h"
+#include "IOGLevel.h"
 
 
 class CLoadScreenController : public IScreenController
@@ -44,11 +44,11 @@ public:
 	
 private:
 	
+	IOGResourceMgr*	m_pResourceMgr;
 	ControllerState	m_State;
     ScreenType      m_Type;
 	IOGSprite*		m_pHUD;
 	IOGLevel*		m_pCurLevel;
-	IOGResourceMgr*	m_pResourceMgr;
 	bool			m_bLoaded;
 	bool			m_bDisplayed;
 };
