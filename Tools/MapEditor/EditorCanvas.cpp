@@ -181,7 +181,7 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 					{
 						if (m_pCurActor)
 						{
-                            if (m_CurActorType == OG_ACTOR_AIRBOT)
+                            if (m_CurActorType == OG_ACTOR_AIRBOT || m_CurActorType == OG_ACTOR_PLAYER)
                             {
                                 m_vIntersection.y = m_fAirBotHeight;
                             }
@@ -630,7 +630,7 @@ void CEditorCanvas::OnLMBUp(wxMouseEvent& event)
                 m_bIntersectionFound = m_pCurLevel->GetTerrain()->GetRayIntersection(vPos, vVec, &m_vIntersection);
                 if (m_bIntersectionFound && m_pCurActor)
                 {
-                    if (m_CurActorType == OG_ACTOR_AIRBOT)
+                    if (m_CurActorType == OG_ACTOR_AIRBOT || m_CurActorType == OG_ACTOR_PLAYER)
                     {
                         m_vIntersection.y = m_fAirBotHeight;
                     }

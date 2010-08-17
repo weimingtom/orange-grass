@@ -34,7 +34,7 @@
 </Meshes>
 <Models>
 	<Model alias="spectator" file="Models\Spectator\spectator.xml" icon = "Models\Spectator\spectator_ed.bmp" actor_type = "air_bot"/>
-	<Model alias="craft" file="Models\Craft\craft.xml" icon = "Models\Craft\craft_ed.bmp" actor_type = "air_bot"/>
+	<Model alias="craft" file="Models\Craft\craft.xml" icon = "Models\Craft\craft_ed.bmp" actor_type = "player"/>
 	<Model alias="palm1" file="Models\Palm1\palm1.xml" icon = "Models\Palm1\palm1_ed.bmp" actor_type = "static"/>
 	<Model alias="palm2" file="Models\Palm2\palm2.xml" icon = "Models\Palm2\palm2_ed.bmp" actor_type = "static"/>
 	<Model alias="palm3_0" file="Models\Palm3\palm3_0.xml" icon = "Models\Palm3\palm3_0_ed.bmp" actor_type = "static"/>
