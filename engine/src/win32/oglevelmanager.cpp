@@ -51,7 +51,7 @@ bool COGLevelManager::Init ()
 bool COGLevelManager::LoadConfig (COGLevelManager::Cfg& _cfg)
 {
 	std::string file_path;
-	file_path = GetResourceMgr()->GetResourcePath() + std::string("\\levels.xml");
+	file_path = GetResourceMgr()->GetResourcePath() + std::string("/levels.xml");
 
     TiXmlDocument* pXmlSettings = new TiXmlDocument ("levels.xml");
 	if (!pXmlSettings->LoadFile (file_path.c_str()))
@@ -72,7 +72,7 @@ bool COGLevelManager::LoadConfig (COGLevelManager::Cfg& _cfg)
 		Cfg::LevelCfg lev_cfg;
 		lev_cfg.level_alias = std::string(pElement->Attribute ("terrain"));
 		lev_cfg.level_file = std::string(pElement->Attribute ("scene_file"));
-		lev_cfg.level_file = GetResourceMgr()->GetResourcePath() + std::string("\\") + lev_cfg.level_file;
+		lev_cfg.level_file = GetResourceMgr()->GetResourcePath() + std::string("/") + lev_cfg.level_file;
 		_cfg.level_cfg_list.push_back(lev_cfg);
 
         TerrainHandle = hTerrainsRoot.Child ( "Level", ++index );

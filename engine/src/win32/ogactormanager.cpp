@@ -51,7 +51,7 @@ IOGActor* COGActorManager::CreateActor (
 	case OG_ACTOR_STATIC:
 		{
 			COGActorStatic* pActor = new COGActorStatic(_Type);
-			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == NULL)
+			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == false)
 			{
 				OG_SAFE_DELETE(pActor);
 				return NULL;
@@ -63,7 +63,7 @@ IOGActor* COGActorManager::CreateActor (
 	case OG_ACTOR_LANDBOT:
 		{
 			COGActorLandBot* pActor = new COGActorLandBot(_Type);
-			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == NULL)
+			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == false)
 			{
 				OG_SAFE_DELETE(pActor);
 				return NULL;
@@ -75,7 +75,7 @@ IOGActor* COGActorManager::CreateActor (
 	case OG_ACTOR_AIRBOT:
 		{
 			COGActorAirBot* pActor = new COGActorAirBot(_Type);
-			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == NULL)
+			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == false)
 			{
 				OG_SAFE_DELETE(pActor);
 				return NULL;

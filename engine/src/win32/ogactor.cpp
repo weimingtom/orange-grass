@@ -11,19 +11,19 @@
 #include "IOGMath.h"
 
 
-COGActor::COGActor() :	m_pNode(NULL),
-						m_Type(OG_ACTOR_NONE),
-                        m_pPhysicalObject(NULL),
+COGActor::COGActor() :	m_Type(OG_ACTOR_NONE),
                         m_bAdded(false),
+                        m_pNode(NULL),
+                        m_pPhysicalObject(NULL),
                         m_pModel(NULL)
 {
 }
 
 
-COGActor::COGActor(OGActorType _Type) : m_pNode(NULL),
-										m_Type(_Type),
-                                        m_pPhysicalObject(NULL),
+COGActor::COGActor(OGActorType _Type) : m_Type(_Type),
                                         m_bAdded(false),
+                                        m_pNode(NULL),
+                                        m_pPhysicalObject(NULL),
                                         m_pModel(NULL)
 {
 }

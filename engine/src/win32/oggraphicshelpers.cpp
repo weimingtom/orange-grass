@@ -15,6 +15,7 @@
 // Draw AABB
 void DrawAABB (const IOGAabb& _aabb)
 {
+#ifdef WIN32
 	const Vec3& min = _aabb.GetMin();
 	const Vec3& max = _aabb.GetMax();
 
@@ -57,6 +58,7 @@ void DrawAABB (const IOGAabb& _aabb)
         glColor3f(0.9f, 0.4f, 0.4f);
         glVertex3f(min.x, max.y, max.z);
 	glEnd();
+#endif
 }
 
 
@@ -95,18 +97,21 @@ void DrawOBB (const IOGObb& _obb)
 // Draw line
 void DrawLine (const Vec3& _vStart, const Vec3& _vEnd)
 {
+#ifdef WIN32
     glBegin(GL_LINES);
         glColor3f(0.9f, 0.4f, 0.4f);
         glVertex3f(_vStart.x, _vStart.y, _vStart.z);
         glColor3f(0.9f, 0.4f, 0.4f);
         glVertex3f(_vEnd.x, _vEnd.y, _vEnd.z);
 	glEnd();
+#endif
 }
 
 
 // Draw coordiantes grid
 void DrawCoordGrid (int _Bounds, int _Step, int _MajorStep)
 {
+#ifdef WIN32
     glBegin(GL_LINES);
         for (int i = -_Bounds; i <= _Bounds; i+=_Step)
         {
@@ -125,12 +130,14 @@ void DrawCoordGrid (int _Bounds, int _Step, int _MajorStep)
             glVertex3i(i, 0, _Bounds);
         }
     glEnd();
+#endif
 }
 
 
 // Draw point patch grid
 void DrawPatchGrid (int _NumPatchVerts, const Vec3* _pGridData)
 {
+#ifdef WIN32
 	float fPointSize = 3.0f;
 	glPointSize(fPointSize);
 	glEnable(GL_POINT_SMOOTH);
@@ -145,12 +152,14 @@ void DrawPatchGrid (int _NumPatchVerts, const Vec3* _pGridData)
 
 	glPointSize(1.0f);
 	glDisable(GL_POINT_SMOOTH);
+#endif
 }
 
 
 // Draw geometry grid
 void DrawGeometryGrid (const std::vector<OGFace>& _GridData)
 {
+#ifdef WIN32
     unsigned int numFaces = _GridData.size();
     for (unsigned int i = 0; i < numFaces; ++i)
     {
@@ -163,4 +172,5 @@ void DrawGeometryGrid (const std::vector<OGFace>& _GridData)
             glVertex3f(_GridData[i].vertices[2].x, _GridData[i].vertices[2].y, _GridData[i].vertices[2].z);
         glEnd();
     }
+#endif
 }

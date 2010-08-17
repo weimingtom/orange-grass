@@ -39,6 +39,7 @@ bool COGTexture::Load ()
 
 	if(!m_pTexture->LoadTextureFromPVR(m_ResourceFile.c_str(), &m_TextureId))
 	{
+        printf("Failed to load %s", m_ResourceFile.c_str());
 		return false;
 	}
 

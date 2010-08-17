@@ -53,11 +53,11 @@ public:
 
 protected:
 
-	IOGSgNode*	        m_pNode;
-	IOGModel*	        m_pModel;
-    IOGPhysicalObject*  m_pPhysicalObject;
 	OGActorType	        m_Type;
     bool                m_bAdded;
+	IOGSgNode*	        m_pNode;
+    IOGPhysicalObject*  m_pPhysicalObject;
+	IOGModel*	        m_pModel;
 };
 
 

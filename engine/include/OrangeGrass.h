@@ -16,8 +16,6 @@
 #include "IOGSceneGraph.h"
 #include "IOGActorManager.h"
 #include "IOGSprite.h"
-#include "IOGSerializer.h"
-#include "IOGDeserializer.h"
 #include "IOGPhysics.h"
 #include <vector>
 #include <string>
@@ -30,7 +28,5 @@ IOGActorManager* GetActorManager ();
 IOGPhysics* GetPhysics ();
 
 IOGSprite* CreateSprite (const char* _pAlias);
-IOGSerializer* GetSerializer (const char* _pFilename);
-IOGDeserializer* GetDeserializer (const char* _pFilename);
 
 #endif

@@ -16,7 +16,11 @@ COGResourceMgr::COGResourceMgr ()
 {
 	char path[OG_MAX_PATH];
 	GetResourcePathASCII(path, OG_MAX_PATH);
+#ifndef WIN32
+    m_ResPath = std::string(path) + std::string("/") + std::string("GameResources");
+#else
 	m_ResPath = std::string(path) + std::string("GameResources");
+#endif
 }
 
 
@@ -52,7 +56,7 @@ COGResourceMgr::~COGResourceMgr ()
 bool COGResourceMgr::Init ()
 {
 	COGTexture* pLoadScr = new COGTexture ();
-	pLoadScr->Init ("load_scr", m_ResPath + std::string("\\Textures\\UI\\load.pvr"));
+	pLoadScr->Init ("load_scr", m_ResPath + std::string("/Textures/UI/load.pvr"));
 	if (!pLoadScr->Load ())
 	{
 		OG_SAFE_DELETE(pLoadScr);
@@ -61,7 +65,7 @@ bool COGResourceMgr::Init ()
 	m_TextureList["load_scr"] = pLoadScr;
 
 	COGTexture* pLoadProgress = new COGTexture ();
-	pLoadProgress->Init ("load_progress", m_ResPath + std::string("\\Textures\\UI\\load_progress.pvr"));
+	pLoadProgress->Init ("load_progress", m_ResPath + std::string("/Textures/UI/load_progress.pvr"));
 	if (!pLoadProgress->Load ())
 	{
 		OG_SAFE_DELETE(pLoadProgress);
@@ -147,7 +151,7 @@ bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
 {
 	int index = 0;
 	std::string file_path;
-	file_path = GetResourceMgr()->GetResourcePath() + std::string("\\resources.xml");
+	file_path = m_ResPath + std::string("/resources.xml");
 
     TiXmlDocument* pXmlSettings = new TiXmlDocument ("resources.xml");
 	if (!pXmlSettings->LoadFile (file_path.c_str()))
@@ -198,7 +202,7 @@ bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
 		rescfg.alias = std::string(pElement->Attribute ("alias"));
 		rescfg.actor_type = std::string(pElement->Attribute ("actor_type"));
 		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
-		rescfg.icon = m_ResPath + std::string("\\") + std::string(pElement->Attribute ("icon"));
+		rescfg.icon = m_ResPath + std::string("/") + std::string(pElement->Attribute ("icon"));
 		_cfg.model_cfg_list.push_back(rescfg);
 
 		ModelHandle = hModelsRoot.Child ( "Model", ++index );
@@ -214,7 +218,7 @@ bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
 		Cfg::ResourceCfg rescfg;
 		rescfg.alias = std::string(pElement->Attribute ("alias"));
 		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
-		rescfg.icon = m_ResPath + std::string("\\") + std::string(pElement->Attribute ("icon"));
+		rescfg.icon = m_ResPath + std::string("/") + std::string(pElement->Attribute ("icon"));
 		_cfg.terrain_cfg_list.push_back(rescfg);
 
 		TerrainHandle = hTerrainsRoot.Child ( "Terrain", ++index );

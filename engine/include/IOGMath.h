@@ -71,6 +71,7 @@ static Vec3 GetPickRay1 (const MATRIX& _mView, const MATRIX& _mProj, int _XRes, 
 // Calculate pick ray
 static Vec3 GetPickRay (int _MouseX, int _MouseY)
 {
+#ifdef WIN32
 	GLdouble modelMatrix[16];
 	GLdouble projMatrix[16];
 	int viewport[4];
@@ -79,7 +80,10 @@ static Vec3 GetPickRay (int _MouseX, int _MouseY)
 	glGetIntegerv(GL_VIEWPORT, viewport);
 	double x0, y0, z0;
 	gluUnProject(_MouseX, viewport[3] - _MouseY, 0, modelMatrix, projMatrix, viewport, &x0, &y0, &z0);
-	return Vec3((float)x0, (float)y0, (float)z0);
+    return Vec3((float)x0, (float)y0, (float)z0);
+#else
+    return Vec3(0,0,0);
+#endif
 }
 
 

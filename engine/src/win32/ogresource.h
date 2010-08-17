@@ -14,7 +14,7 @@
 
 
 // maximal path length
-#define OG_MAX_PATH		260
+#define OG_MAX_PATH		2048
 
 // Resource types
 enum OGResourceTypes
