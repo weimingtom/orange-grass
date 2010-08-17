@@ -18,12 +18,6 @@ T *reallocEM(T *array, size_t old_size, size_t new_size)
 
    delete [] array;
    
-#ifdef DEBUG
-	char strData[128];
-  	sprintf(strData,"%5s %3d %5s %3d", 
-            "New memory piece", (int)new_size, "Old memory piece", (int)old_size);
-#endif
-
    return copy(array, array + old_size, temp);
 }
 
@@ -39,12 +33,6 @@ bool SafeAlloc(T* &ptr, size_t cnt)
 		if(!ptr)
 			return false;
 	}
-#ifdef DEBUG
-	char strData[128];
-  	sprintf(strData,"%5s %3d", 
-            "Memory", (int)cnt);
-//	LOG(string(strData), Logger::LOG_BLOK);
-#endif
 	
 	memset(ptr, 0, cnt *sizeof(T));
 
@@ -66,14 +54,8 @@ void SafeRealloc(T* &ptr, size_t cnt)
    // copy temp starting whereever ptr has started before
    copy(ptr, ptr + old_size, temp);
 
-#ifdef DEBUG
-	char strData[128];
-  	sprintf(strData,"%5s %3d %5s %3d", 
-            "New memory piece", (int)cnt, "Old memory piece", (int)old_size);
-//	LOG(string(strData), Logger::LOG_BLOK);
-#endif
  	_ASSERT(ptr);
 }
 
-char* StrDup(const char *string);
+//char* StrDup(const char *string);
 #endif

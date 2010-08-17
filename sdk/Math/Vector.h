@@ -603,7 +603,29 @@ struct Vec3 : public VECTOR3
 		z = VERTTYPEDIV(z,rhs);
 		return *this;
 	}
-
+    
+    /*!***************************************************************************
+     @Function			[] - r/o
+     @Input				index
+     @Returns			component value
+     @Description		Get components by index
+     ****************************************************************************/
+    VERTTYPE operator [] ( int _ComponentIndex ) const
+    {
+	    return ( (VERTTYPE *)this) [ _ComponentIndex ];
+    }
+    
+    /*!***************************************************************************
+     @Function			[] - w
+     @Input				index
+     @Returns			component value
+     @Description		Set components by index
+     ****************************************************************************/
+    VERTTYPE& operator [] ( int _ComponentIndex )
+    {
+	    return ( (VERTTYPE *)this) [ _ComponentIndex ];
+    }
+    
 	// FUNCTIONS
 /*!***************************************************************************
  @Function			lenSqr
@@ -695,7 +717,7 @@ struct Vec3 : public VECTOR3
  @Returns			scalar product
  @Description		calculate the scalar product of two VECTOR3s
 ****************************************************************************/
-	VERTTYPE dot(const Vec3& rhs)
+	VERTTYPE dot(const Vec3& rhs) const
 	{
 		return VERTTYPEMUL(x,rhs.x)+VERTTYPEMUL(y,rhs.y)+VERTTYPEMUL(z,rhs.z);
 	}

@@ -58,6 +58,38 @@ void MatrixIdentity(MATRIX &mOut)
 }
 
 
+//=============================================================================
+// Returns the zero-point
+// outputs the zero-point vector
+//=============================================================================
+void MatrixGetOrg(VECTOR3& vOut, const MATRIX& mIn)
+{
+    vOut.x = mIn.f[12];
+    vOut.y = mIn.f[13];
+    vOut.z = mIn.f[14];
+}
+
+
+//=============================================================================
+// Returns the basis vectors
+// outputs the basis vectors
+//=============================================================================
+void MatrixGetBasis(VECTOR3& vOutX, VECTOR3& vOutY, VECTOR3& vOutZ, const MATRIX& mIn)
+{
+    vOutX.x = mIn.f[_11];
+    vOutX.y = mIn.f[_21];
+    vOutX.z = mIn.f[_31];
+    
+    vOutY.x = mIn.f[_12];
+    vOutY.y = mIn.f[_22];
+    vOutY.z = mIn.f[_32];
+    
+    vOutZ.x = mIn.f[_13];
+    vOutZ.y = mIn.f[_23];
+    vOutZ.z = mIn.f[_33];
+}
+
+
 void MatrixMultiply(
 	MATRIX			&mOut,
 	const MATRIX	&mA,
@@ -123,6 +155,18 @@ void MatrixVec4Multiply(VECTOR4			&vOut,
 	
 	vOut = result;
 #endif
+}
+
+
+//=============================================================================
+// Multiply vector vIn by matrix mIn and assign result to vOut.
+// Copies result vector, so vIn and vOut can be the same.
+//=============================================================================
+void MatrixVecMultiply( VECTOR3& vOut, const VECTOR3& vIn, const MATRIX& mIn)
+{
+	vOut.x = mIn.f[_11] * vIn.x + mIn.f[_21] * vIn.y + mIn.f[_31] * vIn.z + mIn.f[_41];
+	vOut.y = mIn.f[_12] * vIn.x + mIn.f[_22] * vIn.y + mIn.f[_32] * vIn.z + mIn.f[_42];
+	vOut.z = mIn.f[_13] * vIn.x + mIn.f[_23] * vIn.y + mIn.f[_33] * vIn.z + mIn.f[_43];
 }
 
 
