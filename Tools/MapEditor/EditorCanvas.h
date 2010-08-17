@@ -148,6 +148,8 @@ private:
     float   m_fFineAngleStep;
     float   m_fCoarseAngleStep;
 
+    SettingsMode    m_SettingsMode;
+
     DECLARE_EVENT_TABLE()
 };
 

@@ -14,8 +14,8 @@
 COGLevel::COGLevel () : m_pTerrain(NULL)
 {
     m_vStartPos = Vec3(150,0,-100);
-	m_vFinishPos = Vec3(150,0,-3000);
-	m_vLightDir = Vec3(0,0,1);
+	m_vFinishPos = Vec3(150,0,-1000);
+	m_vLightDir = Vec3(0,1,0);
 	m_vLightColor = Vec3(1,1,1);
 }
 
@@ -41,6 +41,9 @@ bool COGLevel::Load ()
     FILE* pIn = fopen(m_ResourceFile.c_str(), "rb");
     if (pIn == NULL)
     {
+        GetSceneGraph()->GetLight()->SetDirection(Vec4(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z, 0.0f));
+        GetSceneGraph()->GetLight()->SetColor(Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f));
+
 	    m_LoadState = OG_RESSTATE_LOADED;
         return true;    
     }
@@ -68,6 +71,10 @@ bool COGLevel::Load ()
     fread(&m_vStartPos.z, sizeof(float), 1, pIn);
 
     // Level finish position
+    //Vec3 v;
+    //fread(&v.x, sizeof(float), 1, pIn);
+    //fread(&v.y, sizeof(float), 1, pIn);
+    //fread(&v.z, sizeof(float), 1, pIn);
     fread(&m_vFinishPos.x, sizeof(float), 1, pIn);
     fread(&m_vFinishPos.y, sizeof(float), 1, pIn);
     fread(&m_vFinishPos.z, sizeof(float), 1, pIn);
@@ -79,7 +86,6 @@ bool COGLevel::Load ()
 
     GetSceneGraph()->GetLight()->SetDirection(Vec4(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z, 0.0f));
     GetSceneGraph()->GetLight()->SetColor(Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f));
-    GetSceneGraph()->GetLight()->Apply();
 
     unsigned int numActors = 0;
     fread(&numActors, sizeof(unsigned int), 1, pIn);
@@ -233,4 +239,18 @@ const Vec3& COGLevel::GetStartPosition () const
 const Vec3& COGLevel::GetFinishPosition () const
 {
 	return m_vFinishPos;
+}
+
+
+// set level start position.
+void COGLevel::SetStartPosition (const Vec3& _Pos)
+{
+    m_vStartPos = _Pos;
+}
+
+
+// set level start finish.
+void COGLevel::SetFinishPosition (const Vec3& _Pos)
+{
+    m_vFinishPos = _Pos;
 }

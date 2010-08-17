@@ -6,11 +6,12 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "orangegrass.h"
+#include "OrangeGrass.h"
 #include "ogphysics.h"
 #include "ogstaticphysicalobject.h"
 #include "ogairphysicalobject.h"
 #include "oglandphysicalobject.h"
+#include "ogplayerphysicalobject.h"
 #include <algorithm>
 
 
@@ -63,6 +64,14 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 	case OG_PHYSICS_AIRBOT:
 		{
 			COGAirPhysicalObject* pObj = new COGAirPhysicalObject();
+			pObj->Create (_Aabb);
+			return pObj;
+		}
+		break;
+
+	case OG_PHYSICS_PLAYER:
+		{
+			COGPlayerPhysicalObject* pObj = new COGPlayerPhysicalObject();
 			pObj->Create (_Aabb);
 			return pObj;
 		}

@@ -79,6 +79,8 @@ CEditorCanvas::CEditorCanvas (  wxWindow *parent,
 	m_bRedrawPatch = false;
 
 	m_bIntersectionFound = false;
+    
+    m_SettingsMode = SETMODE_NONE;
 }
 
 
@@ -126,7 +128,9 @@ void CEditorCanvas::Render()
 	m_mView = GetSceneGraph()->GetCamera()->Update();
 	glLoadMatrixf(m_mView.f);
 
-    GetPhysics()->Update(10);
+    GetSceneGraph()->GetLight()->Apply();
+
+    GetPhysics()->Update(0);
     GetActorManager()->Update(10);
 
 	if (m_pCurLevel)
@@ -200,6 +204,27 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 
 		case EDITMODE_SETTINGS:
 			{
+                if (m_pCurLevel)
+				{
+                    if (bLmb)
+                    {
+                        m_bIntersectionFound = m_pCurLevel->GetTerrain()->GetRayIntersection(vPos, vVec, &m_vIntersection);
+                        if (m_bIntersectionFound)
+                        {
+                            switch (m_SettingsMode)
+                            {
+                            case SETMODE_LEVEL_START:
+                                m_pCurLevel->SetStartPosition(m_vIntersection);
+                                break;
+
+                            case SETMODE_LEVEL_FINISH:
+                                m_pCurLevel->SetFinishPosition(m_vIntersection);
+                                break;
+                            }
+                            m_bRedrawPatch = true;
+                        }
+                    }
+				}
 			}
 			break;
 		}
@@ -256,10 +281,6 @@ void CEditorCanvas::InitGL()
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);
-
-	GetSceneGraph()->GetLight()->SetDirection(Vec4(0.0f, 0.0f, 1.0f, 0.0f));
-	GetSceneGraph()->GetLight()->SetColor(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	GetSceneGraph()->GetLight()->Apply();
 }
 
 
@@ -309,7 +330,16 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
     switch (event.GetKeyCode())
     {
     case WXK_UP:
-		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(0, 0, -1));
+        if (event.ControlDown())
+        {
+            if (m_pPickedActor)
+            {
+                Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.z -= 1.0f;
+                m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
+            }
+        }
+        else
+		    GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(0, 0, -1));
 		mouse_x = event.GetX();
 		mouse_y = event.GetY();
 		m_bMouseMoved = true;
@@ -317,7 +347,16 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
         break;
 
 	case WXK_DOWN:
-		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(0, 0, 1));
+        if (event.ControlDown())
+        {
+            if (m_pPickedActor)
+            {
+                Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.z += 1.0f;
+                m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
+            }
+        }
+        else
+    		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(0, 0, 1));
 		mouse_x = event.GetX();
 		mouse_y = event.GetY();
 		m_bMouseMoved = true;
@@ -325,7 +364,16 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
         break;
 
 	case WXK_LEFT:
-		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(-1, 0, 0));
+        if (event.ControlDown())
+        {
+            if (m_pPickedActor)
+            {
+                Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.x -= 1.0f;
+                m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
+            }
+        }
+        else
+    		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(-1, 0, 0));
 		mouse_x = event.GetX();
 		mouse_y = event.GetY();
 		m_bMouseMoved = true;
@@ -333,10 +381,43 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
         break;
 
 	case WXK_RIGHT:
-		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(1, 0, 0));
+        if (event.ControlDown())
+        {
+            if (m_pPickedActor)
+            {
+                Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.x += 1.0f;
+                m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
+            }
+        }
+        else
+    		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(1, 0, 0));
 		mouse_x = event.GetX();
 		mouse_y = event.GetY();
 		m_bMouseMoved = true;
+		this->Refresh();
+        break;
+
+    case WXK_PAGEUP:
+        if (event.ControlDown())
+        {
+            if (m_pPickedActor)
+            {
+                Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.y += 1.0f;
+                m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
+            }
+        }
+		this->Refresh();
+        break;
+
+    case WXK_PAGEDOWN:
+        if (event.ControlDown())
+        {
+            if (m_pPickedActor)
+            {
+                Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.y -= 1.0f;
+                m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
+            }
+        }
 		this->Refresh();
         break;
 
@@ -484,6 +565,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
 		this->Refresh();
         break;
     }
+
     event.Skip();
 }
 
@@ -508,6 +590,7 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 		break;
 
 	case CMD_EDITMODE_OBJECTS:
+        m_SettingsMode = SETMODE_NONE;
         m_pPickedActor = NULL;
         m_vCurRotation = Vec3(0, 0, 0);
         m_vCurScaling = Vec3(1, 1, 1);
@@ -518,6 +601,7 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 		break;
 
 	case CMD_EDITMODE_ADJUST:
+        m_SettingsMode = SETMODE_NONE;
         m_vCurRotation = Vec3(0, 0, 0);
         m_vCurScaling = Vec3(1, 1, 1);
         m_pPickedActor = NULL;
@@ -525,6 +609,7 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 		break;
 
 	case CMD_EDITMODE_SETTINGS:
+        m_SettingsMode = SETMODE_NONE;
         m_vCurRotation = Vec3(0, 0, 0);
         m_vCurScaling = Vec3(1, 1, 1);
         m_pPickedActor = NULL;
@@ -533,6 +618,14 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 
     case CMD_LEVEL_SAVE:
         GetLevelManager()->SaveLevel(m_pCurLevel);
+        break;
+
+	case CMD_SETTINGSMODE_LEVSTART:
+        m_SettingsMode = SETMODE_LEVEL_START;
+        break;
+
+	case CMD_SETTINGSMODE_LEVFINISH:
+        m_SettingsMode = SETMODE_LEVEL_FINISH;
         break;
 	}
 	Refresh ();
@@ -576,6 +669,17 @@ void CEditorCanvas::RenderHelpers()
 		DrawPatchGrid (1, &m_vIntersection);
 		m_bRedrawPatch = false;
 	}
+
+    if (m_pCurLevel)
+    {
+        Vec3 vS1 = m_pCurLevel->GetStartPosition(); vS1.y = -10.0f;
+        Vec3 vS2 = m_pCurLevel->GetStartPosition(); vS2.y = 200.0f;
+        DrawLine(vS1, vS2);
+
+        Vec3 vF1 = m_pCurLevel->GetFinishPosition(); vF1.y = -10.0f;
+        Vec3 vF2 = m_pCurLevel->GetFinishPosition(); vF2.y = 200.0f;
+        DrawLine(vF1, vF2);
+    }
 
     glEnable(GL_LIGHTING);
 	glEnable(GL_TEXTURE_2D);

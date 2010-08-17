@@ -116,6 +116,9 @@ void COGLevelManager::UnloadLevel (IOGLevel* _pLevel)
 // save level.
 bool COGLevelManager::SaveLevel (IOGLevel* _pLevel)
 {
+    if (_pLevel == NULL)
+        return false;
+
     return _pLevel->Save();
 }
 

@@ -9,7 +9,7 @@
 #ifndef OGLANDPHYSICALOBJECT_H_
 #define OGLANDPHYSICALOBJECT_H_
 
-#include "OGPhysicalObject.h"
+#include "ogphysicalobject.h"
 
 
 class COGLandPhysicalObject : public COGPhysicalObject

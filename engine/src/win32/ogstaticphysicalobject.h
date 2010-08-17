@@ -9,7 +9,7 @@
 #ifndef OGSTATICPHYSICALOBJECT_H_
 #define OGSTATICPHYSICALOBJECT_H_
 
-#include "OGPhysicalObject.h"
+#include "ogphysicalobject.h"
 
 
 class COGStaticPhysicalObject : public COGPhysicalObject

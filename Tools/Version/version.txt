@@ -2,6 +2,17 @@ Tools: ver. 0.06, 11-Aug-2010
 
 ChangeList:
 
+0.07:
+- [OG] added some player support;
+- [OG] fixed compatibility with iOS;
+- [OG] level start, level finish, light direction are read from the level scene;
+- [MapEditor] fixed lighting direction issue appeared in MapEditor 0.06;
+- [MapEditor] Ctrl+Arrows moves selected object in +-x and +-z and Ctrl+PgUp/Ctrl+PgDown moves selected object in +-y;
+- [MapEditor] Settings mode (3rd mode button on toolbar) allows to setup level start and level finish (LMB+drag);
+- [Game] iOS first draft;
+- [Game] auto-moving camera, player's craft is following it;
+- [Game] game finishes after reaching the finish line;
+
 0.06 (11-Aug-2010):
 - [OG] code clean-up;
 - [OG] added support for different actor types in resource manager (actor_type property in 'Model' entries);

@@ -9,7 +9,7 @@
 #ifndef OGAIRPHYSICALOBJECT_H_
 #define OGAIRPHYSICALOBJECT_H_
 
-#include "OGPhysicalObject.h"
+#include "ogphysicalobject.h"
 
 
 class COGAirPhysicalObject : public COGPhysicalObject

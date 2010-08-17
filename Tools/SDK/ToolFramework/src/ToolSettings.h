@@ -13,6 +13,14 @@ enum TerrainEditMode
 };
 
 
+enum SettingsMode
+{
+    SETMODE_NONE = -1,
+    SETMODE_LEVEL_START,
+    SETMODE_LEVEL_FINISH
+};
+
+
 class ToolSettings
 {
 public:

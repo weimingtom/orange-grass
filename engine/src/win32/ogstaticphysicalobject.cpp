@@ -6,8 +6,8 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "orangegrass.h"
-#include "OGStaticPhysicalObject.h"
+#include "OrangeGrass.h"
+#include "ogstaticphysicalobject.h"
 
 
 COGStaticPhysicalObject::COGStaticPhysicalObject () : COGPhysicalObject()

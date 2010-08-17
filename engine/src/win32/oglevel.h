@@ -34,7 +34,13 @@ public:
 
 	// get level start finish.
 	virtual const Vec3& GetFinishPosition () const;
-	
+
+	// set level start position.
+	virtual void SetStartPosition (const Vec3& _Pos);
+
+	// set level start finish.
+	virtual void SetFinishPosition (const Vec3& _Pos);
+
 	// save level.
 	virtual bool Save ();
 

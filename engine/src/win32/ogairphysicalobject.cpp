@@ -6,8 +6,8 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "orangegrass.h"
-#include "OGAirPhysicalObject.h"
+#include "OrangeGrass.h"
+#include "ogairphysicalobject.h"
 
 
 COGAirPhysicalObject::COGAirPhysicalObject () : COGPhysicalObject()

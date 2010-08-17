@@ -41,6 +41,7 @@ bool CGameScreenController::Init ()
 	m_pCamera = m_pSg->GetCamera();
 
     m_pCurLevel = GetLevelManager()->LoadLevel(std::string("level_0"));
+    m_pSg->GetLight()->Apply();
     
 #ifdef WIN32
     float fRatio = float(SCR_WIDTH)/float(SCR_HEIGHT);
@@ -50,13 +51,13 @@ bool CGameScreenController::Init ()
 	Vec3 vRight = Vec3(1, 0, 0);
 #endif
     
-    MatrixPerspectiveFovRH(m_mProjection, 1.0f, fRatio, 4.0f, 450.0f, true);
+    MatrixPerspectiveFovRH(m_mProjection, 1.0f, fRatio, 4.0f, 200.0f, true);
 	
 	const Vec3& vTarget = m_pCurLevel->GetStartPosition();
     Vec3 vDir (0, 0.6f, 0.4f);
     vDir = vDir.normalize();
     Vec3 vUp = vDir.cross (vRight);
-    m_pCamera->Setup (vTarget + (vDir*120.0f), vTarget, vUp);
+    m_pCamera->Setup (vTarget + (vDir*150.0f), vTarget, vUp);
 
     glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
     glEnable(GL_TEXTURE_2D);
@@ -66,8 +67,6 @@ bool CGameScreenController::Init ()
     glEnable(GL_DEPTH_TEST);
     glDisable(GL_CULL_FACE);
     glEnable(GL_NORMALIZE);
-
-    m_pSg->GetLight()->Apply();
 
     return true;
 }
@@ -79,14 +78,14 @@ void CGameScreenController::Update (unsigned long _ElapsedTime)
 	if (m_State != CSTATE_ACTIVE)
 		return;
     
-    m_pCamera->Strafe(0.5f, Vec3(0,0,-1.0f));
+    m_pCamera->Strafe(0.02f * _ElapsedTime, Vec3(0,0,-1.0f));
 
     GetPhysics()->Update(_ElapsedTime);
     GetActorManager()->Update(_ElapsedTime);
 
 	const Vec3& vFinishPoint = m_pCurLevel->GetFinishPosition();
 	const Vec3& vCurPoint = m_pCamera->GetPosition();
-	if (Dist2DSq(vCurPoint, vFinishPoint) <= 90000.0f)
+	if (Dist2DSq(vCurPoint, vFinishPoint) <= 10000.0f)
 	{
 		Deactivate();
 	}
@@ -106,6 +105,8 @@ void CGameScreenController::RenderScene ()
     glMatrixMode(GL_MODELVIEW);
     m_mView = m_pCamera->Update();
     glLoadMatrixf(m_mView.f);
+
+    m_pSg->GetLight()->Apply();
 
     if (m_pCurLevel)
         m_pCurLevel->GetTerrain()->Render(m_mView);

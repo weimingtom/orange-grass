@@ -2,8 +2,22 @@
 #define EDITORSETTINGSFRAME_H_
 
 #include "wx/clrpicker.h"
+#include "wx/treectrl.h"
 #include <ToolFramework.h>
 #include <vector>
+
+
+struct SettingsItem : public wxTreeItemData
+{
+	SettingsItem (SettingsMode _type, const wxString& _name)
+	{
+		type = _type;
+		name = _name;
+	}
+
+	SettingsMode	type;
+	wxString		name;
+};
 
 
 /// @brief Application's tool window frame.
@@ -23,11 +37,15 @@ public:
 						const wxSize& size, 
 						long style = wxCAPTION);
 
+    /// @brief Settings switching event handler
+    void OnSettingsSwitch ( wxTreeEvent& event );
+
 private:
 
     DECLARE_EVENT_TABLE()
 
-    wxPanel*    m_pPanel;
+    wxPanel*        m_pPanel;
+    wxTreeCtrl*     m_pTree;
 };
 
 #endif

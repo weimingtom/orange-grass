@@ -20,12 +20,18 @@ public:
 		
 	// get associated terrain.
 	virtual IOGTerrain* GetTerrain () = 0;
-		
+
 	// get level start position.
 	virtual const Vec3& GetStartPosition () const = 0;
-		
+
 	// get level start finish.
 	virtual const Vec3& GetFinishPosition () const = 0;
+
+	// set level start position.
+	virtual void SetStartPosition (const Vec3& _Pos) = 0;
+
+	// set level start finish.
+	virtual void SetFinishPosition (const Vec3& _Pos) = 0;
 	
 	// save level.
 	virtual bool Save () = 0;

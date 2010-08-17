@@ -6,8 +6,8 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "orangegrass.h"
-#include "OGLandPhysicalObject.h"
+#include "OrangeGrass.h"
+#include "oglandphysicalobject.h"
 
 
 COGLandPhysicalObject::COGLandPhysicalObject () : COGPhysicalObject()

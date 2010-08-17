@@ -6,7 +6,7 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "orangegrass.h"
+#include "OrangeGrass.h"
 #include "ogphysicalobject.h"
 
 

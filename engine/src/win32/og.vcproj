@@ -306,6 +306,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogplayerphysicalobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogplayerphysicalobject.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogstaticphysicalobject.cpp"
 					>
 				</File>
