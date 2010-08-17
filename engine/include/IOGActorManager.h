@@ -38,7 +38,7 @@ public:
 	virtual void DestroyActor (IOGActor* _pActor) = 0;
 
 	// Update actors.
-	virtual void Update (int _ElapsedTime) = 0;
+	virtual void Update (unsigned long _ElapsedTime) = 0;
 
 	// Get actors list.
     virtual const std::vector<IOGActor*>& GetActorsList () const = 0;

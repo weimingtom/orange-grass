@@ -29,7 +29,7 @@ public:
         const Vec3& _vScale) = 0;
 
 	// Update actor.
-	virtual void Update (int _ElapsedTime);
+	virtual void Update (unsigned long _ElapsedTime);
 
 	// Adding to actor manager event handler.
 	virtual void OnAddedToManager ();

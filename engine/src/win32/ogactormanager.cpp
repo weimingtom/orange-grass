@@ -114,7 +114,7 @@ void COGActorManager::DestroyActor (IOGActor* _pActor)
 
 
 // Update actors.
-void COGActorManager::Update (int _ElapsedTime)
+void COGActorManager::Update (unsigned long _ElapsedTime)
 {
     std::vector<IOGActor*>::iterator iter = m_ActorsList.begin();
     for (; iter != m_ActorsList.end(); ++iter)

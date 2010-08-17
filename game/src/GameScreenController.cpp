@@ -36,20 +36,19 @@ bool CGameScreenController::Init ()
     
 #ifdef WIN32
     float fRatio = float(SCR_WIDTH)/float(SCR_HEIGHT);
+	Vec3 vRight = Vec3(0, 1, 0);
 #else
     float fRatio = float(SCR_HEIGHT)/float(SCR_WIDTH);
+	Vec3 vRight = Vec3(1, 0, 0);
 #endif
     
     MatrixPerspectiveFovRH(m_mProjection, 1.0f, fRatio, 4.0f, 4500.0f, true);
 	
-    //GetSceneGraph()->GetCamera()->Setup (Vec3(200, 150, 0), Vec3(200, 150, -150), Vec3(0, 1, 0));
-	//GetSceneGraph()->GetCamera()->RotateView (-1.2f, Vec3(1, 0, 0));
-
     Vec3 vTarget (150, 0, -100);
     Vec3 vDir (0, 0.6f, 0.4f);
     vDir = vDir.normalize();
-    Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
-    GetSceneGraph()->GetCamera()->Setup (vTarget + (vDir*100.0f), vTarget, vUp);
+    Vec3 vUp = vDir.cross (vRight);
+    GetSceneGraph()->GetCamera()->Setup (vTarget + (vDir*120.0f), vTarget, vUp);
 
     glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
     glEnable(GL_TEXTURE_2D);
@@ -74,8 +73,8 @@ void CGameScreenController::Update (unsigned int _ElapsedTime)
     
     GetSceneGraph()->GetCamera()->Strafe(0.5f, Vec3(0,0,-1.0f));
 
-    GetPhysics()->Update(10);
-    GetActorManager()->Update(10);
+    GetPhysics()->Update(_ElapsedTime);
+    GetActorManager()->Update(_ElapsedTime);
 }
 
 

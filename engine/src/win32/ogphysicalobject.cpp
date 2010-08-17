@@ -97,7 +97,7 @@ const IOGObb& COGPhysicalObject::GetOBB () const
 
 
 // Update transforms.
-void COGPhysicalObject::Update (int _ElapsedTime)
+void COGPhysicalObject::Update (unsigned long _ElapsedTime)
 {
     WorldMatrixFromTransforms(m_mWorld, m_vPosition, m_vRotation, m_vScaling);
     m_Obb.UpdateTransform(m_mWorld);

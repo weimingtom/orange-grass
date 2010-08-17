@@ -41,13 +41,15 @@ void Shutdown()
 /// Application main cycle.
 void Run ()
 {
-    pGameSystem->Update(10);
-    pGameSystem->Draw();
+	if (pGameSystem->GetControllerState() != SYSSTATE_EXIT)
+	{
+		pGameSystem->Update(10);
+		pGameSystem->Draw();
 
-    glFlush();
-    SwapBuffers(shDC);
-
-    if (pGameSystem->GetControllerState() == SYSSTATE_EXIT)
+		glFlush();
+		SwapBuffers(shDC);
+	}
+	else
     {
         Shutdown();
     }

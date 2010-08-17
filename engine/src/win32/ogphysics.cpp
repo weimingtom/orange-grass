@@ -96,7 +96,7 @@ void COGPhysics::RemoveObject (IOGPhysicalObject* _pObject)
 
 
 // Update transforms.
-void COGPhysics::Update (int _ElapsedTime)
+void COGPhysics::Update (unsigned long _ElapsedTime)
 {
     std::vector<IOGPhysicalObject*>::iterator iter = m_ObjList.begin();
     for (; iter != m_ObjList.end(); ++iter)

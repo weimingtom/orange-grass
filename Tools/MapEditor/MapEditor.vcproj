@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\SDK\wxWidgets\include;..\..\engine\include;..\..\engine\SDK\PVR\include;..\..\engine\sdk\OpenGL2\include;..\SDK\ToolFramework\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;wxUSE_GUI=1;_WXDEBUG_;WXDEBUG=1;YAML_DECLARE_STATIC;OG_EDITOR"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;wxUSE_GUI=1;_WXDEBUG_;WXDEBUG=1"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"

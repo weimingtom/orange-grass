@@ -55,7 +55,7 @@ public:
 	virtual const IOGObb& GetOBB () const;
 
 	// Update transforms.
-	virtual void Update (int _ElapsedTime);
+	virtual void Update (unsigned long _ElapsedTime);
 
 protected:
 

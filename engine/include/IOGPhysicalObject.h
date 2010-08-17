@@ -62,7 +62,7 @@ public:
 	virtual const IOGObb& GetOBB () const = 0;
 
 	// Update transforms.
-	virtual void Update (int _ElapsedTime) = 0;
+	virtual void Update (unsigned long _ElapsedTime) = 0;
 };
 
 #endif

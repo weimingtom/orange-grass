@@ -34,7 +34,7 @@ public:
 	virtual void RemoveObject (IOGPhysicalObject* _pObject);
 
 	// Update transforms.
-	virtual void Update (int _ElapsedTime);
+	virtual void Update (unsigned long _ElapsedTime);
 
 private:
 

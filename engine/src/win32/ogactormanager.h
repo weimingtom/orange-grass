@@ -36,7 +36,7 @@ public:
 	virtual void DestroyActor (IOGActor* _pActor);
 
 	// Update actors.
-	virtual void Update (int _ElapsedTime);
+	virtual void Update (unsigned long _ElapsedTime);
 
 	// Get nearest intersected actor.
 	virtual IOGActor* GetNearestIntersectedActor (

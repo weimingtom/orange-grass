@@ -28,7 +28,7 @@ public:
 	virtual ~IOGActor() {}
 
 	// Update actor.
-	virtual void Update (int _ElapsedTime) = 0;
+	virtual void Update (unsigned long _ElapsedTime) = 0;
 
 	// Adding to actor manager event handler.
 	virtual void OnAddedToManager () = 0;
