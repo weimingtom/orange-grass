@@ -46,12 +46,16 @@ public:
 	// Get actors list.
     virtual const std::vector<IOGActor*>& GetActorsList () const;
 
+	// Get player's actor.
+    virtual IOGActor* GetPlayersActor ();
+
 	// Parse the actor type string and convert it to internal type
 	virtual OGActorType ParseActorType (const std::string& _ActorTypeStr);
 
 private:
 
     std::vector<IOGActor*>	m_ActorsList;
+	IOGActor*				m_pPlayersActor;
 };
 
 #endif

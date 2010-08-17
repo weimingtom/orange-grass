@@ -350,6 +350,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogactorplayer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactorplayer.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogactorstatic.cpp"
 					>
 				</File>

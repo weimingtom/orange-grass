@@ -54,7 +54,7 @@ bool COGActorLandBot::Create (const std::string& _ModelAlias,
 	if (!m_pNode)
 		return false;
 	
-    m_pPhysicalObject = GetPhysics()->CreateObject(OG_PHYSICS_STATIC, m_pModel->GetAABB());
+    m_pPhysicalObject = GetPhysics()->CreateObject(OG_PHYSICS_LANDBOT, m_pModel->GetAABB());
     if (!m_pPhysicalObject)
         return false;
 

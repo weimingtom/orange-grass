@@ -39,6 +39,7 @@ CGameSystem::~CGameSystem ()
 ///	@brief Exit from the program.
 void CGameSystem::Exit ()
 {
+	m_pGameScreen = NULL;
     m_State = SYSSTATE_EXIT;
 }
 
@@ -56,8 +57,14 @@ void CGameSystem::ChangeModel ( int _Model, int _Param, int _Param2 )
     {
     case SCRTYPE_LOAD:
         m_pCurScreen = m_pGameScreen;
-        m_pGameScreen->Init();
-        m_pGameScreen->Activate();
+        if (m_pGameScreen->Init())
+		{
+	        m_pGameScreen->Activate();
+		}
+		else
+		{
+			Exit();
+		}
         break;
 
     case SCRTYPE_GAME:
@@ -79,10 +86,19 @@ void CGameSystem::Update ( unsigned long _ElapsedTime )
 
     m_pCurScreen->Update (_ElapsedTime);
     ControllerState state = m_pCurScreen->GetState();
-    if (state == CSTATE_INACTIVE)
-    {
+	switch (state)
+	{
+	case CSTATE_INACTIVE:
         ChangeModel(1, 0, 0);
-    }
+		break;
+
+	case CSTATE_FAILED:
+		Exit();
+		break;
+
+	default:
+		break;
+	}
 }
 
 
@@ -123,7 +139,6 @@ void CGameSystem::OnKeyUp ( int _KeyCode )
 /// @param _Y y coordinate.
 void CGameSystem::OnPointerDown ( int _X, int _Y )
 {
-    Exit();
 }
 
 

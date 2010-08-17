@@ -20,7 +20,8 @@ enum ControllerState
 {
 	CSTATE_NO,
 	CSTATE_ACTIVE,
-	CSTATE_INACTIVE
+	CSTATE_INACTIVE,
+	CSTATE_FAILED
 };
 
 class IScreenController

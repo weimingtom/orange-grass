@@ -1,5 +1,5 @@
 /*
- *  ogactorairbot.cpp
+ *  ogactorplayer.cpp
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 12.11.09.
@@ -7,16 +7,16 @@
  *
  */
 #include "orangegrass.h"
-#include "ogactorairbot.h"
+#include "ogactorplayer.h"
 #include "IOGMath.h"
 
 
-COGActorAirBot::COGActorAirBot(OGActorType _Type) : COGActor(_Type)
+COGActorPlayer::COGActorPlayer(OGActorType _Type) : COGActor(_Type)
 {
 }
 
 
-COGActorAirBot::~COGActorAirBot()
+COGActorPlayer::~COGActorPlayer()
 {
 	if (m_pNode)
 	{
@@ -38,7 +38,7 @@ COGActorAirBot::~COGActorAirBot()
 
 
 // Create actor.
-bool COGActorAirBot::Create (const std::string& _ModelAlias,
+bool COGActorPlayer::Create (const std::string& _ModelAlias,
                              const Vec3& _vPos,
                              const Vec3& _vRot,
                              const Vec3& _vScale)

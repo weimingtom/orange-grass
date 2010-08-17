@@ -13,6 +13,8 @@
 
 
 CGameScreenController::CGameScreenController() :	m_pResourceMgr(NULL),
+													m_pSg(NULL),
+													m_pCamera(NULL),
 													m_State(CSTATE_NO),
                                                     m_Type(SCRTYPE_GAME),
 													m_pCurLevel(NULL)
@@ -23,6 +25,9 @@ CGameScreenController::CGameScreenController() :	m_pResourceMgr(NULL),
 CGameScreenController::~CGameScreenController()
 {
 	m_pResourceMgr = NULL;
+	m_pSg = NULL;
+	m_pCamera = NULL;
+
 	m_State = CSTATE_NO;
 	m_pCurLevel = NULL;
 }
@@ -32,6 +37,9 @@ CGameScreenController::~CGameScreenController()
 bool CGameScreenController::Init ()
 {
 	m_pResourceMgr = GetResourceMgr();
+	m_pSg = GetSceneGraph();
+	m_pCamera = m_pSg->GetCamera();
+
     m_pCurLevel = GetLevelManager()->LoadLevel(std::string("level_0"));
     
 #ifdef WIN32
@@ -48,7 +56,7 @@ bool CGameScreenController::Init ()
     Vec3 vDir (0, 0.6f, 0.4f);
     vDir = vDir.normalize();
     Vec3 vUp = vDir.cross (vRight);
-    GetSceneGraph()->GetCamera()->Setup (vTarget + (vDir*120.0f), vTarget, vUp);
+    m_pCamera->Setup (vTarget + (vDir*120.0f), vTarget, vUp);
 
     glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
     glEnable(GL_TEXTURE_2D);
@@ -59,7 +67,7 @@ bool CGameScreenController::Init ()
     glDisable(GL_CULL_FACE);
     glEnable(GL_NORMALIZE);
 
-    GetSceneGraph()->GetLight()->Apply();
+    m_pSg->GetLight()->Apply();
 
     return true;
 }
@@ -71,13 +79,13 @@ void CGameScreenController::Update (unsigned long _ElapsedTime)
 	if (m_State != CSTATE_ACTIVE)
 		return;
     
-    GetSceneGraph()->GetCamera()->Strafe(0.5f, Vec3(0,0,-1.0f));
+    m_pCamera->Strafe(0.5f, Vec3(0,0,-1.0f));
 
     GetPhysics()->Update(_ElapsedTime);
     GetActorManager()->Update(_ElapsedTime);
 
 	const Vec3& vFinishPoint = m_pCurLevel->GetFinishPosition();
-	const Vec3& vCurPoint = GetSceneGraph()->GetCamera()->GetPosition();
+	const Vec3& vCurPoint = m_pCamera->GetPosition();
 	if (Dist2DSq(vCurPoint, vFinishPoint) <= 90000.0f)
 	{
 		Deactivate();
@@ -96,13 +104,13 @@ void CGameScreenController::RenderScene ()
     glLoadMatrixf(m_mProjection.f);
 
     glMatrixMode(GL_MODELVIEW);
-    m_mView = GetSceneGraph()->GetCamera()->Update();
+    m_mView = m_pCamera->Update();
     glLoadMatrixf(m_mView.f);
 
     if (m_pCurLevel)
         m_pCurLevel->GetTerrain()->Render(m_mView);
 
-    GetSceneGraph()->Render(m_mView);
+    m_pSg->Render(m_mView);
 }
 
 

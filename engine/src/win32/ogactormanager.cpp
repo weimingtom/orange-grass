@@ -11,11 +11,12 @@
 #include "ogactorstatic.h"
 #include "ogactorlandbot.h"
 #include "ogactorairbot.h"
+#include "ogactorplayer.h"
 #include "IOGMath.h"
 #include <algorithm>
 
 
-COGActorManager::COGActorManager ()
+COGActorManager::COGActorManager ()	: m_pPlayersActor(NULL)
 {
 }
 
@@ -29,6 +30,7 @@ COGActorManager::~COGActorManager ()
 // Clear actors manager
 void COGActorManager::Clear ()
 {
+	m_pPlayersActor = NULL;
     std::vector<IOGActor*>::iterator iter = m_ActorsList.begin();
     for (; iter != m_ActorsList.end(); ++iter)
     {
@@ -84,6 +86,18 @@ IOGActor* COGActorManager::CreateActor (
 		}
 		break;
 
+	case OG_ACTOR_PLAYER:
+		{
+			COGActorPlayer* pActor = new COGActorPlayer(_Type);
+			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == false)
+			{
+				OG_SAFE_DELETE(pActor);
+				return NULL;
+			}
+			return pActor;
+		}
+		break;
+
 	case OG_ACTOR_NONE:
 	default:
 		break;
@@ -96,6 +110,11 @@ IOGActor* COGActorManager::CreateActor (
 // Add actor to the list.
 void COGActorManager::AddActor (IOGActor* _pActor)
 {
+	if (_pActor->GetType() == OG_ACTOR_PLAYER)
+	{
+		m_pPlayersActor = _pActor;
+	}
+
     _pActor->OnAddedToManager();
 	m_ActorsList.push_back(_pActor);
 }
@@ -104,6 +123,11 @@ void COGActorManager::AddActor (IOGActor* _pActor)
 // Destroy actor and remove from list.
 void COGActorManager::DestroyActor (IOGActor* _pActor)
 {
+	if (_pActor == m_pPlayersActor)
+	{
+		m_pPlayersActor = NULL;
+	}
+
 	std::vector<IOGActor*>::iterator iter = std::find(m_ActorsList.begin(), m_ActorsList.end(), _pActor);
 	if (iter != m_ActorsList.end())
 	{
@@ -167,6 +191,13 @@ const std::vector<IOGActor*>& COGActorManager::GetActorsList () const
 }
 
 
+// Get player's actor.
+IOGActor* COGActorManager::GetPlayersActor ()
+{
+	return m_pPlayersActor;
+}
+
+
 // Parse the actor type string and convert it to internal type
 OGActorType COGActorManager::ParseActorType (const std::string& _ActorTypeStr)
 {
@@ -181,6 +212,10 @@ OGActorType COGActorManager::ParseActorType (const std::string& _ActorTypeStr)
     else if (_ActorTypeStr.compare(std::string("air_bot")) == 0)
     {
         return OG_ACTOR_AIRBOT;
+    }
+    else if (_ActorTypeStr.compare(std::string("player")) == 0)
+    {
+        return OG_ACTOR_PLAYER;
     }
 
     return OG_ACTOR_NONE;
