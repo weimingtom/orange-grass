@@ -10,8 +10,8 @@
 #define GAMESCREENCONTROLLER_H_
 
 #include "IScreenController.h"
-#include <IOGResourceMgr.h>
-#include <IOGLevelManager.h>
+#include "IOGResourceMgr.h"
+#include "IOGLevelManager.h"
 
 
 class CGameScreenController : public IScreenController

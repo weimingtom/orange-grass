@@ -7,7 +7,7 @@
  *
  */
 #include "GameSystem.h"
-#include <OrangeGrass.h>
+#include "OrangeGrass.h"
 #include "LoadScreenController.h"
 #include "GameScreenController.h"
 
@@ -62,6 +62,9 @@ void CGameSystem::ChangeModel ( int _Model, int _Param, int _Param2 )
 
     case SCRTYPE_GAME:
         Exit();
+        break;
+            
+    case SCRTYPE_NONE:
         break;
     }
 }
