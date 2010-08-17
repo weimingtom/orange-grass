@@ -468,10 +468,6 @@
 				Name="Resources"
 				>
 				<File
-					RelativePath="..\..\include\IOGDeserializer.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\include\IOGLevel.h"
 					>
 				</File>
@@ -481,10 +477,6 @@
 				</File>
 				<File
 					RelativePath="..\..\include\IOGResourceMgr.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\IOGSerializer.h"
 					>
 				</File>
 			</Filter>
