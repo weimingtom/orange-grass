@@ -31,7 +31,7 @@ public:
     virtual ScreenType GetType () const { return m_Type; }
 
 	// Update controller
-	virtual void Update (unsigned int _ElapsedTime);
+	virtual void Update (unsigned long _ElapsedTime);
 	
 	// Render controller scene
 	virtual void RenderScene ();

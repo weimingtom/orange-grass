@@ -32,13 +32,41 @@ static float Dist ( int _x1, int _y1, int _x2, int _y2 )
 }
 
 
+// Get distance between two points (2D)
+static float Dist2D ( const Vec3& _p1, const Vec3& _p2 )
+{
+	float xdiff = _p1.x - _p2.x;
+	float zdiff = _p1.z - _p2.z;
+	return sqrtf (xdiff*xdiff + zdiff*zdiff);
+}
+
+
+// Get square distance between two points (2D)
+static float Dist2DSq ( const Vec3& _p1, const Vec3& _p2 )
+{
+	float xdiff = _p1.x - _p2.x;
+	float zdiff = _p1.z - _p2.z;
+	return (xdiff*xdiff + zdiff*zdiff);
+}
+
+
 // Get distance between two points
 static float Dist3D ( const Vec3& _p1, const Vec3& _p2 )
 {
-	float xdiff = (float)(_p1.x - _p2.x);
-	float ydiff = (float)(_p1.y - _p2.y);
-	float zdiff = (float)(_p1.z - _p2.z);
+	float xdiff = _p1.x - _p2.x;
+	float ydiff = _p1.y - _p2.y;
+	float zdiff = _p1.z - _p2.z;
 	return sqrtf (xdiff*xdiff + ydiff*ydiff + zdiff*zdiff);
+}
+
+
+// Get square distance between two points
+static float Dist3DSq ( const Vec3& _p1, const Vec3& _p2 )
+{
+	float xdiff = _p1.x - _p2.x;
+	float ydiff = _p1.y - _p2.y;
+	float zdiff = _p1.z - _p2.z;
+	return (xdiff*xdiff + ydiff*ydiff + zdiff*zdiff);
 }
 
 

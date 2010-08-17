@@ -28,6 +28,12 @@ public:
 
 	// get associated terrain.
 	virtual IOGTerrain* GetTerrain ();
+
+	// get level start position.
+	virtual const Vec3& GetStartPosition () const;
+
+	// get level start finish.
+	virtual const Vec3& GetFinishPosition () const;
 	
 	// save level.
 	virtual bool Save ();
@@ -35,6 +41,10 @@ public:
 private:
 
     IOGTerrain* m_pTerrain;
+	Vec3		m_vStartPos;
+	Vec3		m_vFinishPos;
+	Vec3		m_vLightDir;
+	Vec3		m_vLightColor;
 };
 
 #endif

@@ -45,7 +45,7 @@ bool CLoadScreenController::Init ()
 
 
 // Update controller
-void CLoadScreenController::Update (unsigned int _ElapsedTime)
+void CLoadScreenController::Update (unsigned long _ElapsedTime)
 {
 	if (!m_bLoaded && m_State == CSTATE_ACTIVE && m_bDisplayed)
 	{

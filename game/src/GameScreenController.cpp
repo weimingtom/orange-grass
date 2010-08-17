@@ -42,9 +42,9 @@ bool CGameScreenController::Init ()
 	Vec3 vRight = Vec3(1, 0, 0);
 #endif
     
-    MatrixPerspectiveFovRH(m_mProjection, 1.0f, fRatio, 4.0f, 4500.0f, true);
+    MatrixPerspectiveFovRH(m_mProjection, 1.0f, fRatio, 4.0f, 450.0f, true);
 	
-    Vec3 vTarget (150, 0, -100);
+	const Vec3& vTarget = m_pCurLevel->GetStartPosition();
     Vec3 vDir (0, 0.6f, 0.4f);
     vDir = vDir.normalize();
     Vec3 vUp = vDir.cross (vRight);
@@ -66,7 +66,7 @@ bool CGameScreenController::Init ()
 
 
 // Update controller
-void CGameScreenController::Update (unsigned int _ElapsedTime)
+void CGameScreenController::Update (unsigned long _ElapsedTime)
 {
 	if (m_State != CSTATE_ACTIVE)
 		return;
@@ -75,6 +75,13 @@ void CGameScreenController::Update (unsigned int _ElapsedTime)
 
     GetPhysics()->Update(_ElapsedTime);
     GetActorManager()->Update(_ElapsedTime);
+
+	const Vec3& vFinishPoint = m_pCurLevel->GetFinishPosition();
+	const Vec3& vCurPoint = GetSceneGraph()->GetCamera()->GetPosition();
+	if (Dist2DSq(vCurPoint, vFinishPoint) <= 90000.0f)
+	{
+		Deactivate();
+	}
 }
 
 

@@ -38,7 +38,7 @@ public:
 	virtual ScreenType GetType () const = 0;
 	
 	// Update controller
-	virtual void Update (unsigned int _ElapsedTime) = 0;
+	virtual void Update (unsigned long _ElapsedTime) = 0;
 	
 	// Render controller scene
 	virtual void RenderScene () = 0;

@@ -13,6 +13,10 @@
 
 COGLevel::COGLevel () : m_pTerrain(NULL)
 {
+    m_vStartPos = Vec3(150,0,-100);
+	m_vFinishPos = Vec3(150,0,-3000);
+	m_vLightDir = Vec3(0,0,1);
+	m_vLightColor = Vec3(1,1,1);
 }
 
 
@@ -59,25 +63,22 @@ bool COGLevel::Load ()
     }
 
     // Level start position
-    Vec3 vLevelStart;
-    fread(&vLevelStart.x, sizeof(float), 1, pIn);
-    fread(&vLevelStart.y, sizeof(float), 1, pIn);
-    fread(&vLevelStart.z, sizeof(float), 1, pIn);
+    fread(&m_vStartPos.x, sizeof(float), 1, pIn);
+    fread(&m_vStartPos.y, sizeof(float), 1, pIn);
+    fread(&m_vStartPos.z, sizeof(float), 1, pIn);
 
     // Level finish position
-    Vec3 vLevelFinish;
-    fread(&vLevelFinish.x, sizeof(float), 1, pIn);
-    fread(&vLevelFinish.y, sizeof(float), 1, pIn);
-    fread(&vLevelFinish.z, sizeof(float), 1, pIn);
+    fread(&m_vFinishPos.x, sizeof(float), 1, pIn);
+    fread(&m_vFinishPos.y, sizeof(float), 1, pIn);
+    fread(&m_vFinishPos.z, sizeof(float), 1, pIn);
 
     // Level finish position
-    Vec3 vLightDir;
-    fread(&vLightDir.x, sizeof(float), 1, pIn);
-    fread(&vLightDir.y, sizeof(float), 1, pIn);
-    fread(&vLightDir.z, sizeof(float), 1, pIn);
+    fread(&m_vLightDir.x, sizeof(float), 1, pIn);
+    fread(&m_vLightDir.y, sizeof(float), 1, pIn);
+    fread(&m_vLightDir.z, sizeof(float), 1, pIn);
 
-    GetSceneGraph()->GetLight()->SetDirection(Vec4(vLightDir.x, vLightDir.y, vLightDir.z, 0.0f));
-    GetSceneGraph()->GetLight()->SetColor(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+    GetSceneGraph()->GetLight()->SetDirection(Vec4(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z, 0.0f));
+    GetSceneGraph()->GetLight()->SetColor(Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f));
     GetSceneGraph()->GetLight()->Apply();
 
     unsigned int numActors = 0;
@@ -160,22 +161,19 @@ bool COGLevel::Save ()
     Vec3 vVec;
 
     // Level start position
-    vVec = Vec3(150,0,-100);
-    fwrite(&vVec.x, sizeof(float), 1, pOut);
-    fwrite(&vVec.y, sizeof(float), 1, pOut);
-    fwrite(&vVec.z, sizeof(float), 1, pOut);
+    fwrite(&m_vStartPos.x, sizeof(float), 1, pOut);
+    fwrite(&m_vStartPos.y, sizeof(float), 1, pOut);
+    fwrite(&m_vStartPos.z, sizeof(float), 1, pOut);
 
     // Level finish position
-    vVec = Vec3(150,0,-3000);
-    fwrite(&vVec.x, sizeof(float), 1, pOut);
-    fwrite(&vVec.y, sizeof(float), 1, pOut);
-    fwrite(&vVec.z, sizeof(float), 1, pOut);
+    fwrite(&m_vFinishPos.x, sizeof(float), 1, pOut);
+    fwrite(&m_vFinishPos.y, sizeof(float), 1, pOut);
+    fwrite(&m_vFinishPos.z, sizeof(float), 1, pOut);
 
     // Lighting direction
-    vVec = Vec3(0,0,1);
-    fwrite(&vVec.x, sizeof(float), 1, pOut);
-    fwrite(&vVec.y, sizeof(float), 1, pOut);
-    fwrite(&vVec.z, sizeof(float), 1, pOut);
+    fwrite(&m_vLightDir.x, sizeof(float), 1, pOut);
+    fwrite(&m_vLightDir.y, sizeof(float), 1, pOut);
+    fwrite(&m_vLightDir.z, sizeof(float), 1, pOut);
 
     // actors list
     const std::vector<IOGActor*> actors = GetActorManager()->GetActorsList();
@@ -221,4 +219,18 @@ bool COGLevel::Save ()
 IOGTerrain* COGLevel::GetTerrain ()
 {
     return m_pTerrain;
+}
+
+
+// get level start position.
+const Vec3& COGLevel::GetStartPosition () const
+{
+	return m_vStartPos;
+}
+
+
+// get level start finish.
+const Vec3& COGLevel::GetFinishPosition () const
+{
+	return m_vFinishPos;
 }

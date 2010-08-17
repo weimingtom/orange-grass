@@ -11,6 +11,7 @@
 
 #include "IScreenController.h"
 #include "IOGResourceMgr.h"
+#include "IOGSceneGraph.h"
 #include "IOGLevelManager.h"
 
 
@@ -30,7 +31,7 @@ public:
     virtual ScreenType GetType () const { return m_Type; }
 
 	// Update controller
-	virtual void Update (unsigned int _ElapsedTime);
+	virtual void Update (unsigned long _ElapsedTime);
 		
 	// Render controller scene
 	virtual void RenderScene ();
@@ -44,6 +45,9 @@ public:
 private:
 		
 	IOGResourceMgr*	m_pResourceMgr;
+	IOGSceneGraph*	m_pSg;
+	IOGCamera*		m_pCamera;
+
 	ControllerState	m_State;
     ScreenType      m_Type;
     IOGLevel*	    m_pCurLevel;
