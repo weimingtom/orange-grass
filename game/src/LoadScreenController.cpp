@@ -6,9 +6,9 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include <OpenGL2.h>
+#include "OpenGL2.h"
 #include "LoadScreenController.h"
-#include <OrangeGrass.h>
+#include "OrangeGrass.h"
 #include "common.h"
 
 
@@ -58,6 +58,11 @@ void CLoadScreenController::Update (unsigned int _ElapsedTime)
 			m_bLoaded = true;
 			Deactivate();
 		}
+        else 
+        {
+            printf("Failed to load level\n");
+        }
+
 	}
 }
 
