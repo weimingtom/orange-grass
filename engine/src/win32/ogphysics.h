@@ -36,9 +36,17 @@ public:
 	// Update transforms.
 	virtual void Update (unsigned long _ElapsedTime);
 
+    // Set level borders
+    virtual void SetLevelBorders (const Vec3& _vStart, const Vec3& _vFinish, float _fWidth);
+
+    // Get borders at point
+    virtual void GetBordersAtPoint (const Vec3& _vPos, Vec3& _vLeft, Vec3& _vRight);
+
 private:
 
 	std::vector<IOGPhysicalObject*>	m_ObjList;
+    Vec3    m_vLeftBorder[3];
+    Vec3    m_vRightBorder[3];
 };
 
 #endif

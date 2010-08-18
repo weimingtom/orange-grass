@@ -701,7 +701,7 @@ void CEditorCanvas::RenderHelpers()
     {
 		DrawLevelRanges(m_pCurLevel->GetStartPosition(),
 			m_pCurLevel->GetFinishPosition(),
-			200.0f,
+            m_pCurLevel->GetActiveWidth(),
 			m_fAirBotHeight);
     }
 

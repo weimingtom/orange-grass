@@ -84,3 +84,12 @@ const MATRIX& COGCamera::Update ()
 	MatrixLookAtRH(m_View, m_Position, m_Direction, m_Up);
 	return m_View;
 }
+
+
+// get left and right edges.
+void COGCamera::GetEdges (Vec3& _vLeft, Vec3& _vRight, float _fFOV, float _fDist)
+{
+    float width = tanf(_fFOV / 2) * _fDist;
+    _vLeft = m_Direction + Vec3(-1.0f, 0, 0) * width;
+    _vRight = m_Direction + Vec3(1.0f, 0, 0) * width;
+}

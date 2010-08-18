@@ -21,8 +21,15 @@ public:
 	// create object
 	virtual void Create (const IOGAabb& _Aabb);
 
+	// strafe.
+	virtual void Strafe (float _fDir);
+
 	// Update transforms.
 	virtual void Update (unsigned long _ElapsedTime);
+
+protected:
+
+    Vec3    m_vStrafeVec;
 };
 
 #endif

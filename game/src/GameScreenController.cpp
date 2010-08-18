@@ -119,6 +119,7 @@ void CGameScreenController::RenderScene ()
 void CGameScreenController::Activate ()
 {
 	m_State = CSTATE_ACTIVE;
+    GetInput()->RegisterReceiver(this);
 }
 
 
@@ -126,4 +127,27 @@ void CGameScreenController::Activate ()
 void CGameScreenController::Deactivate ()
 {
 	m_State = CSTATE_INACTIVE;
+    GetInput()->UnregisterReceiver(this);
+}
+
+
+// Control vector change event handler.
+void CGameScreenController::OnVectorChanged (const Vec3& _vVec)
+{
+    if (m_pCamera && m_pCurLevel)
+    {
+        Vec3 v = _vVec.normalized();
+        Vec3 cl, cr, bl, br;
+        m_pCamera->GetEdges(cl, cr, 1.0f, 150.0f);
+        GetPhysics()->GetBordersAtPoint(cl, bl, br);
+        
+        Vec3 dl = cl + Vec3(v.x, 0, 0);
+        Vec3 dr = cr + Vec3(v.x, 0, 0);
+        float m = v.x;
+        if (dl.x < bl.x)
+            m = bl.x - cl.x;
+        if (dr.x > br.x)
+            m = br.x - cr.x;
+        m_pCamera->Strafe(m, Vec3(1, 0, 0));
+    }
 }

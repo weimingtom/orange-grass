@@ -82,6 +82,12 @@ void COGPhysicalObject::SetScaling (const Vec3& _vScale)
 }
 
 
+// strafe.
+void COGPhysicalObject::Strafe (float _fDir)
+{
+}
+
+
 // get physics type.
 OGPhysicsType COGPhysicalObject::GetPhysicsType () const
 {

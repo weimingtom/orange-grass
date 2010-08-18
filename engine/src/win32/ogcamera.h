@@ -39,6 +39,9 @@ public:
 	// update camera.
 	virtual const MATRIX& Update ();
 
+	// get left and right edges.
+	virtual void GetEdges (Vec3& _vLeft, Vec3& _vRight, float _fFOV, float _fDist);
+
 private:
 	
 	MATRIX		m_View;

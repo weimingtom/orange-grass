@@ -37,6 +37,9 @@ public:
 private:
 
 	std::vector<IOGInputReceiver*>	m_Receivers;
+    float   m_fPrevX;
+    float   m_fPrevY;
+    bool    m_bInMove;
 };
 
 

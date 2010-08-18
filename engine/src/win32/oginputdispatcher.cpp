@@ -12,7 +12,9 @@
 #include <algorithm>
 
 
-COGInputDispatcher::COGInputDispatcher()
+COGInputDispatcher::COGInputDispatcher() :  m_fPrevX(0),
+                                            m_fPrevY(0),
+                                            m_bInMove(false)
 {
 }
 
@@ -48,6 +50,10 @@ void COGInputDispatcher::UnregisterReceiver (IOGInputReceiver* _pReceiver)
 // Pointing device press handler.
 void COGInputDispatcher::OnPointerDown ( int _X, int _Y )
 {
+    //m_bInMove = true;
+    //m_fPrevX = (float)_X;
+    //m_fPrevY = (float)_Y;
+
     std::vector<IOGInputReceiver*>::iterator iter = m_Receivers.begin();
     for (; iter != m_Receivers.end(); ++iter)
     {
@@ -58,6 +64,10 @@ void COGInputDispatcher::OnPointerDown ( int _X, int _Y )
 // Pointing device release handler.
 void COGInputDispatcher::OnPointerUp ( int _X, int _Y )
 {
+    //m_bInMove = false;
+    //m_fPrevX = (float)_X;
+    //m_fPrevY = (float)_Y;
+
     std::vector<IOGInputReceiver*>::iterator iter = m_Receivers.begin();
     for (; iter != m_Receivers.end(); ++iter)
     {
@@ -68,8 +78,25 @@ void COGInputDispatcher::OnPointerUp ( int _X, int _Y )
 // Pointing device move handler.
 void COGInputDispatcher::OnPointerMove ( int _X, int _Y )
 {
-    std::vector<IOGInputReceiver*>::iterator iter = m_Receivers.begin();
-    for (; iter != m_Receivers.end(); ++iter)
+    if (m_bInMove)
     {
-	}
+        Vec3 vVec((float)_X - m_fPrevX, 0, (float)_Y - m_fPrevY);
+        if (vVec.length() > 0.01f)
+        {
+            std::vector<IOGInputReceiver*>::iterator iter = m_Receivers.begin();
+            for (; iter != m_Receivers.end(); ++iter)
+            {
+                (*iter)->OnVectorChanged(vVec);
+            }
+        }
+
+        m_fPrevX = (float)_X;
+        m_fPrevY = (float)_Y;
+    }
+    else
+    {
+        m_fPrevX = (float)_X;
+        m_fPrevY = (float)_Y;
+        m_bInMove = true;
+    }
 }

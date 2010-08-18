@@ -13,9 +13,10 @@
 #include "IOGResourceMgr.h"
 #include "IOGSceneGraph.h"
 #include "IOGLevelManager.h"
+#include "IOGInputReceiver.h"
 
 
-class CGameScreenController : public IScreenController
+class CGameScreenController : public IScreenController, public IOGInputReceiver
 {
 public:
 	CGameScreenController();
@@ -41,7 +42,10 @@ public:
 		
 	// deactivate
 	virtual void Deactivate ();
-		
+
+    // Control vector change event handler.
+	virtual void OnVectorChanged (const Vec3& _vVec);
+
 private:
 		
 	IOGResourceMgr*	m_pResourceMgr;

@@ -17,6 +17,7 @@ COGLevel::COGLevel () : m_pTerrain(NULL)
 	m_vFinishPos = Vec3(150,0,-1000);
 	m_vLightDir = Vec3(0,1,0);
 	m_vLightColor = Vec3(1,1,1);
+    m_fActiveWidth = 200.0f;
 }
 
 
@@ -43,6 +44,7 @@ bool COGLevel::Load ()
     {
         GetSceneGraph()->GetLight()->SetDirection(Vec4(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z, 0.0f));
         GetSceneGraph()->GetLight()->SetColor(Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f));
+        GetPhysics()->SetLevelBorders(m_vStartPos, m_vFinishPos, m_fActiveWidth);
 
 	    m_LoadState = OG_RESSTATE_LOADED;
         return true;    
@@ -92,6 +94,7 @@ bool COGLevel::Load ()
 		fread(&m_vLightColor.z, sizeof(float), 1, pIn);
 	}
 
+    GetPhysics()->SetLevelBorders(m_vStartPos, m_vFinishPos, m_fActiveWidth);
     GetSceneGraph()->GetLight()->SetDirection(Vec4(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z, 0.0f));
     GetSceneGraph()->GetLight()->SetColor(Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f));
 

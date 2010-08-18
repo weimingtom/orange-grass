@@ -56,6 +56,9 @@ public:
 	// set scaling.
 	virtual void SetScaling (const Vec3& _vScale) = 0;
 
+	// strafe.
+	virtual void Strafe (float _fDir) = 0;
+
 	// get physics type.
 	virtual OGPhysicsType GetPhysicsType () const = 0;
 

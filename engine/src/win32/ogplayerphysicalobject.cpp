@@ -12,6 +12,7 @@
 
 COGPlayerPhysicalObject::COGPlayerPhysicalObject () : COGPhysicalObject()
 {
+    m_vStrafeVec = Vec3(0,0,0);
 }
 
 
@@ -26,6 +27,14 @@ void COGPlayerPhysicalObject::Create (const IOGAabb& _Aabb)
 	m_Type = OG_PHYSICS_AIRBOT;
 	m_Aabb = _Aabb;
     m_Obb.Create(m_Aabb);
+    m_vStrafeVec = Vec3(0,0,0);
+}
+
+
+// strafe.
+void COGPlayerPhysicalObject::Strafe (float _fDir)
+{
+    m_vStrafeVec += Vec3(_fDir,0,0);
 }
 
 
