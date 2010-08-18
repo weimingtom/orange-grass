@@ -6,9 +6,12 @@ ChangeList:
 - [OG] added some player support;
 - [OG] fixed compatibility with iOS;
 - [OG] level start, level finish, light direction are read from the level scene;
+- [OG] input dispatcher draft;
 - [MapEditor] fixed lighting direction issue appeared in MapEditor 0.06;
 - [MapEditor] Ctrl+Arrows moves selected object in +-x and +-z and Ctrl+PgUp/Ctrl+PgDown moves selected object in +-y;
 - [MapEditor] Settings mode (3rd mode button on toolbar) allows to setup level start and level finish (LMB+drag);
+- [MapEditor] Settings mode added light color and direction controls;
+- [MapEditor] Settings mode - Ctrl+Left, Ctrl+Right set up level active width;
 - [Game] iOS first draft;
 - [Game] auto-moving camera, player's craft is following it;
 - [Game] game finishes after reaching the finish line;

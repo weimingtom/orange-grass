@@ -374,6 +374,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Input"
+				>
+				<File
+					RelativePath=".\oginputdispatcher.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\oginputdispatcher.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Interface"
@@ -497,6 +509,18 @@
 				</File>
 				<File
 					RelativePath="..\..\include\IOGPhysics.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Input"
+				>
+				<File
+					RelativePath="..\..\include\IOGInputDispatcher.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGInputReceiver.h"
 					>
 				</File>
 			</Filter>

@@ -319,6 +319,7 @@ void CEditorCanvas::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& even
 		GetLevelManager()->UnloadLevel(m_pCurLevel);
 	}
 	m_pCurLevel = GetLevelManager()->LoadLevel(std::string(event.GetEventCustomData().m_Path));
+	GetToolSettings()->SetLevel((void*)m_pCurLevel);
 	this->Refresh();
 }
 
@@ -366,11 +367,24 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
 	case WXK_LEFT:
         if (event.ControlDown())
         {
-            if (m_pPickedActor)
-            {
-                Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.x -= 1.0f;
-                m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
-            }
+			if (GetToolSettings()->GetEditMode() == EDITMODE_SETTINGS)
+			{
+				if (m_pCurLevel)
+				{
+					float fW = m_pCurLevel->GetActiveWidth();
+					if (fW > 30.0f)
+						fW -= 1.0f;
+					m_pCurLevel->SetActiveWidth(fW);
+				}
+			}
+			else
+			{
+				if (m_pPickedActor)
+				{
+					Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.x -= 1.0f;
+					m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
+				}
+			}
         }
         else
     		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(-1, 0, 0));
@@ -383,11 +397,24 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
 	case WXK_RIGHT:
         if (event.ControlDown())
         {
-            if (m_pPickedActor)
-            {
-                Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.x += 1.0f;
-                m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
-            }
+			if (GetToolSettings()->GetEditMode() == EDITMODE_SETTINGS)
+			{
+				if (m_pCurLevel)
+				{
+					float fW = m_pCurLevel->GetActiveWidth();
+					if (fW < 400.0f)
+						fW += 1.0f;
+					m_pCurLevel->SetActiveWidth(fW);
+				}
+			}
+			else
+			{
+				if (m_pPickedActor)
+				{
+					Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.x += 1.0f;
+					m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
+				}
+			}
         }
         else
     		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(1, 0, 0));
@@ -672,13 +699,10 @@ void CEditorCanvas::RenderHelpers()
 
     if (m_pCurLevel)
     {
-        Vec3 vS1 = m_pCurLevel->GetStartPosition(); vS1.y = -10.0f;
-        Vec3 vS2 = m_pCurLevel->GetStartPosition(); vS2.y = 200.0f;
-        DrawLine(vS1, vS2);
-
-        Vec3 vF1 = m_pCurLevel->GetFinishPosition(); vF1.y = -10.0f;
-        Vec3 vF2 = m_pCurLevel->GetFinishPosition(); vF2.y = 200.0f;
-        DrawLine(vF1, vF2);
+		DrawLevelRanges(m_pCurLevel->GetStartPosition(),
+			m_pCurLevel->GetFinishPosition(),
+			200.0f,
+			m_fAirBotHeight);
     }
 
     glEnable(GL_LIGHTING);

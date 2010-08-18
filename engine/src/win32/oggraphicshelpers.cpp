@@ -174,3 +174,71 @@ void DrawGeometryGrid (const std::vector<OGFace>& _GridData)
     }
 #endif
 }
+
+
+// Draw level ranges
+void DrawLevelRanges (const Vec3& _StartPoint, const Vec3& _FinishPoint, float _fWidth, float _fHeight)
+{
+#ifdef WIN32
+	glPointSize(6.0f);
+
+	Vec3 min = _StartPoint; min.x = _StartPoint.x - _fWidth/2.0f; min.y = 0.0f;
+	Vec3 max = _FinishPoint; max.x = _FinishPoint.x + _fWidth/2.0f; max.y = _fHeight;
+	
+    glBegin(GL_LINE_STRIP);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(min.x, min.y, min.z);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(min.x, min.y, max.z);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(min.x, max.y, max.z);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(min.x, max.y, min.z);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(min.x, min.y, min.z);
+
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(max.x, min.y, min.z);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(max.x, min.y, max.z);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(max.x, max.y, max.z);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(max.x, max.y, min.z);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(max.x, min.y, min.z);
+
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(max.x, min.y, max.z);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(min.x, min.y, max.z);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(min.x, min.y, min.z);
+
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(min.x, max.y, min.z);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(max.x, max.y, min.z);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(max.x, max.y, max.z);
+        glColor3f(0.8f, 0.8f, 0.8f);
+        glVertex3f(min.x, max.y, max.z);
+	glEnd();
+
+	glBegin(GL_LINES);
+        glColor3f(0.0f, 1.0f, 0.0f);
+        glVertex3f(_StartPoint.x, -_fHeight, _StartPoint.z);
+        glColor3f(0.0f, 1.0f, 0.0f);
+        glVertex3f(_StartPoint.x, _fHeight, _StartPoint.z);
+	glEnd();
+
+	glBegin(GL_LINES);
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex3f(_FinishPoint.x, -_fHeight, _FinishPoint.z);
+        glColor3f(1.0f, 0.0f, 0.0f);
+        glVertex3f(_FinishPoint.x, _fHeight, _FinishPoint.z);
+	glEnd();
+
+	glPointSize(1.0f);
+#endif
+}

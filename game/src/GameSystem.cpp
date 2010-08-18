@@ -139,6 +139,7 @@ void CGameSystem::OnKeyUp ( int _KeyCode )
 /// @param _Y y coordinate.
 void CGameSystem::OnPointerDown ( int _X, int _Y )
 {
+	GetInput()->OnPointerDown(_X, _Y);
 }
 
 
@@ -147,6 +148,7 @@ void CGameSystem::OnPointerDown ( int _X, int _Y )
 /// @param _Y y coordinate.
 void CGameSystem::OnPointerUp ( int _X, int _Y )
 {
+	GetInput()->OnPointerUp(_X, _Y);
 }
 
 
@@ -155,6 +157,7 @@ void CGameSystem::OnPointerUp ( int _X, int _Y )
 /// @param _Y y coordinate.
 void CGameSystem::OnPointerMove ( int _X, int _Y )
 {
+	GetInput()->OnPointerMove(_X, _Y);
 }
 
 

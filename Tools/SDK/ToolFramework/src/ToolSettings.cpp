@@ -14,13 +14,7 @@ ToolSettings::ToolSettings ()
 void ToolSettings::ResetDefaults ()
 {
 	m_EditMode = EDITMODE_NO;
-    m_PosX = 0;
-    m_PosY = 0;
-    m_PosZ = 0;
-
-    m_Yaw = 0;
-    m_Pitch = 0;
-    m_Roll = 0;
+	m_pLevel = NULL;
 }
 
 

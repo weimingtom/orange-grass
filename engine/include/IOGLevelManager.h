@@ -12,7 +12,7 @@
 #include "IOGLevel.h"
 #include <string>
 
-#define LEVEL_VERSION   1
+#define LEVEL_VERSION   2
 
 
 class IOGLevelManager

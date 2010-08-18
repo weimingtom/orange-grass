@@ -32,4 +32,7 @@ void DrawPatchGrid (int _NumPatchVerts, const Vec3* _pGridData);
 // Draw geometry grid
 void DrawGeometryGrid (const std::vector<OGFace>& _GridData);
 
+// Draw level ranges
+void DrawLevelRanges (const Vec3& _StartPoint, const Vec3& _FinishPoint, float _fWidth, float _fHeight);
+
 #endif

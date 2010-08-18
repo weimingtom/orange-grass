@@ -7,7 +7,7 @@
  *
  */
 #define _CRT_SECURE_NO_WARNINGS
-#include "orangegrass.h"
+#include "OrangeGrass.h"
 #include "oglevel.h"
 
 
@@ -59,7 +59,7 @@ bool COGLevel::Load ()
     }
     unsigned int ver = 0;
     fread(&ver, sizeof(unsigned int), 1, pIn);
-    if (ver != GetLevelManager()->GetVersion())
+    if (ver > GetLevelManager()->GetVersion())
     {
         fclose(pIn);
         return false;
@@ -71,18 +71,26 @@ bool COGLevel::Load ()
     fread(&m_vStartPos.z, sizeof(float), 1, pIn);
 
     // Level finish position
-    //Vec3 v;
-    //fread(&v.x, sizeof(float), 1, pIn);
-    //fread(&v.y, sizeof(float), 1, pIn);
-    //fread(&v.z, sizeof(float), 1, pIn);
     fread(&m_vFinishPos.x, sizeof(float), 1, pIn);
     fread(&m_vFinishPos.y, sizeof(float), 1, pIn);
     fread(&m_vFinishPos.z, sizeof(float), 1, pIn);
 
-    // Level finish position
+    // Level light direction
     fread(&m_vLightDir.x, sizeof(float), 1, pIn);
     fread(&m_vLightDir.y, sizeof(float), 1, pIn);
     fread(&m_vLightDir.z, sizeof(float), 1, pIn);
+
+	// Ver.2 and higher
+	if (ver >= 2)
+	{
+		// Level active width
+	    fread(&m_fActiveWidth, sizeof(float), 1, pIn);
+
+		// Level light color
+		fread(&m_vLightColor.x, sizeof(float), 1, pIn);
+		fread(&m_vLightColor.y, sizeof(float), 1, pIn);
+		fread(&m_vLightColor.z, sizeof(float), 1, pIn);
+	}
 
     GetSceneGraph()->GetLight()->SetDirection(Vec4(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z, 0.0f));
     GetSceneGraph()->GetLight()->SetColor(Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f));
@@ -157,6 +165,11 @@ bool COGLevel::Save ()
         return false;
     }
 
+	Vec4 vL = GetSceneGraph()->GetLight()->GetDirection();
+	Vec4 vC = GetSceneGraph()->GetLight()->GetColor();
+	m_vLightDir = Vec3(vL.x, vL.y, vL.z);
+	m_vLightColor = Vec3(vC.x, vC.y, vC.z);
+
     FILE* pOut = fopen(m_ResourceFile.c_str(), "wb");
     
     // Prolog: "SCN" + version
@@ -180,6 +193,14 @@ bool COGLevel::Save ()
     fwrite(&m_vLightDir.x, sizeof(float), 1, pOut);
     fwrite(&m_vLightDir.y, sizeof(float), 1, pOut);
     fwrite(&m_vLightDir.z, sizeof(float), 1, pOut);
+
+	// Level active width
+	fwrite(&m_fActiveWidth, sizeof(float), 1, pOut);
+
+	// Level light color
+	fwrite(&m_vLightColor.x, sizeof(float), 1, pOut);
+	fwrite(&m_vLightColor.y, sizeof(float), 1, pOut);
+	fwrite(&m_vLightColor.z, sizeof(float), 1, pOut);
 
     // actors list
     const std::vector<IOGActor*> actors = GetActorManager()->GetActorsList();

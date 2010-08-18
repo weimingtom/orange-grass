@@ -10,9 +10,10 @@
 #define OGACTORPLAYER_H_
 
 #include "OGActor.h"
+#include "IOGInputReceiver.h"
 
 
-class COGActorPlayer : public COGActor
+class COGActorPlayer : public COGActor, public IOGInputReceiver
 {
 public:
 	COGActorPlayer(OGActorType _Type);
@@ -24,6 +25,12 @@ public:
 		const Vec3& _vPos,
 		const Vec3& _vRot,
         const Vec3& _vScale);
+
+	// Adding to actor manager event handler.
+	virtual void OnAddedToManager ();
+
+	// Control vector change event handler.
+	virtual void OnVectorChanged (const Vec3& _vVec);
 };
 
 

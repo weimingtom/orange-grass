@@ -17,6 +17,7 @@
 #include "IOGActorManager.h"
 #include "IOGSprite.h"
 #include "IOGPhysics.h"
+#include "IOGInputDispatcher.h"
 #include <vector>
 #include <string>
 
@@ -26,6 +27,7 @@ IOGLevelManager* GetLevelManager ();
 IOGSceneGraph* GetSceneGraph ();
 IOGActorManager* GetActorManager ();
 IOGPhysics* GetPhysics ();
+IOGInputDispatcher* GetInput ();
 
 IOGSprite* CreateSprite (const char* _pAlias);
 

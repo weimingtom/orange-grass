@@ -6,7 +6,7 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "orangegrass.h"
+#include "OrangeGrass.h"
 #include "ogactorplayer.h"
 #include "IOGMath.h"
 
@@ -18,6 +18,8 @@ COGActorPlayer::COGActorPlayer(OGActorType _Type) : COGActor(_Type)
 
 COGActorPlayer::~COGActorPlayer()
 {
+	GetInput()->UnregisterReceiver(this);
+
 	if (m_pNode)
 	{
         if (m_bAdded)
@@ -59,5 +61,20 @@ bool COGActorPlayer::Create (const std::string& _ModelAlias,
         return false;
 
 	m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);
+
 	return true;
+}
+
+
+// Adding to actor manager event handler.
+void COGActorPlayer::OnAddedToManager ()
+{
+	COGActor::OnAddedToManager();
+	GetInput()->RegisterReceiver(this);
+}
+
+
+// Control vector change event handler.
+void COGActorPlayer::OnVectorChanged (const Vec3& _vVec)
+{
 }

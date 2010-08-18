@@ -35,11 +35,17 @@ public:
 	// get level start finish.
 	virtual const Vec3& GetFinishPosition () const;
 
+	// get level active width.
+	virtual float GetActiveWidth () const {return m_fActiveWidth;}
+
 	// set level start position.
 	virtual void SetStartPosition (const Vec3& _Pos);
 
 	// set level start finish.
 	virtual void SetFinishPosition (const Vec3& _Pos);
+
+	// set level active width.
+	virtual void SetActiveWidth (float _fWidth) {m_fActiveWidth = _fWidth;}
 
 	// save level.
 	virtual bool Save ();
@@ -51,6 +57,7 @@ private:
 	Vec3		m_vFinishPos;
 	Vec3		m_vLightDir;
 	Vec3		m_vLightColor;
+	float		m_fActiveWidth;
 };
 
 #endif
