@@ -318,7 +318,27 @@ void CEditorCanvas::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& even
 	{
 		GetLevelManager()->UnloadLevel(m_pCurLevel);
 	}
+	
 	m_pCurLevel = GetLevelManager()->LoadLevel(std::string(event.GetEventCustomData().m_Path));
+	
+	IOGActor* pPlayerActor = GetActorManager()->GetPlayersActor();
+	Vec3 vCraftPos = m_pCurLevel->GetStartPosition();
+	vCraftPos.y = m_fAirBotHeight;
+	if (!pPlayerActor)
+	{
+		pPlayerActor = GetActorManager()->CreateActor(
+            OG_ACTOR_PLAYER, 
+			std::string("craft"),
+			vCraftPos, 
+            Vec3(0,0,0), 
+            Vec3(1,1,1));
+		GetActorManager()->AddActor(pPlayerActor);
+	}
+	else
+	{
+		pPlayerActor->GetPhysicalObject()->SetPosition(vCraftPos);
+	}
+
 	GetToolSettings()->SetLevel((void*)m_pCurLevel);
 	this->Refresh();
 }
@@ -654,6 +674,10 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 	case CMD_SETTINGSMODE_LEVFINISH:
         m_SettingsMode = SETMODE_LEVEL_FINISH;
         break;
+
+	case CMD_UPDATE:
+        Refresh();
+        break;
 	}
 	Refresh ();
 }
@@ -764,7 +788,7 @@ void CEditorCanvas::OnLMBUp(wxMouseEvent& event)
                     }
                     GetActorManager()->AddActor (m_pCurActor);
                     m_pCurActor = GetActorManager()->CreateActor(
-                        OG_ACTOR_STATIC, 
+                        m_CurActorType, 
                         m_CurModelAlias.c_str(), 
                         m_vIntersection, 
                         m_vCurRotation, 

@@ -47,6 +47,14 @@ public:
 	virtual void OnVectorChanged (const Vec3& _vVec);
 
 private:
+
+    // Check if finish condition is satisfied.
+	bool CheckFinishCondition ();
+
+    // Update camera movements.
+	void UpdateCameraMovements (unsigned long _ElapsedTime);
+
+private:
 		
 	IOGResourceMgr*	m_pResourceMgr;
 	IOGSceneGraph*	m_pSg;
@@ -57,6 +65,14 @@ private:
     IOGLevel*	    m_pCurLevel;
 	MATRIX			m_mProjection; 
 	MATRIX			m_mView;
+
+	float			m_fFOV;
+	float			m_fCameraTargetDistance;
+	float			m_fCameraFwdSpeed;
+	float			m_fCameraStrafeSpeed;
+	float			m_fFinishPointSqDistance;
+
+	Vec3			m_vCameraStrafe;
 };
 
 #endif

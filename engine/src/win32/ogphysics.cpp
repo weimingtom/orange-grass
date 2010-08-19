@@ -15,7 +15,8 @@
 #include <algorithm>
 
 
-COGPhysics::COGPhysics ()
+COGPhysics::COGPhysics () :	m_fCameraFwdSpeed(0.02f),
+							m_fCameraStrafeSpeed(0.02f)
 {
 }
 

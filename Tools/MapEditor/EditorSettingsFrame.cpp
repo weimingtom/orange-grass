@@ -148,4 +148,9 @@ void CEditorSettingsFrame::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData
 		(unsigned char)(vC.z * 255.0f),
 		255);
 	m_pColorPicker->SetColour(clr);
+
+    CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
+    ToolCmdEventData cmdData (CMD_UPDATE, true);
+    cmd.SetEventCustomData(cmdData);
+	GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
 }

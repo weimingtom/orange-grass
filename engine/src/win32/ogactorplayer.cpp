@@ -77,6 +77,10 @@ void COGActorPlayer::OnAddedToManager ()
 // Control vector change event handler.
 void COGActorPlayer::OnVectorChanged (const Vec3& _vVec)
 {
-    Vec3 v = _vVec.normalized();
+	Vec3 v = _vVec;
+	if (v.length() > 1.0f)
+	{
+		v.normalize();
+	}
     m_pPhysicalObject->Strafe(v.x);
 }
