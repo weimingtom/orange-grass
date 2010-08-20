@@ -33,11 +33,16 @@ COGMesh::~COGMesh()
 }
 
 
+// Load resource
 bool COGMesh::Load ()
 {	
-	if (m_LoadState == OG_RESSTATE_UNKNOWN)
+	switch (m_LoadState)
 	{
+	case OG_RESSTATE_UNKNOWN:
 		return false;
+
+	case OG_RESSTATE_LOADED:
+        return true;    
 	}
 
 	if (!m_pScene->ReadFromFile(m_ResourceFile.c_str()))

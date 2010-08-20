@@ -295,7 +295,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\include\Graphics.h"
+				RelativePath=".\include\GraphicsDevice.h"
 				>
 			</File>
 			<File

@@ -7,7 +7,7 @@
  *
  */
 #define _CRT_SECURE_NO_WARNINGS
-#include "orangegrass.h"
+#include "OrangeGrass.h"
 #include "ogterrain.h"
 #include "IOGMath.h"
 #include "ogmaterial.h"
@@ -30,9 +30,13 @@ COGTerrain::~COGTerrain()
 // Load terrain.
 bool COGTerrain::Load ()
 {
-	if (m_LoadState == OG_RESSTATE_UNKNOWN)
+	switch (m_LoadState)
 	{
+	case OG_RESSTATE_UNKNOWN:
 		return false;
+
+	case OG_RESSTATE_LOADED:
+        return true;    
 	}
 
 	Cfg cfg;

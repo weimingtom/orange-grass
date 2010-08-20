@@ -151,173 +151,9 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\ogcamera.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ogcamera.h"
-				>
-			</File>
-			<File
-				RelativePath=".\oglevel.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\oglevel.h"
-				>
-			</File>
-			<File
-				RelativePath=".\oglevelmanager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\oglevelmanager.h"
-				>
-			</File>
-			<File
-				RelativePath=".\oglight.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\oglight.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ogmaterial.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ogmaterial.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ogmesh.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ogmesh.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ogmodel.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ogmodel.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ogresource.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ogresource.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ogresourcemgr.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ogresourcemgr.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ogscenegraph.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ogscenegraph.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ogsgnode.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ogsgnode.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ogsprite.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ogsprite.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ogterrain.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ogterrain.h"
-				>
-			</File>
-			<File
-				RelativePath=".\ogtexture.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\ogtexture.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OrangeGrass.cpp"
 				>
 			</File>
-			<Filter
-				Name="Physics"
-				>
-				<File
-					RelativePath=".\ogairphysicalobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ogairphysicalobject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\oglandphysicalobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\oglandphysicalobject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ogphysicalobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ogphysicalobject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ogphysics.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ogphysics.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ogplayerphysicalobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ogplayerphysicalobject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ogstaticphysicalobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ogstaticphysicalobject.h"
-					>
-				</File>
-			</Filter>
 			<Filter
 				Name="GameLogic"
 				>
@@ -371,6 +207,66 @@
 				</File>
 			</Filter>
 			<Filter
+				Name="Graphics"
+				>
+				<File
+					RelativePath=".\oglight.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\oglight.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogmaterial.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogmaterial.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogmesh.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogmesh.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogmodel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogmodel.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogsprite.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogsprite.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogterrain.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogterrain.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogtexture.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogtexture.h"
+					>
+				</File>
+			</Filter>
+			<Filter
 				Name="Input"
 				>
 				<File
@@ -382,16 +278,132 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="Resources"
+				>
+				<File
+					RelativePath=".\oglevel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\oglevel.h"
+					>
+				</File>
+				<File
+					RelativePath=".\oglevelmanager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\oglevelmanager.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogresource.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogresource.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogresourcemgr.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogresourcemgr.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="SceneGraph"
+				>
+				<File
+					RelativePath=".\ogcamera.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogcamera.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogscenegraph.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogscenegraph.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogsgnode.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogsgnode.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Physics"
+				>
+				<File
+					RelativePath=".\ogairphysicalobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogairphysicalobject.h"
+					>
+				</File>
+				<File
+					RelativePath=".\oglandphysicalobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\oglandphysicalobject.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogphysicalobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogphysicalobject.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogphysics.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogphysics.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogplayerphysicalobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogplayerphysicalobject.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogstaticphysicalobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogstaticphysicalobject.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Core"
+				>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Interface"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath="..\..\include\IOGCoreHelpers.h"
-				>
-			</File>
 			<File
 				RelativePath="..\..\include\OrangeGrass.h"
 				>
@@ -436,6 +448,10 @@
 				Name="SceneGraph"
 				>
 				<File
+					RelativePath="..\..\include\IOGCamera.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\IOGSceneGraph.h"
 					>
 				</File>
@@ -461,10 +477,6 @@
 				>
 				<File
 					RelativePath="..\..\include\IOGAabb.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\IOGCamera.h"
 					>
 				</File>
 				<File
@@ -513,6 +525,14 @@
 				</File>
 				<File
 					RelativePath="..\..\include\IOGInputReceiver.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Core"
+				>
+				<File
+					RelativePath="..\..\include\IOGCoreHelpers.h"
 					>
 				</File>
 			</Filter>

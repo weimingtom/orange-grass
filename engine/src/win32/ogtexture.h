@@ -11,11 +11,7 @@
 
 #include "OpenGL2.h"
 #include "IOGTexture.h"
-#ifdef WIN32
-#include "Graphics.h"
-#else
 #include "GraphicsDevice.h"
-#endif
 #include "Geometry.h"
 #include "Mathematics.h"
 #include "ogresource.h"

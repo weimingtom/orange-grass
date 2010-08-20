@@ -263,7 +263,7 @@ void CViewerCanvas::OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& even
 			m_pCurModel = NULL;
 			m_pCurTerrain = NULL;
 			if (m_pCurSprite) delete m_pCurSprite;
-			m_pCurSprite = CreateSprite(evtData.m_Resource);
+			m_pCurSprite = CreateSprite(std::string(evtData.m_Resource));
 			int SprSize = (m_ResX < m_ResY) ? m_ResX : m_ResY;
 			m_pCurSprite->SetPosition (0, 0, 480.f, 320.f);
 		}

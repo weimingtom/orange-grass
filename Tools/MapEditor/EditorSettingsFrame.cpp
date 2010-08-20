@@ -124,7 +124,16 @@ void CEditorSettingsFrame::OnColorChange(wxColourPickerEvent& event)
 /// @param event - event struct
 void CEditorSettingsFrame::OnXDirSlider(wxScrollEvent& event)
 {
-	//int val = event.GetPosition();
+	Vec4 vD = GetSceneGraph()->GetLight()->GetDirection();
+	vD.x = (float)event.GetPosition() / 100.0f;
+	vD.y = 1.0f;
+	vD.z = (float)m_pZDirSlider->GetValue() / 100.0f;
+	GetSceneGraph()->GetLight()->SetDirection(vD.normalized());
+
+	CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
+    ToolCmdEventData cmdData (CMD_UPDATE, true);
+    cmd.SetEventCustomData(cmdData);
+	GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
 }
 
 
@@ -132,7 +141,16 @@ void CEditorSettingsFrame::OnXDirSlider(wxScrollEvent& event)
 /// @param event - event struct
 void CEditorSettingsFrame::OnZDirSlider(wxScrollEvent& event)
 {
-	//int val = event.GetPosition();
+	Vec4 vD = GetSceneGraph()->GetLight()->GetDirection();
+	vD.x = (float)m_pXDirSlider->GetValue() / 100.0f;
+	vD.y = 1.0f;
+	vD.z = (float)event.GetPosition() / 100.0f;
+	GetSceneGraph()->GetLight()->SetDirection(vD.normalized());
+
+	CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
+    ToolCmdEventData cmdData (CMD_UPDATE, true);
+    cmd.SetEventCustomData(cmdData);
+	GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
 }
 
 

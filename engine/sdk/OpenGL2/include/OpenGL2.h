@@ -6,9 +6,7 @@
 #include <windows.h>
 #include "glew.h"
 #include "wglext.h"
-#endif
-
-#ifndef WIN32
+#else
 #import <OpenGLES/EAGL.h>
 #import <OpenGLES/ES1/gl.h>
 #endif

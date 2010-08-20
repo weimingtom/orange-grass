@@ -29,6 +29,6 @@ IOGActorManager* GetActorManager ();
 IOGPhysics* GetPhysics ();
 IOGInputDispatcher* GetInput ();
 
-IOGSprite* CreateSprite (const char* _pAlias);
+IOGSprite* CreateSprite (const std::string& _Alias);
 
 #endif

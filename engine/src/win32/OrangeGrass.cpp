@@ -84,9 +84,9 @@ IOGInputDispatcher* GetInput ()
 }
 
 
-IOGSprite* CreateSprite (const char* _pAlias)
+IOGSprite* CreateSprite (const std::string& _Alias)
 {
 	COGSprite* pSpr = new COGSprite ();
-	pSpr->Init (GetResourceMgr()->GetTexture(_pAlias));
+	pSpr->Init (GetResourceMgr()->GetTexture(_Alias));
 	return pSpr;
 }

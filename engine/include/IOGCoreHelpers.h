@@ -24,4 +24,15 @@
 #define OG_CLAMP(a, min, max)   {if ((a) < (min)) { (a) = (min); } else if ((a) > (max)) { (a) = (max); }}
 
 
+// Logging
+#ifdef WIN32
+#ifdef _WXDEBUG_
+#define OG_LOG(STR)	{wxLogStatus(_T(STR));}
+#else
+#define OG_LOG(STR)	{FILE* pF = 0; pF = fopen("log.txt", "at"); if (pF) { fprintf(pF, STR); fclose(pF); }}
+#endif
+#else
+#define OG_LOG(STR)
+#endif
+
 #endif

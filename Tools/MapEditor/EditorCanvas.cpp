@@ -106,8 +106,14 @@ void CEditorCanvas::Render()
     if (!m_init)
     {
         InitGL();
-		GetResourceMgr()->Init();
-		GetLevelManager()->Init();
+		if (GetResourceMgr()->Init() == false)
+		{
+			OG_LOG("Resource manager initialization FAILED");
+		}
+		if (GetLevelManager()->Init() == false)
+		{
+			OG_LOG("Level manager initialization FAILED");
+		}
 		m_init = true;
     }
 
@@ -311,6 +317,10 @@ bool CEditorCanvas::LoadNextResource()
 				wxT((*iter).m_ResourceActorType)));
 			GetEventHandlersTable()->FireEvent(EVENTID_RESLOAD, &cmd);
 		}
+	}
+	else
+	{
+		OG_LOG("Resource loading failure");
 	}
 
 	m_bLoaded = true;
