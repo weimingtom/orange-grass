@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\wxWidgets\include"
+				AdditionalIncludeDirectories="..\wxWidgets\include;..\..\..\engine\include;..\..\..\engine\sdk\OpenGL2\include;..\..\..\engine\SDK\PVR\include;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -148,6 +148,10 @@
 			Name="Include"
 			>
 			<File
+				RelativePath=".\include\IOGGraphicsHelpers.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\ToolFramework.h"
 				>
 			</File>
@@ -174,6 +178,10 @@
 		</File>
 		<File
 			RelativePath=".\src\ListboxLogger.h"
+			>
+		</File>
+		<File
+			RelativePath=".\src\oggraphicshelpers.cpp"
 			>
 		</File>
 		<File

@@ -7,7 +7,7 @@
  *
  */
 #include "OpenGL2.h"
-#include "IOGGraphicsHelpers.h"
+#include "..\\include\\IOGGraphicsHelpers.h"
 #include "IOGMesh.h"
 #include <vector>
 

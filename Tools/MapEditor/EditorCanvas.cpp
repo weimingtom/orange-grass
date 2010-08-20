@@ -214,7 +214,17 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
                             switch (m_SettingsMode)
                             {
                             case SETMODE_LEVEL_START:
-                                m_pCurLevel->SetStartPosition(m_vIntersection);
+								{
+									m_pCurLevel->SetStartPosition(m_vIntersection);
+
+									IOGActor* pPlayerActor = GetActorManager()->GetPlayersActor();
+									if (pPlayerActor)
+									{
+										Vec3 vCraftPos = m_vIntersection;
+										vCraftPos.y = m_fAirBotHeight;
+										pPlayerActor->GetPhysicalObject()->SetPosition(vCraftPos);
+									}
+								}
                                 break;
 
                             case SETMODE_LEVEL_FINISH:

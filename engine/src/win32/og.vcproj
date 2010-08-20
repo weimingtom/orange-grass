@@ -159,10 +159,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\oggraphicshelpers.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\oglevel.cpp"
 				>
 			</File>
@@ -403,10 +399,6 @@
 			<Filter
 				Name="Graphics"
 				>
-				<File
-					RelativePath="..\..\include\IOGGraphicsHelpers.h"
-					>
-				</File>
 				<File
 					RelativePath="..\..\include\IOGLight.h"
 					>
