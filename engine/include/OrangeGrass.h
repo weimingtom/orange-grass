@@ -18,6 +18,7 @@
 #include "IOGSprite.h"
 #include "IOGPhysics.h"
 #include "IOGInputDispatcher.h"
+#include "common.h"
 #include <vector>
 #include <string>
 

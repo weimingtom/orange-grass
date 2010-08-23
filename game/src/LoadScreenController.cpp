@@ -62,7 +62,6 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
         {
             printf("Failed to load level\n");
         }
-
 	}
 }
 

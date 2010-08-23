@@ -46,7 +46,7 @@ bool CGameScreenController::Init ()
 	m_pSg = GetSceneGraph();
 	m_pCamera = m_pSg->GetCamera();
 
-	m_fFOV = 1.0f;
+	m_fFOV = 0.67f;
 	m_fCameraTargetDistance = 150.0f;
 	m_fCameraFwdSpeed = 0.02f;
 	m_fCameraStrafeSpeed = 0.01f;
@@ -61,20 +61,15 @@ bool CGameScreenController::Init ()
     m_pPlayer = GetActorManager()->GetPlayersActor();
     
 #ifdef WIN32
-    float fRatio = float(SCR_WIDTH)/float(SCR_HEIGHT);
-	Vec3 vRight = Vec3(0, 1, 0);
+    MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(SCR_WIDTH)/float(SCR_HEIGHT), 4.0f, 200.0f, false);
 #else
-    float fRatio = float(SCR_HEIGHT)/float(SCR_WIDTH);
-	Vec3 vRight = Vec3(1, 0, 0);
+    MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(SCR_HEIGHT)/float(SCR_WIDTH), 4.0f, 200.0f, true);
 #endif
-    
-    MatrixPerspectiveFovRH(m_mProjection, m_fFOV, fRatio, 4.0f, 300.0f, true);
 	
-	//const Vec3& vTarget = m_pCurLevel->GetStartPosition();
     const Vec3& vTarget = m_pPlayer->GetPhysicalObject()->GetPosition() + Vec3(0, 0, -15);
     Vec3 vDir (0, 0.6f, 0.4f);
     vDir = vDir.normalize();
-    Vec3 vUp = vDir.cross (vRight);
+    Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
     m_pCamera->Setup (vTarget + (vDir*60.0f), vTarget, vUp);
 
     glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
@@ -83,8 +78,9 @@ bool CGameScreenController::Init ()
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
     glEnable(GL_DEPTH_TEST);
-    glDisable(GL_CULL_FACE);
-    glEnable(GL_NORMALIZE);
+    glEnable(GL_CULL_FACE);
+    //glDisable(GL_CULL_FACE);
+    //glEnable(GL_NORMALIZE);
 
     return true;
 }
@@ -131,6 +127,10 @@ void CGameScreenController::RenderScene ()
         m_pCurLevel->GetTerrain()->Render(m_mView);
 
     m_pSg->Render(m_mView);
+    if (glGetError() != GL_NO_ERROR)
+    {
+        OG_LOG("Ooops!\n");
+    }
 }
 
 
@@ -180,39 +180,11 @@ void CGameScreenController::UpdateCameraMovements (unsigned long _ElapsedTime)
 {
     if (m_pCamera && m_pCurLevel)
     {
-#ifdef WIN32
-        Vec3 vRight = Vec3(0, 1, 0);
-#else
-        Vec3 vRight = Vec3(1, 0, 0);
-#endif
         const Vec3& vTarget = m_pPlayer->GetPhysicalObject()->GetPosition() + Vec3(0, 0, -15);
         Vec3 vDir  = Vec3(0, 0.6f, 0.4f).normalized();
-        Vec3 vUp = vDir.cross (vRight);
+        Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
         Vec3 vPos = vTarget + (vDir*60.0f);
 
-        //Vec3 cl, cr, bl, br;
-        //m_pCamera->GetEdges(cl, cr, m_fFOV, m_fCameraTargetDistance);
-        //GetPhysics()->GetBordersAtPoint(cl, bl, br);
-        //OG_CLAMP(vPos.x, );
-
         m_pCamera->Setup (vPos, vTarget, vUp);
-
-        //// constantly move forward
-        //m_pCamera->Strafe(m_fCameraFwdSpeed * _ElapsedTime, Vec3(0,0,-1.0f));
-
-        //// check edges and perform strafe if needed
-        //Vec3 cl, cr, bl, br;
-        //m_pCamera->GetEdges(cl, cr, m_fFOV, m_fCameraTargetDistance);
-        //GetPhysics()->GetBordersAtPoint(cl, bl, br);
-
-        //Vec3 vStrafeDist = m_vCameraStrafe * (m_fCameraStrafeSpeed * _ElapsedTime);
-        //Vec3 dl = cl + vStrafeDist;
-        //Vec3 dr = cr + vStrafeDist;
-        //float fStrafe = vStrafeDist.x;
-        //if (dl.x < bl.x)
-        //    fStrafe = bl.x - cl.x;
-        //if (dr.x > br.x)
-        //    fStrafe = br.x - cr.x;
-        //m_pCamera->Strafe(fStrafe, Vec3(1.0f,0,0));
 	}
 }
