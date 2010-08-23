@@ -242,7 +242,7 @@ IOGTexture* COGResourceMgr::GetTexture (const std::string& _Alias)
 				return pTexture;
 
 			case OG_RESSTATE_DEFINED:
-				if (pTexture->Load() == NULL)
+				if (pTexture->Load() == false)
 					return NULL;
 				return pTexture;
 
@@ -266,7 +266,7 @@ IOGMesh* COGResourceMgr::GetMesh (const std::string& _Alias)
 				return pMesh;
 
 			case OG_RESSTATE_DEFINED:
-				if (pMesh->Load() == NULL)
+				if (pMesh->Load() == false)
 					return NULL;
 				return pMesh;
 
@@ -290,7 +290,7 @@ IOGModel* COGResourceMgr::GetModel (const std::string& _Alias)
 				return pModel;
 
 			case OG_RESSTATE_DEFINED:
-				if (pModel->Load() == NULL)
+				if (pModel->Load() == false)
 					return NULL;
 				return pModel;
 
@@ -314,7 +314,7 @@ IOGTerrain* COGResourceMgr::GetTerrain (const std::string& _Alias)
 				return pTerrain;
 
 			case OG_RESSTATE_DEFINED:
-				if (pTerrain->Load() == NULL)
+				if (pTerrain->Load() == false)
 					return NULL;
 				return pTerrain;
 

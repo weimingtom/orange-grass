@@ -41,7 +41,10 @@ bool COGLevel::Load ()
 
     m_pTerrain = GetResourceMgr()->GetTerrain(m_ResourceAlias);
     if (m_pTerrain == NULL)
+    {
+        printf("Failed to load terrain: %s", m_ResourceAlias.c_str());
         return false;
+    }
 
     FILE* pIn = fopen(m_ResourceFile.c_str(), "rb");
     if (pIn == NULL)
