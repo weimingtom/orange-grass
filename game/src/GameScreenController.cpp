@@ -48,7 +48,7 @@ bool CGameScreenController::Init ()
 
 	m_fFOV = 1.0f;
 	m_fCameraTargetDistance = 150.0f;
-	m_fCameraFwdSpeed = 0.12f;
+	m_fCameraFwdSpeed = 0.02f;
 	m_fCameraStrafeSpeed = 0.01f;
 	m_fFinishPointSqDistance = 10000.0f;
 	m_vCameraStrafe = Vec3(0,0,0);

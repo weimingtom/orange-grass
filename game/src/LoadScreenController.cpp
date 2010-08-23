@@ -78,6 +78,13 @@ void CLoadScreenController::RenderScene ()
 		m_pHUD->Render ();
         m_bDisplayed = true;
 	}
+    else
+    {
+        if (m_bLoaded)
+            printf("CLoadScreenController::RenderScene: m_bLoaded = true\n");
+        if (m_State != CSTATE_ACTIVE)
+            printf("CLoadScreenController::RenderScene: m_State = %d\n", m_State);
+    }
 }
 
 
