@@ -1,8 +1,8 @@
-Tools: ver. 0.06, 11-Aug-2010
+Tools: ver. 0.07, 23-Aug-2011
 
 ChangeList:
 
-0.07:
+0.07 (23-Aug-2011):
 - [OG] added some player support;
 - [OG] fixed compatibility with iOS;
 - [OG] level start, level finish, light direction are read from the level scene;
