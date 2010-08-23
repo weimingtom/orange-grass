@@ -48,7 +48,7 @@ bool CGameScreenController::Init ()
 
 	m_fFOV = 1.0f;
 	m_fCameraTargetDistance = 150.0f;
-	m_fCameraFwdSpeed = 0.02f;
+	m_fCameraFwdSpeed = 0.12f;
 	m_fCameraStrafeSpeed = 0.01f;
 	m_fFinishPointSqDistance = 10000.0f;
 	m_vCameraStrafe = Vec3(0,0,0);
@@ -68,7 +68,7 @@ bool CGameScreenController::Init ()
 	Vec3 vRight = Vec3(1, 0, 0);
 #endif
     
-    MatrixPerspectiveFovRH(m_mProjection, m_fFOV, fRatio, 4.0f, 200.0f, true);
+    MatrixPerspectiveFovRH(m_mProjection, m_fFOV, fRatio, 4.0f, 300.0f, true);
 	
 	//const Vec3& vTarget = m_pCurLevel->GetStartPosition();
     const Vec3& vTarget = m_pPlayer->GetPhysicalObject()->GetPosition() + Vec3(0, 0, -15);
@@ -112,7 +112,10 @@ void CGameScreenController::Update (unsigned long _ElapsedTime)
 void CGameScreenController::RenderScene ()
 {
 	if (m_State != CSTATE_ACTIVE)
+    {
 		return;
+    }
+    
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_PROJECTION);

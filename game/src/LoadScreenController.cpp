@@ -72,8 +72,8 @@ void CLoadScreenController::RenderScene ()
 {
 	if (!m_bLoaded && m_State == CSTATE_ACTIVE)
 	{
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
 		m_pHUD->SetPosition(0, 0, SCR_WIDTH, SCR_HEIGHT);
 		m_pHUD->Render ();
         m_bDisplayed = true;

@@ -17,7 +17,7 @@
 #import "Delegate.h"
 
 
-#define kFPS			30.0
+#define kFPS			60.0
 
 static CGameSystem *shell = NULL;
 
