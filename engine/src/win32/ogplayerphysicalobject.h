@@ -30,6 +30,8 @@ public:
 protected:
 
     Vec3    m_vStrafeVec;
+    float   m_fRolling;
+    Vec3    m_vPrevPosition;
 };
 
 #endif

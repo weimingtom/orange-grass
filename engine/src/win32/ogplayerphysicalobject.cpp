@@ -13,6 +13,7 @@
 COGPlayerPhysicalObject::COGPlayerPhysicalObject () : COGPhysicalObject()
 {
     m_vStrafeVec = Vec3(0,0,0);
+    m_fRolling = 0.0f;
 }
 
 
@@ -35,6 +36,7 @@ void COGPlayerPhysicalObject::Create (const IOGAabb& _Aabb)
 void COGPlayerPhysicalObject::Strafe (float _fDir)
 {
     m_vStrafeVec += Vec3(_fDir,0,0);
+    m_fRolling += _fDir;// * 0.0002f;
 }
 
 
@@ -43,5 +45,20 @@ void COGPlayerPhysicalObject::Update (unsigned long _ElapsedTime)
 {
 	m_vPosition += Vec3(0,0,-1.0f) * (GetPhysics()->GetCameraFwdSpeed() * _ElapsedTime);
 
+    Vec3 vLeftBorder, vRightBorder;
+    GetPhysics()->GetBordersAtPoint(m_vPosition, vLeftBorder, vRightBorder);
+    Vec3 vStrafeDist = m_vStrafeVec * (GetPhysics()->GetCameraStrafeSpeed() * _ElapsedTime);
+    m_vPosition += vStrafeDist;
+    OG_CLAMP(m_vPosition.x, vLeftBorder.x, vRightBorder.x);
+
+    m_vRotation.z += m_fRolling * 0.0002f * _ElapsedTime;
+    OG_CLAMP(m_vRotation.z, -0.5f, 0.5f);
+
     COGPhysicalObject::Update(_ElapsedTime);
+
+    m_vStrafeVec.x /= 1.08f;
+    m_fRolling /= 1.08f;
+    m_vRotation.z /= 1.08f;
+    
+    m_vPrevPosition = m_vPosition;
 }

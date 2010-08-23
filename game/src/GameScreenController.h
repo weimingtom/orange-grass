@@ -14,6 +14,7 @@
 #include "IOGSceneGraph.h"
 #include "IOGLevelManager.h"
 #include "IOGInputReceiver.h"
+#include "IOGActorManager.h"
 
 
 class CGameScreenController : public IScreenController, public IOGInputReceiver
@@ -59,6 +60,7 @@ private:
 	IOGResourceMgr*	m_pResourceMgr;
 	IOGSceneGraph*	m_pSg;
 	IOGCamera*		m_pCamera;
+    IOGActor*       m_pPlayer;
 
 	ControllerState	m_State;
     ScreenType      m_Type;
