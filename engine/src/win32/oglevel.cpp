@@ -6,7 +6,6 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#define _CRT_SECURE_NO_WARNINGS
 #include "OrangeGrass.h"
 #include "oglevel.h"
 
@@ -42,13 +41,15 @@ bool COGLevel::Load ()
     m_pTerrain = GetResourceMgr()->GetTerrain(m_ResourceAlias);
     if (m_pTerrain == NULL)
     {
-        printf("Failed to load terrain: %s", m_ResourceAlias.c_str());
+        OG_LOG_ERROR("Failed to load terrain %s while loading level", m_ResourceAlias.c_str());
         return false;
     }
 
     FILE* pIn = fopen(m_ResourceFile.c_str(), "rb");
     if (pIn == NULL)
     {
+        OG_LOG_WARNING("No level scene found in file %s", m_ResourceFile.c_str());
+
         GetSceneGraph()->GetLight()->SetDirection(Vec4(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z, 0.0f));
         GetSceneGraph()->GetLight()->SetColor(Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f));
         GetPhysics()->SetLevelBorders(m_vStartPos, m_vFinishPos, m_fActiveWidth);
@@ -63,6 +64,7 @@ bool COGLevel::Load ()
     signature[3] = 0;
     if (strcmp(&signature[0], "SCN") != 0)
     {
+		OG_LOG_ERROR("Level loading failure: signature mismatch");
         fclose(pIn);
         return false;
     }
@@ -70,6 +72,7 @@ bool COGLevel::Load ()
     fread(&ver, sizeof(unsigned int), 1, pIn);
     if (ver > GetLevelManager()->GetVersion())
     {
+		OG_LOG_ERROR("Level loading failure: trying to load newer version %d while current is %d", ver, GetLevelManager()->GetVersion());
         fclose(pIn);
         return false;
     }
@@ -172,6 +175,7 @@ bool COGLevel::Save ()
 {
     if (m_LoadState != OG_RESSTATE_LOADED)
     {
+		OG_LOG_WARNING("Level saving failure: level is not loaded");
         return false;
     }
 
@@ -181,6 +185,11 @@ bool COGLevel::Save ()
 	m_vLightColor = Vec3(vC.x, vC.y, vC.z);
 
     FILE* pOut = fopen(m_ResourceFile.c_str(), "wb");
+	if (pOut == NULL)
+	{
+		OG_LOG_WARNING("Level saving failure: cannot open file %s for write", m_ResourceFile.c_str());
+		return false;
+	}
     
     // Prolog: "SCN" + version
     fwrite("SCN", sizeof(char), 3, pOut);
@@ -213,35 +222,36 @@ bool COGLevel::Save ()
 	fwrite(&m_vLightColor.z, sizeof(float), 1, pOut);
 
     // actors list
-    const std::vector<IOGActor*> actors = GetActorManager()->GetActorsList();
+    const std::list<IOGActor*> actors = GetActorManager()->GetActorsList();
     unsigned int numActors = actors.size();
     fwrite(&numActors, sizeof(unsigned int), 1, pOut);
-    for (unsigned int i = 0; i < numActors; ++i)
+	std::list<IOGActor*>::const_iterator iter = actors.begin();
+    for (; iter != actors.end(); ++iter)
     {
         // actor's model alias
-		const std::string& Alias = actors[i]->GetAlias();
+		const std::string& Alias = (*iter)->GetAlias();
 		unsigned int AliasLen = Alias.length();
         fwrite(&AliasLen, sizeof(unsigned int), 1, pOut);
 		fwrite(Alias.c_str(), sizeof(char), AliasLen, pOut);
 
         // type
-        OGActorType type = actors[i]->GetType();
+        OGActorType type = (*iter)->GetType();
         fwrite(&type, sizeof(OGActorType), 1, pOut);
 
         // position
-        vVec = actors[i]->GetPhysicalObject()->GetPosition();
+        vVec = (*iter)->GetPhysicalObject()->GetPosition();
         fwrite(&vVec.x, sizeof(float), 1, pOut);
         fwrite(&vVec.y, sizeof(float), 1, pOut);
         fwrite(&vVec.z, sizeof(float), 1, pOut);
 
         // rotation
-        vVec = actors[i]->GetPhysicalObject()->GetRotation();
+        vVec = (*iter)->GetPhysicalObject()->GetRotation();
         fwrite(&vVec.x, sizeof(float), 1, pOut);
         fwrite(&vVec.y, sizeof(float), 1, pOut);
         fwrite(&vVec.z, sizeof(float), 1, pOut);
 
         // scale
-        vVec = actors[i]->GetPhysicalObject()->GetScaling();
+        vVec = (*iter)->GetPhysicalObject()->GetScaling();
         fwrite(&vVec.x, sizeof(float), 1, pOut);
         fwrite(&vVec.y, sizeof(float), 1, pOut);
         fwrite(&vVec.z, sizeof(float), 1, pOut);

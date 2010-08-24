@@ -69,6 +69,7 @@ protected:
     Vec3            m_vScaling;
 	IOGAabb			m_Aabb;
 	IOGObb			m_Obb;
+	bool			m_bUpdated;
 };
 
 #endif

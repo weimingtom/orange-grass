@@ -10,7 +10,8 @@
 #include "ogphysicalobject.h"
 
 
-COGPhysicalObject::COGPhysicalObject () :	m_Type (OG_PHYSICS_NONE)
+COGPhysicalObject::COGPhysicalObject () :	m_Type (OG_PHYSICS_NONE),
+											m_bUpdated(false)
 {
     m_vScaling = Vec3(1);
 }
@@ -37,6 +38,8 @@ void COGPhysicalObject::SetWorldTransform (
     m_vPosition = _vPos;
     m_vRotation = _vRot;
     m_vScaling = _vScale;
+
+	m_bUpdated = false;
 }
 
 
@@ -65,6 +68,7 @@ const Vec3& COGPhysicalObject::GetScaling () const
 void COGPhysicalObject::SetPosition (const Vec3& _vPos)
 {
 	m_vPosition = _vPos;
+	m_bUpdated = false;
 }
 
 
@@ -72,6 +76,7 @@ void COGPhysicalObject::SetPosition (const Vec3& _vPos)
 void COGPhysicalObject::SetRotation (const Vec3& _vRot)
 {
 	m_vRotation = _vRot;
+	m_bUpdated = false;
 }
 
 
@@ -79,12 +84,14 @@ void COGPhysicalObject::SetRotation (const Vec3& _vRot)
 void COGPhysicalObject::SetScaling (const Vec3& _vScale)
 {
 	m_vScaling = _vScale;
+	m_bUpdated = false;
 }
 
 
 // strafe.
 void COGPhysicalObject::Strafe (float _fDir)
 {
+	m_bUpdated = false;
 }
 
 
@@ -105,6 +112,10 @@ const IOGObb& COGPhysicalObject::GetOBB () const
 // Update transforms.
 void COGPhysicalObject::Update (unsigned long _ElapsedTime)
 {
-    WorldMatrixFromTransforms(m_mWorld, m_vPosition, m_vRotation, m_vScaling);
-    m_Obb.UpdateTransform(m_mWorld);
+	if (m_bUpdated)
+		return;
+
+	WorldMatrixFromTransforms(m_mWorld, m_vPosition, m_vRotation, m_vScaling);
+	m_Obb.UpdateTransform(m_mWorld);
+	m_bUpdated = true;
 }

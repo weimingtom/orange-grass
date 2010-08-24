@@ -10,7 +10,7 @@
 #define IOGACTORMANAGER_H_
 
 #include "IOGActor.h"
-#include <vector>
+#include <list>
 #include <string>
 
 
@@ -44,7 +44,7 @@ public:
     virtual IOGActor* GetPlayersActor () = 0;
 
 	// Get actors list.
-    virtual const std::vector<IOGActor*>& GetActorsList () const = 0;
+    virtual const std::list<IOGActor*>& GetActorsList () const = 0;
 
 	// Get nearest intersected actor.
 	virtual IOGActor* GetNearestIntersectedActor (

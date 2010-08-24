@@ -30,7 +30,7 @@ COGPhysics::~COGPhysics ()
 // Clear scene graph
 void COGPhysics::Clear ()
 {
-    std::vector<IOGPhysicalObject*>::iterator iter = m_ObjList.begin();
+    std::list<IOGPhysicalObject*>::iterator iter = m_ObjList.begin();
     for (; iter != m_ObjList.end(); ++iter)
     {
 		OG_SAFE_DELETE((*iter));
@@ -96,7 +96,7 @@ void COGPhysics::AddObject (IOGPhysicalObject* _pObject)
 // Remove object
 void COGPhysics::RemoveObject (IOGPhysicalObject* _pObject)
 {
-	std::vector<IOGPhysicalObject*>::iterator iter = std::find(m_ObjList.begin(), m_ObjList.end(), _pObject);
+	std::list<IOGPhysicalObject*>::iterator iter = std::find(m_ObjList.begin(), m_ObjList.end(), _pObject);
 	if (iter != m_ObjList.end())
 	{
 		OG_SAFE_DELETE((*iter));
@@ -108,7 +108,7 @@ void COGPhysics::RemoveObject (IOGPhysicalObject* _pObject)
 // Update transforms.
 void COGPhysics::Update (unsigned long _ElapsedTime)
 {
-    std::vector<IOGPhysicalObject*>::iterator iter = m_ObjList.begin();
+    std::list<IOGPhysicalObject*>::iterator iter = m_ObjList.begin();
     for (; iter != m_ObjList.end(); ++iter)
     {
 		(*iter)->Update(_ElapsedTime);

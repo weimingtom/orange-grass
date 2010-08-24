@@ -32,6 +32,7 @@ protected:
     Vec3    m_vStrafeVec;
     float   m_fRolling;
     Vec3    m_vPrevPosition;
+	IOGPhysics*	m_pPhysics;
 };
 
 #endif

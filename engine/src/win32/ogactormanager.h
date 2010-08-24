@@ -44,7 +44,7 @@ public:
         const Vec3& _RayDir );
 
 	// Get actors list.
-    virtual const std::vector<IOGActor*>& GetActorsList () const;
+    virtual const std::list<IOGActor*>& GetActorsList () const;
 
 	// Get player's actor.
     virtual IOGActor* GetPlayersActor ();
@@ -54,7 +54,7 @@ public:
 
 private:
 
-    std::vector<IOGActor*>	m_ActorsList;
+    std::list<IOGActor*>	m_ActorsList;
 	IOGActor*				m_pPlayersActor;
 };
 

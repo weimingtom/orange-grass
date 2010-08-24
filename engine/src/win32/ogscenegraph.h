@@ -10,7 +10,7 @@
 #define OGSCENEGRAPH_H_
 
 #include "IOGSceneGraph.h"
-#include <vector>
+#include <list>
 
 
 class COGSceneGraph : public IOGSceneGraph
@@ -42,7 +42,7 @@ public:
 
 private:
 
-    std::vector<IOGSgNode*> m_NodesList;
+    std::list<IOGSgNode*>	m_NodesList;
 	IOGCamera*				m_pCamera;
 	IOGLight*				m_pLight;
 };

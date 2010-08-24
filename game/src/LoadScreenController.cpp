@@ -51,16 +51,24 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 	{
         GetLevelManager()->Init();
 
+		std::string LevelAliasStr("level_0");
     	std::vector<IOGResourceInfo> resInfo;
 		if (m_pResourceMgr->Load(resInfo))
 		{
-            m_pCurLevel = GetLevelManager()->LoadLevel(std::string("level_0"));
+            m_pCurLevel = GetLevelManager()->LoadLevel(LevelAliasStr);
+			if (m_pCurLevel == NULL)
+			{
+				m_State = CSTATE_FAILED;
+				OG_LOG_ERROR("Failed to load level %s", LevelAliasStr.c_str());
+				return;
+			}
 			m_bLoaded = true;
 			Deactivate();
 		}
         else 
         {
-            printf("Failed to load level\n");
+			m_State = CSTATE_FAILED;
+			OG_LOG_ERROR("Failed to load resources for level %s", LevelAliasStr.c_str());
         }
 	}
 }
@@ -69,21 +77,11 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 // Render controller scene
 void CLoadScreenController::RenderScene ()
 {
-	if (!m_bLoaded && m_State == CSTATE_ACTIVE)
-	{
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        
-		m_pHUD->SetPosition(0, 0, SCR_WIDTH, SCR_HEIGHT);
-		m_pHUD->Render ();
-        m_bDisplayed = true;
-	}
-    else
-    {
-        if (m_bLoaded)
-            printf("CLoadScreenController::RenderScene: m_bLoaded = true\n");
-        if (m_State != CSTATE_ACTIVE)
-            printf("CLoadScreenController::RenderScene: m_State = %d\n", m_State);
-    }
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	m_pHUD->SetPosition(0, 0, SCR_WIDTH, SCR_HEIGHT);
+	m_pHUD->Render ();
+	m_bDisplayed = true;
 }
 
 

@@ -35,7 +35,7 @@ COGSceneGraph::~COGSceneGraph ()
 // Clear scene graph
 void COGSceneGraph::Clear ()
 {
-    std::vector<IOGSgNode*>::iterator iter = m_NodesList.begin();
+    std::list<IOGSgNode*>::iterator iter = m_NodesList.begin();
     for (; iter != m_NodesList.end(); ++iter)
     {
 		OG_SAFE_DELETE((*iter));
@@ -62,7 +62,7 @@ void COGSceneGraph::AddNode (IOGSgNode* _pNode)
 // Remove scene graph node
 void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
 {
-	std::vector<IOGSgNode*>::iterator iter = std::find(m_NodesList.begin(), m_NodesList.end(), _pNode);
+	std::list<IOGSgNode*>::iterator iter = std::find(m_NodesList.begin(), m_NodesList.end(), _pNode);
 	if (iter != m_NodesList.end())
 	{
 		OG_SAFE_DELETE((*iter));
@@ -74,13 +74,13 @@ void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
 // Render.
 void COGSceneGraph::Render (const MATRIX& _mView)
 {
-    MATRIX mModelView;
+	MATRIX mModelView;
 
-    std::vector<IOGSgNode*>::iterator iter = m_NodesList.begin();
+    std::list<IOGSgNode*>::iterator iter = m_NodesList.begin();
     for (; iter != m_NodesList.end(); ++iter)
     {
-        mModelView = (*iter)->GetWorldTransform();
-        MatrixMultiply(mModelView, mModelView, _mView);
+        const MATRIX& mWorld = (*iter)->GetWorldTransform();
+        MatrixMultiply(mModelView, mWorld, _mView);
         (*iter)->GetRenderable()->Render(mModelView);
     }
 }

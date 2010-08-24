@@ -47,6 +47,7 @@ bool COGMesh::Load ()
 
 	if (!m_pScene->ReadFromFile(m_ResourceFile.c_str()))
 	{
+        OG_LOG_ERROR("Failed to load mesh from file %s", m_ResourceFile.c_str());
 		return false;
 	}
 	
@@ -112,16 +113,16 @@ void COGMesh::Render (const MATRIX& _mView)
 	glEnableClientState(GL_NORMAL_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
+	MATRIX mWorld, mModelView;
+
 	for (unsigned int i=0; i<m_pScene->nNumMesh; ++i)
 	{
-		SPODNode* pNode = &m_pScene->pNode[i];
+		const SPODNode* pNode = &m_pScene->pNode[i];
 		
 		// Gets the node model matrix
-		MATRIX mWorld;
 		m_pScene->GetWorldMatrix(mWorld, *pNode);
 		
 		// Multiply the view matrix by the model matrix to get the model-view matrix
-		MATRIX mModelView;
 		MatrixMultiply(mModelView, mWorld, _mView);
 		glLoadMatrixf(mModelView.f);
 				
@@ -173,7 +174,7 @@ unsigned int COGMesh::GetNumRenderables () const
 // Render the particular sub-object
 void COGMesh::RenderObject(unsigned int _id)
 {
-	SPODMesh& Mesh = m_pScene->pMesh[_id];
+	const SPODMesh& Mesh = m_pScene->pMesh[_id];
 	
 	// bind the VBO for the mesh
 	glBindBuffer(GL_ARRAY_BUFFER, m_pVBO[_id]);

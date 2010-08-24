@@ -6,7 +6,6 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#define _CRT_SECURE_NO_WARNINGS
 #include "ogresource.h"
 #include <stdio.h>
 #include <string.h>

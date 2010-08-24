@@ -6,7 +6,7 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "orangegrass.h"
+#include "OrangeGrass.h"
 #include "ogactormanager.h"
 #include "ogactorstatic.h"
 #include "ogactorlandbot.h"
@@ -31,7 +31,7 @@ COGActorManager::~COGActorManager ()
 void COGActorManager::Clear ()
 {
 	m_pPlayersActor = NULL;
-    std::vector<IOGActor*>::iterator iter = m_ActorsList.begin();
+    std::list<IOGActor*>::iterator iter = m_ActorsList.begin();
     for (; iter != m_ActorsList.end(); ++iter)
     {
 		OG_SAFE_DELETE((*iter));
@@ -100,6 +100,7 @@ IOGActor* COGActorManager::CreateActor (
 
 	case OG_ACTOR_NONE:
 	default:
+		OG_LOG_ERROR("Trying to create actor of unknown type %d from model %s", _Type, _ModelAlias.c_str());
 		break;
 	}
 
@@ -128,7 +129,7 @@ void COGActorManager::DestroyActor (IOGActor* _pActor)
 		m_pPlayersActor = NULL;
 	}
 
-	std::vector<IOGActor*>::iterator iter = std::find(m_ActorsList.begin(), m_ActorsList.end(), _pActor);
+	std::list<IOGActor*>::iterator iter = std::find(m_ActorsList.begin(), m_ActorsList.end(), _pActor);
 	if (iter != m_ActorsList.end())
 	{
 		OG_SAFE_DELETE((*iter));
@@ -140,7 +141,7 @@ void COGActorManager::DestroyActor (IOGActor* _pActor)
 // Update actors.
 void COGActorManager::Update (unsigned long _ElapsedTime)
 {
-    std::vector<IOGActor*>::iterator iter = m_ActorsList.begin();
+    std::list<IOGActor*>::iterator iter = m_ActorsList.begin();
     for (; iter != m_ActorsList.end(); ++iter)
     {
 		(*iter)->Update(_ElapsedTime);
@@ -153,8 +154,8 @@ IOGActor* COGActorManager::GetNearestIntersectedActor (
     const Vec3& _RayStart, 
     const Vec3& _RayDir )
 {
-    std::vector<IOGActor*> IntersectedList;
-    std::vector<IOGActor*>::iterator iter = m_ActorsList.begin();
+    std::list<IOGActor*> IntersectedList;
+    std::list<IOGActor*>::iterator iter = m_ActorsList.begin();
     for (; iter != m_ActorsList.end(); ++iter)
     {
         if ((*iter)->CheckIntersection(_RayStart, _RayDir))
@@ -166,7 +167,7 @@ IOGActor* COGActorManager::GetNearestIntersectedActor (
     if (IntersectedList.size() == 1)
         return *IntersectedList.begin();
 
-    std::vector<IOGActor*>::iterator inters_iter = IntersectedList.begin();
+    std::list<IOGActor*>::iterator inters_iter = IntersectedList.begin();
     IOGActor* pNearest = *inters_iter;
     float fDist = Dist3D(_RayStart, pNearest->GetSgNode()->GetOBB().m_vCenter);
     ++inters_iter;
@@ -185,7 +186,7 @@ IOGActor* COGActorManager::GetNearestIntersectedActor (
 
 
 // Get actors list.
-const std::vector<IOGActor*>& COGActorManager::GetActorsList () const
+const std::list<IOGActor*>& COGActorManager::GetActorsList () const
 {
     return m_ActorsList;
 }

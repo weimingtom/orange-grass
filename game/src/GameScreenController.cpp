@@ -59,7 +59,7 @@ bool CGameScreenController::Init ()
     m_pCurLevel = GetLevelManager()->LoadLevel(std::string("level_0"));
     m_pSg->GetLight()->Apply();
     m_pPlayer = GetActorManager()->GetPlayersActor();
-    
+
 #ifdef WIN32
     MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(SCR_WIDTH)/float(SCR_HEIGHT), 4.0f, 200.0f, false);
 #else
@@ -127,10 +127,6 @@ void CGameScreenController::RenderScene ()
         m_pCurLevel->GetTerrain()->Render(m_mView);
 
     m_pSg->Render(m_mView);
-    if (glGetError() != GL_NO_ERROR)
-    {
-        OG_LOG("Ooops!\n");
-    }
 }
 
 

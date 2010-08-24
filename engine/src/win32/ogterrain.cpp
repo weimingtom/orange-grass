@@ -6,7 +6,6 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#define _CRT_SECURE_NO_WARNINGS
 #include "OrangeGrass.h"
 #include "ogterrain.h"
 #include "IOGMath.h"
@@ -66,6 +65,7 @@ bool COGTerrain::LoadConfig (COGTerrain::Cfg& _cfg)
     TiXmlDocument* pXmlSettings = new TiXmlDocument(m_ResourceFile.c_str());
     if (!pXmlSettings->LoadFile(m_ResourceFile.c_str()))
 	{
+        OG_LOG_ERROR("Failed to load config file %s for terrain", m_ResourceFile.c_str());
 		OG_SAFE_DELETE(pXmlSettings);
         return false;
 	}

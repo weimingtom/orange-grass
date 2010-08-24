@@ -43,6 +43,7 @@ bool COGModel::Load ()
 	Cfg modelcfg;
 	if (!LoadConfig(modelcfg))
 	{
+        OG_LOG_ERROR("Failed to load model from config");
 		return false;
 	}
 
@@ -51,6 +52,7 @@ bool COGModel::Load ()
     OGMaterialType mattype = COGMaterial::ParseMaterialType(modelcfg.material_type);
     if (mattype == OG_MAT_NONE)
     {
+        OG_LOG_ERROR("Model material type is OG_MAT_NONE");
         return false;
     }
 
@@ -67,6 +69,7 @@ bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
 	TiXmlDocument* pXmlSettings = new TiXmlDocument(m_ResourceFile.c_str());
     if (!pXmlSettings->LoadFile(m_ResourceFile.c_str()))
 	{
+        OG_LOG_ERROR("Failed to load model config file %s", m_ResourceFile.c_str());
 		OG_SAFE_DELETE(pXmlSettings);
         return false;
 	}

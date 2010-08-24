@@ -10,7 +10,7 @@
 #define OGPHYSICS_H_
 
 #include "IOGPhysics.h"
-#include <vector>
+#include <list>
 
 
 class COGPhysics : public IOGPhysics
@@ -56,7 +56,7 @@ public:
 
 private:
 
-	std::vector<IOGPhysicalObject*>	m_ObjList;
+	std::list<IOGPhysicalObject*>	m_ObjList;
     Vec3    m_vLeftBorder[3];
     Vec3    m_vRightBorder[3];
 

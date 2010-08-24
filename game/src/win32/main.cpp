@@ -1,6 +1,6 @@
 #include "main.h"
 #include "..\GameSystem.h"
-#include "..\common.h"
+#include "common.h"
 
 
 CGameSystem*    pGameSystem = NULL;

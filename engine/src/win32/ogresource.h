@@ -13,9 +13,6 @@
 #include <string>
 
 
-// maximal path length
-#define OG_MAX_PATH		2048
-
 // Resource types
 enum OGResourceTypes
 {
@@ -34,7 +31,6 @@ enum OGResourceState
 {
     OG_RESSTATE_UNKNOWN,
     OG_RESSTATE_DEFINED,
-    OG_RESSTATE_LOADING,
     OG_RESSTATE_LOADED,
 };
 

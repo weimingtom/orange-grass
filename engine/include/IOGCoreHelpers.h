@@ -9,6 +9,8 @@
 #ifndef IOGCOREHELPERS_H_
 #define IOGCOREHELPERS_H_
 
+// maximal path length
+#define OG_MAX_PATH		2048
 
 // Helpers to safely delete objects and arrays
 #define OG_SAFE_DELETE(x)       {if(x){ delete x; x = 0; }}
@@ -27,12 +29,18 @@
 // Logging
 #ifdef WIN32
 #ifdef _WXDEBUG_
-#define OG_LOG(STR)	{wxLogStatus(_T(STR));}
+#define OG_LOG_INFO(STR, ...)		{wxLogStatus(_T(STR, ## __VA_ARGS__));}
+#define OG_LOG_WARNING(STR, ...)	{wxLogStatus(_T(STR, ## __VA_ARGS__));}
+#define OG_LOG_ERROR(STR, ...)		{wxLogStatus(_T(STR, ## __VA_ARGS__));}
 #else
-#define OG_LOG(STR)	{FILE* pF = 0; pF = fopen("log.txt", "at"); if (pF) { fprintf(pF, STR); fclose(pF); }}
+#define OG_LOG_INFO(STR, ...)		{FILE* pF = fopen("log.txt", "at"); if (pF) { fprintf(pF, "[INFO]: "); fprintf(pF, STR, ## __VA_ARGS__); fprintf(pF, "\n"); fclose(pF); }}
+#define OG_LOG_WARNING(STR, ...)	{FILE* pF = fopen("log.txt", "at"); if (pF) { fprintf(pF, "[WARNING]: "); fprintf(pF, STR, ## __VA_ARGS__); fprintf(pF, "\n"); fclose(pF); }}
+#define OG_LOG_ERROR(STR, ...)		{FILE* pF = fopen("log.txt", "at"); if (pF) { fprintf(pF, "[ERROR]: "); fprintf(pF, STR, ## __VA_ARGS__); fprintf(pF, "\n"); fclose(pF); }}
 #endif
 #else
-#define OG_LOG(STR)
+#define OG_LOG_INFO(STR, ...)
+#define OG_LOG_WARNING(STR, ...)
+#define OG_LOG_ERROR(STR, ...)
 #endif
 
 #endif
