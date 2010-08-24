@@ -47,11 +47,10 @@ bool CGameScreenController::Init ()
 	m_pCamera = m_pSg->GetCamera();
 
 	m_fFOV = 0.67f;
-	m_fCameraTargetDistance = 150.0f;
+	m_fCameraTargetDistance = 60.0f;
 	m_fCameraFwdSpeed = 0.02f;
 	m_fCameraStrafeSpeed = 0.01f;
 	m_fFinishPointSqDistance = 10000.0f;
-	m_vCameraStrafe = Vec3(0,0,0);
 
 	GetPhysics()->SetCameraFwdSpeed(m_fCameraFwdSpeed);
 	GetPhysics()->SetCameraStrafeSpeed(m_fCameraStrafeSpeed);
@@ -65,12 +64,8 @@ bool CGameScreenController::Init ()
 #else
     MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(SCR_HEIGHT)/float(SCR_WIDTH), 4.0f, 200.0f, true);
 #endif
-	
-    const Vec3& vTarget = m_pPlayer->GetPhysicalObject()->GetPosition() + Vec3(0, 0, -15);
-    Vec3 vDir (0, 0.6f, 0.4f);
-    vDir = vDir.normalize();
-    Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
-    m_pCamera->Setup (vTarget + (vDir*60.0f), vTarget, vUp);
+
+	UpdateCamera();
 
     glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
     glEnable(GL_TEXTURE_2D);
@@ -79,8 +74,6 @@ bool CGameScreenController::Init ()
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-    //glDisable(GL_CULL_FACE);
-    //glEnable(GL_NORMALIZE);
 
     return true;
 }
@@ -92,7 +85,7 @@ void CGameScreenController::Update (unsigned long _ElapsedTime)
 	if (m_State != CSTATE_ACTIVE)
 		return;
     
-	UpdateCameraMovements(_ElapsedTime);
+	UpdateCamera();
 
     GetActorManager()->Update(_ElapsedTime);
     GetPhysics()->Update(_ElapsedTime);
@@ -149,12 +142,6 @@ void CGameScreenController::Deactivate ()
 // Control vector change event handler.
 void CGameScreenController::OnVectorChanged (const Vec3& _vVec)
 {
-	Vec3 v = _vVec;
-	if (v.length() > 1.0f)
-	{
-		v.normalize();
-	}
-	m_vCameraStrafe = Vec3(v.x, 0, 0);
 }
 
 
@@ -171,15 +158,15 @@ bool CGameScreenController::CheckFinishCondition ()
 }
 
 
-// Update camera movements.
-void CGameScreenController::UpdateCameraMovements (unsigned long _ElapsedTime)
+// Update camera.
+void CGameScreenController::UpdateCamera ()
 {
     if (m_pCamera && m_pCurLevel)
     {
         const Vec3& vTarget = m_pPlayer->GetPhysicalObject()->GetPosition() + Vec3(0, 0, -15);
         Vec3 vDir  = Vec3(0, 0.6f, 0.4f).normalized();
         Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
-        Vec3 vPos = vTarget + (vDir*60.0f);
+        Vec3 vPos = vTarget + (vDir*m_fCameraTargetDistance);
 
         m_pCamera->Setup (vPos, vTarget, vUp);
 	}

@@ -52,8 +52,8 @@ private:
     // Check if finish condition is satisfied.
 	bool CheckFinishCondition ();
 
-    // Update camera movements.
-	void UpdateCameraMovements (unsigned long _ElapsedTime);
+    // Update camera.
+	void UpdateCamera ();
 
 private:
 		
@@ -73,8 +73,6 @@ private:
 	float			m_fCameraFwdSpeed;
 	float			m_fCameraStrafeSpeed;
 	float			m_fFinishPointSqDistance;
-
-	Vec3			m_vCameraStrafe;
 };
 
 #endif

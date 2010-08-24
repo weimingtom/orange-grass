@@ -21,9 +21,9 @@ CGameSystem::CGameSystem () :   m_pLoadScreen(NULL),
     m_pLoadScreen = new CLoadScreenController();
     m_pGameScreen = new CGameScreenController();
 
-    m_pCurScreen = m_pLoadScreen;
     m_pLoadScreen->Init();
     m_pLoadScreen->Activate();
+    m_pCurScreen = m_pLoadScreen;
 }
 
 
@@ -56,10 +56,10 @@ void CGameSystem::ChangeModel ( int _Model, int _Param, int _Param2 )
     switch(m_pCurScreen->GetType())
     {
     case SCRTYPE_LOAD:
-        m_pCurScreen = m_pGameScreen;
         if (m_pGameScreen->Init())
 		{
 	        m_pGameScreen->Activate();
+			m_pCurScreen = m_pGameScreen;
 		}
 		else
 		{
