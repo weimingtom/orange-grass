@@ -87,8 +87,8 @@ void CGameScreenController::Update (unsigned long _ElapsedTime)
     
 	UpdateCamera();
 
-    GetActorManager()->Update(_ElapsedTime);
     GetPhysics()->Update(_ElapsedTime);
+    GetActorManager()->Update(_ElapsedTime);
 
 	if (CheckFinishCondition())
 	{

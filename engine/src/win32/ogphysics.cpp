@@ -116,6 +116,17 @@ void COGPhysics::Update (unsigned long _ElapsedTime)
 }
 
 
+// Update transforms for the whole scene.
+void COGPhysics::UpdateAll (unsigned long _ElapsedTime)
+{
+    std::list<IOGPhysicalObject*>::iterator iter = m_ObjList.begin();
+    for (; iter != m_ObjList.end(); ++iter)
+    {
+		(*iter)->Update(_ElapsedTime);
+    }
+}
+
+
 // Set level borders
 void COGPhysics::SetLevelBorders (const Vec3& _vStart, const Vec3& _vFinish, float _fWidth)
 {

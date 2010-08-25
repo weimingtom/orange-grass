@@ -242,6 +242,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogrenderer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogrenderer.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogsprite.cpp"
 					>
 				</File>
@@ -263,6 +271,14 @@
 				</File>
 				<File
 					RelativePath=".\ogtexture.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogvertexbuffers.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogvertexbuffers.h"
 					>
 				</File>
 			</Filter>
@@ -433,6 +449,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\IOGRenderable.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGRenderer.h"
 					>
 				</File>
 				<File

@@ -34,6 +34,9 @@ public:
 	// Render.
 	virtual void Render (const MATRIX& _mView);
 
+	// Render the whole scene.
+	virtual void RenderAll (const MATRIX& _mView);
+
 	// Get scene camera.
 	virtual IOGCamera* GetCamera ();
 

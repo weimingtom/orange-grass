@@ -136,13 +136,13 @@ void CEditorCanvas::Render()
 
     GetSceneGraph()->GetLight()->Apply();
 
-    GetPhysics()->Update(0);
+    GetPhysics()->UpdateAll(0);
     GetActorManager()->Update(10);
 
 	if (m_pCurLevel)
         m_pCurLevel->GetTerrain()->Render(m_mView);
 
-    GetSceneGraph()->Render(m_mView);
+    GetSceneGraph()->RenderAll(m_mView);
 
     switch (GetToolSettings()->GetEditMode())
     {

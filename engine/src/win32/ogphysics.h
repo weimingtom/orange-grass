@@ -36,6 +36,9 @@ public:
 	// Update transforms.
 	virtual void Update (unsigned long _ElapsedTime);
 
+	// Update transforms for the whole scene.
+	virtual void UpdateAll (unsigned long _ElapsedTime);
+
     // Set level borders
     virtual void SetLevelBorders (const Vec3& _vStart, const Vec3& _vFinish, float _fWidth);
 

@@ -41,6 +41,9 @@ public:
 	// Update transforms.
 	virtual void Update (unsigned long _ElapsedTime) = 0;
 
+	// Update transforms for the whole scene.
+	virtual void UpdateAll (unsigned long _ElapsedTime) = 0;
+
     // Set camera forward speed
     virtual void SetCameraFwdSpeed (float _fSpeed) = 0;
 

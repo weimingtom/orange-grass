@@ -18,6 +18,7 @@
 #include "IOGSprite.h"
 #include "IOGPhysics.h"
 #include "IOGInputDispatcher.h"
+#include "IOGRenderer.h"
 #include "common.h"
 #include <vector>
 #include <string>
@@ -29,6 +30,7 @@ IOGSceneGraph* GetSceneGraph ();
 IOGActorManager* GetActorManager ();
 IOGPhysics* GetPhysics ();
 IOGInputDispatcher* GetInput ();
+IOGRenderer* GetRenderer ();
 
 IOGSprite* CreateSprite (const std::string& _Alias);
 

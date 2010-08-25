@@ -86,6 +86,21 @@ void COGSceneGraph::Render (const MATRIX& _mView)
 }
 
 
+// Render the whole scene.
+void COGSceneGraph::RenderAll (const MATRIX& _mView)
+{
+	MATRIX mModelView;
+
+    std::list<IOGSgNode*>::iterator iter = m_NodesList.begin();
+    for (; iter != m_NodesList.end(); ++iter)
+    {
+        const MATRIX& mWorld = (*iter)->GetWorldTransform();
+        MatrixMultiply(mModelView, mWorld, _mView);
+        (*iter)->GetRenderable()->Render(mModelView);
+    }
+}
+
+
 // Get scene camera.
 IOGCamera* COGSceneGraph::GetCamera ()
 {

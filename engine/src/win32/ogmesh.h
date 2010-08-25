@@ -15,6 +15,7 @@
 #include "Mathematics.h"
 #include <vector>
 #include "ogresource.h"
+#include "ogvertexbuffers.h"
 
 
 class COGMesh : public IOGMesh, public COGResource
@@ -60,9 +61,10 @@ private:
 
 private:
 	
-	// Vertex Buffer Object (VBO) handles
-	GLuint*			m_pVBO;
-	GLuint*			m_pIndexVBO;
+	//// Vertex Buffer Object (VBO) handles
+	//GLuint*			m_pVBO;
+	//GLuint*			m_pIndexVBO;
+	std::vector<COGVertexBuffers*>	m_BuffersList;
 	
 	// 3D Model
 	CPVRTModelPOD*	m_pScene;

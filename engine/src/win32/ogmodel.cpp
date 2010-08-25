@@ -7,7 +7,7 @@
  *
  */
 
-#include "orangegrass.h"
+#include "OrangeGrass.h"
 #include "ogmodel.h"
 #include "ogmaterial.h"
 #include "tinyxml.h"

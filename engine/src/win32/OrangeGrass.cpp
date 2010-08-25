@@ -13,6 +13,7 @@
 #include "ogactormanager.h"
 #include "ogphysics.h"
 #include "oginputdispatcher.h"
+#include "ogrenderer.h"
 #include "ogsprite.h"
 
 
@@ -22,6 +23,7 @@ static IOGSceneGraph* g_pSg = NULL;
 static IOGActorManager* g_pActorMgr = NULL;
 static IOGPhysics* g_pPhysics = NULL;
 static IOGInputDispatcher* g_pInput = NULL;
+static IOGRenderer* g_pRenderer = NULL;
 
 
 IOGResourceMgr* GetResourceMgr ()
@@ -81,6 +83,16 @@ IOGInputDispatcher* GetInput ()
 		g_pInput = new COGInputDispatcher ();
 	}
 	return g_pInput;
+}
+
+
+IOGRenderer* GetRenderer ()
+{
+	if (g_pRenderer == NULL)
+	{
+		g_pRenderer = new COGRenderer ();
+	}
+	return g_pRenderer;
 }
 
 

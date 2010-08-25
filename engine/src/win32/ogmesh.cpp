@@ -10,8 +10,8 @@
 #include "IOGMath.h"
 
 
-COGMesh::COGMesh () :	m_pVBO (NULL),
-						m_pIndexVBO (NULL),
+COGMesh::COGMesh () :	//m_pVBO (NULL),
+						//m_pIndexVBO (NULL),
 						m_pScene (NULL)
 {
 	m_pScene = (CPVRTModelPOD*)malloc(sizeof(CPVRTModelPOD));
@@ -21,15 +21,13 @@ COGMesh::COGMesh () :	m_pVBO (NULL),
 
 COGMesh::~COGMesh()
 {
+	Unload();
+
 	if (m_pScene)
 	{
-		m_pScene->Destroy();
 		free(m_pScene);
 		m_pScene = NULL;
 	}
-	
-	OG_SAFE_DELETE_ARRAY (m_pVBO);
-	OG_SAFE_DELETE_ARRAY (m_pIndexVBO);
 }
 
 
@@ -51,29 +49,31 @@ bool COGMesh::Load ()
 		return false;
 	}
 	
-	m_pVBO = new GLuint[m_pScene->nNumMesh];
-	m_pIndexVBO = new GLuint[m_pScene->nNumMesh];
-	
-	glGenBuffers(m_pScene->nNumMesh, m_pVBO);
+	//m_pVBO = new GLuint[m_pScene->nNumMesh];
+	//m_pIndexVBO = new GLuint[m_pScene->nNumMesh];
+	//glGenBuffers(m_pScene->nNumMesh, m_pVBO);
 	
 	for(unsigned int i = 0; i < m_pScene->nNumMesh; ++i)
 	{
-		// Load vertex data into buffer object
-		SPODMesh& curMesh = m_pScene->pMesh[i];
-		unsigned int uiSize = curMesh.nNumVertex * curMesh.sVertex.nStride;
-		
-		glBindBuffer(GL_ARRAY_BUFFER, m_pVBO[i]);
-		glBufferData(GL_ARRAY_BUFFER, uiSize, curMesh.pInterleaved, GL_STATIC_DRAW);
-		
-		// Load index data into buffer object if available
-		m_pIndexVBO[i] = 0;
-		if(curMesh.sFaces.pData)
-		{
-			glGenBuffers(1, &m_pIndexVBO[i]);
-			uiSize = PVRTModelPODCountIndices(curMesh) * sizeof(GLshort);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pIndexVBO[i]);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, uiSize, curMesh.sFaces.pData, GL_STATIC_DRAW);
-		}
+		COGVertexBuffers* pBuffer = new COGVertexBuffers(&m_pScene->pMesh[i]);
+		m_BuffersList.push_back(pBuffer);
+
+		//// Load vertex data into buffer object
+		//SPODMesh& curMesh = m_pScene->pMesh[i];
+		//unsigned int uiSize = curMesh.nNumVertex * curMesh.sVertex.nStride;
+		//
+		//glBindBuffer(GL_ARRAY_BUFFER, m_pVBO[i]);
+		//glBufferData(GL_ARRAY_BUFFER, uiSize, curMesh.pInterleaved, GL_STATIC_DRAW);
+		//
+		//// Load index data into buffer object if available
+		//m_pIndexVBO[i] = 0;
+		//if(curMesh.sFaces.pData)
+		//{
+		//	glGenBuffers(1, &m_pIndexVBO[i]);
+		//	uiSize = PVRTModelPODCountIndices(curMesh) * sizeof(GLshort);
+		//	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pIndexVBO[i]);
+		//	glBufferData(GL_ELEMENT_ARRAY_BUFFER, uiSize, curMesh.sFaces.pData, GL_STATIC_DRAW);
+		//}
 	}
 	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -99,8 +99,14 @@ void COGMesh::Unload ()
 	m_Faces.clear();
 	m_AABB.SetMinMax(Vec3(0,0,0), Vec3(0,0,0));
 
-	OG_SAFE_DELETE_ARRAY (m_pVBO);
-	OG_SAFE_DELETE_ARRAY (m_pIndexVBO);
+	std::vector<COGVertexBuffers*>::iterator iter = m_BuffersList.begin();
+    for (; iter != m_BuffersList.end(); ++iter)
+    {
+		OG_SAFE_DELETE((*iter));
+	}
+	m_BuffersList.clear();
+	//OG_SAFE_DELETE_ARRAY (m_pVBO);
+	//OG_SAFE_DELETE_ARRAY (m_pIndexVBO);
 
 	m_LoadState = OG_RESSTATE_DEFINED;
 }
@@ -176,20 +182,22 @@ void COGMesh::RenderObject(unsigned int _id)
 {
 	const SPODMesh& Mesh = m_pScene->pMesh[_id];
 	
-	// bind the VBO for the mesh
-	glBindBuffer(GL_ARRAY_BUFFER, m_pVBO[_id]);
-	// bind the index buffer, won't hurt if the handle is 0
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pIndexVBO[_id]);
-	
-	// Setup pointers
-	glVertexPointer(3, VERTTYPEENUM, Mesh.sVertex.nStride, Mesh.sVertex.pData);
-	if (Mesh.psUVW)
-		glTexCoordPointer(2, VERTTYPEENUM, Mesh.psUVW[0].nStride, Mesh.psUVW[0].pData);
-	glNormalPointer(VERTTYPEENUM, Mesh.sNormals.nStride, Mesh.sNormals.pData);
+	//// bind the VBO for the mesh
+	//glBindBuffer(GL_ARRAY_BUFFER, m_pVBO[_id]);
+	//// bind the index buffer, won't hurt if the handle is 0
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_pIndexVBO[_id]);
+	//
+	//// Setup pointers
+	//glVertexPointer(3, VERTTYPEENUM, Mesh.sVertex.nStride, Mesh.sVertex.pData);
+	//if (Mesh.psUVW)
+	//	glTexCoordPointer(2, VERTTYPEENUM, Mesh.psUVW[0].nStride, Mesh.psUVW[0].pData);
+	//glNormalPointer(VERTTYPEENUM, Mesh.sNormals.nStride, Mesh.sNormals.pData);
+	COGVertexBuffers* pBuff = m_BuffersList[_id];
+	pBuff->Apply();
 	
 	if(Mesh.nNumStrips == 0)
 	{
-		if(m_pIndexVBO[_id])
+		if(/*m_pIndexVBO[_id]*/pBuff->IsIndexed())
 		{
 			// Indexed Triangle list
 			glDrawElements(GL_TRIANGLES, Mesh.nNumFaces * 3, GL_UNSIGNED_SHORT, 0);
@@ -205,7 +213,7 @@ void COGMesh::RenderObject(unsigned int _id)
 		for(unsigned int i = 0; i < Mesh.nNumStrips; ++i)
 		{
 			int offset = 0;
-			if(m_pIndexVBO[_id])
+			if(/*m_pIndexVBO[_id]*/pBuff->IsIndexed())
 			{
 				// Indexed Triangle strips
 				glDrawElements(GL_TRIANGLE_STRIP, Mesh.pnStripLength[i]+2, GL_UNSIGNED_SHORT, &((GLshort*)0)[offset]);
