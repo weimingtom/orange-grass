@@ -12,36 +12,6 @@
 #include "IOGRenderer.h"
 #include "OpenGL2.h"
 #include "ogmesh.h"
-#include <list>
-
-
-enum RenderCmdType
-{
-	RENDERCMD_NONE,
-	RENDERCMD_SETTRANSFORM,
-	RENDERCMD_SETMATERIAL,
-	RENDERCMD_SETTEXTURE,
-	RENDERCMD_SETMESH
-};
-
-
-struct RenderCommand
-{
-	RenderCommand () :	Type(RENDERCMD_NONE),
-						pMaterial(NULL),
-						pTexture(NULL),
-						pPODMesh(NULL)
-	{
-	}
-
-	RenderCmdType	Type;
-	MATRIX			mWorld;
-	IOGMaterial*	pMaterial;
-	IOGTexture*		pTexture;
-	SPODMesh*		pPODMesh;
-	unsigned int	hVBO;
-	unsigned int	hIBO;
-};
 
 
 class COGRenderer : public IOGRenderer
@@ -54,26 +24,28 @@ public:
 	virtual bool Init ();
 
 	// add rendering command.
-	virtual void SetTransform (const MATRIX& _mWorld);
-
-	// add rendering command.
 	virtual void SetTexture (IOGTexture* _pTexture);
 
 	// add rendering command.
 	virtual void SetMaterial (IOGMaterial* _pMaterial);
 
 	// add rendering command.
-	virtual void SetMesh (void* _pPODMesh,
-		unsigned int _hVBO,
-		unsigned int _hIBO);
-	
-	// render command buffer.
-	virtual void Render (const MATRIX& _mView);
+	virtual void RenderMesh (void* _pMesh);
+
+	// start rendering meshes.
+	virtual void StartRenderingMeshes();
+
+	// finish rendering meshes.
+	virtual void FinishRenderingMeshes();
+
+	// reset renderer pipeline.
+	virtual void Reset ();
 	
 private:
 
-	// Render command buffer
-	std::list<RenderCommand>	m_CommandBuffer;
+    IOGTexture*         m_pCurTexture;
+    IOGMaterial*        m_pCurMaterial;
+    COGVertexBuffers*	m_pCurMesh;
 };
 
 #endif

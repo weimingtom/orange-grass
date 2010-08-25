@@ -116,10 +116,13 @@ void CGameScreenController::RenderScene ()
 
     m_pSg->GetLight()->Apply();
 
+    GetRenderer()->StartRenderingMeshes();
     if (m_pCurLevel)
         m_pCurLevel->GetTerrain()->Render(m_mView);
 
     m_pSg->Render(m_mView);
+    GetRenderer()->FinishRenderingMeshes();
+    GetRenderer()->Reset();
 }
 
 

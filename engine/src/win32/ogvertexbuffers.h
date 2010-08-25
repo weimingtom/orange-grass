@@ -21,8 +21,11 @@ public:
 	COGVertexBuffers (const SPODMesh* _pMesh);
 	~COGVertexBuffers ();
 
-	// add rendering command.
+	// apply buffers.
 	void Apply () const;
+
+	// render buffer geometry.
+	void Render () const;
 
 	// is indexed
 	bool IsIndexed() const {return (m_IBO != 0);}

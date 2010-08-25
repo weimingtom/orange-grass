@@ -12,6 +12,7 @@
 #include "IOGModel.h"
 #include "IOGMaterial.h"
 #include "ogresource.h"
+#include "IOGRenderer.h"
 
 
 class COGModel : public IOGModel, public COGResource
@@ -64,6 +65,7 @@ private:
 	IOGMesh*	    m_pMesh;	
 	IOGTexture*	    m_pTexture;
     IOGMaterial*    m_pMaterial;
+    IOGRenderer*    m_pRenderer;
 };
 
 

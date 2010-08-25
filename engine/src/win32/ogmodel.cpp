@@ -17,6 +17,7 @@ COGModel::COGModel() :	m_pMesh(NULL),
 						m_pTexture(NULL),
                         m_pMaterial(NULL)
 {
+    m_pRenderer = GetRenderer();
 }
 
 
@@ -119,8 +120,8 @@ void COGModel::UpdateAnimation (int _ElapsedTime)
 // Render mesh.
 void COGModel::Render (const MATRIX& _mView)
 {
-    m_pMaterial->Apply();
-    m_pTexture->Apply();
+    m_pRenderer->SetMaterial(m_pMaterial);
+    m_pRenderer->SetTexture(m_pTexture);
 	m_pMesh->Render (_mView);
 }
 
@@ -128,8 +129,8 @@ void COGModel::Render (const MATRIX& _mView)
 // Render.
 void COGModel::Render (const MATRIX& _mView, unsigned int _Part)
 {
-    m_pMaterial->Apply();
-    m_pTexture->Apply();
+    m_pRenderer->SetMaterial(m_pMaterial);
+    m_pRenderer->SetTexture(m_pTexture);
 	m_pMesh->Render (_mView, _Part);
 }
 

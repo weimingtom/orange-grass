@@ -15,6 +15,7 @@
 #include "Geometry.h"
 #include "Mathematics.h"
 #include "ogresource.h"
+#include "IOGRenderer.h"
 
 
 class COGTerrain : public IOGTerrain, public COGResource
@@ -71,6 +72,7 @@ private:
 	IOGMesh*					m_pMesh;	
 	std::vector<IOGTexture*>	m_TextureList;
     IOGMaterial*				m_pMaterial;
+    IOGRenderer*                m_pRenderer;
 };
 
 

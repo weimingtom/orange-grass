@@ -16,6 +16,7 @@
 #include <vector>
 #include "ogresource.h"
 #include "ogvertexbuffers.h"
+#include "IOGRenderer.h"
 
 
 class COGMesh : public IOGMesh, public COGResource
@@ -52,18 +53,13 @@ public:
     virtual const std::vector<OGFace>& GetGeometry () const {return m_Faces;}
 
 private:
-	
-	// render sub-mesh
-	void RenderObject(unsigned int _id);
 
 	// calculate geometry
 	void CalculateGeometry ();
 
 private:
 	
-	//// Vertex Buffer Object (VBO) handles
-	//GLuint*			m_pVBO;
-	//GLuint*			m_pIndexVBO;
+	// Vertex Buffer Object (VBO) list
 	std::vector<COGVertexBuffers*>	m_BuffersList;
 	
 	// 3D Model
@@ -75,6 +71,7 @@ private:
     // Geometry (for mapeditor mostly)
 	std::vector<OGFace>     m_Faces;
 
+    IOGRenderer*    m_pRenderer;
 };
 
 

@@ -16,6 +16,7 @@
 COGTerrain::COGTerrain () :	m_pMesh(NULL),
                             m_pMaterial(NULL)
 {
+    m_pRenderer = GetRenderer();
 }
 
 
@@ -115,11 +116,11 @@ void COGTerrain::Unload ()
 // Render terrain.
 void COGTerrain::Render (const MATRIX& _mView)
 {
-    m_pMaterial->Apply();
+    m_pRenderer->SetMaterial(m_pMaterial);
     unsigned int numParts = m_pMesh->GetNumRenderables();
     for (unsigned int i = 0; i < numParts; ++i)
     {
-        m_TextureList[i]->Apply();
+        m_pRenderer->SetTexture(m_TextureList[i]);
         m_pMesh->Render (_mView, i);
     }
 }
@@ -128,8 +129,8 @@ void COGTerrain::Render (const MATRIX& _mView)
 // Render.
 void COGTerrain::Render (const MATRIX& _mView, unsigned int _Part)
 {
-    m_pMaterial->Apply();
-    m_TextureList[_Part]->Apply();
+    m_pRenderer->SetMaterial(m_pMaterial);
+    m_pRenderer->SetTexture(m_TextureList[_Part]);
 	m_pMesh->Render (_mView, _Part);
 }
 
