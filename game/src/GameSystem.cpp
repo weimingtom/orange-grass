@@ -107,7 +107,6 @@ void CGameSystem::Draw ()
 {
     if (!m_pCurScreen)
         return;
-
     m_pCurScreen->RenderScene();
 }
 

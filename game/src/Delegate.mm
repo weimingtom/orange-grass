@@ -15,17 +15,23 @@
 
 #import "GameSystem.h"
 #import "Delegate.h"
+#import "Accelerometer.h"
 
 
-#define kFPS			60.0
+#define kFPS			30.0
 
 static CGameSystem *shell = NULL;
+static Accel *accel = NULL;
 
 
 @implementation AppController
 
 - (void) update
 {
+    double vec[3];
+    [accel GetAccelerometerVector: (double*)vec];
+    shell->OnPointerMove(vec[1]*50, vec[2]*50);
+    
 	shell->Update(10);
     shell->Draw();
 	
@@ -48,6 +54,9 @@ static CGameSystem *shell = NULL;
 
 	// show the window
 	[_window makeKeyAndVisible];
+    
+    accel = [Accel alloc];
+    [accel SetupAccelerometer: kFPS];
 	
 	shell = new CGameSystem();
 	if(!shell)
@@ -60,6 +69,7 @@ static CGameSystem *shell = NULL;
 
 - (void) dealloc
 {
+    [accel release];
 	delete shell;
     shell = NULL;
 
