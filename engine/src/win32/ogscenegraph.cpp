@@ -76,12 +76,22 @@ void COGSceneGraph::Render (const MATRIX& _mView)
 {
 	MATRIX mModelView;
 
+	float fCameraZ = m_pCamera->GetPosition().z;
     std::list<IOGSgNode*>::iterator iter = m_NodesList.begin();
     for (; iter != m_NodesList.end(); ++iter)
     {
-        const MATRIX& mWorld = (*iter)->GetWorldTransform();
-        MatrixMultiply(mModelView, mWorld, _mView);
-        (*iter)->GetRenderable()->Render(mModelView);
+		IOGSgNode* pNode = (*iter);
+		float fObjectZ = pNode->GetOBB().m_vCenter.z;
+
+		if (fObjectZ <= fCameraZ)
+		{
+			if ((fCameraZ - fObjectZ) < 300.0f)
+			{
+				const MATRIX& mWorld = pNode->GetWorldTransform();
+				MatrixMultiply(mModelView, mWorld, _mView);
+				pNode->GetRenderable()->Render(mModelView);
+			}
+		}
     }
 }
 

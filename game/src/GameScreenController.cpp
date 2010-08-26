@@ -66,6 +66,7 @@ bool CGameScreenController::Init ()
 #endif
 
 	UpdateCamera();
+	GetPhysics()->UpdateAll(1);
 
     glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
     glEnable(GL_TEXTURE_2D);

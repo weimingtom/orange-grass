@@ -59,8 +59,10 @@ public:
 
 private:
 
-	std::list<IOGPhysicalObject*>	m_ObjList;
-    Vec3    m_vLeftBorder[3];
+	std::list<IOGPhysicalObject*>	m_StaticObjList;
+	std::list<IOGPhysicalObject*>	m_BotObjList;
+
+	Vec3    m_vLeftBorder[3];
     Vec3    m_vRightBorder[3];
 
 	float	m_fCameraFwdSpeed;

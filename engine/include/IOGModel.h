@@ -37,6 +37,9 @@ public:
 
 	// Get model alias
 	virtual const std::string& GetAlias () const = 0;
+
+	// Get texture
+	virtual const IOGTexture* GetTexture () const = 0;
 };
 
 
