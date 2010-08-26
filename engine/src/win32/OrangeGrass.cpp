@@ -15,6 +15,7 @@
 #include "oginputdispatcher.h"
 #include "ogrenderer.h"
 #include "ogsprite.h"
+#include "ogmaterialmanager.h"
 
 
 static IOGResourceMgr* g_pResourceMgr = NULL;
@@ -24,6 +25,7 @@ static IOGActorManager* g_pActorMgr = NULL;
 static IOGPhysics* g_pPhysics = NULL;
 static IOGInputDispatcher* g_pInput = NULL;
 static IOGRenderer* g_pRenderer = NULL;
+static IOGMaterialManager* g_pMaterialMgr = NULL;
 
 
 IOGResourceMgr* GetResourceMgr ()
@@ -93,6 +95,16 @@ IOGRenderer* GetRenderer ()
 		g_pRenderer = new COGRenderer ();
 	}
 	return g_pRenderer;
+}
+
+
+IOGMaterialManager* GetMaterialManager ()
+{
+	if (g_pMaterialMgr == NULL)
+	{
+		g_pMaterialMgr = new COGMaterialManager ();
+	}
+	return g_pMaterialMgr;
 }
 
 

@@ -218,14 +218,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\ogmaterial.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ogmaterial.h"
-					>
-				</File>
-				<File
 					RelativePath=".\ogmesh.cpp"
 					>
 				</File>
@@ -281,6 +273,42 @@
 					RelativePath=".\ogvertexbuffers.h"
 					>
 				</File>
+				<Filter
+					Name="Materials"
+					>
+					<File
+						RelativePath=".\ogalphablendmaterial.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogalphablendmaterial.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogalphatestmaterial.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogalphatestmaterial.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogmaterialmanager.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogmaterialmanager.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogsolidmaterial.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogsolidmaterial.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Input"
@@ -437,6 +465,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\IOGMaterial.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGMaterialManager.h"
 					>
 				</File>
 				<File

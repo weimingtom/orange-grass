@@ -9,7 +9,6 @@
 #include "OrangeGrass.h"
 #include "ogterrain.h"
 #include "IOGMath.h"
-#include "ogmaterial.h"
 #include "tinyxml.h"
 
 
@@ -46,7 +45,7 @@ bool COGTerrain::Load ()
 	}
 
     m_pMesh = GetResourceMgr()->GetMesh(cfg.mesh_alias);
-    m_pMaterial = new COGMaterial(OG_MAT_SOLID);
+    m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_SOLID);//new COGMaterial(OG_MAT_SOLID);
 
 	std::vector<Cfg::TextureCfg>::const_iterator iter;
 	for (iter = cfg.texture_cfg_list.begin(); iter != cfg.texture_cfg_list.end(); ++iter)

@@ -19,6 +19,7 @@
 #include "IOGPhysics.h"
 #include "IOGInputDispatcher.h"
 #include "IOGRenderer.h"
+#include "IOGMaterialManager.h"
 #include "common.h"
 #include <vector>
 #include <string>
@@ -31,6 +32,7 @@ IOGActorManager* GetActorManager ();
 IOGPhysics* GetPhysics ();
 IOGInputDispatcher* GetInput ();
 IOGRenderer* GetRenderer ();
+IOGMaterialManager* GetMaterialManager ();
 
 IOGSprite* CreateSprite (const std::string& _Alias);
 

@@ -2,6 +2,11 @@ Tools: ver. 0.07, 23-Aug-2011
 
 ChangeList:
 
+0.08:
+- [OG] added material manager and vertex buffer objects;
+- [OG] added rendering state caching;
+- [Game] craft controls - first draft;
+
 0.07 (23-Aug-2011):
 - [OG] added some player support;
 - [OG] fixed compatibility with iOS;

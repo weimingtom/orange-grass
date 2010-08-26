@@ -108,11 +108,9 @@ void CEditorCanvas::Render()
         InitGL();
 		if (GetResourceMgr()->Init() == false)
 		{
-			OG_LOG_ERROR("Resource manager initialization FAILED");
 		}
 		if (GetLevelManager()->Init() == false)
 		{
-			OG_LOG_ERROR("Level manager initialization FAILED");
 		}
 		m_init = true;
     }
@@ -320,7 +318,6 @@ bool CEditorCanvas::LoadNextResource()
 	}
 	else
 	{
-		OG_LOG_ERROR("Resource loading failure");
 	}
 
 	m_bLoaded = true;

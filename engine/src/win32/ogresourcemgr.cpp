@@ -72,6 +72,8 @@ bool COGResourceMgr::Init ()
 	}
 	m_TextureList["load_progress"] = pLoadProgress;
 
+	GetMaterialManager()->Init();
+
 	return true;
 }
 

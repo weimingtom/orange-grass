@@ -41,7 +41,7 @@ public:
 		
 	// get texture.
 	virtual IOGTexture* GetTexture (const std::string& _Alias) = 0;
-		
+
 	// get mesh.
 	virtual IOGMesh* GetMesh (const std::string& _Alias) = 0;
 

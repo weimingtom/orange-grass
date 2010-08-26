@@ -29,7 +29,7 @@ public:
 	virtual OGMaterialType GetType () const = 0;
 		
 	// apply the material.
-	virtual void Apply () = 0;
+	virtual void Apply () const = 0;
 };
 
 #endif
