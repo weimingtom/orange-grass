@@ -117,11 +117,24 @@ void CGameScreenController::RenderScene ()
 
     m_pSg->GetLight()->Apply();
 
+	GLfloat fogColor[4]= {0.8f, 0.9f, 0.5f, 1.0f};
+
+	glFogi(GL_FOG_MODE, GL_LINEAR);
+	glFogfv(GL_FOG_COLOR, fogColor);
+	glFogf(GL_FOG_DENSITY, 0.15f);
+	glHint(GL_FOG_HINT, GL_DONT_CARE);
+	glFogf(GL_FOG_START, 100.0f);
+	glFogf(GL_FOG_END, 250.0f);
+	glEnable(GL_FOG);
+
     GetRenderer()->StartRenderingMeshes();
     if (m_pCurLevel)
         m_pCurLevel->GetTerrain()->Render(m_mView);
 
     m_pSg->Render(m_mView);
+	
+	glDisable(GL_FOG);
+
     GetRenderer()->FinishRenderingMeshes();
     GetRenderer()->Reset();
 }

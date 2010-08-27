@@ -27,8 +27,6 @@ CEditorAdjustFrame::CEditorAdjustFrame(	wxMDIParentFrame *parent,
 {
     SetIcon(wxIcon(sample_xpm));
     m_pPanel = new wxPanel(this);
-	
-	ToolSettings* pTool = GetToolSettings();
 }
 
 
