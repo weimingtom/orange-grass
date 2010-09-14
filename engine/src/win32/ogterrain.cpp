@@ -116,10 +116,11 @@ void COGTerrain::Unload ()
 void COGTerrain::Render (const MATRIX& _mView)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
+    m_pRenderer->SetTexture(m_TextureList[0]);
     unsigned int numParts = m_pMesh->GetNumRenderables();
     for (unsigned int i = 0; i < numParts; ++i)
     {
-        m_pRenderer->SetTexture(m_TextureList[i]);
+        //m_pRenderer->SetTexture(m_TextureList[i]);
         m_pMesh->Render (_mView, i);
     }
 }
