@@ -49,7 +49,7 @@ public:
 	virtual const std::string& GetAlias () const;
 
 	// Get texture
-	virtual const IOGTexture* GetTexture () const { return m_pTexture; }
+	virtual IOGTexture* GetTexture () { return m_pTexture; }
 
 private:
 

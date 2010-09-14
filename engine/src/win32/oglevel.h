@@ -58,6 +58,10 @@ private:
 	Vec3		m_vLightDir;
 	Vec3		m_vLightColor;
 	float		m_fActiveWidth;
+	Vec4		m_vFogColor;
+	float		m_fFogStart;
+	float		m_fFogEnd;
+	float		m_fFogDensity;
 };
 
 #endif

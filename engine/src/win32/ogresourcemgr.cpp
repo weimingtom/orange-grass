@@ -48,6 +48,12 @@ COGResourceMgr::~COGResourceMgr ()
 	{
 		OG_SAFE_DELETE (terra_iter->second);
 	}
+	
+	std::map<std::string, COGSprite*>::iterator spr_iter = m_SpriteList.begin();
+	for( ; spr_iter != m_SpriteList.end(); ++spr_iter )
+	{
+		OG_SAFE_DELETE (spr_iter->second);
+	}
 }
 
 
@@ -94,52 +100,76 @@ bool COGResourceMgr::Load (std::vector<IOGResourceInfo>& _resInfo)
 		return false;
 	}
 
-	std::vector<Cfg::ResourceCfg>::const_iterator iter;
-
-	for (iter = cfg.texture_cfg_list.begin(); iter != cfg.texture_cfg_list.end(); ++iter)
+	Cfg::TTextureCfg::const_iterator texiter;
+	for (texiter = cfg.texture_cfg_list.begin(); texiter != cfg.texture_cfg_list.end(); ++texiter)
 	{
 		COGTexture* pTexture = new COGTexture ();
-		pTexture->Init ((*iter).alias, (*iter).file);
-		m_TextureList[(*iter).alias] = pTexture;
+		pTexture->Init ((*texiter).alias, (*texiter).file);
+		std::list<Cfg::TextureResourceCfg::MappingCfg>::const_iterator miter;
+		for (miter = (*texiter).mappings.begin(); miter != (*texiter).mappings.end(); ++miter)
+		{
+			IOGMapping m;
+			m.upper_left = (*miter).pos;
+			m.size = (*miter).size;
+			pTexture->AddMapping(&m);
+		}
+
+		m_TextureList[(*texiter).alias] = pTexture;
 		IOGResourceInfo inf;
-		inf.m_Resource = (*iter).alias;
+		inf.m_Resource = (*texiter).alias;
 		inf.m_ResourceGroup = std::string("Textures");
 		_resInfo.push_back(inf);
 	}
 
-	for (iter = cfg.mesh_cfg_list.begin(); iter != cfg.mesh_cfg_list.end(); ++iter)
+	Cfg::TMeshCfg::const_iterator meshiter;
+	for (meshiter = cfg.mesh_cfg_list.begin(); meshiter != cfg.mesh_cfg_list.end(); ++meshiter)
 	{
 		COGMesh* pMesh = new COGMesh ();
-		pMesh->Init ((*iter).alias, (*iter).file);
-		m_MeshList[(*iter).alias] = pMesh;
+		pMesh->Init ((*meshiter).alias, (*meshiter).file);
+		m_MeshList[(*meshiter).alias] = pMesh;
 		IOGResourceInfo inf;
-		inf.m_Resource = (*iter).alias;
+		inf.m_Resource = (*meshiter).alias;
 		inf.m_ResourceGroup = std::string("Meshes");
 		_resInfo.push_back(inf);
 	}
 
-	for (iter = cfg.model_cfg_list.begin(); iter != cfg.model_cfg_list.end(); ++iter)
+	Cfg::TModelCfg::const_iterator modeliter;
+	for (modeliter = cfg.model_cfg_list.begin(); modeliter != cfg.model_cfg_list.end(); ++modeliter)
 	{
 		COGModel* pModel = new COGModel ();
-		pModel->Init ((*iter).alias, (*iter).file);
-		m_ModelList[(*iter).alias] = pModel;
+		pModel->Init ((*modeliter).alias, (*modeliter).file);
+		m_ModelList[(*modeliter).alias] = pModel;
 		IOGResourceInfo inf;
-		inf.m_Resource = (*iter).alias;
+		inf.m_Resource = (*modeliter).alias;
 		inf.m_ResourceGroup = std::string("Models");
-		inf.m_ResourceIcon = (*iter).icon;
-		inf.m_ResourceActorType = (*iter).actor_type;
+		inf.m_ResourceIcon = (*modeliter).icon;
+		inf.m_ResourceActorType = (*modeliter).actor_type;
 		_resInfo.push_back(inf);
 	}
 
-	for (iter = cfg.terrain_cfg_list.begin(); iter != cfg.terrain_cfg_list.end(); ++iter)
+	Cfg::TTerrainCfg::const_iterator terraiter;
+	for (terraiter = cfg.terrain_cfg_list.begin(); terraiter != cfg.terrain_cfg_list.end(); ++terraiter)
 	{
 		COGTerrain* pTerrain = new COGTerrain ();
-		pTerrain->Init ((*iter).alias, (*iter).file);
-		m_TerrainList[(*iter).alias] = pTerrain;
+		pTerrain->Init ((*terraiter).alias, (*terraiter).file);
+		m_TerrainList[(*terraiter).alias] = pTerrain;
 		IOGResourceInfo inf;
-		inf.m_Resource = (*iter).alias;
+		inf.m_Resource = (*terraiter).alias;
 		inf.m_ResourceGroup = std::string("Terrains");
-		inf.m_ResourceIcon = (*iter).icon;
+		inf.m_ResourceIcon = (*terraiter).icon;
+		_resInfo.push_back(inf);
+	}
+
+	Cfg::TSpriteCfg::const_iterator spriter;
+	for (spriter = cfg.sprite_cfg_list.begin(); spriter != cfg.sprite_cfg_list.end(); ++spriter)
+	{
+		COGSprite* pSprite = new COGSprite ();
+		pSprite->Init ((*spriter).alias, (*spriter).texture);
+		pSprite->SetMapping((*spriter).pos, (*spriter).size);
+		m_SpriteList[(*spriter).alias] = pSprite;
+		IOGResourceInfo inf;
+		inf.m_Resource = (*spriter).alias;
+		inf.m_ResourceGroup = std::string("Sprites");
 		_resInfo.push_back(inf);
 	}
 
@@ -168,10 +198,28 @@ bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
 	while (TextureHandle.Node ())
 	{
 		TiXmlElement* pElement = TextureHandle.Element();
-
-		Cfg::ResourceCfg rescfg;
+		Cfg::TextureResourceCfg rescfg;
 		rescfg.alias = std::string(pElement->Attribute ("alias"));
 		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
+
+		TiXmlHandle hMappingsRoot = TextureHandle.FirstChild ( "Mappings" );
+		unsigned int mapindex = 0;
+		TiXmlHandle MappingHandle = hMappingsRoot.Child ( "Mapping", mapindex );
+		while (MappingHandle.Node ())
+		{
+			TiXmlElement* pMappingElement = MappingHandle.Element();
+			int x, y, w, h;
+			pMappingElement->Attribute("x", &x);
+			pMappingElement->Attribute("y", &y);
+			pMappingElement->Attribute("width", &w);
+			pMappingElement->Attribute("height", &h);
+			Cfg::TextureResourceCfg::MappingCfg mapcfg;
+			mapcfg.pos = Vec2((float)x, (float)y);
+			mapcfg.size = Vec2((float)w, (float)h);
+			rescfg.mappings.push_back(mapcfg);
+			MappingHandle = hMappingsRoot.Child ( "Mapping", ++mapindex );
+		}
+
 		_cfg.texture_cfg_list.push_back(rescfg);
 
 		TextureHandle = hTexturesRoot.Child ( "Texture", ++index );
@@ -184,7 +232,7 @@ bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
 	{
 		TiXmlElement* pElement = MeshHandle.Element();
 
-		Cfg::ResourceCfg rescfg;
+		Cfg::MeshResourceCfg rescfg;
 		rescfg.alias = std::string(pElement->Attribute ("alias"));
 		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
 		_cfg.mesh_cfg_list.push_back(rescfg);
@@ -199,7 +247,7 @@ bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
 	{
 		TiXmlElement* pElement = ModelHandle.Element();
 
-		Cfg::ResourceCfg rescfg;
+		Cfg::ModelResourceCfg rescfg;
 		rescfg.alias = std::string(pElement->Attribute ("alias"));
 		rescfg.actor_type = std::string(pElement->Attribute ("actor_type"));
 		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
@@ -216,13 +264,35 @@ bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
 	{
 		TiXmlElement* pElement = TerrainHandle.Element();
 
-		Cfg::ResourceCfg rescfg;
+		Cfg::TerrainResourceCfg rescfg;
 		rescfg.alias = std::string(pElement->Attribute ("alias"));
 		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
 		rescfg.icon = m_ResPath + std::string("/") + std::string(pElement->Attribute ("icon"));
 		_cfg.terrain_cfg_list.push_back(rescfg);
 
 		TerrainHandle = hTerrainsRoot.Child ( "Terrain", ++index );
+	}
+
+	TiXmlHandle hSpritesRoot = hDoc->FirstChild ( "Sprites" );
+	index = 0;
+	TiXmlHandle SpriteHandle = hSpritesRoot.Child ( "Sprite", index );
+	while (SpriteHandle.Node ())
+	{
+		TiXmlElement* pElement = SpriteHandle.Element();
+
+		Cfg::SpriteResourceCfg rescfg;
+		rescfg.alias = std::string(pElement->Attribute ("alias"));
+		rescfg.texture = std::string(pElement->Attribute ("texture"));
+		int x, y, w, h;
+		pElement->Attribute("x", &x);
+		pElement->Attribute("y", &y);
+		pElement->Attribute("width", &w);
+		pElement->Attribute("height", &h);
+		rescfg.pos = Vec2((float)x, (float)y);
+		rescfg.size = Vec2((float)w, (float)h);
+		_cfg.sprite_cfg_list.push_back(rescfg);
+
+		SpriteHandle = hSpritesRoot.Child ( "Sprite", ++index );
 	}
 
 	OG_SAFE_DELETE(hDoc);
@@ -327,6 +397,30 @@ IOGTerrain* COGResourceMgr::GetTerrain (const std::string& _Alias)
 }
 
 
+// get sprite.
+IOGSprite* COGResourceMgr::GetSprite (const std::string& _Alias)
+{
+	COGSprite* pSprite = m_SpriteList[_Alias];
+    if (pSprite)
+    {
+		switch (pSprite->GetLoadState())
+		{
+			case OG_RESSTATE_LOADED:
+				return pSprite;
+
+			case OG_RESSTATE_DEFINED:
+				if (pSprite->Load() == false)
+					return NULL;
+				return pSprite;
+
+			default:
+				return NULL;
+		}
+    }
+    return NULL;
+}
+
+
 // release texture.
 void COGResourceMgr::ReleaseTexture (IOGTexture* _pTexture)
 {
@@ -367,5 +461,16 @@ void COGResourceMgr::ReleaseTerrain (IOGTerrain* _pTerrain)
 	if (pTerrain)
 	{
 		pTerrain->Unload();
+	}
+}
+
+
+// release sprite.
+void COGResourceMgr::ReleaseSprite (IOGSprite* _pSprite)
+{
+	COGSprite* pSprite = (COGSprite*)_pSprite;
+	if (pSprite)
+	{
+		pSprite->Unload();
 	}
 }

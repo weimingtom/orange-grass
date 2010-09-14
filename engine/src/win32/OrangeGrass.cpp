@@ -14,8 +14,10 @@
 #include "ogphysics.h"
 #include "oginputdispatcher.h"
 #include "ogrenderer.h"
-#include "ogsprite.h"
+#include "ogspritepool.h"
 #include "ogmaterialmanager.h"
+#include "ogstatistics.h"
+#include "ogeffectsmanager.h"
 
 
 static IOGResourceMgr* g_pResourceMgr = NULL;
@@ -26,6 +28,9 @@ static IOGPhysics* g_pPhysics = NULL;
 static IOGInputDispatcher* g_pInput = NULL;
 static IOGRenderer* g_pRenderer = NULL;
 static IOGMaterialManager* g_pMaterialMgr = NULL;
+static IOGStatistics* g_pStats = NULL;
+static IOGSpritePool* g_pSprPool = NULL;
+static IOGEffectsManager* g_pEffectsMgr = NULL;
 
 
 IOGResourceMgr* GetResourceMgr ()
@@ -93,6 +98,7 @@ IOGRenderer* GetRenderer ()
 	if (g_pRenderer == NULL)
 	{
 		g_pRenderer = new COGRenderer ();
+		g_pRenderer->Init();
 	}
 	return g_pRenderer;
 }
@@ -108,9 +114,31 @@ IOGMaterialManager* GetMaterialManager ()
 }
 
 
-IOGSprite* CreateSprite (const std::string& _Alias)
+IOGStatistics* GetStatistics ()
 {
-	COGSprite* pSpr = new COGSprite ();
-	pSpr->Init (GetResourceMgr()->GetTexture(_Alias));
-	return pSpr;
+	if (g_pStats == NULL)
+	{
+		g_pStats = new COGStatistics ();
+	}
+	return g_pStats;
+}
+
+
+IOGSpritePool* GetSpritePool ()
+{
+	if (g_pSprPool == NULL)
+	{
+		g_pSprPool = new COGSpritePool ();
+	}
+	return g_pSprPool;
+}
+
+
+IOGEffectsManager* GetEffectsManager ()
+{
+	if (g_pEffectsMgr == NULL)
+	{
+		g_pEffectsMgr = new COGEffectsManager ();
+	}
+	return g_pEffectsMgr;
 }

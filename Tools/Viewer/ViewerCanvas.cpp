@@ -93,23 +93,36 @@ void CViewerCanvas::Render()
 		LoadNextResource();
 	}
 
+	GetRenderer()->GetCamera()->Update();
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(m_mProjection.f);
-	
-	glMatrixMode(GL_MODELVIEW);
-	m_mView = GetSceneGraph()->GetCamera()->Update();
-	glLoadMatrixf(m_mView.f);
+	//glMatrixMode(GL_PROJECTION);
+	//glLoadMatrixf(m_mProjection.f);
+	//
+	//glMatrixMode(GL_MODELVIEW);
+	//m_mView = GetSceneGraph()->GetCamera()->Update();
+	//glLoadMatrixf(m_mView.f);
+
+	m_mView = GetRenderer()->GetCamera()->GetViewMatrix();
+	GetRenderer()->StartRenderMode(OG_RENDERMODE_GEOMETRY);
 
 	if (m_pCurModel)
 		m_pCurModel->Render(m_mView);
 	if (m_pCurTerrain)
 		m_pCurTerrain->Render(m_mView);
-	if (m_pCurSprite)
-		m_pCurSprite->Render();
+
+	GetRenderer()->FinishRenderMode();
+    GetRenderer()->Reset();
 
     RenderHelpers();
+
+	if (m_pCurSprite)
+	{
+		GetRenderer()->StartRenderMode(OG_RENDERMODE_SPRITES);
+		m_pCurSprite->Render(Vec2(0, 0), Vec2(SCR_WIDTH, SCR_HEIGHT));
+		GetRenderer()->FinishRenderMode();
+	}
 
     glFlush();
     SwapBuffers();
@@ -141,11 +154,8 @@ void CViewerCanvas::OnSize(wxSizeEvent& event)
     {
         SetCurrent();
         glViewport(0, 0, m_ResX, m_ResY);
-		MatrixPerspectiveFovRH(m_mProjection, 1.0f, float(m_ResX)/float(m_ResY), 4.0f, 2500.0f, true);
-		if (m_pCurSprite)
-		{
-			m_pCurSprite->SetPosition (0, 0, 480.f, 320.f);
-		}
+		GetRenderer()->SetViewport(m_ResX, m_ResY, 4.0f, 2500.0f, 0.67f);
+		//MatrixPerspectiveFovRH(m_mProjection, 1.0f, float(m_ResX)/float(m_ResY), 4.0f, 2500.0f, true);
     }
 }
 
@@ -166,9 +176,9 @@ void CViewerCanvas::InitGL()
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);
 
-	GetSceneGraph()->GetLight()->SetDirection(Vec4(0.0f, 0.0f, 1.0f, 0.0f));
-	GetSceneGraph()->GetLight()->SetColor(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	GetSceneGraph()->GetLight()->Apply();
+	GetRenderer()->GetLight()->SetDirection(Vec4(0.0f, 0.0f, 1.0f, 0.0f));
+	GetRenderer()->GetLight()->SetColor(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
+	GetRenderer()->GetLight()->Apply();
 }
 
 
@@ -204,7 +214,7 @@ void CViewerCanvas::OnKeyDown( wxKeyEvent& event )
     case WXK_UP:
 		if (m_pCurTerrain)
 		{
-			GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(0, 0, -1));
+			GetRenderer()->GetCamera()->Strafe(5.5f, Vec3(0, 0, -1));
 			this->Refresh();
 		}
         break;
@@ -212,7 +222,7 @@ void CViewerCanvas::OnKeyDown( wxKeyEvent& event )
 	case WXK_DOWN:
 		if (m_pCurTerrain)
 		{
-			GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(0, 0, 1));
+			GetRenderer()->GetCamera()->Strafe(5.5f, Vec3(0, 0, 1));
 			this->Refresh();
 		}
         break;
@@ -220,7 +230,7 @@ void CViewerCanvas::OnKeyDown( wxKeyEvent& event )
 	case WXK_LEFT:
 		if (m_pCurTerrain)
 		{
-			GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(-1, 0, 0));
+			GetRenderer()->GetCamera()->Strafe(5.5f, Vec3(-1, 0, 0));
 			this->Refresh();
 		}
         break;
@@ -228,7 +238,7 @@ void CViewerCanvas::OnKeyDown( wxKeyEvent& event )
 	case WXK_RIGHT:
 		if (m_pCurTerrain)
 		{
-			GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(1, 0, 0));
+			GetRenderer()->GetCamera()->Strafe(5.5f, Vec3(1, 0, 0));
 			this->Refresh();
 		}
         break;
@@ -258,16 +268,14 @@ void CViewerCanvas::OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& even
 		delete m_pCurSprite; m_pCurSprite = NULL;
 		break;
 
-	case RESTYPE_TEXTURE:
-		{
-			m_pCurModel = NULL;
-			m_pCurTerrain = NULL;
-			if (m_pCurSprite) delete m_pCurSprite;
-			m_pCurSprite = CreateSprite(std::string(evtData.m_Resource));
-			int SprSize = (m_ResX < m_ResY) ? m_ResX : m_ResY;
-			m_pCurSprite->SetPosition (0, 0, 480.f, 320.f);
-		}
-		break;
+	//case RESTYPE_TEXTURE:
+	//	{
+	//		m_pCurModel = NULL;
+	//		m_pCurTerrain = NULL;
+	//		if (m_pCurSprite) delete m_pCurSprite;
+	//		m_pCurSprite = GetResourceMgr()->GetSprite(std::string(evtData.m_Resource));
+	//	}
+	//	break;
 	}
     SetupCamera ();
 	Refresh();
@@ -303,7 +311,7 @@ void CViewerCanvas::SetupCamera()
 	vDir = vDir.normalize();
 	Vec3 vUp = vDir.cross (Vec3(0, 1, 0));
 
-	GetSceneGraph()->GetCamera()->Setup (vDir * fDist, vTarget, vUp);
+	GetRenderer()->GetCamera()->Setup (vDir * fDist, vTarget, vUp);
 }
 
 

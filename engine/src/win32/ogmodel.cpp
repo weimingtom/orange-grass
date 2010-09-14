@@ -24,7 +24,6 @@ COGModel::~COGModel()
 {
 	m_pMesh = NULL;
 	m_pTexture = NULL;	
-    //OG_SAFE_DELETE(m_pMaterial);
 }
 
 
@@ -50,14 +49,6 @@ bool COGModel::Load ()
 	m_pMesh = GetResourceMgr()->GetMesh(modelcfg.mesh_alias);
 	m_pTexture = GetResourceMgr()->GetTexture(modelcfg.texture_alias);
 	m_pMaterial = GetMaterialManager()->GetMaterial(modelcfg.material_type);
-
-	//OGMaterialType mattype = COGMaterial::ParseMaterialType(modelcfg.material_type);
-	//if (mattype == OG_MAT_NONE)
-	//{
-	//	OG_LOG_ERROR("Model material type is OG_MAT_NONE");
-	//	return false;
-	//}
-	//m_pMaterial = new COGMaterial(mattype);
 
 	m_LoadState = OG_RESSTATE_LOADED;
     return true;

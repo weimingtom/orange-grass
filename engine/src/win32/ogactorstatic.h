@@ -24,6 +24,9 @@ public:
 		const Vec3& _vPos,
 		const Vec3& _vRot,
         const Vec3& _vScale);
+
+	// Adding to actor manager event handler.
+	virtual void OnAddedToManager ();
 };
 
 

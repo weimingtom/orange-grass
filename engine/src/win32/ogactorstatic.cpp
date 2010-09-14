@@ -73,3 +73,12 @@ bool COGActorStatic::Create (const std::string& _ModelAlias,
 	m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);
 	return true;
 }
+
+
+// Adding to actor manager event handler.
+void COGActorStatic::OnAddedToManager ()
+{
+    GetPhysics()->AddObject(m_pPhysicalObject);
+	GetSceneGraph()->AddStaticNode(m_pNode, m_pModel->GetTexture());
+    m_bAdded = true;
+}

@@ -9,7 +9,7 @@
 #include "ogcamera.h"
 
 
-COGCamera::COGCamera ()
+COGCamera::COGCamera () : m_bDirty(true)
 {
 }
 
@@ -25,6 +25,7 @@ void COGCamera::Setup (const Vec3& _vPosition, const Vec3& _vDirection, const Ve
 	m_Position = _vPosition;
 	m_Direction = _vDirection;
 	m_Up = _vUp;
+	m_bDirty = true;
 }
 
 
@@ -49,7 +50,7 @@ void COGCamera::RotateView (float _fAngle, const Vec3& _vAxis)
 	vNewView.z += (cosTheta + (1 - cosTheta) * _vAxis.z * _vAxis.z)	* vView.z;
 	
 	m_Direction = m_Position + vNewView;
-	//m_Direction.normalize();
+	m_bDirty = true;
 }
 
 
@@ -60,6 +61,7 @@ void COGCamera::Strafe(float _fSpeed, const Vec3& _vDir)
 	m_Position.z += _vDir.z * _fSpeed;
 	m_Direction.x += _vDir.x * _fSpeed;
 	m_Direction.z += _vDir.z * _fSpeed;
+	m_bDirty = true;
 }
 
 
@@ -75,13 +77,25 @@ void COGCamera::Move(float _fSpeed)
 	m_Direction.x += vVector.x * _fSpeed;
 	m_Direction.y += vVector.y * _fSpeed;
 	m_Direction.z += vVector.z * _fSpeed;
+
+	m_bDirty = true;
 }
 
 
 // update camera.
-const MATRIX& COGCamera::Update ()
+void COGCamera::Update ()
 {
-	MatrixLookAtRH(m_View, m_Position, m_Direction, m_Up);
+	if (m_bDirty)
+	{
+		MatrixLookAtRH(m_View, m_Position, m_Direction, m_Up);
+		m_bDirty = false;
+	}
+}
+
+
+// get camera view matrix.
+const MATRIX& COGCamera::GetViewMatrix () const
+{
 	return m_View;
 }
 

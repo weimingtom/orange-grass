@@ -31,6 +31,12 @@ public:
 		
 	// apply lighting.
 	virtual void Apply () = 0;
+
+	// enable or disable light.
+	virtual void Enable (bool _bEnable) = 0;
+
+	// check light status.
+	virtual bool IsEnabled () const = 0;
 };
 
 #endif

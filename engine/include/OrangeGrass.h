@@ -15,11 +15,13 @@
 #include "IOGLevelManager.h"
 #include "IOGSceneGraph.h"
 #include "IOGActorManager.h"
-#include "IOGSprite.h"
+#include "IOGSpritePool.h"
 #include "IOGPhysics.h"
 #include "IOGInputDispatcher.h"
 #include "IOGRenderer.h"
 #include "IOGMaterialManager.h"
+#include "IOGStatistics.h"
+#include "IOGEffectsManager.h"
 #include "common.h"
 #include <vector>
 #include <string>
@@ -33,7 +35,8 @@ IOGPhysics* GetPhysics ();
 IOGInputDispatcher* GetInput ();
 IOGRenderer* GetRenderer ();
 IOGMaterialManager* GetMaterialManager ();
-
-IOGSprite* CreateSprite (const std::string& _Alias);
+IOGStatistics* GetStatistics ();
+IOGSpritePool* GetSpritePool ();
+IOGEffectsManager* GetEffectsManager ();
 
 #endif

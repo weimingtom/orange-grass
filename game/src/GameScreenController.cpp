@@ -10,10 +10,14 @@
 #include "GameScreenController.h"
 #include "OrangeGrass.h"
 #include "common.h"
+#include "UI.h"
 
+CDisplayText * AppDisplayText;
+IOGEffect*	g_pEffect = NULL;
 
 CGameScreenController::CGameScreenController() :	m_pResourceMgr(NULL),
 													m_pSg(NULL),
+													m_pRenderer(NULL),
 													m_pCamera(NULL),
                                                     m_pPlayer(NULL),
 													m_State(CSTATE_NO),
@@ -22,15 +26,20 @@ CGameScreenController::CGameScreenController() :	m_pResourceMgr(NULL),
 													m_fFOV(1.0f),
 													m_fCameraTargetDistance(150.0f),
 													m_fCameraFwdSpeed(0.02f),
-													m_fCameraStrafeSpeed(0.02f)
+													m_fCameraStrafeSpeed(0.02f),
+													m_ElapsedTime(0)
 {
 }
 
 
 CGameScreenController::~CGameScreenController()
 {
+	AppDisplayText->ReleaseTextures();
+	free(AppDisplayText);
+
 	m_pResourceMgr = NULL;
 	m_pSg = NULL;
+	m_pRenderer = NULL;
 	m_pCamera = NULL;
     m_pPlayer = NULL;
 
@@ -44,37 +53,31 @@ bool CGameScreenController::Init ()
 {
 	m_pResourceMgr = GetResourceMgr();
 	m_pSg = GetSceneGraph();
-	m_pCamera = m_pSg->GetCamera();
+	m_pRenderer = GetRenderer();
+	m_pCamera = m_pRenderer->GetCamera();
+	m_pRenderer->SetViewport(SCR_WIDTH, SCR_HEIGHT, 4.0f, 200.0f, 0.67f);
+
+	AppDisplayText = (CDisplayText*)malloc(sizeof(CDisplayText));    
+	memset(AppDisplayText, 0, sizeof(CDisplayText));
+	AppDisplayText->SetTextures(SCR_WIDTH, SCR_HEIGHT, false);
 
 	m_fFOV = 0.67f;
 	m_fCameraTargetDistance = 60.0f;
-	m_fCameraFwdSpeed = 0.02f;
+	m_fCameraFwdSpeed = 0;//0.02f;
 	m_fCameraStrafeSpeed = 0.01f;
 	m_fFinishPointSqDistance = 10000.0f;
+	m_ElapsedTime = 0;
 
 	GetPhysics()->SetCameraFwdSpeed(m_fCameraFwdSpeed);
 	GetPhysics()->SetCameraStrafeSpeed(m_fCameraStrafeSpeed);
 
     m_pCurLevel = GetLevelManager()->LoadLevel(std::string("level_0"));
-    m_pSg->GetLight()->Apply();
     m_pPlayer = GetActorManager()->GetPlayersActor();
 
-#ifdef WIN32
-    MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(SCR_WIDTH)/float(SCR_HEIGHT), 4.0f, 200.0f, false);
-#else
-    MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(SCR_HEIGHT)/float(SCR_WIDTH), 4.0f, 200.0f, true);
-#endif
+	g_pEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_PLASMA);
 
 	UpdateCamera();
 	GetPhysics()->UpdateAll(1);
-
-    glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
-    glEnable(GL_TEXTURE_2D);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
 
     return true;
 }
@@ -83,13 +86,16 @@ bool CGameScreenController::Init ()
 // Update controller
 void CGameScreenController::Update (unsigned long _ElapsedTime)
 {
+	m_ElapsedTime = _ElapsedTime;
 	if (m_State != CSTATE_ACTIVE)
 		return;
     
 	UpdateCamera();
+	g_pEffect->SetPosition(m_pPlayer->GetPhysicalObject()->GetPosition()+Vec3(0,0,-20));
 
     GetPhysics()->Update(_ElapsedTime);
     GetActorManager()->Update(_ElapsedTime);
+	GetEffectsManager()->Update(_ElapsedTime);
 
 	if (CheckFinishCondition())
 	{
@@ -105,38 +111,46 @@ void CGameScreenController::RenderScene ()
     {
 		return;
     }
-    
+
+	glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf(m_mProjection.f);
+	m_pRenderer->GetFog()->Enable(true);
+	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
+	m_pSg->RenderLandscape(m_pCamera);
+	m_pSg->RenderScene(m_pCamera);
+	m_pRenderer->FinishRenderMode();
 
-    glMatrixMode(GL_MODELVIEW);
-    m_mView = m_pCamera->Update();
-    glLoadMatrixf(m_mView.f);
+	m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);
+	GetEffectsManager()->Render(m_pCamera->GetViewMatrix());
+	m_pRenderer->FinishRenderMode();
+	m_pRenderer->GetFog()->Enable(false);
 
-    m_pSg->GetLight()->Apply();
+	m_pRenderer->Reset();
 
-	GLfloat fogColor[4]= {0.8f, 0.9f, 0.5f, 1.0f};
-
-	glFogi(GL_FOG_MODE, GL_LINEAR);
-	glFogfv(GL_FOG_COLOR, fogColor);
-	glFogf(GL_FOG_DENSITY, 0.15f);
-	glHint(GL_FOG_HINT, GL_DONT_CARE);
-	glFogf(GL_FOG_START, 100.0f);
-	glFogf(GL_FOG_END, 250.0f);
-	glEnable(GL_FOG);
-
-    GetRenderer()->StartRenderingMeshes();
-    if (m_pCurLevel)
-        m_pCurLevel->GetTerrain()->Render(m_mView);
-
-    m_pSg->Render(m_mView);
-	
-	glDisable(GL_FOG);
-
-    GetRenderer()->FinishRenderingMeshes();
-    GetRenderer()->Reset();
+	glAlphaFunc(GL_GREATER, 0.1f);
+	unsigned long fps = 0;
+	if (m_ElapsedTime > 0)
+	{
+		fps = 1000/m_ElapsedTime;
+	}
+	AppDisplayText->DisplayText(70,4,0.4f, 0xFFFFFFFF, "FPS %d", fps);
+#ifdef STATISTICS
+	unsigned long Verts; 
+	unsigned long Faces;
+	unsigned long TextureSwitches;
+	unsigned long VBOSwitches;
+	unsigned long DrawCalls;
+	GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, 
+		VBOSwitches, DrawCalls);
+	AppDisplayText->DisplayText(70, 8,0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
+	AppDisplayText->DisplayText(70,12,0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
+	AppDisplayText->DisplayText(70,16,0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
+	AppDisplayText->DisplayText(70,20,0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
+	AppDisplayText->DisplayText(70,24,0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
+	GetStatistics()->Reset();
+#endif
+	AppDisplayText->Flush();
 }
 
 
@@ -145,6 +159,9 @@ void CGameScreenController::Activate ()
 {
 	m_State = CSTATE_ACTIVE;
     GetInput()->RegisterReceiver(this);
+	
+	g_pEffect->Start();
+	g_pEffect->SetDirection(Vec3(0,0,1));
 }
 
 
@@ -180,11 +197,12 @@ void CGameScreenController::UpdateCamera ()
 {
     if (m_pCamera && m_pCurLevel)
     {
-        const Vec3& vTarget = m_pPlayer->GetPhysicalObject()->GetPosition() + Vec3(0, 0, -15);
+        const Vec3& vTarget = m_pPlayer->GetPhysicalObject()->GetPosition()+Vec3(0,0,-15);
         Vec3 vDir  = Vec3(0, 0.6f, 0.4f).normalized();
         Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
         Vec3 vPos = vTarget + (vDir*m_fCameraTargetDistance);
 
         m_pCamera->Setup (vPos, vTarget, vUp);
+		m_pCamera->Update();
 	}
 }

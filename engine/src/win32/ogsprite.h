@@ -10,35 +10,40 @@
 #define OGSPRITE_H_
 
 #include "IOGSprite.h"
-#include "OpenGL2.h"
-#include "Geometry.h"
-#include "Mathematics.h"
+#include "ogresource.h"
 
 
-class COGSprite : public IOGSprite
+class COGSprite : public IOGSprite, public COGResource
 {
 public:
 	COGSprite();
 	virtual ~COGSprite();
 		
 	// Initialize sprite.
-	virtual void Init (IOGTexture* _pTexture);
-	
-	// Set position.
-	virtual void SetPosition (float _fX, float _fY, float _fWidth, float _fHeight);
+	virtual void SetMapping (const Vec2& _vT0, const Vec2& _vT1);
+
+    // Load resource.
+    virtual bool Load ();
+
+	// Unload resource.
+	virtual void Unload ();
 	
 	// Render sprite.
-	virtual void Render ();
+	virtual void Render (const Vec2& _vPos, const Vec2& _vSize);
 		
 public:
+	struct SprVert
+	{
+		Vec2 p;
+		Vec2 t;
+	};
+	SprVert		m_Vertices[4];
 	
 	IOGTexture*	m_pTexture;
-	GLfloat		m_Vertices[20];
-	GLuint		m_VBOHandle;
-	MATRIX		m_mOrthoProj;
-	GLfloat		m_fX, m_fY;
-	GLfloat		m_fWidth;
-	GLfloat		m_fHeight;
+	Vec2		m_T0;
+	Vec2		m_T1;
+	Vec2		m_Pos;
+	Vec2		m_Size;
 };
 
 

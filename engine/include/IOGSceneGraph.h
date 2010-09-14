@@ -11,7 +11,7 @@
 
 #include "IOGSgNode.h"
 #include "IOGCamera.h"
-#include "IOGLight.h"
+#include "IOGTexture.h"
 
 
 class IOGSceneGraph
@@ -29,20 +29,23 @@ public:
 	// Add scene graph node
 	virtual void AddNode (IOGSgNode* _pNode) = 0;
 
+	// Add landscape scene graph node
+	virtual void AddLandscapeNode (IOGSgNode* _pNode) = 0;
+
+	// Add static scene graph node
+	virtual void AddStaticNode (IOGSgNode* _pNode, IOGTexture* _pTexture) = 0;
+
 	// Remove scene graph node
 	virtual void RemoveNode (IOGSgNode* _pNode) = 0;
 
-	// Render.
-	virtual void Render (const MATRIX& _mView) = 0;
+	// Render scene graph.
+	virtual void RenderScene (IOGCamera* _pCamera) = 0;
 
-	// Render the whole scene.
-	virtual void RenderAll (const MATRIX& _mView) = 0;
+	// Render landscape.
+	virtual void RenderLandscape (IOGCamera* _pCamera) = 0;
 
-	// Get scene camera.
-	virtual IOGCamera* GetCamera () = 0;
-
-	// Get scene light.
-	virtual IOGLight* GetLight () = 0;
+	// Render the whole scene - for editor.
+	virtual void RenderAll (IOGCamera* _pCamera) = 0;
 };
 
 #endif

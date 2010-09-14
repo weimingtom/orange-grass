@@ -14,6 +14,16 @@ COGTexture::COGTexture () : m_TextureId (0),
 {
 	m_pTexture = (CTexture*)malloc(sizeof(CTexture));
 	memset(m_pTexture, 0, sizeof(CTexture));
+
+	IOGMapping* pNewMapping = new IOGMapping;
+	pNewMapping->upper_left = Vec2(0.0f, 0.0f);
+	pNewMapping->size = Vec2(0.0f, 0.0f);
+	pNewMapping->t0 = Vec2(0.0f, 0.0f);
+	pNewMapping->t1 = Vec2(1.0f, 1.0f);
+	m_MappingsList.push_back(pNewMapping);
+
+	m_Width = 0;
+	m_Height = 0;
 }
 
 
@@ -24,6 +34,13 @@ COGTexture::~COGTexture ()
 		m_pTexture->ReleaseTexture(m_TextureId);
 		free(m_pTexture);
 		m_pTexture = NULL;
+
+		std::vector<IOGMapping*>::iterator iter = m_MappingsList.begin();
+		for (; iter != m_MappingsList.end(); ++iter)
+		{
+			OG_SAFE_DELETE((*iter));
+		}
+		m_MappingsList.clear();
 	}
 	m_TextureId = 0;
 }
@@ -41,10 +58,26 @@ bool COGTexture::Load ()
         return true;    
 	}
 
-	if(!m_pTexture->LoadTextureFromPVR(m_ResourceFile.c_str(), &m_TextureId))
+	PVR_Texture_Header header;
+	if(!m_pTexture->LoadTextureFromPVR(m_ResourceFile.c_str(), &m_TextureId, &header))
 	{
         OG_LOG_ERROR("Failed to load texture file %s", m_ResourceFile.c_str());
 		return false;
+	}
+
+	m_Width = header.dwWidth;
+	m_Height = header.dwHeight;
+	m_MappingsList[0]->size = Vec2((float)m_Width, (float)m_Height);
+
+	std::vector<IOGMapping*>::iterator iter = m_MappingsList.begin();
+	for (; iter != m_MappingsList.end(); ++iter)
+	{
+		(*iter)->t0 = Vec2(
+			(*iter)->upper_left.x / m_Width, 
+			(m_Height - (*iter)->upper_left.y - (*iter)->size.y) / m_Height);
+		(*iter)->t1 = Vec2(
+			((*iter)->upper_left.x + (*iter)->size.x) / m_Width, 
+			(m_Height - (*iter)->upper_left.y) / m_Height);
 	}
 
 	m_LoadState = OG_RESSTATE_LOADED;
@@ -64,6 +97,9 @@ void COGTexture::Unload ()
 	memset(m_pTexture, 0, sizeof(CTexture));
 	m_TextureId = 0;
 
+	m_Width = 0;
+	m_Height = 0;
+
 	m_LoadState = OG_RESSTATE_DEFINED;
 }
 
@@ -72,4 +108,25 @@ void COGTexture::Unload ()
 void COGTexture::Apply () const
 {
 	glBindTexture(GL_TEXTURE_2D, m_TextureId);
+}
+
+
+// get texture mapping
+IOGMapping* COGTexture::GetMapping (unsigned int _Id)
+{
+	if (_Id < m_MappingsList.size() && m_LoadState == OG_RESSTATE_LOADED)
+	{
+		return m_MappingsList[_Id];
+	}
+	return NULL;
+}
+
+
+// add texture mapping
+void COGTexture::AddMapping (IOGMapping* _pMapping)
+{
+	IOGMapping* pNewMapping = new IOGMapping;
+	pNewMapping->upper_left = _pMapping->upper_left;
+	pNewMapping->size = _pMapping->size;
+	m_MappingsList.push_back(pNewMapping);
 }

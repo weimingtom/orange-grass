@@ -14,9 +14,15 @@ COGLevel::COGLevel () : m_pTerrain(NULL)
 {
     m_vStartPos = Vec3(150,0,-100);
 	m_vFinishPos = Vec3(150,0,-1000);
+    m_fActiveWidth = 200.0f;
+
 	m_vLightDir = Vec3(0,1,0);
 	m_vLightColor = Vec3(1,1,1);
-    m_fActiveWidth = 200.0f;
+	
+	m_vFogColor = Vec4(0.8f, 0.9f, 0.5f, 1.0f);
+	m_fFogStart = 100.0f;
+	m_fFogEnd = 250.0f;
+	m_fFogDensity = 0.15f;
 }
 
 
@@ -44,15 +50,21 @@ bool COGLevel::Load ()
         OG_LOG_ERROR("Failed to load terrain %s while loading level", m_ResourceAlias.c_str());
         return false;
     }
+	IOGSgNode* pTerrainSg = GetSceneGraph()->CreateNode(m_pTerrain);
+	GetSceneGraph()->AddLandscapeNode(pTerrainSg);
 
     FILE* pIn = fopen(m_ResourceFile.c_str(), "rb");
     if (pIn == NULL)
     {
         OG_LOG_WARNING("No level scene found in file %s", m_ResourceFile.c_str());
 
-        GetSceneGraph()->GetLight()->SetDirection(Vec4(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z, 0.0f));
-        GetSceneGraph()->GetLight()->SetColor(Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f));
-        GetPhysics()->SetLevelBorders(m_vStartPos, m_vFinishPos, m_fActiveWidth);
+        GetRenderer()->GetLight()->SetDirection(Vec4(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z, 0.0f));
+        GetRenderer()->GetLight()->SetColor(Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f));
+		GetRenderer()->GetFog()->SetColor(m_vFogColor);
+		GetRenderer()->GetFog()->SetStart(m_fFogStart);
+		GetRenderer()->GetFog()->SetEnd(m_fFogEnd);
+		GetRenderer()->GetFog()->SetDensity(m_fFogDensity);
+		GetPhysics()->SetLevelBorders(m_vStartPos, m_vFinishPos, m_fActiveWidth);
 
 	    m_LoadState = OG_RESSTATE_LOADED;
         return true;    
@@ -105,8 +117,13 @@ bool COGLevel::Load ()
 	}
 
     GetPhysics()->SetLevelBorders(m_vStartPos, m_vFinishPos, m_fActiveWidth);
-    GetSceneGraph()->GetLight()->SetDirection(Vec4(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z, 0.0f));
-    GetSceneGraph()->GetLight()->SetColor(Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f));
+    GetRenderer()->GetLight()->SetDirection(Vec4(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z, 0.0f));
+    GetRenderer()->GetLight()->SetColor(Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f));
+
+	GetRenderer()->GetFog()->SetColor(m_vFogColor);
+	GetRenderer()->GetFog()->SetStart(m_fFogStart);
+	GetRenderer()->GetFog()->SetEnd(m_fFogEnd);
+	GetRenderer()->GetFog()->SetDensity(m_fFogDensity);
 
     unsigned int numActors = 0;
     fread(&numActors, sizeof(unsigned int), 1, pIn);
@@ -179,8 +196,8 @@ bool COGLevel::Save ()
         return false;
     }
 
-	Vec4 vL = GetSceneGraph()->GetLight()->GetDirection();
-	Vec4 vC = GetSceneGraph()->GetLight()->GetColor();
+	Vec4 vL = GetRenderer()->GetLight()->GetDirection();
+	Vec4 vC = GetRenderer()->GetLight()->GetColor();
 	m_vLightDir = Vec3(vL.x, vL.y, vL.z);
 	m_vLightColor = Vec3(vC.x, vC.y, vC.z);
 

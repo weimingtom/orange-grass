@@ -20,10 +20,10 @@ END_EVENT_TABLE()
 /// @param size - window size.
 /// @param style - window style.
 CEditorAdjustFrame::CEditorAdjustFrame(	wxMDIParentFrame *parent, 
-												const wxString& title, 
-												const wxPoint& pos,
-												const wxSize& size, 
-												long style) : wxMDIChildFrame(parent, wxID_ANY, title, pos, size, style)
+										const wxString& title, 
+										const wxPoint& pos,
+										const wxSize& size, 
+										long style) : wxMDIChildFrame(parent, wxID_ANY, title, pos, size, style)
 {
     SetIcon(wxIcon(sample_xpm));
     m_pPanel = new wxPanel(this);

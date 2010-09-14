@@ -125,22 +125,23 @@ void CEditorCanvas::Render()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(m_mProjection.f);
-	
-	glMatrixMode(GL_MODELVIEW);
-	m_mView = GetSceneGraph()->GetCamera()->Update();
-	glLoadMatrixf(m_mView.f);
-
-    GetSceneGraph()->GetLight()->Apply();
-
-    GetPhysics()->UpdateAll(0);
+	GetPhysics()->UpdateAll(0);
     GetActorManager()->Update(10);
+	GetRenderer()->GetCamera()->Update();
+
+	GetRenderer()->StartRenderMode(OG_RENDERMODE_GEOMETRY);
+	//glMatrixMode(GL_PROJECTION);
+	//glLoadMatrixf(m_mProjection.f);
+	
+	//glMatrixMode(GL_MODELVIEW);
+	//m_mView = GetSceneGraph()->GetCamera()->Update();
+	//glLoadMatrixf(m_mView.f);
+	//GetSceneGraph()->GetLight()->Apply();
 
 	if (m_pCurLevel)
         m_pCurLevel->GetTerrain()->Render(m_mView);
 
-    GetSceneGraph()->RenderAll(m_mView);
+    GetSceneGraph()->RenderAll(GetRenderer()->GetCamera());
 
     switch (GetToolSettings()->GetEditMode())
     {
@@ -159,6 +160,9 @@ void CEditorCanvas::Render()
         break;
     }
 
+	GetRenderer()->FinishRenderMode();
+    GetRenderer()->Reset();
+
     RenderHelpers();
 
     glFlush();
@@ -173,7 +177,7 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 	if (m_bMouseMoved)
 	{
 		Vec3 vPick = GetPickRay (mouse_x, mouse_y);
-		Vec3 vPos = GetSceneGraph()->GetCamera()->GetPosition();
+		Vec3 vPos = GetRenderer()->GetCamera()->GetPosition();
 		Vec3 vVec = vPick - vPos;
 		vVec.normalize();
 
@@ -275,7 +279,8 @@ void CEditorCanvas::OnSize(wxSizeEvent& event)
     {
         SetCurrent();
         glViewport(0, 0, m_ResX, m_ResY);
-		MatrixPerspectiveFovRH(m_mProjection, 1.0f, float(m_ResX)/float(m_ResY), 4.0f, 4500.0f, true);
+		GetRenderer()->SetViewport(m_ResX, m_ResY, 4.0f, 4500.0f, 0.67f);
+		//MatrixPerspectiveFovRH(m_mProjection, 1.0f, float(m_ResX)/float(m_ResY), 4.0f, 4500.0f, true);
     }
 }
 
@@ -377,7 +382,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
             }
         }
         else
-		    GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(0, 0, -1));
+		    GetRenderer()->GetCamera()->Strafe(5.5f, Vec3(0, 0, -1));
 		mouse_x = event.GetX();
 		mouse_y = event.GetY();
 		m_bMouseMoved = true;
@@ -394,7 +399,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
             }
         }
         else
-    		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(0, 0, 1));
+    		GetRenderer()->GetCamera()->Strafe(5.5f, Vec3(0, 0, 1));
 		mouse_x = event.GetX();
 		mouse_y = event.GetY();
 		m_bMouseMoved = true;
@@ -424,7 +429,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
 			}
         }
         else
-    		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(-1, 0, 0));
+    		GetRenderer()->GetCamera()->Strafe(5.5f, Vec3(-1, 0, 0));
 		mouse_x = event.GetX();
 		mouse_y = event.GetY();
 		m_bMouseMoved = true;
@@ -454,7 +459,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
 			}
         }
         else
-    		GetSceneGraph()->GetCamera()->Strafe(5.5f, Vec3(1, 0, 0));
+    		GetRenderer()->GetCamera()->Strafe(5.5f, Vec3(1, 0, 0));
 		mouse_x = event.GetX();
 		mouse_y = event.GetY();
 		m_bMouseMoved = true;
@@ -706,8 +711,8 @@ void CEditorCanvas::SetupCamera()
     Vec3 vTarget (200, 0, -100);
 	Vec3 vDir (0, 1.0f, 0.4f);
 	vDir = vDir.normalize();
-	Vec3 vUp = vDir.cross (Vec3(0, 1, 0));
-	GetSceneGraph()->GetCamera()->Setup (vTarget + (vDir* m_fCameraDistance), vTarget, vUp);
+	Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
+	GetRenderer()->GetCamera()->Setup (vTarget + (vDir* m_fCameraDistance), vTarget, vUp);
 }
 
 
@@ -785,7 +790,7 @@ void CEditorCanvas::OnLMBUp(wxMouseEvent& event)
 	mouse_y = event.GetY();
 
     Vec3 vPick = GetPickRay (mouse_x, mouse_y);
-    Vec3 vPos = GetSceneGraph()->GetCamera()->GetPosition();
+    Vec3 vPos = GetRenderer()->GetCamera()->GetPosition();
     Vec3 vVec = vPick - vPos;
     vVec.normalize();
 
@@ -868,7 +873,7 @@ void CEditorCanvas::OnRMBDown(wxMouseEvent& event)
 void CEditorCanvas::OnMouseWheel(wxMouseEvent& event)
 {
 	int delta = event.GetWheelRotation();
-	GetSceneGraph()->GetCamera()->Move ((float)delta / 10.0f);
+	GetRenderer()->GetCamera()->Move ((float)delta / 10.0f);
 	Refresh ();
 }
 

@@ -11,6 +11,7 @@
 
 #include "IOGSceneGraph.h"
 #include <list>
+#include <map>
 
 
 class COGSceneGraph : public IOGSceneGraph
@@ -28,26 +29,46 @@ public:
 	// Add scene graph node
 	virtual void AddNode (IOGSgNode* _pNode);
 
+	// Add static scene graph node
+	virtual void AddStaticNode (IOGSgNode* _pNode, IOGTexture* _pTexture);
+
+	// Add landscape scene graph node
+	virtual void AddLandscapeNode (IOGSgNode* _pNode);
+
 	// Remove scene graph node
 	virtual void RemoveNode (IOGSgNode* _pNode);
 
-	// Render.
-	virtual void Render (const MATRIX& _mView);
+	// Render scene graph.
+	virtual void RenderScene (IOGCamera* _pCamera);
+
+	// Render landscape.
+	virtual void RenderLandscape (IOGCamera* _pCamera);
 
 	// Render the whole scene.
-	virtual void RenderAll (const MATRIX& _mView);
+	virtual void RenderAll (IOGCamera* _pCamera);
 
-	// Get scene camera.
-	virtual IOGCamera* GetCamera ();
-
-	// Get scene light.
-	virtual IOGLight* GetLight ();
+private:
+	typedef std::list<IOGSgNode*>				TNodesList;
+	typedef std::map<IOGTexture*, TNodesList>	TStaticNodesMap;
 
 private:
 
-    std::list<IOGSgNode*>	m_NodesList;
-	IOGCamera*				m_pCamera;
-	IOGLight*				m_pLight;
+	// Remove node from list
+	bool RemoveNodeFromList(IOGSgNode* _pNode, TNodesList& _List);
+
+	// clear nodes list
+	void ClearNodesList(TNodesList& _List);
+
+	// render nodes list
+	void RenderNodesList(IOGCamera* _pCamera, TNodesList& _List);
+
+	// render whole nodes list
+	void RenderWholeNodesList(IOGCamera* _pCamera, TNodesList& _List);
+
+private:
+	IOGSgNode*			m_pLandscapeNode;
+	TStaticNodesMap		m_StaticNodes;
+	TNodesList			m_NodesList;
 };
 
 #endif

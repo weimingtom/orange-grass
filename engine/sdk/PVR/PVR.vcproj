@@ -286,6 +286,38 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="UI"
+				>
+				<File
+					RelativePath=".\src\DisplayText.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\DisplayText.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\DisplayTextAPI.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\DisplayTextdat.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Utility"
+				>
+				<File
+					RelativePath=".\src\Timer.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\Timer.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Include"
@@ -304,6 +336,14 @@
 			</File>
 			<File
 				RelativePath=".\include\Pathes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\Timing.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\UI.h"
 				>
 			</File>
 		</Filter>

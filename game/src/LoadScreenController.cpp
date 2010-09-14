@@ -9,7 +9,6 @@
 #include "OpenGL2.h"
 #include "LoadScreenController.h"
 #include "OrangeGrass.h"
-#include "common.h"
 
 
 CLoadScreenController::CLoadScreenController() :	m_pResourceMgr(NULL),
@@ -24,9 +23,7 @@ CLoadScreenController::CLoadScreenController() :	m_pResourceMgr(NULL),
 
 
 CLoadScreenController::~CLoadScreenController()
-{
-	OG_SAFE_DELETE(m_pHUD);
-	
+{	
 	m_pResourceMgr = NULL;
 	m_State = CSTATE_NO;
 	m_bLoaded = false;
@@ -36,9 +33,12 @@ CLoadScreenController::~CLoadScreenController()
 // Initialize controller
 bool CLoadScreenController::Init ()
 {
+	GetRenderer()->SetViewport(SCR_WIDTH, SCR_HEIGHT, 4.0f, 200.0f, 0.67f);
 	m_pResourceMgr = GetResourceMgr();
     m_pResourceMgr->Init();
-	m_pHUD = CreateSprite("load_scr");
+	std::vector<IOGResourceInfo> resInfo;
+	if (!m_pResourceMgr->Load(resInfo))
+		return false;
 	
 	return true;
 }
@@ -52,24 +52,15 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
         GetLevelManager()->Init();
 
 		std::string LevelAliasStr("level_0");
-    	std::vector<IOGResourceInfo> resInfo;
-		if (m_pResourceMgr->Load(resInfo))
+		m_pCurLevel = GetLevelManager()->LoadLevel(LevelAliasStr);
+		if (m_pCurLevel == NULL)
 		{
-            m_pCurLevel = GetLevelManager()->LoadLevel(LevelAliasStr);
-			if (m_pCurLevel == NULL)
-			{
-				m_State = CSTATE_FAILED;
-				OG_LOG_ERROR("Failed to load level %s", LevelAliasStr.c_str());
-				return;
-			}
-			m_bLoaded = true;
-			Deactivate();
-		}
-        else 
-        {
 			m_State = CSTATE_FAILED;
-			OG_LOG_ERROR("Failed to load resources for level %s", LevelAliasStr.c_str());
-        }
+			OG_LOG_ERROR("Failed to load level %s", LevelAliasStr.c_str());
+			return;
+		}
+		m_bLoaded = true;
+		Deactivate();
 	}
 }
 
@@ -79,8 +70,11 @@ void CLoadScreenController::RenderScene ()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	m_pHUD->SetPosition(0, 0, SCR_WIDTH, SCR_HEIGHT);
-	m_pHUD->Render ();
+	GetRenderer()->StartRenderMode(OG_RENDERMODE_SPRITES);
+	m_pHUD->Render(Vec2(0, 0), Vec2(SCR_WIDTH, SCR_HEIGHT));
+	GetRenderer()->FinishRenderMode();
+	GetRenderer()->Reset();
+
 	m_bDisplayed = true;
 }
 
@@ -88,13 +82,7 @@ void CLoadScreenController::RenderScene ()
 // Activate
 void CLoadScreenController::Activate ()
 {
-	glClearColor(f2vt(0.0f), f2vt(0.0f), f2vt(0.0f), f2vt(1.0f));
-	glEnable(GL_TEXTURE_2D);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glDisable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
-
+	m_pHUD = m_pResourceMgr->GetSprite("load_scr");
     m_bDisplayed = false;
 	m_State = CSTATE_ACTIVE;
 }
@@ -103,6 +91,7 @@ void CLoadScreenController::Activate ()
 // deactivate
 void CLoadScreenController::Deactivate ()
 {
-	m_State = CSTATE_INACTIVE;
+	m_pResourceMgr->ReleaseSprite(m_pHUD);
     m_bDisplayed = false;
+	m_State = CSTATE_INACTIVE;
 }

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Textures>
+	<Texture alias="plasma_01" file="Textures/FX/plasma_head1.pvr" />
+
 	<Texture alias="spectator" file="Models/Spectator/spectator.pvr" />
 	<Texture alias="craft" file="Models/Craft/craft.pvr" />
 	<Texture alias="palm1" file="Models/Palm1/palm1.pvr" />
@@ -50,3 +52,7 @@
 	<Terrain alias="level_0" file="Levels/Level_0/level_0.xml" icon = "Levels/Level_0/level_0_ed.bmp" />
 	<Terrain alias="level_1" file="Levels/Level_1/level_1.xml" icon = "Levels/Level_1/level_1_ed.bmp" />
 </Terrains>
+<Sprites>
+	<Sprite alias="load_scr" texture="load_scr" x="0" y="0" width="480" height="320"/>
+	<Sprite alias="logo" texture="load_scr" x="0" y="320" width="256" height="128"/>
+</Sprites>

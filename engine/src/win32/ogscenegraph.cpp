@@ -9,25 +9,17 @@
 #include "OrangeGrass.h"
 #include "ogscenegraph.h"
 #include "ogsgnode.h"
-#include "ogcamera.h"
-#include "oglight.h"
 #include "IOGMath.h"
 #include <algorithm>
 
 
-COGSceneGraph::COGSceneGraph () :	m_pCamera(NULL),
-									m_pLight(NULL)
+COGSceneGraph::COGSceneGraph () : m_pLandscapeNode(NULL)
 {
-	m_pCamera = new COGCamera ();
-	m_pLight = new COGLight ();
 }
 
 
 COGSceneGraph::~COGSceneGraph ()
 {
-	OG_SAFE_DELETE(m_pCamera);
-	OG_SAFE_DELETE(m_pLight);
-
 	Clear();
 }
 
@@ -35,12 +27,13 @@ COGSceneGraph::~COGSceneGraph ()
 // Clear scene graph
 void COGSceneGraph::Clear ()
 {
-    std::list<IOGSgNode*>::iterator iter = m_NodesList.begin();
-    for (; iter != m_NodesList.end(); ++iter)
-    {
-		OG_SAFE_DELETE((*iter));
+	OG_SAFE_DELETE(m_pLandscapeNode);
+	ClearNodesList(m_NodesList);
+	TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
+	for (; s_iter != m_StaticNodes.end(); ++s_iter)
+	{
+		ClearNodesList(s_iter->second);
 	}
-	m_NodesList.clear();
 }
 
 
@@ -59,36 +52,126 @@ void COGSceneGraph::AddNode (IOGSgNode* _pNode)
 }
 
 
-// Remove scene graph node
-void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
+// Add static scene graph node
+void COGSceneGraph::AddStaticNode (IOGSgNode* _pNode, IOGTexture* _pTexture)
 {
-	std::list<IOGSgNode*>::iterator iter = std::find(m_NodesList.begin(), m_NodesList.end(), _pNode);
-	if (iter != m_NodesList.end())
+	TStaticNodesMap::iterator entry = m_StaticNodes.find(_pTexture);
+	if (entry != m_StaticNodes.end())
 	{
-		OG_SAFE_DELETE((*iter));
-		m_NodesList.erase(iter);
+		entry->second.push_back(_pNode);
+	}
+	else
+	{
+		m_StaticNodes[_pTexture].push_back(_pNode);
 	}
 }
 
 
-// Render.
-void COGSceneGraph::Render (const MATRIX& _mView)
+// Add landscape scene graph node
+void COGSceneGraph::AddLandscapeNode (IOGSgNode* _pNode)
+{
+	m_pLandscapeNode = _pNode;
+}
+
+
+// Remove scene graph node
+void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
+{
+	if (RemoveNodeFromList(_pNode, m_NodesList))
+		return;
+
+	TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
+	for (; s_iter != m_StaticNodes.end(); ++s_iter)
+	{
+		if (RemoveNodeFromList(_pNode, s_iter->second))
+			return;
+	}
+}
+
+
+// Render scene graph.
+void COGSceneGraph::RenderScene (IOGCamera* _pCamera)
+{
+	RenderNodesList(_pCamera, m_NodesList);
+	TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
+	for (; s_iter != m_StaticNodes.end(); ++s_iter)
+	{
+		RenderNodesList(_pCamera, s_iter->second);
+	}
+}
+
+
+// Render landscape.
+void COGSceneGraph::RenderLandscape (IOGCamera* _pCamera)
+{
+	if (!m_pLandscapeNode)
+	{
+		return;
+	}
+
+	const MATRIX& mView = _pCamera->GetViewMatrix();
+	m_pLandscapeNode->GetRenderable()->Render(mView);
+}
+
+
+// Render the whole scene.
+void COGSceneGraph::RenderAll (IOGCamera* _pCamera)
+{
+	RenderLandscape(_pCamera);
+	RenderWholeNodesList(_pCamera, m_NodesList);
+	TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
+	for (; s_iter != m_StaticNodes.end(); ++s_iter)
+	{
+		RenderWholeNodesList(_pCamera, s_iter->second);
+	}
+}
+
+
+// Remove node from list
+bool COGSceneGraph::RemoveNodeFromList(IOGSgNode* _pNode, TNodesList& _List)
+{
+	TNodesList::iterator iter = std::find(_List.begin(), _List.end(), _pNode);
+	if (iter != _List.end())
+	{
+		OG_SAFE_DELETE((*iter));
+		_List.erase(iter);
+		return true;
+	}
+	return false;
+}
+
+
+// clear nodes list
+void COGSceneGraph::ClearNodesList(TNodesList& _List)
+{
+    TNodesList::iterator iter = _List.begin();
+    for (; iter != _List.end(); ++iter)
+    {
+		OG_SAFE_DELETE((*iter));
+	}
+	_List.clear();
+}
+
+
+// render nodes list
+void COGSceneGraph::RenderNodesList(IOGCamera* _pCamera, TNodesList& _List)
 {
 	MATRIX mModelView;
+	const MATRIX& mView = _pCamera->GetViewMatrix();
 
-	float fCameraZ = m_pCamera->GetPosition().z;
-    std::list<IOGSgNode*>::iterator iter = m_NodesList.begin();
-    for (; iter != m_NodesList.end(); ++iter)
+	float fCameraZ = _pCamera->GetPosition().z;
+    TNodesList::iterator iter = _List.begin();
+    for (; iter != _List.end(); ++iter)
     {
 		IOGSgNode* pNode = (*iter);
 		float fObjectZ = pNode->GetOBB().m_vCenter.z;
 
 		if (fObjectZ <= fCameraZ)
 		{
-			if ((fCameraZ - fObjectZ) < 300.0f)
+			if ((fCameraZ - fObjectZ) < 200.0f)
 			{
 				const MATRIX& mWorld = pNode->GetWorldTransform();
-				MatrixMultiply(mModelView, mWorld, _mView);
+				MatrixMultiply(mModelView, mWorld, mView);
 				pNode->GetRenderable()->Render(mModelView);
 			}
 		}
@@ -96,30 +179,17 @@ void COGSceneGraph::Render (const MATRIX& _mView)
 }
 
 
-// Render the whole scene.
-void COGSceneGraph::RenderAll (const MATRIX& _mView)
+// render whole nodes list
+void COGSceneGraph::RenderWholeNodesList(IOGCamera* _pCamera, TNodesList& _List)
 {
 	MATRIX mModelView;
+	const MATRIX& mView = _pCamera->GetViewMatrix();
 
-    std::list<IOGSgNode*>::iterator iter = m_NodesList.begin();
-    for (; iter != m_NodesList.end(); ++iter)
+    TNodesList::iterator iter = _List.begin();
+    for (; iter != _List.end(); ++iter)
     {
         const MATRIX& mWorld = (*iter)->GetWorldTransform();
-        MatrixMultiply(mModelView, mWorld, _mView);
+        MatrixMultiply(mModelView, mWorld, mView);
         (*iter)->GetRenderable()->Render(mModelView);
-    }
-}
-
-
-// Get scene camera.
-IOGCamera* COGSceneGraph::GetCamera ()
-{
-	return m_pCamera;
-}
-
-
-// Get scene light.
-IOGLight* COGSceneGraph::GetLight ()
-{
-	return m_pLight;
+	}
 }

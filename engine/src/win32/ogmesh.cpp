@@ -54,10 +54,10 @@ bool COGMesh::Load ()
 		COGVertexBuffers* pBuffer = new COGVertexBuffers(&m_pScene->pMesh[i]);
 		m_BuffersList.push_back(pBuffer);
 	}
-	
+#ifdef USE_VBO	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
+#endif
     CalculateGeometry();
 
 	m_LoadState = OG_RESSTATE_LOADED;

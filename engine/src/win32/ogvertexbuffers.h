@@ -11,6 +11,7 @@
 
 #include "OpenGL2.h"
 #include "Geometry.h"
+#include "IOGStatistics.h"
 
 
 class COGVertexBuffers
@@ -28,13 +29,15 @@ public:
 	void Render () const;
 
 	// is indexed
-	bool IsIndexed() const {return (m_IBO != 0);}
+	bool IsIndexed() const {return (m_pMesh->sFaces.pData != 0);}
 	
 private:
 
 	unsigned int	m_VBO;
 	unsigned int	m_IBO;
+	unsigned int	m_NumVertices;
 	const SPODMesh*	m_pMesh;
+	IOGStatistics*	m_pStats;
 };
 
 #endif

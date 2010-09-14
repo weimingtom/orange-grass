@@ -210,6 +210,14 @@
 				Name="Graphics"
 				>
 				<File
+					RelativePath=".\ogfog.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogfog.h"
+					>
+				</File>
+				<File
 					RelativePath=".\oglight.cpp"
 					>
 				</File>
@@ -242,11 +250,27 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogrendertarget.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogrendertarget.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogsprite.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\ogsprite.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogspritepool.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogspritepool.h"
 					>
 				</File>
 				<File
@@ -285,6 +309,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\ogalphamultmaterial.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogalphamultmaterial.h"
+						>
+					</File>
+					<File
 						RelativePath=".\ogalphatestmaterial.cpp"
 						>
 					</File>
@@ -306,6 +338,34 @@
 					</File>
 					<File
 						RelativePath=".\ogsolidmaterial.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Effects"
+					>
+					<File
+						RelativePath=".\ogeffect.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogeffect.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogeffectsmanager.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogeffectsmanager.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogplasmaeffect.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogplasmaeffect.h"
 						>
 					</File>
 				</Filter>
@@ -441,6 +501,14 @@
 			<Filter
 				Name="Core"
 				>
+				<File
+					RelativePath=".\ogstatistics.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogstatistics.h"
+					>
+				</File>
 			</Filter>
 		</Filter>
 		<Filter
@@ -459,6 +527,18 @@
 			<Filter
 				Name="Graphics"
 				>
+				<File
+					RelativePath="..\..\include\IOGEffect.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGEffectsManager.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGFog.h"
+					>
+				</File>
 				<File
 					RelativePath="..\..\include\IOGLight.h"
 					>
@@ -489,6 +569,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\IOGSprite.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGSpritePool.h"
 					>
 				</File>
 				<File
@@ -589,6 +673,10 @@
 				>
 				<File
 					RelativePath="..\..\include\IOGCoreHelpers.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGStatistics.h"
 					>
 				</File>
 			</Filter>

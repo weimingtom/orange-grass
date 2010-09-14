@@ -36,7 +36,10 @@ public:
 	virtual void Move(float _fSpeed) = 0;
 	
 	// update camera.
-	virtual const MATRIX& Update () = 0;
+	virtual void Update () = 0;
+	
+	// get camera view matrix.
+	virtual const MATRIX& GetViewMatrix () const = 0;
 
 	// get left and right edges.
 	virtual void GetEdges (Vec3& _vLeft, Vec3& _vRight, float _fFOV, float _fDist) = 0;

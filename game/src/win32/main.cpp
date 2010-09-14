@@ -1,9 +1,11 @@
 #include "main.h"
 #include "..\GameSystem.h"
 #include "common.h"
+#include "Timing.h"
 
 
 CGameSystem*    pGameSystem = NULL;
+CFPSCounter		pFPS;
 
 
 /// Application initialization.
@@ -43,7 +45,8 @@ void Run ()
 {
 	if (pGameSystem->GetControllerState() != SYSSTATE_EXIT)
 	{
-		pGameSystem->Update(10);
+		pFPS.Update();
+		pGameSystem->Update((unsigned long)(1000.0f/(float)pFPS.GetFPS()));
 		pGameSystem->Draw();
 
 		glFlush();

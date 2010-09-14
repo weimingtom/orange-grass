@@ -15,6 +15,7 @@
 #include "IOGLevelManager.h"
 #include "IOGInputReceiver.h"
 #include "IOGActorManager.h"
+#include "IOGRenderer.h"
 
 
 class CGameScreenController : public IScreenController, public IOGInputReceiver
@@ -59,6 +60,7 @@ private:
 		
 	IOGResourceMgr*	m_pResourceMgr;
 	IOGSceneGraph*	m_pSg;
+	IOGRenderer*	m_pRenderer;
 	IOGCamera*		m_pCamera;
     IOGActor*       m_pPlayer;
 
@@ -73,6 +75,8 @@ private:
 	float			m_fCameraFwdSpeed;
 	float			m_fCameraStrafeSpeed;
 	float			m_fFinishPointSqDistance;
+
+	unsigned long	m_ElapsedTime;
 };
 
 #endif
