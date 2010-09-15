@@ -72,13 +72,13 @@ void UpdatePolarCamera()
 	
 	MATRIX	MyPerspMatrix;
 	MatrixPerspectiveFovRH(MyPerspMatrix, f2vt(mCameraFOV), f2vt(((float) 320 / (float) 480)), f2vt(0.1f), f2vt(1000.0f), 0);
-	myglMultMatrix(MyPerspMatrix.f);
+	//myglMultMatrix(MyPerspMatrix.f);
     
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-	myglTranslate(mCameraOffsetX, mCameraOffsetY, -mCameraDistance);
+	//myglTranslate(mCameraOffsetX, mCameraOffsetY, -mCameraDistance);
 
-    myglRotate(mCameraPhi,   1, 0, 0);
+    //myglRotate(mCameraPhi,   1, 0, 0);
     myglRotate(mCameraTheta, 0, 0, 1);
 }
 

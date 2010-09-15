@@ -13,7 +13,7 @@
  3. This notice may not be removed or altered from any source distribution.
 */
 #include "Type.h"
-#include <Mathematics.h>
+#include "Mathematics.h"
 
 #include <sys/time.h>
 
