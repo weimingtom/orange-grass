@@ -12,7 +12,7 @@
 
 COGFog::COGFog () : m_bEnabled(false)
 {
-	glFogi(GL_FOG_MODE, GL_LINEAR);
+	glFogf(GL_FOG_MODE, GL_LINEAR);
 	glHint(GL_FOG_HINT, GL_DONT_CARE);
 }
 

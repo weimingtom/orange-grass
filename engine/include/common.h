@@ -4,7 +4,7 @@
 #define SCR_WIDTH	480
 #define SCR_HEIGHT	320
 
-//#define USE_VBO
+#define USE_VBO
 #define STATISTICS
 
 #endif
