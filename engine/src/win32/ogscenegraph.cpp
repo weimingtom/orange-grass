@@ -29,6 +29,7 @@ void COGSceneGraph::Clear ()
 {
 	OG_SAFE_DELETE(m_pLandscapeNode);
 	ClearNodesList(m_NodesList);
+	ClearNodesList(m_EffectNodesList);
 	TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
 	for (; s_iter != m_StaticNodes.end(); ++s_iter)
 	{
@@ -74,18 +75,59 @@ void COGSceneGraph::AddLandscapeNode (IOGSgNode* _pNode)
 }
 
 
+// Add effect scene graph node
+void COGSceneGraph::AddEffectNode (IOGSgNode* _pNode)
+{
+    m_EffectNodesList.push_back(_pNode);
+}
+
+
 // Remove scene graph node
 void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
 {
-	if (RemoveNodeFromList(_pNode, m_NodesList))
-		return;
+    if (!_pNode)
+        return;
 
-	TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
-	for (; s_iter != m_StaticNodes.end(); ++s_iter)
-	{
-		if (RemoveNodeFromList(_pNode, s_iter->second))
-			return;
-	}
+    switch (_pNode->GetRenderable()->GetRenderableType())
+    {
+    case OG_RENDERABLE_MODEL:
+        {
+	        if (RemoveNodeFromList(_pNode, m_NodesList))
+		        return;
+
+	        TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
+	        for (; s_iter != m_StaticNodes.end(); ++s_iter)
+	        {
+		        if (RemoveNodeFromList(_pNode, s_iter->second))
+			        return;
+	        }
+        }
+        break;
+
+    case OG_RENDERABLE_TERRAIN:
+        {
+            OG_SAFE_DELETE(m_pLandscapeNode);
+        }
+        break;
+
+    case OG_RENDERABLE_EFFECT:
+        {
+	        if (RemoveNodeFromList(_pNode, m_EffectNodesList))
+		        return;
+        }
+        break;
+    }
+}
+
+
+// Update scene graph.
+void COGSceneGraph::Update (unsigned long _ElapsedTime)
+{
+    TNodesList::iterator iter = m_EffectNodesList.begin();
+    for (; iter != m_EffectNodesList.end(); ++iter)
+    {
+        //(*iter)->Update();
+    }
 }
 
 
@@ -111,6 +153,13 @@ void COGSceneGraph::RenderLandscape (IOGCamera* _pCamera)
 
 	const MATRIX& mView = _pCamera->GetViewMatrix();
 	m_pLandscapeNode->GetRenderable()->Render(mView);
+}
+
+
+// Render effects.
+void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
+{
+	RenderNodesList(_pCamera, m_EffectNodesList);
 }
 
 

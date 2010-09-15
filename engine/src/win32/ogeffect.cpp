@@ -35,6 +35,13 @@ void COGEffect::SetDirection (const Vec3& _vDir)
 }
 
 
+// Render.
+void COGEffect::Render (const MATRIX& _mView, unsigned int _Part)
+{
+    Render(_mView);
+}
+
+
 // Start.
 void COGEffect::Start ()
 {

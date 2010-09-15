@@ -38,6 +38,7 @@ void COGPlasmaEffect::Init(OGEffectType _Type)
 		particle.pVertices[3].t = Vec2(0.0f, 1.0f);
 		particle.pVertices[3].c = color;
 	}
+    m_AABB.SetMinMax(Vec3(-1,-1,-1), Vec3(1,1,1));
 }
 
 
@@ -54,12 +55,14 @@ void COGPlasmaEffect::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGPlasmaEffect::Render (
-							  const MATRIX& _mView,
-							  const Vec3& _vRight, 
-							  const Vec3& _vUp)
+void COGPlasmaEffect::Render (const MATRIX& _mView)
 {
-	MATRIX mModelView;
+	Vec3 vUp, vRight, vLook;
+	MatrixGetBasis(vRight, vUp, vLook, _mView);
+	vUp.normalize();
+	vRight.normalize();
+
+    MATRIX mModelView;
 	MatrixMultiply(mModelView, m_World, _mView);
 	glLoadMatrixf(mModelView.f);
 
@@ -75,12 +78,12 @@ void COGPlasmaEffect::Render (
 	for (int i = 0; i < 4; ++i)
 	{
 		COGBillboard& particle = m_Particles[i];
-		Vec3 vUp = _vUp * particle.scale;
-		Vec3 vRight = _vRight * particle.scale;
-		particle.pVertices[0].p = vRight + vUp + particle.offset;
-		particle.pVertices[1].p = -vRight + vUp + particle.offset;
-		particle.pVertices[2].p = vRight - vUp + particle.offset;
-		particle.pVertices[3].p = -vRight - vUp + particle.offset;
+		Vec3 vSUp = vUp * particle.scale;
+		Vec3 vSRight = vRight * particle.scale;
+		particle.pVertices[0].p = vSRight + vSUp + particle.offset;
+		particle.pVertices[1].p = -vSRight + vSUp + particle.offset;
+		particle.pVertices[2].p = vSRight - vSUp + particle.offset;
+		particle.pVertices[3].p = -vSRight - vSUp + particle.offset;
 		glDrawArrays(GL_TRIANGLE_STRIP, 4 * i, 4);
 	}
 

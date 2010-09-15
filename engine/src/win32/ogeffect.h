@@ -54,10 +54,16 @@ public:
 	virtual void Update (unsigned long _ElapsedTime) = 0;
 
 	// Render.
-	virtual void Render (
-		const MATRIX& _mView, 
-		const Vec3& _vRight, 
-		const Vec3& _vUp) = 0;
+	virtual void Render (const MATRIX& _mView) = 0;
+
+	// Render.
+	virtual void Render (const MATRIX& _mView, unsigned int _Part);
+
+    // Get num renderable parts.
+    virtual unsigned int GetNumRenderables () const {return 1;}
+
+	// Get combined AABB
+    virtual const IOGAabb& GetAABB () const {return m_AABB;}
 
 	// Start.
 	virtual void Start ();
@@ -71,8 +77,12 @@ public:
 	// Get effect type.
 	virtual OGEffectType GetType() const { return m_Type; }
 
+	// Get type of the renderable.
+	virtual RenderableType GetRenderableType () const { return OG_RENDERABLE_EFFECT; }
+
 protected:
 	
+    IOGAabb         m_AABB;
 	Vec3			m_Position;
 	Vec3			m_Direction;
 	MATRIX			m_World;

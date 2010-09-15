@@ -10,6 +10,8 @@
 #define IOGEFFECT_H_
 
 #include "IOGMath.h"
+#include "IOGRenderable.h"
+
 
 enum OGEffectStatus
 {
@@ -24,7 +26,8 @@ enum OGEffectType
 	OG_EFFECT_PLASMA
 };
 
-class IOGEffect
+
+class IOGEffect : public IOGRenderable
 {
 public:
 	virtual ~IOGEffect() {}
@@ -46,12 +49,6 @@ public:
 
 	// Update.
 	virtual void Update (unsigned long _ElapsedTime) = 0;
-
-	// Render.
-	virtual void Render (
-		const MATRIX& _mView, 
-		const Vec3& _vRight, 
-		const Vec3& _vUp) = 0;
 
 	// Start.
 	virtual void Start () = 0;

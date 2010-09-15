@@ -79,17 +79,11 @@ void COGEffectsManager::Update (unsigned long _ElapsedTime)
 // Render effects.
 void COGEffectsManager::Render (const MATRIX& _mView)
 {
-	Vec3 vUp, vRight, vLook;
-	MatrixGetBasis(vRight, vUp, vLook, _mView);
-	vUp.normalize();
-	vRight.normalize();
-	vLook.normalize();
-
 	glMatrixMode(GL_MODELVIEW);
 
 	TEffectsList::iterator iter = m_EffectsList.begin();
     for (; iter != m_EffectsList.end(); ++iter)
     {
-		(*iter)->Render(_mView, vRight, vUp);
+		(*iter)->Render(_mView);
 	}
 }

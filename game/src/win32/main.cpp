@@ -3,9 +3,14 @@
 #include "common.h"
 #include "Timing.h"
 
+#define TIMER_ID	1
+#define TIMER_RATE	30
+
 
 CGameSystem*    pGameSystem = NULL;
 CFPSCounter		pFPS;
+
+void CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime);
 
 
 /// Application initialization.
@@ -37,25 +42,6 @@ void Initialize ()
 void Shutdown()
 {
     PostQuitMessage(0);
-}
-
-
-/// Application main cycle.
-void Run ()
-{
-	if (pGameSystem->GetControllerState() != SYSSTATE_EXIT)
-	{
-		pFPS.Update();
-		pGameSystem->Update((unsigned long)(1000.0f/(float)pFPS.GetFPS()));
-		pGameSystem->Draw();
-
-		glFlush();
-		SwapBuffers(shDC);
-	}
-	else
-    {
-        Shutdown();
-    }
 }
 
 
@@ -96,7 +82,7 @@ LRESULT CALLBACK WndProc ( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 		{
             sMouseX = (SHORT)LOWORD(lParam);
             sMouseY = (SHORT)HIWORD(lParam);
-            pGameSystem->OnPointerMove(sMouseX, sMouseY);
+            //pGameSystem->OnPointerMove(sMouseX, sMouseY);
 		}
 		break;
 
@@ -142,6 +128,9 @@ BOOL InitInstance ( HINSTANCE hInstance, int nCmdShow )
 	if ( !shWnd )
 		return FALSE;
 
+    if (SetTimer(shWnd, TIMER_ID,  TIMER_RATE,  (TIMERPROC)TimerProc)!=TIMER_ID ) 
+        return FALSE;
+
 	ShowWindow(shWnd, nCmdShow);	
 	UpdateWindow(shWnd);
 
@@ -171,8 +160,36 @@ int WINAPI WinMain( HINSTANCE hInstance,
             DispatchMessage(&msg);
         }
         else
-            Run ();
+        {
+            WaitMessage();
+        }
     }
 
 	return (int)msg.wParam;
+}
+
+
+/// timer callback function
+void CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime)
+{
+	if (idEvent == TIMER_ID)
+	{
+        if (pGameSystem->GetControllerState() != SYSSTATE_EXIT)
+        {
+            pGameSystem->OnPointerMove(sMouseX, sMouseY);
+            pFPS.Update();
+            //unsigned long ElapsedTime = (unsigned long)(1000.0f/(float)pFPS.GetFPS());
+            //if (ElapsedTime > 30)
+            //    ElapsedTime = 30;
+            pGameSystem->Update(33);
+            pGameSystem->Draw();
+
+            glFlush();
+            SwapBuffers(shDC);
+        }
+        else
+        {
+            Shutdown();
+        }
+	}
 }

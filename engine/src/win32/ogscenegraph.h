@@ -35,14 +35,23 @@ public:
 	// Add landscape scene graph node
 	virtual void AddLandscapeNode (IOGSgNode* _pNode);
 
+	// Add effect scene graph node
+	virtual void AddEffectNode (IOGSgNode* _pNode);
+
 	// Remove scene graph node
 	virtual void RemoveNode (IOGSgNode* _pNode);
+
+    // Update scene graph.
+    virtual void Update (unsigned long _ElapsedTime);
 
 	// Render scene graph.
 	virtual void RenderScene (IOGCamera* _pCamera);
 
 	// Render landscape.
 	virtual void RenderLandscape (IOGCamera* _pCamera);
+
+	// Render effects.
+	virtual void RenderEffects (IOGCamera* _pCamera);
 
 	// Render the whole scene.
 	virtual void RenderAll (IOGCamera* _pCamera);
@@ -69,6 +78,7 @@ private:
 	IOGSgNode*			m_pLandscapeNode;
 	TStaticNodesMap		m_StaticNodes;
 	TNodesList			m_NodesList;
+	TNodesList			m_EffectNodesList;
 };
 
 #endif

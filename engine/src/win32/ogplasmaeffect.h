@@ -24,10 +24,7 @@ public:
 	virtual void Update (unsigned long _ElapsedTime);
 
 	// Render.
-	virtual void Render (
-		const MATRIX& _mView,
-		const Vec3& _vRight, 
-		const Vec3& _vUp);
+	virtual void Render (const MATRIX& _mView);
 
 protected:
 	
