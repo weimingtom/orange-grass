@@ -13,7 +13,7 @@
 #include "UI.h"
 
 CDisplayText * AppDisplayText;
-IOGEffect*	g_pEffect = NULL;
+//IOGEffect*	g_pEffect = NULL;
 
 CGameScreenController::CGameScreenController() :	m_pResourceMgr(NULL),
 													m_pSg(NULL),
@@ -59,11 +59,15 @@ bool CGameScreenController::Init ()
 
 	AppDisplayText = (CDisplayText*)malloc(sizeof(CDisplayText));    
 	memset(AppDisplayText, 0, sizeof(CDisplayText));
-	AppDisplayText->SetTextures(SCR_WIDTH, SCR_HEIGHT, false);
-
+#ifdef WIN32
+ 	AppDisplayText->SetTextures(SCR_WIDTH, SCR_HEIGHT, false);
+#else
+ 	AppDisplayText->SetTextures(SCR_HEIGHT, SCR_WIDTH, true);
+#endif
+    
 	m_fFOV = 0.67f;
 	m_fCameraTargetDistance = 60.0f;
-	m_fCameraFwdSpeed = 0;//0.02f;
+	m_fCameraFwdSpeed = 0.02f;
 	m_fCameraStrafeSpeed = 0.01f;
 	m_fFinishPointSqDistance = 10000.0f;
 	m_ElapsedTime = 0;
@@ -74,7 +78,7 @@ bool CGameScreenController::Init ()
     m_pCurLevel = GetLevelManager()->LoadLevel(std::string("level_0"));
     m_pPlayer = GetActorManager()->GetPlayersActor();
 
-	g_pEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_PLASMA);
+	//g_pEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_PLASMA);
 
 	UpdateCamera();
 	GetPhysics()->UpdateAll(1);
@@ -91,7 +95,7 @@ void CGameScreenController::Update (unsigned long _ElapsedTime)
 		return;
     
 	UpdateCamera();
-	g_pEffect->SetPosition(m_pPlayer->GetPhysicalObject()->GetPosition()+Vec3(0,0,-20));
+	//g_pEffect->SetPosition(m_pPlayer->GetPhysicalObject()->GetPosition()+Vec3(0,0,-20));
 
     GetPhysics()->Update(_ElapsedTime);
     GetActorManager()->Update(_ElapsedTime);
@@ -160,8 +164,8 @@ void CGameScreenController::Activate ()
 	m_State = CSTATE_ACTIVE;
     GetInput()->RegisterReceiver(this);
 	
-	g_pEffect->Start();
-	g_pEffect->SetDirection(Vec3(0,0,1));
+	//g_pEffect->Start();
+	//g_pEffect->SetDirection(Vec3(0,0,1));
 }
 
 

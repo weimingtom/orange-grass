@@ -18,7 +18,7 @@
 #import "Accelerometer.h"
 
 
-#define kFPS			30.0
+#define kFPS			33.0
 
 static CGameSystem *shell = NULL;
 static Accel *accel = NULL;
@@ -32,7 +32,7 @@ static Accel *accel = NULL;
     [accel GetAccelerometerVector: (double*)vec];
     shell->OnPointerMove(vec[1]*50, vec[2]*50);
     
-	shell->Update(10);
+	shell->Update(30);
     shell->Draw();
 	
     glFlush();
