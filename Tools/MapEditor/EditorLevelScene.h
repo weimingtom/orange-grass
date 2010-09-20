@@ -25,22 +25,54 @@ public:
 	virtual ~CEditorLevelScene();
 
 	// Initialize scene
-	virtual bool Init ();
+	bool Init ();
 
 	// Setup viewport
-	virtual void SetViewport (int _Width, int _Height);
+	void SetViewport (int _Width, int _Height);
 
 	// Update controller
-	virtual void Update (unsigned long _ElapsedTime);
+	void Update (unsigned long _ElapsedTime);
 
 	// Render controller scene
-	virtual void RenderScene ();
+	void RenderScene ();
 
 	// Load level
-	virtual bool LoadLevel (const std::string& _LevelName);
+	bool LoadLevel (const std::string& _LevelName);
+
+	// Save level
+	bool SaveLevel ();
 
 	// Set editor mode
-	virtual void SetEditMode (TerrainEditMode _Mode);
+	void SetEditMode (TerrainEditMode _Mode);
+
+    // Setup new current node for placement.
+    void SetNewCurrentNodeForPlacement(const char* _pModelAlias, int _ActorType);
+
+	// Place the current node
+	void PlaceCurrentNode (int _mouseX, int _mouseY);
+
+	// Update current actor's position
+	void UpdateCurrentNodePosition (const Vec3& _vPos);
+
+	// Update level start position
+	void UpdateLevelStartPosition (const Vec3& _vPos);
+
+	// Update level start position
+	void UpdateLevelFinishPosition (const Vec3& _vPos);
+
+	// Get picking ray
+	void GetMousePickingRay (Vec3& _vPos, Vec3& _vRay, int _mouseX, int _mouseY);
+
+	// Pick actor
+	void PickActor (int _mouseX, int _mouseY);
+
+	// Camera zoom
+	void CameraZoom (float _fFactor);
+
+private:
+
+    // Render scene helpers.
+    void RenderHelpers();
 
 public:
 		
@@ -56,13 +88,14 @@ public:
 	IOGActor*		m_pCurActor;
 	IOGActor*		m_pPickedActor;
 
-	bool			m_bIntersectionFound = false;
-	Vec3			m_vIntersection;
 	Vec3			m_vCurRotation;
 	Vec3			m_vCurScaling;
 	OGActorType		m_CurActorType;
 	std::string		m_CurModelAlias;
 	float			m_fAirBotHeight;
+	float	        m_fCameraDistance;
+	bool	        m_bShowAABB;
+    bool            m_bInited;
 
 	int				m_ResX;
 	int				m_ResY;

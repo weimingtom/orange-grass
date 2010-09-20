@@ -1,13 +1,20 @@
-Tools: ver. 0.07, 23-Aug-2011
+Tools: ver. 0.08, 19-Sep-2010
 
 ChangeList:
 
-0.08:
+0.08 (19-Sep-2010):
+- [OG] scene graph nodes sorting and scene dissection improvements;
+- [OG] added statistics output;
+- [OG] added text output;
+- [OG] added render target texture support;
+- [OG] added sprites manager, ability to output non-power of 2 sprites;
+- [OG] added texture mapping config;
+- [OG] added effects manager and simple plasma bullet effect;
 - [OG] added material manager and vertex buffer objects;
 - [OG] added rendering state caching;
 - [Game] craft controls - first draft;
 
-0.07 (23-Aug-2011):
+0.07 (23-Aug-2010):
 - [OG] added some player support;
 - [OG] fixed compatibility with iOS;
 - [OG] level start, level finish, light direction are read from the level scene;

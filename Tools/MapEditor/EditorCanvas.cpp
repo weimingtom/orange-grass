@@ -4,6 +4,7 @@
 #include <OrangeGrass.h>
 #include <IOGGraphicsHelpers.h>
 #include <IOGMath.h>
+#include "EditorLevelScene.h"
 
 
 #define TIMER_ID    1000
@@ -43,6 +44,8 @@ OGActorType	m_CurActorType = OG_ACTOR_NONE;
 std::string m_CurModelAlias;
 float       m_fAirBotHeight = 80.0f;
 
+CEditorLevelScene*  g_pScene = NULL;
+
 
 /// @brief Constructor.
 /// @param parent - parent window.
@@ -59,13 +62,14 @@ CEditorCanvas::CEditorCanvas (  wxWindow *parent,
                                 const wxString& name) : wxGLCanvas(parent, (wxGLCanvas*)NULL, id, pos, size, style|wxFULL_REPAINT_ON_RESIZE, name),
                                                         m_timer(this, TIMER_ID)
 {
-    m_init = false;
-	m_bLoaded = false;
+    g_pScene = new CEditorLevelScene();
+    //m_init = false;
+    //m_bLoaded = false;
 	GetEventHandlersTable()->AddEventHandler(EVENTID_RESSWITCH, this);
 	GetEventHandlersTable()->AddEventHandler(EVENTID_TOOLCMD, this);
 	GetEventHandlersTable()->AddEventHandler(EVENTID_LEVELLOAD, this);
     m_timer.Start(100);
-	m_fCameraDistance = 400.0f;
+	//m_fCameraDistance = 400.0f;
 
     bRmb = bLmb = false;
     mouse_x = mouse_y = 0;
@@ -73,12 +77,11 @@ CEditorCanvas::CEditorCanvas (  wxWindow *parent,
     m_fFineAngleStep = TO_RADIAN(2.0f);
     m_fCoarseAngleStep = TO_RADIAN(45.0f);
 
-	m_bShowAABB = false;
+	//m_bShowAABB = false;
 	m_bMouseInWindow = true;
 	m_bMouseMoved = false;
-	m_bRedrawPatch = false;
-
-	m_bIntersectionFound = false;
+	//m_bRedrawPatch = false;
+	//m_bIntersectionFound = false;
     
     m_SettingsMode = SETMODE_NONE;
 }
@@ -87,7 +90,8 @@ CEditorCanvas::CEditorCanvas (  wxWindow *parent,
 /// @brief Destructor.
 CEditorCanvas::~CEditorCanvas()
 {
-    OG_SAFE_DELETE(m_pCurActor);
+    //OG_SAFE_DELETE(m_pCurActor);
+    OG_SAFE_DELETE(g_pScene);
 }
 
 
@@ -102,65 +106,73 @@ void CEditorCanvas::Render()
 
     SetCurrent();
 
-    // Init OpenGL once, but after SetCurrent
-    if (!m_init)
+    if (!g_pScene->m_bInited)
     {
-        InitGL();
-		if (GetResourceMgr()->Init() == false)
-		{
-		}
-		if (GetLevelManager()->Init() == false)
-		{
-		}
-		m_init = true;
+        g_pScene->Init();
     }
+    g_pScene->Update(10);
+    g_pScene->RenderScene();
 
-	if (!m_bLoaded)
-	{
-		GetRenderer()->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
-	    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glFlush();
-		SwapBuffers();
-		LoadNextResource();
-	}
+    //// Init OpenGL once, but after SetCurrent
+    //if (!m_init)
+    //{
+    //    InitGL();
+    //    if (GetResourceMgr()->Init() == false)
+    //    {
+    //    }
+    //    if (GetLevelManager()->Init() == false)
+    //    {
+    //    }
+    //    m_init = true;
+    //}
 
-	GetRenderer()->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
-    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //if (!m_bLoaded)
+    //{
+    //    GetRenderer()->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
+    //    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    //    glFlush();
+    //    SwapBuffers();
+    //    LoadNextResource();
+    //}
 
-	GetPhysics()->UpdateAll(0);
-    GetActorManager()->Update(10);
-	GetRenderer()->GetCamera()->Update();
+    //GetRenderer()->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
+    ////glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	GetRenderer()->StartRenderMode(OG_RENDERMODE_GEOMETRY);
+    //GetPhysics()->UpdateAll(0);
+    //GetActorManager()->Update(10);
+    //GetRenderer()->GetCamera()->Update();
 
-	if (m_pCurLevel)
-        m_pCurLevel->GetTerrain()->Render(m_mView);
+    //m_mView = GetRenderer()->GetCamera()->GetViewMatrix();
+    //GetRenderer()->StartRenderMode(OG_RENDERMODE_GEOMETRY);
 
-    GetSceneGraph()->RenderAll(GetRenderer()->GetCamera());
+    //if (m_pCurLevel)
+    //    m_pCurLevel->GetTerrain()->Render(m_mView);
 
-    switch (GetToolSettings()->GetEditMode())
-    {
-    case EDITMODE_OBJECTS:
-        {
-            if (m_pCurActor)
-            {
-                m_pCurActor->GetPhysicalObject()->Update(10);
-                m_pCurActor->Update(10);
+    //GetSceneGraph()->RenderAll(GetRenderer()->GetCamera());
 
-                MATRIX mModelView = m_pCurActor->GetSgNode()->GetWorldTransform();
-                MatrixMultiply(mModelView, mModelView, m_mView);
-                m_pCurActor->GetSgNode()->GetRenderable()->Render(mModelView);
-            }
-        }
-        break;
-    }
+    //switch (GetToolSettings()->GetEditMode())
+    //{
+    //case EDITMODE_OBJECTS:
+    //    {
+    //        if (m_pCurActor)
+    //        {
+    //            m_pCurActor->GetPhysicalObject()->Update(10);
+    //            m_pCurActor->Update(10);
 
-	GetRenderer()->FinishRenderMode();
-    GetRenderer()->Reset();
+    //            MATRIX mModelView = m_pCurActor->GetSgNode()->GetWorldTransform();
+    //            MatrixMultiply(mModelView, mModelView, m_mView);
+    //            m_pCurActor->GetSgNode()->GetRenderable()->Render(mModelView);
+    //        }
+    //    }
+    //    break;
+    //}
 
-    RenderHelpers();
+    //GetRenderer()->FinishRenderMode();
+    //GetRenderer()->Reset();
 
-    glFlush();
+    //RenderHelpers();
+
+    //glFlush();
     SwapBuffers();
 }
 
@@ -171,32 +183,33 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 {
 	if (m_bMouseMoved)
 	{
-		Vec3 vPick = GetPickRay (mouse_x, mouse_y);
-		Vec3 vPos = GetRenderer()->GetCamera()->GetPosition();
-		Vec3 vVec = vPick - vPos;
-		vVec.normalize();
+		//Vec3 vPick = GetPickRay (mouse_x, mouse_y);
+		//Vec3 vPos = GetRenderer()->GetCamera()->GetPosition();
+		//Vec3 vVec = vPick - vPos;
+		//vVec.normalize();
 
 		ToolSettings* pTool = GetToolSettings();
 		switch (pTool->GetEditMode())
 		{
 		case EDITMODE_OBJECTS:
 			{
-                if (m_pCurLevel)
-				{
-					m_bIntersectionFound = m_pCurLevel->GetTerrain()->GetRayIntersection(vPos, vVec, &m_vIntersection);
-					if (m_bIntersectionFound)
-					{
-						if (m_pCurActor)
-						{
-                            if (m_CurActorType == OG_ACTOR_AIRBOT || m_CurActorType == OG_ACTOR_PLAYER)
-                            {
-                                m_vIntersection.y = m_fAirBotHeight;
-                            }
-                            m_pCurActor->GetPhysicalObject()->SetPosition(m_vIntersection);
-						}
-						m_bRedrawPatch = true;
-					}
-				}
+                g_pScene->UpdateCurrentNodePosition();
+                //if (m_pCurLevel)
+                //{
+                //    m_bIntersectionFound = m_pCurLevel->GetTerrain()->GetRayIntersection(vPos, vVec, &m_vIntersection);
+                //    if (m_bIntersectionFound)
+                //    {
+                //        if (m_pCurActor)
+                //        {
+                //            if (m_CurActorType == OG_ACTOR_AIRBOT || m_CurActorType == OG_ACTOR_PLAYER)
+                //            {
+                //                m_vIntersection.y = m_fAirBotHeight;
+                //            }
+                //            m_pCurActor->GetPhysicalObject()->SetPosition(m_vIntersection);
+                //        }
+                //        m_bRedrawPatch = true;
+                //    }
+                //}
 			}
 			break;
 
