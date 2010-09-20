@@ -17,7 +17,6 @@
 COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
                                 m_pCurMaterial(NULL),
                                 m_pCurMesh(NULL),
-								m_pRT(NULL),
 								m_pFog(NULL),
 								m_pLight(NULL),
 								m_pCamera(NULL)
@@ -31,7 +30,6 @@ COGRenderer::~COGRenderer ()
 	OG_SAFE_DELETE(m_pFog);
 	OG_SAFE_DELETE(m_pLight);
 	OG_SAFE_DELETE(m_pCamera);
-	OG_SAFE_DELETE(m_pRT);
 }
 
 
@@ -49,7 +47,6 @@ bool COGRenderer::Init ()
 	m_pLight = new COGLight ();
 	m_pCamera = new COGCamera ();
 	m_pFog = new COGFog ();
-	m_pRT = new COGRenderTarget();
 	return true;
 }
 
@@ -75,9 +72,6 @@ void COGRenderer::SetViewport (
 	MatrixOrthoRH(m_mOrthoProj, (float)m_Height, (float)m_Width, -1, 1, true);
     MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(m_Height)/float(m_Width), m_fZNear, m_fZFar, true);
 #endif
-
-	MatrixOrthoRH(m_mSMProjection, 32, 32, m_fZNear, m_fZFar, false);
-	//MatrixPerspectiveFovRH(m_mSMProjection, m_fFOV, float(m_pRT->GetWidth())/float(m_pRT->GetHeight()), m_fZNear, m_fZFar, false);
 }
 
 
@@ -116,6 +110,14 @@ void COGRenderer::RenderMesh (void* _pMesh)
         m_pCurMesh->Apply();
     }
     m_pCurMesh->Render();
+}
+
+
+// clear frame buffer with the given color
+void COGRenderer::ClearFrame (const Vec4& _vClearColor)
+{
+	glClearColor(_vClearColor.x, _vClearColor.y, _vClearColor.z, _vClearColor.w);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 
@@ -185,18 +187,6 @@ void COGRenderer::StartRenderMode(OGRenderMode _Mode)
 		break;
 
 	case OG_RENDERMODE_SHADOWMAP:
-		glAlphaFunc(GL_GREATER, 0.90f);
-		glEnable(GL_ALPHA_TEST);
-		glDisable(GL_CULL_FACE);
-	    glMatrixMode(GL_PROJECTION);
-		glLoadMatrixf(m_mSMProjection.f);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadMatrixf(m_pCamera->GetViewMatrix().f);
-		m_pLight->Enable(false);
-		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_TRUE);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_NORMAL_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		break;
 	}
 }
@@ -234,54 +224,8 @@ void COGRenderer::FinishRenderMode()
 		break;
 
 	case OG_RENDERMODE_SHADOWMAP:
-#ifdef USE_VBO
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-#endif
-   		glEnable(GL_TEXTURE_2D);
-	    glEnable(GL_DEPTH_TEST);
-		glDisable(GL_ALPHA_TEST);
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_NORMAL_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		m_pRT->Apply();
-		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 		break;
 	}
-}
-
-
-// draw shadow quad.
-void COGRenderer::DrawShadowQuad()
-{
-	StartRenderMode(OG_RENDERMODE_SPRITES);
-	glEnable (GL_BLEND);
-	glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-
-	COGSprite::SprVert m_Vertices[4];
-	float g_fHalfScrWidth = SCR_WIDTH / 2.0f;
-	float g_fHalfScrHeight = SCR_HEIGHT / 2.0f;
-	Vec2 _vPos = Vec2(0, 0);
-	Vec2 _vSize = Vec2(256, 256);
-	float fLeft = -g_fHalfScrWidth+_vPos.x;
-	float fRight = -g_fHalfScrWidth+_vSize.x+_vPos.x;
-	float fTop = g_fHalfScrHeight-_vSize.y-_vPos.y;
-	float fBottom = g_fHalfScrHeight-_vPos.y;
-	m_Vertices[0].p	= Vec2(fRight, fTop);	
-	m_Vertices[0].t = Vec2(1, 0); 
-	m_Vertices[1].p	= Vec2(fLeft, fTop);	
-	m_Vertices[1].t = Vec2(0, 0); 
-	m_Vertices[2].p	= Vec2(fRight, fBottom);	
-	m_Vertices[2].t = Vec2(1, 1); 
-	m_Vertices[3].p	= Vec2(fLeft, fBottom);	
-	m_Vertices[3].t = Vec2(0, 1); 
-	glBindTexture(GL_TEXTURE_2D, m_pRT->m_TextureId);
-	glVertexPointer(2, GL_FLOAT, 16, m_Vertices);
-	glTexCoordPointer(2, GL_FLOAT, 16, (void*)((char *)m_Vertices + 8));
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-	glDisable (GL_BLEND); 
-	FinishRenderMode();
 }
 
 

@@ -50,6 +50,9 @@ public:
 	// add rendering command.
 	virtual void RenderMesh (void* _pMesh) = 0;
 
+	// clear frame buffer with the given color
+	virtual void ClearFrame (const Vec4& _vClearColor) = 0;
+
 	// Get scene light.
 	virtual IOGLight* GetLight () = 0;
 
@@ -64,9 +67,6 @@ public:
 
 	// finish rendering mode.
 	virtual void FinishRenderMode() = 0;
-
-	// draw shadow quad.
-	virtual void DrawShadowQuad() = 0;
 	
 	// reset renderer pipeline.
 	virtual void Reset () = 0;

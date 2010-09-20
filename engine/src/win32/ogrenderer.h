@@ -42,6 +42,9 @@ public:
 	// add rendering command.
 	virtual void RenderMesh (void* _pMesh);
 
+	// clear frame buffer with the given color
+	virtual void ClearFrame (const Vec4& _vClearColor);
+
 	// Get scene light.
 	virtual IOGLight* GetLight ();
 
@@ -57,9 +60,6 @@ public:
 	// finish rendering mode.
 	virtual void FinishRenderMode();
 
-	// draw shadow quad.
-	virtual void DrawShadowQuad();
-
 	// reset renderer pipeline.
 	virtual void Reset ();
 	
@@ -74,8 +74,6 @@ private:
 	IOGFog*				m_pFog;
 	MATRIX				m_mOrthoProj;
 	MATRIX				m_mProjection;
-	MATRIX				m_mSMProjection;
-	COGRenderTarget*	m_pRT;
 	unsigned int		m_Width; 
 	unsigned int		m_Height;
 	float				m_fZNear;

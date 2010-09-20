@@ -117,26 +117,21 @@ void CEditorCanvas::Render()
 
 	if (!m_bLoaded)
 	{
-	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		GetRenderer()->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
+	    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glFlush();
 		SwapBuffers();
 		LoadNextResource();
 	}
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	GetRenderer()->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
+    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	GetPhysics()->UpdateAll(0);
     GetActorManager()->Update(10);
 	GetRenderer()->GetCamera()->Update();
 
 	GetRenderer()->StartRenderMode(OG_RENDERMODE_GEOMETRY);
-	//glMatrixMode(GL_PROJECTION);
-	//glLoadMatrixf(m_mProjection.f);
-	
-	//glMatrixMode(GL_MODELVIEW);
-	//m_mView = GetSceneGraph()->GetCamera()->Update();
-	//glLoadMatrixf(m_mView.f);
-	//GetSceneGraph()->GetLight()->Apply();
 
 	if (m_pCurLevel)
         m_pCurLevel->GetTerrain()->Render(m_mView);

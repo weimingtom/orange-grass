@@ -116,8 +116,9 @@ void CGameScreenController::RenderScene ()
 		return;
     }
 
-	glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	m_pRenderer->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
 
 	m_pRenderer->GetFog()->Enable(true);
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);

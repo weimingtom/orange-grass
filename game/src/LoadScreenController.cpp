@@ -68,7 +68,8 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 // Render controller scene
 void CLoadScreenController::RenderScene ()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	GetRenderer()->ClearFrame(Vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 	GetRenderer()->StartRenderMode(OG_RENDERMODE_SPRITES);
 	m_pHUD->Render(Vec2(0, 0), Vec2(SCR_WIDTH, SCR_HEIGHT));

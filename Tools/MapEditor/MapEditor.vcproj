@@ -220,6 +220,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EditorLevelScene.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorLevelScene.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EditorObjectsFrame.cpp"
 				>
 			</File>
