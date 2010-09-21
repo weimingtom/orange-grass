@@ -49,7 +49,7 @@ public:
     void SetNewCurrentNodeForPlacement(const char* _pModelAlias, int _ActorType);
 
 	// Place the current node
-	void PlaceCurrentNode (int _mouseX, int _mouseY);
+	void PlaceCurrentNode (const Vec3& _vPos);
 
 	// Update current actor's position
 	void UpdateCurrentNodePosition (const Vec3& _vPos);
@@ -62,6 +62,9 @@ public:
 
 	// Get picking ray
 	void GetMousePickingRay (Vec3& _vPos, Vec3& _vRay, int _mouseX, int _mouseY);
+
+	// Get terrain intersection position.
+	bool GetTerrainIntersection (Vec3& _vOutPos, int _mouseX, int _mouseY);
 
 	// Pick actor
 	void PickActor (int _mouseX, int _mouseY);

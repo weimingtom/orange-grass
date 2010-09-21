@@ -2,7 +2,6 @@
 #define EDITORCANVAS_H_
 
 #include "wx/glcanvas.h"
-#include "wx/progdlg.h"
 #include <ToolFramework.h>
 
 
@@ -59,13 +58,6 @@ private:
     /// @brief Render.
     void Render();
 
-    /// @brief Initialize renderer.
-    void InitGL();
-
-    /// @brief Load next resource bulk.
-    /// @return false if finished loading.
-    bool LoadNextResource();
-
 	/// @brief Tool command event handler
     /// @param event - event structute.
 	void OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event );
@@ -77,12 +69,6 @@ private:
     /// @brief Timer handler.
     /// @param event - event structute.
     void OnTimer(wxTimerEvent& event);
-
-    /// @brief Setup camera.
-    void SetupCamera();
-
-    /// @brief Render scene helpers.
-    void RenderHelpers();
 
     /// @brief Mouse enter handler.
     /// @param event - event structute.
@@ -120,25 +106,16 @@ private:
     /// @param event - event structute.
     void OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& event );
 
-    /// @brief Setup new current node for placement.
-    void SetNewCurrentNodeForPlacement(const char* _pModelAlias, int _ActorType);
-
 private:
 
-    bool	m_init;
-	bool	m_bLoaded;
     long    m_Key;
 	int		m_ResX;
 	int		m_ResY;
-	float	m_fCameraDistance;
 
-	wxProgressDialog*	m_pLoadProgressDlg;
-    wxTimer             m_timer;
+    wxTimer m_timer;
 
-	bool	m_bShowAABB;
 	bool	m_bMouseInWindow;
 	bool	m_bMouseMoved;
-	bool	m_bRedrawPatch;
 
     bool	bRmb;
     bool	bLmb;

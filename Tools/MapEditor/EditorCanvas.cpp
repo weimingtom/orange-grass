@@ -31,19 +31,8 @@ BEGIN_EVENT_TABLE(CEditorCanvas, wxGLCanvas)
 END_EVENT_TABLE()
 
 
-MATRIX		m_mProjection;
-MATRIX		m_mView;
-IOGLevel*	m_pCurLevel = NULL;
-IOGActor*   m_pCurActor = NULL;
-IOGActor*   m_pPickedActor = NULL;
 bool		m_bIntersectionFound = false;
 Vec3		m_vIntersection;
-Vec3		m_vCurRotation;
-Vec3		m_vCurScaling(1);
-OGActorType	m_CurActorType = OG_ACTOR_NONE;
-std::string m_CurModelAlias;
-float       m_fAirBotHeight = 80.0f;
-
 CEditorLevelScene*  g_pScene = NULL;
 
 
@@ -63,13 +52,10 @@ CEditorCanvas::CEditorCanvas (  wxWindow *parent,
                                                         m_timer(this, TIMER_ID)
 {
     g_pScene = new CEditorLevelScene();
-    //m_init = false;
-    //m_bLoaded = false;
 	GetEventHandlersTable()->AddEventHandler(EVENTID_RESSWITCH, this);
 	GetEventHandlersTable()->AddEventHandler(EVENTID_TOOLCMD, this);
 	GetEventHandlersTable()->AddEventHandler(EVENTID_LEVELLOAD, this);
     m_timer.Start(100);
-	//m_fCameraDistance = 400.0f;
 
     bRmb = bLmb = false;
     mouse_x = mouse_y = 0;
@@ -77,11 +63,9 @@ CEditorCanvas::CEditorCanvas (  wxWindow *parent,
     m_fFineAngleStep = TO_RADIAN(2.0f);
     m_fCoarseAngleStep = TO_RADIAN(45.0f);
 
-	//m_bShowAABB = false;
 	m_bMouseInWindow = true;
 	m_bMouseMoved = false;
-	//m_bRedrawPatch = false;
-	//m_bIntersectionFound = false;
+	m_bIntersectionFound = false;
     
     m_SettingsMode = SETMODE_NONE;
 }
@@ -90,7 +74,6 @@ CEditorCanvas::CEditorCanvas (  wxWindow *parent,
 /// @brief Destructor.
 CEditorCanvas::~CEditorCanvas()
 {
-    //OG_SAFE_DELETE(m_pCurActor);
     OG_SAFE_DELETE(g_pScene);
 }
 
@@ -100,10 +83,8 @@ void CEditorCanvas::Render()
 {
     wxPaintDC dc(this);
     dc.GetWindow()->GetHandle();
-
     if (!GetContext()) 
         return;
-
     SetCurrent();
 
     if (!g_pScene->m_bInited)
@@ -113,67 +94,7 @@ void CEditorCanvas::Render()
     g_pScene->Update(10);
     g_pScene->RenderScene();
 
-    //// Init OpenGL once, but after SetCurrent
-    //if (!m_init)
-    //{
-    //    InitGL();
-    //    if (GetResourceMgr()->Init() == false)
-    //    {
-    //    }
-    //    if (GetLevelManager()->Init() == false)
-    //    {
-    //    }
-    //    m_init = true;
-    //}
-
-    //if (!m_bLoaded)
-    //{
-    //    GetRenderer()->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
-    //    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    //    glFlush();
-    //    SwapBuffers();
-    //    LoadNextResource();
-    //}
-
-    //GetRenderer()->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
-    ////glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-    //GetPhysics()->UpdateAll(0);
-    //GetActorManager()->Update(10);
-    //GetRenderer()->GetCamera()->Update();
-
-    //m_mView = GetRenderer()->GetCamera()->GetViewMatrix();
-    //GetRenderer()->StartRenderMode(OG_RENDERMODE_GEOMETRY);
-
-    //if (m_pCurLevel)
-    //    m_pCurLevel->GetTerrain()->Render(m_mView);
-
-    //GetSceneGraph()->RenderAll(GetRenderer()->GetCamera());
-
-    //switch (GetToolSettings()->GetEditMode())
-    //{
-    //case EDITMODE_OBJECTS:
-    //    {
-    //        if (m_pCurActor)
-    //        {
-    //            m_pCurActor->GetPhysicalObject()->Update(10);
-    //            m_pCurActor->Update(10);
-
-    //            MATRIX mModelView = m_pCurActor->GetSgNode()->GetWorldTransform();
-    //            MatrixMultiply(mModelView, mModelView, m_mView);
-    //            m_pCurActor->GetSgNode()->GetRenderable()->Render(mModelView);
-    //        }
-    //    }
-    //    break;
-    //}
-
-    //GetRenderer()->FinishRenderMode();
-    //GetRenderer()->Reset();
-
-    //RenderHelpers();
-
-    //glFlush();
-    SwapBuffers();
+	SwapBuffers();
 }
 
 
@@ -183,33 +104,15 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 {
 	if (m_bMouseMoved)
 	{
-		//Vec3 vPick = GetPickRay (mouse_x, mouse_y);
-		//Vec3 vPos = GetRenderer()->GetCamera()->GetPosition();
-		//Vec3 vVec = vPick - vPos;
-		//vVec.normalize();
+		m_bIntersectionFound = g_pScene->GetTerrainIntersection(m_vIntersection, mouse_x, mouse_y);
 
 		ToolSettings* pTool = GetToolSettings();
 		switch (pTool->GetEditMode())
 		{
 		case EDITMODE_OBJECTS:
 			{
-                g_pScene->UpdateCurrentNodePosition();
-                //if (m_pCurLevel)
-                //{
-                //    m_bIntersectionFound = m_pCurLevel->GetTerrain()->GetRayIntersection(vPos, vVec, &m_vIntersection);
-                //    if (m_bIntersectionFound)
-                //    {
-                //        if (m_pCurActor)
-                //        {
-                //            if (m_CurActorType == OG_ACTOR_AIRBOT || m_CurActorType == OG_ACTOR_PLAYER)
-                //            {
-                //                m_vIntersection.y = m_fAirBotHeight;
-                //            }
-                //            m_pCurActor->GetPhysicalObject()->SetPosition(m_vIntersection);
-                //        }
-                //        m_bRedrawPatch = true;
-                //    }
-                //}
+				if (m_bIntersectionFound)
+					g_pScene->UpdateCurrentNodePosition(m_vIntersection);
 			}
 			break;
 
@@ -220,36 +123,18 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 
 		case EDITMODE_SETTINGS:
 			{
-                if (m_pCurLevel)
+				if (bLmb && m_bIntersectionFound)
 				{
-                    if (bLmb)
-                    {
-                        m_bIntersectionFound = m_pCurLevel->GetTerrain()->GetRayIntersection(vPos, vVec, &m_vIntersection);
-                        if (m_bIntersectionFound)
-                        {
-                            switch (m_SettingsMode)
-                            {
-                            case SETMODE_LEVEL_START:
-								{
-									m_pCurLevel->SetStartPosition(m_vIntersection);
+					switch (m_SettingsMode)
+					{
+					case SETMODE_LEVEL_START:
+						g_pScene->UpdateLevelStartPosition(m_vIntersection);
+						break;
 
-									IOGActor* pPlayerActor = GetActorManager()->GetPlayersActor();
-									if (pPlayerActor)
-									{
-										Vec3 vCraftPos = m_vIntersection;
-										vCraftPos.y = m_fAirBotHeight;
-										pPlayerActor->GetPhysicalObject()->SetPosition(vCraftPos);
-									}
-								}
-                                break;
-
-                            case SETMODE_LEVEL_FINISH:
-                                m_pCurLevel->SetFinishPosition(m_vIntersection);
-                                break;
-                            }
-                            m_bRedrawPatch = true;
-                        }
-                    }
+					case SETMODE_LEVEL_FINISH:
+						g_pScene->UpdateLevelFinishPosition(m_vIntersection);
+						break;
+					}
 				}
 			}
 			break;
@@ -286,57 +171,8 @@ void CEditorCanvas::OnSize(wxSizeEvent& event)
     if (GetContext())
     {
         SetCurrent();
-        glViewport(0, 0, m_ResX, m_ResY);
-		GetRenderer()->SetViewport(m_ResX, m_ResY, 4.0f, 4500.0f, 0.67f);
-		//MatrixPerspectiveFovRH(m_mProjection, 1.0f, float(m_ResX)/float(m_ResY), 4.0f, 4500.0f, true);
+		g_pScene->SetViewport(m_ResX, m_ResY);
     }
-}
-
-
-/// @brief Initialize renderer.
-void CEditorCanvas::InitGL()
-{
-	glewInit();
-
-    SetupCamera ();
-
-	glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
-	glEnable(GL_TEXTURE_2D);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-	glEnable(GL_DEPTH_TEST);
-	glDisable(GL_CULL_FACE);
-	glEnable(GL_NORMALIZE);
-}
-
-
-/// @brief Load next resource bulk.
-/// @return false if finished loading.
-bool CEditorCanvas::LoadNextResource()
-{
-	std::vector<IOGResourceInfo> resInfo;
-	if (GetResourceMgr()->Load(resInfo))
-	{
-		std::vector<IOGResourceInfo>::const_iterator iter = resInfo.begin();
-		for (; iter != resInfo.end(); ++iter)
-		{
-			CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
-			cmd.SetEventCustomData(ResLoadEventData(wxT((*iter).m_Resource), 
-				wxT((*iter).m_ResourceGroup), 
-				wxT((*iter).m_ResourceIcon),
-				wxT((*iter).m_ResourceActorType)));
-			GetEventHandlersTable()->FireEvent(EVENTID_RESLOAD, &cmd);
-		}
-	}
-	else
-	{
-	}
-
-	m_bLoaded = true;
-	SetNewCurrentNodeForPlacement(NULL, OG_ACTOR_NONE);
-
-	return true;
 }
 
 
@@ -344,32 +180,8 @@ bool CEditorCanvas::LoadNextResource()
 /// @param event - event structute.
 void CEditorCanvas::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& event )
 {
-	if (m_pCurLevel)
-	{
-		GetLevelManager()->UnloadLevel(m_pCurLevel);
-	}
-	
-	m_pCurLevel = GetLevelManager()->LoadLevel(std::string(event.GetEventCustomData().m_Path));
-	
-	IOGActor* pPlayerActor = GetActorManager()->GetPlayersActor();
-	Vec3 vCraftPos = m_pCurLevel->GetStartPosition();
-	vCraftPos.y = m_fAirBotHeight;
-	if (!pPlayerActor)
-	{
-		pPlayerActor = GetActorManager()->CreateActor(
-            OG_ACTOR_PLAYER, 
-			std::string("craft"),
-			vCraftPos, 
-            Vec3(0,0,0), 
-            Vec3(1,1,1));
-		GetActorManager()->AddActor(pPlayerActor);
-	}
-	else
-	{
-		pPlayerActor->GetPhysicalObject()->SetPosition(vCraftPos);
-	}
-
-	GetToolSettings()->SetLevel((void*)m_pCurLevel);
+	g_pScene->LoadLevel(std::string(event.GetEventCustomData().m_Path));
+	GetToolSettings()->SetLevel((void*)g_pScene->m_pCurLevel);
 	this->Refresh();
 }
 
@@ -378,7 +190,7 @@ void CEditorCanvas::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& even
 /// @param event - event structute.
 void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
 {
-    switch (event.GetKeyCode())
+    /*switch (event.GetKeyCode())
     {
     case WXK_UP:
         if (event.ControlDown())
@@ -641,7 +453,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
         }
 		this->Refresh();
         break;
-    }
+    }*/
 
     event.Skip();
 }
@@ -663,38 +475,26 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 	switch (evtData.m_CmdType)
 	{
 	case CMD_AABB:
-		m_bShowAABB = evtData.m_bSwitcher;
+		g_pScene->m_bShowAABB = evtData.m_bSwitcher;
 		break;
 
 	case CMD_EDITMODE_OBJECTS:
         m_SettingsMode = SETMODE_NONE;
-        m_pPickedActor = NULL;
-        m_vCurRotation = Vec3(0, 0, 0);
-        m_vCurScaling = Vec3(1, 1, 1);
-		if (m_CurModelAlias.empty())
-			SetNewCurrentNodeForPlacement(NULL, OG_ACTOR_NONE);
-		else
-			SetNewCurrentNodeForPlacement(m_CurModelAlias.c_str(), m_CurActorType);
+		g_pScene->SetEditMode(EDITMODE_OBJECTS);
 		break;
 
 	case CMD_EDITMODE_ADJUST:
         m_SettingsMode = SETMODE_NONE;
-        m_vCurRotation = Vec3(0, 0, 0);
-        m_vCurScaling = Vec3(1, 1, 1);
-        m_pPickedActor = NULL;
-		SetNewCurrentNodeForPlacement(NULL, OG_ACTOR_NONE);
+		g_pScene->SetEditMode(EDITMODE_ADJUST);
 		break;
 
 	case CMD_EDITMODE_SETTINGS:
         m_SettingsMode = SETMODE_NONE;
-        m_vCurRotation = Vec3(0, 0, 0);
-        m_vCurScaling = Vec3(1, 1, 1);
-        m_pPickedActor = NULL;
-		SetNewCurrentNodeForPlacement(NULL, OG_ACTOR_NONE);
+		g_pScene->SetEditMode(EDITMODE_SETTINGS);
 		break;
 
     case CMD_LEVEL_SAVE:
-        GetLevelManager()->SaveLevel(m_pCurLevel);
+		g_pScene->SaveLevel();
         break;
 
 	case CMD_SETTINGSMODE_LEVSTART:
@@ -710,57 +510,6 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
         break;
 	}
 	Refresh ();
-}
-
-
-/// @brief Setup camera.
-void CEditorCanvas::SetupCamera()
-{
-    Vec3 vTarget (200, 0, -100);
-	Vec3 vDir (0, 1.0f, 0.4f);
-	vDir = vDir.normalize();
-	Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
-	GetRenderer()->GetCamera()->Setup (vTarget + (vDir* m_fCameraDistance), vTarget, vUp);
-}
-
-
-/// @brief Render scene helpers.
-void CEditorCanvas::RenderHelpers()
-{
-	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(m_mView.f);
-    glDisable(GL_LIGHTING);
-	glDisable(GL_TEXTURE_2D);
-
-	if (m_bShowAABB)
-	{
-        if (m_pCurActor)
-        {
-            DrawOBB(m_pCurActor->GetPhysicalObject()->GetOBB());
-        }
-	}
-
-    if (m_pPickedActor)
-    {
-        DrawOBB(m_pPickedActor->GetPhysicalObject()->GetOBB());
-    }
-
-	if (m_bIntersectionFound && m_bRedrawPatch)
-	{
-		DrawPatchGrid (1, &m_vIntersection);
-		m_bRedrawPatch = false;
-	}
-
-    if (m_pCurLevel)
-    {
-		DrawLevelRanges(m_pCurLevel->GetStartPosition(),
-			m_pCurLevel->GetFinishPosition(),
-            m_pCurLevel->GetActiveWidth(),
-			m_fAirBotHeight);
-    }
-
-    glEnable(GL_LIGHTING);
-	glEnable(GL_TEXTURE_2D);
 }
 
 
@@ -797,40 +546,22 @@ void CEditorCanvas::OnLMBUp(wxMouseEvent& event)
 	mouse_x = event.GetX();
 	mouse_y = event.GetY();
 
-    Vec3 vPick = GetPickRay (mouse_x, mouse_y);
-    Vec3 vPos = GetRenderer()->GetCamera()->GetPosition();
-    Vec3 vVec = vPick - vPos;
-    vVec.normalize();
-
     ToolSettings* pTool = GetToolSettings();
     switch (pTool->GetEditMode())
     {
     case EDITMODE_OBJECTS:
         {
-            if (m_pCurLevel)
-            {
-                m_bIntersectionFound = m_pCurLevel->GetTerrain()->GetRayIntersection(vPos, vVec, &m_vIntersection);
-                if (m_bIntersectionFound && m_pCurActor)
-                {
-                    if (m_CurActorType == OG_ACTOR_AIRBOT || m_CurActorType == OG_ACTOR_PLAYER)
-                    {
-                        m_vIntersection.y = m_fAirBotHeight;
-                    }
-                    GetActorManager()->AddActor (m_pCurActor);
-                    m_pCurActor = GetActorManager()->CreateActor(
-                        m_CurActorType, 
-                        m_CurModelAlias.c_str(), 
-                        m_vIntersection, 
-                        m_vCurRotation, 
-                        m_vCurScaling);
-                }
-            }
+			m_bIntersectionFound = g_pScene->GetTerrainIntersection(m_vIntersection, mouse_x, mouse_y);
+			if (m_bIntersectionFound)
+			{
+				g_pScene->PlaceCurrentNode(m_vIntersection);
+			}
         }
         break;
 
     case EDITMODE_ADJUST:
         {
-            m_pPickedActor = GetActorManager()->GetNearestIntersectedActor(vPos, vVec);
+			g_pScene->PickActor(mouse_x, mouse_y);
         }
         break;
 
@@ -881,7 +612,7 @@ void CEditorCanvas::OnRMBDown(wxMouseEvent& event)
 void CEditorCanvas::OnMouseWheel(wxMouseEvent& event)
 {
 	int delta = event.GetWheelRotation();
-	GetRenderer()->GetCamera()->Move ((float)delta / 10.0f);
+	g_pScene->CameraZoom((float)delta / 10.0f);
 	Refresh ();
 }
 
@@ -898,38 +629,15 @@ void CEditorCanvas::OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& even
 			OGActorType actor_type = GetActorManager()->ParseActorType(std::string(evtData.m_ResourceActorType));
 			if (actor_type != OG_ACTOR_NONE)
 			{
-				SetNewCurrentNodeForPlacement(evtData.m_Resource, (int)actor_type);
+				g_pScene->SetNewCurrentNodeForPlacement(evtData.m_Resource, (int)actor_type);
 			}
 			else
 			{
-				SetNewCurrentNodeForPlacement(NULL, (int)OG_ACTOR_NONE);
+				g_pScene->SetNewCurrentNodeForPlacement(NULL, (int)OG_ACTOR_NONE);
 			}
         }
 		break;
 	}
 
 	Refresh();
-}
-
-
-/// @brief Setup new current node for placement.
-void CEditorCanvas::SetNewCurrentNodeForPlacement(const char* _pModelAlias, int _ActorType)
-{
-	OG_SAFE_DELETE(m_pCurActor);
-	m_CurActorType = OG_ACTOR_NONE;
-
-	if (_pModelAlias != NULL && _ActorType != (int)OG_ACTOR_NONE)
-	{
-        m_vCurScaling.x = m_vCurScaling.y = m_vCurScaling.z = 1;
-        m_vCurRotation.x = m_vCurRotation.y = m_vCurRotation.z = 0;
-		m_CurActorType = (OGActorType)_ActorType;
-		m_CurModelAlias = std::string(_pModelAlias);
-
-		m_pCurActor = GetActorManager()->CreateActor(
-            m_CurActorType, 
-            m_CurModelAlias,
-            Vec3(0,0,0), 
-            Vec3(0,0,0), 
-            Vec3(1,1,1));
-	}
 }

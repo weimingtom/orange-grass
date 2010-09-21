@@ -24,6 +24,8 @@ CEditorLevelScene::CEditorLevelScene()
 	m_fCameraDistance = 400.0f;
 	m_bShowAABB = false;
     m_bInited = false;
+	m_ResX = m_ResY = 0;
+	m_EditorMode = EDITMODE_OBJECTS;
 }
 
 
@@ -288,28 +290,23 @@ void CEditorLevelScene::SetNewCurrentNodeForPlacement(const char* _pModelAlias, 
 
 
 // Place the current node
-void CEditorLevelScene::PlaceCurrentNode (int _mouseX, int _mouseY)
+void CEditorLevelScene::PlaceCurrentNode (const Vec3& _vPos)
 {
-    if (m_pCurLevel == NULL)
+    if (m_pCurLevel == NULL || m_pCurActor == NULL)
         return;
 
-    Vec3 vPos, vVec, vIntersection;
-    GetMousePickingRay(vPos, vVec, _mouseX, _mouseY);
-    bool bIntersection = m_pCurLevel->GetTerrain()->GetRayIntersection(vPos, vVec, &vIntersection);
-    if (bIntersection && m_pCurActor)
-    {
-        if (m_CurActorType == OG_ACTOR_AIRBOT || m_CurActorType == OG_ACTOR_PLAYER)
-        {
-            vIntersection.y = m_fAirBotHeight;
-        }
-        GetActorManager()->AddActor (m_pCurActor);
-        m_pCurActor = GetActorManager()->CreateActor(
-            m_CurActorType, 
-            m_CurModelAlias.c_str(), 
-            vIntersection, 
-            m_vCurRotation, 
-            m_vCurScaling);
-    }
+    Vec3 vIntersection = _vPos;
+	if (m_CurActorType == OG_ACTOR_AIRBOT || m_CurActorType == OG_ACTOR_PLAYER)
+	{
+		vIntersection.y = m_fAirBotHeight;
+	}
+	GetActorManager()->AddActor (m_pCurActor);
+	m_pCurActor = GetActorManager()->CreateActor(
+		m_CurActorType, 
+		m_CurModelAlias.c_str(), 
+		vIntersection, 
+		m_vCurRotation, 
+		m_vCurScaling);
 }
 
 
@@ -363,6 +360,18 @@ void CEditorLevelScene::GetMousePickingRay (Vec3& _vPos, Vec3& _vRay, int _mouse
     _vPos = m_pCamera->GetPosition();
     _vRay = vPick - _vPos;
     _vRay.normalize();
+}
+
+
+// Get terrain intersection position.
+bool CEditorLevelScene::GetTerrainIntersection (Vec3& _vOutPos, int _mouseX, int _mouseY)
+{
+    if (m_pCurLevel == NULL)
+        return false;
+
+	Vec3 vPos, vVec;
+	GetMousePickingRay(vPos, vVec, _mouseX, _mouseY);
+	return m_pCurLevel->GetTerrain()->GetRayIntersection(vPos, vVec, &_vOutPos);
 }
 
 
