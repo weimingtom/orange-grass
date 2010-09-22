@@ -134,6 +134,12 @@ void COGTerrain::Render (const MATRIX& _mView, unsigned int _Part)
 	m_pMesh->Render (_mView, _Part);
 }
 
+		
+// Update mesh animation.
+void COGTerrain::Update (unsigned long _ElapsedTime)
+{
+}
+
 
 // Get num renderable parts.
 unsigned int COGTerrain::GetNumRenderables () const

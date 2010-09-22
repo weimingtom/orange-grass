@@ -25,7 +25,10 @@ public:
 	virtual const MATRIX& GetWorldTransform () const;
 
 	// update transform.
-	virtual void Update (const MATRIX& _mT, const IOGObb& _Obb);
+	virtual void Update (
+		unsigned long _ElapsedTime, 
+		const MATRIX& _mT, 
+		const IOGObb& _Obb);
 
 	// Get OBB
 	virtual const IOGObb& GetOBB () const;

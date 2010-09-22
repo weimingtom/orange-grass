@@ -60,8 +60,8 @@ public:
 	// Update level start position
 	void UpdateLevelFinishPosition (const Vec3& _vPos);
 
-	// Get picking ray
-	void GetMousePickingRay (Vec3& _vPos, Vec3& _vRay, int _mouseX, int _mouseY);
+	// Update level active width
+	void UpdateLevelActiveWidth (float _fWidthDiff);
 
 	// Get terrain intersection position.
 	bool GetTerrainIntersection (Vec3& _vOutPos, int _mouseX, int _mouseY);
@@ -69,20 +69,49 @@ public:
 	// Pick actor
 	void PickActor (int _mouseX, int _mouseY);
 
+	// Update picked actor's position
+	void UpdatePickedActorPosition (const Vec3& _vDiff);
+
+	// Update selected actor's rotation
+	void UpdateSelectedActorRotation (const Vec3& _vRotationDiff, bool _bCoarse);
+
+	// Update selected actor's scaling
+	void UpdateSelectedActorScaling (float _fScalingDiff, bool _bCoarse);
+
+	// Reset selected actor's transform
+	void ResetSelectedActorTansform ();
+
+	// Delete picked actor
+	void DeletePickedActor ();
+
 	// Camera zoom
 	void CameraZoom (float _fFactor);
 
+	// Camera move
+	void CameraMove (float _fX, float _fZ);
+
+	// Camera move
+	void SetAABBMode (bool _bEnable) {m_bShowAABB = _bEnable;}
+
+	// Get current level
+	IOGLevel* GetLevel() {return m_pCurLevel;}
+
 private:
+
+	// Get picking ray
+	void GetMousePickingRay (Vec3& _vPos, Vec3& _vRay, int _mouseX, int _mouseY);
 
     // Render scene helpers.
     void RenderHelpers();
 
-public:
+private:
 		
-	IOGResourceMgr*	m_pResourceMgr;
-	IOGSceneGraph*	m_pSg;
-	IOGRenderer*	m_pRenderer;
-	IOGCamera*		m_pCamera;
+	IOGResourceMgr*		m_pResourceMgr;
+	IOGSceneGraph*		m_pSg;
+	IOGRenderer*		m_pRenderer;
+	IOGCamera*			m_pCamera;
+	IOGActorManager*	m_pActorMgr;
+	IOGLevelManager*	m_pLevelMgr;
 
 	IOGLevel*	    m_pCurLevel;
 	MATRIX			m_mProjection; 
@@ -99,6 +128,8 @@ public:
 	float	        m_fCameraDistance;
 	bool	        m_bShowAABB;
     bool            m_bInited;
+    float			m_fFineAngleStep;
+    float			m_fCoarseAngleStep;
 
 	int				m_ResX;
 	int				m_ResY;

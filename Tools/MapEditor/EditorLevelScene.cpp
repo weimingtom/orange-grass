@@ -26,6 +26,9 @@ CEditorLevelScene::CEditorLevelScene()
     m_bInited = false;
 	m_ResX = m_ResY = 0;
 	m_EditorMode = EDITMODE_OBJECTS;
+
+	m_fFineAngleStep = TO_RADIAN(2.0f);
+    m_fCoarseAngleStep = TO_RADIAN(45.0f);
 }
 
 
@@ -47,21 +50,23 @@ bool CEditorLevelScene::Init ()
 	m_pSg = GetSceneGraph();
 	m_pRenderer = GetRenderer();
 	m_pCamera = m_pRenderer->GetCamera();
+	m_pActorMgr = GetActorManager();
+	m_pLevelMgr = GetLevelManager();
 
     Vec3 vTarget (200, 0, -100);
 	Vec3 vDir (0, 1.0f, 0.4f);
 	vDir = vDir.normalize();
 	Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
-	GetRenderer()->GetCamera()->Setup (vTarget + (vDir* m_fCameraDistance), vTarget, vUp);
+	m_pCamera->Setup (vTarget + (vDir* m_fCameraDistance), vTarget, vUp);
 
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);
 
-	if (GetResourceMgr()->Init() == false)
+	if (m_pResourceMgr->Init() == false)
 	{
 		return false;
 	}
-	if (GetLevelManager()->Init() == false)
+	if (m_pResourceMgr->Init() == false)
 	{
 		return false;
 	}
@@ -107,7 +112,7 @@ void CEditorLevelScene::SetViewport (int _Width, int _Height)
 void CEditorLevelScene::Update (unsigned long _ElapsedTime)
 {
 	GetPhysics()->UpdateAll(0);
-    GetActorManager()->Update(10);
+    m_pActorMgr->Update(10);
 	m_pCamera->Update();
 	m_mView = m_pCamera->GetViewMatrix();
 
@@ -189,27 +194,27 @@ bool CEditorLevelScene::LoadLevel (const std::string& _LevelName)
 {
 	if (m_pCurLevel)
 	{
-		GetLevelManager()->UnloadLevel(m_pCurLevel);
+		m_pLevelMgr->UnloadLevel(m_pCurLevel);
 	}
 	
-	m_pCurLevel = GetLevelManager()->LoadLevel(_LevelName);
+	m_pCurLevel = m_pLevelMgr->LoadLevel(_LevelName);
 	if (m_pCurLevel == NULL)
 	{
 		return false;
 	}
 	
-	IOGActor* pPlayerActor = GetActorManager()->GetPlayersActor();
+	IOGActor* pPlayerActor = m_pActorMgr->GetPlayersActor();
 	Vec3 vCraftPos = m_pCurLevel->GetStartPosition();
 	vCraftPos.y = m_fAirBotHeight;
 	if (!pPlayerActor)
 	{
-		pPlayerActor = GetActorManager()->CreateActor(
+		pPlayerActor = m_pActorMgr->CreateActor(
             OG_ACTOR_PLAYER, 
 			std::string("craft"),
 			vCraftPos, 
             Vec3(0,0,0), 
             Vec3(1,1,1));
-		GetActorManager()->AddActor(pPlayerActor);
+		m_pActorMgr->AddActor(pPlayerActor);
 	}
 	else
 	{
@@ -223,7 +228,7 @@ bool CEditorLevelScene::LoadLevel (const std::string& _LevelName)
 // Save level
 bool CEditorLevelScene::SaveLevel ()
 {
-    return GetLevelManager()->SaveLevel(m_pCurLevel);
+    return m_pLevelMgr->SaveLevel(m_pCurLevel);
 }
 
 
@@ -279,7 +284,7 @@ void CEditorLevelScene::SetNewCurrentNodeForPlacement(const char* _pModelAlias, 
 		m_CurActorType = (OGActorType)_ActorType;
 		m_CurModelAlias = std::string(_pModelAlias);
 
-		m_pCurActor = GetActorManager()->CreateActor(
+		m_pCurActor = m_pActorMgr->CreateActor(
             m_CurActorType, 
             m_CurModelAlias,
             Vec3(0,0,0), 
@@ -300,8 +305,8 @@ void CEditorLevelScene::PlaceCurrentNode (const Vec3& _vPos)
 	{
 		vIntersection.y = m_fAirBotHeight;
 	}
-	GetActorManager()->AddActor (m_pCurActor);
-	m_pCurActor = GetActorManager()->CreateActor(
+	m_pActorMgr->AddActor (m_pCurActor);
+	m_pCurActor = m_pActorMgr->CreateActor(
 		m_CurActorType, 
 		m_CurModelAlias.c_str(), 
 		vIntersection, 
@@ -333,7 +338,7 @@ void CEditorLevelScene::UpdateLevelStartPosition (const Vec3& _vPos)
 
     m_pCurLevel->SetStartPosition(_vPos);
 
-    IOGActor* pPlayerActor = GetActorManager()->GetPlayersActor();
+    IOGActor* pPlayerActor = m_pActorMgr->GetPlayersActor();
     if (pPlayerActor)
     {
         Vec3 vCraftPos = _vPos;
@@ -350,6 +355,27 @@ void CEditorLevelScene::UpdateLevelFinishPosition (const Vec3& _vPos)
         return;
 
     m_pCurLevel->SetFinishPosition(_vPos);
+}
+
+
+// Update level active width
+void CEditorLevelScene::UpdateLevelActiveWidth (float _fWidthDiff)
+{
+	if (m_pCurLevel)
+	{
+		float fW = m_pCurLevel->GetActiveWidth();
+		if (_fWidthDiff < 0.0f)
+		{
+			if (fW > 30.0f)
+				fW -= 1.0f;
+		}
+		else if (_fWidthDiff > 0.0f)
+		{
+			if (fW < 400.0f)
+				fW += 1.0f;
+		}
+		m_pCurLevel->SetActiveWidth(fW);
+	}
 }
 
 
@@ -380,7 +406,84 @@ void CEditorLevelScene::PickActor (int _mouseX, int _mouseY)
 {
     Vec3 vPos, vVec;
     GetMousePickingRay(vPos, vVec, _mouseX, _mouseY);
-    m_pPickedActor = GetActorManager()->GetNearestIntersectedActor(vPos, vVec);
+    m_pPickedActor = m_pActorMgr->GetNearestIntersectedActor(vPos, vVec);
+}
+
+
+// Update picked actor's position
+void CEditorLevelScene::UpdatePickedActorPosition (const Vec3& _vDiff)
+{
+	if (m_pPickedActor)
+	{
+		Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); 
+		vPos += _vDiff;
+		m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
+	}
+}
+
+
+// Update selected actor's rotation
+void CEditorLevelScene::UpdateSelectedActorRotation (const Vec3& _vRotationDiff, bool _bCoarse)
+{
+	float fStep = _bCoarse ? m_fCoarseAngleStep : m_fFineAngleStep;
+	if (m_pCurActor)
+	{
+		m_vCurRotation += fStep * _vRotationDiff;
+		m_pCurActor->GetPhysicalObject()->SetRotation(m_vCurRotation);
+	}
+	if (m_pPickedActor)
+	{
+		Vec3 vRot = m_pPickedActor->GetPhysicalObject()->GetRotation();
+		vRot += fStep * _vRotationDiff;
+		m_pPickedActor->GetPhysicalObject()->SetRotation(vRot);
+	}
+}
+
+
+// Update selected actor's scaling
+void CEditorLevelScene::UpdateSelectedActorScaling (float _fScalingDiff, bool _bCoarse)
+{
+	float fStep = _bCoarse ? m_fCoarseAngleStep : m_fFineAngleStep;
+	if (m_pCurActor)
+	{
+		m_vCurScaling += Vec3(1,1,1) * (fStep * _fScalingDiff);
+		m_pCurActor->GetPhysicalObject()->SetScaling(m_vCurScaling);
+	}
+	if (m_pPickedActor)
+	{
+		Vec3 vScale = m_pPickedActor->GetPhysicalObject()->GetScaling();
+		vScale += Vec3(1,1,1) * (fStep * _fScalingDiff);
+		m_pPickedActor->GetPhysicalObject()->SetScaling(vScale);
+	}
+}
+
+
+// Reset selected actor's transform
+void CEditorLevelScene::ResetSelectedActorTansform ()
+{
+	if (m_pCurActor)
+	{
+		m_vCurScaling.x = m_vCurScaling.y = m_vCurScaling.z = 1;
+		m_vCurRotation.x = m_vCurRotation.y = m_vCurRotation.z = 0;
+		Vec3 vPos = m_pCurActor->GetPhysicalObject()->GetPosition();
+		m_pCurActor->GetPhysicalObject()->SetWorldTransform(vPos, m_vCurRotation, m_vCurScaling);
+	}
+	if (m_pPickedActor)
+	{
+		Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition();
+		m_pPickedActor->GetPhysicalObject()->SetWorldTransform(vPos, Vec3(0, 0, 0), Vec3(1, 1, 1));
+	}
+}
+
+
+// Delete picked actor
+void CEditorLevelScene::DeletePickedActor ()
+{
+	if (m_pPickedActor)
+	{
+		m_pActorMgr->DestroyActor(m_pPickedActor);
+		m_pPickedActor = NULL;
+	}
 }
 
 
@@ -388,4 +491,11 @@ void CEditorLevelScene::PickActor (int _mouseX, int _mouseY)
 void CEditorLevelScene::CameraZoom (float _fFactor)
 {
 	m_pCamera->Move (_fFactor);
+}
+
+
+// Camera move
+void CEditorLevelScene::CameraMove (float _fX, float _fZ)
+{
+	m_pCamera->Strafe(5.5f, Vec3(_fX, 0, _fZ));
 }

@@ -27,8 +27,8 @@ public:
 	// Unload resource.
 	virtual void Unload ();
 
-	// Update mesh animation.
-	virtual void UpdateAnimation (int _ElapsedTime);
+	// Update.
+	virtual void Update (unsigned long _ElapsedTime);
 
 	// Render mesh.
 	virtual void Render (const MATRIX& _mView);

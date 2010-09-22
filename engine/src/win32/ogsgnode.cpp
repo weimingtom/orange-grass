@@ -1,12 +1,12 @@
 /*
- *  ogsgnode.mm
+ *  ogsgnode.cpp
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 12.11.09.
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "orangegrass.h"
+#include "OrangeGrass.h"
 #include "ogsgnode.h"
 #include "IOGMath.h"
 
@@ -35,7 +35,9 @@ const MATRIX& COGSgNode::GetWorldTransform () const
 
 
 // update transform.
-void COGSgNode::Update (const MATRIX& _mT, const IOGObb& _Obb)
+void COGSgNode::Update (unsigned long _ElapsedTime, 
+						const MATRIX& _mT, 
+						const IOGObb& _Obb)
 {
     m_mWorld = _mT;
     m_Obb = _Obb;

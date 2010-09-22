@@ -29,6 +29,8 @@ public:
     /// @brief Destructor.
     virtual ~CEditorCanvas();
 
+protected:
+
     /// @brief Paint handler.
     /// @param event - event structute.
     void OnPaint(wxPaintEvent& event);
@@ -39,7 +41,7 @@ public:
 
     /// @brief Erase background handler.
     /// @param event - event structute.
-    void OnEraseBackground(wxEraseEvent& event) {}
+    void OnEraseBackground(wxEraseEvent& event);
 
     /// @brief Key down handler.
     /// @param event - event structute.
@@ -53,18 +55,16 @@ public:
     /// @param event - event structute.
     void OnEnterWindow(wxMouseEvent& event);
 
-private:
-
     /// @brief Render.
     void Render();
 
 	/// @brief Tool command event handler
     /// @param event - event structute.
-	void OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event );
+	void OnToolCmdEvent(CommonToolEvent<ToolCmdEventData>& event);
 
 	/// @brief Level load event handler
     /// @param event - event structute.
-	void OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& event );
+	void OnLevelLoadEvent(CommonToolEvent<LevelLoadEventData>& event);
 
     /// @brief Timer handler.
     /// @param event - event structute.
@@ -104,7 +104,7 @@ private:
 
     /// @brief Resource switching event handler
     /// @param event - event structute.
-    void OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& event );
+    void OnResourceSwitch(CommonToolEvent<ResSwitchEventData>& event);
 
 private:
 
@@ -122,10 +122,8 @@ private:
     int		mouse_x; 
     int		mouse_y;
 
-    float   m_fFineAngleStep;
-    float   m_fCoarseAngleStep;
-
     SettingsMode    m_SettingsMode;
+	ToolSettings*	m_pToolSettings;
 
     DECLARE_EVENT_TABLE()
 };

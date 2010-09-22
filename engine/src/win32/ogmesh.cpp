@@ -131,6 +131,12 @@ void COGMesh::Render (const MATRIX& _mView, unsigned int _Part)
 }
 
 
+// Update.
+void COGMesh::Update (unsigned long _ElapsedTime)
+{
+}
+
+
 // Get num renderable parts.
 unsigned int COGMesh::GetNumRenderables () const
 {

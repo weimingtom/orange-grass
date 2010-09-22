@@ -101,10 +101,10 @@ void COGModel::Unload ()
 }
 
 
-// Update mesh animation.
-void COGModel::UpdateAnimation (int _ElapsedTime)
+// Update.
+void COGModel::Update (unsigned long _ElapsedTime)
 {
-	m_pMesh->UpdateAnimation (_ElapsedTime);
+	m_pMesh->Update (_ElapsedTime);
 }
 
 

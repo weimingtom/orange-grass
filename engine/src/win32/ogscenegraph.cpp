@@ -123,10 +123,12 @@ void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
 // Update scene graph.
 void COGSceneGraph::Update (unsigned long _ElapsedTime)
 {
+	MATRIX mW;
+	IOGObb obb;
     TNodesList::iterator iter = m_EffectNodesList.begin();
     for (; iter != m_EffectNodesList.end(); ++iter)
     {
-        //(*iter)->Update();
+        (*iter)->Update(_ElapsedTime, mW, obb);
     }
 }
 

@@ -34,6 +34,9 @@ public:
 	// Render.
 	virtual void Render (const MATRIX& _mView, unsigned int _Part) = 0;
 
+	// Update.
+	virtual void Update (unsigned long _ElapsedTime) = 0;
+
     // Get num renderable parts.
 	virtual unsigned int GetNumRenderables () const = 0;
 

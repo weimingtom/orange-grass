@@ -27,7 +27,7 @@ public:
 	virtual ~IOGMesh() {}
 		
 	// Update mesh animation.
-	virtual void UpdateAnimation (int _ElapsedTime) = 0;
+	virtual void Update (unsigned long _ElapsedTime) = 0;
 		
 	// Render mesh.
 	virtual void Render (const MATRIX& _mView) = 0;

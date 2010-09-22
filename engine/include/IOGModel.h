@@ -20,9 +20,6 @@ class IOGModel : public IOGRenderable
 public:
 	virtual ~IOGModel() {}
 
-	// Update mesh animation.
-	virtual void UpdateAnimation (int _ElapsedTime) = 0;
-
 	// Get model alias
 	virtual const std::string& GetAlias () const = 0;
 

@@ -2,7 +2,6 @@
 #include <wx/wx.h>
 #include "EditorCanvas.h"
 #include <OrangeGrass.h>
-#include <IOGGraphicsHelpers.h>
 #include <IOGMath.h>
 #include "EditorLevelScene.h"
 
@@ -51,23 +50,21 @@ CEditorCanvas::CEditorCanvas (  wxWindow *parent,
                                 const wxString& name) : wxGLCanvas(parent, (wxGLCanvas*)NULL, id, pos, size, style|wxFULL_REPAINT_ON_RESIZE, name),
                                                         m_timer(this, TIMER_ID)
 {
-    g_pScene = new CEditorLevelScene();
+	g_pScene = new CEditorLevelScene();
 	GetEventHandlersTable()->AddEventHandler(EVENTID_RESSWITCH, this);
 	GetEventHandlersTable()->AddEventHandler(EVENTID_TOOLCMD, this);
 	GetEventHandlersTable()->AddEventHandler(EVENTID_LEVELLOAD, this);
-    m_timer.Start(100);
+	m_timer.Start(100);
 
-    bRmb = bLmb = false;
-    mouse_x = mouse_y = 0;
-
-    m_fFineAngleStep = TO_RADIAN(2.0f);
-    m_fCoarseAngleStep = TO_RADIAN(45.0f);
+	bRmb = bLmb = false;
+	mouse_x = mouse_y = 0;
 
 	m_bMouseInWindow = true;
 	m_bMouseMoved = false;
 	m_bIntersectionFound = false;
-    
-    m_SettingsMode = SETMODE_NONE;
+
+	m_SettingsMode = SETMODE_NONE;
+	m_pToolSettings = GetToolSettings();
 }
 
 
@@ -87,10 +84,7 @@ void CEditorCanvas::Render()
         return;
     SetCurrent();
 
-    if (!g_pScene->m_bInited)
-    {
-        g_pScene->Init();
-    }
+    g_pScene->Init();
     g_pScene->Update(10);
     g_pScene->RenderScene();
 
@@ -106,8 +100,7 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 	{
 		m_bIntersectionFound = g_pScene->GetTerrainIntersection(m_vIntersection, mouse_x, mouse_y);
 
-		ToolSettings* pTool = GetToolSettings();
-		switch (pTool->GetEditMode())
+		switch (m_pToolSettings->GetEditMode())
 		{
 		case EDITMODE_OBJECTS:
 			{
@@ -176,13 +169,21 @@ void CEditorCanvas::OnSize(wxSizeEvent& event)
 }
 
 
+/// @brief Erase background handler.
+/// @param event - event structute.
+void CEditorCanvas::OnEraseBackground(wxEraseEvent& event) 
+{
+    Render();
+}
+
+
 /// @brief Level load event handler
 /// @param event - event structute.
 void CEditorCanvas::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& event )
 {
 	g_pScene->LoadLevel(std::string(event.GetEventCustomData().m_Path));
-	GetToolSettings()->SetLevel((void*)g_pScene->m_pCurLevel);
-	this->Refresh();
+	m_pToolSettings->SetLevel((void*)g_pScene->GetLevel());
+	Refresh();
 }
 
 
@@ -190,271 +191,120 @@ void CEditorCanvas::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& even
 /// @param event - event structute.
 void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
 {
-    /*switch (event.GetKeyCode())
+    switch (event.GetKeyCode())
     {
     case WXK_UP:
         if (event.ControlDown())
         {
-            if (m_pPickedActor)
-            {
-                Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.z -= 1.0f;
-                m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
-            }
+			g_pScene->UpdatePickedActorPosition(Vec3(0.0f,0.0f,-1.0f));
         }
         else
-		    GetRenderer()->GetCamera()->Strafe(5.5f, Vec3(0, 0, -1));
-		mouse_x = event.GetX();
-		mouse_y = event.GetY();
+			g_pScene->CameraMove(0.0f, -1.0f);
 		m_bMouseMoved = true;
-		this->Refresh();
         break;
 
 	case WXK_DOWN:
         if (event.ControlDown())
         {
-            if (m_pPickedActor)
-            {
-                Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.z += 1.0f;
-                m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
-            }
+			g_pScene->UpdatePickedActorPosition(Vec3(0.0f,0.0f,1.0f));
         }
         else
-    		GetRenderer()->GetCamera()->Strafe(5.5f, Vec3(0, 0, 1));
-		mouse_x = event.GetX();
-		mouse_y = event.GetY();
+    		g_pScene->CameraMove(0.0f, 1.0f);
 		m_bMouseMoved = true;
-		this->Refresh();
         break;
 
 	case WXK_LEFT:
         if (event.ControlDown())
         {
-			if (GetToolSettings()->GetEditMode() == EDITMODE_SETTINGS)
+			if (m_pToolSettings->GetEditMode() == EDITMODE_SETTINGS)
 			{
-				if (m_pCurLevel)
-				{
-					float fW = m_pCurLevel->GetActiveWidth();
-					if (fW > 30.0f)
-						fW -= 1.0f;
-					m_pCurLevel->SetActiveWidth(fW);
-				}
+				g_pScene->UpdateLevelActiveWidth(-1.0f);
 			}
 			else
 			{
-				if (m_pPickedActor)
-				{
-					Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.x -= 1.0f;
-					m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
-				}
+				g_pScene->UpdatePickedActorPosition(Vec3(-1.0f,0.0f,0.0f));
 			}
         }
         else
-    		GetRenderer()->GetCamera()->Strafe(5.5f, Vec3(-1, 0, 0));
-		mouse_x = event.GetX();
-		mouse_y = event.GetY();
+    		g_pScene->CameraMove(-1.0f, 0.0f);
 		m_bMouseMoved = true;
-		this->Refresh();
         break;
 
 	case WXK_RIGHT:
         if (event.ControlDown())
         {
-			if (GetToolSettings()->GetEditMode() == EDITMODE_SETTINGS)
+			if (m_pToolSettings->GetEditMode() == EDITMODE_SETTINGS)
 			{
-				if (m_pCurLevel)
-				{
-					float fW = m_pCurLevel->GetActiveWidth();
-					if (fW < 400.0f)
-						fW += 1.0f;
-					m_pCurLevel->SetActiveWidth(fW);
-				}
+				g_pScene->UpdateLevelActiveWidth(1.0f);
 			}
 			else
 			{
-				if (m_pPickedActor)
-				{
-					Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.x += 1.0f;
-					m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
-				}
+				g_pScene->UpdatePickedActorPosition(Vec3(1.0f,0.0f,0.0f));
 			}
         }
         else
-    		GetRenderer()->GetCamera()->Strafe(5.5f, Vec3(1, 0, 0));
-		mouse_x = event.GetX();
-		mouse_y = event.GetY();
+    		g_pScene->CameraMove(1.0f, 0.0f);
 		m_bMouseMoved = true;
-		this->Refresh();
         break;
 
     case WXK_PAGEUP:
-        if (event.ControlDown())
-        {
-            if (m_pPickedActor)
-            {
-                Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.y += 1.0f;
-                m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
-            }
-        }
-		this->Refresh();
+		if (event.ControlDown())
+		{
+			g_pScene->UpdatePickedActorPosition(Vec3(0.0f,1.0f,0.0f));
+		}
         break;
 
     case WXK_PAGEDOWN:
-        if (event.ControlDown())
-        {
-            if (m_pPickedActor)
-            {
-                Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); vPos.y -= 1.0f;
-                m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
-            }
-        }
-		this->Refresh();
+		if (event.ControlDown())
+		{
+			g_pScene->UpdatePickedActorPosition(Vec3(0.0f,-1.0f,0.0f));
+		}
         break;
 
     case WXK_DELETE:
-        if (m_pPickedActor)
-        {
-            GetActorManager()->DestroyActor(m_pPickedActor);
-            m_pPickedActor = NULL;
-        }
-		this->Refresh();
+		g_pScene->DeletePickedActor();
         break;
 
     case 'D':
-        if (m_pCurActor)
-        {
-            m_vCurRotation.y += event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
-            m_pCurActor->GetPhysicalObject()->SetRotation(m_vCurRotation);
-        }
-        if (m_pPickedActor)
-        {
-            Vec3 vRot = m_pPickedActor->GetPhysicalObject()->GetRotation();
-            vRot.y += event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
-            m_pPickedActor->GetPhysicalObject()->SetRotation(vRot);
-        }
-		this->Refresh();
+		g_pScene->UpdateSelectedActorRotation(Vec3(0.0f,1.0f,0.0f), event.ControlDown());
         break;
 
     case 'A':
-        if (m_pCurActor)
-        {
-            m_vCurRotation.y -= event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
-            m_pCurActor->GetPhysicalObject()->SetRotation(m_vCurRotation);
-        }
-        if (m_pPickedActor)
-        {
-            Vec3 vRot = m_pPickedActor->GetPhysicalObject()->GetRotation();
-            vRot.y -= event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
-            m_pPickedActor->GetPhysicalObject()->SetRotation(vRot);
-        }
-		this->Refresh();
+		g_pScene->UpdateSelectedActorRotation(Vec3(0.0f,-1.0f,0.0f), event.ControlDown());
         break;
 
     case 'W':
-        if (m_pCurActor)
-        {
-            m_vCurRotation.x += event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
-            m_pCurActor->GetPhysicalObject()->SetRotation(m_vCurRotation);
-        }
-        if (m_pPickedActor)
-        {
-            Vec3 vRot = m_pPickedActor->GetPhysicalObject()->GetRotation();
-            vRot.x += event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
-            m_pPickedActor->GetPhysicalObject()->SetRotation(vRot);
-        }
-		this->Refresh();
+		g_pScene->UpdateSelectedActorRotation(Vec3(1.0f,0.0f,0.0f), event.ControlDown());
         break;
 
     case 'S':
-        if (m_pCurActor)
-        {
-            m_vCurRotation.x -= event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
-            m_pCurActor->GetPhysicalObject()->SetRotation(m_vCurRotation);
-        }
-        if (m_pPickedActor)
-        {
-            Vec3 vRot = m_pPickedActor->GetPhysicalObject()->GetRotation();
-            vRot.x -= event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
-            m_pPickedActor->GetPhysicalObject()->SetRotation(vRot);
-        }
-		this->Refresh();
+		g_pScene->UpdateSelectedActorRotation(Vec3(-1.0f,0.0f,0.0f), event.ControlDown());
         break;
 
     case 'E':
-        if (m_pCurActor)
-        {
-            m_vCurRotation.z += event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
-            m_pCurActor->GetPhysicalObject()->SetRotation(m_vCurRotation);
-        }
-        if (m_pPickedActor)
-        {
-            Vec3 vRot = m_pPickedActor->GetPhysicalObject()->GetRotation();
-            vRot.z += event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
-            m_pPickedActor->GetPhysicalObject()->SetRotation(vRot);
-        }
-		this->Refresh();
+		g_pScene->UpdateSelectedActorRotation(Vec3(0.0f,0.0f,1.0f), event.ControlDown());
         break;
 
     case 'Q':
-        if (m_pCurActor)
-        {
-            m_vCurRotation.z -= event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
-            m_pCurActor->GetPhysicalObject()->SetRotation(m_vCurRotation);
-        }
-        if (m_pPickedActor)
-        {
-            Vec3 vRot = m_pPickedActor->GetPhysicalObject()->GetRotation();
-            vRot.z -= event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
-            m_pPickedActor->GetPhysicalObject()->SetRotation(vRot);
-        }
-		this->Refresh();
+		g_pScene->UpdateSelectedActorRotation(Vec3(0.0f,0.0f,-1.0f), event.ControlDown());
         break;
 
     case 'Z':
-        if (m_pCurActor)
-        {
-            m_vCurScaling -= event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
-            m_pCurActor->GetPhysicalObject()->SetScaling(m_vCurScaling);
-        }
-        if (m_pPickedActor)
-        {
-            Vec3 vScale = m_pPickedActor->GetPhysicalObject()->GetScaling();
-            vScale -= 0.02f;
-            m_pPickedActor->GetPhysicalObject()->SetScaling(vScale);
-        }
-		this->Refresh();
+		g_pScene->UpdateSelectedActorScaling(-1.0f, event.ControlDown());
         break;
 
     case 'X':
-        if (m_pCurActor)
-        {
-            m_vCurScaling += event.ControlDown() ? m_fCoarseAngleStep : m_fFineAngleStep;
-            m_pCurActor->GetPhysicalObject()->SetScaling(m_vCurScaling);
-        }
-        if (m_pPickedActor)
-        {
-            Vec3 vScale = m_pPickedActor->GetPhysicalObject()->GetScaling();
-            vScale += 0.02f;
-            m_pPickedActor->GetPhysicalObject()->SetScaling(vScale);
-        }
-		this->Refresh();
+		g_pScene->UpdateSelectedActorScaling(1.0f, event.ControlDown());
         break;
 
     case 'C':
-        if (m_pCurActor)
-        {
-            m_vCurScaling.x = m_vCurScaling.y = m_vCurScaling.z = 1;
-            m_vCurRotation.x = m_vCurRotation.y = m_vCurRotation.z = 0;
-            m_pCurActor->GetPhysicalObject()->SetWorldTransform(m_vIntersection, m_vCurRotation, m_vCurScaling);
-        }
-        if (m_pPickedActor)
-        {
-            Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition();
-            m_pPickedActor->GetPhysicalObject()->SetWorldTransform(vPos, Vec3(0, 0, 0), Vec3(1, 1, 1));
-        }
-		this->Refresh();
+		g_pScene->ResetSelectedActorTansform();
         break;
-    }*/
+    }
 
+	mouse_x = event.GetX();
+	mouse_y = event.GetY();
+	Refresh();
     event.Skip();
 }
 
@@ -475,7 +325,7 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 	switch (evtData.m_CmdType)
 	{
 	case CMD_AABB:
-		g_pScene->m_bShowAABB = evtData.m_bSwitcher;
+		g_pScene->SetAABBMode(evtData.m_bSwitcher);
 		break;
 
 	case CMD_EDITMODE_OBJECTS:
@@ -506,7 +356,6 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
         break;
 
 	case CMD_UPDATE:
-        Refresh();
         break;
 	}
 	Refresh ();
@@ -546,8 +395,7 @@ void CEditorCanvas::OnLMBUp(wxMouseEvent& event)
 	mouse_x = event.GetX();
 	mouse_y = event.GetY();
 
-    ToolSettings* pTool = GetToolSettings();
-    switch (pTool->GetEditMode())
+    switch (m_pToolSettings->GetEditMode())
     {
     case EDITMODE_OBJECTS:
         {

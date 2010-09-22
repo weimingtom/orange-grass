@@ -35,6 +35,9 @@ public:
 
 	// Render.
 	virtual void Render (const MATRIX& _mView, unsigned int _Part);
+		
+	// Update mesh animation.
+	virtual void Update (unsigned long _ElapsedTime);
 
     // Get num renderable parts.
 	virtual unsigned int GetNumRenderables () const;
