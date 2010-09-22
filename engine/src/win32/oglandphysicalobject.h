@@ -19,7 +19,7 @@ public:
 	virtual ~COGLandPhysicalObject ();
 
 	// create object
-	virtual void Create (const IOGAabb& _Aabb);
+	virtual void Create (const IOGAabb& _Aabb, const IOGPhysicalParams& _Params);
 };
 
 #endif

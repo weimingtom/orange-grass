@@ -51,12 +51,14 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 	OGPhysicsType _Type,
 	const IOGAabb& _Aabb )
 {
+    IOGPhysicalParams params;
+
 	switch (_Type)
 	{
 	case OG_PHYSICS_STATIC:
 		{
 			COGStaticPhysicalObject* pObj = new COGStaticPhysicalObject();
-			pObj->Create (_Aabb);
+			pObj->Create (_Aabb, params);
 			return pObj;
 		}
 		break;
@@ -64,7 +66,7 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 	case OG_PHYSICS_LANDBOT:
 		{
 			COGLandPhysicalObject* pObj = new COGLandPhysicalObject();
-			pObj->Create (_Aabb);
+			pObj->Create (_Aabb, params);
 			return pObj;
 		}
 		break;
@@ -72,7 +74,7 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 	case OG_PHYSICS_AIRBOT:
 		{
 			COGAirPhysicalObject* pObj = new COGAirPhysicalObject();
-			pObj->Create (_Aabb);
+			pObj->Create (_Aabb, params);
 			return pObj;
 		}
 		break;
@@ -80,7 +82,7 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 	case OG_PHYSICS_PLAYER:
 		{
 			COGPlayerPhysicalObject* pObj = new COGPlayerPhysicalObject();
-			pObj->Create (_Aabb);
+			pObj->Create (_Aabb, params);
 			return pObj;
 		}
 		break;

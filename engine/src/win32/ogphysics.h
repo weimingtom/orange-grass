@@ -19,7 +19,7 @@ public:
 	COGPhysics ();
 	virtual ~COGPhysics ();
 
-	// Clear scene graph
+	// Clear physics
 	virtual void Clear ();
 
 	// Create object

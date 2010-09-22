@@ -19,7 +19,7 @@ public:
 	virtual ~COGPhysicalObject ();
 
 	// create object
-	virtual void Create (const IOGAabb& _Aabb) = 0;
+	virtual void Create (const IOGAabb& _Aabb, const IOGPhysicalParams& _Params) = 0;
 
 	// get world transform.
 	virtual const MATRIX& GetWorldTransform () const;
@@ -51,6 +51,9 @@ public:
 	// strafe.
 	virtual void Strafe (float _fDir);
 
+	// accelerate.
+	virtual void Accelerate (float _fDir);
+
 	// get physics type.
 	virtual OGPhysicsType GetPhysicsType () const;
 
@@ -67,9 +70,14 @@ protected:
     Vec3            m_vPosition;
     Vec3            m_vRotation;
     Vec3            m_vScaling;
+    Vec3            m_vUp;
+    Vec3            m_vLook;
+    Vec3            m_vRight;
+    Vec3            m_vMove;
 	IOGAabb			m_Aabb;
 	IOGObb			m_Obb;
 	bool			m_bUpdated;
+    IOGPhysicalParams   m_Params;
 };
 
 #endif

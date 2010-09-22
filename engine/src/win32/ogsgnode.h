@@ -18,29 +18,28 @@ class COGSgNode : public IOGSgNode
 	COGSgNode ();
 
 public:
-	COGSgNode (IOGRenderable* _pRenderable);
+	COGSgNode (IOGRenderable* _pRenderable, IOGPhysicalObject* _pPhysics);
 	virtual ~COGSgNode ();
 
 	// get world transform.
 	virtual const MATRIX& GetWorldTransform () const;
 
-	// update transform.
-	virtual void Update (
-		unsigned long _ElapsedTime, 
-		const MATRIX& _mT, 
-		const IOGObb& _Obb);
-
 	// Get OBB
 	virtual const IOGObb& GetOBB () const;
+
+	// update transform.
+	virtual void Update (unsigned long _ElapsedTime);
 
 	// get renderable.
 	virtual IOGRenderable* GetRenderable ();
 
-private:
+	// get physics.
+	virtual IOGPhysicalObject* GetPhysics ();
 
-    IOGRenderable*  m_pRenderable;
-    MATRIX          m_mWorld;
-	IOGObb			m_Obb;
+protected:
+
+    IOGRenderable*      m_pRenderable;
+    IOGPhysicalObject*  m_pPhysics;
 };
 
 #endif

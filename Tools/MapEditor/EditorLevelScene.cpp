@@ -66,7 +66,7 @@ bool CEditorLevelScene::Init ()
 	{
 		return false;
 	}
-	if (m_pResourceMgr->Init() == false)
+	if (m_pLevelMgr->Init() == false)
 	{
 		return false;
 	}

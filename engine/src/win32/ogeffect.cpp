@@ -21,10 +21,12 @@ COGEffect::~COGEffect()
 }
 
 
-// Set position.
-void COGEffect::SetPosition (const Vec3& _vPos)
+
+// Set billboard basis vectors.
+void COGEffect::SetBillboardVectors (const Vec3& _vUp, const Vec3& _vRight)
 {
-	m_Position = _vPos;
+	m_vCameraUp = _vUp;
+	m_vCameraRight = _vRight;
 }
 
 

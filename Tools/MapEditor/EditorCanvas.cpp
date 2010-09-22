@@ -173,7 +173,6 @@ void CEditorCanvas::OnSize(wxSizeEvent& event)
 /// @param event - event structute.
 void CEditorCanvas::OnEraseBackground(wxEraseEvent& event) 
 {
-    Render();
 }
 
 

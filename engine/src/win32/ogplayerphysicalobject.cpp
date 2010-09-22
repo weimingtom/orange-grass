@@ -24,8 +24,9 @@ COGPlayerPhysicalObject::~COGPlayerPhysicalObject ()
 
 
 // create object
-void COGPlayerPhysicalObject::Create (const IOGAabb& _Aabb)
+void COGPlayerPhysicalObject::Create (const IOGAabb& _Aabb, const IOGPhysicalParams& _Params)
 {
+    m_Params = _Params;
 	m_Type = OG_PHYSICS_PLAYER;
 	m_Aabb = _Aabb;
     m_Obb.Create(m_Aabb);

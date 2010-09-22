@@ -39,9 +39,9 @@ void COGSceneGraph::Clear ()
 
 
 // Create scene graph node
-IOGSgNode* COGSceneGraph::CreateNode (IOGRenderable* _pRenderable)
+IOGSgNode* COGSceneGraph::CreateNode (IOGRenderable* _pRenderable, IOGPhysicalObject* _pPhysics)
 {
-    COGSgNode* pNode = new COGSgNode(_pRenderable);
+    COGSgNode* pNode = new COGSgNode(_pRenderable, _pPhysics);
     return pNode;
 }
 
@@ -123,12 +123,10 @@ void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
 // Update scene graph.
 void COGSceneGraph::Update (unsigned long _ElapsedTime)
 {
-	MATRIX mW;
-	IOGObb obb;
     TNodesList::iterator iter = m_EffectNodesList.begin();
     for (; iter != m_EffectNodesList.end(); ++iter)
     {
-        (*iter)->Update(_ElapsedTime, mW, obb);
+        (*iter)->Update(_ElapsedTime);
     }
 }
 
@@ -161,7 +159,33 @@ void COGSceneGraph::RenderLandscape (IOGCamera* _pCamera)
 // Render effects.
 void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 {
-	RenderNodesList(_pCamera, m_EffectNodesList);
+	glMatrixMode(GL_MODELVIEW);
+	MATRIX mModelView;
+	const MATRIX& mView = _pCamera->GetViewMatrix();
+
+    Vec3 vUp, vRight, vLook;
+	MatrixGetBasis(vRight, vUp, vLook, mView);
+	vUp.normalize();
+	vRight.normalize();
+
+	float fCameraZ = _pCamera->GetPosition().z;
+    TNodesList::iterator iter = m_EffectNodesList.begin();
+    for (; iter != m_EffectNodesList.end(); ++iter)
+    {
+		IOGSgNode* pNode = (*iter);
+		float fObjectZ = pNode->GetOBB().m_vCenter.z;
+
+		if (fObjectZ <= fCameraZ)
+		{
+			if ((fCameraZ - fObjectZ) < 200.0f)
+			{
+				const MATRIX& mWorld = pNode->GetWorldTransform();
+				MatrixMultiply(mModelView, mWorld, mView);
+                ((IOGEffect*)pNode->GetRenderable())->SetBillboardVectors(vUp, vRight);
+				pNode->GetRenderable()->Render(mModelView);
+			}
+		}
+    }
 }
 
 

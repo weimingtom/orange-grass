@@ -14,6 +14,10 @@ COGPhysicalObject::COGPhysicalObject () :	m_Type (OG_PHYSICS_NONE),
 											m_bUpdated(false)
 {
     m_vScaling = Vec3(1);
+    m_vLook = Vec3(0,0,-1);
+    m_vUp = Vec3(0,1,0);
+    m_vRight = Vec3(1,0,0);
+    m_vMove = Vec3(0,0,0);
 }
 
 
@@ -95,6 +99,21 @@ void COGPhysicalObject::Strafe (float _fDir)
 }
 
 
+// accelerate.
+void COGPhysicalObject::Accelerate (float _fDir)
+{
+	m_vMove += m_vLook * (_fDir * 0.01f);
+    float fSpeed = m_vMove.length();
+    if (fSpeed > 0.03f)
+    {
+        m_vMove.normalize();
+        m_vMove *= 0.03f;
+    }
+
+	m_bUpdated = false;
+}
+
+
 // get physics type.
 OGPhysicsType COGPhysicalObject::GetPhysicsType () const
 {
@@ -115,7 +134,16 @@ void COGPhysicalObject::Update (unsigned long _ElapsedTime)
 	if (m_bUpdated)
 		return;
 
+    m_vPosition += m_vMove * (float)_ElapsedTime;
+
 	WorldMatrixFromTransforms(m_mWorld, m_vPosition, m_vRotation, m_vScaling);
 	m_Obb.UpdateTransform(m_mWorld);
-	m_bUpdated = true;
+
+	MatrixGetBasis(m_vRight, m_vUp, m_vLook, m_mWorld);
+	m_vRight.normalize();
+	m_vUp.normalize();
+	m_vLook.normalize();
+    m_vLook = -m_vLook;
+
+    m_bUpdated = true;
 }

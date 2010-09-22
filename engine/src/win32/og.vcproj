@@ -190,6 +190,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogactorplasmamissile.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactorplasmamissile.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogactorplayer.cpp"
 					>
 				</File>
@@ -479,6 +487,14 @@
 				</File>
 				<File
 					RelativePath=".\ogphysics.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogphysicsparamsmgr.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogphysicsparamsmgr.h"
 					>
 				</File>
 				<File

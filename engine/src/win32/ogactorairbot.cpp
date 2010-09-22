@@ -55,13 +55,6 @@ bool COGActorAirBot::Create (const std::string& _ModelAlias,
 		OG_LOG_ERROR("Creating COGActorAirBot failed, cannot get model %s", _ModelAlias.c_str());
 		return false;
 	}
-
-	m_pNode = GetSceneGraph()->CreateNode(m_pModel);
-	if (!m_pNode)
-	{
-		OG_LOG_ERROR("Creating COGActorAirBot failed, cannot create SG node");
-		return false;
-	}
 	
     m_pPhysicalObject = GetPhysics()->CreateObject(OG_PHYSICS_AIRBOT, m_pModel->GetAABB());
     if (!m_pPhysicalObject)
@@ -69,7 +62,14 @@ bool COGActorAirBot::Create (const std::string& _ModelAlias,
 		OG_LOG_ERROR("Creating COGActorAirBot failed, cannot create physical object");
         return false;
 	}
-
 	m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);
-	return true;
+
+	m_pNode = GetSceneGraph()->CreateNode(m_pModel, m_pPhysicalObject);
+	if (!m_pNode)
+	{
+		OG_LOG_ERROR("Creating COGActorAirBot failed, cannot create SG node");
+		return false;
+	}
+
+    return true;
 }

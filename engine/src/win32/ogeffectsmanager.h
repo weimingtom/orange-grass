@@ -24,17 +24,6 @@ public:
 
 	// destroy effect.
 	virtual void DestroyEffect (IOGEffect* _pEffect);
-
-	// Update effects.
-	virtual void Update (unsigned long _ElapsedTime);
-
-	// Render effects.
-	virtual void Render (const MATRIX& _mView);
-
-private:
-
-	typedef std::list<IOGEffect*>	TEffectsList;
-	TEffectsList	m_EffectsList;
 };
 
 #endif

@@ -46,7 +46,7 @@ void COGActor::OnAddedToManager ()
 // Update actor.
 void COGActor::Update (unsigned long _ElapsedTime)
 {
-    m_pNode->Update(_ElapsedTime, m_pPhysicalObject->GetWorldTransform(), m_pPhysicalObject->GetOBB());
+    m_pNode->Update(_ElapsedTime);
 }
 
 

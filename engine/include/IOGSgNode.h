@@ -10,7 +10,8 @@
 #define IOGSGNODE_H_
 
 #include "Mathematics.h"
-#include "IOGObb.h"
+#include "IOGPhysicalObject.h"
+#include "IOGRenderable.h"
 
 
 class IOGSgNode
@@ -19,20 +20,20 @@ public:
 	// destructor
 	virtual ~IOGSgNode () {}
 
+	// update transform.
+	virtual void Update (unsigned long _ElapsedTime) = 0;
+
 	// get world transform.
 	virtual const MATRIX& GetWorldTransform () const = 0;
-
-	// update transform.
-	virtual void Update (
-		unsigned long _ElapsedTime, 
-		const MATRIX& _mT, 
-		const IOGObb& _Obb) = 0;
 
 	// Get OBB
 	virtual const IOGObb& GetOBB () const = 0;
 
 	// get renderable.
 	virtual IOGRenderable* GetRenderable () = 0;
+
+	// get physics.
+	virtual IOGPhysicalObject* GetPhysics () = 0;
 };
 
 #endif

@@ -45,8 +45,6 @@ void COGPlasmaEffect::Init(OGEffectType _Type)
 // Update.
 void COGPlasmaEffect::Update (unsigned long _ElapsedTime)
 {
-    MatrixTranslation(m_World, m_Position.x, m_Position.y, m_Position.z);
-
 	for (int i = 0; i < 4; ++i)
 	{
 		m_Particles[i].offset = m_Direction * (float)i;
@@ -57,14 +55,7 @@ void COGPlasmaEffect::Update (unsigned long _ElapsedTime)
 // Render.
 void COGPlasmaEffect::Render (const MATRIX& _mView)
 {
-	Vec3 vUp, vRight, vLook;
-	MatrixGetBasis(vRight, vUp, vLook, _mView);
-	vUp.normalize();
-	vRight.normalize();
-
-    MATRIX mModelView;
-	MatrixMultiply(mModelView, m_World, _mView);
-	glLoadMatrixf(mModelView.f);
+    glLoadMatrixf(_mView.f);
 
 	glDisable(GL_DEPTH_TEST);
 
@@ -78,8 +69,8 @@ void COGPlasmaEffect::Render (const MATRIX& _mView)
 	for (int i = 0; i < 4; ++i)
 	{
 		COGBillboard& particle = m_Particles[i];
-		Vec3 vSUp = vUp * particle.scale;
-		Vec3 vSRight = vRight * particle.scale;
+		Vec3 vSUp = m_vCameraUp * particle.scale;
+		Vec3 vSRight = m_vCameraRight * particle.scale;
 		particle.pVertices[0].p = vSRight + vSUp + particle.offset;
 		particle.pVertices[1].p = -vSRight + vSUp + particle.offset;
 		particle.pVertices[2].p = vSRight - vSUp + particle.offset;

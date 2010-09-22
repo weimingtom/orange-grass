@@ -23,12 +23,6 @@ public:
 
 	// destroy effect.
 	virtual void DestroyEffect (IOGEffect* _pEffect) = 0;
-
-	// Update effects.
-	virtual void Update (unsigned long _ElapsedTime) = 0;
-
-	// Render effects.
-	virtual void Render (const MATRIX& _mView) = 0;
 };
 
 #endif

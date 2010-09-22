@@ -12,6 +12,7 @@
 #include "ogactorlandbot.h"
 #include "ogactorairbot.h"
 #include "ogactorplayer.h"
+#include "ogactorplasmamissile.h"
 #include "IOGMath.h"
 #include <algorithm>
 
@@ -89,6 +90,18 @@ IOGActor* COGActorManager::CreateActor (
 	case OG_ACTOR_PLAYER:
 		{
 			COGActorPlayer* pActor = new COGActorPlayer(_Type);
+			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == false)
+			{
+				OG_SAFE_DELETE(pActor);
+				return NULL;
+			}
+			return pActor;
+		}
+		break;
+
+	case OG_ACTOR_PLASMAMISSILE:
+		{
+			COGActorPlasmaMissile* pActor = new COGActorPlasmaMissile(_Type);
 			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == false)
 			{
 				OG_SAFE_DELETE(pActor);
@@ -217,6 +230,10 @@ OGActorType COGActorManager::ParseActorType (const std::string& _ActorTypeStr)
     else if (_ActorTypeStr.compare(std::string("player")) == 0)
     {
         return OG_ACTOR_PLAYER;
+    }
+    else if (_ActorTypeStr.compare(std::string("plasma_missile")) == 0)
+    {
+        return OG_ACTOR_PLASMAMISSILE;
     }
 
     return OG_ACTOR_NONE;

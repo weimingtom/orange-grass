@@ -50,7 +50,11 @@ bool COGLevel::Load ()
         OG_LOG_ERROR("Failed to load terrain %s while loading level", m_ResourceAlias.c_str());
         return false;
     }
-	IOGSgNode* pTerrainSg = GetSceneGraph()->CreateNode(m_pTerrain);
+    IOGPhysicalObject* pTerrainPhysics = GetPhysics()->CreateObject(OG_PHYSICS_STATIC, m_pTerrain->GetAABB());
+    GetPhysics()->AddObject(pTerrainPhysics);
+    pTerrainPhysics->SetWorldTransform(Vec3(0,0,0), Vec3(0,0,0), Vec3(1,1,1));
+
+	IOGSgNode* pTerrainSg = GetSceneGraph()->CreateNode(m_pTerrain, pTerrainPhysics);
 	GetSceneGraph()->AddLandscapeNode(pTerrainSg);
 
     FILE* pIn = fopen(m_ResourceFile.c_str(), "rb");

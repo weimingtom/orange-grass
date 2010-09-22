@@ -38,14 +38,11 @@ public:
 	// Initialize effect.
 	virtual void Init(OGEffectType _Type) = 0;
 
-	// Set position.
-	virtual void SetPosition (const Vec3& _vPos);
+	// Set billboard basis vectors.
+	virtual void SetBillboardVectors (const Vec3& _vUp, const Vec3& _vRight);
 
 	// Set direction.
 	virtual void SetDirection (const Vec3& _vDir);
-
-	// Get position.
-	virtual const Vec3& GetPosition () const { return m_Position; }
 
 	// Get direction.
 	virtual const Vec3& GetDirection () const { return m_Direction; }
@@ -83,9 +80,9 @@ public:
 protected:
 	
     IOGAabb         m_AABB;
-	Vec3			m_Position;
+	Vec3			m_vCameraUp;
+	Vec3			m_vCameraRight;
 	Vec3			m_Direction;
-	MATRIX			m_World;
 	OGEffectStatus	m_Status;
 	OGEffectType	m_Type;
 	IOGTexture*		m_pTexture;

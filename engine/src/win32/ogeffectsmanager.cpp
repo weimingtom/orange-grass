@@ -20,12 +20,6 @@ COGEffectsManager::COGEffectsManager ()
 
 COGEffectsManager::~COGEffectsManager ()
 {
-    TEffectsList::iterator iter = m_EffectsList.begin();
-    for (; iter != m_EffectsList.end(); ++iter)
-    {
-		OG_SAFE_DELETE((*iter));
-	}
-	m_EffectsList.clear();
 }
 
 
@@ -38,7 +32,6 @@ IOGEffect* COGEffectsManager::CreateEffect (OGEffectType _Type)
 		{
 			COGPlasmaEffect* pEffect = new COGPlasmaEffect();
 			pEffect->Init(_Type);
-			m_EffectsList.push_back(pEffect);
 			return pEffect;
 		}
 		break;
@@ -55,35 +48,5 @@ IOGEffect* COGEffectsManager::CreateEffect (OGEffectType _Type)
 // destroy effect.
 void COGEffectsManager::DestroyEffect (IOGEffect* _pEffect)
 {
-	TEffectsList::iterator iter = std::find(
-		m_EffectsList.begin(), m_EffectsList.end(), _pEffect);
-	if (iter != m_EffectsList.end())
-	{
-		OG_SAFE_DELETE((*iter));
-		m_EffectsList.erase(iter);
-	}
-}
-
-
-// Update effects.
-void COGEffectsManager::Update (unsigned long _ElapsedTime)
-{
-    TEffectsList::iterator iter = m_EffectsList.begin();
-    for (; iter != m_EffectsList.end(); ++iter)
-    {
-		(*iter)->Update(_ElapsedTime);
-	}
-}
-
-
-// Render effects.
-void COGEffectsManager::Render (const MATRIX& _mView)
-{
-	glMatrixMode(GL_MODELVIEW);
-
-	TEffectsList::iterator iter = m_EffectsList.begin();
-    for (; iter != m_EffectsList.end(); ++iter)
-    {
-		(*iter)->Render(_mView);
-	}
+	OG_SAFE_DELETE(_pEffect);
 }

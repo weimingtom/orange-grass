@@ -23,11 +23,25 @@ enum OGPhysicsType
 };
 
 
+struct IOGPhysicalParams
+{
+    IOGPhysicalParams()
+    {
+        fMaxSpeed = 0.0f;
+    }
+
+    float fMaxSpeed;
+};
+
+
 class IOGPhysicalObject
 {
 public:
 	// destructor
 	virtual ~IOGPhysicalObject () {}
+
+	// create object
+	virtual void Create (const IOGAabb& _Aabb, const IOGPhysicalParams& _Params) = 0;
 
 	// get world transform.
 	virtual const MATRIX& GetWorldTransform () const = 0;
@@ -58,6 +72,9 @@ public:
 
 	// strafe.
 	virtual void Strafe (float _fDir) = 0;
+
+	// accelerate.
+	virtual void Accelerate (float _fDir) = 0;
 
 	// get physics type.
 	virtual OGPhysicsType GetPhysicsType () const = 0;

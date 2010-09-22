@@ -13,7 +13,7 @@
 #include "UI.h"
 
 CDisplayText * AppDisplayText;
-IOGEffect*	g_pEffect = NULL;
+//IOGEffect*	g_pEffect = NULL;
 
 CGameScreenController::CGameScreenController() :	m_pResourceMgr(NULL),
 													m_pSg(NULL),
@@ -67,7 +67,7 @@ bool CGameScreenController::Init ()
     
 	m_fFOV = 0.67f;
 	m_fCameraTargetDistance = 60.0f;
-	m_fCameraFwdSpeed = 0.02f;
+	m_fCameraFwdSpeed = 0.0f;//0.02f;
 	m_fCameraStrafeSpeed = 0.01f;
 	m_fFinishPointSqDistance = 10000.0f;
 	m_ElapsedTime = 0;
@@ -78,10 +78,17 @@ bool CGameScreenController::Init ()
     m_pCurLevel = GetLevelManager()->LoadLevel(std::string("level_0"));
     m_pPlayer = GetActorManager()->GetPlayersActor();
 
-	g_pEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_PLASMA);
+	//g_pEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_PLASMA);
 
 	UpdateCamera();
 	GetPhysics()->UpdateAll(1);
+
+    IOGActor* pMissile = GetActorManager()->CreateActor(OG_ACTOR_PLASMAMISSILE, 
+        std::string("plasma01"), 
+        m_pPlayer->GetPhysicalObject()->GetPosition()+Vec3(0,0,-20),
+        Vec3(0,0,0),
+        Vec3(1,1,1));
+    GetActorManager()->AddActor(pMissile);
 
     return true;
 }
@@ -95,11 +102,12 @@ void CGameScreenController::Update (unsigned long _ElapsedTime)
 		return;
     
 	UpdateCamera();
-	g_pEffect->SetPosition(m_pPlayer->GetPhysicalObject()->GetPosition()+Vec3(0,0,-20));
+	//g_pEffect->SetPosition(m_pPlayer->GetPhysicalObject()->GetPosition()+Vec3(0,0,-20));
 
     GetPhysics()->Update(_ElapsedTime);
     GetActorManager()->Update(_ElapsedTime);
-	GetEffectsManager()->Update(_ElapsedTime);
+	//GetEffectsManager()->Update(_ElapsedTime);
+	m_pSg->Update(_ElapsedTime);
 
 	if (CheckFinishCondition())
 	{
@@ -116,8 +124,6 @@ void CGameScreenController::RenderScene ()
 		return;
     }
 
-	//glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	m_pRenderer->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
 
 	m_pRenderer->GetFog()->Enable(true);
@@ -127,7 +133,8 @@ void CGameScreenController::RenderScene ()
 	m_pRenderer->FinishRenderMode();
 
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);
-	GetEffectsManager()->Render(m_pCamera->GetViewMatrix());
+    m_pSg->RenderEffects(m_pCamera);
+	//GetEffectsManager()->Render(m_pCamera->GetViewMatrix());
 	m_pRenderer->FinishRenderMode();
 	m_pRenderer->GetFog()->Enable(false);
 
@@ -165,8 +172,8 @@ void CGameScreenController::Activate ()
 	m_State = CSTATE_ACTIVE;
     GetInput()->RegisterReceiver(this);
 	
-	g_pEffect->Start();
-	g_pEffect->SetDirection(Vec3(0,0,1));
+	//g_pEffect->Start();
+	//g_pEffect->SetDirection(Vec3(0,0,1));
 }
 
 

@@ -24,7 +24,7 @@ public:
 	virtual void Clear ();
 
 	// Create scene graph node
-	virtual IOGSgNode* CreateNode (IOGRenderable* _pRenderable);
+	virtual IOGSgNode* CreateNode (IOGRenderable* _pRenderable, IOGPhysicalObject* _pPhysics);
 
 	// Add scene graph node
 	virtual void AddNode (IOGSgNode* _pNode);

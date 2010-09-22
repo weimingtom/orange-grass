@@ -21,8 +21,9 @@ COGStaticPhysicalObject::~COGStaticPhysicalObject ()
 
 
 // create object
-void COGStaticPhysicalObject::Create (const IOGAabb& _Aabb)
+void COGStaticPhysicalObject::Create (const IOGAabb& _Aabb, const IOGPhysicalParams& _Params)
 {
+    m_Params = _Params;
 	m_Type = OG_PHYSICS_STATIC;
 	m_Aabb = _Aabb;
     m_Obb.Create(m_Aabb);
