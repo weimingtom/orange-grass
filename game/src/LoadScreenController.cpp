@@ -36,8 +36,7 @@ bool CLoadScreenController::Init ()
 	GetRenderer()->SetViewport(SCR_WIDTH, SCR_HEIGHT, 4.0f, 200.0f, 0.67f);
 	m_pResourceMgr = GetResourceMgr();
     m_pResourceMgr->Init();
-	std::vector<IOGResourceInfo> resInfo;
-	if (!m_pResourceMgr->Load(resInfo))
+	if (!m_pResourceMgr->Load())
 		return false;
 	
 	return true;
@@ -49,6 +48,7 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 {
 	if (!m_bLoaded && m_State == CSTATE_ACTIVE && m_bDisplayed)
 	{
+		GetActorParamsMgr()->Init();
         GetLevelManager()->Init();
 
 		std::string LevelAliasStr("level_0");
@@ -68,7 +68,6 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 // Render controller scene
 void CLoadScreenController::RenderScene ()
 {
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	GetRenderer()->ClearFrame(Vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 	GetRenderer()->StartRenderMode(OG_RENDERMODE_SPRITES);

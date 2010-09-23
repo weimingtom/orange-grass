@@ -11,7 +11,7 @@
 #include "IOGMath.h"
 
 
-COGActorPlayer::COGActorPlayer(OGActorType _Type) : COGActor(_Type)
+COGActorPlayer::COGActorPlayer()
 {
 }
 
@@ -40,21 +40,22 @@ COGActorPlayer::~COGActorPlayer()
 
 
 // Create actor.
-bool COGActorPlayer::Create (const std::string& _ModelAlias,
+bool COGActorPlayer::Create (IOGActorParams* _pParams,
                              const Vec3& _vPos,
                              const Vec3& _vRot,
                              const Vec3& _vScale)
 {
-	if (m_Type == OG_ACTOR_NONE)
+	m_pParams = _pParams;
+	if (m_pParams->type == OG_ACTOR_NONE)
 	{
-		OG_LOG_ERROR("Creating COGActorPlayer from model %s failed, actor type is OG_ACTOR_NONE", _ModelAlias.c_str());
+		OG_LOG_ERROR("Creating COGActorPlayer from model %s failed, actor type is OG_ACTOR_NONE", _pParams->model_alias.c_str());
 		return false;
 	}
 
-	m_pModel = GetResourceMgr()->GetModel(_ModelAlias);
+	m_pModel = GetResourceMgr()->GetModel(_pParams->model_alias);
 	if (!m_pModel)
 	{
-		OG_LOG_ERROR("Creating COGActorPlayer failed, cannot get model %s", _ModelAlias.c_str());
+		OG_LOG_ERROR("Creating COGActorPlayer failed, cannot get model %s", _pParams->model_alias.c_str());
 		return false;
 	}
 	

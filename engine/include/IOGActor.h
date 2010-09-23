@@ -10,18 +10,8 @@
 #define IOGACTOR_H_
 
 #include "IOGSgNode.h"
+#include "IOGActorParams.h"
 #include "IOGPhysicalObject.h"
-
-
-enum OGActorType
-{
-	OG_ACTOR_NONE = -1,
-	OG_ACTOR_STATIC,
-	OG_ACTOR_LANDBOT,
-	OG_ACTOR_AIRBOT,
-	OG_ACTOR_PLAYER,
-	OG_ACTOR_PLASMAMISSILE
-};
 
 
 class IOGActor

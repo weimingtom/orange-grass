@@ -34,15 +34,16 @@ CEditorObjectsFrame::CEditorObjectsFrame(	wxMDIParentFrame *parent,
 /// @brief Resource loading event handler
 void CEditorObjectsFrame::OnLoadResource ( CommonToolEvent<ResLoadEventData>& event )
 {
+
 	const ResLoadEventData& evtData = event.GetEventCustomData();
     wxString resourceText = evtData.m_Resource;
 	wxString resourceGroupText = evtData.m_ResourceGroup;
-	wxString resourceIconText = wxString::Format(_T("<img src=\"%s\" />"), evtData.m_ResourceIcon);
+	wxString resourceIconText = wxString::Format(_T("<img src=\"%s\" />"), GetResourceMgr()->GetResourcePath()evtData.m_ResourceIcon);
 
 	if (resourceGroupText.CmpNoCase(_T("Models")) == 0)
 	{
 		int n = m_pObjectsList->Append (resourceIconText);
-		m_ItemList[n] = new ResourceItem(RESTYPE_MODEL, resourceText, evtData.m_ResourceActorType);
+		m_ItemList[n] = new ResourceItem(RESTYPE_MODEL, resourceText);
 	}
 }
 
@@ -54,7 +55,7 @@ void CEditorObjectsFrame::OnResourceSwitch ( wxCommandEvent& event )
 	if(pData)
 	{
 		CommonToolEvent<ResSwitchEventData> cmd(EVENTID_RESSWITCH);
-		cmd.SetEventCustomData(ResSwitchEventData(pData->name, pData->type, pData->actortype));
+		cmd.SetEventCustomData(ResSwitchEventData(pData->name, pData->type));
 		GetEventHandlersTable()->FireEvent(EVENTID_RESSWITCH, &cmd);
 	}
 	return;

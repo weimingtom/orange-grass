@@ -11,7 +11,7 @@
 #include "IOGMath.h"
 
 
-COGActorPlasmaMissile::COGActorPlasmaMissile(OGActorType _Type) : COGActor(_Type)
+COGActorPlasmaMissile::COGActorPlasmaMissile()
 {
 }
 
@@ -38,23 +38,23 @@ COGActorPlasmaMissile::~COGActorPlasmaMissile()
 
 
 // Create actor.
-bool COGActorPlasmaMissile::Create (const std::string& _ModelAlias,
+bool COGActorPlasmaMissile::Create (IOGActorParams* _pParams,
                                     const Vec3& _vPos,
                                     const Vec3& _vRot,
                                     const Vec3& _vScale)
 {
-    m_EffectAlias = _ModelAlias;
+	m_pParams = _pParams;
 
-	if (m_Type == OG_ACTOR_NONE)
+	if (m_pParams->type == OG_ACTOR_NONE)
 	{
-		OG_LOG_ERROR("Creating COGActorPlasmaMissile from model %s failed, actor type is OG_ACTOR_NONE", _ModelAlias.c_str());
+		OG_LOG_ERROR("Creating COGActorPlasmaMissile from model %s failed, actor type is OG_ACTOR_NONE", _pParams->model_alias.c_str());
 		return false;
 	}
 
 	m_pHeadEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_PLASMA);
 	if (!m_pHeadEffect)
 	{
-		OG_LOG_ERROR("Creating COGActorPlasmaMissile failed, cannot get effect %s", _ModelAlias.c_str());
+		OG_LOG_ERROR("Creating COGActorPlasmaMissile failed, cannot get effect %s", _pParams->model_alias.c_str());
 		return false;
 	}
 	
@@ -92,12 +92,4 @@ void COGActorPlasmaMissile::OnAddedToManager ()
 void COGActorPlasmaMissile::Update (unsigned long _ElapsedTime)
 {
     m_pPhysicalObject->Accelerate(1.0f);
-   	//m_pHeadEffect->SetPosition(m_pPhysicalObject->GetPosition());
-}
-
-
-// Get model alias
-const std::string& COGActorPlasmaMissile::GetAlias () const
-{
-    return m_EffectAlias;
 }

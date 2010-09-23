@@ -22,6 +22,7 @@
 #include "IOGMaterialManager.h"
 #include "IOGStatistics.h"
 #include "IOGEffectsManager.h"
+#include "IOGActorParamsManager.h"
 #include "common.h"
 #include <vector>
 #include <string>
@@ -38,5 +39,6 @@ IOGMaterialManager* GetMaterialManager ();
 IOGStatistics* GetStatistics ();
 IOGSpritePool* GetSpritePool ();
 IOGEffectsManager* GetEffectsManager ();
+IOGActorParamsMgr* GetActorParamsMgr ();
 
 #endif

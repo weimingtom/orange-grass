@@ -23,8 +23,7 @@ public:
 
 	// Create actor
 	virtual IOGActor* CreateActor (
-		OGActorType _Type,
-		const std::string& _ModelAlias,
+		const std::string& _Alias,
 		const Vec3& _vPos,
 		const Vec3& _vRot,
         const Vec3& _vScale);
@@ -48,9 +47,6 @@ public:
 
 	// Get player's actor.
     virtual IOGActor* GetPlayersActor ();
-
-	// Parse the actor type string and convert it to internal type
-	virtual OGActorType ParseActorType (const std::string& _ActorTypeStr);
 
 private:
 

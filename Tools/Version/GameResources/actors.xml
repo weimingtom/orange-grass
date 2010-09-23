@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Actors>
+	<Actor alias="plasma_01" file="Actors/plasma_01.xml" />
+	<Actor alias="craft" file="Actors/craft.xml" />
+	<Actor alias="spectator" file="Actors/spectator.xml" />
+	<Actor alias="radar1" file="Actors/radar1.xml" />
+	<Actor alias="tank1" file="Actors/tank1.xml" />
+	<Actor alias="tank2" file="Actors/tank2.xml" />
+	<Actor alias="stone1" file="Actors/stone1.xml" />
+	<Actor alias="stone2" file="Actors/stone2.xml" />
+	<Actor alias="palm1" file="Actors/palm1.xml" />
+	<Actor alias="palm2" file="Actors/palm2.xml" />
+	<Actor alias="palm3_0" file="Actors/palm3_0.xml" />
+	<Actor alias="palm3_1" file="Actors/palm3_1.xml" />
+	<Actor alias="palm4" file="Actors/palm4.xml" />
+</Actors>

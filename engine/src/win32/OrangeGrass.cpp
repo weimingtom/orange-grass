@@ -18,6 +18,7 @@
 #include "ogmaterialmanager.h"
 #include "ogstatistics.h"
 #include "ogeffectsmanager.h"
+#include "ogactorparamsmgr.h"
 
 
 static IOGResourceMgr* g_pResourceMgr = NULL;
@@ -31,6 +32,7 @@ static IOGMaterialManager* g_pMaterialMgr = NULL;
 static IOGStatistics* g_pStats = NULL;
 static IOGSpritePool* g_pSprPool = NULL;
 static IOGEffectsManager* g_pEffectsMgr = NULL;
+static IOGActorParamsMgr* g_pActorParamsMgr = NULL;
 
 
 IOGResourceMgr* GetResourceMgr ()
@@ -141,4 +143,14 @@ IOGEffectsManager* GetEffectsManager ()
 		g_pEffectsMgr = new COGEffectsManager ();
 	}
 	return g_pEffectsMgr;
+}
+
+
+IOGActorParamsMgr* GetActorParamsMgr ()
+{
+	if (g_pActorParamsMgr == NULL)
+	{
+		g_pActorParamsMgr = new COGActorParamsMgr ();
+	}
+	return g_pActorParamsMgr;
 }

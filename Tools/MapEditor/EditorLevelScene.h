@@ -46,7 +46,7 @@ public:
 	void SetEditMode (TerrainEditMode _Mode);
 
     // Setup new current node for placement.
-    void SetNewCurrentNodeForPlacement(const char* _pModelAlias, int _ActorType);
+    void SetNewCurrentNodeForPlacement(const char* _pModelAlias);
 
 	// Place the current node
 	void PlaceCurrentNode (const Vec3& _vPos);

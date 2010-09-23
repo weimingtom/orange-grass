@@ -17,15 +17,6 @@
 #include <string>
 
 
-struct IOGResourceInfo
-{
-	std::string m_Resource;
-	std::string m_ResourceIcon;
-	std::string m_ResourceGroup;
-	std::string m_ResourceActorType;
-};
-
-
 class IOGResourceMgr
 {
 public:
@@ -38,7 +29,7 @@ public:
     virtual const std::string& GetResourcePath () const = 0;
 
 	// load resources.
-	virtual bool Load (std::vector<IOGResourceInfo>& _resInfo) = 0;
+	virtual bool Load () = 0;
 		
 	// get texture.
 	virtual IOGTexture* GetTexture (const std::string& _Alias) = 0;

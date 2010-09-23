@@ -92,7 +92,7 @@ const std::string& COGResourceMgr::GetResourcePath () const
 
 
 // load resources.
-bool COGResourceMgr::Load (std::vector<IOGResourceInfo>& _resInfo)
+bool COGResourceMgr::Load ()
 {
 	Cfg cfg;
 	if (!LoadConfig(cfg))
@@ -115,10 +115,6 @@ bool COGResourceMgr::Load (std::vector<IOGResourceInfo>& _resInfo)
 		}
 
 		m_TextureList[(*texiter).alias] = pTexture;
-		IOGResourceInfo inf;
-		inf.m_Resource = (*texiter).alias;
-		inf.m_ResourceGroup = std::string("Textures");
-		_resInfo.push_back(inf);
 	}
 
 	Cfg::TMeshCfg::const_iterator meshiter;
@@ -127,10 +123,6 @@ bool COGResourceMgr::Load (std::vector<IOGResourceInfo>& _resInfo)
 		COGMesh* pMesh = new COGMesh ();
 		pMesh->Init ((*meshiter).alias, (*meshiter).file);
 		m_MeshList[(*meshiter).alias] = pMesh;
-		IOGResourceInfo inf;
-		inf.m_Resource = (*meshiter).alias;
-		inf.m_ResourceGroup = std::string("Meshes");
-		_resInfo.push_back(inf);
 	}
 
 	Cfg::TModelCfg::const_iterator modeliter;
@@ -139,12 +131,6 @@ bool COGResourceMgr::Load (std::vector<IOGResourceInfo>& _resInfo)
 		COGModel* pModel = new COGModel ();
 		pModel->Init ((*modeliter).alias, (*modeliter).file);
 		m_ModelList[(*modeliter).alias] = pModel;
-		IOGResourceInfo inf;
-		inf.m_Resource = (*modeliter).alias;
-		inf.m_ResourceGroup = std::string("Models");
-		inf.m_ResourceIcon = (*modeliter).icon;
-		inf.m_ResourceActorType = (*modeliter).actor_type;
-		_resInfo.push_back(inf);
 	}
 
 	Cfg::TTerrainCfg::const_iterator terraiter;
@@ -153,11 +139,6 @@ bool COGResourceMgr::Load (std::vector<IOGResourceInfo>& _resInfo)
 		COGTerrain* pTerrain = new COGTerrain ();
 		pTerrain->Init ((*terraiter).alias, (*terraiter).file);
 		m_TerrainList[(*terraiter).alias] = pTerrain;
-		IOGResourceInfo inf;
-		inf.m_Resource = (*terraiter).alias;
-		inf.m_ResourceGroup = std::string("Terrains");
-		inf.m_ResourceIcon = (*terraiter).icon;
-		_resInfo.push_back(inf);
 	}
 
 	Cfg::TSpriteCfg::const_iterator spriter;
@@ -167,10 +148,6 @@ bool COGResourceMgr::Load (std::vector<IOGResourceInfo>& _resInfo)
 		pSprite->Init ((*spriter).alias, (*spriter).texture);
 		pSprite->SetMapping((*spriter).pos, (*spriter).size);
 		m_SpriteList[(*spriter).alias] = pSprite;
-		IOGResourceInfo inf;
-		inf.m_Resource = (*spriter).alias;
-		inf.m_ResourceGroup = std::string("Sprites");
-		_resInfo.push_back(inf);
 	}
 
 	return true;
@@ -249,9 +226,7 @@ bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
 
 		Cfg::ModelResourceCfg rescfg;
 		rescfg.alias = std::string(pElement->Attribute ("alias"));
-		rescfg.actor_type = std::string(pElement->Attribute ("actor_type"));
 		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
-		rescfg.icon = m_ResPath + std::string("/") + std::string(pElement->Attribute ("icon"));
 		_cfg.model_cfg_list.push_back(rescfg);
 
 		ModelHandle = hModelsRoot.Child ( "Model", ++index );
@@ -267,7 +242,6 @@ bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
 		Cfg::TerrainResourceCfg rescfg;
 		rescfg.alias = std::string(pElement->Attribute ("alias"));
 		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
-		rescfg.icon = m_ResPath + std::string("/") + std::string(pElement->Attribute ("icon"));
 		_cfg.terrain_cfg_list.push_back(rescfg);
 
 		TerrainHandle = hTerrainsRoot.Child ( "Terrain", ++index );

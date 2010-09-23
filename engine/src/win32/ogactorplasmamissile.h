@@ -15,12 +15,12 @@
 class COGActorPlasmaMissile : public COGActor
 {
 public:
-	COGActorPlasmaMissile(OGActorType _Type);
+	COGActorPlasmaMissile();
 	virtual ~COGActorPlasmaMissile();
 
 	// Create actor.
 	virtual bool Create (
-		const std::string& _ModelAlias,
+		IOGActorParams* _pParams,
 		const Vec3& _vPos,
 		const Vec3& _vRot,
         const Vec3& _vScale);
@@ -31,13 +31,9 @@ public:
 	// Update actor.
 	virtual void Update (unsigned long _ElapsedTime);
 
-	// Get model alias
-	virtual const std::string& GetAlias () const;
-
 protected:
 
     IOGEffect*  m_pHeadEffect;
-    std::string m_EffectAlias;
 };
 
 

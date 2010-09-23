@@ -16,12 +16,12 @@
 class COGActorPlayer : public COGActor, public IOGInputReceiver
 {
 public:
-	COGActorPlayer(OGActorType _Type);
+	COGActorPlayer();
 	virtual ~COGActorPlayer();
 
 	// Create actor.
 	virtual bool Create (
-		const std::string& _ModelAlias,
+		IOGActorParams* _pParams,
 		const Vec3& _vPos,
 		const Vec3& _vRot,
         const Vec3& _vScale);

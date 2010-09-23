@@ -15,12 +15,12 @@
 class COGActorStatic : public COGActor
 {
 public:
-	COGActorStatic(OGActorType _Type);
+	COGActorStatic();
 	virtual ~COGActorStatic();
 
 	// Create actor.
 	virtual bool Create (
-		const std::string& _ModelAlias,
+		IOGActorParams* _pParams,
 		const Vec3& _vPos,
 		const Vec3& _vRot,
         const Vec3& _vScale);

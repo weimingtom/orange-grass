@@ -43,18 +43,24 @@ void COGActorManager::Clear ()
 
 // Create actor
 IOGActor* COGActorManager::CreateActor (
-	OGActorType _Type,
-	const std::string& _ModelAlias,
+	const std::string& _Alias,
 	const Vec3& _vPos,
 	const Vec3& _vRot,
     const Vec3& _vScale)
 {
-	switch (_Type)
+	IOGActorParams* pParams = GetActorParamsMgr()->GetParams(_Alias);
+	if (!pParams)
+	{
+		OG_LOG_ERROR("Trying to create actor of unknown alias %s", _Alias.c_str());
+		return NULL;
+	}
+
+	switch (pParams->type)
 	{
 	case OG_ACTOR_STATIC:
 		{
-			COGActorStatic* pActor = new COGActorStatic(_Type);
-			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == false)
+			COGActorStatic* pActor = new COGActorStatic();
+			if (pActor->Create(pParams, _vPos, _vRot, _vScale) == false)
 			{
 				OG_SAFE_DELETE(pActor);
 				return NULL;
@@ -65,8 +71,8 @@ IOGActor* COGActorManager::CreateActor (
 
 	case OG_ACTOR_LANDBOT:
 		{
-			COGActorLandBot* pActor = new COGActorLandBot(_Type);
-			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == false)
+			COGActorLandBot* pActor = new COGActorLandBot();
+			if (pActor->Create(pParams, _vPos, _vRot, _vScale) == false)
 			{
 				OG_SAFE_DELETE(pActor);
 				return NULL;
@@ -77,8 +83,8 @@ IOGActor* COGActorManager::CreateActor (
 
 	case OG_ACTOR_AIRBOT:
 		{
-			COGActorAirBot* pActor = new COGActorAirBot(_Type);
-			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == false)
+			COGActorAirBot* pActor = new COGActorAirBot();
+			if (pActor->Create(pParams, _vPos, _vRot, _vScale) == false)
 			{
 				OG_SAFE_DELETE(pActor);
 				return NULL;
@@ -89,8 +95,8 @@ IOGActor* COGActorManager::CreateActor (
 
 	case OG_ACTOR_PLAYER:
 		{
-			COGActorPlayer* pActor = new COGActorPlayer(_Type);
-			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == false)
+			COGActorPlayer* pActor = new COGActorPlayer();
+			if (pActor->Create(pParams, _vPos, _vRot, _vScale) == false)
 			{
 				OG_SAFE_DELETE(pActor);
 				return NULL;
@@ -101,8 +107,8 @@ IOGActor* COGActorManager::CreateActor (
 
 	case OG_ACTOR_PLASMAMISSILE:
 		{
-			COGActorPlasmaMissile* pActor = new COGActorPlasmaMissile(_Type);
-			if (pActor->Create(_ModelAlias, _vPos, _vRot, _vScale) == false)
+			COGActorPlasmaMissile* pActor = new COGActorPlasmaMissile();
+			if (pActor->Create(pParams, _vPos, _vRot, _vScale) == false)
 			{
 				OG_SAFE_DELETE(pActor);
 				return NULL;
@@ -113,7 +119,7 @@ IOGActor* COGActorManager::CreateActor (
 
 	case OG_ACTOR_NONE:
 	default:
-		OG_LOG_ERROR("Trying to create actor of unknown type %d from model %s", _Type, _ModelAlias.c_str());
+		OG_LOG_ERROR("Trying to create actor of unknown type %d from model %s", pParams->type, _Alias.c_str());
 		break;
 	}
 
@@ -209,32 +215,4 @@ const std::list<IOGActor*>& COGActorManager::GetActorsList () const
 IOGActor* COGActorManager::GetPlayersActor ()
 {
 	return m_pPlayersActor;
-}
-
-
-// Parse the actor type string and convert it to internal type
-OGActorType COGActorManager::ParseActorType (const std::string& _ActorTypeStr)
-{
-	if (_ActorTypeStr.compare(std::string("static")) == 0)
-    {
-        return OG_ACTOR_STATIC;
-    }
-    else if (_ActorTypeStr.compare(std::string("land_bot")) == 0)
-    {
-        return OG_ACTOR_LANDBOT;
-    }
-    else if (_ActorTypeStr.compare(std::string("air_bot")) == 0)
-    {
-        return OG_ACTOR_AIRBOT;
-    }
-    else if (_ActorTypeStr.compare(std::string("player")) == 0)
-    {
-        return OG_ACTOR_PLAYER;
-    }
-    else if (_ActorTypeStr.compare(std::string("plasma_missile")) == 0)
-    {
-        return OG_ACTOR_PLASMAMISSILE;
-    }
-
-    return OG_ACTOR_NONE;
 }

@@ -473,15 +473,7 @@ void CEditorCanvas::OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& even
 	{
 	case RESTYPE_MODEL:
         {
-			OGActorType actor_type = GetActorManager()->ParseActorType(std::string(evtData.m_ResourceActorType));
-			if (actor_type != OG_ACTOR_NONE)
-			{
-				g_pScene->SetNewCurrentNodeForPlacement(evtData.m_Resource, (int)actor_type);
-			}
-			else
-			{
-				g_pScene->SetNewCurrentNodeForPlacement(NULL, (int)OG_ACTOR_NONE);
-			}
+			g_pScene->SetNewCurrentNodeForPlacement(evtData.m_Resource);
         }
 		break;
 	}

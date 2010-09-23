@@ -32,22 +32,22 @@
 	<Mesh alias="level_1" file="Levels/Level_1/level_1.POD"/>
 </Meshes>
 <Models>
-	<Model alias="spectator" file="Models/Spectator/spectator.xml" icon = "Models/Spectator/spectator_ed.bmp" actor_type = "air_bot"/>
-	<Model alias="craft" file="Models/Craft/craft.xml" icon = "Models/Craft/craft_ed.bmp" actor_type = "player"/>
-	<Model alias="palm1" file="Models/Palm1/palm1.xml" icon = "Models/Palm1/palm1_ed.bmp" actor_type = "static"/>
-	<Model alias="palm2" file="Models/Palm2/palm2.xml" icon = "Models/Palm2/palm2_ed.bmp" actor_type = "static"/>
-	<Model alias="palm3_0" file="Models/Palm3/palm3_0.xml" icon = "Models/Palm3/palm3_0_ed.bmp" actor_type = "static"/>
-	<Model alias="palm3_1" file="Models/Palm3/palm3_1.xml" icon = "Models/Palm3/palm3_1_ed.bmp" actor_type = "static"/>
-	<Model alias="palm4" file="Models/Palm4/palm4.xml" icon = "Models/Palm4/palm4_ed.bmp" actor_type = "static"/>
-	<Model alias="stone1" file="Models/Stone1/stone1.xml" icon = "Models/Stone1/stone1_ed.bmp" actor_type = "static"/>
-	<Model alias="stone2" file="Models/Stone2/stone2.xml" icon = "Models/Stone2/stone2_ed.bmp" actor_type = "static"/>
-	<Model alias="radar1" file="Models/Radar1/radar1.xml" icon = "Models/Radar1/radar1_ed.bmp" actor_type = "static"/>
-	<Model alias="tank1" file="Models/Tank1/tank1.xml" icon = "Models/Tank1/tank1_ed.bmp" actor_type = "land_bot"/>
-	<Model alias="tank2" file="Models/Tank1/tank2.xml" icon = "Models/Tank1/tank2_ed.bmp" actor_type = "land_bot"/>
+	<Model alias="spectator" file="Models/Spectator/spectator.xml"/>
+	<Model alias="craft" file="Models/Craft/craft.xml"/>
+	<Model alias="palm1" file="Models/Palm1/palm1.xml"/>
+	<Model alias="palm2" file="Models/Palm2/palm2.xml"/>
+	<Model alias="palm3_0" file="Models/Palm3/palm3_0.xml"/>
+	<Model alias="palm3_1" file="Models/Palm3/palm3_1.xml"/>
+	<Model alias="palm4" file="Models/Palm4/palm4.xml"/>
+	<Model alias="stone1" file="Models/Stone1/stone1.xml"/>
+	<Model alias="stone2" file="Models/Stone2/stone2.xml"/>
+	<Model alias="radar1" file="Models/Radar1/radar1.xml"/>
+	<Model alias="tank1" file="Models/Tank1/tank1.xml"/>
+	<Model alias="tank2" file="Models/Tank1/tank2.xml"/>
 </Models>
 <Terrains>
-	<Terrain alias="level_0" file="Levels/Level_0/level_0.xml" icon = "Levels/Level_0/level_0_ed.bmp" />
-	<Terrain alias="level_1" file="Levels/Level_1/level_1.xml" icon = "Levels/Level_1/level_1_ed.bmp" />
+	<Terrain alias="level_0" file="Levels/Level_0/level_0.xml" />
+	<Terrain alias="level_1" file="Levels/Level_1/level_1.xml" />
 </Terrains>
 <Sprites>
 	<Sprite alias="load_scr" texture="load_scr" x="0" y="0" width="480" height="320"/>

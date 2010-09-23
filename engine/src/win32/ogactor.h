@@ -15,15 +15,13 @@
 
 class COGActor : public IOGActor
 {
-	COGActor();
-
 public:
-	COGActor(OGActorType _Type);
+	COGActor();
 	virtual ~COGActor();
 
 	// Create actor.
 	virtual bool Create (
-		const std::string& _ModelAlias,
+		IOGActorParams* _pParams,
 		const Vec3& _vPos,
 		const Vec3& _vRot,
         const Vec3& _vScale) = 0;
@@ -53,8 +51,8 @@ public:
 
 protected:
 
-	OGActorType	        m_Type;
     bool                m_bAdded;
+	IOGActorParams*		m_pParams;
 	IOGSgNode*	        m_pNode;
     IOGPhysicalObject*  m_pPhysicalObject;
 	IOGModel*	        m_pModel;

@@ -162,7 +162,7 @@ bool COGLevel::Load ()
         fread(&vScale.y, sizeof(float), 1, pIn);
         fread(&vScale.z, sizeof(float), 1, pIn);
 
-		IOGActor* pActor = GetActorManager()->CreateActor(type, std::string(pAlias), vPos, vRot, vScale);
+		IOGActor* pActor = GetActorManager()->CreateActor(std::string(pAlias), vPos, vRot, vScale);
         GetActorManager()->AddActor(pActor);
     }
 

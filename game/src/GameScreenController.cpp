@@ -13,7 +13,7 @@
 #include "UI.h"
 
 CDisplayText * AppDisplayText;
-//IOGEffect*	g_pEffect = NULL;
+
 
 CGameScreenController::CGameScreenController() :	m_pResourceMgr(NULL),
 													m_pSg(NULL),
@@ -78,13 +78,11 @@ bool CGameScreenController::Init ()
     m_pCurLevel = GetLevelManager()->LoadLevel(std::string("level_0"));
     m_pPlayer = GetActorManager()->GetPlayersActor();
 
-	//g_pEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_PLASMA);
-
 	UpdateCamera();
 	GetPhysics()->UpdateAll(1);
 
-    IOGActor* pMissile = GetActorManager()->CreateActor(OG_ACTOR_PLASMAMISSILE, 
-        std::string("plasma01"), 
+    IOGActor* pMissile = GetActorManager()->CreateActor(
+        std::string("plasma_01"), 
         m_pPlayer->GetPhysicalObject()->GetPosition()+Vec3(0,0,-20),
         Vec3(0,0,0),
         Vec3(1,1,1));
@@ -102,11 +100,9 @@ void CGameScreenController::Update (unsigned long _ElapsedTime)
 		return;
     
 	UpdateCamera();
-	//g_pEffect->SetPosition(m_pPlayer->GetPhysicalObject()->GetPosition()+Vec3(0,0,-20));
 
     GetPhysics()->Update(_ElapsedTime);
     GetActorManager()->Update(_ElapsedTime);
-	//GetEffectsManager()->Update(_ElapsedTime);
 	m_pSg->Update(_ElapsedTime);
 
 	if (CheckFinishCondition())
@@ -134,7 +130,6 @@ void CGameScreenController::RenderScene ()
 
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);
     m_pSg->RenderEffects(m_pCamera);
-	//GetEffectsManager()->Render(m_pCamera->GetViewMatrix());
 	m_pRenderer->FinishRenderMode();
 	m_pRenderer->GetFog()->Enable(false);
 
@@ -171,9 +166,6 @@ void CGameScreenController::Activate ()
 {
 	m_State = CSTATE_ACTIVE;
     GetInput()->RegisterReceiver(this);
-	
-	//g_pEffect->Start();
-	//g_pEffect->SetDirection(Vec3(0,0,1));
 }
 
 

@@ -71,17 +71,22 @@ bool CEditorLevelScene::Init ()
 		return false;
 	}
 
-	std::vector<IOGResourceInfo> resInfo;
-	if (m_pResourceMgr->Load(resInfo))
+	if (m_pResourceMgr->Load() == false)
 	{
-		std::vector<IOGResourceInfo>::const_iterator iter = resInfo.begin();
-		for (; iter != resInfo.end(); ++iter)
+        return false;
+	}
+
+	if (GetActorParamsMgr()->Init())
+	{
+		std::list<IOGActorParams*> ActorsParamsList;
+		GetActorParamsMgr()->GetParamsList(ActorsParamsList);
+		std::list<IOGActorParams*>::const_iterator iter = ActorsParamsList.begin();
+		for (; iter != ActorsParamsList.end(); ++iter)
 		{
 			CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
-			cmd.SetEventCustomData(ResLoadEventData(wxT((*iter).m_Resource), 
-				wxT((*iter).m_ResourceGroup), 
-				wxT((*iter).m_ResourceIcon),
-				wxT((*iter).m_ResourceActorType)));
+			cmd.SetEventCustomData(ResLoadEventData(wxT((*iter)->alias.c_str()), 
+				wxT("Models"), 
+				wxT((*iter)->icon.c_str())));
 			GetEventHandlersTable()->FireEvent(EVENTID_RESLOAD, &cmd);
 		}
 	}
@@ -90,7 +95,7 @@ bool CEditorLevelScene::Init ()
         return false;
 	}
 
-	SetNewCurrentNodeForPlacement(NULL, OG_ACTOR_NONE);
+	SetNewCurrentNodeForPlacement(NULL);
     m_bInited = true;
 
 	return true;
@@ -209,7 +214,6 @@ bool CEditorLevelScene::LoadLevel (const std::string& _LevelName)
 	if (!pPlayerActor)
 	{
 		pPlayerActor = m_pActorMgr->CreateActor(
-            OG_ACTOR_PLAYER, 
 			std::string("craft"),
 			vCraftPos, 
             Vec3(0,0,0), 
@@ -244,9 +248,9 @@ void CEditorLevelScene::SetEditMode (TerrainEditMode _Mode)
                 m_vCurRotation = Vec3(0, 0, 0);
                 m_vCurScaling = Vec3(1, 1, 1);
                 if (m_CurModelAlias.empty())
-                    SetNewCurrentNodeForPlacement(NULL, OG_ACTOR_NONE);
+                    SetNewCurrentNodeForPlacement(NULL);
                 else
-                    SetNewCurrentNodeForPlacement(m_CurModelAlias.c_str(), m_CurActorType);
+                    SetNewCurrentNodeForPlacement(m_CurModelAlias.c_str());
             }
             break;
 
@@ -255,7 +259,7 @@ void CEditorLevelScene::SetEditMode (TerrainEditMode _Mode)
                 m_vCurRotation = Vec3(0, 0, 0);
                 m_vCurScaling = Vec3(1, 1, 1);
                 m_pPickedActor = NULL;
-                SetNewCurrentNodeForPlacement(NULL, OG_ACTOR_NONE);
+                SetNewCurrentNodeForPlacement(NULL);
             }
             break;
 
@@ -264,7 +268,7 @@ void CEditorLevelScene::SetEditMode (TerrainEditMode _Mode)
                 m_vCurRotation = Vec3(0, 0, 0);
                 m_vCurScaling = Vec3(1, 1, 1);
                 m_pPickedActor = NULL;
-                SetNewCurrentNodeForPlacement(NULL, OG_ACTOR_NONE);
+                SetNewCurrentNodeForPlacement(NULL);
             }
             break;
     }
@@ -272,24 +276,26 @@ void CEditorLevelScene::SetEditMode (TerrainEditMode _Mode)
 
 
 // Setup new current node for placement.
-void CEditorLevelScene::SetNewCurrentNodeForPlacement(const char* _pModelAlias, int _ActorType)
+void CEditorLevelScene::SetNewCurrentNodeForPlacement(const char* _pModelAlias)
 {
 	OG_SAFE_DELETE(m_pCurActor);
-	m_CurActorType = OG_ACTOR_NONE;
 
-	if (_pModelAlias != NULL && _ActorType != (int)OG_ACTOR_NONE)
+	if (_pModelAlias != NULL)
 	{
         m_vCurScaling.x = m_vCurScaling.y = m_vCurScaling.z = 1;
         m_vCurRotation.x = m_vCurRotation.y = m_vCurRotation.z = 0;
-		m_CurActorType = (OGActorType)_ActorType;
 		m_CurModelAlias = std::string(_pModelAlias);
 
 		m_pCurActor = m_pActorMgr->CreateActor(
-            m_CurActorType, 
             m_CurModelAlias,
             Vec3(0,0,0), 
             Vec3(0,0,0), 
             Vec3(1,1,1));
+		m_CurActorType = m_pCurActor->GetType();
+	}
+	else
+	{
+		m_CurActorType = OG_ACTOR_NONE;
 	}
 }
 
@@ -307,7 +313,6 @@ void CEditorLevelScene::PlaceCurrentNode (const Vec3& _vPos)
 	}
 	m_pActorMgr->AddActor (m_pCurActor);
 	m_pCurActor = m_pActorMgr->CreateActor(
-		m_CurActorType, 
 		m_CurModelAlias.c_str(), 
 		vIntersection, 
 		m_vCurRotation, 

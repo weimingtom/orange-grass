@@ -190,6 +190,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogactorparamsmgr.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactorparamsmgr.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogactorplasmamissile.cpp"
 					>
 				</File>
@@ -490,14 +498,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\ogphysicsparamsmgr.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ogphysicsparamsmgr.h"
-					>
-				</File>
-				<File
 					RelativePath=".\ogplayerphysicalobject.cpp"
 					>
 				</File>
@@ -627,6 +627,14 @@
 					RelativePath="..\..\include\IOGActorManager.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\include\IOGActorParams.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGActorParamsManager.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Math"
@@ -665,6 +673,10 @@
 				>
 				<File
 					RelativePath="..\..\include\IOGPhysicalObject.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGPhysicalParams.h"
 					>
 				</File>
 				<File

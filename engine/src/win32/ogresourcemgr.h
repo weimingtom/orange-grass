@@ -36,7 +36,7 @@ public:
     virtual const std::string& GetResourcePath () const;
 
 	// load resources.
-	virtual bool Load (std::vector<IOGResourceInfo>& _resInfo);
+	virtual bool Load ();
 
 	// get texture.
 	virtual IOGTexture* GetTexture (const std::string& _Alias);
@@ -95,15 +95,12 @@ private:
 		{
 			std::string alias;
 			std::string file;
-			std::string icon;
-			std::string actor_type;
 		};
 
 		struct TerrainResourceCfg
 		{
 			std::string alias;
 			std::string file;
-			std::string icon;
 		};
 
 		struct SpriteResourceCfg

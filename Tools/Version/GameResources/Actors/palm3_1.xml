@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Params>
+	<Physics 
+		max_speed = "0.0" 
+		/>
+	<Actor 
+		type = "static"
+		model = "palm3_1"
+		icon = "Models/Palm3/palm3_1_ed.bmp"
+		/>
+</Params>

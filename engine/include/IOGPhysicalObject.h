@@ -9,29 +9,7 @@
 #ifndef IOGPHYSICALOBJECT_H_
 #define IOGPHYSICALOBJECT_H_
 
-#include "IOGMath.h"
-#include "IOGObb.h"
-
-
-enum OGPhysicsType
-{
-	OG_PHYSICS_NONE = -1,
-	OG_PHYSICS_STATIC,
-	OG_PHYSICS_LANDBOT,
-	OG_PHYSICS_AIRBOT,
-	OG_PHYSICS_PLAYER
-};
-
-
-struct IOGPhysicalParams
-{
-    IOGPhysicalParams()
-    {
-        fMaxSpeed = 0.0f;
-    }
-
-    float fMaxSpeed;
-};
+#include "IOGPhysicalParams.h"
 
 
 class IOGPhysicalObject

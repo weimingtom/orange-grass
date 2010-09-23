@@ -11,20 +11,11 @@
 #include "IOGMath.h"
 
 
-COGActor::COGActor() :	m_Type(OG_ACTOR_NONE),
-                        m_bAdded(false),
+COGActor::COGActor() :	m_bAdded(false),
+						m_pParams(NULL),
                         m_pNode(NULL),
                         m_pPhysicalObject(NULL),
                         m_pModel(NULL)
-{
-}
-
-
-COGActor::COGActor(OGActorType _Type) : m_Type(_Type),
-                                        m_bAdded(false),
-                                        m_pNode(NULL),
-                                        m_pPhysicalObject(NULL),
-                                        m_pModel(NULL)
 {
 }
 
@@ -53,7 +44,7 @@ void COGActor::Update (unsigned long _ElapsedTime)
 // Get actor type.
 OGActorType COGActor::GetType () const
 {
-	return m_Type;
+	return m_pParams->type;
 }
 
 
@@ -74,7 +65,7 @@ IOGPhysicalObject* COGActor::GetPhysicalObject ()
 // Get model alias
 const std::string& COGActor::GetAlias () const
 {
-    return m_pModel->GetAlias();
+	return m_pParams->alias;
 }
 
 
