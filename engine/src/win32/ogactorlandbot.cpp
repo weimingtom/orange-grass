@@ -57,7 +57,7 @@ bool COGActorLandBot::Create (IOGActorParams* _pParams,
 		return false;
 	}
 	
-    m_pPhysicalObject = GetPhysics()->CreateObject(OG_PHYSICS_LANDBOT, m_pModel->GetAABB());
+    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pModel->GetAABB());
     if (!m_pPhysicalObject)
 	{
 		OG_LOG_ERROR("Creating COGActorLandBot failed, cannot create physical object");

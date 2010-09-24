@@ -19,7 +19,7 @@ public:
 	virtual ~COGPhysicalObject ();
 
 	// create object
-	virtual void Create (const IOGAabb& _Aabb, const IOGPhysicalParams& _Params) = 0;
+	virtual void Create (const IOGAabb& _Aabb, IOGPhysicalParams* _pParams) = 0;
 
 	// get world transform.
 	virtual const MATRIX& GetWorldTransform () const;
@@ -77,7 +77,7 @@ protected:
 	IOGAabb			m_Aabb;
 	IOGObb			m_Obb;
 	bool			m_bUpdated;
-    IOGPhysicalParams   m_Params;
+    IOGPhysicalParams*	m_pParams;
 };
 
 #endif

@@ -221,6 +221,26 @@
 					RelativePath=".\ogactorstatic.h"
 					>
 				</File>
+				<Filter
+					Name="Workers"
+					>
+					<File
+						RelativePath=".\ogmissileflightworker.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogmissileflightworker.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogworker.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogworker.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Graphics"
@@ -482,6 +502,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogmissilephysicalobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogmissilephysicalobject.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogphysicalobject.cpp"
 					>
 				</File>
@@ -517,6 +545,14 @@
 			<Filter
 				Name="Core"
 				>
+				<File
+					RelativePath=".\ogglobalvarstable.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogglobalvarstable.h"
+					>
+				</File>
 				<File
 					RelativePath=".\ogstatistics.cpp"
 					>
@@ -701,6 +737,10 @@
 				>
 				<File
 					RelativePath="..\..\include\IOGCoreHelpers.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGGlobalVarsTable.h"
 					>
 				</File>
 				<File

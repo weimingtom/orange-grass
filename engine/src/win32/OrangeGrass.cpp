@@ -19,6 +19,7 @@
 #include "ogstatistics.h"
 #include "ogeffectsmanager.h"
 #include "ogactorparamsmgr.h"
+#include "ogglobalvarstable.h"
 
 
 static IOGResourceMgr* g_pResourceMgr = NULL;
@@ -33,6 +34,7 @@ static IOGStatistics* g_pStats = NULL;
 static IOGSpritePool* g_pSprPool = NULL;
 static IOGEffectsManager* g_pEffectsMgr = NULL;
 static IOGActorParamsMgr* g_pActorParamsMgr = NULL;
+static IOGGlobalVarsTable* g_pGlobalVars = NULL;
 
 
 IOGResourceMgr* GetResourceMgr ()
@@ -153,4 +155,14 @@ IOGActorParamsMgr* GetActorParamsMgr ()
 		g_pActorParamsMgr = new COGActorParamsMgr ();
 	}
 	return g_pActorParamsMgr;
+}
+
+
+IOGGlobalVarsTable* GetGlobalVars ()
+{
+	if (g_pGlobalVars == NULL)
+	{
+		g_pGlobalVars = new COGGlobalVarsTable ();
+	}
+	return g_pGlobalVars;
 }

@@ -57,6 +57,7 @@ void COGInputDispatcher::OnPointerDown ( int _X, int _Y )
     std::vector<IOGInputReceiver*>::iterator iter = m_Receivers.begin();
     for (; iter != m_Receivers.end(); ++iter)
     {
+		(*iter)->OnTouch(Vec2((float)_X, (float)_Y));
 	}
 }
 

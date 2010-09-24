@@ -1,5 +1,5 @@
 /*
- *  OGStatistics.h
+ *  OGStatistics.cpp
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 11.11.09.

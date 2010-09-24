@@ -59,7 +59,7 @@ bool COGActorPlayer::Create (IOGActorParams* _pParams,
 		return false;
 	}
 	
-    m_pPhysicalObject = GetPhysics()->CreateObject(OG_PHYSICS_PLAYER, m_pModel->GetAABB());
+    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pModel->GetAABB());
     if (!m_pPhysicalObject)
 	{
 		OG_LOG_ERROR("Creating COGActorPlayer failed, cannot create physical object");
@@ -95,4 +95,10 @@ void COGActorPlayer::OnVectorChanged (const Vec3& _vVec)
 		v.normalize();
 	}
     m_pPhysicalObject->Strafe(v.x);
+}
+
+
+// Touch event handler.
+void COGActorPlayer::OnTouch (const Vec2& _vPos)
+{
 }

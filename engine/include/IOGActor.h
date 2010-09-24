@@ -37,6 +37,12 @@ public:
 	// Get model alias
 	virtual const std::string& GetAlias () const = 0;
 
+	// Get active state
+	virtual bool IsActive () const = 0;
+
+	// Set active state
+	virtual void Activate (bool _bActive) = 0;
+
 	// Check actor's OBB intersection with ray.
 	virtual bool CheckIntersection (
         const Vec3& _vRayStart,

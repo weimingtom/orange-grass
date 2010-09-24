@@ -10,6 +10,7 @@
 #define OGACTORPLASMAMISSILE_H_
 
 #include "OGActor.h"
+#include "ogmissileflightworker.h"
 
 
 class COGActorPlasmaMissile : public COGActor
@@ -31,9 +32,13 @@ public:
 	// Update actor.
 	virtual void Update (unsigned long _ElapsedTime);
 
+	// Set active state
+	virtual void Activate (bool _bActive);
+
 protected:
 
     IOGEffect*  m_pHeadEffect;
+	COGMissileFlightWorker	m_FlightWorker;
 };
 
 

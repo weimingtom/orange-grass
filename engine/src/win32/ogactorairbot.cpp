@@ -57,7 +57,7 @@ bool COGActorAirBot::Create (IOGActorParams* _pParams,
 		return false;
 	}
 	
-    m_pPhysicalObject = GetPhysics()->CreateObject(OG_PHYSICS_AIRBOT, m_pModel->GetAABB());
+	m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pModel->GetAABB());
     if (!m_pPhysicalObject)
 	{
 		OG_LOG_ERROR("Creating COGActorAirBot failed, cannot create physical object");

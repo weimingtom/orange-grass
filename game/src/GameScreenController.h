@@ -48,6 +48,9 @@ public:
     // Control vector change event handler.
 	virtual void OnVectorChanged (const Vec3& _vVec);
 
+	// Touch event handler.
+	virtual void OnTouch (const Vec2& _vPos);
+
 private:
 
     // Check if finish condition is satisfied.

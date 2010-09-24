@@ -52,7 +52,8 @@ public:
 
 private:
 
-    IOGTerrain* m_pTerrain;
+    IOGTerrain*			m_pTerrain;
+	IOGPhysicalParams	m_TerrainPhysicsParams;
 	Vec3		m_vStartPos;
 	Vec3		m_vFinishPos;
 	Vec3		m_vLightDir;

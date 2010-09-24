@@ -19,7 +19,7 @@ public:
 	virtual ~COGStaticPhysicalObject ();
 
 	// create object
-	virtual void Create (const IOGAabb& _Aabb, const IOGPhysicalParams& _Params);
+	virtual void Create (const IOGAabb& _Aabb, IOGPhysicalParams* _pParams);
 };
 
 #endif

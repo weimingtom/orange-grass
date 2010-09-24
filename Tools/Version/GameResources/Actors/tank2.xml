@@ -2,10 +2,11 @@
 <Params>
 	<Physics 
 		max_speed = "0.01" 
+		type = "land_bot"
 		/>
 	<Actor 
 		type = "land_bot"
 		model = "tank2"
-		icon = "Models/Tank2/tank2_ed.bmp"
+		icon = "Models/Tank1/tank2_ed.bmp"
 		/>
 </Params>

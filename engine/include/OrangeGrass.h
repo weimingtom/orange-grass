@@ -23,6 +23,7 @@
 #include "IOGStatistics.h"
 #include "IOGEffectsManager.h"
 #include "IOGActorParamsManager.h"
+#include "IOGGlobalVarsTable.h"
 #include "common.h"
 #include <vector>
 #include <string>
@@ -40,5 +41,6 @@ IOGStatistics* GetStatistics ();
 IOGSpritePool* GetSpritePool ();
 IOGEffectsManager* GetEffectsManager ();
 IOGActorParamsMgr* GetActorParamsMgr ();
+IOGGlobalVarsTable* GetGlobalVars ();
 
 #endif

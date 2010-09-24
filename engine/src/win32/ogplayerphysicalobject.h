@@ -19,7 +19,7 @@ public:
 	virtual ~COGPlayerPhysicalObject ();
 
 	// create object
-	virtual void Create (const IOGAabb& _Aabb, const IOGPhysicalParams& _Params);
+	virtual void Create (const IOGAabb& _Aabb, IOGPhysicalParams* _pParams);
 
 	// strafe.
 	virtual void Strafe (float _fDir);

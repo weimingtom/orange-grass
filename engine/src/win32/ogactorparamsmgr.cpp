@@ -99,6 +99,8 @@ bool COGActorParamsMgr::LoadParamsConfig (const std::string& _Alias, const std::
 		double MaxSpeed = 0;
 		pElement->Attribute ("max_speed", &MaxSpeed);
 		pParam->physics.fMaxSpeed = (float)MaxSpeed;
+
+		pParam->physics.type = ParsePhysicsType(std::string(pElement->Attribute ("type")));
     }
     TiXmlHandle ActorsParamsHandle = hParamsRoot.FirstChild("Actor");
     if (ActorsParamsHandle.Node ())

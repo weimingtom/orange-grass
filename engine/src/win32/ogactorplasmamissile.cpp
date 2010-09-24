@@ -58,7 +58,7 @@ bool COGActorPlasmaMissile::Create (IOGActorParams* _pParams,
 		return false;
 	}
 	
-    m_pPhysicalObject = GetPhysics()->CreateObject(OG_PHYSICS_AIRBOT, m_pHeadEffect->GetAABB());
+    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pHeadEffect->GetAABB());
     if (!m_pPhysicalObject)
 	{
 		OG_LOG_ERROR("Creating COGActorPlasmaMissile failed, cannot create physical object");
@@ -73,6 +73,8 @@ bool COGActorPlasmaMissile::Create (IOGActorParams* _pParams,
 		return false;
 	}
 
+	m_FlightWorker.Create(this);
+
 	return true;
 }
 
@@ -82,8 +84,6 @@ void COGActorPlasmaMissile::OnAddedToManager ()
 {
     GetPhysics()->AddObject(m_pPhysicalObject);
     GetSceneGraph()->AddEffectNode(m_pNode);
-	m_pHeadEffect->Start();
-	m_pHeadEffect->SetDirection(Vec3(0,0,1));
     m_bAdded = true;
 }
 
@@ -91,5 +91,34 @@ void COGActorPlasmaMissile::OnAddedToManager ()
 // Update actor.
 void COGActorPlasmaMissile::Update (unsigned long _ElapsedTime)
 {
-    m_pPhysicalObject->Accelerate(1.0f);
+	if (m_FlightWorker.IsActive())
+	{
+		m_FlightWorker.Update(_ElapsedTime);
+		if (m_FlightWorker.IsFinished())
+		{
+			Activate(false);
+		}
+	}
+}
+
+
+// Set active state
+void COGActorPlasmaMissile::Activate (bool _bActive)
+{
+	m_bActive = _bActive;
+
+	m_FlightWorker.Reset();
+	m_FlightWorker.Activate(m_bActive);
+	if (m_bActive)
+	{
+		m_FlightWorker.Reset();
+		m_FlightWorker.Activate(true);
+		m_pHeadEffect->Start();
+		m_pHeadEffect->SetDirection(Vec3(0,0,1));
+	}
+	else
+	{
+		m_FlightWorker.Activate(false);
+		m_pHeadEffect->Stop();
+	}
 }

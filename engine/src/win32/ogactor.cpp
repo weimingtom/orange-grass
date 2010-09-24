@@ -1,12 +1,12 @@
 /*
- *  ogactor.mm
+ *  ogactor.cpp
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 12.11.09.
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "orangegrass.h"
+#include "OrangeGrass.h"
 #include "ogactor.h"
 #include "IOGMath.h"
 
@@ -66,6 +66,13 @@ IOGPhysicalObject* COGActor::GetPhysicalObject ()
 const std::string& COGActor::GetAlias () const
 {
 	return m_pParams->alias;
+}
+
+
+// Set active state
+void COGActor::Activate (bool _bActive)
+{
+	m_bActive = _bActive;
 }
 
 

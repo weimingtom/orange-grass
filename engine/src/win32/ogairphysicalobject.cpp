@@ -1,5 +1,5 @@
 /*
- *  IOGAirPhysicalObject.h
+ *  OGAirPhysicalObject.h
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 12.11.09.
@@ -21,9 +21,9 @@ COGAirPhysicalObject::~COGAirPhysicalObject ()
 
 
 // create object
-void COGAirPhysicalObject::Create (const IOGAabb& _Aabb, const IOGPhysicalParams& _Params)
+void COGAirPhysicalObject::Create (const IOGAabb& _Aabb, IOGPhysicalParams* _pParams)
 {
-    m_Params = _Params;
+    m_pParams = _pParams;
 	m_Type = OG_PHYSICS_AIRBOT;
 	m_Aabb = _Aabb;
     m_Obb.Create(m_Aabb);

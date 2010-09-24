@@ -183,6 +183,12 @@ void CGameScreenController::OnVectorChanged (const Vec3& _vVec)
 }
 
 
+// Touch event handler.
+void CGameScreenController::OnTouch (const Vec2& _vPos)
+{
+}
+
+
 // Check if finish condition is satisfied.
 bool CGameScreenController::CheckFinishCondition ()
 {

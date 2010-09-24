@@ -1,6 +1,7 @@
 #include <wx/wx.h>
 #include "EditorObjectsFrame.h"
 #include "sample.xpm"
+#include <OrangeGrass.h>
 
 
 BEGIN_EVENT_TABLE(CEditorObjectsFrame, wxMDIChildFrame)
@@ -34,11 +35,11 @@ CEditorObjectsFrame::CEditorObjectsFrame(	wxMDIParentFrame *parent,
 /// @brief Resource loading event handler
 void CEditorObjectsFrame::OnLoadResource ( CommonToolEvent<ResLoadEventData>& event )
 {
-
 	const ResLoadEventData& evtData = event.GetEventCustomData();
+	std::string IconPath = GetResourceMgr()->GetResourcePath() + std::string("/") + std::string(evtData.m_ResourceIcon);
     wxString resourceText = evtData.m_Resource;
 	wxString resourceGroupText = evtData.m_ResourceGroup;
-	wxString resourceIconText = wxString::Format(_T("<img src=\"%s\" />"), GetResourceMgr()->GetResourcePath()evtData.m_ResourceIcon);
+	wxString resourceIconText = wxString::Format(_T("<img src=\"%s\" />"), IconPath.c_str());
 
 	if (resourceGroupText.CmpNoCase(_T("Models")) == 0)
 	{

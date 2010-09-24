@@ -2,6 +2,7 @@
 <Params>
 	<Physics 
 		max_speed = "0.01" 
+		type = "land_bot"
 		/>
 	<Actor 
 		type = "land_bot"

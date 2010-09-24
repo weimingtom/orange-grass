@@ -23,7 +23,7 @@ public:
 
 	// Create object
 	virtual IOGPhysicalObject* CreateObject (
-		OGPhysicsType _Type,
+		IOGPhysicalParams* _pParams,
 		const IOGAabb& _Aabb ) = 0;
 
 	// Add object

@@ -26,6 +26,12 @@ public:
 	// Render.
 	virtual void Render (const MATRIX& _mView);
 
+	// Start.
+	virtual void Start ();
+
+	// Stop.
+	virtual void Stop ();
+
 protected:
 	
 	COGBillboard::BBVert	m_Vertices[16];

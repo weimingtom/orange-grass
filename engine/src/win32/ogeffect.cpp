@@ -13,13 +13,13 @@
 
 COGEffect::COGEffect()
 {
+	m_Status = OG_EFFECTSTATUS_INACTIVE;
 }
 
 
 COGEffect::~COGEffect()
 {
 }
-
 
 
 // Set billboard basis vectors.

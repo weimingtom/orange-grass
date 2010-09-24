@@ -44,6 +44,12 @@ public:
 	// Get model alias
 	virtual const std::string& GetAlias () const;
 
+	// Get active state
+	virtual bool IsActive () const { return m_bActive; }
+
+	// Set active state
+	virtual void Activate (bool _bActive);
+
 	// Check actor's OBB intersection with ray.
 	virtual bool CheckIntersection (
         const Vec3& _vRayStart,
@@ -51,7 +57,8 @@ public:
 
 protected:
 
-    bool                m_bAdded;
+    bool				m_bActive;
+	bool                m_bAdded;
 	IOGActorParams*		m_pParams;
 	IOGSgNode*	        m_pNode;
     IOGPhysicalObject*  m_pPhysicalObject;

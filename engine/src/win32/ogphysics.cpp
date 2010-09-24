@@ -12,6 +12,7 @@
 #include "ogairphysicalobject.h"
 #include "oglandphysicalobject.h"
 #include "ogplayerphysicalobject.h"
+#include "ogmissilephysicalobject.h"
 #include <algorithm>
 
 
@@ -48,17 +49,15 @@ void COGPhysics::Clear ()
 
 // Create object
 IOGPhysicalObject* COGPhysics::CreateObject (
-	OGPhysicsType _Type,
+	IOGPhysicalParams* _pParams,
 	const IOGAabb& _Aabb )
 {
-    IOGPhysicalParams params;
-
-	switch (_Type)
+	switch (_pParams->type)
 	{
 	case OG_PHYSICS_STATIC:
 		{
 			COGStaticPhysicalObject* pObj = new COGStaticPhysicalObject();
-			pObj->Create (_Aabb, params);
+			pObj->Create (_Aabb, _pParams);
 			return pObj;
 		}
 		break;
@@ -66,7 +65,15 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 	case OG_PHYSICS_LANDBOT:
 		{
 			COGLandPhysicalObject* pObj = new COGLandPhysicalObject();
-			pObj->Create (_Aabb, params);
+			pObj->Create (_Aabb, _pParams);
+			return pObj;
+		}
+		break;
+
+	case OG_PHYSICS_MISSILE:
+		{
+			COGMissilePhysicalObject* pObj = new COGMissilePhysicalObject();
+			pObj->Create (_Aabb, _pParams);
 			return pObj;
 		}
 		break;
@@ -74,7 +81,7 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 	case OG_PHYSICS_AIRBOT:
 		{
 			COGAirPhysicalObject* pObj = new COGAirPhysicalObject();
-			pObj->Create (_Aabb, params);
+			pObj->Create (_Aabb, _pParams);
 			return pObj;
 		}
 		break;
@@ -82,7 +89,7 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 	case OG_PHYSICS_PLAYER:
 		{
 			COGPlayerPhysicalObject* pObj = new COGPlayerPhysicalObject();
-			pObj->Create (_Aabb, params);
+			pObj->Create (_Aabb, _pParams);
 			return pObj;
 		}
 		break;
@@ -104,6 +111,7 @@ void COGPhysics::AddObject (IOGPhysicalObject* _pObject)
 		m_StaticObjList.push_back(_pObject);
 		break;
 
+	case OG_PHYSICS_MISSILE:
 	case OG_PHYSICS_LANDBOT:
 	case OG_PHYSICS_AIRBOT:
 	case OG_PHYSICS_PLAYER:
@@ -132,6 +140,7 @@ void COGPhysics::RemoveObject (IOGPhysicalObject* _pObject)
 		}
 		break;
 
+	case OG_PHYSICS_MISSILE:
 	case OG_PHYSICS_LANDBOT:
 	case OG_PHYSICS_AIRBOT:
 	case OG_PHYSICS_PLAYER:

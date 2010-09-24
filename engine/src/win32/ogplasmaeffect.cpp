@@ -45,6 +45,9 @@ void COGPlasmaEffect::Init(OGEffectType _Type)
 // Update.
 void COGPlasmaEffect::Update (unsigned long _ElapsedTime)
 {
+	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
+		return;
+
 	for (int i = 0; i < 4; ++i)
 	{
 		m_Particles[i].offset = m_Direction * (float)i;
@@ -55,6 +58,9 @@ void COGPlasmaEffect::Update (unsigned long _ElapsedTime)
 // Render.
 void COGPlasmaEffect::Render (const MATRIX& _mView)
 {
+	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
+		return;
+
     glLoadMatrixf(_mView.f);
 
 	glDisable(GL_DEPTH_TEST);
@@ -79,4 +85,18 @@ void COGPlasmaEffect::Render (const MATRIX& _mView)
 	}
 
 	glEnable(GL_DEPTH_TEST);
+}
+
+
+// Start.
+void COGPlasmaEffect::Start ()
+{
+	m_Status = OG_EFFECTSTATUS_STARTED;
+}
+
+
+// Stop.
+void COGPlasmaEffect::Stop ()
+{
+	m_Status = OG_EFFECTSTATUS_INACTIVE;
 }
