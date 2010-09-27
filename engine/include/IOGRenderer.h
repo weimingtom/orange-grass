@@ -70,6 +70,9 @@ public:
 	
 	// reset renderer pipeline.
 	virtual void Reset () = 0;
+
+    // Unproject screen coords.
+    virtual Vec3 UnprojectCoords (int _X, int _Y) = 0;
 };
 
 #endif

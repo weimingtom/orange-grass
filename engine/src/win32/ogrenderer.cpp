@@ -236,3 +236,45 @@ void COGRenderer::Reset ()
     m_pCurMaterial = NULL;
     m_pCurMesh = NULL;
 }
+
+
+// Unproject screen coords.
+Vec3 COGRenderer::UnprojectCoords (int _X, int _Y)
+{
+	// Get the inverse of the view matrix
+	MATRIX mInv, mMul;
+    MATRIX mView = m_pCamera->GetViewMatrix();
+	MatrixMultiply (mMul, m_mProjection, m_pCamera->GetViewMatrix());
+	//MatrixMultiply (mMul, mView, m_mProjection);
+	MatrixInverse (mInv, mMul);
+
+	//// Compute the vector of the pick ray in screen space
+ //   Vec4 v;
+	//v.x = ( ( ( 2.0f * _X ) / 480 ) - 1.0f );
+	//v.y = ( ( ( 2.0f * _Y ) / 320 ) - 1.0f );
+	//v.z = 2.0f * 0.0f - 1.0f;
+	//v.w = 1.0f;
+
+    Vec4 in;
+    in.x=_X;
+    in.y=_Y;
+    in.z=0.0f;
+    in.w=1.0f;
+
+    /* Map x and y from window coordinates */
+    in.x = (in.x - 0) / 480;
+    in.y = (in.y - 0) / 320;
+
+    /* Map to range -1 to 1 */
+    in.x = in.x * 2 - 1;
+    in.y = in.y * 2 - 1;
+    in.z = in.z * 2 - 1;
+
+	// Transform the screen space pick ray into 3D space
+	VECTOR4 out;
+	MatrixVec4Multiply (out, in, mInv);
+	out.x /= out.w;
+	out.y /= out.w;
+	out.z /= out.w;
+	return Vec3(out.x, out.y, out.z);
+}

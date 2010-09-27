@@ -11,6 +11,7 @@
 
 #include "OGActor.h"
 #include "IOGInputReceiver.h"
+#include "OGWeapon.h"
 
 
 class COGActorPlayer : public COGActor, public IOGInputReceiver
@@ -34,6 +35,10 @@ public:
 
 	// Touch event handler.
 	virtual void OnTouch (const Vec2& _vPos);
+
+protected:
+
+    COGWeapon   m_Weapon;
 };
 
 

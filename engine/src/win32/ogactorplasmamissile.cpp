@@ -13,6 +13,7 @@
 
 COGActorPlasmaMissile::COGActorPlasmaMissile()
 {
+    m_pOwner = NULL;
 }
 
 
@@ -74,6 +75,7 @@ bool COGActorPlasmaMissile::Create (IOGActorParams* _pParams,
 	}
 
 	m_FlightWorker.Create(this);
+    Activate(false);
 
 	return true;
 }
@@ -121,4 +123,22 @@ void COGActorPlasmaMissile::Activate (bool _bActive)
 		m_FlightWorker.Activate(false);
 		m_pHeadEffect->Stop();
 	}
+}
+
+
+// Set owner.
+void COGActorPlasmaMissile::SetOwner (IOGActor* _pOwner, const Vec3& _vLaunchOffset)
+{
+    m_pOwner = _pOwner;
+    m_vLaunchOffset = _vLaunchOffset;
+}
+
+
+// Fire to target.
+void COGActorPlasmaMissile::Fire (const Vec3& _vTarget)
+{
+    Vec3 vPos = m_pOwner->GetPhysicalObject()->GetPosition() + m_vLaunchOffset;
+    Vec3 vRot = m_pOwner->GetPhysicalObject()->GetRotation();
+	m_pPhysicalObject->SetWorldTransform(vPos, vRot, Vec3(1,1,1));
+    Activate(true);
 }

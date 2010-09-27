@@ -55,33 +55,51 @@ LRESULT CALLBACK WndProc ( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
      		break;
 
 		case WM_KEYDOWN:
-            pGameSystem->OnKeyDown(0);
+            if (wParam == VK_LEFT)
+            {
+                sMouseX -= 3;
+            }
+            else if (wParam == VK_RIGHT)
+            {
+                sMouseX += 3;
+            }
+            pGameSystem->OnPointerMove(sMouseX, sMouseY);
+            //pGameSystem->OnKeyDown(0);
 			break;
 
 		case WM_KEYUP:
-            pGameSystem->OnKeyUp(0);
+            //pGameSystem->OnKeyUp(0);
 			break;
 
 		case WM_LBUTTONUP:
         {
-			sMouseX = (SHORT)LOWORD(lParam);
-			sMouseY = (SHORT)HIWORD(lParam);
-            pGameSystem->OnPointerUp(sMouseX, sMouseY);
+            RECT r; 
+            GetClientRect(shWnd, &r); 
+            int Y = r.bottom - 1 - (SHORT)HIWORD(lParam);
+
+            bTouch = false;
+            sTouchX = (SHORT)LOWORD(lParam);
+            sTouchY = (SHORT)HIWORD(lParam);
+            pGameSystem->OnPointerUp(sTouchX, sTouchY);
         }
         break;
 
 		case WM_LBUTTONDOWN:
         {
-			sMouseX = (SHORT)LOWORD(lParam);
-			sMouseY = (SHORT)HIWORD(lParam);
-            pGameSystem->OnPointerDown(sMouseX, sMouseY);
+            bTouch = true;
+            sTouchX = (SHORT)LOWORD(lParam);
+            sTouchY = (SHORT)HIWORD(lParam);
+            pGameSystem->OnPointerDown(sTouchX, sTouchY);
+            //int X = (SHORT)LOWORD(lParam);
+            //int Y = (SHORT)HIWORD(lParam);
+            //pGameSystem->OnPointerDown(X, Y);
         }
         break;
 
 		case WM_MOUSEMOVE:
 		{
-            sMouseX = (SHORT)LOWORD(lParam);
-            sMouseY = (SHORT)HIWORD(lParam);
+            //sMouseX = (SHORT)LOWORD(lParam);
+            //sMouseY = (SHORT)HIWORD(lParam);
             //pGameSystem->OnPointerMove(sMouseX, sMouseY);
 		}
 		break;
@@ -176,7 +194,11 @@ void CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime)
 	{
         if (pGameSystem->GetControllerState() != SYSSTATE_EXIT)
         {
-            pGameSystem->OnPointerMove(sMouseX, sMouseY);
+            //pGameSystem->OnPointerMove(sMouseX, sMouseY);
+            //if (bTouch)
+            //{
+            //    pGameSystem->OnPointerDown(sTouchX, sTouchY);
+            //}
             pFPS.Update();
             //unsigned long ElapsedTime = (unsigned long)(1000.0f/(float)pFPS.GetFPS());
             //if (ElapsedTime > 30)

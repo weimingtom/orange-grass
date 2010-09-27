@@ -19,5 +19,8 @@ DWORD				sCurTime = 0;
 int                 sMouseX = 0;
 int                 sMouseY = 0;
 
+bool                bTouch = false;
+int                 sTouchX = 0;
+int                 sTouchY = 0;
 
 #endif

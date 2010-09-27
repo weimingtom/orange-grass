@@ -13,6 +13,8 @@
 #include "UI.h"
 
 CDisplayText * AppDisplayText;
+Vec3    gV = Vec3(0,0,0);
+Vec3    gP = Vec3(0,0,0);
 
 
 CGameScreenController::CGameScreenController() :	m_pResourceMgr(NULL),
@@ -150,13 +152,17 @@ void CGameScreenController::RenderScene ()
 	unsigned long DrawCalls;
 	GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, 
 		VBOSwitches, DrawCalls);
-	AppDisplayText->DisplayText(70, 8,0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
-	AppDisplayText->DisplayText(70,12,0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
-	AppDisplayText->DisplayText(70,16,0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
-	AppDisplayText->DisplayText(70,20,0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
-	AppDisplayText->DisplayText(70,24,0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
+	//AppDisplayText->DisplayText(70, 8,0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
+	//AppDisplayText->DisplayText(70,12,0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
+	//AppDisplayText->DisplayText(70,16,0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
+	//AppDisplayText->DisplayText(70,20,0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
+	//AppDisplayText->DisplayText(70,24,0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
 	GetStatistics()->Reset();
 #endif
+
+    AppDisplayText->DisplayText(0,20,0.4f, 0x7FFFFFFF, "[%f, %f, %f]", gV.x, gV.y, gV.z);
+    AppDisplayText->DisplayText(0,24,0.4f, 0x7FFFFFFF, "[%f, %f, %f]", gP.x, gP.y, gP.z);
+
 	AppDisplayText->Flush();
 }
 
@@ -186,6 +192,16 @@ void CGameScreenController::OnVectorChanged (const Vec3& _vVec)
 // Touch event handler.
 void CGameScreenController::OnTouch (const Vec2& _vPos)
 {
+	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
+    Vec3 vPick = GetPickRay (_vPos.x, _vPos.y);
+    Vec3 vPos = GetRenderer()->GetCamera()->GetPosition();
+    gV = vPick - vPos;
+    gV.normalize();
+
+    vPick = GetRenderer()->UnprojectCoords (_vPos.x, 320 - _vPos.y);
+    gP = vPick - vPos;
+    gP.normalize();
+	m_pRenderer->FinishRenderMode();
 }
 
 

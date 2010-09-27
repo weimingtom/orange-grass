@@ -35,9 +35,17 @@ public:
 	// Set active state
 	virtual void Activate (bool _bActive);
 
+	// Set owner.
+	virtual void SetOwner (IOGActor* _pOwner, const Vec3& _vLaunchOffset);
+
+	// Fire to target.
+	virtual void Fire (const Vec3& _vTarget);
+
 protected:
 
     IOGEffect*  m_pHeadEffect;
+    IOGActor*   m_pOwner;
+    Vec3        m_vLaunchOffset;
 	COGMissileFlightWorker	m_FlightWorker;
 };
 

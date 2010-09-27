@@ -74,6 +74,8 @@ bool COGActorPlayer::Create (IOGActorParams* _pParams,
 		return false;
 	}
 
+    m_Weapon.Create(this);
+
     return true;
 }
 
@@ -101,4 +103,5 @@ void COGActorPlayer::OnVectorChanged (const Vec3& _vVec)
 // Touch event handler.
 void COGActorPlayer::OnTouch (const Vec2& _vPos)
 {
+    m_Weapon.Fire(Vec3(0,0,0));
 }

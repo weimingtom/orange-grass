@@ -221,6 +221,14 @@
 					RelativePath=".\ogactorstatic.h"
 					>
 				</File>
+				<File
+					RelativePath=".\ogweapon.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogweapon.h"
+					>
+				</File>
 				<Filter
 					Name="Workers"
 					>
