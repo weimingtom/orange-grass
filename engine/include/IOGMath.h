@@ -71,32 +71,6 @@ static float Dist3DSq ( const Vec3& _p1, const Vec3& _p2 )
 
 
 // Calculate pick ray
-static Vec3 GetPickRay1 (const MATRIX& _mView, const MATRIX& _mProj, int _XRes, int _YRes, int _MouseX, int _MouseY, int _MouseZ)
-{
-	// Get the inverse of the view matrix
-	MATRIX mInv, mMul;
-	MatrixMultiply (mMul, _mProj, _mView);
-	MatrixInverseEx (mInv, mMul);
-
-	// Compute the vector of the pick ray in screen space
-    Vec4 v;
-	v.x = ( ( ( 2.0f * _MouseX ) / _XRes ) - 1.0f );
-	v.y = ( ( ( 2.0f * _MouseY ) / _YRes ) - 1.0f );
-	v.z = 2.0f * _MouseZ - 1.0f;
-	v.w = 1.0f;
-
-	// Transform the screen space pick ray into 3D space
-	VECTOR4 out;
-	MatrixVec4Multiply (out, v, mInv);
-	out.w = 1 / out.w;
-	out.x *= out.w;
-	out.y *= out.w;
-	out.z *= out.w;
-	return Vec3(out.x, out.y, out.z);
-}
-
-
-// Calculate pick ray
 static Vec3 GetPickRay (int _MouseX, int _MouseY)
 {
 #ifdef WIN32

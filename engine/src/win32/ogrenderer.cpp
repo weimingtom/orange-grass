@@ -12,6 +12,7 @@
 #include "ogcamera.h"
 #include "ogfog.h"
 #include "ogsprite.h"
+#include "oggrutility.h"
 
 
 COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
@@ -19,7 +20,8 @@ COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
                                 m_pCurMesh(NULL),
 								m_pFog(NULL),
 								m_pLight(NULL),
-								m_pCamera(NULL)
+								m_pCamera(NULL),
+								m_pText(NULL)
 {
 	m_pStats = GetStatistics();
 }
@@ -27,6 +29,10 @@ COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
 
 COGRenderer::~COGRenderer ()
 {
+	m_pText->ReleaseTextures();
+	free(m_pText);
+	m_pText = NULL;
+
 	OG_SAFE_DELETE(m_pFog);
 	OG_SAFE_DELETE(m_pLight);
 	OG_SAFE_DELETE(m_pCamera);
@@ -47,6 +53,10 @@ bool COGRenderer::Init ()
 	m_pLight = new COGLight ();
 	m_pCamera = new COGCamera ();
 	m_pFog = new COGFog ();
+
+	m_pText = (CDisplayText*)malloc(sizeof(CDisplayText));    
+	memset(m_pText, 0, sizeof(CDisplayText));
+
 	return true;
 }
 
@@ -68,9 +78,11 @@ void COGRenderer::SetViewport (
 #ifdef WIN32
 	MatrixOrthoRH(m_mOrthoProj, (float)m_Width, (float)m_Height, -1, 1, false);
     MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(m_Width)/float(m_Height), m_fZNear, m_fZFar, false);
+ 	m_pText->SetTextures(SCR_WIDTH, SCR_HEIGHT, false);
 #else
 	MatrixOrthoRH(m_mOrthoProj, (float)m_Height, (float)m_Width, -1, 1, true);
     MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(m_Height)/float(m_Width), m_fZNear, m_fZFar, true);
+ 	m_pText->SetTextures(SCR_HEIGHT, SCR_WIDTH, true);
 #endif
 }
 
@@ -175,6 +187,7 @@ void COGRenderer::StartRenderMode(OGRenderMode _Mode)
 		break;
 	
 	case OG_RENDERMODE_SPRITES:
+		glAlphaFunc(GL_GREATER, 0.1f);
 		m_pLight->Enable(false);
 		glDisable(GL_DEPTH_TEST);
 	    glDisable(GL_CULL_FACE);
@@ -220,7 +233,8 @@ void COGRenderer::FinishRenderMode()
 		glEnable(GL_DEPTH_TEST);
 	    glEnable(GL_CULL_FACE);
 		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);	
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		m_pText->Flush();
 		break;
 
 	case OG_RENDERMODE_SHADOWMAP:
@@ -241,40 +255,29 @@ void COGRenderer::Reset ()
 // Unproject screen coords.
 Vec3 COGRenderer::UnprojectCoords (int _X, int _Y)
 {
-	// Get the inverse of the view matrix
-	MATRIX mInv, mMul;
-    MATRIX mView = m_pCamera->GetViewMatrix();
-	MatrixMultiply (mMul, m_mProjection, m_pCamera->GetViewMatrix());
-	//MatrixMultiply (mMul, mView, m_mProjection);
-	MatrixInverse (mInv, mMul);
+	float modelMatrix[16];
+	float projMatrix[16];
+	int viewport[4];
+	glGetFloatv(GL_MODELVIEW_MATRIX, modelMatrix);
+	glGetFloatv(GL_PROJECTION_MATRIX, projMatrix);
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	float x0, y0, z0;
+	UnProject((float)_X, (float)(viewport[3] - _Y), 0.0f, modelMatrix, projMatrix, viewport, &x0, &y0, &z0);
+    return Vec3(x0, y0, z0);
+}
 
-	//// Compute the vector of the pick ray in screen space
- //   Vec4 v;
-	//v.x = ( ( ( 2.0f * _X ) / 480 ) - 1.0f );
-	//v.y = ( ( ( 2.0f * _Y ) / 320 ) - 1.0f );
-	//v.z = 2.0f * 0.0f - 1.0f;
-	//v.w = 1.0f;
 
-    Vec4 in;
-    in.x=_X;
-    in.y=_Y;
-    in.z=0.0f;
-    in.w=1.0f;
+// Display string.
+void COGRenderer::DisplayString (const Vec2& _vPos, 
+								 float _fScale, 
+								 unsigned int Colour, 
+								 const char * const pszFormat, ...)
+{
+	va_list	args;
+	static char	Text[5120+1];
+	va_start(args, pszFormat);
+	vsprintf(Text, pszFormat, args);
+	va_end(args);
 
-    /* Map x and y from window coordinates */
-    in.x = (in.x - 0) / 480;
-    in.y = (in.y - 0) / 320;
-
-    /* Map to range -1 to 1 */
-    in.x = in.x * 2 - 1;
-    in.y = in.y * 2 - 1;
-    in.z = in.z * 2 - 1;
-
-	// Transform the screen space pick ray into 3D space
-	VECTOR4 out;
-	MatrixVec4Multiply (out, in, mInv);
-	out.x /= out.w;
-	out.y /= out.w;
-	out.z /= out.w;
-	return Vec3(out.x, out.y, out.z);
+    m_pText->DisplayText(_vPos.x,_vPos.y,_fScale, Colour, pszFormat);
 }

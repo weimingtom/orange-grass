@@ -262,6 +262,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\oggrutility.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\oggrutility.h"
+					>
+				</File>
+				<File
 					RelativePath=".\oglight.cpp"
 					>
 				</File>
@@ -562,6 +570,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogsettingsreader.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogsettingsreader.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogstatistics.cpp"
 					>
 				</File>
@@ -749,6 +765,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\IOGGlobalVarsTable.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGSettingsReader.h"
 					>
 				</File>
 				<File

@@ -10,11 +10,6 @@
 #include "GameScreenController.h"
 #include "OrangeGrass.h"
 #include "common.h"
-#include "UI.h"
-
-CDisplayText * AppDisplayText;
-Vec3    gV = Vec3(0,0,0);
-Vec3    gP = Vec3(0,0,0);
 
 
 CGameScreenController::CGameScreenController() :	m_pResourceMgr(NULL),
@@ -36,9 +31,6 @@ CGameScreenController::CGameScreenController() :	m_pResourceMgr(NULL),
 
 CGameScreenController::~CGameScreenController()
 {
-	AppDisplayText->ReleaseTextures();
-	free(AppDisplayText);
-
 	m_pResourceMgr = NULL;
 	m_pSg = NULL;
 	m_pRenderer = NULL;
@@ -58,14 +50,6 @@ bool CGameScreenController::Init ()
 	m_pRenderer = GetRenderer();
 	m_pCamera = m_pRenderer->GetCamera();
 	m_pRenderer->SetViewport(SCR_WIDTH, SCR_HEIGHT, 4.0f, 200.0f, 0.67f);
-
-	AppDisplayText = (CDisplayText*)malloc(sizeof(CDisplayText));    
-	memset(AppDisplayText, 0, sizeof(CDisplayText));
-#ifdef WIN32
- 	AppDisplayText->SetTextures(SCR_WIDTH, SCR_HEIGHT, false);
-#else
- 	AppDisplayText->SetTextures(SCR_HEIGHT, SCR_WIDTH, true);
-#endif
     
 	m_fFOV = 0.67f;
 	m_fCameraTargetDistance = 60.0f;
@@ -82,13 +66,6 @@ bool CGameScreenController::Init ()
 
 	UpdateCamera();
 	GetPhysics()->UpdateAll(1);
-
-    IOGActor* pMissile = GetActorManager()->CreateActor(
-        std::string("plasma_01"), 
-        m_pPlayer->GetPhysicalObject()->GetPosition()+Vec3(0,0,-20),
-        Vec3(0,0,0),
-        Vec3(1,1,1));
-    GetActorManager()->AddActor(pMissile);
 
     return true;
 }
@@ -135,15 +112,13 @@ void CGameScreenController::RenderScene ()
 	m_pRenderer->FinishRenderMode();
 	m_pRenderer->GetFog()->Enable(false);
 
-	m_pRenderer->Reset();
-
-	glAlphaFunc(GL_GREATER, 0.1f);
 	unsigned long fps = 0;
 	if (m_ElapsedTime > 0)
 	{
 		fps = 1000/m_ElapsedTime;
 	}
-	AppDisplayText->DisplayText(70,4,0.4f, 0xFFFFFFFF, "FPS %d", fps);
+	m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
+	m_pRenderer->DisplayString(Vec2(70.0f,4.0f), 0.4f, 0xFFFFFFFF, "FPS %d", fps);
 #ifdef STATISTICS
 	unsigned long Verts; 
 	unsigned long Faces;
@@ -152,18 +127,16 @@ void CGameScreenController::RenderScene ()
 	unsigned long DrawCalls;
 	GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, 
 		VBOSwitches, DrawCalls);
-	//AppDisplayText->DisplayText(70, 8,0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
-	//AppDisplayText->DisplayText(70,12,0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
-	//AppDisplayText->DisplayText(70,16,0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
-	//AppDisplayText->DisplayText(70,20,0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
-	//AppDisplayText->DisplayText(70,24,0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
+	m_pRenderer->DisplayString(Vec2(70.0f, 8.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
+	m_pRenderer->DisplayString(Vec2(70.0f,12.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
+	m_pRenderer->DisplayString(Vec2(70.0f,16.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
+	m_pRenderer->DisplayString(Vec2(70.0f,20.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
+	m_pRenderer->DisplayString(Vec2(70.0f,24.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
 	GetStatistics()->Reset();
 #endif
+	m_pRenderer->FinishRenderMode();
 
-    AppDisplayText->DisplayText(0,20,0.4f, 0x7FFFFFFF, "[%f, %f, %f]", gV.x, gV.y, gV.z);
-    AppDisplayText->DisplayText(0,24,0.4f, 0x7FFFFFFF, "[%f, %f, %f]", gP.x, gP.y, gP.z);
-
-	AppDisplayText->Flush();
+	m_pRenderer->Reset();
 }
 
 
@@ -192,16 +165,6 @@ void CGameScreenController::OnVectorChanged (const Vec3& _vVec)
 // Touch event handler.
 void CGameScreenController::OnTouch (const Vec2& _vPos)
 {
-	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
-    Vec3 vPick = GetPickRay (_vPos.x, _vPos.y);
-    Vec3 vPos = GetRenderer()->GetCamera()->GetPosition();
-    gV = vPick - vPos;
-    gV.normalize();
-
-    vPick = GetRenderer()->UnprojectCoords (_vPos.x, 320 - _vPos.y);
-    gP = vPick - vPos;
-    gP.normalize();
-	m_pRenderer->FinishRenderMode();
 }
 
 

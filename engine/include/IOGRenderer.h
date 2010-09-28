@@ -73,6 +73,9 @@ public:
 
     // Unproject screen coords.
     virtual Vec3 UnprojectCoords (int _X, int _Y) = 0;
+
+    // Display string.
+    virtual void DisplayString (const Vec2& _vPos, float _fScale, unsigned int Colour, const char * const pszFormat, ...) = 0;
 };
 
 #endif

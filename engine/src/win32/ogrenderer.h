@@ -14,6 +14,7 @@
 #include "OpenGL2.h"
 #include "ogmesh.h"
 #include "ogrendertarget.h"
+#include "UI.h"
 
 
 class COGRenderer : public IOGRenderer
@@ -65,6 +66,13 @@ public:
 
     // Unproject screen coords.
     virtual Vec3 UnprojectCoords (int _X, int _Y);
+
+    // Display string.
+    virtual void DisplayString (
+		const Vec2& _vPos, 
+		float _fScale, 
+		unsigned int Colour, 
+		const char * const pszFormat, ...);
 	
 private:
 
@@ -75,6 +83,7 @@ private:
 	IOGLight*			m_pLight;
 	IOGCamera*			m_pCamera;
 	IOGFog*				m_pFog;
+	CDisplayText*		m_pText;
 	MATRIX				m_mOrthoProj;
 	MATRIX				m_mProjection;
 	unsigned int		m_Width; 
