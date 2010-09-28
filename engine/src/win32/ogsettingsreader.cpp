@@ -84,6 +84,15 @@ void COGSettingsReader::CloseGroupNode (IOGGroupNode* _pNode)
 // read next group node.
 IOGGroupNode* COGSettingsReader::ReadNextNode (IOGGroupNode* _pNode)
 {
+    TiXmlHandle* pNewNode = new TiXmlHandle(((COGGroupNode*)_pNode->pParent)->pNode->Child ( _pNode->name.c_str(), _pNode->index + 1 ));
+    if (pNewNode->Node())
+    {
+        COGGroupNode* pNode = (COGGroupNode*)_pNode;
+    	OG_SAFE_DELETE(pNode->pNode);
+        pNode->pNode = pNewNode;
+        pNode->index++;
+        _pNode->pElement = ((COGGroupNode*)_pNode)->pNode->Element();
+    }
 }
 
 

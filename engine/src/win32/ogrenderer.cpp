@@ -279,5 +279,5 @@ void COGRenderer::DisplayString (const Vec2& _vPos,
 	vsprintf(Text, pszFormat, args);
 	va_end(args);
 
-    m_pText->DisplayText(_vPos.x,_vPos.y,_fScale, Colour, pszFormat);
+    m_pText->DisplayText(_vPos.x,_vPos.y,_fScale, Colour, Text);
 }
