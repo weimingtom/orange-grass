@@ -51,7 +51,7 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 		GetActorParamsMgr()->Init();
         GetLevelManager()->Init();
 
-		std::string LevelAliasStr("level_0");
+		std::string LevelAliasStr("level_1");
 		m_pCurLevel = GetLevelManager()->LoadLevel(LevelAliasStr);
 		if (m_pCurLevel == NULL)
 		{

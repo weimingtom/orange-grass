@@ -49,11 +49,11 @@ bool CGameScreenController::Init ()
 	m_pSg = GetSceneGraph();
 	m_pRenderer = GetRenderer();
 	m_pCamera = m_pRenderer->GetCamera();
-	m_pRenderer->SetViewport(SCR_WIDTH, SCR_HEIGHT, 4.0f, 200.0f, 0.67f);
+	m_pRenderer->SetViewport(SCR_WIDTH, SCR_HEIGHT, 4.0f, 350.0f, 0.67f);
     
 	m_fFOV = 0.67f;
 	m_fCameraTargetDistance = 60.0f;
-	m_fCameraFwdSpeed = 0.0f;//0.02f;
+	m_fCameraFwdSpeed = 0.04f;
 	m_fCameraStrafeSpeed = 0.01f;
 	m_fFinishPointSqDistance = 10000.0f;
 	m_ElapsedTime = 0;
@@ -61,7 +61,7 @@ bool CGameScreenController::Init ()
 	GetPhysics()->SetCameraFwdSpeed(m_fCameraFwdSpeed);
 	GetPhysics()->SetCameraStrafeSpeed(m_fCameraStrafeSpeed);
 
-    m_pCurLevel = GetLevelManager()->LoadLevel(std::string("level_0"));
+    m_pCurLevel = GetLevelManager()->LoadLevel(std::string("level_1"));
     m_pPlayer = GetActorManager()->GetPlayersActor();
 
 	UpdateCamera();
