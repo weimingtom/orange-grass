@@ -45,18 +45,6 @@ public:
     // Get borders at point
     virtual void GetBordersAtPoint (const Vec3& _vPos, Vec3& _vLeft, Vec3& _vRight);
 
-    // Set camera forward speed
-	virtual void SetCameraFwdSpeed (float _fSpeed) {m_fCameraFwdSpeed = _fSpeed;}
-
-    // Set camera forward speed
-	virtual float GetCameraFwdSpeed () const {return m_fCameraFwdSpeed;}
-
-    // Set camera strafe speed
-	virtual void SetCameraStrafeSpeed (float _fSpeed) {m_fCameraStrafeSpeed = _fSpeed;}
-
-    // Set camera strafe speed
-	virtual float GetCameraStrafeSpeed () const {return m_fCameraStrafeSpeed;}
-
 private:
 
 	std::list<IOGPhysicalObject*>	m_StaticObjList;
@@ -64,9 +52,6 @@ private:
 
 	Vec3    m_vLeftBorder[3];
     Vec3    m_vRightBorder[3];
-
-	float	m_fCameraFwdSpeed;
-	float	m_fCameraStrafeSpeed;
 };
 
 #endif

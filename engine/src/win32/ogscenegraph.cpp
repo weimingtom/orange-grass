@@ -177,7 +177,7 @@ void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 
 		if (fObjectZ <= fCameraZ)
 		{
-			if ((fCameraZ - fObjectZ) < 200.0f)
+			if ((fCameraZ - fObjectZ) < 300.0f)
 			{
 				const MATRIX& mWorld = pNode->GetWorldTransform();
 				MatrixMultiply(mModelView, mWorld, mView);
@@ -243,7 +243,7 @@ void COGSceneGraph::RenderNodesList(IOGCamera* _pCamera, TNodesList& _List)
 
 		if (fObjectZ <= fCameraZ)
 		{
-			if ((fCameraZ - fObjectZ) < 200.0f)
+			if ((fCameraZ - fObjectZ) < 300.0f)
 			{
 				const MATRIX& mWorld = pNode->GetWorldTransform();
 				MatrixMultiply(mModelView, mWorld, mView);

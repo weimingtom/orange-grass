@@ -43,18 +43,6 @@ public:
 
 	// Update transforms for the whole scene.
 	virtual void UpdateAll (unsigned long _ElapsedTime) = 0;
-
-    // Set camera forward speed
-    virtual void SetCameraFwdSpeed (float _fSpeed) = 0;
-
-    // Set camera forward speed
-    virtual float GetCameraFwdSpeed () const = 0;
-
-    // Set camera strafe speed
-    virtual void SetCameraStrafeSpeed (float _fSpeed) = 0;
-
-    // Set camera strafe speed
-    virtual float GetCameraStrafeSpeed () const = 0;
 };
 
 #endif

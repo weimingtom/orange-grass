@@ -75,8 +75,6 @@ private:
 
 	float			m_fFOV;
 	float			m_fCameraTargetDistance;
-	float			m_fCameraFwdSpeed;
-	float			m_fCameraStrafeSpeed;
 	float			m_fFinishPointSqDistance;
 
 	unsigned long	m_ElapsedTime;

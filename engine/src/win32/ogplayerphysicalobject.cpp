@@ -46,16 +46,16 @@ void COGPlayerPhysicalObject::Strafe (float _fDir)
 // Update transforms.
 void COGPlayerPhysicalObject::Update (unsigned long _ElapsedTime)
 {
-	m_vPosition += Vec3(0,0,-1.0f) * (m_pPhysics->GetCameraFwdSpeed() * _ElapsedTime);
+    m_vPosition += Vec3(0,0,-1.0f) * (m_pParams->fMaxSpeed * _ElapsedTime);
 
     Vec3 vLeftBorder, vRightBorder;
     m_pPhysics->GetBordersAtPoint(m_vPosition, vLeftBorder, vRightBorder);
-    Vec3 vStrafeDist = m_vStrafeVec * (m_pPhysics->GetCameraStrafeSpeed() * _ElapsedTime);
+    Vec3 vStrafeDist = m_vStrafeVec * (m_pParams->fStrafeMaxSpeed * _ElapsedTime);
     m_vPosition += vStrafeDist;
     OG_CLAMP(m_vPosition.x, vLeftBorder.x, vRightBorder.x);
 
-    m_vRotation.z += m_fRolling * 0.0002f * _ElapsedTime;
-    OG_CLAMP(m_vRotation.z, -0.5f, 0.5f);
+    m_vRotation.z += m_fRolling * m_pParams->fRollSpeed * _ElapsedTime;
+    OG_CLAMP(m_vRotation.z, -m_pParams->fMaxRollAngle, m_pParams->fMaxRollAngle);
 
     COGPhysicalObject::Update(_ElapsedTime);
 

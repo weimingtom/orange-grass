@@ -20,8 +20,8 @@ COGLevel::COGLevel () : m_pTerrain(NULL)
 	m_vLightColor = Vec3(1,1,1);
 	
 	m_vFogColor = Vec4(0.8f, 0.9f, 0.5f, 1.0f);
-	m_fFogStart = 100.0f;
-	m_fFogEnd = 250.0f;
+	m_fFogStart = 150.0f;
+	m_fFogEnd = 300.0f;
 	m_fFogDensity = 0.15f;
 }
 

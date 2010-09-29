@@ -22,8 +22,6 @@ CGameScreenController::CGameScreenController() :	m_pResourceMgr(NULL),
 													m_pCurLevel(NULL),
 													m_fFOV(1.0f),
 													m_fCameraTargetDistance(150.0f),
-													m_fCameraFwdSpeed(0.02f),
-													m_fCameraStrafeSpeed(0.02f),
 													m_ElapsedTime(0)
 {
 }
@@ -45,22 +43,17 @@ CGameScreenController::~CGameScreenController()
 // Initialize controller
 bool CGameScreenController::Init ()
 {
-	m_pResourceMgr = GetResourceMgr();
-	m_pSg = GetSceneGraph();
-	m_pRenderer = GetRenderer();
-	m_pCamera = m_pRenderer->GetCamera();
-	m_pRenderer->SetViewport(SCR_WIDTH, SCR_HEIGHT, 4.0f, 350.0f, 0.67f);
-    
 	m_fFOV = 0.67f;
-	m_fCameraTargetDistance = 60.0f;
-	m_fCameraFwdSpeed = 0.04f;
-	m_fCameraStrafeSpeed = 0.01f;
+	m_fCameraTargetDistance = 120.0f;
 	m_fFinishPointSqDistance = 10000.0f;
 	m_ElapsedTime = 0;
 
-	GetPhysics()->SetCameraFwdSpeed(m_fCameraFwdSpeed);
-	GetPhysics()->SetCameraStrafeSpeed(m_fCameraStrafeSpeed);
-
+    m_pResourceMgr = GetResourceMgr();
+	m_pSg = GetSceneGraph();
+	m_pRenderer = GetRenderer();
+	m_pCamera = m_pRenderer->GetCamera();
+	m_pRenderer->SetViewport(SCR_WIDTH, SCR_HEIGHT, 4.0f, 430.0f, m_fFOV);
+    
     m_pCurLevel = GetLevelManager()->LoadLevel(std::string("level_1"));
     m_pPlayer = GetActorManager()->GetPlayersActor();
 
@@ -186,12 +179,20 @@ void CGameScreenController::UpdateCamera ()
 {
     if (m_pCamera && m_pCurLevel)
     {
-        const Vec3& vTarget = m_pPlayer->GetPhysicalObject()->GetPosition()+Vec3(0,0,-15);
-        Vec3 vDir  = Vec3(0, 0.6f, 0.4f).normalized();
+        const Vec3& vTarget = m_pPlayer->GetPhysicalObject()->GetPosition()+Vec3(0,0,-30);
+        Vec3 vDir = Vec3(0, 0.6f, 0.4f).normalized();
         Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
         Vec3 vPos = vTarget + (vDir*m_fCameraTargetDistance);
+        Vec3 vT = vTarget;
 
-        m_pCamera->Setup (vPos, vTarget, vUp);
+        Vec3 vLeftBorder, vRightBorder;
+        GetPhysics()->GetBordersAtPoint(vPos, vLeftBorder, vRightBorder);
+        float fLeft = vLeftBorder.x + 25.0f;
+        float fRight = vRightBorder.x - 25.0f;
+        OG_CLAMP(vPos.x, fLeft, fRight);
+        OG_CLAMP(vT.x, fLeft, fRight);
+
+        m_pCamera->Setup (vPos, vT, vUp);
 		m_pCamera->Update();
 	}
 }

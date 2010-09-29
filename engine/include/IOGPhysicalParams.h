@@ -31,11 +31,17 @@ struct IOGPhysicalParams
 		type = OG_PHYSICS_STATIC;
         fMaxSpeed = 0.0f;
         fAcceleration = 0.0f;
+        fStrafeMaxSpeed = 0.0f;
+	    fRollSpeed = 0.0f;
+	    fMaxRollAngle = 0.0f;
     }
 
     OGPhysicsType type;
 	float fMaxSpeed;
 	float fAcceleration;
+	float fStrafeMaxSpeed;
+	float fRollSpeed;
+	float fMaxRollAngle;
 };
 
 

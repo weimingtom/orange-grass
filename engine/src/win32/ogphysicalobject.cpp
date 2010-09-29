@@ -43,6 +43,7 @@ void COGPhysicalObject::SetWorldTransform (
     m_vPosition = _vPos;
     m_vRotation = _vRot;
     m_vScaling = _vScale;
+    m_vMove = Vec3(0,0,0);
 
 	m_bUpdated = false;
 }
