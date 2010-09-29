@@ -20,6 +20,7 @@
 #include "ogeffectsmanager.h"
 #include "ogactorparamsmgr.h"
 #include "ogglobalvarstable.h"
+#include "ogsettingsreader.h"
 
 
 static IOGResourceMgr* g_pResourceMgr = NULL;
@@ -35,6 +36,7 @@ static IOGSpritePool* g_pSprPool = NULL;
 static IOGEffectsManager* g_pEffectsMgr = NULL;
 static IOGActorParamsMgr* g_pActorParamsMgr = NULL;
 static IOGGlobalVarsTable* g_pGlobalVars = NULL;
+static IOGSettingsReader* g_pSettingsReader = NULL;
 
 
 IOGResourceMgr* GetResourceMgr ()
@@ -165,4 +167,14 @@ IOGGlobalVarsTable* GetGlobalVars ()
 		g_pGlobalVars = new COGGlobalVarsTable ();
 	}
 	return g_pGlobalVars;
+}
+
+
+IOGSettingsReader* GetSettingsReader ()
+{
+	if (g_pSettingsReader == NULL)
+	{
+		g_pSettingsReader = new COGSettingsReader ();
+	}
+	return g_pSettingsReader;
 }

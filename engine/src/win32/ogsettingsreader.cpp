@@ -66,7 +66,7 @@ IOGGroupNode* COGSettingsReader::OpenGroupNode (
 	{
 		pGroup->pParent = NULL;
 		pGroup->pElement = NULL;
-		pGroup->pNode = ((COGSettingsSource*)_pSource)->pDoc->Child ( pGroup->name.c_str(), pGroup->index ));
+		pGroup->pNode = new TiXmlHandle(((COGSettingsSource*)_pSource)->pDoc->Child ( pGroup->name.c_str(), pGroup->index ));
 	}
 	return pGroup;
 }
@@ -91,27 +91,50 @@ IOGGroupNode* COGSettingsReader::ReadNextNode (IOGGroupNode* _pNode)
     	OG_SAFE_DELETE(pNode->pNode);
         pNode->pNode = pNewNode;
         pNode->index++;
-        _pNode->pElement = ((COGGroupNode*)_pNode)->pNode->Element();
+        pNode->pElement = pNode->pNode->Element();
+		return pNode;
     }
+	else
+	{
+		OG_SAFE_DELETE(pNewNode);
+		CloseGroupNode(_pNode);
+		return NULL;
+	}
 }
 
 
 // read string parameter.
 std::string COGSettingsReader::ReadStringParam (IOGGroupNode* _pGroup, const std::string& _Alias)
 {
-	return std::string("");
+	COGGroupNode* pNode = (COGGroupNode*)_pGroup;
+	if (!pNode->pElement)
+		return std::string("");
+
+	return std::string(pNode->pElement->Attribute (_Alias.c_str()));
 }
 
 
 // read int parameter.
-int COGSettingsReader::ReadIntParam (const std::string& _Alias)
+int COGSettingsReader::ReadIntParam (IOGGroupNode* _pGroup, const std::string& _Alias)
 {
-	return 0;
+	int val = 0;
+	COGGroupNode* pNode = (COGGroupNode*)_pGroup;
+	if (!pNode->pElement)
+		return val;
+
+	pNode->pElement->Attribute (_Alias.c_str(), &val);
+	return val;
 }
 
 
 // read float parameter.
-float COGSettingsReader::ReadFloatParam (const std::string& _Alias)
+float COGSettingsReader::ReadFloatParam (IOGGroupNode* _pGroup, const std::string& _Alias)
 {
-	return 0.0f;
+	double val = 0.0;
+	COGGroupNode* pNode = (COGGroupNode*)_pGroup;
+	if (!pNode->pElement)
+		return 0.0f;
+
+	pNode->pElement->Attribute (_Alias.c_str(), &val);
+	return (float)val;
 }

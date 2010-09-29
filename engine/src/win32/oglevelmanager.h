@@ -13,6 +13,7 @@
 #include "oglevel.h"
 #include <string>
 #include <map>
+#include "IOGSettingsReader.h"
 
 
 class COGLevelManager : public IOGLevelManager
@@ -57,6 +58,7 @@ private:
 
 private:
 
+	IOGSettingsReader*	m_pReader;
     std::map<std::string, COGLevel*>	m_LevelList;
 };
 

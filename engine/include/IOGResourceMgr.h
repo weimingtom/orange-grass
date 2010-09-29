@@ -28,6 +28,9 @@ public:
     // get resource path
     virtual const std::string& GetResourcePath () const = 0;
 
+    // get full resource path
+    virtual std::string GetFullPath (const std::string& _File) const = 0;
+
 	// load resources.
 	virtual bool Load () = 0;
 		

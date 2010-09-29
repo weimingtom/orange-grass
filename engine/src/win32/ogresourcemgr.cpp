@@ -91,6 +91,13 @@ const std::string& COGResourceMgr::GetResourcePath () const
 }
 
 
+// get full resource path
+std::string COGResourceMgr::GetFullPath (const std::string& _File) const
+{
+	return m_ResPath + std::string("/") + _File;
+}
+
+
 // load resources.
 bool COGResourceMgr::Load ()
 {

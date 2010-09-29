@@ -48,10 +48,10 @@ public:
 	virtual std::string ReadStringParam (IOGGroupNode* _pGroup, const std::string& _Alias) = 0;
 
 	// read int parameter.
-	virtual int ReadIntParam (const std::string& _Alias) = 0;
+	virtual int ReadIntParam (IOGGroupNode* _pGroup, const std::string& _Alias) = 0;
 
 	// read float parameter.
-	virtual float ReadFloatParam (const std::string& _Alias) = 0;
+	virtual float ReadFloatParam (IOGGroupNode* _pGroup, const std::string& _Alias) = 0;
 
 	// close source.
 	virtual void CloseSource (IOGSettingsSource* _pSource) = 0;

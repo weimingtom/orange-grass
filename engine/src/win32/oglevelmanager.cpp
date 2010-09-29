@@ -16,6 +16,7 @@
 // constructor.
 COGLevelManager::COGLevelManager ()
 {
+	m_pReader = GetSettingsReader();
 }
 
 
@@ -49,36 +50,53 @@ bool COGLevelManager::Init ()
 // Load level manager configuration
 bool COGLevelManager::LoadConfig (COGLevelManager::Cfg& _cfg)
 {
-	std::string file_path;
-	file_path = GetResourceMgr()->GetResourcePath() + std::string("/levels.xml");
+	//std::string file_path = GetResourceMgr()->GetFullPath("levels.xml");
 
-    TiXmlDocument* pXmlSettings = new TiXmlDocument ("levels.xml");
-	if (!pXmlSettings->LoadFile (file_path.c_str()))
+	//TiXmlDocument* pXmlSettings = new TiXmlDocument ("levels.xml");
+	//if (!pXmlSettings->LoadFile (file_path.c_str()))
+	//{
+	//	OG_SAFE_DELETE(pXmlSettings);
+	//	return false;
+	//}
+
+	//TiXmlHandle* hDoc = new TiXmlHandle (pXmlSettings);
+	//TiXmlHandle hTerrainsRoot = hDoc->FirstChild ( "Levels" );
+
+	//int index = 0;
+	//TiXmlHandle TerrainHandle = hTerrainsRoot.Child ( "Level", index );
+	//while (TerrainHandle.Node ())
+	//{
+	//	TiXmlElement* pElement = TerrainHandle.Element();
+
+	//	Cfg::LevelCfg lev_cfg;
+	//	lev_cfg.level_alias = std::string(pElement->Attribute ("terrain"));
+	//	lev_cfg.level_file = std::string(pElement->Attribute ("scene_file"));
+	//	lev_cfg.level_file = GetResourceMgr()->GetResourcePath() + std::string("/") + lev_cfg.level_file;
+	//	_cfg.level_cfg_list.push_back(lev_cfg);
+
+	//	TerrainHandle = hTerrainsRoot.Child ( "Level", ++index );
+	//}
+
+	//OG_SAFE_DELETE(hDoc);
+	//OG_SAFE_DELETE(pXmlSettings);
+
+	IOGSettingsSource* pSource = m_pReader->OpenSource(GetResourceMgr()->GetFullPath("levels.xml"));
+	if (!pSource)
+		return false;
+
+	IOGGroupNode* pRoot = m_pReader->OpenGroupNode(pSource, NULL, "Levels");
+	IOGGroupNode* pLevelNode = m_pReader->OpenGroupNode(pSource, pRoot, "Level");
+	for (; pLevelNode != NULL; )
 	{
-		OG_SAFE_DELETE(pXmlSettings);
-        return false;
-	}
-
-    TiXmlHandle* hDoc = new TiXmlHandle (pXmlSettings);
-    TiXmlHandle hTerrainsRoot = hDoc->FirstChild ( "Levels" );
-
-	int index = 0;
-    TiXmlHandle TerrainHandle = hTerrainsRoot.Child ( "Level", index );
-    while (TerrainHandle.Node ())
-    {
-        TiXmlElement* pElement = TerrainHandle.Element();
-
 		Cfg::LevelCfg lev_cfg;
-		lev_cfg.level_alias = std::string(pElement->Attribute ("terrain"));
-		lev_cfg.level_file = std::string(pElement->Attribute ("scene_file"));
-		lev_cfg.level_file = GetResourceMgr()->GetResourcePath() + std::string("/") + lev_cfg.level_file;
+		lev_cfg.level_alias = m_pReader->ReadStringParam(pLevelNode, "terrain");
+		lev_cfg.level_file = m_pReader->ReadStringParam(pLevelNode, "scene_file");
+		lev_cfg.level_file = GetResourceMgr()->GetFullPath(lev_cfg.level_file);
 		_cfg.level_cfg_list.push_back(lev_cfg);
-
-        TerrainHandle = hTerrainsRoot.Child ( "Level", ++index );
-    }
-
-	OG_SAFE_DELETE(hDoc);
-	OG_SAFE_DELETE(pXmlSettings);
+		pLevelNode = m_pReader->ReadNextNode(pLevelNode);
+	}
+	m_pReader->CloseGroupNode(pRoot);
+	m_pReader->CloseSource(pSource);
 	return true;
 }
 
