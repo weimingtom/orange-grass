@@ -2,6 +2,15 @@ Tools: ver. 0.08, 19-Sep-2010
 
 ChangeList:
 
+0.09 (29-Sep-2010):
+- [OG] actors settings system;
+- [OG] weapon system, simple firing;
+- [OG] refactored settings reader system;
+- [OG] missile actors and some logic behind it;
+- [OG] workers system;
+- [OG] effects are now SceneGraph nodes too;
+- [Game] now level_1 is enabled;
+
 0.08 (19-Sep-2010):
 - [OG] scene graph nodes sorting and scene dissection improvements;
 - [OG] added statistics output;
