@@ -9,8 +9,6 @@
 #include "OrangeGrass.h"
 #include "oglevelmanager.h"
 #include "oglevel.h"
-#include "Pathes.h"
-#include "tinyxml.h"
 
 
 // constructor.
@@ -50,36 +48,6 @@ bool COGLevelManager::Init ()
 // Load level manager configuration
 bool COGLevelManager::LoadConfig (COGLevelManager::Cfg& _cfg)
 {
-	//std::string file_path = GetResourceMgr()->GetFullPath("levels.xml");
-
-	//TiXmlDocument* pXmlSettings = new TiXmlDocument ("levels.xml");
-	//if (!pXmlSettings->LoadFile (file_path.c_str()))
-	//{
-	//	OG_SAFE_DELETE(pXmlSettings);
-	//	return false;
-	//}
-
-	//TiXmlHandle* hDoc = new TiXmlHandle (pXmlSettings);
-	//TiXmlHandle hTerrainsRoot = hDoc->FirstChild ( "Levels" );
-
-	//int index = 0;
-	//TiXmlHandle TerrainHandle = hTerrainsRoot.Child ( "Level", index );
-	//while (TerrainHandle.Node ())
-	//{
-	//	TiXmlElement* pElement = TerrainHandle.Element();
-
-	//	Cfg::LevelCfg lev_cfg;
-	//	lev_cfg.level_alias = std::string(pElement->Attribute ("terrain"));
-	//	lev_cfg.level_file = std::string(pElement->Attribute ("scene_file"));
-	//	lev_cfg.level_file = GetResourceMgr()->GetResourcePath() + std::string("/") + lev_cfg.level_file;
-	//	_cfg.level_cfg_list.push_back(lev_cfg);
-
-	//	TerrainHandle = hTerrainsRoot.Child ( "Level", ++index );
-	//}
-
-	//OG_SAFE_DELETE(hDoc);
-	//OG_SAFE_DELETE(pXmlSettings);
-
 	IOGSettingsSource* pSource = m_pReader->OpenSource(GetResourceMgr()->GetFullPath("levels.xml"));
 	if (!pSource)
 		return false;

@@ -11,6 +11,7 @@
 
 #include "IOGActorParamsManager.h"
 #include <map>
+#include "IOGSettingsReader.h"
 
 
 class COGActorParamsMgr : public IOGActorParamsMgr
@@ -36,6 +37,7 @@ private:
 private:
 
     std::map<std::string, IOGActorParams*>	m_ParamsList;
+	IOGSettingsReader*	m_pReader;
 };
 
 #endif

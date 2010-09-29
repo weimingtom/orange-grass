@@ -30,10 +30,12 @@ struct IOGPhysicalParams
     {
 		type = OG_PHYSICS_STATIC;
         fMaxSpeed = 0.0f;
+        fAcceleration = 0.0f;
     }
 
     OGPhysicsType type;
 	float fMaxSpeed;
+	float fAcceleration;
 };
 
 

@@ -105,10 +105,10 @@ void COGPhysicalObject::Accelerate (float _fDir)
 {
 	m_vMove += m_vLook * (_fDir * 0.01f);
     float fSpeed = m_vMove.length();
-    if (fSpeed > 0.03f)
+	if (fSpeed > m_pParams->fMaxSpeed)
     {
         m_vMove.normalize();
-        m_vMove *= 0.03f;
+        m_vMove *= m_pParams->fMaxSpeed;
     }
 
 	m_bUpdated = false;

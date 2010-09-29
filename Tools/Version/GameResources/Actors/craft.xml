@@ -2,6 +2,7 @@
 <Params>
 	<Physics 
 		max_speed = "0.0" 
+		acceleration = "0.0" 
 		type = "player"
 		/>
 	<Actor 

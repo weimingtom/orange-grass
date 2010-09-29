@@ -8,12 +8,11 @@
  */
 #include "OrangeGrass.h"
 #include "ogactorparamsmgr.h"
-#include "Pathes.h"
-#include "tinyxml.h"
 
 
 COGActorParamsMgr::COGActorParamsMgr ()
 {
+	m_pReader = GetSettingsReader();
 }
 
 
@@ -30,35 +29,23 @@ COGActorParamsMgr::~COGActorParamsMgr ()
 // load from config file.
 bool COGActorParamsMgr::Init ()
 {
-	std::string file_path;
-	file_path = GetResourceMgr()->GetResourcePath() + std::string("/actors.xml");
+	IOGSettingsSource* pSource = m_pReader->OpenSource(GetResourceMgr()->GetFullPath("actors.xml"));
+	if (!pSource)
+		return false;
 
-    TiXmlDocument* pXmlSettings = new TiXmlDocument ("actors.xml");
-	if (!pXmlSettings->LoadFile (file_path.c_str()))
+	IOGGroupNode* pRoot = m_pReader->OpenGroupNode(pSource, NULL, "Actors");
+	IOGGroupNode* pActorNode = m_pReader->OpenGroupNode(pSource, pRoot, "Actor");
+	for (; pActorNode != NULL; )
 	{
-		OG_SAFE_DELETE(pXmlSettings);
-        return false;
+		std::string alias = m_pReader->ReadStringParam(pActorNode, "alias");
+		std::string file = m_pReader->ReadStringParam(pActorNode, "file");
+		file = GetResourceMgr()->GetFullPath(file);
+		LoadParamsConfig(alias, file);
+
+		pActorNode = m_pReader->ReadNextNode(pActorNode);
 	}
-
-    TiXmlHandle* hDoc = new TiXmlHandle (pXmlSettings);
-    TiXmlHandle hParamsRoot = hDoc->FirstChild ( "Actors" );
-
-	int index = 0;
-    TiXmlHandle ParamsHandle = hParamsRoot.Child ( "Actor", index );
-    while (ParamsHandle.Node ())
-    {
-        TiXmlElement* pElement = ParamsHandle.Element();
-
-		std::string alias = std::string(pElement->Attribute ("alias"));
-		std::string file = std::string(pElement->Attribute ("file"));
-		std::string path = GetResourceMgr()->GetResourcePath() + std::string("/") + file;
-		LoadParamsConfig(alias, path);
-
-        ParamsHandle = hParamsRoot.Child ( "Actor", ++index );
-    }
-
-	OG_SAFE_DELETE(hDoc);
-	OG_SAFE_DELETE(pXmlSettings);
+	m_pReader->CloseGroupNode(pRoot);
+	m_pReader->CloseSource(pSource);
 	return true;
 }
 
@@ -78,44 +65,36 @@ IOGActorParams* COGActorParamsMgr::GetParams (const std::string& _Alias)
 // Load actor params configuration
 bool COGActorParamsMgr::LoadParamsConfig (const std::string& _Alias, const std::string& _Path)
 {
-	TiXmlDocument* pXmlSettings = new TiXmlDocument (_Alias.c_str());
-	if (!pXmlSettings->LoadFile (_Path.c_str()))
-	{
-		OG_SAFE_DELETE(pXmlSettings);
-        return false;
-	}
+	IOGSettingsSource* pSource = m_pReader->OpenSource(_Path);
+	if (!pSource)
+		return false;
 
 	IOGActorParams* pParam = new IOGActorParams;
 	pParam->alias = _Alias;
 
-    TiXmlHandle* hDoc = new TiXmlHandle (pXmlSettings);
-    TiXmlHandle hParamsRoot = hDoc->FirstChild("Params");
+	IOGGroupNode* pRoot = m_pReader->OpenGroupNode(pSource, NULL, "Params");
+	IOGGroupNode* pPhysicsNode = m_pReader->OpenGroupNode(pSource, pRoot, "Physics");
+	if (pPhysicsNode != NULL)
+	{
+		pParam->physics.fMaxSpeed = m_pReader->ReadFloatParam(pPhysicsNode, "max_speed");
+		pParam->physics.fAcceleration = m_pReader->ReadFloatParam(pPhysicsNode, "acceleration");
+		m_pReader->CloseGroupNode(pPhysicsNode);
+	}
 
-    TiXmlHandle PhysicsParamsHandle = hParamsRoot.FirstChild("Physics");
-    if (PhysicsParamsHandle.Node ())
-    {
-        TiXmlElement* pElement = PhysicsParamsHandle.Element();
-
-		double MaxSpeed = 0;
-		pElement->Attribute ("max_speed", &MaxSpeed);
-		pParam->physics.fMaxSpeed = (float)MaxSpeed;
-
-		pParam->physics.type = ParsePhysicsType(std::string(pElement->Attribute ("type")));
-    }
-    TiXmlHandle ActorsParamsHandle = hParamsRoot.FirstChild("Actor");
-    if (ActorsParamsHandle.Node ())
-    {
-        TiXmlElement* pElement = ActorsParamsHandle.Element();
-
-		pParam->model_alias = std::string(pElement->Attribute ("model"));
-		pParam->type = ParseActorType(std::string(pElement->Attribute ("type")));
-		pParam->icon = std::string(pElement->Attribute ("icon"));
-    }
+	IOGGroupNode* pActorNode = m_pReader->OpenGroupNode(pSource, pRoot, "Actor");
+	if (pActorNode != NULL)
+	{
+		pParam->model_alias = m_pReader->ReadStringParam(pActorNode, "model");
+		pParam->type = ParseActorType(m_pReader->ReadStringParam(pActorNode, "type"));
+		pParam->icon = m_pReader->ReadStringParam(pActorNode, "icon");
+		m_pReader->CloseGroupNode(pActorNode);
+	}
 
 	m_ParamsList[_Alias] = pParam;
 
-	OG_SAFE_DELETE(hDoc);
-	OG_SAFE_DELETE(pXmlSettings);
+	m_pReader->CloseGroupNode(pRoot);
+	m_pReader->CloseSource(pSource);
+
 	return true;
 }
 
