@@ -75,6 +75,11 @@ bool COGActorPlayer::Create (IOGActorParams* _pParams,
 	}
 
     m_Weapon.Create(this);
+    m_OrientWorker.Create(this);
+    m_OrientWorker.Activate(false);
+    m_CoolDown = 2000;
+    m_StraightenWorker.Create(this);
+    m_StraightenWorker.Activate(false);
 
     return true;
 }
@@ -103,5 +108,59 @@ void COGActorPlayer::OnVectorChanged (const Vec3& _vVec)
 // Touch event handler.
 void COGActorPlayer::OnTouch (const Vec2& _vPos)
 {
-    m_Weapon.Fire(Vec3(0,0,0));
+    GetRenderer()->StartRenderMode(OG_RENDERMODE_GEOMETRY);
+    Vec3 vP = GetRenderer()->UnprojectCoords((int)_vPos.x, (int)_vPos.y);
+    GetRenderer()->FinishRenderMode();
+    Vec3 vCam = GetRenderer()->GetCamera()->GetPosition();
+
+    Vec3 vDir = (vP - vCam).normalized();
+    Vec3 vPoint = FindIntersectionWithPlane(
+        m_pPhysicalObject->GetPosition().y, 
+        vCam, 
+        vDir);
+
+    m_OrientWorker.Reset();
+    m_OrientWorker.SetTarget(vPoint);
+    m_OrientWorker.Activate(true);
+
+    m_CoolDown = 0;
+    m_StraightenWorker.Activate(false);
+}
+
+
+// Update actor.
+void COGActorPlayer::Update (unsigned long _ElapsedTime)
+{
+	if (m_OrientWorker.IsActive())
+	{
+		m_OrientWorker.Update(_ElapsedTime);
+		if (m_OrientWorker.IsFinished())
+		{
+            m_Weapon.Fire(Vec3(0,0,0));
+            m_CoolDown = 0;
+            m_StraightenWorker.Activate(false);
+		}
+	}
+    else
+    {
+        if (m_CoolDown < 2000)
+        {
+            m_CoolDown += _ElapsedTime;
+            if (m_CoolDown >= 2000)
+            {
+                m_CoolDown = 2000;
+                m_StraightenWorker.Activate(true);
+            }
+        }
+        else
+        {
+            if (m_StraightenWorker.IsActive())
+            {
+                m_StraightenWorker.Update(_ElapsedTime);
+                if (m_StraightenWorker.IsFinished())
+                {
+                }
+            }
+        }
+    }
 }

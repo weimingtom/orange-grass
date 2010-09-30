@@ -39,6 +39,9 @@ public:
 	// get scaling.
 	virtual const Vec3& GetScaling () const = 0;
 
+	// get direction.
+	virtual const Vec3& GetDirection () const = 0;
+
 	// set position.
 	virtual void SetPosition (const Vec3& _vPos) = 0;
 
@@ -53,6 +56,12 @@ public:
 
 	// accelerate.
 	virtual void Accelerate (float _fDir) = 0;
+
+	// orient on point.
+	virtual bool Orient (const Vec3& _vPoint) = 0;
+
+	// strabilize object.
+	virtual bool Stabilize () = 0;
 
 	// get physics type.
 	virtual OGPhysicsType GetPhysicsType () const = 0;

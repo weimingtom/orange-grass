@@ -241,6 +241,22 @@
 						>
 					</File>
 					<File
+						RelativePath=".\ogorientworker.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogorientworker.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogstabilizeworker.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogstabilizeworker.h"
+						>
+					</File>
+					<File
 						RelativePath=".\ogworker.cpp"
 						>
 					</File>

@@ -20,11 +20,13 @@ COGCamera::~COGCamera ()
 
 
 // setup camera.
-void COGCamera::Setup (const Vec3& _vPosition, const Vec3& _vDirection, const Vec3& _vUp)
+void COGCamera::Setup (const Vec3& _vPosition, const Vec3& _vTarget, const Vec3& _vUp)
 {
 	m_Position = _vPosition;
-	m_Direction = _vDirection;
+	m_Target = _vTarget;
 	m_Up = _vUp;
+	m_Direction = m_Target - m_Position;
+	m_Direction.normalize();
 	m_bDirty = true;
 }
 
@@ -33,7 +35,7 @@ void COGCamera::Setup (const Vec3& _vPosition, const Vec3& _vDirection, const Ve
 void COGCamera::RotateView (float _fAngle, const Vec3& _vAxis)
 {
 	Vec3 vNewView;
-	Vec3 vView = m_Direction - m_Position;		
+	Vec3 vView = m_Target - m_Position;		
 	float cosTheta = cosf(_fAngle);
 	float sinTheta = sinf(_fAngle);
 	
@@ -49,7 +51,9 @@ void COGCamera::RotateView (float _fAngle, const Vec3& _vAxis)
 	vNewView.z += ((1 - cosTheta) * _vAxis.y * _vAxis.z + _vAxis.x * sinTheta)	* vView.y;
 	vNewView.z += (cosTheta + (1 - cosTheta) * _vAxis.z * _vAxis.z)	* vView.z;
 	
-	m_Direction = m_Position + vNewView;
+	m_Target = m_Position + vNewView;
+	m_Direction = m_Target - m_Position;
+	m_Direction.normalize();
 	m_bDirty = true;
 }
 
@@ -59,8 +63,10 @@ void COGCamera::Strafe(float _fSpeed, const Vec3& _vDir)
 {	
 	m_Position.x += _vDir.x * _fSpeed;
 	m_Position.z += _vDir.z * _fSpeed;
-	m_Direction.x += _vDir.x * _fSpeed;
-	m_Direction.z += _vDir.z * _fSpeed;
+	m_Target.x += _vDir.x * _fSpeed;
+	m_Target.z += _vDir.z * _fSpeed;
+	m_Direction = m_Target - m_Position;
+	m_Direction.normalize();
 	m_bDirty = true;
 }
 
@@ -68,15 +74,15 @@ void COGCamera::Strafe(float _fSpeed, const Vec3& _vDir)
 // move camera forward/backward
 void COGCamera::Move(float _fSpeed)
 {
-	Vec3 vVector = m_Direction - m_Position;
-	vVector.normalize();
+	m_Direction = m_Target - m_Position;
+	m_Direction.normalize();
 	
-	m_Position.x += vVector.x * _fSpeed;
-	m_Position.y += vVector.y * _fSpeed;
-	m_Position.z += vVector.z * _fSpeed;
-	m_Direction.x += vVector.x * _fSpeed;
-	m_Direction.y += vVector.y * _fSpeed;
-	m_Direction.z += vVector.z * _fSpeed;
+	m_Position.x += m_Direction.x * _fSpeed;
+	m_Position.y += m_Direction.y * _fSpeed;
+	m_Position.z += m_Direction.z * _fSpeed;
+	m_Target.x += m_Direction.x * _fSpeed;
+	m_Target.y += m_Direction.y * _fSpeed;
+	m_Target.z += m_Direction.z * _fSpeed;
 
 	m_bDirty = true;
 }
@@ -87,7 +93,7 @@ void COGCamera::Update ()
 {
 	if (m_bDirty)
 	{
-		MatrixLookAtRH(m_View, m_Position, m_Direction, m_Up);
+		MatrixLookAtRH(m_View, m_Position, m_Target, m_Up);
 		m_bDirty = false;
 	}
 }
@@ -104,6 +110,6 @@ const MATRIX& COGCamera::GetViewMatrix () const
 void COGCamera::GetEdges (Vec3& _vLeft, Vec3& _vRight, float _fFOV, float _fDist)
 {
     float width = tanf(_fFOV / 2) * _fDist;
-    _vLeft = m_Direction + Vec3(-1.0f, 0, 0) * width;
-    _vRight = m_Direction + Vec3(1.0f, 0, 0) * width;
+    _vLeft = m_Target + Vec3(-1.0f, 0, 0) * width;
+    _vRight = m_Target + Vec3(1.0f, 0, 0) * width;
 }

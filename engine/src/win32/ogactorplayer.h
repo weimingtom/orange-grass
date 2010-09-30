@@ -9,9 +9,11 @@
 #ifndef OGACTORPLAYER_H_
 #define OGACTORPLAYER_H_
 
-#include "OGActor.h"
+#include "ogactor.h"
 #include "IOGInputReceiver.h"
-#include "OGWeapon.h"
+#include "ogweapon.h"
+#include "ogorientworker.h"
+#include "ogstabilizeworker.h"
 
 
 class COGActorPlayer : public COGActor, public IOGInputReceiver
@@ -36,9 +38,15 @@ public:
 	// Touch event handler.
 	virtual void OnTouch (const Vec2& _vPos);
 
+	// Update actor.
+	virtual void Update (unsigned long _ElapsedTime);
+
 protected:
 
     COGWeapon   m_Weapon;
+    COGOrientWorker m_OrientWorker;
+    COGStabilizeWorker m_StraightenWorker;
+    unsigned long   m_CoolDown;
 };
 
 

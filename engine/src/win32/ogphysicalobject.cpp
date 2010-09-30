@@ -19,6 +19,7 @@ COGPhysicalObject::COGPhysicalObject () :	m_Type (OG_PHYSICS_NONE),
     m_vUp = Vec3(0,1,0);
     m_vRight = Vec3(1,0,0);
     m_vMove = Vec3(0,0,0);
+    m_vTorque = Vec3(0,0,0);
 }
 
 
@@ -44,6 +45,7 @@ void COGPhysicalObject::SetWorldTransform (
     m_vRotation = _vRot;
     m_vScaling = _vScale;
     m_vMove = Vec3(0,0,0);
+    m_vTorque = Vec3(0,0,0);
 
 	m_bUpdated = false;
 }
@@ -67,6 +69,13 @@ const Vec3& COGPhysicalObject::GetRotation () const
 const Vec3& COGPhysicalObject::GetScaling () const
 {
 	return m_vScaling;
+}
+
+
+// get direction.
+const Vec3& COGPhysicalObject::GetDirection () const
+{
+    return m_vLook;
 }
 
 
@@ -116,6 +125,45 @@ void COGPhysicalObject::Accelerate (float _fDir)
 }
 
 
+// orient on point.
+bool COGPhysicalObject::Orient (const Vec3& _vPoint)
+{
+    Vec3 vDirOnTarget = (_vPoint - m_vPosition).normalized();
+    float fAngle = GetAngle(m_vLook, vDirOnTarget);
+    if (fabsf(fAngle) < 0.1f)
+    {
+        return true;
+    }
+
+    if (fAngle > 0)
+        m_vTorque.y -= 0.003f;
+    else
+        m_vTorque.y += 0.003f;
+
+	m_bUpdated = false;
+    return false;
+}
+
+
+// strabilize object.
+bool COGPhysicalObject::Stabilize ()
+{
+    float fAngle = GetAngle(m_vLook, Vec3(0,0,-1.0f));
+    if (fabsf(fAngle) < 0.05f)
+    {
+        return true;
+    }
+
+    if (fAngle > 0)
+        m_vTorque.y -= 0.0006f;
+    else
+        m_vTorque.y += 0.0006f;
+
+	m_bUpdated = false;
+    return false;
+}
+
+
 // get physics type.
 OGPhysicsType COGPhysicalObject::GetPhysicsType () const
 {
@@ -137,15 +185,18 @@ void COGPhysicalObject::Update (unsigned long _ElapsedTime)
 		return;
 
     m_vPosition += m_vMove * (float)_ElapsedTime;
+    m_vRotation += m_vTorque * (float)_ElapsedTime;
+    m_vTorque = Vec3(0,0,0);
 
 	WorldMatrixFromTransforms(m_mWorld, m_vPosition, m_vRotation, m_vScaling);
 	m_Obb.UpdateTransform(m_mWorld);
 
-	MatrixGetBasis(m_vRight, m_vUp, m_vLook, m_mWorld);
-	m_vRight.normalize();
-	m_vUp.normalize();
+    MatrixVec3Multiply(m_vLook, Vec3(0,0,-1), m_mWorld);
 	m_vLook.normalize();
-    m_vLook = -m_vLook;
+    MatrixVec3Multiply(m_vRight, Vec3(1,0,0), m_mWorld);
+	m_vRight.normalize();
+    MatrixVec3Multiply(m_vUp, Vec3(0,1,0), m_mWorld);
+	m_vUp.normalize();
 
     m_bUpdated = true;
 }

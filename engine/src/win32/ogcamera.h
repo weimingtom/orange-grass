@@ -19,13 +19,16 @@ public:
 	virtual ~COGCamera ();
 	
 	// setup camera.
-	virtual void Setup (const Vec3& _vPosition, const Vec3& _vDirection, const Vec3& _vUp);
+	virtual void Setup (const Vec3& _vPosition, const Vec3& _vTarget, const Vec3& _vUp);
 	
 	// get camera position.
 	virtual const Vec3& GetPosition () const { return m_Position; }
 	
 	// get camera direction.
 	virtual const Vec3& GetDirection () const { return m_Direction; }
+	
+	// get camera target.
+	virtual const Vec3& GetTarget () const { return m_Target; }
 	
 	// rotate view.
 	virtual void RotateView (float _fAngle, const Vec3& _vAxis);
@@ -50,6 +53,7 @@ private:
 	MATRIX		m_View;
 	Vec3		m_Position;
 	Vec3		m_Direction;
+	Vec3		m_Target;
 	Vec3		m_Up;
 	bool		m_bDirty;
 };

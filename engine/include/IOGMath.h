@@ -11,6 +11,7 @@
 
 #include <math.h>
 #include "Mathematics.h"
+#include "IOGCoreHelpers.h"
 
 // floating point macros
 #define FP_BITS(fp)			(*(unsigned long*)&(fp))
@@ -199,5 +200,40 @@ inline int ClipAxialLine (
     return sign0;	
 }
 
+
+// Find intersection with plane
+static Vec3 FindIntersectionWithPlane ( 
+    float _fHeight,
+    const Vec3& _vRayOrig,
+    const Vec3& _vRayDir
+    )
+{
+    Vec3 vIntersectionPoint;
+    float fFactorLine = (float)( ( _fHeight - _vRayOrig.y ) / _vRayDir.y );
+    vIntersectionPoint.x = _vRayDir.x * fFactorLine + _vRayOrig.x;
+    vIntersectionPoint.y = _vRayDir.y * fFactorLine + _vRayOrig.y;
+    vIntersectionPoint.z = _vRayDir.z * fFactorLine + _vRayOrig.z;
+    return vIntersectionPoint;
+}
+
+
+// CW or CCW
+static bool IsCCW (const Vec2& _vV1, const Vec2& _vV2)
+{
+    return (_vV1.x * _vV2.y - _vV1.y * _vV2.x > 0.0f);
+}
+
+
+// Get angle between two vectors
+static float GetAngle (const Vec3& _vV1, const Vec3& _vV2)
+{
+    float fDot = _vV2.dot(_vV1) / (_vV1.length() * _vV2.length());
+    OG_CLAMP(fDot, -1.0f, 1.0f);
+    float fAngle = acosf( fDot );
+    if ( fAngle < 0 )
+        return -PI;
+    bool bSign = IsCCW (Vec2(_vV2.x, _vV2.z), Vec2(_vV1.x, _vV1.z));
+    return bSign ? fAngle : -fAngle;
+}
 
 #endif
