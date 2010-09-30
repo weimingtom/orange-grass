@@ -38,11 +38,38 @@ void COGGlobalVarsTable::SetFVar (
 
 
 // set string variable.
-void COGGlobalVarsTable::SetFVar (
+void COGGlobalVarsTable::SetSVar (
 					  const std::string& _VarAlias, 
 					  const std::string& _SVar)
 {
 	m_SVarsList[_VarAlias] = _SVar;
+}
+
+
+// set Vec2 variable.
+void COGGlobalVarsTable::SetVec2Var (
+						 const std::string& _VarAlias, 
+						 const Vec2& _vVar)
+{
+	m_Vec2VarsList[_VarAlias] = _vVar;
+}
+
+
+// set Vec3 variable.
+void COGGlobalVarsTable::SetVec3Var (
+						 const std::string& _VarAlias, 
+						 const Vec3& _vVar)
+{
+	m_Vec3VarsList[_VarAlias] = _vVar;
+}
+
+
+// set Vec4 variable.
+void COGGlobalVarsTable::SetVec4Var (
+						 const std::string& _VarAlias, 
+						 const Vec4& _vVar)
+{
+	m_Vec4VarsList[_VarAlias] = _vVar;
 }
 
 
@@ -64,4 +91,25 @@ float COGGlobalVarsTable::GetFVar (const std::string& _VarAlias)
 const std::string& COGGlobalVarsTable::GetSVar (const std::string& _VarAlias)
 {
 	return m_SVarsList[_VarAlias];
+}
+
+
+// get Vec2 variable.
+const Vec2& COGGlobalVarsTable::GetVec2Var (const std::string& _VarAlias)
+{
+	return m_Vec2VarsList[_VarAlias];
+}
+
+
+// get Vec3 variable.
+const Vec3& COGGlobalVarsTable::GetVec3Var (const std::string& _VarAlias)
+{
+	return m_Vec3VarsList[_VarAlias];
+}
+
+
+// get Vec4 variable.
+const Vec4& COGGlobalVarsTable::GetVec4Var (const std::string& _VarAlias)
+{
+	return m_Vec4VarsList[_VarAlias];
 }

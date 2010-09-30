@@ -138,3 +138,48 @@ float COGSettingsReader::ReadFloatParam (IOGGroupNode* _pGroup, const std::strin
 	pNode->pElement->Attribute (_Alias.c_str(), &val);
 	return (float)val;
 }
+
+
+// read Vec2 parameter.
+Vec2 COGSettingsReader::ReadVec2Param (
+							IOGGroupNode* _pGroup, 
+							const std::string& _AliasX, 
+							const std::string& _AliasY)
+{
+	Vec2 vOut;
+	vOut.x = ReadFloatParam(_pGroup, _AliasX);
+	vOut.y = ReadFloatParam(_pGroup, _AliasY);
+	return vOut;
+}
+
+
+// read Vec3 parameter.
+Vec3 COGSettingsReader::ReadVec3Param (
+							IOGGroupNode* _pGroup, 
+							const std::string& _AliasX, 
+							const std::string& _AliasY,
+							const std::string& _AliasZ)
+{
+	Vec3 vOut;
+	vOut.x = ReadFloatParam(_pGroup, _AliasX);
+	vOut.y = ReadFloatParam(_pGroup, _AliasY);
+	vOut.z = ReadFloatParam(_pGroup, _AliasZ);
+	return vOut;
+}
+
+
+// read Vec4 parameter.
+Vec4 COGSettingsReader::ReadVec4Param (
+							IOGGroupNode* _pGroup, 
+							const std::string& _AliasX, 
+							const std::string& _AliasY,
+							const std::string& _AliasZ,
+							const std::string& _AliasW)
+{
+	Vec4 vOut;
+	vOut.x = ReadFloatParam(_pGroup, _AliasX);
+	vOut.y = ReadFloatParam(_pGroup, _AliasY);
+	vOut.z = ReadFloatParam(_pGroup, _AliasZ);
+	vOut.w = ReadFloatParam(_pGroup, _AliasW);
+	return vOut;
+}

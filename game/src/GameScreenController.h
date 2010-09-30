@@ -16,6 +16,7 @@
 #include "IOGInputReceiver.h"
 #include "IOGActorManager.h"
 #include "IOGRenderer.h"
+#include "IOGGlobalVarsTable.h"
 
 
 class CGameScreenController : public IScreenController, public IOGInputReceiver
@@ -61,6 +62,7 @@ private:
 
 private:
 		
+	IOGGlobalVarsTable* m_pGlobalVars;
 	IOGResourceMgr*	m_pResourceMgr;
 	IOGSceneGraph*	m_pSg;
 	IOGRenderer*	m_pRenderer;
@@ -73,9 +75,16 @@ private:
 	MATRIX			m_mProjection; 
 	MATRIX			m_mView;
 
+	std::string		m_CurLevel;
 	float			m_fFOV;
+	float			m_fZNear;
+	float			m_fZFar;
+	int				m_ScrWidth;
+	int				m_ScrHeight;
 	float			m_fCameraTargetDistance;
-	float			m_fFinishPointSqDistance;
+	float			m_fCameraMargins;
+	Vec3			m_vCameraDir;
+	Vec3			m_vCameraOffset;
 
 	unsigned long	m_ElapsedTime;
 };

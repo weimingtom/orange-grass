@@ -21,6 +21,7 @@
 #include "ogactorparamsmgr.h"
 #include "ogglobalvarstable.h"
 #include "ogsettingsreader.h"
+#include "ogappsettings.h"
 
 
 static IOGResourceMgr* g_pResourceMgr = NULL;
@@ -37,6 +38,7 @@ static IOGEffectsManager* g_pEffectsMgr = NULL;
 static IOGActorParamsMgr* g_pActorParamsMgr = NULL;
 static IOGGlobalVarsTable* g_pGlobalVars = NULL;
 static IOGSettingsReader* g_pSettingsReader = NULL;
+static IOGAppSettings* g_pAppSettings = NULL;
 
 
 IOGResourceMgr* GetResourceMgr ()
@@ -177,4 +179,14 @@ IOGSettingsReader* GetSettingsReader ()
 		g_pSettingsReader = new COGSettingsReader ();
 	}
 	return g_pSettingsReader;
+}
+
+
+IOGAppSettings* GetAppSettings ()
+{
+	if (g_pAppSettings == NULL)
+	{
+		g_pAppSettings = new COGAppSettings ();
+	}
+	return g_pAppSettings;
 }

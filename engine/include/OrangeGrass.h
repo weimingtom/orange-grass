@@ -25,6 +25,7 @@
 #include "IOGActorParamsManager.h"
 #include "IOGGlobalVarsTable.h"
 #include "IOGSettingsReader.h"
+#include "IOGAppSettings.h"
 #include "common.h"
 #include <vector>
 #include <string>
@@ -44,5 +45,6 @@ IOGEffectsManager* GetEffectsManager ();
 IOGActorParamsMgr* GetActorParamsMgr ();
 IOGGlobalVarsTable* GetGlobalVars ();
 IOGSettingsReader* GetSettingsReader ();
+IOGAppSettings* GetAppSettings ();
 
 #endif

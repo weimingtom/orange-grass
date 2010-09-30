@@ -12,6 +12,7 @@
 #include "IOGSceneGraph.h"
 #include <list>
 #include <map>
+#include "IOGGlobalVarsTable.h"
 
 
 class COGSceneGraph : public IOGSceneGraph
@@ -75,10 +76,12 @@ private:
 	void RenderWholeNodesList(IOGCamera* _pCamera, TNodesList& _List);
 
 private:
+	IOGGlobalVarsTable* m_pGlobalVars;
 	IOGSgNode*			m_pLandscapeNode;
 	TStaticNodesMap		m_StaticNodes;
 	TNodesList			m_NodesList;
 	TNodesList			m_EffectNodesList;
+	float				m_fViewDistance;
 };
 
 #endif

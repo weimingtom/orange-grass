@@ -33,7 +33,18 @@ CLoadScreenController::~CLoadScreenController()
 // Initialize controller
 bool CLoadScreenController::Init ()
 {
-	GetRenderer()->SetViewport(SCR_WIDTH, SCR_HEIGHT, 4.0f, 200.0f, 0.67f);
+	if (!GetAppSettings()->Init("settings.xml"))
+		return false;
+
+	m_pGlobalVars = GetGlobalVars();
+	m_CurLevel = m_pGlobalVars->GetSVar("level_0");
+	m_fFOV = m_pGlobalVars->GetFVar("FOV");
+	m_fZNear = m_pGlobalVars->GetFVar("z_near");
+	m_fZFar = m_pGlobalVars->GetFVar("z_far");
+	m_ScrWidth = m_pGlobalVars->GetIVar("view_width");
+	m_ScrHeight = m_pGlobalVars->GetIVar("view_height");
+
+	GetRenderer()->SetViewport(m_ScrWidth, m_ScrHeight, m_fZNear, m_fZFar, m_fFOV);
 	m_pResourceMgr = GetResourceMgr();
     m_pResourceMgr->Init();
 	if (!m_pResourceMgr->Load())
@@ -51,12 +62,11 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 		GetActorParamsMgr()->Init();
         GetLevelManager()->Init();
 
-		std::string LevelAliasStr("level_1");
-		m_pCurLevel = GetLevelManager()->LoadLevel(LevelAliasStr);
+		m_pCurLevel = GetLevelManager()->LoadLevel(m_CurLevel);
 		if (m_pCurLevel == NULL)
 		{
 			m_State = CSTATE_FAILED;
-			OG_LOG_ERROR("Failed to load level %s", LevelAliasStr.c_str());
+			OG_LOG_ERROR("Failed to load level %s", m_CurLevel.c_str());
 			return;
 		}
 		m_bLoaded = true;
@@ -71,7 +81,7 @@ void CLoadScreenController::RenderScene ()
 	GetRenderer()->ClearFrame(Vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 	GetRenderer()->StartRenderMode(OG_RENDERMODE_SPRITES);
-	m_pHUD->Render(Vec2(0, 0), Vec2(SCR_WIDTH, SCR_HEIGHT));
+	m_pHUD->Render(Vec2(0, 0), Vec2((float)m_ScrWidth, (float)m_ScrHeight));
 	GetRenderer()->FinishRenderMode();
 	GetRenderer()->Reset();
 

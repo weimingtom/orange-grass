@@ -54,6 +54,27 @@ public:
 	// read float parameter.
 	virtual float ReadFloatParam (IOGGroupNode* _pGroup, const std::string& _Alias);
 
+	// read Vec2 parameter.
+	virtual Vec2 ReadVec2Param (
+		IOGGroupNode* _pGroup, 
+		const std::string& _AliasX, 
+		const std::string& _AliasY);
+
+	// read Vec3 parameter.
+	virtual Vec3 ReadVec3Param (
+		IOGGroupNode* _pGroup, 
+		const std::string& _AliasX, 
+		const std::string& _AliasY,
+		const std::string& _AliasZ);
+
+	// read Vec4 parameter.
+	virtual Vec4 ReadVec4Param (
+		IOGGroupNode* _pGroup, 
+		const std::string& _AliasX, 
+		const std::string& _AliasY,
+		const std::string& _AliasZ,
+		const std::string& _AliasW);
+
 	// close source.
 	virtual void CloseSource (IOGSettingsSource* _pSource);
 };

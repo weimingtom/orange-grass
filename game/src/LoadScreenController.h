@@ -13,6 +13,7 @@
 #include "IOGSprite.h"
 #include "IOGResourceMgr.h"
 #include "IOGLevel.h"
+#include "IOGGlobalVarsTable.h"
 
 
 class CLoadScreenController : public IScreenController
@@ -44,6 +45,7 @@ public:
 	
 private:
 	
+	IOGGlobalVarsTable* m_pGlobalVars;
 	IOGResourceMgr*	m_pResourceMgr;
 	ControllerState	m_State;
     ScreenType      m_Type;
@@ -51,6 +53,13 @@ private:
 	IOGLevel*		m_pCurLevel;
 	bool			m_bLoaded;
 	bool			m_bDisplayed;
+
+	std::string		m_CurLevel;
+	float			m_fFOV;
+	float			m_fZNear;
+	float			m_fZFar;
+	int				m_ScrWidth;
+	int				m_ScrHeight;
 };
 
 #endif

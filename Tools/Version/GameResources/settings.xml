@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Settings>
+	<View
+		view_width = "480" view_height = "320"
+		z_near = "4.0" z_far = "430.0"
+		FOV = "0.67"
+		view_distance = "300.0"
+	/>
+	<Camera
+		cam_offset_x = "0.0" cam_offset_y = "0.0" cam_offset_z = "-30.0"
+		cam_dir_x = "0.0" cam_dir_y = "0.6" cam_dir_z = "0.4"
+		cam_margins = "25.0"
+		cam_distance = "120.0"
+	/>
+	<Game
+		level_0 = "level_1"
+		level_1 = "level_0"
+		/>
+	
+</Settings>

@@ -10,6 +10,7 @@
 #define IOGSETTINGSREADER_H_
 
 #include <string>
+#include "Mathematics.h"
 
 
 struct IOGSettingsSource
@@ -52,6 +53,27 @@ public:
 
 	// read float parameter.
 	virtual float ReadFloatParam (IOGGroupNode* _pGroup, const std::string& _Alias) = 0;
+
+	// read Vec2 parameter.
+	virtual Vec2 ReadVec2Param (
+		IOGGroupNode* _pGroup, 
+		const std::string& _AliasX, 
+		const std::string& _AliasY) = 0;
+
+	// read Vec3 parameter.
+	virtual Vec3 ReadVec3Param (
+		IOGGroupNode* _pGroup, 
+		const std::string& _AliasX, 
+		const std::string& _AliasY,
+		const std::string& _AliasZ) = 0;
+
+	// read Vec4 parameter.
+	virtual Vec4 ReadVec4Param (
+		IOGGroupNode* _pGroup, 
+		const std::string& _AliasX, 
+		const std::string& _AliasY,
+		const std::string& _AliasZ,
+		const std::string& _AliasW) = 0;
 
 	// close source.
 	virtual void CloseSource (IOGSettingsSource* _pSource) = 0;

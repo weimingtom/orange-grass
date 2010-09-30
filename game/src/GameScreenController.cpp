@@ -12,7 +12,8 @@
 #include "common.h"
 
 
-CGameScreenController::CGameScreenController() :	m_pResourceMgr(NULL),
+CGameScreenController::CGameScreenController() :	m_pGlobalVars(NULL),
+													m_pResourceMgr(NULL),
 													m_pSg(NULL),
 													m_pRenderer(NULL),
 													m_pCamera(NULL),
@@ -20,8 +21,6 @@ CGameScreenController::CGameScreenController() :	m_pResourceMgr(NULL),
 													m_State(CSTATE_NO),
                                                     m_Type(SCRTYPE_GAME),
 													m_pCurLevel(NULL),
-													m_fFOV(1.0f),
-													m_fCameraTargetDistance(150.0f),
 													m_ElapsedTime(0)
 {
 }
@@ -43,18 +42,28 @@ CGameScreenController::~CGameScreenController()
 // Initialize controller
 bool CGameScreenController::Init ()
 {
-	m_fFOV = 0.67f;
-	m_fCameraTargetDistance = 120.0f;
-	m_fFinishPointSqDistance = 10000.0f;
+	m_pGlobalVars = GetGlobalVars();
+
+	m_CurLevel = m_pGlobalVars->GetSVar("level_0");
+	m_fFOV = m_pGlobalVars->GetFVar("FOV");
+	m_fZNear = m_pGlobalVars->GetFVar("z_near");
+	m_fZFar = m_pGlobalVars->GetFVar("z_far");
+	m_ScrWidth = m_pGlobalVars->GetIVar("view_width");
+	m_ScrHeight = m_pGlobalVars->GetIVar("view_height");
+	m_fCameraTargetDistance = m_pGlobalVars->GetFVar("cam_distance");
+	m_fCameraMargins = m_pGlobalVars->GetFVar("cam_margins");
+	m_vCameraDir = m_pGlobalVars->GetVec3Var("cam_dir");
+	m_vCameraOffset = m_pGlobalVars->GetVec3Var("cam_offset");
+
 	m_ElapsedTime = 0;
 
     m_pResourceMgr = GetResourceMgr();
 	m_pSg = GetSceneGraph();
 	m_pRenderer = GetRenderer();
 	m_pCamera = m_pRenderer->GetCamera();
-	m_pRenderer->SetViewport(SCR_WIDTH, SCR_HEIGHT, 4.0f, 430.0f, m_fFOV);
+	m_pRenderer->SetViewport(m_ScrWidth, m_ScrHeight, m_fZNear, m_fZFar, m_fFOV);
     
-    m_pCurLevel = GetLevelManager()->LoadLevel(std::string("level_1"));
+    m_pCurLevel = GetLevelManager()->LoadLevel(m_CurLevel);
     m_pPlayer = GetActorManager()->GetPlayersActor();
 
 	UpdateCamera();
@@ -166,7 +175,7 @@ bool CGameScreenController::CheckFinishCondition ()
 {
 	const Vec3& vFinishPoint = m_pCurLevel->GetFinishPosition();
 	const Vec3& vCurPoint = m_pCamera->GetPosition();
-	if (Dist2DSq(vCurPoint, vFinishPoint) <= m_fFinishPointSqDistance)
+	if (Dist2DSq(vCurPoint, vFinishPoint) <= 10000.0f)
 	{
 		return true;
 	}
@@ -179,20 +188,18 @@ void CGameScreenController::UpdateCamera ()
 {
     if (m_pCamera && m_pCurLevel)
     {
-        const Vec3& vTarget = m_pPlayer->GetPhysicalObject()->GetPosition()+Vec3(0,0,-30);
-        Vec3 vDir = Vec3(0, 0.6f, 0.4f).normalized();
-        Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
-        Vec3 vPos = vTarget + (vDir*m_fCameraTargetDistance);
-        Vec3 vT = vTarget;
+        Vec3 vTarget = m_pPlayer->GetPhysicalObject()->GetPosition() + m_vCameraOffset;
+        Vec3 vUp = m_vCameraDir.cross(Vec3(1, 0, 0));
+        Vec3 vPos = vTarget + (m_vCameraDir * m_fCameraTargetDistance);
 
         Vec3 vLeftBorder, vRightBorder;
         GetPhysics()->GetBordersAtPoint(vPos, vLeftBorder, vRightBorder);
-        float fLeft = vLeftBorder.x + 25.0f;
-        float fRight = vRightBorder.x - 25.0f;
+        float fLeft = vLeftBorder.x + m_fCameraMargins;
+        float fRight = vRightBorder.x - m_fCameraMargins;
         OG_CLAMP(vPos.x, fLeft, fRight);
-        OG_CLAMP(vT.x, fLeft, fRight);
+        OG_CLAMP(vTarget.x, fLeft, fRight);
 
-        m_pCamera->Setup (vPos, vT, vUp);
+        m_pCamera->Setup (vPos, vTarget, vUp);
 		m_pCamera->Update();
 	}
 }

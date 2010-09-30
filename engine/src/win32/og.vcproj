@@ -562,6 +562,14 @@
 				Name="Core"
 				>
 				<File
+					RelativePath=".\ogappsettings.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogappsettings.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogglobalvarstable.cpp"
 					>
 				</File>
@@ -759,6 +767,10 @@
 			<Filter
 				Name="Core"
 				>
+				<File
+					RelativePath="..\..\include\IOGAppSettings.h"
+					>
+				</File>
 				<File
 					RelativePath="..\..\include\IOGCoreHelpers.h"
 					>
