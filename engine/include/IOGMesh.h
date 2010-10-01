@@ -26,14 +26,11 @@ class IOGMesh
 public:
 	virtual ~IOGMesh() {}
 		
-	// Update mesh animation.
-	virtual void Update (unsigned long _ElapsedTime) = 0;
-		
 	// Render mesh.
-	virtual void Render (const MATRIX& _mView) = 0;
+	virtual void Render (const MATRIX& _mView, unsigned int _Frame) = 0;
 
-	// Render.
-	virtual void Render (const MATRIX& _mView, unsigned int _Part) = 0;
+	// Render part of the mesh.
+	virtual void RenderPart (const MATRIX& _mView, unsigned int _Part, unsigned int _Frame) = 0;
 
     // Get num renderable parts.
 	virtual unsigned int GetNumRenderables () const = 0;

@@ -49,6 +49,7 @@ bool COGMesh::Load ()
 		return false;
 	}
 	
+	m_BuffersList.reserve(m_pScene->nNumMesh);
 	for(unsigned int i = 0; i < m_pScene->nNumMesh; ++i)
 	{
 		COGVertexBuffers* pBuffer = new COGVertexBuffers(&m_pScene->pMesh[i]);
@@ -89,33 +90,26 @@ void COGMesh::Unload ()
 }
 
 
-// Render.
-void COGMesh::Render (const MATRIX& _mView)
+// Render mesh.
+void COGMesh::Render (const MATRIX& _mView, unsigned int _Frame)
 {
-	MATRIX mWorld, mModelView;
+	if (_Frame < m_pScene->nNumFrame)
+		return;
 
 	for (unsigned int i=0; i<m_pScene->nNumMesh; ++i)
 	{
-		const SPODNode& node = m_pScene->pNode[i];
-		
-		// Gets the node model matrix
-		m_pScene->GetWorldMatrix(mWorld, node);
-
-		// Multiply the view matrix by the model matrix to get the model-view matrix
-		MatrixMultiply(mModelView, mWorld, _mView);
-		glLoadMatrixf(mModelView.f);
-		
-        m_pRenderer->RenderMesh(m_BuffersList[node.nIdx]);
+		RenderPart(_mView, i, _Frame);
 	}
 }
 
 
-// Render.
-void COGMesh::Render (const MATRIX& _mView, unsigned int _Part)
+// Render part of the mesh.
+void COGMesh::RenderPart (const MATRIX& _mView, unsigned int _Part, unsigned int _Frame)
 {
-    if (_Part > GetNumRenderables() || _Part < 0)
+    if (_Part > GetNumRenderables() || _Frame < m_pScene->nNumFrame)
         return;
 
+	m_pScene->SetFrame((float)_Frame);
 	const SPODNode& node = m_pScene->pNode[_Part];
 
     // Gets the node model matrix
@@ -128,12 +122,6 @@ void COGMesh::Render (const MATRIX& _mView, unsigned int _Part)
     glLoadMatrixf(mModelView.f);
 
     m_pRenderer->RenderMesh(m_BuffersList[node.nIdx]);
-}
-
-
-// Update.
-void COGMesh::Update (unsigned long _ElapsedTime)
-{
 }
 
 

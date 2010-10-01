@@ -16,6 +16,7 @@
 #include "Mathematics.h"
 #include "ogresource.h"
 #include "IOGRenderer.h"
+#include "IOGSettingsReader.h"
 
 
 class COGTerrain : public IOGTerrain, public COGResource
@@ -76,6 +77,7 @@ private:
 	std::vector<IOGTexture*>	m_TextureList;
     IOGMaterial*				m_pMaterial;
     IOGRenderer*                m_pRenderer;
+	IOGSettingsReader*			m_pReader;
 };
 
 

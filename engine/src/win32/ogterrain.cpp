@@ -1,5 +1,5 @@
 /*
- *  ogterrain.mm
+ *  ogterrain.cpp
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 12.11.09.
@@ -9,13 +9,13 @@
 #include "OrangeGrass.h"
 #include "ogterrain.h"
 #include "IOGMath.h"
-#include "tinyxml.h"
 
 
 COGTerrain::COGTerrain () :	m_pMesh(NULL),
                             m_pMaterial(NULL)
 {
     m_pRenderer = GetRenderer();
+	m_pReader = GetSettingsReader();
 }
 
 
@@ -62,37 +62,35 @@ bool COGTerrain::Load ()
 // Load terrain configuration
 bool COGTerrain::LoadConfig (COGTerrain::Cfg& _cfg)
 {
-    TiXmlDocument* pXmlSettings = new TiXmlDocument(m_ResourceFile.c_str());
-    if (!pXmlSettings->LoadFile(m_ResourceFile.c_str()))
+	IOGSettingsSource* pSource = m_pReader->OpenSource(m_ResourceFile);
+	if (!pSource)
 	{
-        OG_LOG_ERROR("Failed to load config file %s for terrain", m_ResourceFile.c_str());
-		OG_SAFE_DELETE(pXmlSettings);
-        return false;
+		OG_LOG_ERROR("Failed to load terrain config file %s", m_ResourceFile.c_str());
+		return false;
 	}
-    TiXmlHandle* hDoc = new TiXmlHandle (pXmlSettings);
 
-    TiXmlHandle meshHandle = hDoc->FirstChild ("Mesh");
-    if (meshHandle.Node())
-    {
-        TiXmlElement* pElement = meshHandle.Element();
-		_cfg.mesh_alias = std::string(pElement->Attribute ("alias"));
-    }
-    TiXmlHandle mtlHandle = hDoc->FirstChild ("Material");
-    int index = 0;
-    TiXmlHandle TxHandle = mtlHandle.Child ( "Texture", index );
-    while (TxHandle.Node ())
-    {
-        TiXmlElement* pElement = TxHandle.Element();
-		
-		Cfg::TextureCfg txcfg;
-		txcfg.alias = std::string(pElement->Attribute ("alias"));
-		_cfg.texture_cfg_list.push_back(txcfg);
+	IOGGroupNode* pMeshNode = m_pReader->OpenGroupNode(pSource, NULL, "Mesh");
+	if (pMeshNode != NULL)
+	{
+		_cfg.mesh_alias = m_pReader->ReadStringParam(pMeshNode, "alias");
+		m_pReader->CloseGroupNode(pMeshNode);
+	}
 
-		TxHandle = mtlHandle.Child ( "Texture", ++index );
-    }
+	IOGGroupNode* pMaterialNode = m_pReader->OpenGroupNode(pSource, NULL, "Material");
+	if (pMaterialNode != NULL)
+	{
+		IOGGroupNode* pTextureNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Texture");
+		for (; pTextureNode != NULL; )
+		{
+			Cfg::TextureCfg txcfg;
+			txcfg.alias = m_pReader->ReadStringParam(pTextureNode, "alias");
+			_cfg.texture_cfg_list.push_back(txcfg);
+			pTextureNode = m_pReader->ReadNextNode(pTextureNode);
+		}
+		m_pReader->CloseGroupNode(pMaterialNode);
+	}
 
-	OG_SAFE_DELETE(hDoc);
-	OG_SAFE_DELETE(pXmlSettings);
+	m_pReader->CloseSource(pSource);
 	return true;
 }
 
@@ -120,8 +118,7 @@ void COGTerrain::Render (const MATRIX& _mView)
     unsigned int numParts = m_pMesh->GetNumRenderables();
     for (unsigned int i = 0; i < numParts; ++i)
     {
-        //m_pRenderer->SetTexture(m_TextureList[i]);
-        m_pMesh->Render (_mView, i);
+        m_pMesh->RenderPart (_mView, i, 0);
     }
 }
 
@@ -131,10 +128,10 @@ void COGTerrain::Render (const MATRIX& _mView, unsigned int _Part)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_TextureList[_Part]);
-	m_pMesh->Render (_mView, _Part);
+	m_pMesh->RenderPart (_mView, _Part, 0);
 }
 
-		
+
 // Update mesh animation.
 void COGTerrain::Update (unsigned long _ElapsedTime)
 {

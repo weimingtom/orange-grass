@@ -13,6 +13,9 @@
 #include "IOGMaterial.h"
 #include "ogresource.h"
 #include "IOGRenderer.h"
+#include "IOGAnimation.h"
+#include "IOGSettingsReader.h"
+#include <map>
 
 
 class COGModel : public IOGModel, public COGResource
@@ -69,6 +72,9 @@ private:
 	IOGTexture*	    m_pTexture;
     IOGMaterial*    m_pMaterial;
     IOGRenderer*    m_pRenderer;
+	IOGSettingsReader*	m_pReader;
+
+	std::map<std::string, IOGAnimation*>	m_pAnimations;
 };
 
 

@@ -9,7 +9,6 @@
 
 #include "OrangeGrass.h"
 #include "ogmodel.h"
-#include "tinyxml.h"
 
 
 COGModel::COGModel() :	m_pMesh(NULL),
@@ -17,6 +16,7 @@ COGModel::COGModel() :	m_pMesh(NULL),
                         m_pMaterial(NULL)
 {
     m_pRenderer = GetRenderer();
+	m_pReader = GetSettingsReader();
 }
 
 
@@ -58,31 +58,29 @@ bool COGModel::Load ()
 // Load model configuration
 bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
 {
-	TiXmlDocument* pXmlSettings = new TiXmlDocument(m_ResourceFile.c_str());
-    if (!pXmlSettings->LoadFile(m_ResourceFile.c_str()))
+	IOGSettingsSource* pSource = m_pReader->OpenSource(m_ResourceFile);
+	if (!pSource)
 	{
-        OG_LOG_ERROR("Failed to load model config file %s", m_ResourceFile.c_str());
-		OG_SAFE_DELETE(pXmlSettings);
-        return false;
+		OG_LOG_ERROR("Failed to load model config file %s", m_ResourceFile.c_str());
+		return false;
 	}
 
-	TiXmlHandle* hDoc = new TiXmlHandle(pXmlSettings);
-	TiXmlHandle meshHandle = hDoc->FirstChild ("Mesh");
-    if (meshHandle.Node())
-    {
-        TiXmlElement* pElement = meshHandle.Element();
-		_cfg.mesh_alias = std::string(pElement->Attribute ("alias"));
-    }
-	TiXmlHandle mtlHandle = hDoc->FirstChild ("Material");
-    if (mtlHandle.Node())
-    {
-        TiXmlElement* pElement = mtlHandle.Element();
-        _cfg.texture_alias = std::string(pElement->Attribute ("texture"));
-        _cfg.material_type = std::string(pElement->Attribute ("type"));
-    }
+	IOGGroupNode* pMeshNode = m_pReader->OpenGroupNode(pSource, NULL, "Mesh");
+	if (pMeshNode != NULL)
+	{
+		_cfg.mesh_alias = m_pReader->ReadStringParam(pMeshNode, "alias");
+		m_pReader->CloseGroupNode(pMeshNode);
+	}
 
-	OG_SAFE_DELETE(hDoc);
-	OG_SAFE_DELETE(pXmlSettings);
+	IOGGroupNode* pMaterialNode = m_pReader->OpenGroupNode(pSource, NULL, "Material");
+	if (pMaterialNode != NULL)
+	{
+		_cfg.texture_alias = m_pReader->ReadStringParam(pMaterialNode, "texture");
+		_cfg.material_type = m_pReader->ReadStringParam(pMaterialNode, "type");
+		m_pReader->CloseGroupNode(pMaterialNode);
+	}
+
+	m_pReader->CloseSource(pSource);
 	return true;
 }
 
@@ -104,7 +102,6 @@ void COGModel::Unload ()
 // Update.
 void COGModel::Update (unsigned long _ElapsedTime)
 {
-	m_pMesh->Update (_ElapsedTime);
 }
 
 
@@ -113,7 +110,7 @@ void COGModel::Render (const MATRIX& _mView)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
-	m_pMesh->Render (_mView);
+	m_pMesh->Render (_mView, 0);
 }
 
 		
@@ -122,7 +119,7 @@ void COGModel::Render (const MATRIX& _mView, unsigned int _Part)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
-	m_pMesh->Render (_mView, _Part);
+	m_pMesh->RenderPart (_mView, _Part, 0);
 }
 
 

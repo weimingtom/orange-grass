@@ -56,6 +56,7 @@ IOGGroupNode* COGSettingsReader::OpenGroupNode (
 	COGGroupNode* pGroup = new COGGroupNode;
 	pGroup->index = 0;
 	pGroup->name = _Alias;
+	pGroup->pSource = _pSource;
 	if (_pParent)
 	{
 		pGroup->pParent = _pParent;
@@ -65,8 +66,8 @@ IOGGroupNode* COGSettingsReader::OpenGroupNode (
 	else
 	{
 		pGroup->pParent = NULL;
-		pGroup->pElement = NULL;
 		pGroup->pNode = new TiXmlHandle(((COGSettingsSource*)_pSource)->pDoc->Child ( pGroup->name.c_str(), pGroup->index ));
+		pGroup->pElement = pGroup->pNode->Element();
 	}
 	return pGroup;
 }

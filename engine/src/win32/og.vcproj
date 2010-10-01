@@ -270,6 +270,14 @@
 				Name="Graphics"
 				>
 				<File
+					RelativePath=".\oganimationcontroller.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\oganimationcontroller.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogfog.cpp"
 					>
 				</File>
@@ -627,6 +635,14 @@
 			<Filter
 				Name="Graphics"
 				>
+				<File
+					RelativePath="..\..\include\IOGAnimation.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGAnimationController.h"
+					>
+				</File>
 				<File
 					RelativePath="..\..\include\IOGEffect.h"
 					>
