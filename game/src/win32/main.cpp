@@ -73,10 +73,6 @@ LRESULT CALLBACK WndProc ( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 
 		case WM_LBUTTONUP:
         {
-            RECT r; 
-            GetClientRect(shWnd, &r); 
-            int Y = r.bottom - 1 - (SHORT)HIWORD(lParam);
-
             bTouch = false;
             sTouchX = (SHORT)LOWORD(lParam);
             sTouchY = (SHORT)HIWORD(lParam);

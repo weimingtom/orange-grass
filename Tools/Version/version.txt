@@ -1,6 +1,11 @@
-Tools: ver. 0.08, 19-Sep-2010
+Tools: ver. 0.10, 01-Oct-2010
 
 ChangeList:
+
+0.10 (01-Oct-2010):
+- [OG] object orientation and stabilization workers;
+- [OG] application settings manager, all params are now configurable;
+- [Docs] documentation updated;
 
 0.09 (29-Sep-2010):
 - [OG] actors settings system;

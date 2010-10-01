@@ -11,12 +11,14 @@
 #include "OrangeGrass.h"
 
 
-static const float g_fHalfScrWidth = SCR_WIDTH / 2.0f;
-static const float g_fHalfScrHeight = SCR_HEIGHT / 2.0f;
+static int m_HalfScrWidth = 0;
+static int m_HalfScrHeight = 0;
 
 
 COGSprite::COGSprite() : m_pTexture(NULL)
 {
+	m_HalfScrWidth = GetGlobalVars()->GetIVar("view_width") / 2;
+	m_HalfScrHeight = GetGlobalVars()->GetIVar("view_height") / 2;
 }
 
 
@@ -81,10 +83,10 @@ void COGSprite::Unload ()
 // Render sprite.
 void COGSprite::Render (const Vec2& _vPos, const Vec2& _vSize)
 {
-	float fLeft = -g_fHalfScrWidth+_vPos.x;
-	float fRight = -g_fHalfScrWidth+_vSize.x+_vPos.x;
-	float fTop = g_fHalfScrHeight-_vSize.y-_vPos.y;
-	float fBottom = g_fHalfScrHeight-_vPos.y;
+	float fLeft = -m_HalfScrWidth+_vPos.x;
+	float fRight = -m_HalfScrWidth+_vSize.x+_vPos.x;
+	float fTop = m_HalfScrHeight-_vSize.y-_vPos.y;
+	float fBottom = m_HalfScrHeight-_vPos.y;
 
 	m_Vertices[0].p	= Vec2(fRight, fTop);	
 	m_Vertices[0].t = Vec2(m_T1.x, m_T0.y); 

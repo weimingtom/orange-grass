@@ -78,11 +78,11 @@ void COGRenderer::SetViewport (
 #ifdef WIN32
 	MatrixOrthoRH(m_mOrthoProj, (float)m_Width, (float)m_Height, -1, 1, false);
     MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(m_Width)/float(m_Height), m_fZNear, m_fZFar, false);
- 	m_pText->SetTextures(SCR_WIDTH, SCR_HEIGHT, false);
+ 	m_pText->SetTextures(_Width, _Height, false);
 #else
 	MatrixOrthoRH(m_mOrthoProj, (float)m_Height, (float)m_Width, -1, 1, true);
     MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(m_Height)/float(m_Width), m_fZNear, m_fZFar, true);
- 	m_pText->SetTextures(SCR_HEIGHT, SCR_WIDTH, true);
+ 	m_pText->SetTextures(_Height, _Width, true);
 #endif
 }
 
