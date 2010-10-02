@@ -178,7 +178,6 @@ void CViewerCanvas::InitGL()
 
 	GetRenderer()->GetLight()->SetDirection(Vec4(0.0f, 0.0f, 1.0f, 0.0f));
 	GetRenderer()->GetLight()->SetColor(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
-	GetRenderer()->GetLight()->Apply();
 }
 
 

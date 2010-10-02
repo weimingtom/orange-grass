@@ -9,7 +9,6 @@
 #ifndef OGTEXTURE_H_
 #define OGTEXTURE_H_
 
-#include "OpenGL2.h"
 #include "IOGTexture.h"
 #include "GraphicsDevice.h"
 #include "Geometry.h"

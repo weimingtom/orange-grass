@@ -6,6 +6,7 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
+#include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogresourcemgr.h"
 #include "oglevelmanager.h"
@@ -13,7 +14,8 @@
 #include "ogactormanager.h"
 #include "ogphysics.h"
 #include "oginputdispatcher.h"
-#include "ogrenderer.h"
+#include "ogrenderer_gles11.h"
+#include "ogrenderer_gles20.h"
 #include "ogspritepool.h"
 #include "ogmaterialmanager.h"
 #include "ogstatistics.h"
@@ -105,7 +107,11 @@ IOGRenderer* GetRenderer ()
 {
 	if (g_pRenderer == NULL)
 	{
-		g_pRenderer = new COGRenderer ();
+#ifdef GLES11
+		g_pRenderer = new COGRenderer_GLES11 ();
+#else
+		g_pRenderer = new COGRenderer_GLES20 ();
+#endif
 		g_pRenderer->Init();
 	}
 	return g_pRenderer;

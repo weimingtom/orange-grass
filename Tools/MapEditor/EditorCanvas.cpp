@@ -1,9 +1,7 @@
-#include <Opengl2.h>
 #include <wx/wx.h>
 #include "EditorCanvas.h"
-#include <OrangeGrass.h>
-#include <IOGMath.h>
 #include "EditorLevelScene.h"
+#include <OrangeGrass.h>
 
 
 #define TIMER_ID    1000

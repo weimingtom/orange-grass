@@ -9,7 +9,6 @@
 #ifndef OGTERRAIN_H_
 #define OGTERRAIN_H_
 
-#include "OpenGL2.h"
 #include "IOGTerrain.h"
 #include "IOGMaterial.h"
 #include "Geometry.h"
@@ -32,10 +31,10 @@ public:
 	virtual void Unload ();
 
 	// Render terrain.
-	virtual void Render (const MATRIX& _mView);
+	virtual void Render (const MATRIX& _mWorld);
 
 	// Render.
-	virtual void Render (const MATRIX& _mView, unsigned int _Part);
+	virtual void Render (const MATRIX& _mWorld, unsigned int _Part);
 		
 	// Update mesh animation.
 	virtual void Update (unsigned long _ElapsedTime);

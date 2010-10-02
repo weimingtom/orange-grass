@@ -47,6 +47,12 @@ public:
 	// add rendering command.
 	virtual void SetMaterial (IOGMaterial* _pMaterial) = 0;
 
+	// set model matrix.
+	virtual void SetModelMatrix (const MATRIX& _mModel) = 0;
+
+	// set view matrix.
+	virtual void SetViewMatrix (const MATRIX& _mView) = 0;
+
 	// add rendering command.
 	virtual void RenderMesh (void* _pMesh) = 0;
 
@@ -56,11 +62,17 @@ public:
 	// Get scene light.
 	virtual IOGLight* GetLight () = 0;
 
+	// Enable scene light.
+	virtual void EnableLight (bool _bEnable) = 0;
+
 	// Get main camera.
 	virtual IOGCamera* GetCamera () = 0;
 
 	// Get fog.
 	virtual IOGFog* GetFog () = 0;
+
+	// Enable scene fog.
+	virtual void EnableFog (bool _bEnable) = 0;
 
 	// start rendering mode.
 	virtual void StartRenderMode(OGRenderMode _Mode) = 0;
@@ -76,6 +88,12 @@ public:
 
     // Display string.
     virtual void DisplayString (const Vec2& _vPos, float _fScale, unsigned int Colour, const char * const pszFormat, ...) = 0;
+
+    // Draw effects buffer.
+    virtual void DrawEffectBuffer (void* _pBuffer, int _StartId, int _NumVertices) = 0;
+
+    // Draw sprite buffer.
+    virtual void DrawSpriteBuffer (void* _pBuffer, int _StartId, int _NumVertices) = 0;
 };
 
 #endif

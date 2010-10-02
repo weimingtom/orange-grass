@@ -10,8 +10,6 @@
 #define OGLIGHT_H_
 
 #include "IOGLight.h"
-#include "Geometry.h"
-#include "Mathematics.h"
 
 
 class COGLight : public IOGLight
@@ -31,21 +29,11 @@ public:
 	
 	// get light direction.
 	virtual const Vec4& GetDirection () const { return m_vDirection; }
-
-	// apply lighting.
-	virtual void Apply ();
-
-	// enable or disable light.
-	virtual void Enable (bool _bEnable);
-
-	// check light status.
-	virtual bool IsEnabled () const {return m_bEnabled;}
 	
 private:
 
 	Vec4	m_vDirection;
 	Vec4	m_vColor;
-	bool	m_bEnabled;
 };
 
 #endif

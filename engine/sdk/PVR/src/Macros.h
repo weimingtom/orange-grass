@@ -44,7 +44,7 @@ subject to the following restrictions:
 #define LIMIT_COORD(Val, Size, AssumeImageTiles) \
       ((AssumeImageTiles)? WRAP_COORD((Val), (Size)): CLAMP((Val), 0, (Size)-1))
 	  
-#define RGBA(r, g, b, a)   ((GLuint) (((a) << 24) | ((b) << 16) | ((g) << 8) | (r)))
+#define RGBA(r, g, b, a)   ((unsigned int) (((a) << 24) | ((b) << 16) | ((g) << 8) | (r)))
 
 /****************************************************************************
 ** Defines

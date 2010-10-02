@@ -9,7 +9,6 @@
 #ifndef OGMESH_H_
 #define OGMESH_H_
 
-#include "OpenGL2.h"
 #include "IOGMesh.h"
 #include "Geometry.h"
 #include "Mathematics.h"
@@ -32,10 +31,10 @@ public:
 	virtual void Unload ();
 
 	// Render mesh.
-	virtual void Render (const MATRIX& _mView, unsigned int _Frame);
+	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame);
 
 	// Render part of the mesh.
-	virtual void RenderPart (const MATRIX& _mView, unsigned int _Part, unsigned int _Frame);
+	virtual void RenderPart (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame);
 
     // Get num renderable parts.
 	virtual unsigned int GetNumRenderables () const;

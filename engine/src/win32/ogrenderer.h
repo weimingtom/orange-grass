@@ -11,7 +11,6 @@
 
 #include "IOGRenderer.h"
 #include "IOGStatistics.h"
-#include "OpenGL2.h"
 #include "ogmesh.h"
 #include "ogrendertarget.h"
 #include "UI.h"
@@ -22,7 +21,7 @@ class COGRenderer : public IOGRenderer
 public:
 	COGRenderer ();
 	virtual ~COGRenderer ();
-	
+
 	// initialize renderer.
 	virtual bool Init ();
 	
@@ -55,12 +54,6 @@ public:
 	// Get fog.
 	virtual IOGFog* GetFog ();
 
-	// start rendering mode.
-	virtual void StartRenderMode(OGRenderMode _Mode);
-
-	// finish rendering mode.
-	virtual void FinishRenderMode();
-
 	// reset renderer pipeline.
 	virtual void Reset ();
 
@@ -73,8 +66,8 @@ public:
 		float _fScale, 
 		unsigned int Colour, 
 		const char * const pszFormat, ...);
-	
-private:
+
+protected:
 
     IOGTexture*         m_pCurTexture;
     IOGMaterial*        m_pCurMaterial;
@@ -86,6 +79,7 @@ private:
 	CDisplayText*		m_pText;
 	MATRIX				m_mOrthoProj;
 	MATRIX				m_mProjection;
+	MATRIX				m_mView;
 	unsigned int		m_Width; 
 	unsigned int		m_Height;
 	float				m_fZNear;

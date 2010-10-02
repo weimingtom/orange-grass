@@ -6,6 +6,7 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
+#include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogrenderer.h"
 #include "oglight.h"
@@ -151,95 +152,6 @@ IOGCamera* COGRenderer::GetCamera ()
 IOGFog* COGRenderer::GetFog ()
 {
 	return m_pFog;
-}
-
-
-// start rendering mode.
-void COGRenderer::StartRenderMode(OGRenderMode _Mode)
-{
-	m_Mode = _Mode;
-	switch(m_Mode)
-	{
-	case OG_RENDERMODE_GEOMETRY:
-	    glEnable(GL_CULL_FACE);
-	    glEnable(GL_DEPTH_TEST);
-	    glMatrixMode(GL_PROJECTION);
-		glLoadMatrixf(m_mProjection.f);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadMatrixf(m_pCamera->GetViewMatrix().f);
-		m_pLight->Enable(true);
-		m_pLight->Apply();
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_NORMAL_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		break;
-		
-	case OG_RENDERMODE_EFFECTS:
-	    glMatrixMode(GL_PROJECTION);
-		glLoadMatrixf(m_mProjection.f);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadMatrixf(m_pCamera->GetViewMatrix().f);
-		m_pLight->Enable(false);
-		glDisable(GL_CULL_FACE);
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);	
-		glEnableClientState(GL_COLOR_ARRAY);	
-		break;
-	
-	case OG_RENDERMODE_SPRITES:
-		glAlphaFunc(GL_GREATER, 0.1f);
-		m_pLight->Enable(false);
-		glDisable(GL_DEPTH_TEST);
-	    glDisable(GL_CULL_FACE);
-		glMatrixMode(GL_PROJECTION);
-		glLoadMatrixf(m_mOrthoProj.f);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);	
-		break;
-
-	case OG_RENDERMODE_SHADOWMAP:
-		break;
-	}
-}
-
-
-// finish rendering mode.
-void COGRenderer::FinishRenderMode()
-{
-	switch(m_Mode)
-	{
-	case OG_RENDERMODE_GEOMETRY:
-#ifdef USE_VBO
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-#endif
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_NORMAL_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		break;
-	
-	case OG_RENDERMODE_EFFECTS:
-		glDisable(GL_BLEND); 
-	    glEnable(GL_CULL_FACE);
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);	
-		glDisableClientState(GL_COLOR_ARRAY);
-		break;
-	
-	case OG_RENDERMODE_SPRITES:
-		glDisable(GL_BLEND); 
-		glEnable(GL_DEPTH_TEST);
-	    glEnable(GL_CULL_FACE);
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		m_pText->Flush();
-		break;
-
-	case OG_RENDERMODE_SHADOWMAP:
-		break;
-	}
 }
 
 

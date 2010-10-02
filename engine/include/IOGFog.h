@@ -40,12 +40,6 @@ public:
 
 	// get fog density.
 	virtual float GetDensity () const = 0;
-
-	// enable or disable.
-	virtual void Enable (bool _bEnable) = 0;
-
-	// get status.
-	virtual bool IsEnabled () const = 0;
 };
 
 #endif

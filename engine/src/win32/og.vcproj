@@ -318,14 +318,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\ogrenderer.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ogrenderer.h"
-					>
-				</File>
-				<File
 					RelativePath=".\ogrendertarget.cpp"
 					>
 				</File>
@@ -385,14 +377,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\ogalphamultmaterial.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ogalphamultmaterial.h"
-						>
-					</File>
-					<File
 						RelativePath=".\ogalphatestmaterial.cpp"
 						>
 					</File>
@@ -442,6 +426,46 @@
 					</File>
 					<File
 						RelativePath=".\ogplasmaeffect.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Renderers"
+					>
+					<File
+						RelativePath=".\ogrenderer.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogrenderer.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogrenderer_gles11.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogrenderer_gles11.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogrenderer_gles20.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogrenderer_gles20.h"
+						>
+					</File>
+				</Filter>
+				<Filter
+					Name="Shaders"
+					>
+					<File
+						RelativePath=".\ogmodelshader.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogmodelshader.h"
 						>
 					</File>
 				</Filter>
@@ -681,6 +705,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\IOGRenderer.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGShader.h"
 					>
 				</File>
 				<File

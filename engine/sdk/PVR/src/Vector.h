@@ -16,13 +16,10 @@ subject to the following restrictions:
 #define VECTOR_H_
 
 #include <windows.h>
-#include <GL/gl.h>
 #include <math.h>
 
-//#include "Matrix.h"
 
-
-#define VERTTYPE GLfloat
+#define VERTTYPE float
 #define VERTTYPEENUM GL_FLOAT
 
 // Floating-point operations

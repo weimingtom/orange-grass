@@ -6,6 +6,7 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
+#include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogvertexbuffers.h"
 
@@ -49,6 +50,9 @@ COGVertexBuffers::COGVertexBuffers (const SPODMesh* _pMesh) :	m_pMesh(_pMesh),
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, uiSize, m_pMesh->sFaces.pData, GL_STATIC_DRAW);
 	}
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 #endif
 	m_NumVertices = m_pMesh->nNumFaces * 3;
 	m_pStats = GetStatistics();
@@ -64,12 +68,21 @@ void COGVertexBuffers::Apply () const
 	// bind the index buffer, won't hurt if the handle is 0
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
 
+#ifdef GLES11
 	// Setup pointers
 	glVertexPointer(3, VERTTYPEENUM, m_pMesh->sVertex.nStride, m_pMesh->sVertex.pData);
+	glNormalPointer(VERTTYPEENUM, m_pMesh->sNormals.nStride, m_pMesh->sNormals.pData);
 	if (m_pMesh->psUVW)
 		glTexCoordPointer(2, VERTTYPEENUM, m_pMesh->psUVW[0].nStride, m_pMesh->psUVW[0].pData);
-	glNormalPointer(VERTTYPEENUM, m_pMesh->sNormals.nStride, m_pMesh->sNormals.pData);
 #else
+	// Setup pointers
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, m_pMesh->sVertex.nStride, m_pMesh->sVertex.pData);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, m_pMesh->sNormals.nStride, m_pMesh->sNormals.pData);
+	if (m_pMesh->psUVW)
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, m_pMesh->psUVW[0].nStride, m_pMesh->psUVW[0].pData);
+#endif
+#else
+#ifdef GLES11
 	// Setup pointers
 	glVertexPointer(3, VERTTYPEENUM, m_pMesh->sVertex.nStride, m_pMesh->pInterleaved);
 	glNormalPointer(VERTTYPEENUM, m_pMesh->sVertex.nStride, (void*)((char*)m_pMesh->pInterleaved + 12));
@@ -77,6 +90,15 @@ void COGVertexBuffers::Apply () const
 	{
 		glTexCoordPointer(2, VERTTYPEENUM, m_pMesh->sVertex.nStride, (void*)((char*)m_pMesh->pInterleaved + 24));
 	}
+#else
+	// Setup pointers
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, m_pMesh->sVertex.nStride, m_pMesh->pInterleaved);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, m_pMesh->sVertex.nStride, (void*)((char*)m_pMesh->pInterleaved + 12));
+	if (m_pMesh->psUVW)
+	{
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, m_pMesh->sVertex.nStride, (void*)((char*)m_pMesh->pInterleaved + 24));
+	}
+#endif
 #endif
 #ifdef STATISTICS
 	m_pStats->AddVBOSwitch();

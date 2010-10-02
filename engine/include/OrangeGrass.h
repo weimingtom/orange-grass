@@ -9,7 +9,6 @@
 #ifndef ORANGEGRASS_H_
 #define ORANGEGRASS_H_
 
-#include "OpenGL2.h"
 #include "IOGCoreHelpers.h"
 #include "IOGResourceMgr.h"
 #include "IOGLevelManager.h"
@@ -27,8 +26,6 @@
 #include "IOGSettingsReader.h"
 #include "IOGAppSettings.h"
 #include "common.h"
-#include <vector>
-#include <string>
 
 
 IOGResourceMgr* GetResourceMgr ();

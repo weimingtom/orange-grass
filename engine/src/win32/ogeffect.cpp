@@ -6,14 +6,14 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "OpenGL2.h"
 #include "ogeffect.h"
-#include "common.h"
+#include "OrangeGrass.h"
 
 
 COGEffect::COGEffect()
 {
 	m_Status = OG_EFFECTSTATUS_INACTIVE;
+    m_pRenderer = GetRenderer();
 }
 
 
@@ -38,9 +38,9 @@ void COGEffect::SetDirection (const Vec3& _vDir)
 
 
 // Render.
-void COGEffect::Render (const MATRIX& _mView, unsigned int _Part)
+void COGEffect::Render (const MATRIX& _mWorld, unsigned int _Part)
 {
-    Render(_mView);
+    Render(_mWorld);
 }
 
 

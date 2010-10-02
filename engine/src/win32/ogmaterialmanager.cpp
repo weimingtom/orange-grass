@@ -11,7 +11,6 @@
 #include "ogsolidmaterial.h"
 #include "ogalphatestmaterial.h"
 #include "ogalphablendmaterial.h"
-#include "ogalphamultmaterial.h"
 
 
 COGMaterialManager::COGMaterialManager ()
@@ -35,7 +34,6 @@ bool COGMaterialManager::Init ()
 	m_MaterialsList[OG_MAT_SOLID] = new COGSolidMaterial();
 	m_MaterialsList[OG_MAT_ALPHATEST] = new COGAlphaTestMaterial();
 	m_MaterialsList[OG_MAT_TEXTUREALPHABLEND] = new COGAlphaBlendMaterial();
-	m_MaterialsList[OG_MAT_TEXTUREALPHAMULT] = new COGAlphaMultMaterial();
 	return true;
 }
 
@@ -77,10 +75,6 @@ OGMaterialType COGMaterialManager::ParseMaterialType (const std::string& _Type)
     else if (_Type.compare(std::string("tex_alpha")) == 0)
     {
         return OG_MAT_TEXTUREALPHABLEND;
-    }
-    else if (_Type.compare(std::string("alpha_mult")) == 0)
-    {
-        return OG_MAT_TEXTUREALPHAMULT;
     }
 
     return OG_MAT_NONE;

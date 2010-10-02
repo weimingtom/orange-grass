@@ -9,15 +9,13 @@
 #ifndef IOGMATERIAL_H_
 #define IOGMATERIAL_H_
 
-#include "Mathematics.h"
 
 enum OGMaterialType
 {
     OG_MAT_NONE = -1,
     OG_MAT_SOLID,
     OG_MAT_ALPHATEST,
-    OG_MAT_TEXTUREALPHABLEND,
-    OG_MAT_TEXTUREALPHAMULT
+    OG_MAT_TEXTUREALPHABLEND
 };
 
 

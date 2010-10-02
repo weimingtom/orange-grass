@@ -6,7 +6,6 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "OpenGL2.h"
 #include "LoadScreenController.h"
 #include "OrangeGrass.h"
 

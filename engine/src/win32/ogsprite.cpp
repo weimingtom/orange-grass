@@ -1,12 +1,11 @@
 /*
- *  ogsprite.mm
+ *  ogsprite.cpp
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 08.11.09.
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "OpenGL2.h"
 #include "ogsprite.h"
 #include "OrangeGrass.h"
 
@@ -98,7 +97,5 @@ void COGSprite::Render (const Vec2& _vPos, const Vec2& _vSize)
 	m_Vertices[3].t = Vec2(m_T0.x, m_T1.y); 
 
 	GetRenderer()->SetTexture(m_pTexture);
-	glVertexPointer(2, GL_FLOAT, 16, m_Vertices);
-	glTexCoordPointer(2, GL_FLOAT, 16, (void*)((char *)m_Vertices + 8));
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    GetRenderer()->DrawSpriteBuffer(m_Vertices, 0, 4);
 }

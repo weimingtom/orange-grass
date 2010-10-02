@@ -9,7 +9,6 @@
 #ifndef OGVERTEXBUFFERS_H_
 #define OGVERTEXBUFFERS_H_
 
-#include "OpenGL2.h"
 #include "Geometry.h"
 #include "IOGStatistics.h"
 

@@ -34,10 +34,10 @@ public:
 	virtual void Update (unsigned long _ElapsedTime);
 
 	// Render mesh.
-	virtual void Render (const MATRIX& _mView);
+	virtual void Render (const MATRIX& _mWorld);
 
 	// Render.
-	virtual void Render (const MATRIX& _mView, unsigned int _Part);
+	virtual void Render (const MATRIX& _mWorld, unsigned int _Part);
 
     // Get num renderable parts.
 	virtual unsigned int GetNumRenderables () const;

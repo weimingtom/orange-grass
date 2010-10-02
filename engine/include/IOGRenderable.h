@@ -29,10 +29,10 @@ public:
 	virtual ~IOGRenderable () {}
 
 	// Render.
-	virtual void Render (const MATRIX& _mView) = 0;
+	virtual void Render (const MATRIX& _mWorld) = 0;
 
 	// Render.
-	virtual void Render (const MATRIX& _mView, unsigned int _Part) = 0;
+	virtual void Render (const MATRIX& _mWorld, unsigned int _Part) = 0;
 
 	// Update.
 	virtual void Update (unsigned long _ElapsedTime) = 0;

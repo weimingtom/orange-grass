@@ -12,6 +12,7 @@
 #include "IOGEffect.h"
 #include "IOGTexture.h"
 #include "IOGMaterial.h"
+#include "IOGRenderer.h"
 
 
 struct COGBillboard
@@ -51,10 +52,10 @@ public:
 	virtual void Update (unsigned long _ElapsedTime) = 0;
 
 	// Render.
-	virtual void Render (const MATRIX& _mView) = 0;
+	virtual void Render (const MATRIX& _mWorld) = 0;
 
 	// Render.
-	virtual void Render (const MATRIX& _mView, unsigned int _Part);
+	virtual void Render (const MATRIX& _mWorld, unsigned int _Part);
 
     // Get num renderable parts.
     virtual unsigned int GetNumRenderables () const {return 1;}
@@ -87,6 +88,7 @@ protected:
 	OGEffectType	m_Type;
 	IOGTexture*		m_pTexture;
 	IOGMaterial*	m_pMaterial;
+	IOGRenderer*	m_pRenderer;
 };
 
 

@@ -17,7 +17,7 @@ subject to the following restrictions:
 
 #include <stdio.h>
 #include <windows.h>
-#include <gl\gl.h>
+//#include <gl\gl.h>
 
 
 // Describes the header of a PVR header-texture

@@ -153,15 +153,15 @@ void COGSceneGraph::RenderLandscape (IOGCamera* _pCamera)
 		return;
 	}
 
-	const MATRIX& mView = _pCamera->GetViewMatrix();
-	m_pLandscapeNode->GetRenderable()->Render(mView);
+	MATRIX mT;
+    MatrixIdentity(mT);
+	m_pLandscapeNode->GetRenderable()->Render(mT);
 }
 
 
 // Render effects.
 void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 {
-	glMatrixMode(GL_MODELVIEW);
 	MATRIX mModelView;
 	const MATRIX& mView = _pCamera->GetViewMatrix();
 
@@ -182,9 +182,8 @@ void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 			if ((fCameraZ - fObjectZ) < m_fViewDistance)
 			{
 				const MATRIX& mWorld = pNode->GetWorldTransform();
-				MatrixMultiply(mModelView, mWorld, mView);
                 ((IOGEffect*)pNode->GetRenderable())->SetBillboardVectors(vUp, vRight);
-				pNode->GetRenderable()->Render(mModelView);
+				pNode->GetRenderable()->Render(mWorld);
 			}
 		}
     }
@@ -233,9 +232,6 @@ void COGSceneGraph::ClearNodesList(TNodesList& _List)
 // render nodes list
 void COGSceneGraph::RenderNodesList(IOGCamera* _pCamera, TNodesList& _List)
 {
-	MATRIX mModelView;
-	const MATRIX& mView = _pCamera->GetViewMatrix();
-
 	float fCameraZ = _pCamera->GetPosition().z;
     TNodesList::iterator iter = _List.begin();
     for (; iter != _List.end(); ++iter)
@@ -248,8 +244,7 @@ void COGSceneGraph::RenderNodesList(IOGCamera* _pCamera, TNodesList& _List)
 			if ((fCameraZ - fObjectZ) < m_fViewDistance)
 			{
 				const MATRIX& mWorld = pNode->GetWorldTransform();
-				MatrixMultiply(mModelView, mWorld, mView);
-				pNode->GetRenderable()->Render(mModelView);
+				pNode->GetRenderable()->Render(mWorld);
 			}
 		}
     }
@@ -259,14 +254,10 @@ void COGSceneGraph::RenderNodesList(IOGCamera* _pCamera, TNodesList& _List)
 // render whole nodes list
 void COGSceneGraph::RenderWholeNodesList(IOGCamera* _pCamera, TNodesList& _List)
 {
-	MATRIX mModelView;
-	const MATRIX& mView = _pCamera->GetViewMatrix();
-
     TNodesList::iterator iter = _List.begin();
     for (; iter != _List.end(); ++iter)
     {
         const MATRIX& mWorld = (*iter)->GetWorldTransform();
-        MatrixMultiply(mModelView, mWorld, mView);
-        (*iter)->GetRenderable()->Render(mModelView);
+        (*iter)->GetRenderable()->Render(mWorld);
 	}
 }

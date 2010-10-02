@@ -55,10 +55,7 @@ bool COGMesh::Load ()
 		COGVertexBuffers* pBuffer = new COGVertexBuffers(&m_pScene->pMesh[i]);
 		m_BuffersList.push_back(pBuffer);
 	}
-#ifdef USE_VBO	
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-#endif
+
     CalculateGeometry();
 
 	m_LoadState = OG_RESSTATE_LOADED;
@@ -91,20 +88,20 @@ void COGMesh::Unload ()
 
 
 // Render mesh.
-void COGMesh::Render (const MATRIX& _mView, unsigned int _Frame)
+void COGMesh::Render (const MATRIX& _mWorld, unsigned int _Frame)
 {
 	if (_Frame < m_pScene->nNumFrame)
 		return;
 
 	for (unsigned int i=0; i<m_pScene->nNumMesh; ++i)
 	{
-		RenderPart(_mView, i, _Frame);
+		RenderPart(_mWorld, i, _Frame);
 	}
 }
 
 
 // Render part of the mesh.
-void COGMesh::RenderPart (const MATRIX& _mView, unsigned int _Part, unsigned int _Frame)
+void COGMesh::RenderPart (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame)
 {
     if (_Part > GetNumRenderables() || _Frame < m_pScene->nNumFrame)
         return;
@@ -113,14 +110,14 @@ void COGMesh::RenderPart (const MATRIX& _mView, unsigned int _Part, unsigned int
 	const SPODNode& node = m_pScene->pNode[_Part];
 
     // Gets the node model matrix
-    MATRIX mWorld;
-    m_pScene->GetWorldMatrix(mWorld, node);
+    MATRIX mNodeWorld;
+    m_pScene->GetWorldMatrix(mNodeWorld, node);
 
-    // Multiply the view matrix by the model matrix to get the model-view matrix
-    MATRIX mModelView;
-    MatrixMultiply(mModelView, mWorld, _mView);
-    glLoadMatrixf(mModelView.f);
+    // Multiply on the global world transform
+    MATRIX mModel;
+    MatrixMultiply(mModel, mNodeWorld, _mWorld);
 
+    m_pRenderer->SetModelMatrix(mModel);
     m_pRenderer->RenderMesh(m_BuffersList[node.nIdx]);
 }
 

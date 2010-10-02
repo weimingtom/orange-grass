@@ -6,10 +6,8 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "OpenGL2.h"
 #include "GameScreenController.h"
 #include "OrangeGrass.h"
-#include "common.h"
 
 
 CGameScreenController::CGameScreenController() :	m_pGlobalVars(NULL),
@@ -103,7 +101,7 @@ void CGameScreenController::RenderScene ()
 
 	m_pRenderer->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
 
-	m_pRenderer->GetFog()->Enable(true);
+	m_pRenderer->EnableFog(true);
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
 	m_pSg->RenderLandscape(m_pCamera);
 	m_pSg->RenderScene(m_pCamera);
@@ -112,7 +110,7 @@ void CGameScreenController::RenderScene ()
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);
     m_pSg->RenderEffects(m_pCamera);
 	m_pRenderer->FinishRenderMode();
-	m_pRenderer->GetFog()->Enable(false);
+	m_pRenderer->EnableFog(false);
 
 	unsigned long fps = 0;
 	if (m_ElapsedTime > 0)

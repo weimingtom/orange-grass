@@ -16,14 +16,10 @@ subject to the following restrictions:
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "..\..\OpenGL2\include\OpenGL2.h"
 #include "Texture.h"
 #include "MemoryFile.h"
 #include "ResourceFile.h"
-/*#include "Pathes.h"
-#include "ResourceFile.h"
-
-//#include "Log.h"
-#include "Resource.h"*/
 #include "Macros.h"
 
 extern int __OPENGLES_VERSION;

@@ -387,7 +387,7 @@ void CEditorLevelScene::UpdateLevelActiveWidth (float _fWidthDiff)
 // Get picking ray
 void CEditorLevelScene::GetMousePickingRay (Vec3& _vPos, Vec3& _vRay, int _mouseX, int _mouseY)
 {
-    Vec3 vPick = GetPickRay (_mouseX, _mouseY);
+    Vec3 vPick = m_pRenderer->UnprojectCoords (_mouseX, _mouseY);
     _vPos = m_pCamera->GetPosition();
     _vRay = vPick - _vPos;
     _vRay.normalize();

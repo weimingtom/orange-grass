@@ -24,7 +24,7 @@ public:
 	virtual void Update (unsigned long _ElapsedTime);
 
 	// Render.
-	virtual void Render (const MATRIX& _mView);
+	virtual void Render (const MATRIX& _mWorld);
 
 	// Start.
 	virtual void Start ();

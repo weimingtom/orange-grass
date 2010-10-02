@@ -42,19 +42,12 @@ public:
 	// get fog density.
 	virtual float GetDensity () const {return m_fDensity;}
 
-	// enable or disable.
-	virtual void Enable (bool _bEnable);
-
-	// get status.
-	virtual bool IsEnabled () const {return m_bEnabled;}
-
 private:
 
 	Vec4	m_Color;
 	float	m_fStart;
 	float	m_fEnd;
 	float	m_fDensity;
-	bool	m_bEnabled;
 };
 
 #endif

@@ -6,7 +6,6 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "OpenGL2.h"
 #include "ogplasmaeffect.h"
 #include "OrangeGrass.h"
 
@@ -20,7 +19,7 @@ COGPlasmaEffect::~COGPlasmaEffect()
 void COGPlasmaEffect::Init(OGEffectType _Type)
 {
 	m_pTexture = GetResourceMgr()->GetTexture("plasma_01");
-    m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHAMULT);
+    m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
 
 	Vec4 color = Vec4(1.0f, 0.0f, 0.0f, 0.5f);
 
@@ -56,21 +55,14 @@ void COGPlasmaEffect::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGPlasmaEffect::Render (const MATRIX& _mView)
+void COGPlasmaEffect::Render (const MATRIX& _mWorld)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-    glLoadMatrixf(_mView.f);
-
-	glDisable(GL_DEPTH_TEST);
-
-	glVertexPointer(3, GL_FLOAT, 36, m_Vertices);
-	glTexCoordPointer(2, GL_FLOAT, 36, (void*)((char *)m_Vertices + 12));
-	glColorPointer(4, GL_FLOAT, 36, (void*)((char *)m_Vertices + 20));
-
-	GetRenderer()->SetMaterial(m_pMaterial);
-	GetRenderer()->SetTexture(m_pTexture);
+    m_pRenderer->SetModelMatrix(_mWorld);
+	m_pRenderer->SetMaterial(m_pMaterial);
+	m_pRenderer->SetTexture(m_pTexture);
 
 	for (int i = 0; i < 4; ++i)
 	{
@@ -81,10 +73,9 @@ void COGPlasmaEffect::Render (const MATRIX& _mView)
 		particle.pVertices[1].p = -vSRight + vSUp + particle.offset;
 		particle.pVertices[2].p = vSRight - vSUp + particle.offset;
 		particle.pVertices[3].p = -vSRight - vSUp + particle.offset;
-		glDrawArrays(GL_TRIANGLE_STRIP, 4 * i, 4);
 	}
 
-	glEnable(GL_DEPTH_TEST);
+    m_pRenderer->DrawEffectBuffer(m_Vertices, 0, 16);
 }
 
 

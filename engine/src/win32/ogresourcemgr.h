@@ -9,15 +9,12 @@
 #ifndef OGRESOURCEMGR_H_
 #define OGRESOURCEMGR_H_
 
-#include "OpenGL2.h"
 #include "IOGResourceMgr.h"
-#include "common.h"
 #include "ogtexture.h"
 #include "ogmesh.h"
 #include "ogmodel.h"
 #include "ogterrain.h"
 #include "ogsprite.h"
-#include "tinyxml.h"
 #include <string>
 #include <map>
 #include <list>

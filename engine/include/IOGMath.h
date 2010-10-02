@@ -71,25 +71,6 @@ static float Dist3DSq ( const Vec3& _p1, const Vec3& _p2 )
 }
 
 
-// Calculate pick ray
-static Vec3 GetPickRay (int _MouseX, int _MouseY)
-{
-#ifdef WIN32
-	GLdouble modelMatrix[16];
-	GLdouble projMatrix[16];
-	int viewport[4];
-	glGetDoublev(GL_MODELVIEW_MATRIX, modelMatrix);
-	glGetDoublev(GL_PROJECTION_MATRIX, projMatrix);
-	glGetIntegerv(GL_VIEWPORT, viewport);
-	double x0, y0, z0;
-	gluUnProject(_MouseX, viewport[3] - _MouseY, 0, modelMatrix, projMatrix, viewport, &x0, &y0, &z0);
-    return Vec3((float)x0, (float)y0, (float)z0);
-#else
-    return Vec3(0,0,0);
-#endif
-}
-
-
 // Check ray intersection with the triangle
 static bool CheckTriangleIntersection (	const Vec3& _orig, const Vec3& _dir, 
 										const Vec3& _p0, const Vec3& _p1, const Vec3& _p2,

@@ -6,9 +6,11 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
+#include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogresourcemgr.h"
 #include "Pathes.h"
+#include "tinyxml.h"
 
 
 COGResourceMgr::COGResourceMgr ()
