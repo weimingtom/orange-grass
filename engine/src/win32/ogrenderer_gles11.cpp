@@ -51,7 +51,9 @@ void COGRenderer_GLES11::EnableLight (bool _bEnable)
 {
 	if (_bEnable)
 	{
-        glLightfv(GL_LIGHT0, GL_POSITION, (VERTTYPE*)&m_pLight->GetDirection());
+        const Vec3& vD = m_pLight->GetDirection();
+        Vec4 vDir = Vec4(vD.x, vD.y, vD.z, 0.0f);
+        glLightfv(GL_LIGHT0, GL_POSITION, (VERTTYPE*)&vDir);
         glLightfv(GL_LIGHT0, GL_DIFFUSE, (VERTTYPE*)&m_pLight->GetColor());
 	    glLightfv(GL_LIGHT0, GL_AMBIENT, (VERTTYPE*)&m_pLight->GetColor());
 	    glLightfv(GL_LIGHT0, GL_SPECULAR, (VERTTYPE*)&m_pLight->GetColor());

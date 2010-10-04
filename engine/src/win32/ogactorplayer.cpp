@@ -108,9 +108,7 @@ void COGActorPlayer::OnVectorChanged (const Vec3& _vVec)
 // Touch event handler.
 void COGActorPlayer::OnTouch (const Vec2& _vPos)
 {
-    GetRenderer()->StartRenderMode(OG_RENDERMODE_GEOMETRY);
     Vec3 vP = GetRenderer()->UnprojectCoords((int)_vPos.x, (int)_vPos.y);
-    GetRenderer()->FinishRenderMode();
     Vec3 vCam = GetRenderer()->GetCamera()->GetPosition();
 
     Vec3 vDir = (vP - vCam).normalized();

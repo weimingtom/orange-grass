@@ -114,8 +114,7 @@ void CEditorSettingsFrame::OnColorChange(wxColourPickerEvent& event)
 		GetRenderer()->GetLight()->SetColor(Vec4(
 			clr.Red()/255.0f,
 			clr.Green()/255.0f,
-			clr.Blue()/255.0f,
-			1.0f));
+			clr.Blue()/255.0f, 1.0f));
 	}
 }
 
@@ -124,7 +123,7 @@ void CEditorSettingsFrame::OnColorChange(wxColourPickerEvent& event)
 /// @param event - event struct
 void CEditorSettingsFrame::OnXDirSlider(wxScrollEvent& event)
 {
-	Vec4 vD = GetRenderer()->GetLight()->GetDirection();
+	Vec3 vD = GetRenderer()->GetLight()->GetDirection();
 	vD.x = (float)event.GetPosition() / 100.0f;
 	vD.y = 1.0f;
 	vD.z = (float)m_pZDirSlider->GetValue() / 100.0f;
@@ -141,7 +140,7 @@ void CEditorSettingsFrame::OnXDirSlider(wxScrollEvent& event)
 /// @param event - event struct
 void CEditorSettingsFrame::OnZDirSlider(wxScrollEvent& event)
 {
-	Vec4 vD = GetRenderer()->GetLight()->GetDirection();
+	Vec3 vD = GetRenderer()->GetLight()->GetDirection();
 	vD.x = (float)m_pXDirSlider->GetValue() / 100.0f;
 	vD.y = 1.0f;
 	vD.z = (float)event.GetPosition() / 100.0f;

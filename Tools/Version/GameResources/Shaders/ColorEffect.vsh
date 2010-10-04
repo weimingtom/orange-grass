@@ -1,14 +1,13 @@
 attribute vec4 inVertex;
-attribute vec3 inNormal;
 attribute vec2 inTexCoord;
+attribute vec4 inColor;
 
 uniform mat4 MVPMatrix;
 uniform mat4 MVMatrix;
-uniform vec3 LightDirection;
 uniform /*highp*/ float  FogEnd;
 uniform /*highp*/ float  FogRcpEndStartDiff;
 
-varying vec3 DiffuseLight;
+varying vec4 VertexColor;
 varying vec2 TexCoord;
 varying /*lowp*/ vec3 FogIntensity;
 
@@ -19,7 +18,7 @@ void main()
 	/*highp*/ float eyeDist = length(viewPos);
 
 	gl_Position = MVPMatrix * inVertex;
-	DiffuseLight = vec3(max(dot(inNormal, LightDirection), 0.0));
+	VertexColor = inColor;
 	TexCoord = inTexCoord;
 	/*highp*/ float fogIntensity = (FogEnd - eyeDist) * FogRcpEndStartDiff;
 

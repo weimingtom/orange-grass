@@ -30,9 +30,11 @@ COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
 
 COGRenderer::~COGRenderer ()
 {
-	m_pText->ReleaseTextures();
-	free(m_pText);
-	m_pText = NULL;
+    if (m_pText)
+    {
+        m_pText->ReleaseTextures();
+        OG_SAFE_DELETE(m_pText);
+    }
 
 	OG_SAFE_DELETE(m_pFog);
 	OG_SAFE_DELETE(m_pLight);
@@ -55,9 +57,7 @@ bool COGRenderer::Init ()
 	m_pCamera = new COGCamera ();
 	m_pFog = new COGFog ();
 
-	m_pText = (CDisplayText*)malloc(sizeof(CDisplayText));    
-	memset(m_pText, 0, sizeof(CDisplayText));
-
+	m_pText = new CDisplayText();
 	return true;
 }
 
@@ -167,14 +167,10 @@ void COGRenderer::Reset ()
 // Unproject screen coords.
 Vec3 COGRenderer::UnprojectCoords (int _X, int _Y)
 {
-	float modelMatrix[16];
-	float projMatrix[16];
-	int viewport[4];
-	glGetFloatv(GL_MODELVIEW_MATRIX, modelMatrix);
-	glGetFloatv(GL_PROJECTION_MATRIX, projMatrix);
-	glGetIntegerv(GL_VIEWPORT, viewport);
+    float* pMV = m_mView.f;
+    float* pP = m_mProjection.f;
 	float x0, y0, z0;
-	UnProject((float)_X, (float)(viewport[3] - _Y), 0.0f, modelMatrix, projMatrix, viewport, &x0, &y0, &z0);
+	UnProject((float)_X, (float)(m_Height - _Y), 0.0f, pMV, pP, m_Width, m_Height, &x0, &y0, &z0);
     return Vec3(x0, y0, z0);
 }
 

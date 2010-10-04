@@ -11,6 +11,8 @@
 
 #include "ogrenderer.h"
 #include "ogmodelshader.h"
+#include "ogspriteshader.h"
+#include "ogcoloreffectshader.h"
 
 
 class COGRenderer_GLES20 : public COGRenderer
@@ -52,10 +54,13 @@ public:
 protected:
 
 	MATRIX	m_mWorld;
-    COGModelShader  m_ModelShader;
-    IOGShader*      m_pCurShader;
     bool    m_bLightEnabled;
     bool    m_bFogEnabled;
+
+    COGModelShader          m_ModelShader;
+    COGSpriteShader         m_SpriteShader;
+    COGColorEffectShader    m_ColorEffectShader;
+    IOGShader*              m_pCurShader;
 };
 
 #endif

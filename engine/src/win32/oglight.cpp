@@ -27,7 +27,7 @@ void COGLight::SetColor (const Vec4& _vColor)
 
 
 // set light direction.
-void COGLight::SetDirection (const Vec4& _vDirection)
+void COGLight::SetDirection (const Vec3& _vDirection)
 {
 	m_vDirection = _vDirection;
 }

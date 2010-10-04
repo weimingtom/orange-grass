@@ -461,11 +461,27 @@
 					Name="Shaders"
 					>
 					<File
+						RelativePath=".\ogcoloreffectshader.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogcoloreffectshader.h"
+						>
+					</File>
+					<File
 						RelativePath=".\ogmodelshader.cpp"
 						>
 					</File>
 					<File
 						RelativePath=".\ogmodelshader.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogspriteshader.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogspriteshader.h"
 						>
 					</File>
 				</Filter>

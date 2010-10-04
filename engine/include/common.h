@@ -6,7 +6,7 @@
 
 #define USE_VBO
 #define STATISTICS
-#define GLES11
-//#define GLES20
+//#define GLES11
+#define GLES20
 
 #endif

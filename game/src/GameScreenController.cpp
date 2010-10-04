@@ -107,9 +107,9 @@ void CGameScreenController::RenderScene ()
 	m_pSg->RenderScene(m_pCamera);
 	m_pRenderer->FinishRenderMode();
 
-	m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);
+    m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);
     m_pSg->RenderEffects(m_pCamera);
-	m_pRenderer->FinishRenderMode();
+    m_pRenderer->FinishRenderMode();
 	m_pRenderer->EnableFog(false);
 
 	unsigned long fps = 0;
@@ -117,7 +117,7 @@ void CGameScreenController::RenderScene ()
 	{
 		fps = 1000/m_ElapsedTime;
 	}
-	m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
+	m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
 	m_pRenderer->DisplayString(Vec2(70.0f,4.0f), 0.4f, 0xFFFFFFFF, "FPS %d", fps);
 #ifdef STATISTICS
 	unsigned long Verts; 

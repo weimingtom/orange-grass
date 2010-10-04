@@ -119,10 +119,8 @@ int CDisplayText::Flush()
 		_ASSERT(nTris <= (DISPLAYTEXT_MAX_RENDERABLE_LETTERS*2));
 		_ASSERT((nVtx % 4) == 0);
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
+#ifdef GLES20
 		
-		if( __OPENGLES_VERSION >= 2 )
-		{
 			// Bind the VBO so we can fill it with data
 			glBindBuffer(GL_ARRAY_BUFFER, 0);
 			
@@ -137,18 +135,13 @@ int CDisplayText::Flush()
 
 			if (glGetError())
 			{
-				_RPT0(_CRT_WARN,"Error while binding bufer for CDisplayText::Flush\n");
 			}
-		}
-		else 
-#endif
-		{		
+#else
 			/* Draw triangles */
 			glVertexPointer(3,		VERTTYPEENUM,		sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].sx);
 			glColorPointer(4,		VERTTYPEENUM,	sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].r);
 			glTexCoordPointer(2,	VERTTYPEENUM,		sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].tu);
-
-		}
+#endif
 		
 		glDrawElements(GL_TRIANGLES, nTris * 3, GL_UNSIGNED_SHORT, m_pwFacesFont);
 		//glDrawArrays(GL_TRIANGLES,  0, 3);
@@ -433,12 +426,8 @@ void CDisplayText::APIRenderStates(int nAction)
 		//glGetbooleanv(GL_VERTEX_ARRAY,		&bVertexPointerEnabled);
 		//glGetbooleanv(GL_COLOR_ARRAY,			&bColorPointerEnabled);
 		//glGetbooleanv(GL_TEXTURE_COORD_ARRAY,	&bTexCoorPointerEnabled);
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
-		if( __OPENGLES_VERSION >= 2 ) {
-		}
-		else 
-#endif
-		{		
+#ifdef GLES20
+#else
 			bVertexPointerEnabled = glIsEnabled(GL_VERTEX_ARRAY);
 			bColorPointerEnabled = glIsEnabled(GL_COLOR_ARRAY);
 			bTexCoorPointerEnabled = glIsEnabled(GL_TEXTURE_COORD_ARRAY);
@@ -450,7 +439,7 @@ void CDisplayText::APIRenderStates(int nAction)
 			
 			glActiveTexture(GL_TEXTURE1);
 			bTextureEnabled1 = glIsEnabled(GL_TEXTURE_2D);
-		}
+#endif
 
 		bCullFace = glIsEnabled(GL_CULL_FACE);
 		bDepthTest = glIsEnabled(GL_DEPTH_TEST);
@@ -462,22 +451,17 @@ void CDisplayText::APIRenderStates(int nAction)
 		glGetIntegerv(GL_BLEND_SRC, &iSrcBlend);
       
 		
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
-		if( __OPENGLES_VERSION >= 2 ) {
-			//glBindBuffer( GL_ARRAY_BUFFER, 0 );
-			glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
-		}
-		else 
+#ifdef GLES20
+        glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
+#else
+        /* Save matrices */
+        glGetIntegerv(GL_MATRIX_MODE, &iMatrixMode);
+
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glMatrixMode(GL_PROJECTION);
+        glPushMatrix();
 #endif
-		{
-			/* Save matrices */
-			glGetIntegerv(GL_MATRIX_MODE, &iMatrixMode);
-			
-			glMatrixMode(GL_MODELVIEW);
-			glPushMatrix();
-			glMatrixMode(GL_PROJECTION);
-			glPushMatrix();
-		}		
 			
 		/******************************
 		** SET DisplayText RENDER STATES **
@@ -501,133 +485,102 @@ void CDisplayText::APIRenderStates(int nAction)
 		Matrix.f[15] = f2vt(1.0f);
 			
 			
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
-		if( __OPENGLES_VERSION >= 2 ) {
-			glUseProgram(uiProgramObject);
-			glUniformMatrix4fv( PMVMatrixHandle, 1, GL_FALSE, Matrix.f);
-		}
-		else 
-#endif
-		{			
-			/* Set matrix mode so that screen coordinates can be specified */
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
+#ifdef GLES20
+        glUseProgram(uiProgramObject);
+        glUniformMatrix4fv( PMVMatrixHandle, 1, GL_FALSE, Matrix.f);
+#else
+        /* Set matrix mode so that screen coordinates can be specified */
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
 
-			glMatrixMode(GL_MODELVIEW);
-			
-			glLoadMatrixf(Matrix.f);
-			glDisable(GL_LIGHTING);
-		}
-					
+        glMatrixMode(GL_MODELVIEW);
+
+        glLoadMatrixf(Matrix.f);
+        glDisable(GL_LIGHTING);
+#endif					
 			
 		/* Culling */
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CW);
 		glCullFace(GL_FRONT);
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
-		if( __OPENGLES_VERSION >= 2 ) {
-			glActiveTexture(GL_TEXTURE0);
-			glUniform1i( TextureHandle, 0 );
-		}
-		else 		
-#endif
-		{	
-			/* Set client states */
-			glEnableClientState(GL_VERTEX_ARRAY);
-			glEnableClientState(GL_COLOR_ARRAY);
-			glClientActiveTexture(GL_TEXTURE0);
-			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-			
-			/* texture 	*/
-			glActiveTexture(GL_TEXTURE1);
-			glDisable(GL_TEXTURE_2D);
-			glActiveTexture(GL_TEXTURE0);
-			glEnable(GL_TEXTURE_2D);
-		}
+#ifdef GLES20
+        glActiveTexture(GL_TEXTURE0);
+        glUniform1i( TextureHandle, 0 );
+#else
+        /* Set client states */
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_COLOR_ARRAY);
+        glClientActiveTexture(GL_TEXTURE0);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
-		if( __OPENGLES_VERSION >= 2 ) {
-		}
-		else 
+        /* texture 	*/
+        glActiveTexture(GL_TEXTURE1);
+        glDisable(GL_TEXTURE_2D);
+        glActiveTexture(GL_TEXTURE0);
+        glEnable(GL_TEXTURE_2D);
 #endif
-		{			
-			glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
-			/* Disable fog */
-			glDisable(GL_FOG);
-		}
 
+#ifdef GLES20
+#else
+        glTexEnvf(GL_TEXTURE_ENV,GL_TEXTURE_ENV_MODE,GL_MODULATE);
+        /* Disable fog */
+        glDisable(GL_FOG);
+#endif
 		/* Blending mode */
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		/* Set Z compare properties */
 		glDisable(GL_DEPTH_TEST);
-
-		// Disable vertex program
-//		glDisable(GL_IMG_vertex_program);			
-			
 		break;
 
 	case 1:
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
-		if( __OPENGLES_VERSION >= 2 ) {
-		}
-		else 
+#ifdef GLES20
+#else
+        /* Restore render states */
+        if (!bVertexPointerEnabled)		
+            glDisableClientState(GL_VERTEX_ARRAY);
+        else 
+            glEnableClientState(GL_VERTEX_ARRAY);
+        if (!bColorPointerEnabled)		
+            glDisableClientState(GL_COLOR_ARRAY);
+        else
+            glEnableClientState(GL_COLOR_ARRAY);
+        if (!bTexCoorPointerEnabled)		
+            glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+        else
+            glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 #endif
-		{				
-			/* Restore render states */
-			if (!bVertexPointerEnabled)		
-				glDisableClientState(GL_VERTEX_ARRAY);
-			else 
-				glEnableClientState(GL_VERTEX_ARRAY);
-			if (!bColorPointerEnabled)		
-				glDisableClientState(GL_COLOR_ARRAY);
-			else
-				glEnableClientState(GL_COLOR_ARRAY);
-			if (!bTexCoorPointerEnabled)		
-				glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-			else
-				glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		}
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
-		if( __OPENGLES_VERSION >= 2 ) {
-		}
-		else 
+#ifdef GLES20
+#else
+        /* Restore matrix mode & matrix */
+        glMatrixMode(GL_PROJECTION);
+        glPopMatrix();
+        glMatrixMode(GL_MODELVIEW);
+        glPopMatrix();
+
+        glMatrixMode(iMatrixMode);
+        if(bLighting)		glEnable(GL_LIGHTING);
+        if(bFog)			glEnable(GL_FOG);
+
+        // restore texture states
+        glActiveTexture(GL_TEXTURE1);
+        bTextureEnabled1 ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
+        glActiveTexture(GL_TEXTURE0);
+        bTextureEnabled0 ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
 #endif
-		{
-			/* Restore matrix mode & matrix */
-			glMatrixMode(GL_PROJECTION);
-			glPopMatrix();
-			glMatrixMode(GL_MODELVIEW);
-			glPopMatrix();
-
-			glMatrixMode(iMatrixMode);
-			if(bLighting)		glEnable(GL_LIGHTING);
-			if(bFog)			glEnable(GL_FOG);
-
-			// restore texture states
-			glActiveTexture(GL_TEXTURE1);
-			bTextureEnabled1 ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
-			glActiveTexture(GL_TEXTURE0);
-			bTextureEnabled0 ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
-		}
-			
 
 		// Restore some values
 		if(!bCullFace)		glDisable(GL_CULL_FACE);
 		if(bDepthTest)		glEnable(GL_DEPTH_TEST);
-//		if(bVertexProgram)	glEnable(GL_IMG_vertex_program);
 			
 		glFrontFace(iFrontFace);
 		glCullFace(iCullFaceMode);
 
 		glBlendFunc(iSrcBlend, iDestBlend);
 		if(bBlend == 0) glDisable(GL_BLEND);
-
-
-
 		break;
 	}
 }
@@ -689,88 +642,74 @@ void CDisplayText::APIDrawLogo(unsigned int uLogoToDisplay, int nPos)
 	if (nPos == -1)
 	{
 		pVertices = VerticesLeft;
-	}
+    }
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
-	if( __OPENGLES_VERSION >= 2 ) {
-		MATRIX mx;
-		MatrixIdentity(mx);
-		if(bScreenRotate)
-		{
-			MatrixRotationZ( mx, 90.0 * PIf /180.0f );
-		}
-		glUseProgram(uiProgramObject);
-		glUniformMatrix4fv( PMVMatrixHandle, 1, GL_FALSE, mx.f);
-		
-		// Render states
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, tex);
-	}
-	else 
-#endif		
-//#else
-	{	
-		//Matrices
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
+#ifdef GLES20
+    MATRIX mx;
+    MatrixIdentity(mx);
+    if(bScreenRotate)
+    {
+        MatrixRotationZ( mx, 90.0 * PIf /180.0f );
+    }
+    glUseProgram(uiProgramObject);
+    glUniformMatrix4fv( PMVMatrixHandle, 1, GL_FALSE, mx.f);
 
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-		if(bScreenRotate)
-		{
-			glRotatef(f2vt(-90), f2vt(0), f2vt(0), f2vt(1));
-		}
-		glActiveTexture(GL_TEXTURE0);
-		glEnable(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, tex);
-	}
-//#endif
+    // Render states
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, tex);
+#else
+    //Matrices
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    if(bScreenRotate)
+    {
+        glRotatef(f2vt(-90), f2vt(0), f2vt(0), f2vt(1));
+    }
+    glActiveTexture(GL_TEXTURE0);
+    glEnable(GL_TEXTURE_2D);
+    glBindTexture(GL_TEXTURE_2D, tex);
+#endif
 	
 
 
 	glEnable (GL_BLEND);
 	glBlendFunc (GL_ZERO, GL_SRC_COLOR);
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
-	
-	if( __OPENGLES_VERSION >= 2 )
-	{
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, VERTTYPEENUM, GL_FALSE, 0, pVertices);	
-		
-		//glEnableVertexAttribArray(1);
-		//glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].color);	
-		
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, VERTTYPEENUM, GL_FALSE, 0, pUV);
-		
-		glUniform1i( TextureHandle, 0 );			
-		
-		glDrawArrays(GL_TRIANGLE_STRIP,0,4);
-	}
-	else 
-#endif	// Vertices
-	{
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glVertexPointer(3,VERTTYPEENUM,0,pVertices);
+#ifdef GLES20
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, VERTTYPEENUM, GL_FALSE, 0, pVertices);	
 
-		glEnableClientState(GL_COLOR_ARRAY);
-		glColorPointer(4,VERTTYPEENUM,0,pColours);
+    //glEnableVertexAttribArray(1);
+    //glVertexAttribPointer(1, 4, GL_UNSIGNED_BYTE, GL_FALSE, sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].color);	
 
-		glClientActiveTexture(GL_TEXTURE0);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-		glTexCoordPointer(2,VERTTYPEENUM,0,pUV);
-		
-		glDrawArrays(GL_TRIANGLE_STRIP,0,4);
-		
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);
-		glClientActiveTexture(GL_TEXTURE0);
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	}
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 2, VERTTYPEENUM, GL_FALSE, 0, pUV);
 
+    glUniform1i( TextureHandle, 0 );			
 
+    glDrawArrays(GL_TRIANGLE_STRIP,0,4);
+#else
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(3,VERTTYPEENUM,0,pVertices);
 
-	// Restore render states
+    glEnableClientState(GL_COLOR_ARRAY);
+    glColorPointer(4,VERTTYPEENUM,0,pColours);
+
+    glClientActiveTexture(GL_TEXTURE0);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glTexCoordPointer(2,VERTTYPEENUM,0,pUV);
+
+    glDrawArrays(GL_TRIANGLE_STRIP,0,4);
+
+    glDisableClientState(GL_VERTEX_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
+    glClientActiveTexture(GL_TEXTURE0);
+    glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+#endif
+
+    // Restore render states
 	glDisable (GL_BLEND);
 }

@@ -1,22 +1,22 @@
 /*
- *  OGModelShader.h
+ *  OGColorEffectShader.h
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 11.11.09.
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#ifndef OGMODELSHADER_H_
-#define OGMODELSHADER_H_
+#ifndef OGCOLOREFFECTSHADER_H_
+#define OGCOLOREFFECTSHADER_H_
 
 #include "IOGShader.h"
 
 
-class COGModelShader : public IOGShader
+class COGColorEffectShader : public IOGShader
 {
 public:
-    COGModelShader ();
-	virtual ~COGModelShader ();
+    COGColorEffectShader ();
+	virtual ~COGColorEffectShader ();
 
     // load shaders.
     virtual bool Load (const std::string& _VertShader, const std::string& _FragmentShader);
@@ -53,9 +53,6 @@ protected:
     MATRIX  m_mView;
     MATRIX  m_mProjection;
 
-    // light params
-    Vec3    m_vLightDir;
-
     // fog params
     Vec4	m_vFogColor;
 	float	m_fFogStart;
@@ -66,7 +63,6 @@ protected:
     unsigned int m_uiId;
 	unsigned int m_uiMVPMatrixLoc;
 	unsigned int m_uiMVMatrixLoc;
-	unsigned int m_uiLightDirLoc;
     unsigned int m_uiTextureLoc;
     unsigned int m_uiFogEndLoc;
 	unsigned int m_uiFogRcpDiffLoc;

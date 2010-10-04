@@ -13,20 +13,17 @@ subject to the following restrictions:
 3. This notice may not be removed or altered from any source distribution.
 */
 
-//#include <TargetConditionals.h>
-//#include <Availability.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
 
 
-//#include "DeviceType.h"
 #include "..\include\Mathematics.h"
 #include "..\include\Geometry.h"
 #include "Macros.h"
-//#include "MemoryManager.h"
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
-#include "Shader.h"
+#ifdef GLES20
+#include "..\..\OpenGL2\include\OpenGL2.h"
+#include "..\include\GraphicsDevice.h"
 #endif
 
 #include "DisplayText.h"
@@ -46,28 +43,24 @@ subject to the following restrictions:
 #define DisplayText_ADJUST_SIZE	64
 #define DisplayText_NO_BORDER	128
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
-extern int __OPENGLES_VERSION;
-#endif
-
 float WindowWidth = 320.0f;
 float WindowHeight = 480.0f;
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
+#ifdef GLES20
 // This ties in with the shader attribute to link to openGL, see pszVertShader.
 static const char* pszAttribs[] = { "myVertex", "myColor", "myTexCoord" };
 
 	
 
 static char vsh[] = "\
-attribute highp vec4	myVertex;											\
-attribute highp vec4	myColor;											\
-attribute highp vec2	myTexCoord;											\
+attribute vec4	myVertex;											\
+attribute vec4	myColor;											\
+attribute vec2	myTexCoord;											\
 																			\
-uniform mediump mat4	myPMVMatrix;										\
+uniform mat4	myPMVMatrix;										\
 																			\
-varying mediump vec2	v_textureCoord;										\
-varying mediump vec4	v_color;											\
+varying vec2	v_textureCoord;										\
+varying vec4	v_color;											\
 																			\
 void main(void)																\
 {																			\
@@ -78,8 +71,8 @@ void main(void)																\
 ";
 
 static char fsh[] = "\
-varying mediump vec2	v_textureCoord;										\
-varying mediump vec4	v_color;											\
+varying vec2	v_textureCoord;										\
+varying vec4	v_color;											\
 uniform sampler2D		s_texture;											\
 																			\
 void main(void)																\
@@ -100,19 +93,17 @@ CDisplayText::CDisplayText()
 	// Initialise all variables
 	memset(this, 0, sizeof(*this));
 	
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
-	if( __OPENGLES_VERSION >= 2 ) {
-		if(ShaderLoadSourceFromMemory( fsh, GL_FRAGMENT_SHADER, &uiFragShader) == 0)
-			printf("Loading the fragment shader fails");
-		if(ShaderLoadSourceFromMemory( vsh, GL_VERTEX_SHADER, &uiVertShader) == 0)
-			printf("Loading the vertex shader fails");
-		
-		CreateProgram(&uiProgramObject, uiVertShader, uiFragShader, pszAttribs, 3);
-		
-		// First gets the location of that variable in the shader using its name
-		PMVMatrixHandle = glGetUniformLocation(uiProgramObject, "myPMVMatrix");
-		TextureHandle = glGetUniformLocation(uiProgramObject, "s_texture");			
-	}
+#ifdef GLES20
+    if(ShaderLoadSourceFromMemory( fsh, GL_FRAGMENT_SHADER, &uiFragShader) == 0)
+        printf("Loading the fragment shader fails");
+    if(ShaderLoadSourceFromMemory( vsh, GL_VERTEX_SHADER, &uiVertShader) == 0)
+        printf("Loading the vertex shader fails");
+
+    CreateProgram(&uiProgramObject, uiVertShader, uiFragShader, pszAttribs, 3);
+
+    // First gets the location of that variable in the shader using its name
+    PMVMatrixHandle = glGetUniformLocation(uiProgramObject, "myPMVMatrix");
+    TextureHandle = glGetUniformLocation(uiProgramObject, "s_texture");			
 #endif
 
 #endif
@@ -122,14 +113,11 @@ CDisplayText::CDisplayText()
 CDisplayText::~CDisplayText()
 {
 #if !defined (DISABLE_DISPLAYTEXT)
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000	
-	if( __OPENGLES_VERSION >= 2 )
-	{
-		// Frees the OpenGL handles for the program and the 2 shaders
-		glDeleteProgram(uiProgramObject);
-		glDeleteShader(uiFragShader);
-		glDeleteShader(uiVertShader);
-	}
+#ifdef GLES20
+    // Frees the OpenGL handles for the program and the 2 shaders
+    glDeleteProgram(uiProgramObject);
+    glDeleteShader(uiFragShader);
+    glDeleteShader(uiVertShader);
 #endif
 	APIRelease();
 #endif
@@ -156,28 +144,12 @@ bool CDisplayText::SetTextures(
 	bScreenRotate = bRotate; 
 	//bScreenRotate = false;
 	if( bRotate ) {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30200
-		if (GetDeviceType()==IPAD_DEVICE)
-		{
-			WindowWidth = 1024;
-			WindowHeight = 768;
-		}
-		else 
-#endif
 		{
 			WindowWidth = 480;
 			WindowHeight = 320;
 		}
-
 	}
 	else {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30200
-		if (GetDeviceType()==IPAD_DEVICE)
-		{
-			WindowWidth = 768;
-			WindowHeight = 1024;
-		}
-#endif
 	}
 	/* Set the aspect ratio, so we can change it without updating textures or anything else */
 	m_fScreenScale[0] = (float)dwScreenX/WindowWidth;

@@ -49,4 +49,10 @@ bool UnProject(float winx, float winy, float winz,
 			   const int viewport[4],
 			   float * objx, float * objy, float * objz);
 
+/* Transform point from screen coords. (winx,winy,winz) to world coords. */
+bool UnProject(float winx, float winy, float winz,
+			   const float model[16], const float proj[16],
+			   int ViewWidth, int ViewHeight,
+			   float * objx, float * objy, float * objz);
+
 #endif

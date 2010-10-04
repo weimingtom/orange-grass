@@ -24,10 +24,10 @@ public:
 	virtual const Vec4& GetColor () const = 0;
 
 	// set light direction.
-	virtual void SetDirection (const Vec4& _vDirection) = 0;
+	virtual void SetDirection (const Vec3& _vDirection) = 0;
 
 	// get light direction.
-	virtual const Vec4& GetDirection () const = 0;
+	virtual const Vec3& GetDirection () const = 0;
 };
 
 #endif

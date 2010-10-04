@@ -176,7 +176,7 @@ void CViewerCanvas::InitGL()
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);
 
-	GetRenderer()->GetLight()->SetDirection(Vec4(0.0f, 0.0f, 1.0f, 0.0f));
+	GetRenderer()->GetLight()->SetDirection(Vec3(0.0f, 0.0f, 1.0f));
 	GetRenderer()->GetLight()->SetColor(Vec4(1.0f, 1.0f, 1.0f, 1.0f));
 }
 

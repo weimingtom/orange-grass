@@ -322,3 +322,34 @@ bool UnProject(float winx, float winy, float winz,
 	*objz = out[2] / out[3];
 	return true;
 }
+
+
+/* Transform point from screen coords. (winx,winy,winz) to world coords. */
+bool UnProject(float winx, float winy, float winz,
+			   const float model[16], const float proj[16],
+			   int ViewWidth, int ViewHeight,
+			   float * objx, float * objy, float * objz)
+{
+	/* matrice de transformation */
+	float m[16], A[16];
+	float in[4], out[4];
+
+	/* transformation coordonnees normalisees entre -1 et 1 */
+	in[0] = (winx) * 2 / ViewWidth - 1.0f;
+	in[1] = (winy) * 2 / ViewHeight - 1.0f;
+	in[2] = 2 * winz - 1.0f;
+	in[3] = 1.0f;
+
+	/* calcul transformation inverse */
+	matmul(A, proj, model);
+	invert_matrix(A, m);
+
+	/* d'ou les coordonnees objets */
+	transform_point(out, m, in);
+	if (out[3] == 0.0f)
+		return false;
+	*objx = out[0] / out[3];
+	*objy = out[1] / out[3];
+	*objz = out[2] / out[3];
+	return true;
+}

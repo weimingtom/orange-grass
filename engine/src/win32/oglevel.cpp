@@ -62,7 +62,7 @@ bool COGLevel::Load ()
     {
         OG_LOG_WARNING("No level scene found in file %s", m_ResourceFile.c_str());
 
-        GetRenderer()->GetLight()->SetDirection(Vec4(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z, 0.0f));
+        GetRenderer()->GetLight()->SetDirection(Vec3(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z));
         GetRenderer()->GetLight()->SetColor(Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f));
 		GetRenderer()->GetFog()->SetColor(m_vFogColor);
 		GetRenderer()->GetFog()->SetStart(m_fFogStart);
@@ -121,7 +121,7 @@ bool COGLevel::Load ()
 	}
 
     GetPhysics()->SetLevelBorders(m_vStartPos, m_vFinishPos, m_fActiveWidth);
-    GetRenderer()->GetLight()->SetDirection(Vec4(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z, 0.0f));
+    GetRenderer()->GetLight()->SetDirection(Vec3(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z));
     GetRenderer()->GetLight()->SetColor(Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f));
 
 	GetRenderer()->GetFog()->SetColor(m_vFogColor);
@@ -200,7 +200,7 @@ bool COGLevel::Save ()
         return false;
     }
 
-	Vec4 vL = GetRenderer()->GetLight()->GetDirection();
+	Vec3 vL = GetRenderer()->GetLight()->GetDirection();
 	Vec4 vC = GetRenderer()->GetLight()->GetColor();
 	m_vLightDir = Vec3(vL.x, vL.y, vL.z);
 	m_vLightColor = Vec3(vC.x, vC.y, vC.z);

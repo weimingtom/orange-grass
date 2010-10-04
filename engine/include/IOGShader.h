@@ -26,6 +26,9 @@ public:
 		
 	// apply the shader.
 	virtual void Apply () = 0;
+		
+	// setup the shader.
+	virtual void Setup () = 0;
 
     // set model matrix
     virtual void SetModelMatrix (const MATRIX& _mModel) = 0;

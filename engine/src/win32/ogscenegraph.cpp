@@ -162,7 +162,6 @@ void COGSceneGraph::RenderLandscape (IOGCamera* _pCamera)
 // Render effects.
 void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 {
-	MATRIX mModelView;
 	const MATRIX& mView = _pCamera->GetViewMatrix();
 
     Vec3 vUp, vRight, vLook;
