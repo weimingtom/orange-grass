@@ -229,6 +229,8 @@
 			<key>Layout</key>
 			<array>
 				<dict>
+					<key>BecomeActive</key>
+					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -266,8 +268,7 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>31</integer>
-									<integer>28</integer>
+									<integer>38</integer>
 									<integer>0</integer>
 								</array>
 							</array>
@@ -304,14 +305,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>Delegate.mm</string>
+								<string>GameScreenController.h</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -319,11 +318,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>Delegate.mm</string>
+										<string>GameScreenController.h</string>
 										<key>_historyCapacity</key>
 										<integer>20</integer>
 										<key>bookmark</key>
-										<string>B29691E1125A2DF9003B7A4C</string>
+										<string>B2DF04EB125A3519002BE972</string>
 										<key>history</key>
 										<array>
 											<string>B2AEFF1012411A2F0039DC17</string>
@@ -332,7 +331,8 @@
 											<string>B2AEFF4B1241224F0039DC17</string>
 											<string>B2AEFF61124123EC0039DC17</string>
 											<string>B2AEFF62124123EC0039DC17</string>
-											<string>B29691CE125A2CB9003B7A4C</string>
+											<string>B2969288125A32F4003B7A4C</string>
+											<string>B273EA0A125A3407004FCB50</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -390,9 +390,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>B29691E2125A2DF9003B7A4C</string>
+				<string>B2DF04EC125A3519002BE972</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>B29691E3125A2DF9003B7A4C</string>
+				<string>B2DF04ED125A3519002BE972</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -611,7 +611,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>B2656F471217E94A002F1DC8</string>
-				<string>B29691E4125A2DF9003B7A4C</string>
+				<string>B2DF04EA125A350E002BE972</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
