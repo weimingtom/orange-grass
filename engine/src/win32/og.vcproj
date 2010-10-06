@@ -493,6 +493,38 @@
 						>
 					</File>
 				</Filter>
+				<Filter
+					Name="Text"
+					>
+					<File
+						RelativePath=".\ogtextrenderer.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogtextrenderer.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogtextrenderer_data.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogtextrenderer_gles11.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogtextrenderer_gles11.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogtextrenderer_gles20.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogtextrenderer_gles20.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="Input"

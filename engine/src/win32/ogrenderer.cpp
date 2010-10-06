@@ -57,7 +57,6 @@ bool COGRenderer::Init ()
 	m_pCamera = new COGCamera ();
 	m_pFog = new COGFog ();
 
-	m_pText = new CDisplayText();
 	return true;
 }
 

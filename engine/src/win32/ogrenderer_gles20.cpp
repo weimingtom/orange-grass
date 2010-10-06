@@ -9,6 +9,7 @@
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogrenderer_gles20.h"
+#include "ogtextrenderer_gles20.h"
 #include "ogvertexbuffers_gles20.h"
 
 
@@ -35,6 +36,8 @@ bool COGRenderer_GLES20::Init ()
         return false;
     if (!m_ColorEffectShader.Load(pResMgr->GetFullPath("Shaders/ColorEffect.vsh"), pResMgr->GetFullPath("Shaders/ColorEffect.fsh")))
         return false;
+
+	m_pText = new COGTextRenderer_GLES20();
 
 	return true;
 }

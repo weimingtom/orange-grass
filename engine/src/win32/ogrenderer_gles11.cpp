@@ -9,6 +9,7 @@
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogrenderer_gles11.h"
+#include "ogtextrenderer_gles11.h"
 #include "ogvertexbuffers_gles11.h"
 
 
@@ -26,6 +27,7 @@ COGRenderer_GLES11::~COGRenderer_GLES11 ()
 bool COGRenderer_GLES11::Init ()
 {
     COGRenderer::Init();
+	m_pText = new COGTextRenderer_GLES11();
 	return true;
 }
 

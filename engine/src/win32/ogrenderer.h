@@ -13,7 +13,7 @@
 #include "IOGStatistics.h"
 #include "ogmesh.h"
 #include "ogrendertarget.h"
-#include "UI.h"
+#include "ogtextrenderer.h"
 
 
 class COGRenderer : public IOGRenderer
@@ -76,7 +76,7 @@ protected:
 	IOGLight*			m_pLight;
 	IOGCamera*			m_pCamera;
 	IOGFog*				m_pFog;
-	CDisplayText*		m_pText;
+	COGTextRenderer*	m_pText;
 	MATRIX				m_mOrthoProj;
 	MATRIX				m_mProjection;
 	MATRIX				m_mView;
