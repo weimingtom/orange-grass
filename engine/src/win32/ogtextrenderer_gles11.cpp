@@ -104,8 +104,8 @@ void COGTextRenderer_GLES11::APIRenderStates(int nAction)
 		{
 			Matrix.f[i]=0;
 		}
-		Matrix.f[0] =	f2vt(2.0f/m_WindowWidth);
-		Matrix.f[5] =	f2vt(-2.0f/m_WindowHeight);
+		Matrix.f[0] = f2vt(2.0f/m_WindowWidth);
+		Matrix.f[5] = f2vt(-2.0f/m_WindowHeight);
 		Matrix.f[10] = f2vt(1.0f);
 		Matrix.f[12] = f2vt(-1.0f);
 		Matrix.f[13] = f2vt(1.0f);
@@ -169,8 +169,10 @@ void COGTextRenderer_GLES11::APIRenderStates(int nAction)
         glPopMatrix();
 
         glMatrixMode(iMatrixMode);
-        if(bLighting)		glEnable(GL_LIGHTING);
-        if(bFog)			glEnable(GL_FOG);
+        if(bLighting)
+            glEnable(GL_LIGHTING);
+        if(bFog)
+            glEnable(GL_FOG);
 
         // restore texture states
         glActiveTexture(GL_TEXTURE1);
@@ -179,14 +181,17 @@ void COGTextRenderer_GLES11::APIRenderStates(int nAction)
         bTextureEnabled0 ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
 
         // Restore some values
-		if(!bCullFace) glDisable(GL_CULL_FACE);
-		if(bDepthTest) glEnable(GL_DEPTH_TEST);
+		if(!bCullFace) 
+            glDisable(GL_CULL_FACE);
+		if(bDepthTest) 
+            glEnable(GL_DEPTH_TEST);
 
 		glFrontFace(iFrontFace);
 		glCullFace(iCullFaceMode);
 
 		glBlendFunc(iSrcBlend, iDestBlend);
-		if(bBlend == 0) glDisable(GL_BLEND);
+		if(bBlend == 0) 
+            glDisable(GL_BLEND);
 		break;
 	}
 }

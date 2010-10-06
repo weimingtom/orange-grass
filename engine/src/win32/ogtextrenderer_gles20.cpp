@@ -103,14 +103,17 @@ void COGTextRenderer_GLES20::APIRenderStates(int nAction)
 
 	case 1:
 		// Restore some values
-		if(!bCullFace) glDisable(GL_CULL_FACE);
-		if(bDepthTest) glEnable(GL_DEPTH_TEST);
+		if(!bCullFace) 
+            glDisable(GL_CULL_FACE);
+		if(bDepthTest) 
+            glEnable(GL_DEPTH_TEST);
 
 		glFrontFace(iFrontFace);
 		glCullFace(iCullFaceMode);
 
 		glBlendFunc(iSrcBlend, iDestBlend);
-		if(bBlend == 0) glDisable(GL_BLEND);
+		if(bBlend == 0) 
+            glDisable(GL_BLEND);
 		break;
 	}
 }

@@ -74,12 +74,12 @@ void COGRenderer::SetViewport (
     {
         m_mTextProj.f[i]=0;
     }
-    m_mTextProj.f[0] =	f2vt(2.0f/(m_Width));
-    m_mTextProj.f[5] =	f2vt(-2.0f/(m_Height));
-    m_mTextProj.f[10] = f2vt(1.0f);
-    m_mTextProj.f[12] = f2vt(-1.0f);
-    m_mTextProj.f[13] = f2vt(1.0f);
-    m_mTextProj.f[15] = f2vt(1.0f);
+    m_mTextProj.f[0] = 2.0f/(m_Width);
+    m_mTextProj.f[5] = -2.0f/(m_Height);
+    m_mTextProj.f[10] = 1.0f;
+    m_mTextProj.f[12] = -1.0f;
+    m_mTextProj.f[13] = 1.0f;
+    m_mTextProj.f[15] = 1.0f;
 
 #ifdef WIN32
 	MatrixOrthoRH(m_mOrthoProj, (float)m_Width, (float)m_Height, -1, 1, false);
