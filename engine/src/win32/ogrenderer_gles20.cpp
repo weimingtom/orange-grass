@@ -36,6 +36,8 @@ bool COGRenderer_GLES20::Init ()
         return false;
     if (!m_ColorEffectShader.Load(pResMgr->GetFullPath("Shaders/ColorEffect.vsh"), pResMgr->GetFullPath("Shaders/ColorEffect.fsh")))
         return false;
+    if (!m_TextShader.Load(pResMgr->GetFullPath("Shaders/Text.vsh"), pResMgr->GetFullPath("Shaders/Text.fsh")))
+        return false;
 
 	m_pText = new COGTextRenderer_GLES20();
 
@@ -131,9 +133,12 @@ void COGRenderer_GLES20::StartRenderMode(OGRenderMode _Mode)
 		break;
 
     case OG_RENDERMODE_TEXT:
+	    m_pCurShader = &m_TextShader;
+        m_TextShader.SetProjectionMatrix(m_mTextProj);
 		glAlphaFunc(GL_GREATER, 0.1f);
 		glDisable(GL_DEPTH_TEST);
 	    glDisable(GL_CULL_FACE);
+        m_TextShader.Setup();
         break;
 	}
 }
@@ -168,7 +173,6 @@ void COGRenderer_GLES20::FinishRenderMode()
 	    glEnable(GL_CULL_FACE);
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
-		m_pText->Flush();
 		break;
 
 	case OG_RENDERMODE_TEXT:

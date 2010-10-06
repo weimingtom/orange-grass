@@ -43,14 +43,14 @@ int COGTextRenderer_GLES11::Flush()
 		nTris = nVtx >> 1;
 
         /* Draw triangles */
-        glVertexPointer(3,		VERTTYPEENUM,		sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].sx);
-        glColorPointer(4,		VERTTYPEENUM,	sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].r);
-        glTexCoordPointer(2,	VERTTYPEENUM,		sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].tu);
+        glVertexPointer(3, VERTTYPEENUM, sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].sx);
+        glColorPointer(4, VERTTYPEENUM, sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].r);
+        glTexCoordPointer(2, VERTTYPEENUM, sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].tu);
 
         glDrawElements(GL_TRIANGLES, nTris * 3, GL_UNSIGNED_SHORT, m_pwFacesFont);
 		
-		nVtxBase		+= nVtx;
-		m_nVtxCache	-= nVtx;
+		nVtxBase += nVtx;
+		m_nVtxCache -= nVtx;
 	}
 
 	/* Restore render states */
@@ -104,8 +104,8 @@ void COGTextRenderer_GLES11::APIRenderStates(int nAction)
 		{
 			Matrix.f[i]=0;
 		}
-		Matrix.f[0] =	f2vt(2.0f/(m_fScreenScale[0]*m_WindowWidth));
-		Matrix.f[5] =	f2vt(-2.0f/(m_fScreenScale[1]*m_WindowHeight));
+		Matrix.f[0] =	f2vt(2.0f/m_WindowWidth);
+		Matrix.f[5] =	f2vt(-2.0f/m_WindowHeight);
 		Matrix.f[10] = f2vt(1.0f);
 		Matrix.f[12] = f2vt(-1.0f);
 		Matrix.f[13] = f2vt(1.0f);

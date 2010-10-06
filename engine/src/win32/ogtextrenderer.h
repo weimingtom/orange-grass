@@ -22,8 +22,8 @@ public:
     // Initialization and texture upload. Should be called only once
     // for a given context.
     bool SetTextures(
-	    const unsigned int	dwScreenX,
-	    const unsigned int	dwScreenY,
+	    unsigned int	dwScreenX,
+	    unsigned int	dwScreenY,
 	    bool			bRotate = true); 
 
     // fPosX		Position of the text along X
@@ -32,7 +32,7 @@ public:
     // Colour		Colour of the text
     // pszFormat	Format string for the text
     // Display text on screen.
-    void DisplayText(float fPosX, float fPosY, const float fScale, unsigned int Colour, const char * const pszFormat, ...);
+    void DisplayText(float fPosX, float fPosY, float fScale, unsigned int Colour, const char * const pszFormat, ...);
 
     // Deallocate the memory allocated in SetTextures
     void ReleaseTextures();
@@ -55,8 +55,7 @@ protected:
     unsigned int UpdateLine(
         float XPos, 
         float YPos, 
-        const float 
-        fScale, const 
+        float fScale, 
         unsigned int Colour, 
         const char * const Text, 
         SDisplayTextAPIVertex * const pVertices);
@@ -79,7 +78,6 @@ protected:
     GLuint					m_uTexture;
 	unsigned short			*m_pwFacesFont;
 	SDisplayTextAPIVertex	*m_pPrint3dVtx;
-	float					m_fScreenScale[2];
 	bool					m_bTexturesSet;
 	SDisplayTextAPIVertex	*m_pVtxCache;
 	int						m_nVtxCache;

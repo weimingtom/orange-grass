@@ -13,6 +13,7 @@
 #include "ogmodelshader.h"
 #include "ogspriteshader.h"
 #include "ogcoloreffectshader.h"
+#include "ogtextshader.h"
 
 
 class COGRenderer_GLES20 : public COGRenderer
@@ -63,6 +64,7 @@ protected:
     COGModelShader          m_ModelShader;
     COGSpriteShader         m_SpriteShader;
     COGColorEffectShader    m_ColorEffectShader;
+    COGTextShader           m_TextShader;
     IOGShader*              m_pCurShader;
 };
 

@@ -30,15 +30,10 @@ COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
 
 COGRenderer::~COGRenderer ()
 {
-    if (m_pText)
-    {
-        m_pText->ReleaseTextures();
-        OG_SAFE_DELETE(m_pText);
-    }
-
-	OG_SAFE_DELETE(m_pFog);
-	OG_SAFE_DELETE(m_pLight);
-	OG_SAFE_DELETE(m_pCamera);
+    OG_SAFE_DELETE(m_pText);
+    OG_SAFE_DELETE(m_pFog);
+    OG_SAFE_DELETE(m_pLight);
+    OG_SAFE_DELETE(m_pCamera);
 }
 
 
@@ -60,7 +55,7 @@ bool COGRenderer::Init ()
 	return true;
 }
 
-	
+
 // set viewport.
 void COGRenderer::SetViewport (
 							   unsigned int _Width, 
@@ -74,6 +69,17 @@ void COGRenderer::SetViewport (
 	m_fFOV = _fFOV;
 	m_fZNear = _fZNear;
 	m_fZFar = _fZFar;
+
+    for(int i=0; i<16; i++)
+    {
+        m_mTextProj.f[i]=0;
+    }
+    m_mTextProj.f[0] =	f2vt(2.0f/(m_Width));
+    m_mTextProj.f[5] =	f2vt(-2.0f/(m_Height));
+    m_mTextProj.f[10] = f2vt(1.0f);
+    m_mTextProj.f[12] = f2vt(-1.0f);
+    m_mTextProj.f[13] = f2vt(1.0f);
+    m_mTextProj.f[15] = f2vt(1.0f);
 
 #ifdef WIN32
 	MatrixOrthoRH(m_mOrthoProj, (float)m_Width, (float)m_Height, -1, 1, false);

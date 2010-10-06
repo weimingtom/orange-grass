@@ -25,16 +25,6 @@ protected:
 
     // Stores, writes and restores Render States
     virtual void APIRenderStates(int nAction);
-
-protected:
-
-    // Declare the fragment and vertex shaders.
-	GLuint uiFragShader, uiVertShader;
-	GLuint uiProgramObject;
-
-    // Handles for the uniform variables.
-	int PMVMatrixHandle;
-	int TextureHandle;
 };
 
 #endif

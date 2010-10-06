@@ -34,6 +34,7 @@ COGTextRenderer::COGTextRenderer()
 
 COGTextRenderer::~COGTextRenderer()
 {
+    ReleaseTextures();
 }
 
 
@@ -42,26 +43,22 @@ COGTextRenderer::~COGTextRenderer()
 // true or false
 // Initialization and texture upload.
 bool COGTextRenderer::SetTextures(
-	const unsigned int	dwScreenX,
-	const unsigned int	dwScreenY,
+	unsigned int	dwScreenX,
+	unsigned int	dwScreenY,
 	bool			bRotate) 
 {
 	int				i;
 	bool			bStatus;
 
-    m_WindowWidth = dwScreenX;
-    m_WindowHeight = dwScreenY;
+    m_WindowWidth = (float)dwScreenX;
+    m_WindowHeight = (float)dwScreenY;
 
 	m_bScreenRotate = bRotate; 
 	if( m_bScreenRotate ) 
     {
-        m_WindowWidth = dwScreenY;
-        m_WindowHeight = dwScreenX;
+        m_WindowWidth = (float)dwScreenY;
+        m_WindowHeight = (float)dwScreenX;
 	}
-
-    /* Set the aspect ratio, so we can change it without updating textures or anything else */
-	m_fScreenScale[0] = 1.0f;
-	m_fScreenScale[1] = 1.0f;
 
 	/* Check whether textures are already set up just in case */
 	if (m_bTexturesSet) return true;
@@ -105,7 +102,7 @@ bool COGTextRenderer::SetTextures(
 // Colour		Colour of the text
 // pszFormat	Format string for the text
 // Display text on screen.
-void COGTextRenderer::DisplayText(float fPosX, float fPosY, const float fScale, unsigned int Colour, const char * const pszFormat, ...)
+void COGTextRenderer::DisplayText(float fPosX, float fPosY, float fScale, unsigned int Colour, const char * const pszFormat, ...)
 {
 	va_list				args;
 	static char			Text[MAX_LETTERS+1], sPreviousString[MAX_LETTERS+1];
@@ -127,8 +124,8 @@ void COGTextRenderer::DisplayText(float fPosX, float fPosY, const float fScale, 
 		return;
 
 	/* Adjust input parameters */
-	fPosX *= WindowWidth/100.0f;
-	fPosY *= WindowHeight/100.0f;
+	fPosX *= m_WindowWidth/100.0f;
+	fPosY *= m_WindowHeight/100.0f;
 
 	/* We check if the string has been changed since last time */
 	if(
@@ -290,8 +287,8 @@ bool COGTextRenderer::APIUpLoad4444(unsigned char *pSource, unsigned int nSize, 
 unsigned int COGTextRenderer::UpdateLine(
                                       float XPos, 
                                       float YPos, 
-                                      const float fScale, 
-                                      const unsigned int Colour, 
+                                      float fScale, 
+                                      unsigned int Colour, 
                                       const char * const Text, 
                                       SDisplayTextAPIVertex * const pVertices)
 {
@@ -307,17 +304,14 @@ unsigned int COGTextRenderer::UpdateLine(
 
 	if (fScale>0)
 	{
-		fScaleX = m_fScreenScale[0] * fScale * 255.0f;
-		fScaleY = m_fScreenScale[1] * fScale * 27.0f;
+		fScaleX = fScale * 255.0f;
+		fScaleY = fScale * 27.0f;
 	}
 	else
 	{
-		fScaleX = m_fScreenScale[0] * 255.0f;
-		fScaleY = m_fScreenScale[1] * 12.0f;
+		fScaleX = 255.0f;
+		fScaleY = 12.0f;
 	}
-
-	XPos *= m_fScreenScale[0];
-	YPos *= m_fScreenScale[1];
 
 	fPreXPos = XPos;
 
@@ -332,7 +326,7 @@ unsigned int COGTextRenderer::UpdateLine(
 		if (Val==' ')
 		{
 			if (fScale>0)	XPos += 10.0f/255.0f * fScaleX;
-			else			XPos += 5.0f * m_fScreenScale[0];
+			else			XPos += 5.0f;
 			continue;
 		}
 
@@ -340,7 +334,7 @@ unsigned int COGTextRenderer::UpdateLine(
 		if (Val=='#')
 		{
 			if (fScale>0)	XPos += 1.0f/255.0f * fScaleX;
-			else			XPos += 5.0f * m_fScreenScale[0];
+			else			XPos += 5.0f;
 			continue;
 		}
 
@@ -458,8 +452,8 @@ void COGTextRenderer::DrawLineUP(SDisplayTextAPIVertex *pVtx, unsigned int nVert
 			return;
 		}
 
-		m_nVtxCacheMax	= _MIN(m_nVtxCacheMax * 2, MAX_CACHED_VTX);
-		m_pVtxCache		= (SDisplayTextAPIVertex*) reallocEM(m_pVtxCache, sizeof(*m_pVtxCache), m_nVtxCacheMax * sizeof(*m_pVtxCache));
+		m_nVtxCacheMax = _MIN(m_nVtxCacheMax * 2, MAX_CACHED_VTX);
+		m_pVtxCache = (SDisplayTextAPIVertex*) reallocEM(m_pVtxCache, sizeof(*m_pVtxCache), m_nVtxCacheMax * sizeof(*m_pVtxCache));
 	}
 
 	memcpy(&m_pVtxCache[m_nVtxCache], pVtx, nVertices * sizeof(*pVtx));
@@ -467,17 +461,15 @@ void COGTextRenderer::DrawLineUP(SDisplayTextAPIVertex *pVtx, unsigned int nVert
 }
 
 
-void COGTextRenderer::Rotate(SDisplayTextAPIVertex * const pv, const unsigned int nCnt)
+void COGTextRenderer::Rotate(SDisplayTextAPIVertex * const pv, unsigned int nCnt)
 {
-	unsigned int	i;
-	VERTTYPE		x, y;
-
-	for(i = 0; i < nCnt; ++i)
+	VERTTYPE x, y;
+	for(unsigned int i = 0; i < nCnt; ++i)
 	{
-		x = VERTTYPEDIV((VERTTYPE&)pv[i].sx, f2vt(WindowWidth * m_fScreenScale[0]));
-		y = VERTTYPEDIV((VERTTYPE&)pv[i].sy, f2vt(WindowHeight * m_fScreenScale[1]));
+		x = VERTTYPEDIV((VERTTYPE&)pv[i].sx, f2vt(m_WindowWidth));
+		y = VERTTYPEDIV((VERTTYPE&)pv[i].sy, f2vt(m_WindowHeight));
 		
-		(VERTTYPE&)pv[i].sx = VERTTYPEMUL(-y+f2vt(1.0f), f2vt(WindowWidth * m_fScreenScale[0]));
-		(VERTTYPE&)pv[i].sy = VERTTYPEMUL(x, f2vt(WindowHeight * m_fScreenScale[1]));
+		(VERTTYPE&)pv[i].sx = VERTTYPEMUL(-y+f2vt(1.0f), f2vt(m_WindowWidth));
+		(VERTTYPE&)pv[i].sy = VERTTYPEMUL(x, f2vt(m_WindowHeight));
 	}
 }

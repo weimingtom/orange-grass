@@ -14,60 +14,13 @@
 #include "ogtextrenderer_data.h"
 
 
-// This ties in with the shader attribute to link to openGL, see pszVertShader.
-static const char* pszAttribs[] = { "myVertex", "myColor", "myTexCoord" };
-
-static char vsh[] = "\
-attribute vec4	myVertex;											\
-attribute vec4	myColor;											\
-attribute vec2	myTexCoord;											\
-																			\
-uniform mat4	myPMVMatrix;										\
-																			\
-varying vec2	v_textureCoord;										\
-varying vec4	v_color;											\
-																			\
-void main(void)																\
-{																			\
-	gl_Position = myPMVMatrix * myVertex;									\
-	v_textureCoord = myTexCoord;											\
-	v_color = myColor;														\
-}																			\
-";
-
-static char fsh[] = "\
-varying vec2	v_textureCoord;										\
-varying vec4	v_color;											\
-uniform sampler2D		s_texture;											\
-																			\
-void main(void)																\
-{																			\
-	gl_FragColor = texture2D(s_texture, v_textureCoord) * v_color;			\
-}																			\
-";
-
-
 COGTextRenderer_GLES20::COGTextRenderer_GLES20()
 {
-    if(ShaderLoadSourceFromMemory( fsh, GL_FRAGMENT_SHADER, &uiFragShader) == 0)
-        printf("Loading the fragment shader fails");
-    if(ShaderLoadSourceFromMemory( vsh, GL_VERTEX_SHADER, &uiVertShader) == 0)
-        printf("Loading the vertex shader fails");
-
-    CreateProgram(&uiProgramObject, uiVertShader, uiFragShader, pszAttribs, 3);
-
-    // First gets the location of that variable in the shader using its name
-    PMVMatrixHandle = glGetUniformLocation(uiProgramObject, "myPMVMatrix");
-    TextureHandle = glGetUniformLocation(uiProgramObject, "s_texture");			
 }
 
 
 COGTextRenderer_GLES20::~COGTextRenderer_GLES20()
 {
-    // Frees the OpenGL handles for the program and the 2 shaders
-    glDeleteProgram(uiProgramObject);
-    glDeleteShader(uiFragShader);
-    glDeleteShader(uiVertShader);
 }
 
 
@@ -118,11 +71,8 @@ int COGTextRenderer_GLES20::Flush()
 // Stores, writes and restores Render States
 void COGTextRenderer_GLES20::APIRenderStates(int nAction)
 {
-	static GLint iMatrixMode, iFrontFace, iCullFaceMode, iDestBlend, iSrcBlend;
-	static GLboolean bLighting, bCullFace, bFog, bDepthTest, bBlend, bVertexPointerEnabled, bColorPointerEnabled, bTexCoorPointerEnabled;
-    static GLboolean bTextureEnabled0, bTextureEnabled1;
-	MATRIX Matrix;
-	int i;
+	static GLint iFrontFace, iCullFaceMode, iDestBlend, iSrcBlend;
+	static GLboolean bCullFace, bDepthTest, bBlend;
 
 	/* Saving or restoring states ? */
 	switch (nAction)
@@ -137,26 +87,11 @@ void COGTextRenderer_GLES20::APIRenderStates(int nAction)
 		glGetIntegerv(GL_BLEND_SRC, &iSrcBlend);
         glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
-        /* Set matrix with viewport dimensions */
-		for(i=0; i<16; i++)
-		{
-			Matrix.f[i]=0;
-		}
-		Matrix.f[0] =	f2vt(2.0f/(m_fScreenScale[0]*m_WindowWidth));
-		Matrix.f[5] =	f2vt(-2.0f/(m_fScreenScale[1]*m_WindowHeight));
-		Matrix.f[10] = f2vt(1.0f);
-		Matrix.f[12] = f2vt(-1.0f);
-		Matrix.f[13] = f2vt(1.0f);
-		Matrix.f[15] = f2vt(1.0f);
-        glUseProgram(uiProgramObject);
-        glUniformMatrix4fv( PMVMatrixHandle, 1, GL_FALSE, Matrix.f);
-
         /* Culling */
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CW);
 		glCullFace(GL_FRONT);
         glActiveTexture(GL_TEXTURE0);
-        glUniform1i( TextureHandle, 0 );
 
 		/* Blending mode */
 		glEnable(GL_BLEND);

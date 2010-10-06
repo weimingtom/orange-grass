@@ -492,6 +492,14 @@
 						RelativePath=".\ogspriteshader.h"
 						>
 					</File>
+					<File
+						RelativePath=".\ogtextshader.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogtextshader.h"
+						>
+					</File>
 				</Filter>
 				<Filter
 					Name="Text"

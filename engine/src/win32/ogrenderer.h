@@ -79,6 +79,7 @@ protected:
 	COGTextRenderer*	m_pText;
 	MATRIX				m_mOrthoProj;
 	MATRIX				m_mProjection;
+    MATRIX              m_mTextProj;
 	MATRIX				m_mView;
 	unsigned int		m_Width; 
 	unsigned int		m_Height;
