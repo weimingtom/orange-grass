@@ -52,7 +52,7 @@ bool COGMesh::Load ()
 	m_BuffersList.reserve(m_pScene->nNumMesh);
 	for(unsigned int i = 0; i < m_pScene->nNumMesh; ++i)
 	{
-		COGVertexBuffers* pBuffer = new COGVertexBuffers(&m_pScene->pMesh[i]);
+		IOGVertexBuffers* pBuffer = m_pRenderer->CreateVertexBuffer(&m_pScene->pMesh[i]);
 		m_BuffersList.push_back(pBuffer);
 	}
 
@@ -76,7 +76,7 @@ void COGMesh::Unload ()
 	m_Faces.clear();
 	m_AABB.SetMinMax(Vec3(0,0,0), Vec3(0,0,0));
 
-	std::vector<COGVertexBuffers*>::iterator iter = m_BuffersList.begin();
+	std::vector<IOGVertexBuffers*>::iterator iter = m_BuffersList.begin();
     for (; iter != m_BuffersList.end(); ++iter)
     {
 		OG_SAFE_DELETE((*iter));

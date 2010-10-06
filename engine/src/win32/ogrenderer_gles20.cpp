@@ -9,6 +9,7 @@
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogrenderer_gles20.h"
+#include "ogvertexbuffers_gles20.h"
 
 
 COGRenderer_GLES20::COGRenderer_GLES20 ()
@@ -36,6 +37,14 @@ bool COGRenderer_GLES20::Init ()
         return false;
 
 	return true;
+}
+
+
+// Create vertex buffer for mesh.
+IOGVertexBuffers* COGRenderer_GLES20::CreateVertexBuffer (const void* _pMeshData)
+{
+	COGVertexBuffers_GLES20* pVB = new COGVertexBuffers_GLES20((const SPODMesh*)_pMeshData);
+	return pVB;
 }
 
 

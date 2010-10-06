@@ -14,7 +14,7 @@
 #include "Mathematics.h"
 #include <vector>
 #include "ogresource.h"
-#include "ogvertexbuffers.h"
+#include "IOGVertexBuffers.h"
 #include "IOGRenderer.h"
 
 
@@ -56,7 +56,7 @@ private:
 private:
 	
 	// Vertex Buffer Object (VBO) list
-	std::vector<COGVertexBuffers*>	m_BuffersList;
+	std::vector<IOGVertexBuffers*>	m_BuffersList;
 	
 	// 3D Model
 	CPVRTModelPOD*	m_pScene;

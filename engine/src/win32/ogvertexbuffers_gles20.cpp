@@ -1,5 +1,5 @@
 /*
- *  ogvertexbuffers.cpp
+ *  ogvertexbuffers_gles20.cpp
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 08.11.09.
@@ -8,10 +8,10 @@
  */
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
-#include "ogvertexbuffers.h"
+#include "ogvertexbuffers_gles20.h"
 
 
-COGVertexBuffers::COGVertexBuffers () : m_pMesh(NULL),
+COGVertexBuffers_GLES20::COGVertexBuffers_GLES20 () : m_pMesh(NULL),
 										m_VBO(0),
 										m_IBO(0),
 										m_NumVertices(0)
@@ -19,13 +19,13 @@ COGVertexBuffers::COGVertexBuffers () : m_pMesh(NULL),
 }
 
 
-COGVertexBuffers::~COGVertexBuffers ()
+COGVertexBuffers_GLES20::~COGVertexBuffers_GLES20 ()
 {
 }
 
 
 // initialize VBO and IBO.
-COGVertexBuffers::COGVertexBuffers (const SPODMesh* _pMesh) :	m_pMesh(_pMesh),
+COGVertexBuffers_GLES20::COGVertexBuffers_GLES20 (const SPODMesh* _pMesh) :	m_pMesh(_pMesh),
 																m_VBO(0),
 																m_IBO(0),
 																m_NumVertices(0)
@@ -60,7 +60,7 @@ COGVertexBuffers::COGVertexBuffers (const SPODMesh* _pMesh) :	m_pMesh(_pMesh),
 
 
 // apply buffers.
-void COGVertexBuffers::Apply () const
+void COGVertexBuffers_GLES20::Apply () const
 {
 #ifdef USE_VBO
 	// bind the VBO for the mesh
@@ -68,28 +68,11 @@ void COGVertexBuffers::Apply () const
 	// bind the index buffer, won't hurt if the handle is 0
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
 
-#ifdef GLES11
-	// Setup pointers
-	glVertexPointer(3, VERTTYPEENUM, m_pMesh->sVertex.nStride, m_pMesh->sVertex.pData);
-	glNormalPointer(VERTTYPEENUM, m_pMesh->sNormals.nStride, m_pMesh->sNormals.pData);
-	if (m_pMesh->psUVW)
-		glTexCoordPointer(2, VERTTYPEENUM, m_pMesh->psUVW[0].nStride, m_pMesh->psUVW[0].pData);
-#else
 	// Setup pointers
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, m_pMesh->sVertex.nStride, m_pMesh->sVertex.pData);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, m_pMesh->sNormals.nStride, m_pMesh->sNormals.pData);
 	if (m_pMesh->psUVW)
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, m_pMesh->psUVW[0].nStride, m_pMesh->psUVW[0].pData);
-#endif
-#else
-#ifdef GLES11
-	// Setup pointers
-	glVertexPointer(3, VERTTYPEENUM, m_pMesh->sVertex.nStride, m_pMesh->pInterleaved);
-	glNormalPointer(VERTTYPEENUM, m_pMesh->sVertex.nStride, (void*)((char*)m_pMesh->pInterleaved + 12));
-	if (m_pMesh->psUVW)
-	{
-		glTexCoordPointer(2, VERTTYPEENUM, m_pMesh->sVertex.nStride, (void*)((char*)m_pMesh->pInterleaved + 24));
-	}
 #else
 	// Setup pointers
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, m_pMesh->sVertex.nStride, m_pMesh->pInterleaved);
@@ -99,7 +82,6 @@ void COGVertexBuffers::Apply () const
 		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, m_pMesh->sVertex.nStride, (void*)((char*)m_pMesh->pInterleaved + 24));
 	}
 #endif
-#endif
 #ifdef STATISTICS
 	m_pStats->AddVBOSwitch();
 #endif
@@ -107,7 +89,7 @@ void COGVertexBuffers::Apply () const
 
 
 // render buffer geometry.
-void COGVertexBuffers::Render () const
+void COGVertexBuffers_GLES20::Render () const
 {
     if(m_pMesh->nNumStrips == 0)
     {

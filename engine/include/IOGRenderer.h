@@ -14,6 +14,7 @@
 #include "IOGLight.h"
 #include "IOGCamera.h"
 #include "IOGFog.h"
+#include "IOGVertexBuffers.h"
 
 
 enum OGRenderMode
@@ -62,6 +63,9 @@ public:
 
 	// Get scene light.
 	virtual IOGLight* GetLight () = 0;
+
+	// Create vertex buffer for mesh.
+	virtual IOGVertexBuffers* CreateVertexBuffer (const void* _pMeshData) = 0;
 
 	// Enable scene light.
 	virtual void EnableLight (bool _bEnable) = 0;

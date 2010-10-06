@@ -117,9 +117,9 @@ void COGRenderer::SetMaterial (IOGMaterial* _pMaterial)
 // add rendering command.
 void COGRenderer::RenderMesh (void* _pMesh)
 {
-	if ((COGVertexBuffers*)_pMesh != m_pCurMesh)
+	if ((IOGVertexBuffers*)_pMesh != m_pCurMesh)
     {
-        m_pCurMesh = (COGVertexBuffers*)_pMesh;
+        m_pCurMesh = (IOGVertexBuffers*)_pMesh;
         m_pCurMesh->Apply();
     }
     m_pCurMesh->Render();

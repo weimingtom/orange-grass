@@ -9,6 +9,7 @@
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogrenderer_gles11.h"
+#include "ogvertexbuffers_gles11.h"
 
 
 COGRenderer_GLES11::COGRenderer_GLES11 ()
@@ -26,6 +27,14 @@ bool COGRenderer_GLES11::Init ()
 {
     COGRenderer::Init();
 	return true;
+}
+
+
+// Create vertex buffer for mesh.
+IOGVertexBuffers* COGRenderer_GLES11::CreateVertexBuffer (const void* _pMeshData)
+{
+	COGVertexBuffers_GLES11* pVB = new COGVertexBuffers_GLES11((const SPODMesh*)_pMeshData);
+	return pVB;
 }
 
 

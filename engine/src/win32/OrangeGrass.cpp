@@ -118,6 +118,17 @@ IOGRenderer* GetRenderer ()
 }
 
 
+IOGRenderer* GetRendererGL11 ()
+{
+	if (g_pRenderer == NULL)
+	{
+		g_pRenderer = new COGRenderer_GLES11 ();
+		g_pRenderer->Init();
+	}
+	return g_pRenderer;
+}
+
+
 IOGMaterialManager* GetMaterialManager ()
 {
 	if (g_pMaterialMgr == NULL)

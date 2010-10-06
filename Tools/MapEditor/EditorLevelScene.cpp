@@ -9,7 +9,6 @@
 #include "OpenGL2.h"
 #include "EditorLevelScene.h"
 #include "OrangeGrass.h"
-#include "common.h"
 #include <IOGGraphicsHelpers.h>
 
 
@@ -46,9 +45,9 @@ bool CEditorLevelScene::Init ()
 
 	glewInit();
 
+	m_pRenderer = GetRendererGL11();
 	m_pResourceMgr = GetResourceMgr();
 	m_pSg = GetSceneGraph();
-	m_pRenderer = GetRenderer();
 	m_pCamera = m_pRenderer->GetCamera();
 	m_pActorMgr = GetActorManager();
 	m_pLevelMgr = GetLevelManager();

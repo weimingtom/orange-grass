@@ -71,7 +71,7 @@ protected:
 
     IOGTexture*         m_pCurTexture;
     IOGMaterial*        m_pCurMaterial;
-    COGVertexBuffers*	m_pCurMesh;
+    IOGVertexBuffers*	m_pCurMesh;
 	IOGStatistics*		m_pStats;
 	IOGLight*			m_pLight;
 	IOGCamera*			m_pCamera;

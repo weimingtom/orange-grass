@@ -24,6 +24,9 @@ public:
 	// initialize renderer.
 	virtual bool Init ();
 
+	// Create vertex buffer for mesh.
+	virtual IOGVertexBuffers* CreateVertexBuffer (const void* _pMeshData);
+
 	// set model matrix.
 	virtual void SetModelMatrix (const MATRIX& _mModel);
 

@@ -358,11 +358,19 @@
 					>
 				</File>
 				<File
-					RelativePath=".\ogvertexbuffers.cpp"
+					RelativePath=".\ogvertexbuffers_gles11.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\ogvertexbuffers.h"
+					RelativePath=".\ogvertexbuffers_gles11.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogvertexbuffers_gles20.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogvertexbuffers_gles20.h"
 					>
 				</File>
 				<Filter
@@ -741,6 +749,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\IOGTexture.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGVertexBuffers.h"
 					>
 				</File>
 			</Filter>
