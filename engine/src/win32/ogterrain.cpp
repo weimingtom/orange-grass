@@ -103,7 +103,7 @@ void COGTerrain::Unload ()
 		return;
 	}
 
-	OG_SAFE_DELETE(m_pMaterial);
+	m_pMaterial = NULL;
 	m_TextureList.clear();
 
 	m_LoadState = OG_RESSTATE_DEFINED;

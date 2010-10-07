@@ -18,11 +18,6 @@ COGWeapon::COGWeapon()
 
 COGWeapon::~COGWeapon()
 {
-    std::list<COGActorPlasmaMissile*>::iterator iter = m_MissileList.begin();
-    for (; iter != m_MissileList.end(); ++iter)
-    {
-		OG_SAFE_DELETE((*iter));
-	}
 	m_MissileList.clear();
 }
 

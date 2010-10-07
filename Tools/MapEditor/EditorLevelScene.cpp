@@ -136,21 +136,21 @@ void CEditorLevelScene::RenderScene ()
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
 
 	if (m_pCurLevel)
-        m_pCurLevel->GetTerrain()->Render(m_mView);
-
-    m_pSg->RenderAll(m_pCamera);
-
-    if (m_EditorMode == EDITMODE_OBJECTS)
     {
-        if (m_pCurActor)
-        {
-            MATRIX mModelView = m_pCurActor->GetSgNode()->GetWorldTransform();
-            MatrixMultiply(mModelView, mModelView, m_mView);
-            m_pCurActor->GetSgNode()->GetRenderable()->Render(mModelView);
-        }
-    }
+        m_pSg->RenderAll(m_pCamera);
 
-	m_pRenderer->FinishRenderMode();
+        if (m_EditorMode == EDITMODE_OBJECTS)
+        {
+            if (m_pCurActor)
+            {
+                MATRIX mModelView = m_pCurActor->GetSgNode()->GetWorldTransform();
+                MatrixMultiply(mModelView, mModelView, m_mView);
+                m_pCurActor->GetSgNode()->GetRenderable()->Render(mModelView);
+            }
+        }
+
+        m_pRenderer->FinishRenderMode();
+    }
     m_pRenderer->Reset();
 
     RenderHelpers();

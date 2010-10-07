@@ -13,6 +13,7 @@
 
 COGActorPlasmaMissile::COGActorPlasmaMissile()
 {
+    m_pHeadEffect = NULL;
     m_pOwner = NULL;
 }
 
