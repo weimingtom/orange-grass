@@ -10,6 +10,9 @@ IMPLEMENT_APP(CViewerApp)
 /// @return true if success
 bool CViewerApp::OnInit()
 {
-    (void) CViewerFrame::Create();
+    CViewerFrame* pFrame = new CViewerFrame(NULL);
+	SetTopWindow(pFrame);
+	pFrame->Centre();
+	pFrame->Show();
     return true;
 }

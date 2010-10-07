@@ -144,6 +144,12 @@ void COGRenderer_GLES11::StartRenderMode(OGRenderMode _Mode)
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);	
 		break;
 
+	case OG_RENDERMODE_TEXT:
+		glAlphaFunc(GL_GREATER, 0.1f);
+		glDisable(GL_DEPTH_TEST);
+	    glDisable(GL_CULL_FACE);
+		break;
+
 	case OG_RENDERMODE_SHADOWMAP:
 		break;
 	}
@@ -179,7 +185,13 @@ void COGRenderer_GLES11::FinishRenderMode()
 	    glEnable(GL_CULL_FACE);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		break;
+
+	case OG_RENDERMODE_TEXT:
 		m_pText->Flush();
+		glDisable(GL_BLEND); 
+		glEnable(GL_DEPTH_TEST);
+	    glEnable(GL_CULL_FACE);
 		break;
 
 	case OG_RENDERMODE_SHADOWMAP:

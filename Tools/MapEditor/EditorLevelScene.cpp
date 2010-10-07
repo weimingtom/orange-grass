@@ -143,9 +143,8 @@ void CEditorLevelScene::RenderScene ()
         {
             if (m_pCurActor)
             {
-                MATRIX mModelView = m_pCurActor->GetSgNode()->GetWorldTransform();
-                MatrixMultiply(mModelView, mModelView, m_mView);
-                m_pCurActor->GetSgNode()->GetRenderable()->Render(mModelView);
+                MATRIX mModel = m_pCurActor->GetSgNode()->GetWorldTransform();
+                m_pCurActor->GetSgNode()->GetRenderable()->Render(mModel);
             }
         }
 

@@ -2,8 +2,8 @@
 #define VIEWERCANVAS_H_
 
 #include "wx/glcanvas.h"
-#include "wx/progdlg.h"
 #include <ToolFramework.h>
+
 
 /// @brief Viewer canvas class.
 class CViewerCanvas: public wxGLCanvas
@@ -54,13 +54,6 @@ private:
     /// @brief Render.
     void Render();
 
-    /// @brief Initialize renderer.
-    void InitGL();
-
-    /// @brief Load next resource bulk.
-    /// @return false if finished loading.
-    bool LoadNextResource();
-
 	/// @brief Resource switching event handler
     /// @param event - event structute.
 	void OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& event );
@@ -72,12 +65,6 @@ private:
     /// @brief Timer handler.
     /// @param event - event structute.
     void OnTimer(wxTimerEvent& event);
-
-    /// @brief Setup camera.
-    void SetupCamera();
-
-    /// @brief Render scene helpers.
-    void RenderHelpers();
 
     /// @brief Mouse enter handler.
     /// @param event - event structute.
@@ -107,6 +94,10 @@ private:
     /// @param event - event structute.
     void OnRMBDown(wxMouseEvent& event);
 
+	/// @brief Mouse wheel handler.
+	/// @param event - event structute.
+	void OnMouseWheel(wxMouseEvent& event);
+
 private:
 
     bool	m_init;
@@ -115,11 +106,7 @@ private:
 	int		m_ResX;
 	int		m_ResY;
 
-	//wxProgressDialog*	m_pLoadProgressDlg;
-    wxTimer             m_timer;
-
-	bool	m_bShowGrid;
-	bool	m_bShowAABB;
+    wxTimer m_timer;
 
     DECLARE_EVENT_TABLE()
 };

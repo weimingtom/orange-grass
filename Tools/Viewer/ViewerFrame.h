@@ -1,18 +1,41 @@
 #ifndef VIEWERFRAME_H_
 #define VIEWERFRAME_H_
 
-#include "ViewerToolFrame.h"
-#include "ViewerOutputFrame.h"
+#include <wx/aui/aui.h>
+#include <ToolFramework.h>
+#include <vector>
+#include "ViewerCanvas.h"
 
+#define wxDWSTitleStr _("OG Viewer")
 
 /// @brief Application's parent window frame.
-class CViewerFrame: public wxMDIParentFrame
+class CViewerFrame: public wxFrame
 {
 public:
-    
-    /// @brief Factory method.
-    /// @return Pointer to a created frame.
-    static CViewerFrame* Create();
+
+    /// @brief Constructor.
+    /// @param parent - parent window.
+    /// @param title - window title.
+    /// @param pos - window position.
+    /// @param size - window size.
+    /// @param style - window style.
+	CViewerFrame (  wxWindow *parent, 
+		wxWindowID id = wxID_ANY,
+		const wxString & title = wxDWSTitleStr,
+		const wxPoint & pos = wxDefaultPosition,
+		const wxSize & size = wxDefaultSize,
+		long style = wxDEFAULT_FRAME_STYLE);
+
+	/// Destructor
+	virtual ~CViewerFrame();
+
+	/// Create frame
+	bool Create(wxWindow * parent, 
+		wxWindowID id = wxID_ANY,
+		const wxString & title = wxDWSTitleStr,
+		const wxPoint & pos = wxDefaultPosition,
+		const wxSize & size = wxDefaultSize,
+		long style = wxDEFAULT_FRAME_STYLE);
 
     /// @brief App exit handler.
     /// @param event - event structute.
@@ -32,29 +55,30 @@ public:
 
 private:
 
-    /// @brief Constructor.
-    /// @param parent - parent window.
-    /// @param title - window title.
-    /// @param pos - window position.
-    /// @param size - window size.
-    /// @param style - window style.
-    CViewerFrame (  wxWindow *parent, 
-                    const wxString& title, 
-                    const wxPoint& pos,
-                    const wxSize& size, 
-                    long style = wxDEFAULT_FRAME_STYLE);
-
     /// @brief Populate the toolbar.
     /// @param toolBar - toolbar.
     void PopulateToolbar(wxToolBarBase* toolBar);
+
+	/// @brief Resource loading event handler
+	void OnLoadResource ( CommonToolEvent<ResLoadEventData>& event );
+
+	/// @brief Resource switching event handler
+	void OnResourceSwitch ( wxTreeEvent& event );
+
+	/// @brief Adding resource group
+	void AddResourceGroup ( ResourceType _type, const wxString& _name );
 
 private:
 
     DECLARE_EVENT_TABLE()
 
-    CViewerToolFrame*			m_pToolFrame;
-    CViewerOutputFrame*			m_pOutputFrame;
     wxToolBar*					m_pToolBar;
+	wxAuiManager				m_Manager;
+    CViewerCanvas*				m_pCanvas;
+
+	wxTreeCtrl*					m_pTree;
+	std::vector<ResourceGroup>	m_ResourceGroups;
+	std::vector<ResourceItem>	m_ResourceItems;
 };
 
 
