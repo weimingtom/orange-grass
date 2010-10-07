@@ -161,7 +161,7 @@ void CEditorCanvas::OnSize(wxSizeEvent& event)
     GetClientSize(&m_ResX, &m_ResY);
     if (GetContext())
     {
-        SetCurrent();
+        //SetCurrent();
 		g_pScene->SetViewport(m_ResX, m_ResY);
     }
 }

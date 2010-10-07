@@ -186,7 +186,7 @@ void CViewerScene::RenderHelpers()
 
 	if (m_bShowGrid)
 	{
-		DrawCoordGrid(20, 1, 5);
+		DrawCoordGrid(50, 2, 10);
 	}
 
     glEnable(GL_LIGHTING);

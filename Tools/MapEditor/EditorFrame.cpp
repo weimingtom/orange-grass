@@ -13,13 +13,14 @@
 #define ID_DEF_ADJUST		10003
 #define ID_DEF_SETTINGS		10004
 #define ID_DEF_OBJECTS		10005
+#define ID_NOTEBOOK         10007
 
 const int ID_TOOLBAR = 500;
 
 static const long TOOLBAR_STYLE = wxTB_FLAT | wxTB_DOCKABLE | wxTB_TEXT;
 
 
-BEGIN_EVENT_TABLE(CEditorFrame, wxMDIParentFrame)
+BEGIN_EVENT_TABLE(CEditorFrame, wxFrame)
     EVT_MENU (wxID_EXIT,		CEditorFrame::OnExit)
     EVT_MENU (wxID_OPEN,		CEditorFrame::OnOpenLevel)
     EVT_MENU (wxID_SAVE,		CEditorFrame::OnSaveLevel)
@@ -28,19 +29,75 @@ BEGIN_EVENT_TABLE(CEditorFrame, wxMDIParentFrame)
     EVT_MENU (ID_DEF_ADJUST,	CEditorFrame::OnAdjustDlg)
     EVT_MENU (ID_DEF_SETTINGS,	CEditorFrame::OnSettingsDlg)
     EVT_MENU (ID_DEF_AABB,		CEditorFrame::OnBounds)
+    EVT_RESLOAD(wxID_ANY,       CEditorFrame::OnLoadResource)
 END_EVENT_TABLE()
 
 
-/// @brief Factory method.
-/// @return Pointer to a created frame.
-CEditorFrame* CEditorFrame::Create()
+///// @brief Factory method.
+///// @return Pointer to a created frame.
+//CEditorFrame* CEditorFrame::Create()
+//{
+//    int w, h;
+//    wxDisplaySize(&w, &h);
+//
+//    wxSize appSize = wxSize(w*0.8, h*0.8);
+//    wxPoint appPos = wxPoint((w-w*0.8)/2, (h-h*0.8)/2);
+//    CEditorFrame* pFrame = new CEditorFrame(NULL, wxT("OG Level Editor"), appPos, appSize);
+//
+//    wxMenuBar* pMenuBar = new wxMenuBar ();
+//    wxMenu* pWindowMenu = new wxMenu ();
+//    wxMenu* pHelpMenu = new wxMenu ();
+//    pWindowMenu->Append(wxID_EXIT, wxT("&Close"));
+//    pWindowMenu->Append(ID_DEF_AABB, wxT("Show &Bounds"), wxT("Show bounds"), wxITEM_CHECK);
+//    pHelpMenu->Append(ID_DEF_ABOUT, wxT("&About"));
+//    pMenuBar->Append(pWindowMenu, wxT("&Editor"));
+//    pMenuBar->Append(pHelpMenu, wxT("&Help"));
+//    pFrame->SetMenuBar(pMenuBar);
+//    pFrame->Show(true);
+//
+//    return pFrame;
+//}
+
+
+/// @brief Constructor.
+/// @param parent - parent window.
+/// @param title - window title.
+/// @param pos - window position.
+/// @param size - window size.
+/// @param style - window style.
+CEditorFrame::CEditorFrame (wxWindow *parent, 
+                            wxWindowID id,
+                            const wxString & title,
+                            const wxPoint & pos,
+                            const wxSize & size,
+                            long style)
+{
+	Create(parent, id, title, pos, size, style);
+}
+
+
+/// Destructor
+CEditorFrame::~CEditorFrame()
+{
+	m_Manager.UnInit();
+}
+
+
+/// Create frame
+bool CEditorFrame::Create(wxWindow * parent, 
+                          wxWindowID id,
+                          const wxString & title,
+                          const wxPoint & pos,
+                          const wxSize & size,
+                          long style)
 {
     int w, h;
     wxDisplaySize(&w, &h);
+    wxSize appSize = wxSize(w*0.7, h*0.7);
 
-    wxSize appSize = wxSize(w*0.8, h*0.8);
-    wxPoint appPos = wxPoint((w-w*0.8)/2, (h-h*0.8)/2);
-    CEditorFrame* pFrame = new CEditorFrame(NULL, wxT("OG Level Editor"), appPos, appSize);
+    wxFrame::Create(parent, id, title, pos, appSize, style);
+
+    SetIcon(wxIcon(sample_xpm));
 
     wxMenuBar* pMenuBar = new wxMenuBar ();
     wxMenu* pWindowMenu = new wxMenu ();
@@ -50,26 +107,7 @@ CEditorFrame* CEditorFrame::Create()
     pHelpMenu->Append(ID_DEF_ABOUT, wxT("&About"));
     pMenuBar->Append(pWindowMenu, wxT("&Editor"));
     pMenuBar->Append(pHelpMenu, wxT("&Help"));
-    pFrame->SetMenuBar(pMenuBar);
-    pFrame->Show(true);
-
-    return pFrame;
-}
-
-
-/// @brief Constructor.
-/// @param parent - parent window.
-/// @param title - window title.
-/// @param pos - window position.
-/// @param size - window size.
-/// @param style - window style.
-CEditorFrame::CEditorFrame( wxWindow *parent, 
-                            const wxString& title, 
-                            const wxPoint& pos,
-                            const wxSize& size, 
-                            long style) : wxMDIParentFrame(parent, wxID_ANY, title, pos, size, style)
-{
-    SetIcon(wxIcon(sample_xpm));
+    SetMenuBar(pMenuBar);
 
     SetToolBar(NULL);
 
@@ -79,33 +117,86 @@ CEditorFrame::CEditorFrame( wxWindow *parent,
     m_pToolBar = CreateToolBar(style, ID_TOOLBAR);
     PopulateToolbar(m_pToolBar);
 
-	wxSize ifSize = wxSize(size.GetWidth()*0.99, size.GetHeight()*0.19);
-	wxPoint ifPos = wxPoint(0, size.GetHeight()*0.7);
-    m_pInfoFrame = new CEditorInfoFrame (this, wxT("Info"), ifPos, ifSize);
-    m_pInfoFrame->Show(true);
+	m_pNotebook = new wxAuiNotebook(this, ID_NOTEBOOK, wxDefaultPosition, wxDefaultSize, 
+		wxAUI_NB_DEFAULT_STYLE|wxNO_BORDER);
+	m_pPage1 = new wxPanel(m_pNotebook, wxID_ANY);
+	m_pPage2 = new wxPanel(m_pNotebook, wxID_ANY);
+	m_pNotebook->AddPage(m_pPage1, _("Editor"));
+	m_pNotebook->AddPage(m_pPage2, _("Viewer"));
 
-	wxSize ofSize = wxSize(size.GetWidth() - 185, size.GetHeight()*0.7);
-    wxPoint ofPos = wxPoint(172, 0);
-    m_pOutputFrame = new CEditorOutputFrame (this, wxT("3D View"), ofPos, ofSize);
-    m_pOutputFrame->Show(true);
+    m_pObjectsList = new wxSimpleHtmlListBox();
+    m_pObjectsList->Create(this, wxID_ANY, wxDefaultPosition, wxSize(148, appSize.y), 0, NULL, 0);
+    m_pObjectsList->Connect(wxEVT_COMMAND_LISTBOX_SELECTED, wxCommandEventHandler( CEditorFrame::OnResourceSwitch ), NULL, this);
+    GetEventHandlersTable()->AddEventHandler(EVENTID_RESLOAD, this);
 
-	wxSize tfSize = wxSize(170, size.GetHeight()*0.7);
-    wxPoint tfPos = wxPoint(0, 0);
-    m_pObjectsFrame = new CEditorObjectsFrame (this, wxT("Objects"), tfPos, tfSize);
-    m_pObjectsFrame->Show(true);
+    m_pLogBox = new wxListBox(this, wxID_ANY, wxDefaultPosition, wxSize(appSize.x, 140));
+    ListBoxLogger* m_logTarget = new ListBoxLogger(m_pLogBox, wxLog::GetActiveTarget());
+    wxLog::SetActiveTarget(m_logTarget);
 
-	wxSize afSize = wxSize(170, size.GetHeight()*0.7);
-    wxPoint afPos = wxPoint(0, 0);
-    m_pAdjustFrame = new CEditorAdjustFrame (this, wxT("Adjust"), afPos, afSize);
-    m_pAdjustFrame->Show(false);
+    m_Manager.SetManagedWindow(this);
+    m_Manager.AddPane(m_pNotebook, wxAuiPaneInfo().CenterPane());
+    m_Manager.AddPane(m_pLogBox, wxAuiPaneInfo().Bottom().CloseButton(false).Resizable(false).Floatable(false).Caption(wxT("Log")));
+    m_Manager.AddPane(m_pObjectsList, wxAuiPaneInfo().Left().Layer(1).CloseButton(false).Resizable(false).Floatable(false).Caption(wxT("Objects")));
+    m_Manager.Update();
 
-	wxSize sfSize = wxSize(170, size.GetHeight()*0.7);
-    wxPoint sfPos = wxPoint(0, 0);
-    m_pSettingsFrame = new CEditorSettingsFrame (this, wxT("Settings"), sfPos, sfSize);
-    m_pSettingsFrame->Show(false);
+    GetToolSettings()->SetEditMode(EDITMODE_OBJECTS);
 
-	GetToolSettings()->SetEditMode(EDITMODE_OBJECTS);
+    m_pCanvas = new CEditorCanvas(m_pPage1, wxID_ANY, wxDefaultPosition, m_pPage1->GetSize());
+    m_pLogBox->SetSize(wxSize(m_pPage1->GetSize().x, 140));
+
+    return true;
 }
+
+
+///// @brief Constructor.
+///// @param parent - parent window.
+///// @param title - window title.
+///// @param pos - window position.
+///// @param size - window size.
+///// @param style - window style.
+//CEditorFrame::CEditorFrame( wxWindow *parent, 
+//                            const wxString& title, 
+//                            const wxPoint& pos,
+//                            const wxSize& size, 
+//                            long style) : wxMDIParentFrame(parent, wxID_ANY, title, pos, size, style)
+//{
+//    SetIcon(wxIcon(sample_xpm));
+//
+//    SetToolBar(NULL);
+//
+//    style &= ~(wxTB_HORIZONTAL | wxTB_VERTICAL | wxTB_BOTTOM | wxTB_RIGHT | wxTB_HORZ_LAYOUT);
+//    style |= wxTB_TOP;
+//    style |= wxTB_NO_TOOLTIPS;
+//    m_pToolBar = CreateToolBar(style, ID_TOOLBAR);
+//    PopulateToolbar(m_pToolBar);
+//
+//	wxSize ifSize = wxSize(size.GetWidth()*0.99, size.GetHeight()*0.19);
+//	wxPoint ifPos = wxPoint(0, size.GetHeight()*0.7);
+//    m_pInfoFrame = new CEditorInfoFrame (this, wxT("Info"), ifPos, ifSize);
+//    m_pInfoFrame->Show(true);
+//
+//	wxSize ofSize = wxSize(size.GetWidth() - 185, size.GetHeight()*0.7);
+//    wxPoint ofPos = wxPoint(172, 0);
+//    m_pOutputFrame = new CEditorOutputFrame (this, wxT("3D View"), ofPos, ofSize);
+//    m_pOutputFrame->Show(true);
+//
+//	wxSize tfSize = wxSize(170, size.GetHeight()*0.7);
+//    wxPoint tfPos = wxPoint(0, 0);
+//    m_pObjectsFrame = new CEditorObjectsFrame (this, wxT("Objects"), tfPos, tfSize);
+//    m_pObjectsFrame->Show(true);
+//
+//	wxSize afSize = wxSize(170, size.GetHeight()*0.7);
+//    wxPoint afPos = wxPoint(0, 0);
+//    m_pAdjustFrame = new CEditorAdjustFrame (this, wxT("Adjust"), afPos, afSize);
+//    m_pAdjustFrame->Show(false);
+//
+//	wxSize sfSize = wxSize(170, size.GetHeight()*0.7);
+//    wxPoint sfPos = wxPoint(0, 0);
+//    m_pSettingsFrame = new CEditorSettingsFrame (this, wxT("Settings"), sfPos, sfSize);
+//    m_pSettingsFrame->Show(false);
+//
+//	GetToolSettings()->SetEditMode(EDITMODE_OBJECTS);
+//}
 
 
 /// @brief App exit handler.
@@ -177,15 +268,15 @@ void CEditorFrame::PopulateToolbar(wxToolBarBase* toolBar)
 /// @param event - event structute.
 void CEditorFrame::OnObjectsDlg(wxCommandEvent& event)
 {
-    m_pObjectsFrame->Show(true);
-    m_pAdjustFrame->Show(false);
-    m_pSettingsFrame->Show(false);
-	GetToolSettings()->SetEditMode(EDITMODE_OBJECTS);
+ //   m_pObjectsFrame->Show(true);
+ //   m_pAdjustFrame->Show(false);
+ //   m_pSettingsFrame->Show(false);
+	//GetToolSettings()->SetEditMode(EDITMODE_OBJECTS);
 
-    CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
-    ToolCmdEventData cmdData (CMD_EDITMODE_OBJECTS, true);
-    cmd.SetEventCustomData(cmdData);
-	GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
+ //   CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
+ //   ToolCmdEventData cmdData (CMD_EDITMODE_OBJECTS, true);
+ //   cmd.SetEventCustomData(cmdData);
+	//GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
 }
 
 
@@ -193,15 +284,15 @@ void CEditorFrame::OnObjectsDlg(wxCommandEvent& event)
 /// @param event - event structute.
 void CEditorFrame::OnAdjustDlg(wxCommandEvent& event)
 {
-    m_pObjectsFrame->Show(false);
-    m_pAdjustFrame->Show(true);
-    m_pSettingsFrame->Show(false);
-	GetToolSettings()->SetEditMode(EDITMODE_ADJUST);
+ //   m_pObjectsFrame->Show(false);
+ //   m_pAdjustFrame->Show(true);
+ //   m_pSettingsFrame->Show(false);
+	//GetToolSettings()->SetEditMode(EDITMODE_ADJUST);
 
-    CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
-    ToolCmdEventData cmdData (CMD_EDITMODE_ADJUST, true);
-    cmd.SetEventCustomData(cmdData);
-	GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
+ //   CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
+ //   ToolCmdEventData cmdData (CMD_EDITMODE_ADJUST, true);
+ //   cmd.SetEventCustomData(cmdData);
+	//GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
 }
 
 
@@ -209,15 +300,15 @@ void CEditorFrame::OnAdjustDlg(wxCommandEvent& event)
 /// @param event - event structute.
 void CEditorFrame::OnSettingsDlg(wxCommandEvent& event)
 {
-    m_pObjectsFrame->Show(false);
-    m_pAdjustFrame->Show(false);
-    m_pSettingsFrame->Show(true);
-	GetToolSettings()->SetEditMode(EDITMODE_SETTINGS);
+ //   m_pObjectsFrame->Show(false);
+ //   m_pAdjustFrame->Show(false);
+ //   m_pSettingsFrame->Show(true);
+	//GetToolSettings()->SetEditMode(EDITMODE_SETTINGS);
 
-    CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
-    ToolCmdEventData cmdData (CMD_EDITMODE_SETTINGS, true);
-    cmd.SetEventCustomData(cmdData);
-	GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
+ //   CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
+ //   ToolCmdEventData cmdData (CMD_EDITMODE_SETTINGS, true);
+ //   cmd.SetEventCustomData(cmdData);
+	//GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
 }
 
 
@@ -253,4 +344,35 @@ void CEditorFrame::OnSaveLevel(wxCommandEvent& event)
     ToolCmdEventData cmdData (CMD_LEVEL_SAVE, true);
     cmd.SetEventCustomData(cmdData);
 	GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
+}
+
+
+/// @brief Resource loading event handler
+void CEditorFrame::OnLoadResource ( CommonToolEvent<ResLoadEventData>& event )
+{
+	const ResLoadEventData& evtData = event.GetEventCustomData();
+	std::string IconPath = GetResourceMgr()->GetResourcePath() + std::string("/") + std::string(evtData.m_ResourceIcon);
+    wxString resourceText = evtData.m_Resource;
+	wxString resourceGroupText = evtData.m_ResourceGroup;
+	wxString resourceIconText = wxString::Format(_T("<img src=\"%s\" />"), IconPath.c_str());
+
+	if (resourceGroupText.CmpNoCase(_T("Models")) == 0)
+	{
+		int n = m_pObjectsList->Append (resourceIconText);
+		m_ItemList[n] = new ResourceItem(RESTYPE_MODEL, resourceText);
+	}
+}
+
+
+/// @brief Resource switching event handler
+void CEditorFrame::OnResourceSwitch ( wxCommandEvent& event )
+{
+    ResourceItem* pData = m_ItemList[event.GetSelection()];
+	if(pData)
+	{
+		CommonToolEvent<ResSwitchEventData> cmd(EVENTID_RESSWITCH);
+		cmd.SetEventCustomData(ResSwitchEventData(pData->name, pData->type));
+		GetEventHandlersTable()->FireEvent(EVENTID_RESSWITCH, &cmd);
+	}
+	return;
 }

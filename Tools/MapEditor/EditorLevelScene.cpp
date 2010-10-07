@@ -108,7 +108,10 @@ void CEditorLevelScene::SetViewport (int _Width, int _Height)
 	m_ResY = _Height;
 
 	glViewport(0, 0, m_ResX, m_ResY);
-	m_pRenderer->SetViewport(m_ResX, m_ResY, 4.0f, 4500.0f, 0.67f);
+	if (m_bInited)
+	{
+		m_pRenderer->SetViewport(m_ResX, m_ResY, 4.0f, 4500.0f, 0.67f);
+	}
 }
 
 
