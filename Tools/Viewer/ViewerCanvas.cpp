@@ -55,7 +55,7 @@ CViewerCanvas::CViewerCanvas (  wxWindow *parent,
 	m_bLoaded = false;
 	GetEventHandlersTable()->AddEventHandler(EVENTID_RESSWITCH, this);
 	GetEventHandlersTable()->AddEventHandler(EVENTID_TOOLCMD, this);
-    m_timer.Start(100);
+    m_timer.Start(33);
 }
 
 
@@ -75,11 +75,11 @@ void CViewerCanvas::Render()
         return;
     SetCurrent();
 
-    g_pScene->Init();
-    g_pScene->Update(10);
-    g_pScene->RenderScene();
+ //   g_pScene->Init();
+ //   g_pScene->Update(10);
+ //   g_pScene->RenderScene();
 
-	SwapBuffers();
+	//SwapBuffers();
 }
 
 
@@ -87,6 +87,10 @@ void CViewerCanvas::Render()
 /// @param event - event structute.
 void CViewerCanvas::OnTimer(wxTimerEvent& event)
 {
+    g_pScene->Init();
+    g_pScene->Update(10);
+    g_pScene->RenderScene();
+	SwapBuffers();
 }
 
 

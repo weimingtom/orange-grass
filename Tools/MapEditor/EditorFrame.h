@@ -6,6 +6,9 @@
 #include "wx/imaglist.h"
 #include "wx/bmpcbox.h"
 #include "wx/htmllbox.h"
+#include "wx/clrpicker.h"
+#include "wx/treectrl.h"
+#include "wx/slider.h"
 #include <ToolFramework.h>
 #include <vector>
 #include "EditorCanvas.h"
@@ -63,17 +66,14 @@ private:
     /// @param toolBar - toolbar.
     void PopulateToolbar(wxToolBarBase* toolBar);
 
-    /// @brief Objects dialog handler.
-    /// @param event - event structute.
-    void OnObjectsDlg(wxCommandEvent& event);
+    /// @brief Set Objects mode.
+    void SetObjectsMode();
 
-    /// @brief Adjust dialog handler.
-    /// @param event - event structute.
-    void OnAdjustDlg(wxCommandEvent& event);
+    /// @brief Set Adjust mode.
+    void SetAdjustMode();
 
-    /// @brief Settings dialog handler.
-    /// @param event - event structute.
-    void OnSettingsDlg(wxCommandEvent& event);
+    /// @brief Set Settings mode.
+    void SetSettingsMode();
 
     /// @brief Level open handler.
     /// @param event - event structute.
@@ -89,28 +89,66 @@ private:
 	/// @brief Resource switching event handler
 	void OnResourceSwitch ( wxCommandEvent& event );
 
+	/// @brief Settings switching event handler
+	void OnSettingsSwitch ( wxTreeEvent& event );
+
+	/// @brief color event handler
+	void OnColorChange(wxColourPickerEvent& event);
+
+	/// @brief Light X direction slider event handler
+	/// @param event - event struct
+	void OnXDirSlider(wxScrollEvent& event);
+
+	/// @brief Light Z direction slider event handler
+	/// @param event - event struct
+	void OnZDirSlider(wxScrollEvent& event);
+
+	/// @brief fog color event handler
+	void OnFogColorChange(wxColourPickerEvent& event);
+
+	/// @brief Fog near slider event handler
+	/// @param event - event struct
+	void OnFogNearSlider(wxScrollEvent& event);
+
+	/// @brief Fog far slider event handler
+	/// @param event - event struct
+	void OnFogFarSlider(wxScrollEvent& event);
+
+	/// @brief Level load event handler
+	/// @param event - event structute.
+	void OnLevelLoadEvent(CommonToolEvent<LevelLoadEventData>& event);
+
+	/// Create settings panel
+	void CreateSettingsPanelControls(wxPanel* _pPanel);
+
+	/// Fire update event.
+	void FireUpdateEvent();
+
 private:
 
     DECLARE_EVENT_TABLE()
 
-    //CEditorOutputFrame*		m_pOutputFrame;
-    //CEditorObjectsFrame*	m_pObjectsFrame;
-    //CEditorAdjustFrame*	    m_pAdjustFrame;
-    //CEditorSettingsFrame*	m_pSettingsFrame;
-    //CEditorInfoFrame*		m_pInfoFrame;
-
     wxToolBar*				m_pToolBar;
     wxAuiManager			m_Manager;
-    CEditorCanvas*			m_pCanvas;
+
+	CEditorCanvas*			m_pCanvas;
     wxAuiNotebook*          m_pNotebook;
 	wxPanel *               m_pPage1;
 	wxPanel *               m_pPage2;
 
+    wxAuiNotebook*          m_pToolsNotebook;
+	wxPanel*                m_pToolsPage1;
+	wxPanel*                m_pToolsPage2;
+	wxTreeCtrl*				m_pSettingsTree;
+	wxColourPickerCtrl*		m_pColorPicker;
+	wxSlider*				m_pXDirSlider;
+	wxSlider*				m_pZDirSlider;
+	wxColourPickerCtrl*		m_pFogColorPicker;
+	wxSlider*				m_pFogNearSlider;
+	wxSlider*				m_pFogFarSlider;
+
     wxSimpleHtmlListBox*    m_pObjectsList;
     std::map<int, ResourceItem*> m_ItemList;
-
-    wxPanel*                m_pLogPanel;
-	wxListBox*	            m_pLogBox;
 };
 
 

@@ -188,14 +188,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\EditorAdjustFrame.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorAdjustFrame.h"
-				>
-			</File>
-			<File
 				RelativePath=".\EditorCanvas.cpp"
 				>
 			</File>
@@ -212,43 +204,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\EditorInfoFrame.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorInfoFrame.h"
-				>
-			</File>
-			<File
 				RelativePath=".\EditorLevelScene.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\EditorLevelScene.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorObjectsFrame.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorObjectsFrame.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorOutputFrame.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorOutputFrame.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorSettingsFrame.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorSettingsFrame.h"
 				>
 			</File>
 		</Filter>

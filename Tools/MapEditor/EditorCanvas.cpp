@@ -63,6 +63,7 @@ CEditorCanvas::CEditorCanvas (  wxWindow *parent,
 
 	m_SettingsMode = SETMODE_NONE;
 	m_pToolSettings = GetToolSettings();
+	g_pScene->SetViewport(size.x, size.y);
 }
 
 
@@ -260,6 +261,10 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
 
     case WXK_DELETE:
 		g_pScene->DeletePickedActor();
+        break;
+
+    case WXK_ESCAPE:
+		GetToolSettings()->SetEditMode(EDITMODE_ADJUST);
         break;
 
     case 'D':

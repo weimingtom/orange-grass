@@ -357,22 +357,6 @@
 					RelativePath=".\ogtexture.h"
 					>
 				</File>
-				<File
-					RelativePath=".\ogvertexbuffers_gles11.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ogvertexbuffers_gles11.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ogvertexbuffers_gles20.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ogvertexbuffers_gles20.h"
-					>
-				</File>
 				<Filter
 					Name="Materials"
 					>
@@ -449,62 +433,6 @@
 						>
 					</File>
 					<File
-						RelativePath=".\ogrenderer_gles11.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ogrenderer_gles11.h"
-						>
-					</File>
-					<File
-						RelativePath=".\ogrenderer_gles20.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ogrenderer_gles20.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Shaders"
-					>
-					<File
-						RelativePath=".\ogcoloreffectshader.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ogcoloreffectshader.h"
-						>
-					</File>
-					<File
-						RelativePath=".\ogmodelshader.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ogmodelshader.h"
-						>
-					</File>
-					<File
-						RelativePath=".\ogspriteshader.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ogspriteshader.h"
-						>
-					</File>
-					<File
-						RelativePath=".\ogtextshader.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ogtextshader.h"
-						>
-					</File>
-				</Filter>
-				<Filter
-					Name="Text"
-					>
-					<File
 						RelativePath=".\ogtextrenderer.cpp"
 						>
 					</File>
@@ -516,22 +444,98 @@
 						RelativePath=".\ogtextrenderer_data.h"
 						>
 					</File>
-					<File
-						RelativePath=".\ogtextrenderer_gles11.cpp"
+					<Filter
+						Name="GLES11"
 						>
-					</File>
-					<File
-						RelativePath=".\ogtextrenderer_gles11.h"
+						<File
+							RelativePath=".\ogrenderer_gles11.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogrenderer_gles11.h"
+							>
+						</File>
+						<File
+							RelativePath=".\ogtextrenderer_gles11.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogtextrenderer_gles11.h"
+							>
+						</File>
+						<File
+							RelativePath=".\ogvertexbuffers_gles11.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogvertexbuffers_gles11.h"
+							>
+						</File>
+					</Filter>
+					<Filter
+						Name="GLES20"
 						>
-					</File>
-					<File
-						RelativePath=".\ogtextrenderer_gles20.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ogtextrenderer_gles20.h"
-						>
-					</File>
+						<File
+							RelativePath=".\ogrenderer_gles20.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogrenderer_gles20.h"
+							>
+						</File>
+						<File
+							RelativePath=".\ogtextrenderer_gles20.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogtextrenderer_gles20.h"
+							>
+						</File>
+						<File
+							RelativePath=".\ogvertexbuffers_gles20.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogvertexbuffers_gles20.h"
+							>
+						</File>
+						<Filter
+							Name="Shaders"
+							>
+							<File
+								RelativePath=".\ogcoloreffectshader.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\ogcoloreffectshader.h"
+								>
+							</File>
+							<File
+								RelativePath=".\ogmodelshader.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\ogmodelshader.h"
+								>
+							</File>
+							<File
+								RelativePath=".\ogspriteshader.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\ogspriteshader.h"
+								>
+							</File>
+							<File
+								RelativePath=".\ogtextshader.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\ogtextshader.h"
+								>
+							</File>
+						</Filter>
+					</Filter>
 				</Filter>
 			</Filter>
 			<Filter
