@@ -137,10 +137,9 @@ void CEditorLevelScene::RenderScene ()
 {
 	m_pRenderer->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
 
-	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
-
 	if (m_pCurLevel)
     {
+		m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
         m_pSg->RenderAll(m_pCamera);
 
         if (m_EditorMode == EDITMODE_OBJECTS)

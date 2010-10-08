@@ -12,11 +12,6 @@
 #include <ToolFramework.h>
 #include <vector>
 #include "EditorCanvas.h"
-//#include "EditorOutputFrame.h"
-//#include "EditorObjectsFrame.h"
-//#include "EditorAdjustFrame.h"
-//#include "EditorSettingsFrame.h"
-//#include "EditorInfoFrame.h"
 
 #define wxDWSTitleStr _("OG Editor")
 
@@ -134,7 +129,6 @@ private:
 	CEditorCanvas*			m_pCanvas;
     wxAuiNotebook*          m_pNotebook;
 	wxPanel *               m_pPage1;
-	wxPanel *               m_pPage2;
 
     wxAuiNotebook*          m_pToolsNotebook;
 	wxPanel*                m_pToolsPage1;

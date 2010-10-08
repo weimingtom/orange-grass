@@ -117,9 +117,7 @@ bool CEditorFrame::Create(wxWindow * parent,
 	m_pNotebook = new wxAuiNotebook(this, ID_NOTEBOOK, wxDefaultPosition, wxDefaultSize, 
 		wxAUI_NB_DEFAULT_STYLE|wxNO_BORDER);
 	m_pPage1 = new wxPanel(m_pNotebook, wxID_ANY);
-	m_pPage2 = new wxPanel(m_pNotebook, wxID_ANY);
 	m_pNotebook->AddPage(m_pPage1, _("Editor"));
-	m_pNotebook->AddPage(m_pPage2, _("Viewer"));
 
 	m_pToolsNotebook = new wxAuiNotebook(this, ID_TOOLSNOTEBOOK, wxDefaultPosition, wxSize(148, appSize.y), 
 		wxAUI_NB_DEFAULT_STYLE|wxNO_BORDER);

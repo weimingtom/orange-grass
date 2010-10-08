@@ -74,12 +74,6 @@ void CViewerCanvas::Render()
     if (!GetContext()) 
         return;
     SetCurrent();
-
- //   g_pScene->Init();
- //   g_pScene->Update(10);
- //   g_pScene->RenderScene();
-
-	//SwapBuffers();
 }
 
 
