@@ -368,6 +368,7 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 /// @param event - event structute.
 void CEditorCanvas::OnMouseEnter(wxMouseEvent& event)
 {
+    SetFocus();
 	m_bMouseInWindow = true;
 }
 

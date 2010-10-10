@@ -13,4 +13,5 @@
 	<Actor alias="palm3_0" file="Actors/palm3_0.xml" />
 	<Actor alias="palm3_1" file="Actors/palm3_1.xml" />
 	<Actor alias="palm4" file="Actors/palm4.xml" />
+	<Actor alias="helicopter" file="Actors/helicopter.xml" />
 </Actors>

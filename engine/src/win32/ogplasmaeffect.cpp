@@ -55,7 +55,7 @@ void COGPlasmaEffect::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGPlasmaEffect::Render (const MATRIX& _mWorld)
+void COGPlasmaEffect::Render (const MATRIX& _mWorld, unsigned int _Frame)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;

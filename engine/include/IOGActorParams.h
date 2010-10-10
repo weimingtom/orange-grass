@@ -30,6 +30,7 @@ struct IOGActorParams
 	OGActorType			type;
 	std::string			alias;
 	std::string			model_alias;
+	std::string			model_propeller_alias;
 	std::string			icon;
 };
 

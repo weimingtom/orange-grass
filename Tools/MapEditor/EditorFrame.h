@@ -127,8 +127,6 @@ private:
     wxAuiManager			m_Manager;
 
 	CEditorCanvas*			m_pCanvas;
-    wxAuiNotebook*          m_pNotebook;
-	wxPanel *               m_pPage1;
 
     wxAuiNotebook*          m_pToolsNotebook;
 	wxPanel*                m_pToolsPage1;

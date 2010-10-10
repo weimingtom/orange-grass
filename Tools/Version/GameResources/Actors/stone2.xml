@@ -11,6 +11,7 @@
 	<Actor 
 		type = "static"
 		model = "stone2"
+		model_propeller = ""
 		icon = "Models/Stone2/stone2_ed.bmp"
 		/>
 </Params>

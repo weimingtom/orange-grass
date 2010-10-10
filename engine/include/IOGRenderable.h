@@ -10,6 +10,8 @@
 #define IOGRENDERABLE_H_
 
 #include "IOGAabb.h"
+#include "IOGAnimation.h"
+#include <string>
 
 
 // Type of the renderables
@@ -29,10 +31,10 @@ public:
 	virtual ~IOGRenderable () {}
 
 	// Render.
-	virtual void Render (const MATRIX& _mWorld) = 0;
+	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame) = 0;
 
 	// Render.
-	virtual void Render (const MATRIX& _mWorld, unsigned int _Part) = 0;
+	virtual void Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame) = 0;
 
 	// Update.
 	virtual void Update (unsigned long _ElapsedTime) = 0;
@@ -45,6 +47,9 @@ public:
 
 	// Get type of the renderable.
 	virtual RenderableType GetRenderableType () const = 0;
+
+	// Get animation
+    virtual IOGAnimation* GetAnimation (const std::string& _Alias) = 0;
 };
 
 #endif

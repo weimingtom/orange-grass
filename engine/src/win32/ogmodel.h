@@ -13,7 +13,6 @@
 #include "IOGMaterial.h"
 #include "ogresource.h"
 #include "IOGRenderer.h"
-#include "IOGAnimation.h"
 #include "IOGSettingsReader.h"
 #include <map>
 
@@ -34,10 +33,10 @@ public:
 	virtual void Update (unsigned long _ElapsedTime);
 
 	// Render mesh.
-	virtual void Render (const MATRIX& _mWorld);
+	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame);
 
 	// Render.
-	virtual void Render (const MATRIX& _mWorld, unsigned int _Part);
+	virtual void Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame);
 
     // Get num renderable parts.
 	virtual unsigned int GetNumRenderables () const;
@@ -54,6 +53,9 @@ public:
 	// Get texture
 	virtual IOGTexture* GetTexture () { return m_pTexture; }
 
+	// Get animation
+    virtual IOGAnimation* GetAnimation (const std::string& _Alias);
+
 private:
 
 	struct Cfg
@@ -61,6 +63,9 @@ private:
 		std::string mesh_alias;
 		std::string texture_alias;
 		std::string material_type;
+		std::string anim_alias;
+		int anim_start;
+		int anim_end;
 	};
 
 	// Load model configuration

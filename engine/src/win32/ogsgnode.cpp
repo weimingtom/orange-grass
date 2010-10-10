@@ -9,18 +9,24 @@
 #include "OrangeGrass.h"
 #include "ogsgnode.h"
 #include "IOGMath.h"
+#include "oganimationcontroller.h"
 
 
 COGSgNode::COGSgNode () :   m_pRenderable(NULL),
-                            m_pPhysics(NULL)
+                            m_pPhysics(NULL),
+                            m_pAnimator(NULL)
 {
+    m_AnimFrame = 0;
 }
 
 
 COGSgNode::COGSgNode (IOGRenderable* _pRenderable,
                       IOGPhysicalObject* _pPhysics) :   m_pRenderable(_pRenderable),
-                                                        m_pPhysics(_pPhysics)
+                                                        m_pPhysics(_pPhysics),
+                                                        m_pAnimator(NULL)
 {
+    m_pAnimator = new COGAnimationController();
+    m_AnimFrame = 0;
 }
 
 
@@ -28,6 +34,7 @@ COGSgNode::~COGSgNode ()
 {
     m_pRenderable = NULL;
     m_pPhysics = NULL;
+    OG_SAFE_DELETE(m_pAnimator);
 }
 
 
@@ -48,7 +55,20 @@ const IOGObb& COGSgNode::GetOBB () const
 // update transform.
 void COGSgNode::Update (unsigned long _ElapsedTime)
 {
+    if (m_pAnimator->GetCurrentAnimation())
+    {
+        m_pAnimator->UpdateAnimation(_ElapsedTime);
+        m_AnimFrame = (unsigned int)m_pAnimator->GetCurrentAnimationProgress();
+    }
     m_pRenderable->Update(_ElapsedTime);
+}
+
+
+// render.
+void COGSgNode::Render ()
+{
+    const MATRIX& mWorld = m_pPhysics->GetWorldTransform();
+    m_pRenderable->Render(mWorld, m_AnimFrame);
 }
 
 
@@ -63,4 +83,14 @@ IOGRenderable* COGSgNode::GetRenderable ()
 IOGPhysicalObject* COGSgNode::GetPhysics ()
 {
     return m_pPhysics;
+}
+
+
+// start animation.
+void COGSgNode::StartAnimation (const std::string& _Alias)
+{
+    m_AnimFrame = 0;
+    IOGAnimation* pAnim = m_pRenderable->GetAnimation(_Alias);
+    if (pAnim)
+        m_pAnimator->StartAnimation(pAnim);
 }

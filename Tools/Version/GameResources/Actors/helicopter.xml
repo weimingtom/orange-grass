@@ -10,8 +10,8 @@
 		/>
 	<Actor 
 		type = "player"
-		model = "craft"
-		model_propeller = ""
-		icon = "Models/Craft/craft_ed.bmp"
+		model = "helicopter_body"
+		model_propeller = "helicopter_propeller"
+		icon = "Models/Helicopter/helicopter_ed.bmp"
 		/>
 </Params>

@@ -23,6 +23,9 @@ public:
 	// update transform.
 	virtual void Update (unsigned long _ElapsedTime) = 0;
 
+	// render.
+	virtual void Render () = 0;
+
 	// get world transform.
 	virtual const MATRIX& GetWorldTransform () const = 0;
 
@@ -34,6 +37,9 @@ public:
 
 	// get physics.
 	virtual IOGPhysicalObject* GetPhysics () = 0;
+
+	// start animation.
+    virtual void StartAnimation (const std::string& _Alias) = 0;
 };
 
 #endif

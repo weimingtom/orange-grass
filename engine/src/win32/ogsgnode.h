@@ -11,6 +11,7 @@
 
 #include "Mathematics.h"
 #include "IOGSgNode.h"
+#include "IOGAnimationController.h"
 
 
 class COGSgNode : public IOGSgNode
@@ -27,6 +28,9 @@ public:
 	// Get OBB
 	virtual const IOGObb& GetOBB () const;
 
+	// render.
+	virtual void Render ();
+
 	// update transform.
 	virtual void Update (unsigned long _ElapsedTime);
 
@@ -36,10 +40,18 @@ public:
 	// get physics.
 	virtual IOGPhysicalObject* GetPhysics ();
 
+	// get animation controller.
+    virtual IOGAnimationController* GetAnimator () { return m_pAnimator;}
+
+	// start animation.
+    virtual void StartAnimation (const std::string& _Alias);
+
 protected:
 
-    IOGRenderable*      m_pRenderable;
-    IOGPhysicalObject*  m_pPhysics;
+    IOGRenderable*          m_pRenderable;
+    IOGPhysicalObject*      m_pPhysics;
+    IOGAnimationController* m_pAnimator;
+    unsigned int            m_AnimFrame;
 };
 
 #endif

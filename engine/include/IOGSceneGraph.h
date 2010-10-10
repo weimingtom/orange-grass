@@ -53,6 +53,9 @@ public:
 	// Render effects.
 	virtual void RenderEffects (IOGCamera* _pCamera) = 0;
 
+    // Render all effects.
+	virtual void RenderAllEffects (IOGCamera* _pCamera) = 0;
+
 	// Render the whole scene - for editor.
 	virtual void RenderAll (IOGCamera* _pCamera) = 0;
 };

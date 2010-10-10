@@ -12,7 +12,6 @@
 #include "IOGRenderable.h"
 #include "IOGTexture.h"
 #include "IOGMesh.h"
-#include <string>
 
 
 class IOGModel : public IOGRenderable

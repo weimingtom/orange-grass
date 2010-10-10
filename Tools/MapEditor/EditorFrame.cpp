@@ -114,10 +114,7 @@ bool CEditorFrame::Create(wxWindow * parent,
     m_pToolBar = CreateToolBar(style, ID_TOOLBAR);
     PopulateToolbar(m_pToolBar);
 
-	m_pNotebook = new wxAuiNotebook(this, ID_NOTEBOOK, wxDefaultPosition, wxDefaultSize, 
-		wxAUI_NB_DEFAULT_STYLE|wxNO_BORDER);
-	m_pPage1 = new wxPanel(m_pNotebook, wxID_ANY);
-	m_pNotebook->AddPage(m_pPage1, _("Editor"));
+    m_pCanvas = new CEditorCanvas(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 
 	m_pToolsNotebook = new wxAuiNotebook(this, ID_TOOLSNOTEBOOK, wxDefaultPosition, wxSize(148, appSize.y), 
 		wxAUI_NB_DEFAULT_STYLE|wxNO_BORDER);
@@ -132,15 +129,12 @@ bool CEditorFrame::Create(wxWindow * parent,
     GetEventHandlersTable()->AddEventHandler(EVENTID_RESLOAD, this);
 
     m_Manager.SetManagedWindow(this);
-    m_Manager.AddPane(m_pNotebook, wxAuiPaneInfo().CenterPane());
+    m_Manager.AddPane(m_pCanvas, wxAuiPaneInfo().CenterPane());
     m_Manager.AddPane(m_pObjectsList, wxAuiPaneInfo().Left().Layer(1).CloseButton(false).Resizable(false).Floatable(false).Caption(wxT("Objects")));
 	m_Manager.AddPane(m_pToolsNotebook, wxAuiPaneInfo().Right().Layer(1).CloseButton(false).Resizable(false).Floatable(false).Caption(wxT("Settings")));
     m_Manager.Update();
 
     GetToolSettings()->SetEditMode(EDITMODE_OBJECTS);
-
-    m_pCanvas = new CEditorCanvas(m_pPage1, wxID_ANY, wxDefaultPosition, m_pPage1->GetSize());
-	m_pCanvas->SetSize(m_pPage1->GetSize());
 
 	CreateSettingsPanelControls(m_pToolsPage1);
 

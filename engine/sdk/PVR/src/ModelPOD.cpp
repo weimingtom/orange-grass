@@ -1383,7 +1383,7 @@ void CPVRTModelPOD::SetFrame(const VERTTYPE fFrame)
 		*/
 		_ASSERT(fFrame <= f2vt((float)(nNumFrame-1)));
 		m_pImpl->nFrame = (int)vt2f(fFrame);
-		m_pImpl->fBlend = fFrame - f2vt(m_pImpl->nFrame);
+		m_pImpl->fBlend = 1.0f;//fFrame - f2vt(m_pImpl->nFrame);
 	}
 	else
 	{

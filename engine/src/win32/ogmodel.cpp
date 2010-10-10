@@ -24,6 +24,13 @@ COGModel::~COGModel()
 {
 	m_pMesh = NULL;
 	m_pTexture = NULL;	
+
+    std::map<std::string, IOGAnimation*>::iterator iter= m_pAnimations.begin();
+	for (; iter != m_pAnimations.end(); ++iter)
+	{
+		OG_SAFE_DELETE(iter->second);
+	}
+    m_pAnimations.clear();
 }
 
 
@@ -49,6 +56,15 @@ bool COGModel::Load ()
 	m_pMesh = GetResourceMgr()->GetMesh(modelcfg.mesh_alias);
 	m_pTexture = GetResourceMgr()->GetTexture(modelcfg.texture_alias);
 	m_pMaterial = GetMaterialManager()->GetMaterial(modelcfg.material_type);
+
+    if (!modelcfg.anim_alias.empty())
+    {
+        IOGAnimation* pAnim = new IOGAnimation();
+        pAnim->name = modelcfg.anim_alias;
+        pAnim->start_frame = (unsigned int)modelcfg.anim_start;
+        pAnim->end_frame = (unsigned int)modelcfg.anim_end;
+        m_pAnimations[pAnim->name] = pAnim;
+    }
 
 	m_LoadState = OG_RESSTATE_LOADED;
     return true;
@@ -80,6 +96,15 @@ bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
 		m_pReader->CloseGroupNode(pMaterialNode);
 	}
 
+	IOGGroupNode* pAnimationNode = m_pReader->OpenGroupNode(pSource, NULL, "Animation");
+	if (pAnimationNode != NULL)
+	{
+		_cfg.anim_alias = m_pReader->ReadStringParam(pAnimationNode, "name");
+		_cfg.anim_start = m_pReader->ReadIntParam(pAnimationNode, "start_frame");
+		_cfg.anim_end = m_pReader->ReadIntParam(pAnimationNode, "end_frame");
+		m_pReader->CloseGroupNode(pAnimationNode);
+	}
+
 	m_pReader->CloseSource(pSource);
 	return true;
 }
@@ -106,20 +131,20 @@ void COGModel::Update (unsigned long _ElapsedTime)
 
 
 // Render mesh.
-void COGModel::Render (const MATRIX& _mWorld)
+void COGModel::Render (const MATRIX& _mWorld, unsigned int _Frame)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
-	m_pMesh->Render (_mWorld, 0);
+	m_pMesh->Render (_mWorld, _Frame);
 }
 
 		
 // Render.
-void COGModel::Render (const MATRIX& _mWorld, unsigned int _Part)
+void COGModel::Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
-	m_pMesh->RenderPart (_mWorld, _Part, 0);
+	m_pMesh->RenderPart (_mWorld, _Part, _Frame);
 }
 
 
@@ -141,4 +166,11 @@ const IOGAabb& COGModel::GetAABB () const
 const std::string& COGModel::GetAlias () const
 {
     return m_ResourceAlias;
+}
+
+
+// Get animation
+IOGAnimation* COGModel::GetAnimation (const std::string& _Alias)
+{
+    return m_pAnimations[_Alias];
 }

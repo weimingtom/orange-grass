@@ -111,7 +111,7 @@ void COGTerrain::Unload ()
 
 
 // Render terrain.
-void COGTerrain::Render (const MATRIX& _mWorld)
+void COGTerrain::Render (const MATRIX& _mWorld, unsigned int _Frame)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_TextureList[0]);
@@ -124,7 +124,7 @@ void COGTerrain::Render (const MATRIX& _mWorld)
 
 
 // Render.
-void COGTerrain::Render (const MATRIX& _mWorld, unsigned int _Part)
+void COGTerrain::Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_TextureList[_Part]);

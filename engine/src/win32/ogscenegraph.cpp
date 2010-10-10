@@ -155,7 +155,7 @@ void COGSceneGraph::RenderLandscape (IOGCamera* _pCamera)
 
 	MATRIX mT;
     MatrixIdentity(mT);
-	m_pLandscapeNode->GetRenderable()->Render(mT);
+	m_pLandscapeNode->GetRenderable()->Render(mT, 0);
 }
 
 
@@ -180,11 +180,30 @@ void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 		{
 			if ((fCameraZ - fObjectZ) < m_fViewDistance)
 			{
-				const MATRIX& mWorld = pNode->GetWorldTransform();
                 ((IOGEffect*)pNode->GetRenderable())->SetBillboardVectors(vUp, vRight);
-				pNode->GetRenderable()->Render(mWorld);
+				pNode->Render();
 			}
 		}
+    }
+}
+
+
+// Render all effects.
+void COGSceneGraph::RenderAllEffects (IOGCamera* _pCamera)
+{
+	const MATRIX& mView = _pCamera->GetViewMatrix();
+
+    Vec3 vUp, vRight, vLook;
+	MatrixGetBasis(vRight, vUp, vLook, mView);
+	vUp.normalize();
+	vRight.normalize();
+
+    TNodesList::iterator iter = m_EffectNodesList.begin();
+    for (; iter != m_EffectNodesList.end(); ++iter)
+    {
+		IOGSgNode* pNode = (*iter);
+        ((IOGEffect*)pNode->GetRenderable())->SetBillboardVectors(vUp, vRight);
+        pNode->Render();
     }
 }
 
@@ -242,8 +261,7 @@ void COGSceneGraph::RenderNodesList(IOGCamera* _pCamera, TNodesList& _List)
 		{
 			if ((fCameraZ - fObjectZ) < m_fViewDistance)
 			{
-				const MATRIX& mWorld = pNode->GetWorldTransform();
-				pNode->GetRenderable()->Render(mWorld);
+				pNode->Render();
 			}
 		}
     }
@@ -256,7 +274,6 @@ void COGSceneGraph::RenderWholeNodesList(IOGCamera* _pCamera, TNodesList& _List)
     TNodesList::iterator iter = _List.begin();
     for (; iter != _List.end(); ++iter)
     {
-        const MATRIX& mWorld = (*iter)->GetWorldTransform();
-        (*iter)->GetRenderable()->Render(mWorld);
+        (*iter)->Render();
 	}
 }

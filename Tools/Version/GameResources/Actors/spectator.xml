@@ -11,6 +11,7 @@
 	<Actor 
 		type = "air_bot"
 		model = "spectator"
+		model_propeller = ""
 		icon = "Models/Spectator/spectator_ed.bmp" 
 		/>
 </Params>

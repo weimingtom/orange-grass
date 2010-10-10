@@ -90,7 +90,7 @@ void COGMesh::Unload ()
 // Render mesh.
 void COGMesh::Render (const MATRIX& _mWorld, unsigned int _Frame)
 {
-	if (_Frame < m_pScene->nNumFrame)
+	if (_Frame > m_pScene->nNumFrame)
 		return;
 
 	for (unsigned int i=0; i<m_pScene->nNumMesh; ++i)
@@ -103,7 +103,7 @@ void COGMesh::Render (const MATRIX& _mWorld, unsigned int _Frame)
 // Render part of the mesh.
 void COGMesh::RenderPart (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame)
 {
-    if (_Part > GetNumRenderables() || _Frame < m_pScene->nNumFrame)
+    if (_Part > GetNumRenderables() || _Frame > m_pScene->nNumFrame)
         return;
 
 	m_pScene->SetFrame((float)_Frame);
@@ -126,6 +126,13 @@ void COGMesh::RenderPart (const MATRIX& _mWorld, unsigned int _Part, unsigned in
 unsigned int COGMesh::GetNumRenderables () const
 {
     return m_pScene->nNumMesh;
+}
+
+
+// Get num animation frames.
+unsigned int COGMesh::GetNumFrames () const
+{
+    return m_pScene->nNumFrame;
 }
 
 

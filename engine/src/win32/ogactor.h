@@ -61,8 +61,10 @@ protected:
 	bool                m_bAdded;
 	IOGActorParams*		m_pParams;
 	IOGSgNode*	        m_pNode;
+	IOGSgNode*	        m_pNodePropeller;
     IOGPhysicalObject*  m_pPhysicalObject;
 	IOGModel*	        m_pModel;
+    IOGModel*           m_pModelPropeller;
 };
 
 

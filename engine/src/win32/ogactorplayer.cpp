@@ -28,6 +28,14 @@ COGActorPlayer::~COGActorPlayer()
             OG_SAFE_DELETE(m_pNode);
 		m_pNode = NULL;
 	}
+	if (m_pNodePropeller)
+	{
+        if (m_bAdded)
+		    GetSceneGraph()->RemoveNode(m_pNodePropeller);
+        else
+            OG_SAFE_DELETE(m_pNodePropeller);
+		m_pNodePropeller = NULL;
+	}
     if (m_pPhysicalObject)
     {
         if (m_bAdded)
@@ -58,6 +66,15 @@ bool COGActorPlayer::Create (IOGActorParams* _pParams,
 		OG_LOG_ERROR("Creating COGActorPlayer failed, cannot get model %s", _pParams->model_alias.c_str());
 		return false;
 	}
+    if (!_pParams->model_propeller_alias.empty())
+    {
+	    m_pModelPropeller = GetResourceMgr()->GetModel(_pParams->model_propeller_alias);
+	    if (!m_pModelPropeller)
+	    {
+		    OG_LOG_ERROR("Creating COGActorPlayer failed, cannot get propeller model %s", _pParams->model_propeller_alias.c_str());
+		    return false;
+	    }
+    }
 	
     m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pModel->GetAABB());
     if (!m_pPhysicalObject)
@@ -73,6 +90,15 @@ bool COGActorPlayer::Create (IOGActorParams* _pParams,
 		OG_LOG_ERROR("Creating COGActorPlayer failed, cannot create SG node");
 		return false;
 	}
+    if (m_pModelPropeller)
+    {
+	    m_pNodePropeller = GetSceneGraph()->CreateNode(m_pModelPropeller, m_pPhysicalObject);
+	    if (!m_pNodePropeller)
+	    {
+		    OG_LOG_ERROR("Creating COGActorPlayer failed, cannot create SG node");
+		    return false;
+	    }
+    }
 
     m_Weapon.Create(this);
     m_OrientWorker.Create(this);
@@ -129,6 +155,7 @@ void COGActorPlayer::OnTouch (const Vec2& _vPos)
 // Update actor.
 void COGActorPlayer::Update (unsigned long _ElapsedTime)
 {
+    COGActor::Update(_ElapsedTime);
 	if (m_OrientWorker.IsActive())
 	{
 		m_OrientWorker.Update(_ElapsedTime);

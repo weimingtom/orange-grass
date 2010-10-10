@@ -11,6 +11,7 @@
 	<Actor 
 		type = "static"
 		model = "radar1"
+		model_propeller = ""
 		icon = "Models/Radar1/radar1_ed.bmp"
 		/>
 </Params>

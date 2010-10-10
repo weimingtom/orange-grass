@@ -31,10 +31,10 @@ public:
 	virtual void Unload ();
 
 	// Render terrain.
-	virtual void Render (const MATRIX& _mWorld);
+	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame);
 
 	// Render.
-	virtual void Render (const MATRIX& _mWorld, unsigned int _Part);
+	virtual void Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame);
 		
 	// Update mesh animation.
 	virtual void Update (unsigned long _ElapsedTime);
@@ -53,6 +53,9 @@ public:
 
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const;
+
+	// Get animation
+    virtual IOGAnimation* GetAnimation (const std::string& _Alias) {return NULL;}
 
 private:
 

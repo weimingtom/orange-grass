@@ -52,10 +52,10 @@ public:
 	virtual void Update (unsigned long _ElapsedTime) = 0;
 
 	// Render.
-	virtual void Render (const MATRIX& _mWorld) = 0;
+	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame) = 0;
 
 	// Render.
-	virtual void Render (const MATRIX& _mWorld, unsigned int _Part);
+	virtual void Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame);
 
     // Get num renderable parts.
     virtual unsigned int GetNumRenderables () const {return 1;}
@@ -77,6 +77,9 @@ public:
 
 	// Get type of the renderable.
 	virtual RenderableType GetRenderableType () const { return OG_RENDERABLE_EFFECT; }
+
+	// Get animation
+    virtual IOGAnimation* GetAnimation (const std::string& _Alias) {return NULL;}
 
 protected:
 	

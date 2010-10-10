@@ -10,7 +10,9 @@
 #include "oganimationcontroller.h"
 
 
-COGAnimationController::COGAnimationController()
+COGAnimationController::COGAnimationController() :  m_pCurAnimation(NULL),
+                                                    m_fProgress(0.0f),
+                                                    m_bPlaying(false)
 {
 }
 
@@ -28,7 +30,7 @@ void COGAnimationController::StartAnimation (IOGAnimation* _pAnimation)
 
 	m_pCurAnimation = _pAnimation;
 	m_bPlaying = true;
-	m_fProgress = 0.0f;
+	m_fProgress = (float)m_pCurAnimation->start_frame;
 }
 
 
@@ -60,5 +62,14 @@ void COGAnimationController::UpdateAnimation (unsigned long _ElapsedTime)
 {
 	if (m_bPlaying)
 	{
+        float fNewProgress = m_fProgress + 5;
+        if (fNewProgress < m_pCurAnimation->end_frame - 1)
+        {
+            m_fProgress = fNewProgress;
+        }
+        else
+        {
+            m_fProgress = (float)m_pCurAnimation->start_frame + (fNewProgress - m_pCurAnimation->end_frame - 1);
+        }
 	}
 }

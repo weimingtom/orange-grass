@@ -14,8 +14,10 @@
 COGActor::COGActor() :	m_bAdded(false),
 						m_pParams(NULL),
                         m_pNode(NULL),
+                        m_pNodePropeller(NULL),
                         m_pPhysicalObject(NULL),
-                        m_pModel(NULL)
+                        m_pModel(NULL),
+                        m_pModelPropeller(NULL)
 {
 }
 
@@ -30,6 +32,11 @@ void COGActor::OnAddedToManager ()
 {
     GetPhysics()->AddObject(m_pPhysicalObject);
 	GetSceneGraph()->AddNode(m_pNode);
+    if (m_pNodePropeller)
+    {
+    	GetSceneGraph()->AddNode(m_pNodePropeller);
+        m_pNodePropeller->StartAnimation("idle");
+    }
     m_bAdded = true;
 }
 
@@ -38,6 +45,10 @@ void COGActor::OnAddedToManager ()
 void COGActor::Update (unsigned long _ElapsedTime)
 {
     m_pNode->Update(_ElapsedTime);
+    if (m_pNodePropeller)
+    {
+    	m_pNodePropeller->Update(_ElapsedTime);
+    }
 }
 
 

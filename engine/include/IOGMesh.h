@@ -35,6 +35,9 @@ public:
     // Get num renderable parts.
 	virtual unsigned int GetNumRenderables () const = 0;
 
+    // Get num animation frames.
+	virtual unsigned int GetNumFrames () const = 0;
+
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const = 0;
 

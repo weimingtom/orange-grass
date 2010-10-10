@@ -2,6 +2,8 @@
 <Textures>
 	<Texture alias="plasma_01" file="Textures/FX/plasma_head1.pvr" />
 
+	<Texture alias="helicopter_body" file="Models/Helicopter/helicopter_body.pvr" />
+	<Texture alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller.pvr" />
 	<Texture alias="spectator" file="Models/Spectator/spectator.pvr" />
 	<Texture alias="craft" file="Models/Craft/craft.pvr" />
 	<Texture alias="palm1" file="Models/Palm1/palm1.pvr" />
@@ -18,6 +20,8 @@
 	<Texture alias="level_1" file="Levels/Level_1/level_1.pvr" />
 </Textures>
 <Meshes>
+	<Mesh alias="helicopter_body" file="Models/Helicopter/helicopter_body.POD"/>
+	<Mesh alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller_anim.POD"/>
 	<Mesh alias="spectator" file="Models/Spectator/spectator.POD"/>
 	<Mesh alias="craft" file="Models/Craft/craft.POD"/>
 	<Mesh alias="palm1" file="Models/Palm1/palm1.POD"/>
@@ -32,6 +36,8 @@
 	<Mesh alias="level_1" file="Levels/Level_1/level_1.POD"/>
 </Meshes>
 <Models>
+	<Model alias="helicopter_body" file="Models/Helicopter/helicopter_body.xml"/>
+	<Model alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller.xml"/>
 	<Model alias="spectator" file="Models/Spectator/spectator.xml"/>
 	<Model alias="craft" file="Models/Craft/craft.xml"/>
 	<Model alias="palm1" file="Models/Palm1/palm1.xml"/>

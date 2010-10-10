@@ -11,6 +11,7 @@
 	<Actor 
 		type = "static"
 		model = "palm3_1"
+		model_propeller = ""
 		icon = "Models/Palm3/palm3_1_ed.bmp"
 		/>
 </Params>

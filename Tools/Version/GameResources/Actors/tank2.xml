@@ -11,6 +11,7 @@
 	<Actor 
 		type = "land_bot"
 		model = "tank2"
+		model_propeller = ""
 		icon = "Models/Tank1/tank2_ed.bmp"
 		/>
 </Params>

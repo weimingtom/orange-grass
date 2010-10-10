@@ -89,6 +89,7 @@ bool COGActorParamsMgr::LoadParamsConfig (const std::string& _Alias, const std::
 	if (pActorNode != NULL)
 	{
 		pParam->model_alias = m_pReader->ReadStringParam(pActorNode, "model");
+		pParam->model_propeller_alias = m_pReader->ReadStringParam(pActorNode, "model_propeller");
 		pParam->type = ParseActorType(m_pReader->ReadStringParam(pActorNode, "type"));
 		pParam->icon = m_pReader->ReadStringParam(pActorNode, "icon");
 		m_pReader->CloseGroupNode(pActorNode);

@@ -116,15 +116,10 @@ void CViewerScene::SetViewport (int _Width, int _Height)
 void CViewerScene::Update (unsigned long _ElapsedTime)
 {
 	GetPhysics()->UpdateAll(0);
-    m_pActorMgr->Update(10);
+    m_pActorMgr->Update(33);
+    m_pSg->Update(33);
 	m_pCamera->Update();
 	m_mView = m_pCamera->GetViewMatrix();
-
-    if (m_pCurActor)
-    {
-        m_pCurActor->GetPhysicalObject()->Update(10);
-        m_pCurActor->Update(10);
-    }
 }
 
 
@@ -133,17 +128,16 @@ void CViewerScene::RenderScene ()
 {
 	m_pRenderer->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
 
-	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
+	RenderHelpers();
 
-	if (m_pCurActor)
-	{
-		MATRIX mModel = m_pCurActor->GetSgNode()->GetWorldTransform();
-		m_pCurActor->GetSgNode()->GetRenderable()->Render(mModel);
-	}
+    m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
+    m_pSg->RenderAll(m_pCamera);
+	m_pRenderer->FinishRenderMode();
+    m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);
+    m_pSg->RenderAllEffects(m_pCamera);
 	m_pRenderer->FinishRenderMode();
 
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
-#ifdef STATISTICS
 	unsigned long Verts; 
 	unsigned long Faces;
 	unsigned long TextureSwitches;
@@ -157,12 +151,9 @@ void CViewerScene::RenderScene ()
 	m_pRenderer->DisplayString(Vec2(85.0f,14.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
 	m_pRenderer->DisplayString(Vec2(85.0f,18.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
 	GetStatistics()->Reset();
-#endif
 	m_pRenderer->FinishRenderMode();
 
 	m_pRenderer->Reset();
-
-	RenderHelpers();
 
 	glFlush();
 }
@@ -197,7 +188,10 @@ void CViewerScene::RenderHelpers()
 // Setup model.
 void CViewerScene::SetupModel(const char* _pModelAlias)
 {
-	OG_SAFE_DELETE(m_pCurActor);
+    if (m_pCurActor)
+    {
+        m_pActorMgr->DestroyActor(m_pCurActor);
+    }
 
 	if (_pModelAlias != NULL)
 	{
@@ -206,6 +200,8 @@ void CViewerScene::SetupModel(const char* _pModelAlias)
             Vec3(0,0,0), 
             Vec3(0,0,0), 
             Vec3(1,1,1));
+        m_pActorMgr->AddActor(m_pCurActor);
+        m_pCurActor->Activate(true);
 	}
 	else
 	{

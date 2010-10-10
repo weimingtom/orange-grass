@@ -11,6 +11,7 @@
 	<Actor 
 		type = "plasma_missile"
 		model = "plasma_01"
+		model_propeller = ""
 		icon = "Models/Tank1/tank2_ed.bmp"
 		/>
 </Params>

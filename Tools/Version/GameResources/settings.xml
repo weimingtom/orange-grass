@@ -13,8 +13,8 @@
 		cam_distance = "120.0"
 	/>
 	<Game
-		level_0 = "level_1"
-		level_1 = "level_0"
+		level_0 = "level_0"
+		level_1 = "level_1"
 		/>
 	
 </Settings>
