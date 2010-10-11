@@ -71,15 +71,6 @@ bool COGResourceMgr::Init ()
 	}
 	m_TextureList["load_scr"] = pLoadScr;
 
-	COGTexture* pLoadProgress = new COGTexture ();
-	pLoadProgress->Init ("load_progress", m_ResPath + std::string("/Textures/UI/load_progress.pvr"));
-	if (!pLoadProgress->Load ())
-	{
-		OG_SAFE_DELETE(pLoadProgress);
-		return false;
-	}
-	m_TextureList["load_progress"] = pLoadProgress;
-
 	GetMaterialManager()->Init();
 
 	return true;

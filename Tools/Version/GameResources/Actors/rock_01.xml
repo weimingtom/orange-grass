@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Params>
+	<Physics 
+		max_speed = "0.0" 
+		acceleration = "0.0" 
+		max_strafe_speed = "0.0" 
+		roll_speed = "0.0" 
+		max_roll_angle = "0.0" 
+		type = "static"
+		/>
+	<Actor 
+		type = "static"
+		model = "rock_01"
+		model_propeller = ""
+		icon = "Models/Land_objects_02/rock/rock_01_ed.bmp"
+		/>
+</Params>

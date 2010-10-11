@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Mesh alias = "stone_01" />
+<Material texture = "land_02" type = "solid"/>

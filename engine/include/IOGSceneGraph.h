@@ -35,6 +35,9 @@ public:
 	// Add effect scene graph node
 	virtual void AddEffectNode (IOGSgNode* _pNode) = 0;
 
+	// Add transparent scene graph node
+	virtual void AddTransparentNode (IOGSgNode* _pNode) = 0;
+
 	// Add static scene graph node
 	virtual void AddStaticNode (IOGSgNode* _pNode, IOGTexture* _pTexture) = 0;
 
@@ -52,6 +55,9 @@ public:
 
 	// Render effects.
 	virtual void RenderEffects (IOGCamera* _pCamera) = 0;
+
+	// Render transparent nodes.
+	virtual void RenderTransparentNodes (IOGCamera* _pCamera) = 0;
 
     // Render all effects.
 	virtual void RenderAllEffects (IOGCamera* _pCamera) = 0;

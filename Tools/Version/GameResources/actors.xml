@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Actors>
 	<Actor alias="plasma_01" file="Actors/plasma_01.xml" />
-	<Actor alias="craft" file="Actors/craft.xml" />
-	<Actor alias="spectator" file="Actors/spectator.xml" />
-	<Actor alias="radar1" file="Actors/radar1.xml" />
-	<Actor alias="tank1" file="Actors/tank1.xml" />
-	<Actor alias="tank2" file="Actors/tank2.xml" />
-	<Actor alias="stone1" file="Actors/stone1.xml" />
-	<Actor alias="stone2" file="Actors/stone2.xml" />
-	<Actor alias="palm1" file="Actors/palm1.xml" />
-	<Actor alias="palm2" file="Actors/palm2.xml" />
-	<Actor alias="palm3_0" file="Actors/palm3_0.xml" />
-	<Actor alias="palm3_1" file="Actors/palm3_1.xml" />
-	<Actor alias="palm4" file="Actors/palm4.xml" />
+	<Actor alias="stone_01" file="Actors/stone_01.xml" />
+	<Actor alias="stone_02" file="Actors/stone_02.xml" />
+	<Actor alias="stone_03" file="Actors/stone_03.xml" />
+	<Actor alias="stone_04" file="Actors/stone_04.xml" />
+	<Actor alias="stone_05" file="Actors/stone_05.xml" />
+	<Actor alias="stone_06" file="Actors/stone_06.xml" />
+	<Actor alias="stone_07" file="Actors/stone_07.xml" />
+	<Actor alias="palm_01" file="Actors/palm_01.xml" />
+	<Actor alias="palm_02" file="Actors/palm_02.xml" />
+	<Actor alias="bush_01" file="Actors/bush_01.xml" />
+	<Actor alias="rock_01" file="Actors/rock_01.xml" />
+	<Actor alias="cactus_01" file="Actors/cactus_01.xml" />
+	<Actor alias="cactus_02" file="Actors/cactus_02.xml" />
+	<Actor alias="cactus_03" file="Actors/cactus_03.xml" />
 	<Actor alias="helicopter" file="Actors/helicopter.xml" />
 </Actors>

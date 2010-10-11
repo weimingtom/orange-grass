@@ -102,6 +102,7 @@ void CGameScreenController::RenderScene ()
 	m_pRenderer->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
 
 	m_pRenderer->EnableFog(true);
+
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
 	m_pSg->RenderLandscape(m_pCamera);
 	m_pSg->RenderScene(m_pCamera);
@@ -110,7 +111,14 @@ void CGameScreenController::RenderScene ()
     m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);
     m_pSg->RenderEffects(m_pCamera);
     m_pRenderer->FinishRenderMode();
-	m_pRenderer->EnableFog(false);
+
+    m_pRenderer->Reset();
+
+	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
+    m_pSg->RenderTransparentNodes(m_pCamera);
+	m_pRenderer->FinishRenderMode();
+
+    m_pRenderer->EnableFog(false);
 
 	unsigned long fps = 0;
 	if (m_ElapsedTime > 0)
@@ -135,8 +143,6 @@ void CGameScreenController::RenderScene ()
 	GetStatistics()->Reset();
 #endif
 	m_pRenderer->FinishRenderMode();
-
-	m_pRenderer->Reset();
 }
 
 

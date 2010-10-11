@@ -32,6 +32,7 @@ void COGSceneGraph::Clear ()
 	OG_SAFE_DELETE(m_pLandscapeNode);
 	ClearNodesList(m_NodesList);
 	ClearNodesList(m_EffectNodesList);
+	ClearNodesList(m_TransparentNodesList);
 	TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
 	for (; s_iter != m_StaticNodes.end(); ++s_iter)
 	{
@@ -70,6 +71,13 @@ void COGSceneGraph::AddStaticNode (IOGSgNode* _pNode, IOGTexture* _pTexture)
 }
 
 
+// Add transparent scene graph node
+void COGSceneGraph::AddTransparentNode (IOGSgNode* _pNode)
+{
+    m_TransparentNodesList.push_back(_pNode);
+}
+
+
 // Add landscape scene graph node
 void COGSceneGraph::AddLandscapeNode (IOGSgNode* _pNode)
 {
@@ -95,6 +103,9 @@ void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
     case OG_RENDERABLE_MODEL:
         {
 	        if (RemoveNodeFromList(_pNode, m_NodesList))
+		        return;
+
+            if (RemoveNodeFromList(_pNode, m_TransparentNodesList))
 		        return;
 
 	        TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
@@ -188,6 +199,13 @@ void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 }
 
 
+// Render transparent nodes.
+void COGSceneGraph::RenderTransparentNodes (IOGCamera* _pCamera)
+{
+	RenderNodesList(_pCamera, m_TransparentNodesList);
+}
+
+
 // Render all effects.
 void COGSceneGraph::RenderAllEffects (IOGCamera* _pCamera)
 {
@@ -218,6 +236,7 @@ void COGSceneGraph::RenderAll (IOGCamera* _pCamera)
 	{
 		RenderWholeNodesList(_pCamera, s_iter->second);
 	}
+	RenderWholeNodesList(_pCamera, m_TransparentNodesList);
 }
 
 

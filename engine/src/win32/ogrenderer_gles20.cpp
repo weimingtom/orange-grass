@@ -89,7 +89,7 @@ void COGRenderer_GLES20::StartRenderMode(OGRenderMode _Mode)
 	{
 	case OG_RENDERMODE_GEOMETRY:
 	    m_pCurShader = &m_ModelShader;
-        glEnable(GL_CULL_FACE);
+        glDisable(GL_CULL_FACE);
 	    glEnable(GL_DEPTH_TEST);
 		SetViewMatrix(m_pCamera->GetViewMatrix());
         m_ModelShader.SetProjectionMatrix(m_mProjection);

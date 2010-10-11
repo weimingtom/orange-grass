@@ -9,21 +9,14 @@
 #ifndef OGACTORAIRBOT_H_
 #define OGACTORAIRBOT_H_
 
-#include "OGActor.h"
+#include "ogactorbot.h"
 
 
-class COGActorAirBot : public COGActor
+class COGActorAirBot : public COGActorBot
 {
 public:
 	COGActorAirBot();
 	virtual ~COGActorAirBot();
-
-	// Create actor.
-	virtual bool Create (
-		IOGActorParams* _pParams,
-		const Vec3& _vPos,
-		const Vec3& _vRot,
-        const Vec3& _vScale);
 };
 
 

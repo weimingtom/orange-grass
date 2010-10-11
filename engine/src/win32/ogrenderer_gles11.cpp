@@ -107,7 +107,7 @@ void COGRenderer_GLES11::StartRenderMode(OGRenderMode _Mode)
 	switch(m_Mode)
 	{
 	case OG_RENDERMODE_GEOMETRY:
-	    glEnable(GL_CULL_FACE);
+	    glDisable(GL_CULL_FACE);
 	    glEnable(GL_DEPTH_TEST);
 	    glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(m_mProjection.f);
@@ -173,7 +173,7 @@ void COGRenderer_GLES11::FinishRenderMode()
 	
 	case OG_RENDERMODE_EFFECTS:
 		glDisable(GL_BLEND); 
-	    glEnable(GL_CULL_FACE);
+	    glDisable(GL_CULL_FACE);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);	
 		glDisableClientState(GL_COLOR_ARRAY);

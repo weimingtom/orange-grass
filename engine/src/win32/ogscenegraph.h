@@ -39,6 +39,9 @@ public:
 	// Add effect scene graph node
 	virtual void AddEffectNode (IOGSgNode* _pNode);
 
+	// Add transparent scene graph node
+	virtual void AddTransparentNode (IOGSgNode* _pNode);
+
 	// Remove scene graph node
 	virtual void RemoveNode (IOGSgNode* _pNode);
 
@@ -53,6 +56,9 @@ public:
 
 	// Render effects.
 	virtual void RenderEffects (IOGCamera* _pCamera);
+
+	// Render transparent nodes.
+	virtual void RenderTransparentNodes (IOGCamera* _pCamera);
 
 	// Render all effects.
 	virtual void RenderAllEffects (IOGCamera* _pCamera);
@@ -84,6 +90,7 @@ private:
 	TStaticNodesMap		m_StaticNodes;
 	TNodesList			m_NodesList;
 	TNodesList			m_EffectNodesList;
+	TNodesList			m_TransparentNodesList;
 	float				m_fViewDistance;
 };
 

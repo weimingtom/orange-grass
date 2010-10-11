@@ -9,14 +9,14 @@
 #ifndef OGACTORPLAYER_H_
 #define OGACTORPLAYER_H_
 
-#include "ogactor.h"
+#include "ogactorbot.h"
 #include "IOGInputReceiver.h"
 #include "ogweapon.h"
 #include "ogorientworker.h"
 #include "ogstabilizeworker.h"
 
 
-class COGActorPlayer : public COGActor, public IOGInputReceiver
+class COGActorPlayer : public COGActorBot, public IOGInputReceiver
 {
 public:
 	COGActorPlayer();
@@ -43,10 +43,10 @@ public:
 
 protected:
 
-    COGWeapon   m_Weapon;
-    COGOrientWorker m_OrientWorker;
-    COGStabilizeWorker m_StraightenWorker;
-    unsigned long   m_CoolDown;
+    COGWeapon           m_Weapon;
+    COGOrientWorker     m_OrientWorker;
+    COGStabilizeWorker  m_StraightenWorker;
+    unsigned long       m_CoolDown;
 };
 
 

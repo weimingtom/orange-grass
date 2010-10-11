@@ -9,21 +9,14 @@
 #ifndef OGACTORLANDBOT_H_
 #define OGACTORLANDBOT_H_
 
-#include "OGActor.h"
+#include "ogactorbot.h"
 
 
-class COGActorLandBot : public COGActor
+class COGActorLandBot : public COGActorBot
 {
 public:
 	COGActorLandBot();
 	virtual ~COGActorLandBot();
-
-	// Create actor.
-	virtual bool Create (
-		IOGActorParams* _pParams,
-		const Vec3& _vPos,
-		const Vec3& _vRot,
-        const Vec3& _vScale);
 };
 
 

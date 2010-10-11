@@ -19,31 +19,6 @@ COGActorPlayer::COGActorPlayer()
 COGActorPlayer::~COGActorPlayer()
 {
 	GetInput()->UnregisterReceiver(this);
-
-	if (m_pNode)
-	{
-        if (m_bAdded)
-		    GetSceneGraph()->RemoveNode(m_pNode);
-        else
-            OG_SAFE_DELETE(m_pNode);
-		m_pNode = NULL;
-	}
-	if (m_pNodePropeller)
-	{
-        if (m_bAdded)
-		    GetSceneGraph()->RemoveNode(m_pNodePropeller);
-        else
-            OG_SAFE_DELETE(m_pNodePropeller);
-		m_pNodePropeller = NULL;
-	}
-    if (m_pPhysicalObject)
-    {
-        if (m_bAdded)
-            GetPhysics()->RemoveObject(m_pPhysicalObject);
-        else
-            OG_SAFE_DELETE(m_pPhysicalObject);
-        m_pPhysicalObject = NULL;
-    }
 }
 
 
@@ -53,52 +28,8 @@ bool COGActorPlayer::Create (IOGActorParams* _pParams,
                              const Vec3& _vRot,
                              const Vec3& _vScale)
 {
-	m_pParams = _pParams;
-	if (m_pParams->type == OG_ACTOR_NONE)
-	{
-		OG_LOG_ERROR("Creating COGActorPlayer from model %s failed, actor type is OG_ACTOR_NONE", _pParams->model_alias.c_str());
-		return false;
-	}
-
-	m_pModel = GetResourceMgr()->GetModel(_pParams->model_alias);
-	if (!m_pModel)
-	{
-		OG_LOG_ERROR("Creating COGActorPlayer failed, cannot get model %s", _pParams->model_alias.c_str());
-		return false;
-	}
-    if (!_pParams->model_propeller_alias.empty())
-    {
-	    m_pModelPropeller = GetResourceMgr()->GetModel(_pParams->model_propeller_alias);
-	    if (!m_pModelPropeller)
-	    {
-		    OG_LOG_ERROR("Creating COGActorPlayer failed, cannot get propeller model %s", _pParams->model_propeller_alias.c_str());
-		    return false;
-	    }
-    }
-	
-    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pModel->GetAABB());
-    if (!m_pPhysicalObject)
-	{
-		OG_LOG_ERROR("Creating COGActorPlayer failed, cannot create physical object");
+    if (!COGActorBot::Create(_pParams, _vPos, _vRot, _vScale))
         return false;
-	}
-	m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);
-
-	m_pNode = GetSceneGraph()->CreateNode(m_pModel, m_pPhysicalObject);
-	if (!m_pNode)
-	{
-		OG_LOG_ERROR("Creating COGActorPlayer failed, cannot create SG node");
-		return false;
-	}
-    if (m_pModelPropeller)
-    {
-	    m_pNodePropeller = GetSceneGraph()->CreateNode(m_pModelPropeller, m_pPhysicalObject);
-	    if (!m_pNodePropeller)
-	    {
-		    OG_LOG_ERROR("Creating COGActorPlayer failed, cannot create SG node");
-		    return false;
-	    }
-    }
 
     m_Weapon.Create(this);
     m_OrientWorker.Create(this);
@@ -114,7 +45,7 @@ bool COGActorPlayer::Create (IOGActorParams* _pParams,
 // Adding to actor manager event handler.
 void COGActorPlayer::OnAddedToManager ()
 {
-	COGActor::OnAddedToManager();
+	COGActorBot::OnAddedToManager();
 	GetInput()->RegisterReceiver(this);
 }
 
@@ -155,7 +86,7 @@ void COGActorPlayer::OnTouch (const Vec2& _vPos)
 // Update actor.
 void COGActorPlayer::Update (unsigned long _ElapsedTime)
 {
-    COGActor::Update(_ElapsedTime);
+    COGActorBot::Update(_ElapsedTime);
 	if (m_OrientWorker.IsActive())
 	{
 		m_OrientWorker.Update(_ElapsedTime);

@@ -82,12 +82,6 @@ void CEditorCanvas::Render()
     if (!GetContext()) 
         return;
     SetCurrent();
-
-    g_pScene->Init();
-    g_pScene->Update(10);
-    g_pScene->RenderScene();
-
-	SwapBuffers();
 }
 
 
@@ -133,8 +127,13 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 		}
 
 		m_bMouseMoved = false;
-		Refresh();
 	}
+
+    g_pScene->Init();
+    g_pScene->Update(10);
+    g_pScene->RenderScene();
+
+	SwapBuffers();
 }
 
 
@@ -181,7 +180,6 @@ void CEditorCanvas::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& even
 {
 	g_pScene->LoadLevel(std::string(event.GetEventCustomData().m_Path));
 	m_pToolSettings->SetLevel((void*)g_pScene->GetLevel());
-	Refresh();
 }
 
 
@@ -306,7 +304,6 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
 
 	mouse_x = event.GetX();
 	mouse_y = event.GetY();
-	Refresh();
     event.Skip();
 }
 
@@ -360,7 +357,6 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 	case CMD_UPDATE:
         break;
 	}
-	Refresh ();
 }
 
 
@@ -422,8 +418,6 @@ void CEditorCanvas::OnLMBUp(wxMouseEvent& event)
         break;
     }
 
-    Refresh();
-
 	bLmb = false;
 }
 
@@ -464,7 +458,6 @@ void CEditorCanvas::OnMouseWheel(wxMouseEvent& event)
 {
 	int delta = event.GetWheelRotation();
 	g_pScene->CameraZoom((float)delta / 10.0f);
-	Refresh ();
 }
 
 
@@ -481,6 +474,4 @@ void CEditorCanvas::OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& even
         }
 		break;
 	}
-
-	Refresh();
 }
