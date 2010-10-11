@@ -12,8 +12,16 @@ subject to the following restrictions:
 2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
 3. This notice may not be removed or altered from any source distribution.
 */
+#include <TargetConditionals.h>
+#include <Availability.h>
 
-#import "EAGLView2.h"
+//#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
+//#import "EAGLView2.h"
+//#define _EAGLVIEW_ EAGLView2
+//#else
+#import "EAGLView.h"
+#define _EAGLVIEW_ EAGLView
+//#endif
 
 @class EAGLCameraView;
 
@@ -37,7 +45,7 @@ typedef struct Touches
 TouchScreenValues; 
 
 
-@interface EAGLCameraView : EAGLView2
+@interface EAGLCameraView : _EAGLVIEW_
 {
 	TouchScreenValues TouchScreen;	
 }
