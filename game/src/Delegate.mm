@@ -16,6 +16,7 @@
 #import "GameSystem.h"
 #import "Delegate.h"
 #import "Accelerometer.h"
+#import "TouchScreen.h"
 
 
 #define kFPS			33.0
@@ -31,6 +32,20 @@ static Accel *accel = NULL;
     double vec[3];
     [accel GetAccelerometerVector: (double*)vec];
     shell->OnPointerMove(vec[1]*50, vec[2]*50);
+    
+    TouchScreenValues* pVals = GetValuesTouchScreen();
+    if (pVals->CountTouchesBegan > 0)
+    {
+        float x = pVals->LocationXTouchesBegan/320.0f*480.0f;
+        float y = pVals->LocationYTouchesBegan/480.0f*320.0f;
+        shell->OnPointerDown(x,y);
+    }
+    else if (pVals->CountTouchesMoved > 0)
+    {
+        float x = pVals->LocationXTouchesMoved/320.0f*480.0f;
+        float y = pVals->LocationYTouchesMoved/480.0f*320.0f;
+        shell->OnPointerDown(x,y);
+    }
     
 	shell->Update(30);
     shell->Draw();
@@ -48,7 +63,7 @@ static Accel *accel = NULL;
 	_window = [[UIWindow alloc] initWithFrame:rect];
 	
 	// create the OpenGL view and add it to the window
-	_glView = [[EAGLView alloc] initWithFrame:rect pixelFormat:GL_RGB565_OES depthFormat:GL_DEPTH_COMPONENT16_OES preserveBackbuffer:NO];
+	_glView = [[EAGLCameraView alloc] initWithFrame:rect pixelFormat:GL_RGB565_OES depthFormat:GL_DEPTH_COMPONENT16_OES preserveBackbuffer:NO];
 	
 	[_window addSubview:_glView];
 
