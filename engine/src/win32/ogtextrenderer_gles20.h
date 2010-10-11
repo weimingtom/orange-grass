@@ -8,7 +8,7 @@
  */
 #ifndef OGTEXTRENDERER_GLES20_H_
 #define OGTEXTRENDERER_GLES20_H_
-
+#ifdef GLES20
 #include "ogtextrenderer.h"
 
 
@@ -26,5 +26,5 @@ protected:
     // Stores, writes and restores Render States
     virtual void APIRenderStates(int nAction);
 };
-
+#endif
 #endif

@@ -10,7 +10,8 @@
 #define OGPLASMAEFFECT_H_
 
 #include "OGEffect.h"
-
+#define MAX_PLASMA_PARTILES 12
+#define PLASMA_VERTICES     MAX_PLASMA_PARTILES*4
 
 class COGPlasmaEffect : public COGEffect
 {
@@ -34,8 +35,8 @@ public:
 
 protected:
 	
-	COGBillboard::BBVert	m_Vertices[16];
-	COGBillboard			m_Particles[4];
+	COGBillboard::BBVert	m_Vertices[PLASMA_VERTICES];
+	COGBillboard			m_Particles[MAX_PLASMA_PARTILES];
 };
 
 

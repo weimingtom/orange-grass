@@ -10,7 +10,7 @@
 #include "OrangeGrass.h"
 #include "ogspriteshader.h"
 #include "GraphicsDevice.h"
-
+#ifdef GLES20
 
 COGSpriteShader::COGSpriteShader ()
 {
@@ -70,3 +70,4 @@ void COGSpriteShader::SetProjectionMatrix (const MATRIX& _mProj)
 {
     m_mProjection = _mProj;
 }
+#endif

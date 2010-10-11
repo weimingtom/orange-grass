@@ -10,7 +10,7 @@
 #include "OrangeGrass.h"
 #include "ogtextshader.h"
 #include "GraphicsDevice.h"
-
+#ifdef GLES20
 
 COGTextShader::COGTextShader ()
 {
@@ -70,3 +70,4 @@ void COGTextShader::SetProjectionMatrix (const MATRIX& _mProj)
 {
     m_mProjection = _mProj;
 }
+#endif

@@ -10,7 +10,7 @@
 #include "OrangeGrass.h"
 #include "ogmodelshader.h"
 #include "GraphicsDevice.h"
-
+#ifdef GLES20
 
 COGModelShader::COGModelShader ()
 {
@@ -123,3 +123,4 @@ void COGModelShader::SetFogParams (float _fFogStart, float _fFogEnd, const Vec4&
 	m_fFogStart = _fFogStart;
 	m_fFogEnd = _fFogEnd;
 }
+#endif

@@ -8,7 +8,7 @@
  */
 #ifndef OGRENDERER_GLES20_H_
 #define OGRENDERER_GLES20_H_
-
+#ifdef GLES20
 #include "ogrenderer.h"
 #include "ogmodelshader.h"
 #include "ogspriteshader.h"
@@ -68,4 +68,5 @@ protected:
     IOGShader*              m_pCurShader;
 };
 
+#endif
 #endif

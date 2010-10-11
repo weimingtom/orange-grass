@@ -35,6 +35,8 @@ bool COGActorPlayer::Create (IOGActorParams* _pParams,
     m_OrientWorker.Create(this);
     m_OrientWorker.Activate(false);
     m_CoolDown = 2000;
+    m_WeaponCoolDownMax = 200;
+    m_WeaponCoolDown = m_WeaponCoolDownMax;
     m_StraightenWorker.Create(this);
     m_StraightenWorker.Activate(false);
 
@@ -87,12 +89,24 @@ void COGActorPlayer::OnTouch (const Vec2& _vPos)
 void COGActorPlayer::Update (unsigned long _ElapsedTime)
 {
     COGActorBot::Update(_ElapsedTime);
+    
+    if (m_WeaponCoolDown < m_WeaponCoolDownMax)
+    {
+        m_WeaponCoolDown += _ElapsedTime;
+        if (m_WeaponCoolDown >= m_WeaponCoolDownMax)
+        {
+            m_WeaponCoolDown = m_WeaponCoolDownMax;
+            m_StraightenWorker.Activate(true);
+        }        
+    }
+    
 	if (m_OrientWorker.IsActive())
 	{
 		m_OrientWorker.Update(_ElapsedTime);
-		if (m_OrientWorker.IsFinished())
+		if (m_OrientWorker.IsFinished() && m_WeaponCoolDown == m_WeaponCoolDownMax)
 		{
             m_Weapon.Fire(Vec3(0,0,0));
+            m_WeaponCoolDown = 0;
             m_CoolDown = 0;
             m_StraightenWorker.Activate(false);
 		}

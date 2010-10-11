@@ -10,7 +10,7 @@
 #define OGCOLOREFFECTSHADER_H_
 
 #include "IOGShader.h"
-
+#ifdef GLES20
 
 class COGColorEffectShader : public IOGShader
 {
@@ -68,5 +68,5 @@ protected:
 	unsigned int m_uiFogRcpDiffLoc;
 	unsigned int m_uiFogColorLoc;
 };
-
+#endif
 #endif

@@ -8,7 +8,7 @@
  */
 #ifndef OGVERTEXBUFFERS_GLES20_H_
 #define OGVERTEXBUFFERS_GLES20_H_
-
+#ifdef GLES20
 #include "Geometry.h"
 #include "IOGStatistics.h"
 #include "IOGVertexBuffers.h"
@@ -39,5 +39,5 @@ private:
 	const SPODMesh*	m_pMesh;
 	IOGStatistics*	m_pStats;
 };
-
+#endif
 #endif

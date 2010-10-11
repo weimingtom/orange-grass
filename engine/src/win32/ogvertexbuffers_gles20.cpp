@@ -9,7 +9,7 @@
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogvertexbuffers_gles20.h"
-
+#ifdef GLES20
 
 COGVertexBuffers_GLES20::COGVertexBuffers_GLES20 () : m_pMesh(NULL),
 										m_VBO(0),
@@ -136,3 +136,4 @@ void COGVertexBuffers_GLES20::Render () const
         }
     }
 }
+#endif

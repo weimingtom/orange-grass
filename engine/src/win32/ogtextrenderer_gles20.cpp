@@ -9,7 +9,7 @@
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "GraphicsDevice.h"
-
+#ifdef GLES20
 #include "ogtextrenderer_gles20.h"
 #include "ogtextrenderer_data.h"
 
@@ -117,3 +117,4 @@ void COGTextRenderer_GLES20::APIRenderStates(int nAction)
 		break;
 	}
 }
+#endif

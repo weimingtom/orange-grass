@@ -6,6 +6,7 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
+#ifdef GLES20
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogrenderer_gles20.h"
@@ -222,3 +223,4 @@ void COGRenderer_GLES20::DrawSpriteBuffer (void* _pBuffer, int _StartId, int _Nu
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 16, (void*)((char *)_pBuffer + 8));
 	glDrawArrays(GL_TRIANGLE_STRIP, _StartId, _NumVertices);
 }
+#endif

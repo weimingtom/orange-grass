@@ -10,7 +10,7 @@
 #include "OrangeGrass.h"
 #include "ogcoloreffectshader.h"
 #include "GraphicsDevice.h"
-
+#ifdef GLES20
 
 COGColorEffectShader::COGColorEffectShader ()
 {
@@ -108,3 +108,4 @@ void COGColorEffectShader::SetFogParams (float _fFogStart, float _fFogEnd, const
 	m_fFogStart = _fFogStart;
 	m_fFogEnd = _fFogEnd;
 }
+#endif
