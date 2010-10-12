@@ -136,9 +136,9 @@ bool COGPhysicalObject::Orient (const Vec3& _vPoint)
     }
 
     if (fAngle > 0)
-        m_vTorque.y -= 0.003f;
+        m_vTorque.y -= 0.0045f;
     else
-        m_vTorque.y += 0.003f;
+        m_vTorque.y += 0.0045f;
 
 	m_bUpdated = false;
     return false;
@@ -155,9 +155,9 @@ bool COGPhysicalObject::Stabilize ()
     }
 
     if (fAngle > 0)
-        m_vTorque.y -= 0.0006f;
+        m_vTorque.y -= 0.0009f;
     else
-        m_vTorque.y += 0.0006f;
+        m_vTorque.y += 0.0009f;
 
 	m_bUpdated = false;
     return false;

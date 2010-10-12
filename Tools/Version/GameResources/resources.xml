@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Textures>
 	<Texture alias="plasma_01" file="Textures/FX/plasma_head1.pvr" />
+	<Texture alias="smoke_01" file="Textures/FX/smoke_01.pvr" />
 	<Texture alias="helicopter_body" file="Models/Helicopter/helicopter_body.pvr" />
 	<Texture alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller.pvr" />
 	<Texture alias="land_02" file="Models/Land_objects_02/land_02.pvr" />

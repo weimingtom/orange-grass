@@ -30,7 +30,7 @@ bool COGWeapon::Create (IOGActor* _pOwner)
     for (int i = 0; i < 10; ++i)
     {
         IOGActor* pMissile = GetActorManager()->CreateActor(
-            std::string("plasma_01"), 
+            std::string("missile_01"), 
             Vec3(0,0,0),
             Vec3(0,0,0),
             Vec3(1,1,1));

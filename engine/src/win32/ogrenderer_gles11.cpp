@@ -126,7 +126,8 @@ void COGRenderer_GLES11::StartRenderMode(OGRenderMode _Mode)
 		SetViewMatrix(m_pCamera->GetViewMatrix());
 		EnableLight(false);
 		glDisable(GL_CULL_FACE);
-		glEnableClientState(GL_VERTEX_ARRAY);
+        glDisable(GL_DEPTH_TEST);
+        glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);	
 		glEnableClientState(GL_COLOR_ARRAY);	
 		break;
@@ -172,6 +173,7 @@ void COGRenderer_GLES11::FinishRenderMode()
 		break;
 	
 	case OG_RENDERMODE_EFFECTS:
+        glEnable(GL_DEPTH_TEST);
 		glDisable(GL_BLEND); 
 	    glDisable(GL_CULL_FACE);
 		glDisableClientState(GL_VERTEX_ARRAY);

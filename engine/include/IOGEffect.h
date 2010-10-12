@@ -23,7 +23,8 @@ enum OGEffectStatus
 enum OGEffectType
 {
 	OG_EFFECT_NO = 0,
-	OG_EFFECT_PLASMA
+	OG_EFFECT_PLASMA,
+	OG_EFFECT_MISSILESMOKE
 };
 
 

@@ -13,6 +13,7 @@
 #include "ogactorairbot.h"
 #include "ogactorplayer.h"
 #include "ogactorplasmamissile.h"
+#include "ogactormissile.h"
 #include "IOGMath.h"
 #include <algorithm>
 
@@ -108,6 +109,18 @@ IOGActor* COGActorManager::CreateActor (
 	case OG_ACTOR_PLASMAMISSILE:
 		{
 			COGActorPlasmaMissile* pActor = new COGActorPlasmaMissile();
+			if (pActor->Create(pParams, _vPos, _vRot, _vScale) == false)
+			{
+				OG_SAFE_DELETE(pActor);
+				return NULL;
+			}
+			return pActor;
+		}
+		break;
+
+	case OG_ACTOR_MISSILE:
+		{
+			COGActorMissile* pActor = new COGActorMissile();
 			if (pActor->Create(pParams, _vPos, _vRot, _vScale) == false)
 			{
 				OG_SAFE_DELETE(pActor);

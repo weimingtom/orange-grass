@@ -198,6 +198,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogactormissile.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactormissile.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogactorparamsmgr.cpp"
 					>
 				</File>
@@ -410,6 +418,14 @@
 					</File>
 					<File
 						RelativePath=".\ogeffect.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogeffectmissilesmoke.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogeffectmissilesmoke.h"
 						>
 					</File>
 					<File

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Actors>
 	<Actor alias="plasma_01" file="Actors/plasma_01.xml" />
+	<Actor alias="missile_01" file="Actors/missile_01.xml" />
 	<Actor alias="stone_01" file="Actors/stone_01.xml" />
 	<Actor alias="stone_02" file="Actors/stone_02.xml" />
 	<Actor alias="stone_03" file="Actors/stone_03.xml" />
