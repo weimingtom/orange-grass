@@ -7,12 +7,12 @@
 		roll_speed = "0.0002" 
 		max_roll_angle = "0.5"
 		torque = "0.0045"
-		type = "player"
+		type = "air_bot"
 		/>
 	<Actor 
-		type = "player"
-		model = "helicopter_body"
-		model_propeller = "helicopter_propeller"
-		icon = "Models/Helicopter/helicopter_ed.bmp"
+		type = "air_bot"
+		model = "bot_plane_small"
+		model_propeller = ""
+		icon = "Models/Bot_plane_small/bot_plane_small_ed.bmp"
 		/>
 </Params>

@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Mesh alias = "bot_plane_small"/>
+<Material texture = "helicopter_body" type = "solid"/>

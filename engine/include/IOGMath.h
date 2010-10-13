@@ -217,4 +217,21 @@ static float GetAngle (const Vec3& _vV1, const Vec3& _vV2)
     return bSign ? fAngle : -fAngle;
 }
 
+
+// Rotate 2D point
+static void Rotate2DPoint ( float& _X, float& _Y, float _Angle, float _CenterX, float _CenterY )
+{
+    float sin = sinf ( _Angle );
+    float cos = cosf ( _Angle );
+
+    float RotX = _X - _CenterX;
+    float RotY = _Y - _CenterY;
+
+    float RetX = RotX * cos - RotY * sin;
+    float RetY = RotX * sin + RotY * cos;
+
+    _X = RetX + _CenterX;
+    _Y = RetY + _CenterY;
+}
+
 #endif

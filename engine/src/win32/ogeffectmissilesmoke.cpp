@@ -35,8 +35,9 @@ void COGEffectMissileSmoke::Update (unsigned long _ElapsedTime)
 
 	float fAlphaFade = 0.01f;
 	float fInitialScale = 2.0f;
-	float fScaleInc = 0.2f;
+	float fScaleInc = 0.1f;
 	int numVertsAtOnce = 3;
+    float fRotateInc = 0.1f;
 	Vec4 color = Vec4(0.6f, 0.6f, 0.6f, 0.2f);
 
     std::vector<COSmokeGBillboard>::iterator iter = m_BBList.begin();
@@ -46,6 +47,7 @@ void COGEffectMissileSmoke::Update (unsigned long _ElapsedTime)
         if (particle.pVertices[0].c.w >= fAlphaFade)
         {
             particle.scale += fScaleInc;
+            particle.angle += fRotateInc;
     		particle.pVertices[0].c.w -= fAlphaFade;
     		particle.pVertices[1].c.w -= fAlphaFade;
     		particle.pVertices[2].c.w -= fAlphaFade;
@@ -71,6 +73,7 @@ void COGEffectMissileSmoke::Update (unsigned long _ElapsedTime)
 				COSmokeGBillboard particle;
 				particle.offset = vDir * (fDist * (float)n);
 				particle.scale = fInitialScale;
+                particle.angle = rand() * 0.01f;
 				particle.bDirty = true;
 				particle.pVertices[0].t = Vec2(1.0f, 0.0f);
 				particle.pVertices[0].c = color;
@@ -131,6 +134,15 @@ void COGEffectMissileSmoke::Render (const MATRIX& _mWorld, unsigned int _Frame)
 		particle.pVertices[1].p = -vSRight + vSUp + particle.offset;
 		particle.pVertices[2].p = vSRight - vSUp + particle.offset;
 		particle.pVertices[3].p = -vSRight - vSUp + particle.offset;
+
+        particle.pVertices[0].t = Vec2(1.0f, 0.0f);
+        particle.pVertices[1].t = Vec2(0.0f, 0.0f);
+        particle.pVertices[2].t = Vec2(1.0f, 1.0f);
+        particle.pVertices[3].t = Vec2(0.0f, 1.0f);
+        Rotate2DPoint(particle.pVertices[0].t.x, particle.pVertices[0].t.y, particle.angle, 0.5f, 0.5f);
+        Rotate2DPoint(particle.pVertices[1].t.x, particle.pVertices[1].t.y, particle.angle, 0.5f, 0.5f);
+        Rotate2DPoint(particle.pVertices[2].t.x, particle.pVertices[2].t.y, particle.angle, 0.5f, 0.5f);
+        Rotate2DPoint(particle.pVertices[3].t.x, particle.pVertices[3].t.y, particle.angle, 0.5f, 0.5f);
 
 		m_pRenderer->DrawEffectBuffer(&particle.pVertices[0], 0, 4);
     }

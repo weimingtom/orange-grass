@@ -25,6 +25,7 @@ struct COSmokeGBillboard
 
     bool    bDirty;
 	float	scale;
+    float   angle;
 	Vec3	offset;
 	BBVert	pVertices[4];
 };

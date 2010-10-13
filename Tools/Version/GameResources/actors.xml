@@ -17,4 +17,5 @@
 	<Actor alias="cactus_02" file="Actors/cactus_02.xml" />
 	<Actor alias="cactus_03" file="Actors/cactus_03.xml" />
 	<Actor alias="helicopter" file="Actors/helicopter.xml" />
+	<Actor alias="bot_plane_small" file="Actors/bot_plane_small.xml" />
 </Actors>
