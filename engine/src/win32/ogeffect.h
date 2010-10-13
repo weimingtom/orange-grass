@@ -51,6 +51,9 @@ public:
 	// Update.
 	virtual void Update (unsigned long _ElapsedTime) = 0;
 
+	// Update position.
+	virtual void UpdatePosition (const Vec3& _vPosition);
+
 	// Render.
 	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame) = 0;
 

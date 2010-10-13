@@ -48,6 +48,9 @@ public:
 	// Update.
 	virtual void Update (unsigned long _ElapsedTime) = 0;
 
+	// Update position.
+	virtual void UpdatePosition (const Vec3& _vPosition) = 0;
+
 	// Start.
 	virtual void Start () = 0;
 

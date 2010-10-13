@@ -62,12 +62,24 @@ IOGGroupNode* COGSettingsReader::OpenGroupNode (
 		pGroup->pParent = _pParent;
 		pGroup->pNode = new TiXmlHandle(((COGGroupNode*)pGroup->pParent)->pNode->Child ( pGroup->name.c_str(), pGroup->index ));
 		pGroup->pElement = pGroup->pNode->Element();
+		if (pGroup->pElement == NULL)
+		{
+			OG_SAFE_DELETE(pGroup->pNode);
+			OG_SAFE_DELETE(pGroup);
+			return NULL;
+		}
 	}
 	else
 	{
 		pGroup->pParent = NULL;
 		pGroup->pNode = new TiXmlHandle(((COGSettingsSource*)_pSource)->pDoc->Child ( pGroup->name.c_str(), pGroup->index ));
 		pGroup->pElement = pGroup->pNode->Element();
+		if (pGroup->pElement == NULL)
+		{
+			OG_SAFE_DELETE(pGroup->pNode);
+			OG_SAFE_DELETE(pGroup);
+			return NULL;
+		}
 	}
 	return pGroup;
 }

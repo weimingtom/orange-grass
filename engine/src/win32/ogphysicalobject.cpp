@@ -113,7 +113,7 @@ void COGPhysicalObject::Strafe (float _fDir)
 // accelerate.
 void COGPhysicalObject::Accelerate (float _fDir)
 {
-	m_vMove += m_vLook * (_fDir * 0.01f);
+	m_vMove += m_vLook * (_fDir * m_pParams->fAcceleration);
     float fSpeed = m_vMove.length();
 	if (fSpeed > m_pParams->fMaxSpeed)
     {
@@ -136,9 +136,9 @@ bool COGPhysicalObject::Orient (const Vec3& _vPoint)
     }
 
     if (fAngle > 0)
-        m_vTorque.y -= 0.0045f;
+		m_vTorque.y -= m_pParams->fTorque;
     else
-        m_vTorque.y += 0.0045f;
+        m_vTorque.y += m_pParams->fTorque;
 
 	m_bUpdated = false;
     return false;
@@ -155,9 +155,9 @@ bool COGPhysicalObject::Stabilize ()
     }
 
     if (fAngle > 0)
-        m_vTorque.y -= 0.0009f;
+        m_vTorque.y -= m_pParams->fTorque;
     else
-        m_vTorque.y += 0.0009f;
+        m_vTorque.y += m_pParams->fTorque;
 
 	m_bUpdated = false;
     return false;

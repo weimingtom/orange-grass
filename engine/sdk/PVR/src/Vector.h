@@ -584,6 +584,28 @@ struct Vec3 : public VECTOR3
 	}
 
 /*!***************************************************************************
+ @Function			==
+ @Input				rhs a vector
+ @Returns			result of comparison
+ @Description		componentwise comparison
+****************************************************************************/
+	bool operator==(const Vec3& rhs)
+	{
+		return (x==rhs.x && y==rhs.y && z==rhs.z);
+	}
+
+/*!***************************************************************************
+ @Function			!=
+ @Input				rhs a vector
+ @Returns			result of comparison
+ @Description		componentwise comparison
+****************************************************************************/
+	bool operator!=(const Vec3& rhs)
+	{
+		return (x!=rhs.x || y!=rhs.y || z!=rhs.z);
+	}
+
+/*!***************************************************************************
  @Function			[] - r/o
  @Input				index
  @Returns			component value

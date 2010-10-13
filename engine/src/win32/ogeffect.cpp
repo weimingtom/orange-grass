@@ -37,6 +37,12 @@ void COGEffect::SetDirection (const Vec3& _vDir)
 }
 
 
+// Update position.
+void COGEffect::UpdatePosition (const Vec3& _vPosition)
+{
+}
+
+
 // Render.
 void COGEffect::Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame)
 {

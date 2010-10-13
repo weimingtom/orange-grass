@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Params>
 	<Physics 
-		max_speed = "0.4" 
-		acceleration = "0.15" 
+		max_speed = "0.1" 
+		acceleration = "0.01" 
 		max_strafe_speed = "0.0" 
 		roll_speed = "0.0" 
 		max_roll_angle = "0.0" 
+		torque = "0.0045"
 		type = "missile"
 		/>
 	<Actor 

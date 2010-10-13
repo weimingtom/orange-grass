@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Params>
-	<Physics 
-		max_speed = "0.0" 
-		acceleration = "0.0" 
-		max_strafe_speed = "0.0" 
-		roll_speed = "0.0" 
-		max_roll_angle = "0.0" 
-		type = "static"
-		/>
 	<Actor 
 		type = "static"
 		model = "bush_01"

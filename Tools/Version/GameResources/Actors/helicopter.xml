@@ -5,7 +5,8 @@
 		acceleration = "0.0" 
 		max_strafe_speed = "0.01" 
 		roll_speed = "0.0002" 
-		max_roll_angle = "0.5" 
+		max_roll_angle = "0.5"
+		torque = "0.0045"
 		type = "player"
 		/>
 	<Actor 

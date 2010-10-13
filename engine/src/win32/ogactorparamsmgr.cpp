@@ -81,6 +81,7 @@ bool COGActorParamsMgr::LoadParamsConfig (const std::string& _Alias, const std::
         pParam->physics.fStrafeMaxSpeed = m_pReader->ReadFloatParam(pPhysicsNode, "max_strafe_speed");
         pParam->physics.fRollSpeed = m_pReader->ReadFloatParam(pPhysicsNode, "roll_speed");
         pParam->physics.fMaxRollAngle = m_pReader->ReadFloatParam(pPhysicsNode, "max_roll_angle");
+		pParam->physics.fTorque = m_pReader->ReadFloatParam(pPhysicsNode, "torque");
         pParam->physics.type = ParsePhysicsType(m_pReader->ReadStringParam(pPhysicsNode, "type"));
 		m_pReader->CloseGroupNode(pPhysicsNode);
 	}

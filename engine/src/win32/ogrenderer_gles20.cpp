@@ -211,6 +211,12 @@ void COGRenderer_GLES20::DrawEffectBuffer (void* _pBuffer, int _StartId, int _Nu
 	// color pointer
 	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 36, (void*)((char *)_pBuffer + 20));
     glDrawArrays(GL_TRIANGLE_STRIP, _StartId, _NumVertices);
+
+#ifdef STATISTICS
+	m_pStats->AddVertexCount(_NumVertices, 1);
+	m_pStats->AddDrawCall();
+	m_pStats->AddVBOSwitch();
+#endif
 }
 
 
@@ -222,5 +228,11 @@ void COGRenderer_GLES20::DrawSpriteBuffer (void* _pBuffer, int _StartId, int _Nu
 	// texture coord pointer
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 16, (void*)((char *)_pBuffer + 8));
 	glDrawArrays(GL_TRIANGLE_STRIP, _StartId, _NumVertices);
+
+#ifdef STATISTICS
+	m_pStats->AddVertexCount(_NumVertices, 1);
+	m_pStats->AddDrawCall();
+	m_pStats->AddVBOSwitch();
+#endif
 }
 #endif

@@ -11,7 +11,7 @@
 
 #include "OGEffect.h"
 #include <vector>
-#define MAX_SMOKE_PARTILES 30
+#define MAX_SMOKE_PARTILES 60
 #define SMOKE_VERTICES     MAX_SMOKE_PARTILES*4
 
 struct COSmokeGBillboard
@@ -41,6 +41,9 @@ public:
 	// Update.
 	virtual void Update (unsigned long _ElapsedTime);
 
+	// Update position.
+	virtual void UpdatePosition (const Vec3& _vPosition);
+
 	// Render.
 	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame);
 
@@ -52,8 +55,10 @@ public:
 
 protected:
 	
-	COSmokeGBillboard::BBVert	    m_Vertices[SMOKE_VERTICES];
     std::vector<COSmokeGBillboard>  m_BBList;
+	Vec3							m_vPrevPosition;
+	Vec3							m_vCurPosition;
+	bool							m_bPositionUpdated;
 };
 
 
