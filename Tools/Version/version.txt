@@ -1,6 +1,16 @@
-Tools: ver. 0.10, 01-Oct-2010
+Tools: ver. 0.11, 14-Oct-2010
 
 ChangeList:
+
+0.11 (14-Oct-2010):
+- [OG] added missile actor with missile smoke effect;
+- [OG] added animation controller and sample helicopter propeller animation implementation;
+- [OG] new models integrated;
+- [OG] physics params for static objects are now optional;
+- [Editor] new GUI;
+- [Editor] simple switching between modes ('Esc' switches to existing object editing mode);
+- [Editor] timer-based updates, animations are displayed;
+- [Viewer] new GUI, timer-based updates, possibility to view effects;
 
 0.10 (01-Oct-2010):
 - [OG] object orientation and stabilization workers;
