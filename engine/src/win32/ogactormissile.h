@@ -41,6 +41,9 @@ public:
 	// Fire to target.
 	virtual void Fire (const Vec3& _vTarget);
 
+    // collision event handler
+	virtual bool OnCollision (const IOGCollision& _Collision);
+
 protected:
 
     IOGEffect*  m_pHeadEffect;

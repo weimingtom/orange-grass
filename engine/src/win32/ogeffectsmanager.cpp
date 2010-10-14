@@ -9,6 +9,7 @@
 #include "ogeffectsmanager.h"
 #include "ogplasmaeffect.h"
 #include "ogeffectmissilesmoke.h"
+#include "ogeffectexplosion.h"
 #include "OrangeGrass.h"
 #include <algorithm>
 
@@ -39,6 +40,14 @@ IOGEffect* COGEffectsManager::CreateEffect (OGEffectType _Type)
 	case OG_EFFECT_MISSILESMOKE:
 		{
 			COGEffectMissileSmoke* pEffect = new COGEffectMissileSmoke();
+			pEffect->Init(_Type);
+			return pEffect;
+		}
+		break;
+
+	case OG_EFFECT_EXPLOSION:
+		{
+			COGEffectExplosion* pEffect = new COGEffectExplosion();
 			pEffect->Init(_Type);
 			return pEffect;
 		}

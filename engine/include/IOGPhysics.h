@@ -24,7 +24,8 @@ public:
 	// Create object
 	virtual IOGPhysicalObject* CreateObject (
 		IOGPhysicalParams* _pParams,
-		const IOGAabb& _Aabb ) = 0;
+		const IOGAabb& _Aabb,
+        void* _pActor) = 0;
 
 	// Add object
 	virtual void AddObject (IOGPhysicalObject* _pObject) = 0;

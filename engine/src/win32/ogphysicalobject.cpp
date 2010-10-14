@@ -12,7 +12,9 @@
 
 COGPhysicalObject::COGPhysicalObject () :	m_Type (OG_PHYSICS_NONE),
 											m_pParams(NULL),
-											m_bUpdated(false)
+											m_bUpdated(false),
+                                            m_pListener(NULL),
+                                            m_pActor(NULL)
 {
     m_vScaling = Vec3(1);
     m_vLook = Vec3(0,0,-1);
@@ -25,6 +27,20 @@ COGPhysicalObject::COGPhysicalObject () :	m_Type (OG_PHYSICS_NONE),
 
 COGPhysicalObject::~COGPhysicalObject ()
 {
+}
+
+
+// add collision handler.
+void COGPhysicalObject::AddCollisionListener (IOGCollisionListener* _pListener)
+{
+    m_pListener = _pListener;
+}
+
+
+// check collision.
+bool COGPhysicalObject::CheckCollision (IOGPhysicalObject* _pObject)
+{
+    return false;
 }
 
 
@@ -183,6 +199,8 @@ void COGPhysicalObject::Update (unsigned long _ElapsedTime)
 {
 	if (m_bUpdated)
 		return;
+
+    m_vPrevPosition = m_vPosition;
 
     m_vPosition += m_vMove * (float)_ElapsedTime;
     m_vRotation += m_vTorque * (float)_ElapsedTime;

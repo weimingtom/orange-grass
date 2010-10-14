@@ -21,10 +21,13 @@ COGLandPhysicalObject::~COGLandPhysicalObject ()
 
 
 // create object
-void COGLandPhysicalObject::Create (const IOGAabb& _Aabb, IOGPhysicalParams* _pParams)
+void COGLandPhysicalObject::Create (const IOGAabb& _Aabb, 
+                                    IOGPhysicalParams* _pParams,
+                                    void* _pParentActor)
 {
     m_pParams = _pParams;
 	m_Type = OG_PHYSICS_LANDBOT;
 	m_Aabb = _Aabb;
+    m_pActor = (IOGActor*)_pParentActor;
     m_Obb.Create(m_Aabb);
 }

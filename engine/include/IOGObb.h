@@ -58,6 +58,19 @@ public:
         return m_TransformedAabb.CheckIntersection (vOrg, vOrg + vDirection * 200000.f);
     }
 
+    // Check OBB-line intersection
+    bool CheckLineIntersection (
+        const Vec3&	_vRayStart,
+        const Vec3&	_vRayEnd
+        ) const
+    {
+        Vec3 vOrg = VectorConvertToLocal ( _vRayStart - m_vCenter );
+        Vec3 vDir = (_vRayEnd - _vRayStart);
+        float fLen = vDir.length();
+        Vec3 vDirection = VectorConvertToLocal ( vDir.normalized() );
+        return m_TransformedAabb.CheckIntersection (vOrg, vOrg + vDirection * fLen);
+    }
+
     // Convert point to world space
     Vec3 VectorConvertToWorld (const Vec3& _Vector) const
     {

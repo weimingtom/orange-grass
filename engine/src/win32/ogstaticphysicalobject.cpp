@@ -10,7 +10,7 @@
 #include "ogstaticphysicalobject.h"
 
 
-COGStaticPhysicalObject::COGStaticPhysicalObject () : COGPhysicalObject()
+COGStaticPhysicalObject::COGStaticPhysicalObject ()
 {
 }
 
@@ -21,10 +21,13 @@ COGStaticPhysicalObject::~COGStaticPhysicalObject ()
 
 
 // create object
-void COGStaticPhysicalObject::Create (const IOGAabb& _Aabb, IOGPhysicalParams* _pParams)
+void COGStaticPhysicalObject::Create (const IOGAabb& _Aabb, 
+                                      IOGPhysicalParams* _pParams,
+                                      void* _pParentActor)
 {
     m_pParams = _pParams;
 	m_Type = OG_PHYSICS_STATIC;
 	m_Aabb = _Aabb;
+    m_pActor = (IOGActor*)_pParentActor;
     m_Obb.Create(m_Aabb);
 }

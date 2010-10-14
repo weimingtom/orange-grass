@@ -10,7 +10,7 @@
 #include "ogairphysicalobject.h"
 
 
-COGAirPhysicalObject::COGAirPhysicalObject () : COGPhysicalObject()
+COGAirPhysicalObject::COGAirPhysicalObject ()
 {
 }
 
@@ -21,10 +21,13 @@ COGAirPhysicalObject::~COGAirPhysicalObject ()
 
 
 // create object
-void COGAirPhysicalObject::Create (const IOGAabb& _Aabb, IOGPhysicalParams* _pParams)
+void COGAirPhysicalObject::Create (const IOGAabb& _Aabb, 
+                                   IOGPhysicalParams* _pParams,
+                                   void* _pParentActor)
 {
     m_pParams = _pParams;
 	m_Type = OG_PHYSICS_AIRBOT;
 	m_Aabb = _Aabb;
+    m_pActor = (IOGActor*)_pParentActor;
     m_Obb.Create(m_Aabb);
 }

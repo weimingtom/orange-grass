@@ -24,11 +24,14 @@ COGPlayerPhysicalObject::~COGPlayerPhysicalObject ()
 
 
 // create object
-void COGPlayerPhysicalObject::Create (const IOGAabb& _Aabb, IOGPhysicalParams* _pParams)
+void COGPlayerPhysicalObject::Create (const IOGAabb& _Aabb, 
+                                      IOGPhysicalParams* _pParams,
+                                      void* _pParentActor)
 {
     m_pParams = _pParams;
 	m_Type = OG_PHYSICS_PLAYER;
 	m_Aabb = _Aabb;
+    m_pActor = (IOGActor*)_pParentActor;
     m_Obb.Create(m_Aabb);
     m_vStrafeVec = Vec3(0,0,0);
 }
@@ -62,8 +65,6 @@ void COGPlayerPhysicalObject::Update (unsigned long _ElapsedTime)
     m_vStrafeVec.x /= 1.08f;
     //m_fRolling /= 1.08f;
     //m_vRotation.z /= 1.08f;
-    
-    m_vPrevPosition = m_vPosition;
-	
+    	
 	m_bUpdated = false;
 }

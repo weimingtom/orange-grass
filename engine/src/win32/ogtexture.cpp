@@ -73,12 +73,13 @@ bool COGTexture::Load ()
 	std::vector<IOGMapping*>::iterator iter = m_MappingsList.begin();
 	for (; iter != m_MappingsList.end(); ++iter)
 	{
-		(*iter)->t0 = Vec2(
-			(*iter)->upper_left.x / m_Width, 
-			(m_Height - (*iter)->upper_left.y - (*iter)->size.y) / m_Height);
-		(*iter)->t1 = Vec2(
-			((*iter)->upper_left.x + (*iter)->size.x) / m_Width, 
-			(m_Height - (*iter)->upper_left.y) / m_Height);
+        IOGMapping* pMap = (*iter);
+		pMap->t0 = Vec2(
+			pMap->upper_left.x / m_Width, 
+			(m_Height - pMap->upper_left.y - pMap->size.y) / m_Height);
+		pMap->t1 = Vec2(
+			(pMap->upper_left.x + pMap->size.x) / m_Width, 
+			(m_Height - pMap->upper_left.y) / m_Height);
 	}
 
 	m_LoadState = OG_RESSTATE_LOADED;

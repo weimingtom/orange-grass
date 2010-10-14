@@ -60,7 +60,7 @@ bool COGActorMissile::Create (IOGActorParams* _pParams,
 		return false;
 	}
 	
-    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pHeadEffect->GetAABB());
+    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pHeadEffect->GetAABB(), this);
     if (!m_pPhysicalObject)
 	{
 		OG_LOG_ERROR("Creating COGActorMissile failed, cannot create physical object");
@@ -86,6 +86,7 @@ bool COGActorMissile::Create (IOGActorParams* _pParams,
 void COGActorMissile::OnAddedToManager ()
 {
     GetPhysics()->AddObject(m_pPhysicalObject);
+    m_pPhysicalObject->AddCollisionListener(this);
     GetSceneGraph()->AddEffectNode(m_pNode);
     m_bAdded = true;
 }
@@ -142,4 +143,12 @@ void COGActorMissile::Fire (const Vec3& _vTarget)
     Vec3 vRot = m_pOwner->GetPhysicalObject()->GetRotation();
 	m_pPhysicalObject->SetWorldTransform(vPos, vRot, Vec3(1,1,1));
     Activate(true);
+}
+
+
+// collision event handler
+bool COGActorMissile::OnCollision (const IOGCollision& _Collision)
+{
+    Activate(false);
+    return true;
 }

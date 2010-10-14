@@ -10,6 +10,7 @@
 #define OGPHYSICALOBJECT_H_
 
 #include "IOGPhysicalObject.h"
+#include "IOGActor.h"
 
 
 class COGPhysicalObject : public IOGPhysicalObject
@@ -19,7 +20,16 @@ public:
 	virtual ~COGPhysicalObject ();
 
 	// create object
-	virtual void Create (const IOGAabb& _Aabb, IOGPhysicalParams* _pParams) = 0;
+	virtual void Create (
+        const IOGAabb& _Aabb, 
+        IOGPhysicalParams* _pParams, 
+        void* _pParentActor) = 0;
+
+    // add collision handler.
+    virtual void AddCollisionListener (IOGCollisionListener* _pListener);
+
+    // check collision.
+    virtual bool CheckCollision (IOGPhysicalObject* _pObject);
 
 	// get world transform.
 	virtual const MATRIX& GetWorldTransform () const;
@@ -84,10 +94,13 @@ protected:
     Vec3            m_vRight;
     Vec3            m_vMove;
     Vec3            m_vTorque;
+    Vec3            m_vPrevPosition;
 	IOGAabb			m_Aabb;
 	IOGObb			m_Obb;
 	bool			m_bUpdated;
     IOGPhysicalParams*	m_pParams;
+    IOGCollisionListener*   m_pListener;
+    IOGActor*       m_pActor;
 };
 
 #endif

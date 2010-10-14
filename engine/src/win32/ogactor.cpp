@@ -82,3 +82,10 @@ bool COGActor::CheckIntersection (const Vec3& _vRayStart,
 {
     return m_pPhysicalObject->GetOBB().CheckIntersection (_vRayStart, _vRayDir);
 }
+
+
+// collision event handler
+bool COGActor::OnCollision (const IOGCollision& _Collision)
+{
+    return false;
+}

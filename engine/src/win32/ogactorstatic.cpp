@@ -57,7 +57,7 @@ bool COGActorStatic::Create (IOGActorParams* _pParams,
 		return false;
 	}
 	
-    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pModel->GetAABB());
+    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pModel->GetAABB(), this);
     if (!m_pPhysicalObject)
 	{
 		OG_LOG_ERROR("Creating COGActorStatic failed, cannot create physical object");

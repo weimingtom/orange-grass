@@ -2,6 +2,18 @@
 <Textures>
 	<Texture alias="plasma_01" file="Textures/FX/plasma_head1.pvr" />
 	<Texture alias="smoke_01" file="Textures/FX/smoke_01.pvr" />
+	<Texture alias="explosion" file="Textures/FX/explosion.pvr">
+		<Mappings>
+			<Mapping x="0" y="0" width="128" height="128"/>
+			<Mapping x="128" y="0" width="128" height="128"/>
+			<Mapping x="256" y="0" width="128" height="128"/>
+			<Mapping x="384" y="0" width="128" height="128"/>
+			<Mapping x="0" y="128" width="128" height="128"/>
+			<Mapping x="128" y="128" width="128" height="128"/>
+			<Mapping x="256" y="128" width="128" height="128"/>
+			<Mapping x="384" y="128" width="128" height="128"/>
+		</Mappings>
+	</Texture>
 	<Texture alias="helicopter_body" file="Models/Helicopter/helicopter_body.pvr" />
 	<Texture alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller.pvr" />
 	<Texture alias="land_02" file="Models/Land_objects_02/land_02.pvr" />

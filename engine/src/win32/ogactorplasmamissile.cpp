@@ -60,7 +60,7 @@ bool COGActorPlasmaMissile::Create (IOGActorParams* _pParams,
 		return false;
 	}
 	
-    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pHeadEffect->GetAABB());
+    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pHeadEffect->GetAABB(), this);
     if (!m_pPhysicalObject)
 	{
 		OG_LOG_ERROR("Creating COGActorPlasmaMissile failed, cannot create physical object");

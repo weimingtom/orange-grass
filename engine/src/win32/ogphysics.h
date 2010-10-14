@@ -25,7 +25,8 @@ public:
 	// Create object
 	virtual IOGPhysicalObject* CreateObject (
 		IOGPhysicalParams* _pParams,
-		const IOGAabb& _Aabb );
+		const IOGAabb& _Aabb,
+        void* _pActor);
 
 	// Add object
 	virtual void AddObject (IOGPhysicalObject* _pObject);
@@ -47,8 +48,10 @@ public:
 
 private:
 
+    IOGPhysicalObject*              m_pPlayer;
 	std::list<IOGPhysicalObject*>	m_StaticObjList;
 	std::list<IOGPhysicalObject*>	m_BotObjList;
+	std::list<IOGPhysicalObject*>	m_MissileObjList;
 
 	Vec3    m_vLeftBorder[3];
     Vec3    m_vRightBorder[3];

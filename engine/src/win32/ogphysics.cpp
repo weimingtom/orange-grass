@@ -18,6 +18,7 @@
 
 COGPhysics::COGPhysics ()
 {
+    m_pPlayer = NULL;
 }
 
 
@@ -30,6 +31,8 @@ COGPhysics::~COGPhysics ()
 // Clear scene graph
 void COGPhysics::Clear ()
 {
+	OG_SAFE_DELETE(m_pPlayer);
+
     std::list<IOGPhysicalObject*>::iterator iter;
 
     for (iter = m_StaticObjList.begin(); iter != m_StaticObjList.end(); ++iter)
@@ -43,20 +46,27 @@ void COGPhysics::Clear ()
 		OG_SAFE_DELETE((*iter));
 	}
 	m_BotObjList.clear();
+
+    for (iter = m_MissileObjList.begin(); iter != m_MissileObjList.end(); ++iter)
+    {
+		OG_SAFE_DELETE((*iter));
+	}
+	m_MissileObjList.clear();
 }
 
 
 // Create object
 IOGPhysicalObject* COGPhysics::CreateObject (
 	IOGPhysicalParams* _pParams,
-	const IOGAabb& _Aabb )
+	const IOGAabb& _Aabb,
+    void* _pActor)
 {
 	switch (_pParams->type)
 	{
 	case OG_PHYSICS_STATIC:
 		{
 			COGStaticPhysicalObject* pObj = new COGStaticPhysicalObject();
-			pObj->Create (_Aabb, _pParams);
+			pObj->Create (_Aabb, _pParams, _pActor);
 			return pObj;
 		}
 		break;
@@ -64,7 +74,7 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 	case OG_PHYSICS_LANDBOT:
 		{
 			COGLandPhysicalObject* pObj = new COGLandPhysicalObject();
-			pObj->Create (_Aabb, _pParams);
+			pObj->Create (_Aabb, _pParams, _pActor);
 			return pObj;
 		}
 		break;
@@ -72,7 +82,7 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 	case OG_PHYSICS_MISSILE:
 		{
 			COGMissilePhysicalObject* pObj = new COGMissilePhysicalObject();
-			pObj->Create (_Aabb, _pParams);
+			pObj->Create (_Aabb, _pParams, _pActor);
 			return pObj;
 		}
 		break;
@@ -80,7 +90,7 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 	case OG_PHYSICS_AIRBOT:
 		{
 			COGAirPhysicalObject* pObj = new COGAirPhysicalObject();
-			pObj->Create (_Aabb, _pParams);
+			pObj->Create (_Aabb, _pParams, _pActor);
 			return pObj;
 		}
 		break;
@@ -88,7 +98,7 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 	case OG_PHYSICS_PLAYER:
 		{
 			COGPlayerPhysicalObject* pObj = new COGPlayerPhysicalObject();
-			pObj->Create (_Aabb, _pParams);
+			pObj->Create (_Aabb, _pParams, _pActor);
 			return pObj;
 		}
 		break;
@@ -111,11 +121,17 @@ void COGPhysics::AddObject (IOGPhysicalObject* _pObject)
 		break;
 
 	case OG_PHYSICS_MISSILE:
-	case OG_PHYSICS_LANDBOT:
+		m_MissileObjList.push_back(_pObject);
+		break;
+
+    case OG_PHYSICS_LANDBOT:
 	case OG_PHYSICS_AIRBOT:
-	case OG_PHYSICS_PLAYER:
 		m_BotObjList.push_back(_pObject);
 		break;
+
+    case OG_PHYSICS_PLAYER:
+        m_pPlayer = _pObject;
+        break;
 
 	default:
 		break;
@@ -140,9 +156,16 @@ void COGPhysics::RemoveObject (IOGPhysicalObject* _pObject)
 		break;
 
 	case OG_PHYSICS_MISSILE:
-	case OG_PHYSICS_LANDBOT:
+		iter = std::find(m_MissileObjList.begin(), m_MissileObjList.end(), _pObject);
+		if (iter != m_MissileObjList.end())
+		{
+			OG_SAFE_DELETE((*iter));
+			m_MissileObjList.erase(iter);
+		}
+		break;
+
+    case OG_PHYSICS_LANDBOT:
 	case OG_PHYSICS_AIRBOT:
-	case OG_PHYSICS_PLAYER:
 		iter = std::find(m_BotObjList.begin(), m_BotObjList.end(), _pObject);
 		if (iter != m_BotObjList.end())
 		{
@@ -150,6 +173,12 @@ void COGPhysics::RemoveObject (IOGPhysicalObject* _pObject)
 			m_BotObjList.erase(iter);
 		}
 		break;
+
+    case OG_PHYSICS_PLAYER:
+        {
+    	    OG_SAFE_DELETE(m_pPlayer);
+        }
+        break;
 
 	default:
 		break;
@@ -160,10 +189,28 @@ void COGPhysics::RemoveObject (IOGPhysicalObject* _pObject)
 // Update transforms.
 void COGPhysics::Update (unsigned long _ElapsedTime)
 {
+    if (m_pPlayer)
+    {
+        m_pPlayer->Update(_ElapsedTime);
+    }
+
     std::list<IOGPhysicalObject*>::iterator iter = m_BotObjList.begin();
     for (; iter != m_BotObjList.end(); ++iter)
     {
 		(*iter)->Update(_ElapsedTime);
+    }
+
+    iter = m_MissileObjList.begin();
+    for (; iter != m_MissileObjList.end(); ++iter)
+    {
+		(*iter)->Update(_ElapsedTime);
+
+        std::list<IOGPhysicalObject*>::iterator coll_iter = m_BotObjList.begin();
+        for (; coll_iter != m_BotObjList.end(); ++coll_iter)
+        {
+            if ((*iter)->CheckCollision((*coll_iter)))
+                break;
+        }
     }
 }
 
@@ -171,14 +218,23 @@ void COGPhysics::Update (unsigned long _ElapsedTime)
 // Update transforms for the whole scene.
 void COGPhysics::UpdateAll (unsigned long _ElapsedTime)
 {
-    std::list<IOGPhysicalObject*>::iterator iter;
+    if (m_pPlayer)
+    {
+        m_pPlayer->Update(_ElapsedTime);
+    }
 
+    std::list<IOGPhysicalObject*>::iterator iter;
     for (iter = m_BotObjList.begin(); iter != m_BotObjList.end(); ++iter)
     {
 		(*iter)->Update(_ElapsedTime);
     }
 
 	for (iter = m_StaticObjList.begin(); iter != m_StaticObjList.end(); ++iter)
+    {
+		(*iter)->Update(_ElapsedTime);
+    }
+
+	for (iter = m_MissileObjList.begin(); iter != m_MissileObjList.end(); ++iter)
     {
 		(*iter)->Update(_ElapsedTime);
     }

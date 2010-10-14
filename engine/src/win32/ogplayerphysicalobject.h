@@ -19,7 +19,10 @@ public:
 	virtual ~COGPlayerPhysicalObject ();
 
 	// create object
-	virtual void Create (const IOGAabb& _Aabb, IOGPhysicalParams* _pParams);
+	virtual void Create (
+        const IOGAabb& _Aabb, 
+        IOGPhysicalParams* _pParams,
+        void* _pParentActor);
 
 	// strafe.
 	virtual void Strafe (float _fDir);
@@ -31,7 +34,6 @@ protected:
 
     Vec3    m_vStrafeVec;
     float   m_fRolling;
-    Vec3    m_vPrevPosition;
 	IOGPhysics*	m_pPhysics;
 };
 

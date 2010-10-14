@@ -421,6 +421,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\ogeffectexplosion.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogeffectexplosion.h"
+						>
+					</File>
+					<File
 						RelativePath=".\ogeffectmissilesmoke.cpp"
 						>
 					</File>
@@ -895,6 +903,10 @@
 			<Filter
 				Name="Physics"
 				>
+				<File
+					RelativePath="..\..\include\IOGCollisionListener.h"
+					>
+				</File>
 				<File
 					RelativePath="..\..\include\IOGPhysicalObject.h"
 					>

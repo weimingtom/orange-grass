@@ -10,6 +10,7 @@
 #define IOGPHYSICALOBJECT_H_
 
 #include "IOGPhysicalParams.h"
+#include "IOGCollisionListener.h"
 
 
 class IOGPhysicalObject
@@ -19,7 +20,13 @@ public:
 	virtual ~IOGPhysicalObject () {}
 
 	// create object
-	virtual void Create (const IOGAabb& _Aabb, IOGPhysicalParams* _pParams) = 0;
+	virtual void Create (const IOGAabb& _Aabb, IOGPhysicalParams* _pParams, void* _pParentActor) = 0;
+
+    // add collision handler.
+    virtual void AddCollisionListener (IOGCollisionListener* _pListener) = 0;
+
+    // check collision.
+    virtual bool CheckCollision (IOGPhysicalObject* _pObject) = 0;
 
 	// get world transform.
 	virtual const MATRIX& GetWorldTransform () const = 0;

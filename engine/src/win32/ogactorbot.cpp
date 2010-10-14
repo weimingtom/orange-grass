@@ -75,7 +75,7 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 	    }
     }
 	
-    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pModel->GetAABB());
+    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pModel->GetAABB(), this);
     if (!m_pPhysicalObject)
 	{
 		OG_LOG_ERROR("Creating COGActorBot failed, cannot create physical object");
@@ -125,4 +125,11 @@ void COGActorBot::Update (unsigned long _ElapsedTime)
     {
     	m_pNodePropeller->Update(_ElapsedTime);
     }
+}
+
+
+// collision event handler
+bool COGActorBot::OnCollision (const IOGCollision& _Collision)
+{
+    return false;
 }

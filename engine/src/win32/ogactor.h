@@ -13,7 +13,7 @@
 #include <string>
 
 
-class COGActor : public IOGActor
+class COGActor : public IOGActor, public IOGCollisionListener
 {
 public:
 	COGActor();
@@ -54,6 +54,9 @@ public:
 	virtual bool CheckIntersection (
         const Vec3& _vRayStart,
         const Vec3& _vRayDir ) const;
+
+    // collision event handler
+	virtual bool OnCollision (const IOGCollision& _Collision);
 
 protected:
 

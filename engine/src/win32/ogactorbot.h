@@ -10,6 +10,7 @@
 #define OGACTORBOT_H_
 
 #include "ogactor.h"
+#include "IOGCollisionListener.h"
 
 
 class COGActorBot : public COGActor
@@ -30,6 +31,9 @@ public:
 
 	// Adding to actor manager event handler.
 	virtual void OnAddedToManager ();
+
+    // collision event handler
+	virtual bool OnCollision (const IOGCollision& _Collision);
 
 protected:
 

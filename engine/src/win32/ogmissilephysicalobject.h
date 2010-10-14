@@ -19,7 +19,13 @@ public:
 	virtual ~COGMissilePhysicalObject ();
 
 	// create object
-	virtual void Create (const IOGAabb& _Aabb, IOGPhysicalParams* _pParams);
+	virtual void Create (
+        const IOGAabb& _Aabb, 
+        IOGPhysicalParams* _pParams,
+        void* _pParentActor);
+
+    // check collision.
+    virtual bool CheckCollision (IOGPhysicalObject* _pObject);
 };
 
 #endif
