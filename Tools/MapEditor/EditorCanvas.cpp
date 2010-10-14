@@ -262,7 +262,9 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
         break;
 
     case WXK_ESCAPE:
+        m_SettingsMode = SETMODE_NONE;
 		GetToolSettings()->SetEditMode(EDITMODE_ADJUST);
+		g_pScene->SetEditMode(EDITMODE_ADJUST);
         break;
 
     case 'D':

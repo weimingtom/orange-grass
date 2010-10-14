@@ -10,6 +10,7 @@
 #include "ViewerScene.h"
 #include "OrangeGrass.h"
 #include <IOGGraphicsHelpers.h>
+#include "IOGMath.h"
 
 
 CViewerScene::CViewerScene()
@@ -220,4 +221,10 @@ void CViewerScene::CameraZoom (float _fFactor)
 void CViewerScene::CameraMove (float _fX, float _fZ)
 {
 	m_pCamera->Strafe(5.5f, Vec3(_fX, 0, _fZ));
+}
+
+
+// Camera rotate horizontally
+void CViewerScene::CameraRotateHor (float _fAngle)
+{
 }

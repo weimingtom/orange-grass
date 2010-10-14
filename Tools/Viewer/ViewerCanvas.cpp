@@ -201,6 +201,20 @@ void CViewerCanvas::OnMouseLeave(wxMouseEvent& event)
 /// @param event - event structute.
 void CViewerCanvas::OnMouseMove(wxMouseEvent& event)
 {
+	if (bLmb)
+	{
+		int prev_x = mouse_x;
+		int prev_y = mouse_y;
+
+		mouse_x = event.GetX();
+		mouse_y = event.GetY();
+
+		int delta = mouse_x - prev_x;
+		g_pScene->CameraRotateHor(/*delta > 0 ? 0.01f : -0.01f*/0.01f);
+	}
+
+	mouse_x = event.GetX();
+	mouse_y = event.GetY();
 }
 
 

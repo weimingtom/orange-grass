@@ -45,6 +45,9 @@ public:
 	// Camera move
 	void CameraMove (float _fX, float _fZ);
 
+	// Camera rotate horizontally
+	void CameraRotateHor (float _fAngle);
+
 	// Set AABB mode
 	void SetAABBMode (bool _bEnable) {m_bShowAABB = _bEnable;}
 
