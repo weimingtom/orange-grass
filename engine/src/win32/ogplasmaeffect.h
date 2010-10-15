@@ -34,9 +34,18 @@ public:
 	virtual void Stop ();
 
 protected:
+
+	struct COGBillboard
+	{
+		float	scale;
+		Vec3	offset;
+		BBVert*	pVertices;
+	};
+
+protected:
 	
-	COGBillboard::BBVert	m_Vertices[PLASMA_VERTICES];
-	COGBillboard			m_Particles[MAX_PLASMA_PARTILES];
+	BBVert			m_Vertices[PLASMA_VERTICES];
+	COGBillboard	m_Particles[MAX_PLASMA_PARTILES];
 };
 
 

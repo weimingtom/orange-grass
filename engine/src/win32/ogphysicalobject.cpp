@@ -44,6 +44,25 @@ bool COGPhysicalObject::CheckCollision (IOGPhysicalObject* _pObject)
 }
 
 
+// respond on a collision.
+bool COGPhysicalObject::RespondOnCollision (const IOGCollision& _Collision)
+{
+	if (!m_pListener)
+		return false;
+
+	m_pListener->OnCollision(_Collision);
+	return true;
+}
+
+
+// Set active state.
+void COGPhysicalObject::Activate (bool _bActive)
+{
+	m_bActive = _bActive;
+	m_bUpdated = !m_bActive;
+}
+
+
 // get world transform.
 const MATRIX& COGPhysicalObject::GetWorldTransform () const
 {

@@ -28,6 +28,12 @@ public:
     // check collision.
     virtual bool CheckCollision (IOGPhysicalObject* _pObject) = 0;
 
+    // respond on a collision.
+    virtual bool RespondOnCollision (const IOGCollision& _Collision) = 0;
+
+	// Set active state.
+	virtual void Activate (bool _bActive) = 0;
+
 	// get world transform.
 	virtual const MATRIX& GetWorldTransform () const = 0;
 
@@ -72,6 +78,9 @@ public:
 
 	// get physics type.
 	virtual OGPhysicsType GetPhysicsType () const = 0;
+
+	// get actor.
+	virtual void* GetActor () = 0;
 
 	// get OBB.
 	virtual const IOGObb& GetOBB () const = 0;

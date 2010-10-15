@@ -15,18 +15,11 @@
 #include "IOGRenderer.h"
 
 
-struct COGBillboard
+struct BBVert
 {
-	struct BBVert
-	{
-		Vec3 p;
-		Vec2 t;
-		Vec4 c;
-	};
-
-	float	scale;
-	Vec3	offset;
-	BBVert*	pVertices;
+	Vec3 p;
+	Vec2 t;
+	Vec4 c;
 };
 
 

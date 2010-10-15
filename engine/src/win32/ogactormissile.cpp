@@ -100,6 +100,13 @@ void COGActorMissile::Update (unsigned long _ElapsedTime)
 		m_FlightWorker.Update(_ElapsedTime);
 		if (m_FlightWorker.IsFinished())
 		{
+			m_pHeadEffect->Stop();
+		}
+	}
+	else
+	{
+		if (m_pHeadEffect->GetStatus() == OG_EFFECTSTATUS_INACTIVE)
+		{
 			Activate(false);
 		}
 	}
@@ -111,10 +118,9 @@ void COGActorMissile::Activate (bool _bActive)
 {
 	m_bActive = _bActive;
 
-	m_FlightWorker.Reset();
-	m_FlightWorker.Activate(m_bActive);
 	if (m_bActive)
 	{
+		m_pPhysicalObject->Activate(true);
 		m_FlightWorker.Reset();
 		m_FlightWorker.Activate(true);
 		m_pHeadEffect->Start();
@@ -122,8 +128,7 @@ void COGActorMissile::Activate (bool _bActive)
 	}
 	else
 	{
-		m_FlightWorker.Activate(false);
-		m_pHeadEffect->Stop();
+		m_pPhysicalObject->Activate(false);
 	}
 }
 
@@ -149,6 +154,7 @@ void COGActorMissile::Fire (const Vec3& _vTarget)
 // collision event handler
 bool COGActorMissile::OnCollision (const IOGCollision& _Collision)
 {
-    Activate(false);
+	m_pPhysicalObject->Activate(false);
+	m_FlightWorker.Activate(false);
     return true;
 }

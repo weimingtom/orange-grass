@@ -31,6 +31,12 @@ public:
     // check collision.
     virtual bool CheckCollision (IOGPhysicalObject* _pObject);
 
+    // respond on a collision.
+    virtual bool RespondOnCollision (const IOGCollision& _Collision);
+
+	// Set active state.
+	virtual void Activate (bool _bActive);
+
 	// get world transform.
 	virtual const MATRIX& GetWorldTransform () const;
 
@@ -76,6 +82,9 @@ public:
 	// get physics type.
 	virtual OGPhysicsType GetPhysicsType () const;
 
+	// get actor.
+	virtual void* GetActor () {return m_pActor;}
+
 	// get OBB.
 	virtual const IOGObb& GetOBB () const;
 
@@ -98,6 +107,7 @@ protected:
 	IOGAabb			m_Aabb;
 	IOGObb			m_Obb;
 	bool			m_bUpdated;
+	bool			m_bActive;
     IOGPhysicalParams*	m_pParams;
     IOGCollisionListener*   m_pListener;
     IOGActor*       m_pActor;

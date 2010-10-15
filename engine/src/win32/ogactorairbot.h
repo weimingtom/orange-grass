@@ -32,9 +32,6 @@ public:
 	virtual void Update (unsigned long _ElapsedTime);
 
 protected:
-
-    IOGEffect*  m_pExplosionEffect;
-    IOGSgNode*  m_pExplosionNode;
 };
 
 

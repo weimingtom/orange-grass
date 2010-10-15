@@ -1,0 +1,1 @@
+FOR /F "tokens=*" %%G IN ('DIR /b /ad /s "*.svn"') DO RMDIR /S /Q "%%G"

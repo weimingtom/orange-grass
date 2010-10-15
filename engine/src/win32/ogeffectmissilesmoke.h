@@ -11,24 +11,6 @@
 
 #include "OGEffect.h"
 #include <vector>
-#define MAX_SMOKE_PARTILES 60
-#define SMOKE_VERTICES     MAX_SMOKE_PARTILES*4
-
-struct COSmokeGBillboard
-{
-	struct BBVert
-	{
-		Vec3 p;
-		Vec2 t;
-		Vec4 c;
-	};
-
-    bool    bDirty;
-	float	scale;
-    float   angle;
-	Vec3	offset;
-	BBVert	pVertices[4];
-};
 
 
 class COGEffectMissileSmoke : public COGEffect
@@ -55,8 +37,19 @@ public:
 	virtual void Stop ();
 
 protected:
-	
-    std::vector<COSmokeGBillboard>  m_BBList;
+
+	struct COGSmokeBillboard
+	{
+		bool    bDirty;
+		float	scale;
+		float   angle;
+		Vec3	offset;
+		BBVert	pVertices[4];
+	};
+
+protected:
+
+    std::vector<COGSmokeBillboard>  m_BBList;
 	Vec3							m_vPrevPosition;
 	Vec3							m_vCurPosition;
 	bool							m_bPositionUpdated;

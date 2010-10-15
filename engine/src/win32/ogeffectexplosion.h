@@ -37,13 +37,6 @@ protected:
 
     struct COGExplosionBillboard
     {
-	    struct BBVert
-	    {
-		    Vec3 p;
-		    Vec2 t;
-		    Vec4 c;
-	    };
-
         bool    bDirty;
         float   frame;
 	    float	scale;

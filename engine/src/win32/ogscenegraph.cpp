@@ -184,6 +184,9 @@ void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 	vUp.normalize();
 	vRight.normalize();
 
+	OG_LOG_INFO("SG Up = [%f, %f, %f]", 
+		vUp.x, vUp.y, vUp.z);
+
 	float fCameraZ = _pCamera->GetPosition().z;
     TNodesList::iterator iter = m_EffectNodesList.begin();
     for (; iter != m_EffectNodesList.end(); ++iter)
@@ -191,9 +194,9 @@ void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 		IOGSgNode* pNode = (*iter);
 		float fObjectZ = pNode->GetOBB().m_vCenter.z;
 
-		if (fObjectZ <= fCameraZ)
+		//if (fObjectZ <= fCameraZ)
 		{
-			if ((fCameraZ - fObjectZ) < m_fViewDistance)
+			//if ((fCameraZ - fObjectZ) < m_fViewDistance)
 			{
                 ((IOGEffect*)pNode->GetRenderable())->SetBillboardVectors(vUp, vRight);
 				pNode->Render();

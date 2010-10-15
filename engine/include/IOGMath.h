@@ -234,4 +234,12 @@ static void Rotate2DPoint ( float& _X, float& _Y, float _Angle, float _CenterX, 
     _Y = RetY + _CenterY;
 }
 
+
+// get random number in range
+static int GetRandomRange (int _Min, int _Max)
+{
+	return _Min + abs ( rand() % _Max );
+}
+
+
 #endif

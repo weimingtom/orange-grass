@@ -39,15 +39,21 @@ bool COGMissilePhysicalObject::CheckCollision (IOGPhysicalObject* _pObject)
     if (!m_pListener)
         return false;
 
-    const IOGObb& obb = _pObject->GetOBB();
+	if (!m_bActive)
+		return false;
+
     if (m_vPrevPosition == m_vPosition)
         return false;
+
+	const IOGObb& obb = _pObject->GetOBB();
     if (obb.CheckLineIntersection(m_vPrevPosition, m_vPosition))
     {
         IOGCollision collision;
-        collision.pActorCollided = NULL;
+        collision.pActorMissile = m_pActor;
+		collision.pActorBot = _pObject->GetActor();
         if (m_pListener->OnCollision(collision))
         {
+			_pObject->RespondOnCollision(collision);
             return true;
         }
     }

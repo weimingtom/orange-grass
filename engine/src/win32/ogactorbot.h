@@ -39,6 +39,9 @@ protected:
 
 	IOGSgNode*	m_pNodePropeller;
     IOGModel*   m_pModelPropeller;
+
+	IOGEffect*  m_pExplosionEffect;
+    IOGSgNode*  m_pExplosionNode;
 };
 
 
