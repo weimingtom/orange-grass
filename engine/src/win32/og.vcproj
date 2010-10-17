@@ -249,6 +249,14 @@
 					Name="Workers"
 					>
 					<File
+						RelativePath=".\ogbotflightworker.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogbotflightworker.h"
+						>
+					</File>
+					<File
 						RelativePath=".\ogmissileflightworker.cpp"
 						>
 					</File>

@@ -101,6 +101,14 @@ void CGameScreenController::RenderScene ()
 
 	m_pRenderer->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
 
+ //   m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
+ //   m_pSg->RenderAll(m_pCamera);
+	//m_pRenderer->FinishRenderMode();
+ //   m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);
+ //   m_pSg->RenderAllEffects(m_pCamera);
+	//m_pRenderer->FinishRenderMode();
+
+
 	m_pRenderer->EnableFog(true);
 
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);

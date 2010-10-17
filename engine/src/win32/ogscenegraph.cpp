@@ -183,9 +183,7 @@ void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 	MatrixGetBasis(vRight, vUp, vLook, mView);
 	vUp.normalize();
 	vRight.normalize();
-
-	OG_LOG_INFO("SG Up = [%f, %f, %f]", 
-		vUp.x, vUp.y, vUp.z);
+	vLook.normalize();
 
 	float fCameraZ = _pCamera->GetPosition().z;
     TNodesList::iterator iter = m_EffectNodesList.begin();
@@ -194,11 +192,11 @@ void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 		IOGSgNode* pNode = (*iter);
 		float fObjectZ = pNode->GetOBB().m_vCenter.z;
 
-		//if (fObjectZ <= fCameraZ)
+		if (fObjectZ <= fCameraZ)
 		{
-			//if ((fCameraZ - fObjectZ) < m_fViewDistance)
+			if ((fCameraZ - fObjectZ) < m_fViewDistance)
 			{
-                ((IOGEffect*)pNode->GetRenderable())->SetBillboardVectors(vUp, vRight);
+                ((IOGEffect*)pNode->GetRenderable())->SetBillboardVectors(vLook, vUp, vRight);
 				pNode->Render();
 			}
 		}
@@ -222,12 +220,13 @@ void COGSceneGraph::RenderAllEffects (IOGCamera* _pCamera)
 	MatrixGetBasis(vRight, vUp, vLook, mView);
 	vUp.normalize();
 	vRight.normalize();
+	vLook.normalize();
 
     TNodesList::iterator iter = m_EffectNodesList.begin();
     for (; iter != m_EffectNodesList.end(); ++iter)
     {
 		IOGSgNode* pNode = (*iter);
-        ((IOGEffect*)pNode->GetRenderable())->SetBillboardVectors(vUp, vRight);
+        ((IOGEffect*)pNode->GetRenderable())->SetBillboardVectors(vLook, vUp, vRight);
         pNode->Render();
     }
 }

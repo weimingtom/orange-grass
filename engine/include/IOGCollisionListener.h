@@ -9,18 +9,20 @@
 #ifndef IOGCOLLISIONLISTENER_H_
 #define IOGCOLLISIONLISTENER_H_
 
+#include "IOGPhysicalObject.h"
+
 
 struct IOGCollision
 {
-	void* pActorMissile;
-	void* pActorBot;
+    void* pActorBot;
+    void* pActorMissile;
 };
 
 
 class IOGCollisionListener
 {
 public:
-    // collision event handler
+	// collision event handler
 	virtual bool OnCollision (const IOGCollision& _Collision) = 0;
 };
 

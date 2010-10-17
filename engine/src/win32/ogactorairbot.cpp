@@ -30,6 +30,9 @@ bool COGActorAirBot::Create (IOGActorParams* _pParams,
     if (!COGActorBot::Create(_pParams, _vPos, _vRot, _vScale))
         return false;
 
+	m_FlightWorker.Create(this);
+    Activate(false);
+
     return true;
 }
 
@@ -41,8 +44,36 @@ void COGActorAirBot::OnAddedToManager ()
 }
 
 
+// Set active state
+void COGActorAirBot::Activate (bool _bActive)
+{
+	m_bActive = _bActive;
+
+	if (m_bActive)
+	{
+		m_pPhysicalObject->Activate(true);
+		m_FlightWorker.Reset();
+		m_FlightWorker.Activate(true);
+	}
+	else
+	{
+		m_pPhysicalObject->Activate(false);
+		m_FlightWorker.Activate(false);
+	}
+}
+
+
 // Update actor.
 void COGActorAirBot::Update (unsigned long _ElapsedTime)
 {
     COGActorBot::Update(_ElapsedTime);
+
+    if (m_FlightWorker.IsActive())
+	{
+		m_FlightWorker.Update(_ElapsedTime);
+		if (m_FlightWorker.IsFinished())
+		{
+			Activate(false);
+		}
+	}
 }

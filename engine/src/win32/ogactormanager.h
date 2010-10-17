@@ -49,9 +49,10 @@ public:
     virtual IOGActor* GetPlayersActor ();
 
 private:
+	typedef std::list<IOGActor*>    TActorsList;
 
-    std::list<IOGActor*>	m_ActorsList;
-	IOGActor*				m_pPlayersActor;
+    TActorsList	    m_ActorsList;
+	IOGActor*		m_pPlayersActor;
 };
 
 #endif

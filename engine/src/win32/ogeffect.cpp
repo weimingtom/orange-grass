@@ -23,8 +23,9 @@ COGEffect::~COGEffect()
 
 
 // Set billboard basis vectors.
-void COGEffect::SetBillboardVectors (const Vec3& _vUp, const Vec3& _vRight)
+void COGEffect::SetBillboardVectors (const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight)
 {
+    m_vCameraLook = _vLook;
 	m_vCameraUp = _vUp;
 	m_vCameraRight = _vRight;
 }

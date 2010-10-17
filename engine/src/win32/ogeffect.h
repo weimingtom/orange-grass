@@ -33,7 +33,7 @@ public:
 	virtual void Init(OGEffectType _Type) = 0;
 
 	// Set billboard basis vectors.
-	virtual void SetBillboardVectors (const Vec3& _vUp, const Vec3& _vRight);
+	virtual void SetBillboardVectors (const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight);
 
 	// Set direction.
 	virtual void SetDirection (const Vec3& _vDir);
@@ -80,6 +80,7 @@ public:
 protected:
 	
     IOGAabb         m_AABB;
+	Vec3			m_vCameraLook;
 	Vec3			m_vCameraUp;
 	Vec3			m_vCameraRight;
 	Vec3			m_Direction;

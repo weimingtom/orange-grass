@@ -37,7 +37,6 @@ protected:
 
     struct COGExplosionBillboard
     {
-        bool    bDirty;
         float   frame;
 	    float	scale;
         float   angle;

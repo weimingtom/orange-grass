@@ -10,6 +10,7 @@
 #define OGACTORAIRBOT_H_
 
 #include "ogactorbot.h"
+#include "ogbotflightworker.h"
 
 
 class COGActorAirBot : public COGActorBot
@@ -28,10 +29,15 @@ public:
 	// Adding to actor manager event handler.
 	virtual void OnAddedToManager ();
 
+	// Set active state
+	virtual void Activate (bool _bActive);
+
 	// Update actor.
 	virtual void Update (unsigned long _ElapsedTime);
 
 protected:
+
+    COGBotFlightWorker  m_FlightWorker;
 };
 
 

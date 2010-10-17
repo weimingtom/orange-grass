@@ -38,7 +38,7 @@ public:
 	virtual void Init(OGEffectType _Type) = 0;
 
 	// Set billboard basis vectors.
-	virtual void SetBillboardVectors (const Vec3& _vUp, const Vec3& _vRight) = 0;
+	virtual void SetBillboardVectors (const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight) = 0;
 
 	// Set direction.
 	virtual void SetDirection (const Vec3& _vDir) = 0;

@@ -43,7 +43,7 @@ void COGEffectExplosion::Update (unsigned long _ElapsedTime)
 
 	float fFrameInc = 0.38f;
 	float fInitialScale = 8.0f;
-	float fScaleInc = 0.05f;
+	float fScaleInc = 0.2f;
 	int numVertsAtOnce = 5;
     float fRotateInc = 0.1f;
 	Vec4 color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -88,7 +88,6 @@ void COGEffectExplosion::Update (unsigned long _ElapsedTime)
             particle.scale = fInitialScale;
             particle.frame = 0.0f;
             particle.angle = GetRandomRange(-314,314) * 0.01f;
-            particle.bDirty = true;
             particle.pVertices[0].c = color;
             particle.pVertices[1].c = color;
             particle.pVertices[2].c = color;
@@ -105,27 +104,34 @@ void COGEffectExplosion::Render (const MATRIX& _mWorld, unsigned int _Frame)
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-    m_pRenderer->SetModelMatrix(_mWorld);
+    MATRIX mId; 
+    MatrixIdentity(mId);
+    m_pRenderer->SetModelMatrix(mId);
 	m_pRenderer->SetMaterial(m_pMaterial);
 	m_pRenderer->SetTexture(m_pTexture);
 
-	OG_LOG_INFO("U [%f, %f, %f], R [%f, %f, %f]", 
-		m_vCameraUp.x, m_vCameraUp.y, m_vCameraUp.z, m_vCameraRight.x, m_vCameraRight.y, m_vCameraRight.z);
-
+    MATRIX mR;
+    Vec3 vOffset = Vec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
     std::vector<COGExplosionBillboard>::iterator iter = m_BBList.begin();
     for (; iter != m_BBList.end(); ++iter)
     {
         COGExplosionBillboard& particle = (*iter);
-		Vec3 vSUp = m_vCameraUp * particle.scale;
+
+        MatrixRotationAxis(mR, particle.angle, m_vCameraLook.x, m_vCameraLook.y, m_vCameraLook.z);
+
+        Vec3 vSUp = m_vCameraUp * particle.scale;
 		Vec3 vSRight = m_vCameraRight * particle.scale;
-        if (particle.bDirty)
-        {
-            particle.bDirty = false;
-        }
-		particle.pVertices[0].p = vSRight + vSUp;// + particle.offset;
-		particle.pVertices[1].p = -vSRight + vSUp;// + particle.offset;
-		particle.pVertices[2].p = vSRight - vSUp;// + particle.offset;
-		particle.pVertices[3].p = -vSRight - vSUp;// + particle.offset;
+
+        MatrixVecMultiply(particle.pVertices[0].p, vSRight + vSUp, mR);
+        MatrixVecMultiply(particle.pVertices[1].p, -vSRight + vSUp, mR);
+        MatrixVecMultiply(particle.pVertices[2].p, vSRight - vSUp, mR);
+        MatrixVecMultiply(particle.pVertices[3].p, -vSRight - vSUp, mR);
+
+        //particle.offset = vOffset;
+		particle.pVertices[0].p += particle.offset + vOffset;
+		particle.pVertices[1].p += particle.offset + vOffset;
+		particle.pVertices[2].p += particle.offset + vOffset;
+		particle.pVertices[3].p += particle.offset + vOffset;
 
         int cur_fr = (int)particle.frame;
 
@@ -133,14 +139,6 @@ void COGEffectExplosion::Render (const MATRIX& _mWorld, unsigned int _Frame)
         particle.pVertices[1].t = Vec2(m_Frames[cur_fr].t0.x, m_Frames[cur_fr].t0.y);
         particle.pVertices[2].t = Vec2(m_Frames[cur_fr].t1.x, m_Frames[cur_fr].t1.y);
         particle.pVertices[3].t = Vec2(m_Frames[cur_fr].t0.x, m_Frames[cur_fr].t1.y);
-
-		float cx = (m_Frames[cur_fr].t1.x - m_Frames[cur_fr].t0.x) / 2.0f + m_Frames[cur_fr].t0.x;
-        float cy = (m_Frames[cur_fr].t1.y - m_Frames[cur_fr].t0.y) / 2.0f + m_Frames[cur_fr].t0.y;
-
-		Rotate2DPoint(particle.pVertices[0].t.x, particle.pVertices[0].t.y, particle.angle, cx, cy);
-        Rotate2DPoint(particle.pVertices[1].t.x, particle.pVertices[1].t.y, particle.angle, cx, cy);
-        Rotate2DPoint(particle.pVertices[2].t.x, particle.pVertices[2].t.y, particle.angle, cx, cy);
-        Rotate2DPoint(particle.pVertices[3].t.x, particle.pVertices[3].t.y, particle.angle, cx, cy);
 
 		m_pRenderer->DrawEffectBuffer(&particle.pVertices[0], 0, 4);
     }

@@ -143,13 +143,16 @@ IOGActor* COGActorManager::CreateActor (
 // Add actor to the list.
 void COGActorManager::AddActor (IOGActor* _pActor)
 {
-	if (_pActor->GetType() == OG_ACTOR_PLAYER)
-	{
-		m_pPlayersActor = _pActor;
-	}
-
     _pActor->OnAddedToManager();
-	m_ActorsList.push_back(_pActor);
+
+    switch (_pActor->GetType())
+	{
+    case OG_ACTOR_PLAYER:
+		m_pPlayersActor = _pActor;
+        break;
+    }
+
+    m_ActorsList.push_back(_pActor);
 }
 
 
@@ -158,7 +161,7 @@ void COGActorManager::DestroyActor (IOGActor* _pActor)
 {
 	if (_pActor == m_pPlayersActor)
 	{
-		m_pPlayersActor = NULL;
+		OG_SAFE_DELETE(m_pPlayersActor);
 	}
 
 	std::list<IOGActor*>::iterator iter = std::find(m_ActorsList.begin(), m_ActorsList.end(), _pActor);
@@ -176,7 +179,8 @@ void COGActorManager::Update (unsigned long _ElapsedTime)
     std::list<IOGActor*>::iterator iter = m_ActorsList.begin();
     for (; iter != m_ActorsList.end(); ++iter)
     {
-		(*iter)->Update(_ElapsedTime);
+        IOGActor* pActor = (*iter);
+		pActor->Update(_ElapsedTime);
     }
 }
 
