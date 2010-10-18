@@ -20,6 +20,8 @@
 
 COGActorManager::COGActorManager ()	: m_pPlayersActor(NULL)
 {
+	m_pGlobalVars = GetGlobalVars();
+	m_fViewDistance = m_pGlobalVars->GetFVar("view_distance");
 }
 
 
@@ -33,7 +35,7 @@ COGActorManager::~COGActorManager ()
 void COGActorManager::Clear ()
 {
 	m_pPlayersActor = NULL;
-    std::list<IOGActor*>::iterator iter = m_ActorsList.begin();
+    TActorsList::iterator iter = m_ActorsList.begin();
     for (; iter != m_ActorsList.end(); ++iter)
     {
 		OG_SAFE_DELETE((*iter));
@@ -164,7 +166,7 @@ void COGActorManager::DestroyActor (IOGActor* _pActor)
 		OG_SAFE_DELETE(m_pPlayersActor);
 	}
 
-	std::list<IOGActor*>::iterator iter = std::find(m_ActorsList.begin(), m_ActorsList.end(), _pActor);
+	TActorsList::iterator iter = std::find(m_ActorsList.begin(), m_ActorsList.end(), _pActor);
 	if (iter != m_ActorsList.end())
 	{
 		OG_SAFE_DELETE((*iter));
@@ -176,10 +178,34 @@ void COGActorManager::DestroyActor (IOGActor* _pActor)
 // Update actors.
 void COGActorManager::Update (unsigned long _ElapsedTime)
 {
-    std::list<IOGActor*>::iterator iter = m_ActorsList.begin();
+	IOGCamera* pCamera = GetRenderer()->GetCamera();
+	float fCameraZ = pCamera->GetPosition().z;
+
+    TActorsList::iterator iter = m_ActorsList.begin();
     for (; iter != m_ActorsList.end(); ++iter)
     {
         IOGActor* pActor = (*iter);
+		switch (pActor->GetType())
+		{
+		case OG_ACTOR_AIRBOT:
+		case OG_ACTOR_LANDBOT:
+			{
+				float fObjectZ = pActor->GetPhysicalObject()->GetPosition().z;
+				if (fObjectZ <= fCameraZ)
+				{
+					if ((fCameraZ - fObjectZ) < m_fViewDistance)
+					{
+						pActor->Activate(true);
+					}
+				}
+				else
+				{
+					if (pActor->IsActive())
+						pActor->Activate(false);
+				}
+			}
+			break;
+		}
 		pActor->Update(_ElapsedTime);
     }
 }
@@ -190,8 +216,8 @@ IOGActor* COGActorManager::GetNearestIntersectedActor (
     const Vec3& _RayStart, 
     const Vec3& _RayDir )
 {
-    std::list<IOGActor*> IntersectedList;
-    std::list<IOGActor*>::iterator iter = m_ActorsList.begin();
+    TActorsList IntersectedList;
+    TActorsList::iterator iter = m_ActorsList.begin();
     for (; iter != m_ActorsList.end(); ++iter)
     {
         if ((*iter)->CheckIntersection(_RayStart, _RayDir))
@@ -203,7 +229,7 @@ IOGActor* COGActorManager::GetNearestIntersectedActor (
     if (IntersectedList.size() == 1)
         return *IntersectedList.begin();
 
-    std::list<IOGActor*>::iterator inters_iter = IntersectedList.begin();
+    TActorsList::iterator inters_iter = IntersectedList.begin();
     IOGActor* pNearest = *inters_iter;
     float fDist = Dist3D(_RayStart, pNearest->GetSgNode()->GetOBB().m_vCenter);
     ++inters_iter;
@@ -222,7 +248,7 @@ IOGActor* COGActorManager::GetNearestIntersectedActor (
 
 
 // Get actors list.
-const std::list<IOGActor*>& COGActorManager::GetActorsList () const
+const IOGActorManager::TActorsList& COGActorManager::GetActorsList () const
 {
     return m_ActorsList;
 }

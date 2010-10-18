@@ -51,12 +51,12 @@ public:
     // Get mesh geometry
     virtual const std::vector<OGFace>& GetGeometry () const {return m_Faces;}
 
-private:
+protected:
 
 	// calculate geometry
-	void CalculateGeometry ();
+	virtual void CalculateGeometry ();
 
-private:
+protected:
 	
 	// Vertex Buffer Object (VBO) list
 	std::vector<IOGVertexBuffers*>	m_BuffersList;
@@ -65,7 +65,8 @@ private:
 	CPVRTModelPOD*	m_pScene;
 
 	// Bounds
-	IOGAabb			m_AABB;
+	IOGAabb					m_AABB;
+	std::vector<IOGAabb>	m_AabbList;
 
     // Geometry (for mapeditor mostly)
 	std::vector<OGFace>     m_Faces;

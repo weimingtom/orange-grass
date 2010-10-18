@@ -17,6 +17,9 @@
 class IOGActorManager
 {
 public:
+	typedef std::list<IOGActor*>    TActorsList;
+
+public:
 	// destructor
 	virtual ~IOGActorManager () {}
 
@@ -43,7 +46,7 @@ public:
     virtual IOGActor* GetPlayersActor () = 0;
 
 	// Get actors list.
-    virtual const std::list<IOGActor*>& GetActorsList () const = 0;
+    virtual const TActorsList& GetActorsList () const = 0;
 
 	// Get nearest intersected actor.
 	virtual IOGActor* GetNearestIntersectedActor (

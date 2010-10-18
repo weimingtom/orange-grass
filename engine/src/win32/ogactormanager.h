@@ -43,7 +43,7 @@ public:
         const Vec3& _RayDir );
 
 	// Get actors list.
-    virtual const std::list<IOGActor*>& GetActorsList () const;
+    virtual const TActorsList& GetActorsList () const;
 
 	// Get player's actor.
     virtual IOGActor* GetPlayersActor ();
@@ -51,8 +51,10 @@ public:
 private:
 	typedef std::list<IOGActor*>    TActorsList;
 
-    TActorsList	    m_ActorsList;
-	IOGActor*		m_pPlayersActor;
+	IOGGlobalVarsTable* m_pGlobalVars;
+    TActorsList			m_ActorsList;
+	IOGActor*			m_pPlayersActor;
+	float				m_fViewDistance;
 };
 
 #endif

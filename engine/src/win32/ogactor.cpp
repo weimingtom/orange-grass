@@ -11,7 +11,8 @@
 #include "IOGMath.h"
 
 
-COGActor::COGActor() :	m_bAdded(false),
+COGActor::COGActor() :	m_bActive(true),
+						m_bAdded(false),
 						m_pParams(NULL),
                         m_pNode(NULL),
                         m_pPhysicalObject(NULL),
@@ -73,6 +74,7 @@ const std::string& COGActor::GetAlias () const
 void COGActor::Activate (bool _bActive)
 {
 	m_bActive = _bActive;
+	m_pPhysicalObject->Activate(m_bActive);
 }
 
 

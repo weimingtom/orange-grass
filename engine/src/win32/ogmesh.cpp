@@ -142,8 +142,7 @@ void COGMesh::CalculateGeometry ()
 	MATRIX mModel;
     Vec3 v, vMinCorner, vMaxCorner;
 
-    bool bFirstVertexProcessed = false;
-
+	m_AabbList.reserve(m_pScene->nNumMesh);
     m_Faces.reserve(4096);
     for (unsigned int i=0; i<m_pScene->nNumMesh; ++i)
 	{
@@ -154,15 +153,11 @@ void COGMesh::CalculateGeometry ()
 
         Vec3* pPtr = (Vec3*)Mesh.pInterleaved;
 		
-        if (!bFirstVertexProcessed)
-        {
-            vMinCorner.x = vMaxCorner.x = pPtr->x; 
-            vMinCorner.y = vMaxCorner.y = pPtr->y; 
-            vMinCorner.z = vMaxCorner.z = pPtr->z;
-            MatrixVecMultiply(vMinCorner, vMinCorner, mModel);
-            MatrixVecMultiply(vMaxCorner, vMaxCorner, mModel);
-            bFirstVertexProcessed = true;
-        }
+		vMinCorner.x = vMaxCorner.x = pPtr->x; 
+		vMinCorner.y = vMaxCorner.y = pPtr->y; 
+		vMinCorner.z = vMaxCorner.z = pPtr->z;
+		MatrixVecMultiply(vMinCorner, vMinCorner, mModel);
+		MatrixVecMultiply(vMaxCorner, vMaxCorner, mModel);
 
 		if(Mesh.sFaces.pData)
         {
@@ -190,9 +185,13 @@ void COGMesh::CalculateGeometry ()
                 m_Faces.push_back(face);
             }
         }
+
+		IOGAabb aabb = IOGAabb(vMinCorner, vMaxCorner);
+		m_AabbList.push_back(aabb);
+		m_AABB.EmbraceAABB(aabb);
 	}
 
-    m_AABB.SetMinMax (vMinCorner, vMaxCorner);
+    //m_AABB.SetMinMax (vMinCorner, vMaxCorner);
 }
 
 

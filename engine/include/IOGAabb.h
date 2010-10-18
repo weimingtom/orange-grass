@@ -36,6 +36,23 @@ public:
 		m_fBoundingRadius = (m_vMax - m_vMin).length () / 2;
 	}
 
+	// Embrace AABB
+	void EmbraceAABB (const IOGAabb& _aabb)
+	{
+		const Vec3& vNewMin = _aabb.GetMin();
+		const Vec3& vNewMax = _aabb.GetMax();
+
+		if (vNewMin.x < m_vMin.x) m_vMin.x = vNewMin.x;
+		if (vNewMin.y < m_vMin.y) m_vMin.y = vNewMin.y;
+		if (vNewMin.z < m_vMin.z) m_vMin.z = vNewMin.z;
+		if (vNewMax.x > m_vMax.x) m_vMax.x = vNewMax.x;
+		if (vNewMax.y > m_vMax.y) m_vMax.y = vNewMax.y;
+		if (vNewMax.z > m_vMax.z) m_vMax.z = vNewMax.z;
+
+		m_vCenter = (m_vMax + m_vMin) / 2.0f;
+		m_fBoundingRadius = (m_vMax - m_vMin).length () / 2;
+	}
+
 	// Get AABB minimum
 	const Vec3& GetMin () const { return m_vMin; }
 
@@ -74,7 +91,6 @@ private:
 	Vec3	m_vMin;
 	Vec3	m_vMax;
 	Vec3	m_vCenter;
-	MATRIX	m_mTransform;
 	float	m_fBoundingRadius;
 };
 

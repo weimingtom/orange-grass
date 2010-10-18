@@ -47,17 +47,15 @@ void COGActorAirBot::OnAddedToManager ()
 // Set active state
 void COGActorAirBot::Activate (bool _bActive)
 {
-	m_bActive = _bActive;
+	COGActorBot::Activate(_bActive);
 
 	if (m_bActive)
 	{
-		m_pPhysicalObject->Activate(true);
 		m_FlightWorker.Reset();
 		m_FlightWorker.Activate(true);
 	}
 	else
 	{
-		m_pPhysicalObject->Activate(false);
 		m_FlightWorker.Activate(false);
 	}
 }

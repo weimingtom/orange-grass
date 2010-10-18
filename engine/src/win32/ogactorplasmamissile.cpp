@@ -108,7 +108,7 @@ void COGActorPlasmaMissile::Update (unsigned long _ElapsedTime)
 // Set active state
 void COGActorPlasmaMissile::Activate (bool _bActive)
 {
-	m_bActive = _bActive;
+	COGActor::Activate(_bActive);
 
 	m_FlightWorker.Reset();
 	m_FlightWorker.Activate(m_bActive);

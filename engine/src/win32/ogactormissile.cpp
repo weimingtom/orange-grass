@@ -116,11 +116,10 @@ void COGActorMissile::Update (unsigned long _ElapsedTime)
 // Set active state
 void COGActorMissile::Activate (bool _bActive)
 {
-	m_bActive = _bActive;
+	COGActor::Activate(_bActive);
 
 	if (m_bActive)
 	{
-		m_pPhysicalObject->Activate(true);
 		m_FlightWorker.Reset();
 		m_FlightWorker.Activate(true);
 		m_pHeadEffect->Start();
@@ -128,7 +127,6 @@ void COGActorMissile::Activate (bool _bActive)
 	}
 	else
 	{
-		m_pPhysicalObject->Activate(false);
 	}
 }
 
