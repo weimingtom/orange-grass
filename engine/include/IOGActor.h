@@ -14,6 +14,14 @@
 #include "IOGPhysicalObject.h"
 
 
+enum OGActorStatus
+{
+	OG_ACTORSTATUS_ALIVE,
+	OG_ACTORSTATUS_FALLING,
+	OG_ACTORSTATUS_DEAD
+};
+
+
 class IOGActor
 {
 public:
@@ -33,6 +41,9 @@ public:
 
 	// Get physical object.
 	virtual IOGPhysicalObject* GetPhysicalObject () = 0;
+
+	// Get actor params.
+	virtual IOGActorParams* GetParams () = 0;
 
 	// Get model alias
 	virtual const std::string& GetAlias () const = 0;

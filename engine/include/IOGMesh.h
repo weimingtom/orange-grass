@@ -41,6 +41,9 @@ public:
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const = 0;
 
+	// Get part AABB
+	virtual const IOGAabb& GetAABB (unsigned int _Part) const = 0;
+
     // Get ray intersection
     virtual bool GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos) = 0;
 

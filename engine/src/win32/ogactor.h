@@ -41,6 +41,9 @@ public:
 	// Get physical object.
 	virtual IOGPhysicalObject* GetPhysicalObject ();
 
+	// Get actor params.
+	virtual IOGActorParams* GetParams () {return m_pParams;}
+
 	// Get model alias
 	virtual const std::string& GetAlias () const;
 
@@ -66,6 +69,7 @@ protected:
 	IOGSgNode*	        m_pNode;
     IOGPhysicalObject*  m_pPhysicalObject;
 	IOGModel*	        m_pModel;
+	OGActorStatus		m_Status;
 };
 
 

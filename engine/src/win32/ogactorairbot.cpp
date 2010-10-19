@@ -31,6 +31,7 @@ bool COGActorAirBot::Create (IOGActorParams* _pParams,
         return false;
 
 	m_FlightWorker.Create(this);
+	m_FallingWorker.Create(this);
     Activate(false);
 
     return true;
@@ -47,6 +48,9 @@ void COGActorAirBot::OnAddedToManager ()
 // Set active state
 void COGActorAirBot::Activate (bool _bActive)
 {
+	if (m_Status == OG_ACTORSTATUS_DEAD)
+		return;
+
 	COGActorBot::Activate(_bActive);
 
 	if (m_bActive)
@@ -64,14 +68,49 @@ void COGActorAirBot::Activate (bool _bActive)
 // Update actor.
 void COGActorAirBot::Update (unsigned long _ElapsedTime)
 {
-    COGActorBot::Update(_ElapsedTime);
+	if (m_Status != OG_ACTORSTATUS_DEAD)
+		COGActorBot::Update(_ElapsedTime);
 
-    if (m_FlightWorker.IsActive())
+	switch (m_Status)
 	{
-		m_FlightWorker.Update(_ElapsedTime);
-		if (m_FlightWorker.IsFinished())
+	case OG_ACTORSTATUS_ALIVE:
 		{
-			Activate(false);
+			if (m_FlightWorker.IsActive())
+			{
+				m_FlightWorker.Update(_ElapsedTime);
+				if (m_FlightWorker.IsFinished())
+				{
+					Activate(false);
+				}
+			}
 		}
+		break;
+
+	case OG_ACTORSTATUS_FALLING:
+		{
+			if (m_FallingWorker.IsActive())
+			{
+				m_FallingWorker.Update(_ElapsedTime);
+				if (m_FallingWorker.IsFinished())
+				{
+					m_Status = OG_ACTORSTATUS_DEAD;
+					Activate(false);
+				}
+			}
+		}
+		break;
 	}
+}
+
+
+// collision event handler
+bool COGActorAirBot::OnCollision (const IOGCollision& _Collision)
+{
+	if (COGActorBot::OnCollision(_Collision))
+	{
+		m_Status = OG_ACTORSTATUS_FALLING;
+		m_FallingWorker.Activate(true);
+		return true;
+	}
+	return false;
 }

@@ -11,6 +11,7 @@
 
 #include "ogactorbot.h"
 #include "ogbotflightworker.h"
+#include "ogbotfallingworker.h"
 
 
 class COGActorAirBot : public COGActorBot
@@ -35,9 +36,13 @@ public:
 	// Update actor.
 	virtual void Update (unsigned long _ElapsedTime);
 
+    // collision event handler
+	virtual bool OnCollision (const IOGCollision& _Collision);
+
 protected:
 
-    COGBotFlightWorker  m_FlightWorker;
+    COGBotFlightWorker		m_FlightWorker;
+    COGBotFallingWorker		m_FallingWorker;
 };
 
 

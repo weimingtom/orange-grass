@@ -70,6 +70,9 @@ public:
 	// accelerate.
 	virtual void Accelerate (float _fDir) = 0;
 
+	// fall.
+	virtual void Fall () = 0;
+
 	// orient on point.
 	virtual bool Orient (const Vec3& _vPoint) = 0;
 

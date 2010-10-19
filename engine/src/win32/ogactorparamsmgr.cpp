@@ -96,6 +96,15 @@ bool COGActorParamsMgr::LoadParamsConfig (const std::string& _Alias, const std::
 		m_pReader->CloseGroupNode(pActorNode);
 	}
 
+	IOGGroupNode* pLogicNode = m_pReader->OpenGroupNode(pSource, pRoot, "Logic");
+	if (pLogicNode != NULL)
+	{
+		pParam->gameplay.team = (OGTeam)m_pReader->ReadIntParam(pLogicNode, "team");
+		pParam->gameplay.max_hitpoints = m_pReader->ReadIntParam(pLogicNode, "max_hitpoints");
+		pParam->gameplay.hitpoints = pParam->gameplay.max_hitpoints;
+		m_pReader->CloseGroupNode(pLogicNode);
+	}
+
 	m_ParamsList[_Alias] = pParam;
 
 	m_pReader->CloseGroupNode(pRoot);

@@ -18,6 +18,7 @@ COGActor::COGActor() :	m_bActive(true),
                         m_pPhysicalObject(NULL),
                         m_pModel(NULL)
 {
+	m_Status = OG_ACTORSTATUS_ALIVE;
 }
 
 

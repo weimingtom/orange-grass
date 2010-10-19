@@ -25,9 +25,33 @@ enum OGActorType
 };
 
 
+enum OGTeam
+{
+	TEAM_NEUTRAL = 0,
+	TEAM_PLAYER,
+	TEAM_ENEMY
+};
+
+
+struct IOGGameplayParams
+{
+	IOGGameplayParams()
+	{
+		max_hitpoints = 0;
+		hitpoints = max_hitpoints;
+		team = TEAM_NEUTRAL;
+	}
+
+	unsigned int	max_hitpoints;
+	unsigned int	hitpoints;
+	OGTeam			team;
+};
+
+
 struct IOGActorParams
 {
 	IOGPhysicalParams	physics;
+	IOGGameplayParams	gameplay;
 	OGActorType			type;
 	std::string			alias;
 	std::string			model_alias;
