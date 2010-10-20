@@ -56,16 +56,31 @@ public:
 	// Get animation
     virtual IOGAnimation* GetAnimation (const std::string& _Alias);
 
+	// Get active point
+	virtual IOGActivePoint* GetActivePoint (const std::string& _Alias);
+
 private:
 
 	struct Cfg
 	{
+		struct Anim
+		{
+			std::string anim_alias;
+			int anim_start;
+			int anim_end;
+		};
+
+		struct ActPoint
+		{
+			std::string alias;
+			Vec3 pos;
+		};
+
 		std::string mesh_alias;
 		std::string texture_alias;
 		std::string material_type;
-		std::string anim_alias;
-		int anim_start;
-		int anim_end;
+		std::list<Anim> anim_list;
+		std::list<ActPoint> point_list;
 	};
 
 	// Load model configuration
@@ -80,6 +95,7 @@ private:
 	IOGSettingsReader*	m_pReader;
 
 	std::map<std::string, IOGAnimation*>	m_pAnimations;
+	std::map<std::string, IOGActivePoint*>	m_pActivePoints;
 };
 
 

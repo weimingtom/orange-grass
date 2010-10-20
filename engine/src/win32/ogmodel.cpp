@@ -24,13 +24,6 @@ COGModel::~COGModel()
 {
 	m_pMesh = NULL;
 	m_pTexture = NULL;	
-
-    std::map<std::string, IOGAnimation*>::iterator iter= m_pAnimations.begin();
-	for (; iter != m_pAnimations.end(); ++iter)
-	{
-		OG_SAFE_DELETE(iter->second);
-	}
-    m_pAnimations.clear();
 }
 
 
@@ -57,13 +50,25 @@ bool COGModel::Load ()
 	m_pTexture = GetResourceMgr()->GetTexture(modelcfg.texture_alias);
 	m_pMaterial = GetMaterialManager()->GetMaterial(modelcfg.material_type);
 
-    if (!modelcfg.anim_alias.empty())
+	std::list<Cfg::Anim>::const_iterator anim_iter = modelcfg.anim_list.begin();
+	for (; anim_iter != modelcfg.anim_list.end(); ++anim_iter)
     {
+		const COGModel::Cfg::Anim& anim = (*anim_iter);
         IOGAnimation* pAnim = new IOGAnimation();
-        pAnim->name = modelcfg.anim_alias;
-        pAnim->start_frame = (unsigned int)modelcfg.anim_start;
-        pAnim->end_frame = (unsigned int)modelcfg.anim_end;
+        pAnim->name = anim.anim_alias;
+        pAnim->start_frame = (unsigned int)anim.anim_start;
+        pAnim->end_frame = (unsigned int)anim.anim_end;
         m_pAnimations[pAnim->name] = pAnim;
+    }
+
+	std::list<Cfg::ActPoint>::const_iterator pt_iter = modelcfg.point_list.begin();
+	for (; pt_iter != modelcfg.point_list.end(); ++pt_iter)
+    {
+		const COGModel::Cfg::ActPoint& pt = (*pt_iter);
+        IOGActivePoint* pPt = new IOGActivePoint();
+		pPt->alias = pt.alias;
+		pPt->pos = pt.pos;
+        m_pActivePoints[pPt->alias] = pPt;
     }
 
 	m_LoadState = OG_RESSTATE_LOADED;
@@ -97,12 +102,24 @@ bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
 	}
 
 	IOGGroupNode* pAnimationNode = m_pReader->OpenGroupNode(pSource, NULL, "Animation");
-	if (pAnimationNode != NULL)
+	while (pAnimationNode != NULL)
 	{
-		_cfg.anim_alias = m_pReader->ReadStringParam(pAnimationNode, "name");
-		_cfg.anim_start = m_pReader->ReadIntParam(pAnimationNode, "start_frame");
-		_cfg.anim_end = m_pReader->ReadIntParam(pAnimationNode, "end_frame");
-		m_pReader->CloseGroupNode(pAnimationNode);
+		COGModel::Cfg::Anim anim;
+		anim.anim_alias = m_pReader->ReadStringParam(pAnimationNode, "name");
+		anim.anim_start = m_pReader->ReadIntParam(pAnimationNode, "start_frame");
+		anim.anim_end = m_pReader->ReadIntParam(pAnimationNode, "end_frame");
+		_cfg.anim_list.push_back(anim);
+		pAnimationNode = m_pReader->ReadNextNode(pAnimationNode);
+	}
+
+	IOGGroupNode* pPointNode = m_pReader->OpenGroupNode(pSource, NULL, "ActivePoints");
+	while (pPointNode != NULL)
+	{
+		COGModel::Cfg::ActPoint pt;
+		pt.alias = m_pReader->ReadStringParam(pPointNode, "alias");
+		pt.pos = m_pReader->ReadVec3Param(pPointNode, "x", "y", "z");
+		_cfg.point_list.push_back(pt);
+		pPointNode = m_pReader->ReadNextNode(pPointNode);
 	}
 
 	m_pReader->CloseSource(pSource);
@@ -119,6 +136,20 @@ void COGModel::Unload ()
 	}
 
 	OG_SAFE_DELETE(m_pMaterial);
+
+    std::map<std::string, IOGAnimation*>::iterator iter= m_pAnimations.begin();
+	for (; iter != m_pAnimations.end(); ++iter)
+	{
+		OG_SAFE_DELETE(iter->second);
+	}
+    m_pAnimations.clear();
+
+    std::map<std::string, IOGActivePoint*>::iterator point_iter= m_pActivePoints.begin();
+	for (; point_iter != m_pActivePoints.end(); ++point_iter)
+	{
+		OG_SAFE_DELETE(point_iter->second);
+	}
+    m_pActivePoints.clear();
 
 	m_LoadState = OG_RESSTATE_DEFINED;
 }
@@ -173,4 +204,11 @@ const std::string& COGModel::GetAlias () const
 IOGAnimation* COGModel::GetAnimation (const std::string& _Alias)
 {
     return m_pAnimations[_Alias];
+}
+
+
+// Get active point
+IOGActivePoint* COGModel::GetActivePoint (const std::string& _Alias)
+{
+	return m_pActivePoints[_Alias];
 }

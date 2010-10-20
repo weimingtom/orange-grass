@@ -14,6 +14,13 @@
 #include "IOGMesh.h"
 
 
+struct IOGActivePoint
+{
+	std::string alias;
+	Vec3		pos;
+};
+
+
 class IOGModel : public IOGRenderable
 {
 public:
@@ -24,6 +31,9 @@ public:
 
 	// Get texture
 	virtual IOGTexture* GetTexture () = 0;
+
+	// Get active point
+	virtual IOGActivePoint* GetActivePoint (const std::string& _Alias) = 0;
 };
 
 

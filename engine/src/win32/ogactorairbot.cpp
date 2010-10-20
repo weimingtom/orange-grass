@@ -99,6 +99,11 @@ void COGActorAirBot::Update (unsigned long _ElapsedTime)
 			}
 		}
 		break;
+
+	case OG_ACTORSTATUS_DEAD:
+		{
+		}
+		break;
 	}
 }
 
