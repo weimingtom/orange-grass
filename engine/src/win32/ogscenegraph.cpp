@@ -235,7 +235,13 @@ void COGSceneGraph::RenderAllEffects (IOGCamera* _pCamera)
 // Render the whole scene.
 void COGSceneGraph::RenderAll (IOGCamera* _pCamera)
 {
-	RenderLandscape(_pCamera);
+	if (m_pLandscapeNode)
+	{
+		MATRIX mT;
+		MatrixIdentity(mT);
+		m_pLandscapeNode->GetRenderable()->RenderAll(mT, 0);
+	}
+
 	RenderWholeNodesList(_pCamera, m_NodesList);
 	TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
 	for (; s_iter != m_StaticNodes.end(); ++s_iter)

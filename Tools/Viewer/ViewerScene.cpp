@@ -117,7 +117,7 @@ void CViewerScene::SetViewport (int _Width, int _Height)
 void CViewerScene::Update (unsigned long _ElapsedTime)
 {
 	GetPhysics()->UpdateAll(0);
-    m_pActorMgr->Update(33);
+    m_pActorMgr->UpdateEditor(33);
     m_pSg->Update(33);
 	m_pCamera->Update();
 	m_mView = m_pCamera->GetViewMatrix();

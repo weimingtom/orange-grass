@@ -36,6 +36,9 @@ public:
 	// Render.
 	virtual void Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame) = 0;
 
+	// Render all.
+	virtual void RenderAll (const MATRIX& _mWorld, unsigned int _Frame) = 0;
+
 	// Update.
 	virtual void Update (unsigned long _ElapsedTime) = 0;
 

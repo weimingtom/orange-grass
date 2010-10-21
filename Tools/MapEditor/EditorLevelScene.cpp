@@ -120,14 +120,14 @@ void CEditorLevelScene::SetViewport (int _Width, int _Height)
 void CEditorLevelScene::Update (unsigned long _ElapsedTime)
 {
 	GetPhysics()->UpdateAll(0);
-    m_pActorMgr->Update(10);
+    m_pActorMgr->UpdateEditor(10);
 	m_pCamera->Update();
 	m_mView = m_pCamera->GetViewMatrix();
 
     if (m_pCurActor)
     {
         m_pCurActor->GetPhysicalObject()->Update(10);
-        m_pCurActor->Update(10);
+        m_pCurActor->UpdateEditor(10);
     }
 }
 

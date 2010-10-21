@@ -167,3 +167,14 @@ bool COGActorBot::OnCollision (const IOGCollision& _Collision)
 	}
     return true;
 }
+
+
+// Set active state
+void COGActorBot::Activate (bool _bActive)
+{
+	COGActor::Activate(_bActive);
+	if (m_pNodePropeller)
+	{
+		m_pNodePropeller->Activate(_bActive);
+	}
+}

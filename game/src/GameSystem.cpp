@@ -8,28 +8,36 @@
  */
 #include "GameSystem.h"
 #include "OrangeGrass.h"
+#include "StartMenuScreenController.h"
 #include "LoadScreenController.h"
 #include "GameScreenController.h"
 
 
 ///	@brief Constructor.
-CGameSystem::CGameSystem () :   m_pLoadScreen(NULL),
+CGameSystem::CGameSystem () :   m_pStartMenuScreen(NULL),
+								m_pLoadScreen(NULL),
                                 m_pGameScreen(NULL),
                                 m_pCurScreen(NULL)
 {
     m_State = SYSSTATE_ACTIVE;
+    m_pStartMenuScreen = new CStartMenuScreenController();
     m_pLoadScreen = new CLoadScreenController();
     m_pGameScreen = new CGameScreenController();
 
-    m_pLoadScreen->Init();
-    m_pLoadScreen->Activate();
-    m_pCurScreen = m_pLoadScreen;
+	m_ScreenSequence.push_back(m_pStartMenuScreen);
+	m_ScreenSequence.push_back(m_pLoadScreen);
+	m_ScreenSequence.push_back(m_pGameScreen);
+
+	m_CurModel = -1;
+
+	ChangeModel(1, 0, 0);
 }
 
 
 ///	@brief Destructor.
 CGameSystem::~CGameSystem ()
 {
+    OG_SAFE_DELETE(m_pStartMenuScreen);
     OG_SAFE_DELETE(m_pLoadScreen);
     OG_SAFE_DELETE(m_pGameScreen);
     m_pCurScreen = NULL;
@@ -50,30 +58,52 @@ void CGameSystem::Exit ()
 /// @param _Param2 screen model parameter #2.
 void CGameSystem::ChangeModel ( int _Model, int _Param, int _Param2 )
 {
-    if (m_pCurScreen == NULL)
-        return;
-
-    switch(m_pCurScreen->GetType())
-    {
-    case SCRTYPE_LOAD:
-        if (m_pGameScreen->Init())
+	switch (_Model)
+	{
+	case 1:
 		{
-	        m_pGameScreen->Activate();
-			m_pCurScreen = m_pGameScreen;
+			if (m_CurModel >= (int)m_ScreenSequence.size() - 1)
+			{
+				m_CurModel = -1;
+			}
+			++m_CurModel;
+			m_pCurScreen = m_ScreenSequence[m_CurModel];
+			if (m_pCurScreen->Init())
+			{
+				m_pCurScreen->Activate();
+			}
+			else
+			{
+				ChangeModel(-1, 0, 0);
+				return;
+			}
 		}
-		else
-		{
-			Exit();
-		}
-        break;
+		break;
 
-    case SCRTYPE_GAME:
-        Exit();
-        break;
-            
-    case SCRTYPE_NONE:
-        break;
-    }
+	case -1:
+		{
+			if (m_CurModel <= 0)
+			{
+				Exit();
+				return;
+			}
+			else
+			{
+				--m_CurModel;
+				m_pCurScreen = m_ScreenSequence[m_CurModel];
+				if (m_pCurScreen->Init())
+				{
+					m_pCurScreen->Activate();
+				}
+				else
+				{
+					ChangeModel(-1, 0, 0);
+					return;
+				}
+			}
+		}
+		break;
+	}
 }
 
 
@@ -93,7 +123,7 @@ void CGameSystem::Update ( unsigned long _ElapsedTime )
 		break;
 
 	case CSTATE_FAILED:
-		Exit();
+        ChangeModel(-1, 0, 0);
 		break;
 
 	default:

@@ -147,6 +147,19 @@ void COGTerrain::Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int
 }
 
 
+// Render all.
+void COGTerrain::RenderAll (const MATRIX& _mWorld, unsigned int _Frame)
+{
+    m_pRenderer->SetMaterial(m_pMaterial);
+    m_pRenderer->SetTexture(m_TextureList[0]);
+    unsigned int numParts = m_pMesh->GetNumRenderables();
+    for (unsigned int i = 0; i < numParts; ++i)
+    {
+		m_pMesh->RenderPart (_mWorld, i, 0);
+    }
+}
+
+
 // Update mesh animation.
 void COGTerrain::Update (unsigned long _ElapsedTime)
 {

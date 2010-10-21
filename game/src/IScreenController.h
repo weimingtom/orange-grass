@@ -12,6 +12,7 @@
 enum ScreenType
 {
     SCRTYPE_NONE,
+    SCRTYPE_STARTMENU,
     SCRTYPE_LOAD,
     SCRTYPE_GAME
 };

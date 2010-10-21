@@ -189,6 +189,13 @@ void COGModel::Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int _
 }
 
 
+// Render all.
+void COGModel::RenderAll (const MATRIX& _mWorld, unsigned int _Frame)
+{
+	Render(_mWorld, _Frame);
+}
+
+
 // Get num renderable parts.
 unsigned int COGModel::GetNumRenderables () const
 {

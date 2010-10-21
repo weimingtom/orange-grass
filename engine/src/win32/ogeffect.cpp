@@ -51,6 +51,13 @@ void COGEffect::Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int 
 }
 
 
+// Render all.
+void COGEffect::RenderAll (const MATRIX& _mWorld, unsigned int _Frame)
+{
+	Render(_mWorld, _Frame);
+}
+
+
 // Start.
 void COGEffect::Start ()
 {

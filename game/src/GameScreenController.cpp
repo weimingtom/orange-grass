@@ -42,6 +42,8 @@ bool CGameScreenController::Init ()
 {
 	m_pGlobalVars = GetGlobalVars();
 
+	GetInput()->RegisterReceiver(this);
+
 	m_CurLevel = m_pGlobalVars->GetSVar("level_0");
 	m_fFOV = m_pGlobalVars->GetFVar("FOV");
 	m_fZNear = m_pGlobalVars->GetFVar("z_near");
@@ -166,7 +168,7 @@ void CGameScreenController::Activate ()
 void CGameScreenController::Deactivate ()
 {
 	m_State = CSTATE_INACTIVE;
-    GetInput()->UnregisterReceiver(this);
+    //GetInput()->UnregisterReceiver(this);
 }
 
 

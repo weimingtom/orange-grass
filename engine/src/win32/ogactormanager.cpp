@@ -211,6 +211,30 @@ void COGActorManager::Update (unsigned long _ElapsedTime)
 }
 
 
+// Update actors in editor.
+void COGActorManager::UpdateEditor (unsigned long _ElapsedTime)
+{
+    TActorsList::iterator iter = m_ActorsList.begin();
+    for (; iter != m_ActorsList.end(); ++iter)
+    {
+        IOGActor* pActor = (*iter);
+		switch (pActor->GetType())
+		{
+		case OG_ACTOR_MISSILE:
+		case OG_ACTOR_PLASMAMISSILE:
+			pActor->Activate(false);
+			break;
+
+		case OG_ACTOR_AIRBOT:
+		case OG_ACTOR_LANDBOT:
+			pActor->Activate(true);
+			break;
+		}
+		pActor->UpdateEditor(_ElapsedTime);
+    }
+}
+
+
 // Get nearest intersected actor.
 IOGActor* COGActorManager::GetNearestIntersectedActor (
     const Vec3& _RayStart, 

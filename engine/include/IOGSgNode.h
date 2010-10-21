@@ -40,6 +40,12 @@ public:
 
 	// start animation.
     virtual void StartAnimation (const std::string& _Alias) = 0;
+
+	// Get active state
+	virtual bool IsActive () const = 0;
+
+	// Set active state
+	virtual void Activate (bool _bActive) = 0;
 };
 
 #endif

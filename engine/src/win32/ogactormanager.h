@@ -37,6 +37,9 @@ public:
 	// Update actors.
 	virtual void Update (unsigned long _ElapsedTime);
 
+	// Update actors in editor.
+	virtual void UpdateEditor (unsigned long _ElapsedTime);
+
 	// Get nearest intersected actor.
 	virtual IOGActor* GetNearestIntersectedActor (
         const Vec3& _RayStart, 

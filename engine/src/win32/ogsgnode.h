@@ -46,8 +46,15 @@ public:
 	// start animation.
     virtual void StartAnimation (const std::string& _Alias);
 
+	// Get active state
+	virtual bool IsActive () const { return m_bActive; }
+
+	// Set active state
+	virtual void Activate (bool _bActive);
+
 protected:
 
+    bool					m_bActive;
     IOGRenderable*          m_pRenderable;
     IOGPhysicalObject*      m_pPhysics;
     IOGAnimationController* m_pAnimator;

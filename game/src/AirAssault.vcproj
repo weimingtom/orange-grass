@@ -203,6 +203,14 @@
 				RelativePath=".\LoadScreenController.h"
 				>
 			</File>
+			<File
+				RelativePath=".\StartMenuScreenController.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\StartMenuScreenController.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Resource Files"

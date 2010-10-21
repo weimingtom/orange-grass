@@ -35,7 +35,10 @@ public:
 
 	// Render.
 	virtual void Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame);
-		
+
+	// Render all.
+	virtual void RenderAll (const MATRIX& _mWorld, unsigned int _Frame);
+
 	// Update mesh animation.
 	virtual void Update (unsigned long _ElapsedTime);
 

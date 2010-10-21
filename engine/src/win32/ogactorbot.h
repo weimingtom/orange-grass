@@ -35,6 +35,9 @@ public:
     // collision event handler
 	virtual bool OnCollision (const IOGCollision& _Collision);
 
+	// Set active state
+	virtual void Activate (bool _bActive);
+
 protected:
 
 	IOGSgNode*	m_pNodePropeller;

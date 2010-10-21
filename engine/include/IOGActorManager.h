@@ -42,6 +42,9 @@ public:
 	// Update actors.
 	virtual void Update (unsigned long _ElapsedTime) = 0;
 
+	// Update actors in editor.
+	virtual void UpdateEditor (unsigned long _ElapsedTime) = 0;
+
 	// Get player's actor.
     virtual IOGActor* GetPlayersActor () = 0;
 

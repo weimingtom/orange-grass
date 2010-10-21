@@ -43,6 +43,13 @@ void COGActor::Update (unsigned long _ElapsedTime)
 }
 
 
+// Update actors in editor.
+void COGActor::UpdateEditor (unsigned long _ElapsedTime)
+{
+    m_pNode->Update(_ElapsedTime);
+}
+
+
 // Get actor type.
 OGActorType COGActor::GetType () const
 {
@@ -76,6 +83,7 @@ void COGActor::Activate (bool _bActive)
 {
 	m_bActive = _bActive;
 	m_pPhysicalObject->Activate(m_bActive);
+	m_pNode->Activate(m_bActive);
 }
 
 

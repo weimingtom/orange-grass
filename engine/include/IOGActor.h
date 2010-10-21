@@ -30,6 +30,9 @@ public:
 	// Update actor.
 	virtual void Update (unsigned long _ElapsedTime) = 0;
 
+	// Update actors in editor.
+	virtual void UpdateEditor (unsigned long _ElapsedTime) = 0;
+
 	// Adding to actor manager event handler.
 	virtual void OnAddedToManager () = 0;
 

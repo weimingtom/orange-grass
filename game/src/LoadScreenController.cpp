@@ -32,9 +32,6 @@ CLoadScreenController::~CLoadScreenController()
 // Initialize controller
 bool CLoadScreenController::Init ()
 {
-	if (!GetAppSettings()->Init("settings.xml"))
-		return false;
-
 	m_pGlobalVars = GetGlobalVars();
 	m_CurLevel = m_pGlobalVars->GetSVar("level_0");
 	m_fFOV = m_pGlobalVars->GetFVar("FOV");
@@ -45,9 +42,6 @@ bool CLoadScreenController::Init ()
 
 	GetRenderer()->SetViewport(m_ScrWidth, m_ScrHeight, m_fZNear, m_fZFar, m_fFOV);
 	m_pResourceMgr = GetResourceMgr();
-    m_pResourceMgr->Init();
-	if (!m_pResourceMgr->Load())
-		return false;
 	
 	return true;
 }

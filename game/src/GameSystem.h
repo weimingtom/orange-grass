@@ -10,6 +10,7 @@
 #define GAMESYSTEM_H_
 
 #include "IScreenController.h"
+#include <vector>
 
 enum SystemState
 {
@@ -82,9 +83,13 @@ public:
 private:
 
     SystemState         m_State;
+    IScreenController*  m_pStartMenuScreen;
     IScreenController*  m_pLoadScreen;
     IScreenController*  m_pGameScreen;
     IScreenController*  m_pCurScreen;
+
+	std::vector<IScreenController*>	m_ScreenSequence;
+	int								m_CurModel;
 };
 
 
