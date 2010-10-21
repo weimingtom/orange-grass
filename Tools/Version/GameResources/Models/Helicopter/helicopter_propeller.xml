@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Mesh alias = "helicopter_propeller"/>
 <Material texture = "helicopter_propeller" type = "tex_alpha"/>
-<Animation name = "idle" start_frame="1" end_frame = "100"/>
+<Animations>
+	<Animation name = "idle" start_frame="1" end_frame = "100"/>
+</Animations>

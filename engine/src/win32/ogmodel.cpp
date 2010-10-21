@@ -101,26 +101,36 @@ bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
 		m_pReader->CloseGroupNode(pMaterialNode);
 	}
 
-	IOGGroupNode* pAnimationNode = m_pReader->OpenGroupNode(pSource, NULL, "Animation");
-	while (pAnimationNode != NULL)
-	{
-		COGModel::Cfg::Anim anim;
-		anim.anim_alias = m_pReader->ReadStringParam(pAnimationNode, "name");
-		anim.anim_start = m_pReader->ReadIntParam(pAnimationNode, "start_frame");
-		anim.anim_end = m_pReader->ReadIntParam(pAnimationNode, "end_frame");
-		_cfg.anim_list.push_back(anim);
-		pAnimationNode = m_pReader->ReadNextNode(pAnimationNode);
-	}
+	IOGGroupNode* pAnimationsNode = m_pReader->OpenGroupNode(pSource, NULL, "Animations");
+    if (pAnimationsNode)
+    {
+        IOGGroupNode* pAnimationNode = m_pReader->OpenGroupNode(pSource, pAnimationsNode, "Animation");
+        while (pAnimationNode != NULL)
+        {
+            COGModel::Cfg::Anim anim;
+            anim.anim_alias = m_pReader->ReadStringParam(pAnimationNode, "name");
+            anim.anim_start = m_pReader->ReadIntParam(pAnimationNode, "start_frame");
+            anim.anim_end = m_pReader->ReadIntParam(pAnimationNode, "end_frame");
+            _cfg.anim_list.push_back(anim);
+            pAnimationNode = m_pReader->ReadNextNode(pAnimationNode);
+        }
+        m_pReader->CloseGroupNode(pAnimationsNode);
+    }
 
-	IOGGroupNode* pPointNode = m_pReader->OpenGroupNode(pSource, NULL, "ActivePoints");
-	while (pPointNode != NULL)
-	{
-		COGModel::Cfg::ActPoint pt;
-		pt.alias = m_pReader->ReadStringParam(pPointNode, "alias");
-		pt.pos = m_pReader->ReadVec3Param(pPointNode, "x", "y", "z");
-		_cfg.point_list.push_back(pt);
-		pPointNode = m_pReader->ReadNextNode(pPointNode);
-	}
+	IOGGroupNode* pPointsNode = m_pReader->OpenGroupNode(pSource, NULL, "ActivePoints");
+    if (pPointsNode)
+    {
+	    IOGGroupNode* pPointNode = m_pReader->OpenGroupNode(pSource, pPointsNode, "Point");
+	    while (pPointNode != NULL)
+	    {
+		    COGModel::Cfg::ActPoint pt;
+		    pt.alias = m_pReader->ReadStringParam(pPointNode, "alias");
+		    pt.pos = m_pReader->ReadVec3Param(pPointNode, "x", "y", "z");
+		    _cfg.point_list.push_back(pt);
+		    pPointNode = m_pReader->ReadNextNode(pPointNode);
+	    }
+        m_pReader->CloseGroupNode(pPointsNode);
+    }
 
 	m_pReader->CloseSource(pSource);
 	return true;
