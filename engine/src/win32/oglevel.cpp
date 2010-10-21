@@ -243,7 +243,7 @@ bool COGLevel::Save ()
 	fwrite(&m_vLightColor.z, sizeof(float), 1, pOut);
 
     // actors list
-    const std::list<IOGActor*> actors = GetActorManager()->GetActorsList();
+    const std::list<IOGActor*>& actors = GetActorManager()->GetActorsList();
     unsigned int numActors = actors.size();
     fwrite(&numActors, sizeof(unsigned int), 1, pOut);
 	std::list<IOGActor*>::const_iterator iter = actors.begin();

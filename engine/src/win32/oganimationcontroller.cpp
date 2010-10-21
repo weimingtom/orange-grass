@@ -62,14 +62,20 @@ void COGAnimationController::UpdateAnimation (unsigned long _ElapsedTime)
 {
 	if (m_bPlaying)
 	{
-        float fNewProgress = m_fProgress + 5;
+        float fNewProgress = m_fProgress + /*5*/m_pCurAnimation->speed;
         if (fNewProgress < m_pCurAnimation->end_frame - 1)
         {
             m_fProgress = fNewProgress;
         }
         else
         {
-            m_fProgress = (float)m_pCurAnimation->start_frame + (fNewProgress - m_pCurAnimation->end_frame - 1);
+            if (m_pCurAnimation->looped)
+                m_fProgress = (float)m_pCurAnimation->start_frame + (fNewProgress - m_pCurAnimation->end_frame - 1);
+            else
+            {
+            	m_bPlaying = false;
+	            m_fProgress = (float)(m_pCurAnimation->end_frame - 1);
+            }
         }
 	}
 }

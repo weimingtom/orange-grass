@@ -4,6 +4,7 @@
 		type = "static"
 		model = "palm_02"
 		model_propeller = ""
+		model_destruction = ""
 		icon = "Models/Land_objects_02/palm/palm_02_ed.bmp"
 		/>
 </Params>

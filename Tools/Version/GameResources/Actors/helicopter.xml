@@ -13,6 +13,7 @@
 		type = "player"
 		model = "helicopter_body"
 		model_propeller = "helicopter_propeller"
+		model_destruction = "helicopter_destruction"
 		icon = "Models/Helicopter/helicopter_ed.bmp"
 		/>
 </Params>

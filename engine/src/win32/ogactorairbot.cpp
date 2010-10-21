@@ -48,7 +48,7 @@ void COGActorAirBot::OnAddedToManager ()
 // Set active state
 void COGActorAirBot::Activate (bool _bActive)
 {
-	if (m_Status == OG_ACTORSTATUS_DEAD)
+	if (m_Status == OG_ACTORSTATUS_DEAD || _bActive == m_bActive)
 		return;
 
 	COGActorBot::Activate(_bActive);

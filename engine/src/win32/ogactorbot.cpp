@@ -13,6 +13,8 @@
 
 COGActorBot::COGActorBot() :    m_pModelPropeller(NULL),
                                 m_pNodePropeller(NULL),
+								m_pModelDestruction(NULL),
+                                m_pNodeDestruction(NULL),
 								m_pExplosionEffect(NULL),
 								m_pExplosionNode(NULL)
 {
@@ -36,6 +38,14 @@ COGActorBot::~COGActorBot()
         else
             OG_SAFE_DELETE(m_pNodePropeller);
 		m_pNodePropeller = NULL;
+	}
+	if (m_pNodeDestruction)
+	{
+        if (m_bAdded)
+		    GetSceneGraph()->RemoveNode(m_pNodeDestruction);
+        else
+            OG_SAFE_DELETE(m_pNodeDestruction);
+		m_pNodeDestruction = NULL;
 	}
 	if (m_pExplosionNode)
 	{
@@ -84,6 +94,15 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 		    return false;
 	    }
     }
+    if (!m_pParams->model_destruction.empty())
+    {
+	    m_pModelDestruction = GetResourceMgr()->GetModel(_pParams->model_destruction);
+	    if (!m_pModelDestruction)
+	    {
+		    OG_LOG_ERROR("Creating COGActorBot failed, cannot get destruction model %s", m_pParams->model_destruction.c_str());
+		    return false;
+	    }
+    }
 	
     m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pModel->GetAABB(), this);
     if (!m_pPhysicalObject)
@@ -103,6 +122,15 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
     {
 	    m_pNodePropeller = GetSceneGraph()->CreateNode(m_pModelPropeller, m_pPhysicalObject);
 	    if (!m_pNodePropeller)
+	    {
+		    OG_LOG_ERROR("Creating COGActorBot failed, cannot create SG node");
+		    return false;
+	    }
+    }
+    if (m_pModelDestruction)
+    {
+	    m_pNodeDestruction = GetSceneGraph()->CreateNode(m_pModelDestruction, m_pPhysicalObject);
+	    if (!m_pNodeDestruction)
 	    {
 		    OG_LOG_ERROR("Creating COGActorBot failed, cannot create SG node");
 		    return false;
@@ -139,6 +167,12 @@ void COGActorBot::OnAddedToManager ()
         m_pNodePropeller->StartAnimation("idle");
     }
 
+    if (m_pNodeDestruction)
+    {
+    	GetSceneGraph()->AddTransparentNode(m_pNodeDestruction);
+        m_pNodeDestruction->Activate(false);
+    }
+
 	if (m_pExplosionNode)
 	{
 		GetSceneGraph()->AddEffectNode(m_pExplosionNode);
@@ -151,9 +185,16 @@ void COGActorBot::Update (unsigned long _ElapsedTime)
 {
     COGActor::Update(_ElapsedTime);
 
-    if (m_pNodePropeller)
+    if (m_Status == OG_ACTORSTATUS_FALLING)
     {
-    	m_pNodePropeller->Update(_ElapsedTime);
+        m_pNodeDestruction->Update(_ElapsedTime);
+    }
+    else
+    {
+        if (m_pNodePropeller)
+        {
+    	    m_pNodePropeller->Update(_ElapsedTime);
+        }
     }
 }
 
@@ -165,6 +206,17 @@ bool COGActorBot::OnCollision (const IOGCollision& _Collision)
 	{
 		m_pExplosionEffect->Start();
 	}
+    if (m_pNodeDestruction)
+    {
+        m_pNodeDestruction->Activate(true);
+        m_pNodeDestruction->StartAnimation("idle");
+        m_pNode->Activate(false);
+        if (m_pNodePropeller)
+        {
+            m_pNodePropeller->Activate(false);
+        }
+    }
+
     return true;
 }
 

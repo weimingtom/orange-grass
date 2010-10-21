@@ -13,6 +13,7 @@
 		type = "missile"
 		model = "missile_01"
 		model_propeller = ""
+		model_destruction = ""
 		icon = "Models/Land_objects_02/no_ed.bmp"
 		/>
 </Params>

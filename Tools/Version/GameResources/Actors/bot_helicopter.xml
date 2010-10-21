@@ -2,7 +2,7 @@
 <Params>
 	<Physics 
 		max_speed = "0.02" 
-		acceleration = "0.01" 
+		acceleration = "0.0" 
 		max_strafe_speed = "0.01" 
 		roll_speed = "0.0002" 
 		max_roll_angle = "0.5"
@@ -11,9 +11,9 @@
 		/>
 	<Actor 
 		type = "air_bot"
-		model = "bot_plane_small"
-		model_propeller = ""
-		model_destruction = "bot_plane_small_destruction"
-		icon = "Models/Bot_plane_small/bot_plane_small_ed.bmp"
+		model = "helicopter_body"
+		model_propeller = "helicopter_propeller"
+		model_destruction = "helicopter_destruction"
+		icon = "Models/Helicopter/bot_helicopter_ed.bmp"
 		/>
 </Params>

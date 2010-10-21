@@ -4,6 +4,7 @@
 		type = "static"
 		model = "stone_06"
 		model_propeller = ""
+		model_destruction = ""
 		icon = "Models/Land_objects_02/stone/stone_06_ed.bmp"
 		/>
 </Params>

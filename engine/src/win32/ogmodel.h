@@ -71,6 +71,8 @@ private:
 			std::string anim_alias;
 			int anim_start;
 			int anim_end;
+            int speed;
+            int looped;
 		};
 
 		struct ActPoint

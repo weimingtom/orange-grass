@@ -18,6 +18,8 @@ struct IOGAnimation
 	std::string name;
 	unsigned int start_frame;
 	unsigned int end_frame;
+    unsigned int speed;
+    bool looped;
 };
 
 #endif

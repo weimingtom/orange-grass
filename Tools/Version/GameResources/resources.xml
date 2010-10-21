@@ -22,7 +22,9 @@
 <Meshes>
 	<Mesh alias="helicopter_body" file="Models/Helicopter/helicopter_body.POD"/>
 	<Mesh alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller_anim.POD"/>
+	<Mesh alias="helicopter_destruction" file="Models/Helicopter/helicopter_destruction.POD"/>
 	<Mesh alias="bot_plane_small" file="Models/Bot_plane_small/bot_plane_small.POD"/>
+	<Mesh alias="bot_plane_small_destruction" file="Models/Bot_plane_small/bot_plane_small_destruction.POD"/>
 	<Mesh alias="bush_01" file="Models/Land_objects_02/bush/bush_01.POD"/>
 	<Mesh alias="palm_01" file="Models/Land_objects_02/palm/palm_01.POD" />
 	<Mesh alias="palm_02" file="Models/Land_objects_02/palm/palm_02.POD" />
@@ -42,7 +44,9 @@
 <Models>
 	<Model alias="helicopter_body" file="Models/Helicopter/helicopter_body.xml"/>
 	<Model alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller.xml"/>
+	<Model alias="helicopter_destruction" file="Models/Helicopter/helicopter_destruction.xml"/>
 	<Model alias="bot_plane_small" file="Models/Bot_plane_small/bot_plane_small.xml"/>
+	<Model alias="bot_plane_small_destruction" file="Models/Bot_plane_small/bot_plane_small_destruction.xml"/>
 	<Model alias="bush_01" file="Models/Land_objects_02/bush/bush_01.xml"/>
 	<Model alias="palm_01" file="Models/Land_objects_02/palm/palm_01.xml" />
 	<Model alias="palm_02" file="Models/Land_objects_02/palm/palm_02.xml" />

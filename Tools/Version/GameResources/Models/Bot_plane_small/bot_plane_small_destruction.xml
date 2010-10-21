@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Mesh alias = "bot_plane_small_destruction"/>
+<Material texture = "helicopter_body" type = "solid"/>
+<Animations>
+	<Animation name = "idle" start_frame="0" end_frame = "100" speed = "1" looped = "0"/>
+</Animations>

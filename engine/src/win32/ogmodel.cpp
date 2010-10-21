@@ -58,6 +58,8 @@ bool COGModel::Load ()
         pAnim->name = anim.anim_alias;
         pAnim->start_frame = (unsigned int)anim.anim_start;
         pAnim->end_frame = (unsigned int)anim.anim_end;
+        pAnim->speed = (unsigned int)anim.speed;
+        pAnim->looped = (anim.looped == 0) ? false : true;
         m_pAnimations[pAnim->name] = pAnim;
     }
 
@@ -111,6 +113,8 @@ bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
             anim.anim_alias = m_pReader->ReadStringParam(pAnimationNode, "name");
             anim.anim_start = m_pReader->ReadIntParam(pAnimationNode, "start_frame");
             anim.anim_end = m_pReader->ReadIntParam(pAnimationNode, "end_frame");
+            anim.speed = m_pReader->ReadIntParam(pAnimationNode, "speed");
+            anim.looped = m_pReader->ReadIntParam(pAnimationNode, "looped");
             _cfg.anim_list.push_back(anim);
             pAnimationNode = m_pReader->ReadNextNode(pAnimationNode);
         }
