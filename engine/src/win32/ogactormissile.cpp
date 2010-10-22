@@ -14,7 +14,6 @@
 COGActorMissile::COGActorMissile()
 {
     m_pHeadEffect = NULL;
-    m_pOwner = NULL;
 }
 
 
@@ -41,9 +40,9 @@ COGActorMissile::~COGActorMissile()
 
 // Create actor.
 bool COGActorMissile::Create (IOGActorParams* _pParams,
-                                    const Vec3& _vPos,
-                                    const Vec3& _vRot,
-                                    const Vec3& _vScale)
+                              const Vec3& _vPos,
+                              const Vec3& _vRot,
+                              const Vec3& _vScale)
 {
 	m_pParams = _pParams;
 
@@ -85,10 +84,8 @@ bool COGActorMissile::Create (IOGActorParams* _pParams,
 // Adding to actor manager event handler.
 void COGActorMissile::OnAddedToManager ()
 {
-    GetPhysics()->AddObject(m_pPhysicalObject);
+	COGActorBullet::OnAddedToManager();
     m_pPhysicalObject->AddCollisionListener(this);
-    GetSceneGraph()->AddEffectNode(m_pNode);
-    m_bAdded = true;
 }
 
 
@@ -116,7 +113,7 @@ void COGActorMissile::Update (unsigned long _ElapsedTime)
 // Set active state
 void COGActorMissile::Activate (bool _bActive)
 {
-	COGActor::Activate(_bActive);
+	COGActorBullet::Activate(_bActive);
 
 	if (m_bActive)
 	{
@@ -131,17 +128,11 @@ void COGActorMissile::Activate (bool _bActive)
 }
 
 
-// Set owner.
-void COGActorMissile::SetOwner (IOGActor* _pOwner, const Vec3& _vLaunchOffset)
-{
-    m_pOwner = _pOwner;
-    m_vLaunchOffset = _vLaunchOffset;
-}
-
-
 // Fire to target.
 void COGActorMissile::Fire (const Vec3& _vTarget)
 {
+	COGActorBullet::Fire(_vTarget);
+
     Vec3 vPos = m_pOwner->GetPhysicalObject()->GetPosition() + m_vLaunchOffset;
     Vec3 vRot = m_pOwner->GetPhysicalObject()->GetRotation();
 	m_pPhysicalObject->SetWorldTransform(vPos, vRot, Vec3(1,1,1));

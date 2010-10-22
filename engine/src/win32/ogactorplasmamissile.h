@@ -9,11 +9,11 @@
 #ifndef OGACTORPLASMAMISSILE_H_
 #define OGACTORPLASMAMISSILE_H_
 
-#include "OGActor.h"
+#include "ogactorbullet.h"
 #include "ogmissileflightworker.h"
 
 
-class COGActorPlasmaMissile : public COGActor
+class COGActorPlasmaMissile : public COGActorBullet
 {
 public:
 	COGActorPlasmaMissile();
@@ -35,17 +35,15 @@ public:
 	// Set active state
 	virtual void Activate (bool _bActive);
 
-	// Set owner.
-	virtual void SetOwner (IOGActor* _pOwner, const Vec3& _vLaunchOffset);
-
 	// Fire to target.
 	virtual void Fire (const Vec3& _vTarget);
 
+    // collision event handler
+	virtual bool OnCollision (const IOGCollision& _Collision);
+
 protected:
 
-    IOGEffect*  m_pHeadEffect;
-    IOGActor*   m_pOwner;
-    Vec3        m_vLaunchOffset;
+    IOGEffect*				m_pHeadEffect;
 	COGMissileFlightWorker	m_FlightWorker;
 };
 

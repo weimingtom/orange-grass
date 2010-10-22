@@ -14,7 +14,6 @@
 COGActorPlasmaMissile::COGActorPlasmaMissile()
 {
     m_pHeadEffect = NULL;
-    m_pOwner = NULL;
 }
 
 
@@ -85,9 +84,8 @@ bool COGActorPlasmaMissile::Create (IOGActorParams* _pParams,
 // Adding to actor manager event handler.
 void COGActorPlasmaMissile::OnAddedToManager ()
 {
-    GetPhysics()->AddObject(m_pPhysicalObject);
-    GetSceneGraph()->AddEffectNode(m_pNode);
-    m_bAdded = true;
+	COGActorBullet::OnAddedToManager();
+    m_pPhysicalObject->AddCollisionListener(this);
 }
 
 
@@ -108,7 +106,7 @@ void COGActorPlasmaMissile::Update (unsigned long _ElapsedTime)
 // Set active state
 void COGActorPlasmaMissile::Activate (bool _bActive)
 {
-	COGActor::Activate(_bActive);
+	COGActorBullet::Activate(_bActive);
 
 	m_FlightWorker.Reset();
 	m_FlightWorker.Activate(m_bActive);
@@ -127,19 +125,22 @@ void COGActorPlasmaMissile::Activate (bool _bActive)
 }
 
 
-// Set owner.
-void COGActorPlasmaMissile::SetOwner (IOGActor* _pOwner, const Vec3& _vLaunchOffset)
-{
-    m_pOwner = _pOwner;
-    m_vLaunchOffset = _vLaunchOffset;
-}
-
-
 // Fire to target.
 void COGActorPlasmaMissile::Fire (const Vec3& _vTarget)
 {
+	COGActorBullet::Fire(_vTarget);
+
     Vec3 vPos = m_pOwner->GetPhysicalObject()->GetPosition() + m_vLaunchOffset;
     Vec3 vRot = m_pOwner->GetPhysicalObject()->GetRotation();
 	m_pPhysicalObject->SetWorldTransform(vPos, vRot, Vec3(1,1,1));
     Activate(true);
+}
+
+
+// collision event handler
+bool COGActorPlasmaMissile::OnCollision (const IOGCollision& _Collision)
+{
+	m_pPhysicalObject->Activate(false);
+	m_FlightWorker.Activate(false);
+    return true;
 }

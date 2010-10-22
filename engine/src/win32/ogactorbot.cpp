@@ -16,7 +16,8 @@ COGActorBot::COGActorBot() :    m_pModelPropeller(NULL),
 								m_pModelDestruction(NULL),
                                 m_pNodeDestruction(NULL),
 								m_pExplosionEffect(NULL),
-								m_pExplosionNode(NULL)
+								m_pExplosionNode(NULL),
+								m_pWeapon(NULL)
 {
 }
 
@@ -63,6 +64,7 @@ COGActorBot::~COGActorBot()
             OG_SAFE_DELETE(m_pPhysicalObject);
         m_pPhysicalObject = NULL;
     }
+	OG_SAFE_DELETE(m_pWeapon);
 }
 
 
@@ -218,6 +220,16 @@ bool COGActorBot::OnCollision (const IOGCollision& _Collision)
     }
 
     return true;
+}
+
+
+// Set weapon
+void COGActorBot::SetWeapon (const std::string& _WeaponAlias)
+{
+	OG_SAFE_DELETE(m_pWeapon);
+
+	m_pWeapon = new COGWeapon();
+    m_pWeapon->Create(this, _WeaponAlias);
 }
 
 

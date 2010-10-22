@@ -11,6 +11,7 @@
 
 #include "ogactor.h"
 #include "IOGCollisionListener.h"
+#include "ogweapon.h"
 
 
 class COGActorBot : public COGActor
@@ -35,6 +36,9 @@ public:
     // collision event handler
 	virtual bool OnCollision (const IOGCollision& _Collision);
 
+	// Set weapon
+	virtual void SetWeapon (const std::string& _WeaponAlias);
+
 	// Set active state
 	virtual void Activate (bool _bActive);
 
@@ -48,6 +52,8 @@ protected:
 
 	IOGEffect*  m_pExplosionEffect;
     IOGSgNode*  m_pExplosionNode;
+
+	COGWeapon*	m_pWeapon;
 };
 
 

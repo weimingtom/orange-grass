@@ -31,7 +31,6 @@ bool COGActorPlayer::Create (IOGActorParams* _pParams,
     if (!COGActorBot::Create(_pParams, _vPos, _vRot, _vScale))
         return false;
 
-    m_Weapon.Create(this);
     m_OrientWorker.Create(this);
     m_OrientWorker.Activate(false);
     m_CoolDownMax = 500;
@@ -97,7 +96,7 @@ void COGActorPlayer::Update (unsigned long _ElapsedTime)
         if (m_WeaponCoolDown >= m_WeaponCoolDownMax)
         {
             m_WeaponCoolDown = m_WeaponCoolDownMax;
-            m_StraightenWorker.Activate(true);
+            //m_StraightenWorker.Activate(true);
         }        
     }
     
@@ -106,7 +105,8 @@ void COGActorPlayer::Update (unsigned long _ElapsedTime)
 		m_OrientWorker.Update(_ElapsedTime);
 		if (m_OrientWorker.IsFinished() && m_WeaponCoolDown == m_WeaponCoolDownMax)
 		{
-            m_Weapon.Fire(Vec3(0,0,0));
+			if (m_pWeapon)
+				m_pWeapon->Fire(Vec3(0,0,0));
             m_WeaponCoolDown = 0;
             m_CoolDown = 0;
             m_StraightenWorker.Activate(false);

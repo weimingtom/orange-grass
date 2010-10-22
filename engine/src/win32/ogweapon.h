@@ -9,7 +9,7 @@
 #ifndef OGWEAPON_H_
 #define OGWEAPON_H_
 
-#include "OGActorPlasmaMissile.h"
+#include "ogactorbullet.h"
 #include <list>
 
 
@@ -20,14 +20,14 @@ public:
 	virtual ~COGWeapon();
 
 	// Create weapon.
-	virtual bool Create (IOGActor* _pOwner);
+	virtual bool Create (IOGActor* _pOwner, const std::string& _Alias);
 
 	// Fire missile.
 	virtual void Fire (const Vec3& _vTarget);
 
 protected:
 
-    std::list<COGActorPlasmaMissile*>  m_MissileList;
+    std::list<COGActorBullet*>  m_MissileList;
     IOGActor*  m_pOwner;
 };
 

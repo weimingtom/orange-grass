@@ -71,6 +71,7 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 			vCraftPos, 
 			Vec3(0,0,0), 
 			Vec3(1,1,1));
+		pPlayerActor->SetWeapon(pLevelParams->weapon);
 		GetActorManager()->AddActor(pPlayerActor);
 
 		m_bLoaded = true;

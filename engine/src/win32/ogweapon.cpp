@@ -23,19 +23,19 @@ COGWeapon::~COGWeapon()
 
 
 // Create weapon.
-bool COGWeapon::Create (IOGActor* _pOwner)
+bool COGWeapon::Create (IOGActor* _pOwner, const std::string& _Alias)
 {
     m_pOwner = _pOwner;
     Vec3 vStart = _pOwner->GetPhysicalObject()->GetPosition();
     for (int i = 0; i < 10; ++i)
     {
         IOGActor* pMissile = GetActorManager()->CreateActor(
-            std::string("missile_01"), 
+            _Alias, 
             Vec3(0,0,0),
             Vec3(0,0,0),
             Vec3(1,1,1));
         GetActorManager()->AddActor(pMissile);
-        m_MissileList.push_back((COGActorPlasmaMissile*)pMissile);
+        m_MissileList.push_back((COGActorBullet*)pMissile);
     }
     return true;
 }
@@ -44,10 +44,10 @@ bool COGWeapon::Create (IOGActor* _pOwner)
 // Fire missile.
 void COGWeapon::Fire (const Vec3& _vTarget)
 {
-    std::list<COGActorPlasmaMissile*>::iterator iter = m_MissileList.begin();
+    std::list<COGActorBullet*>::iterator iter = m_MissileList.begin();
     for (; iter != m_MissileList.end(); ++iter)
     {
-        COGActorPlasmaMissile* pMissile = *iter;
+        COGActorBullet* pMissile = *iter;
         if (!pMissile->IsActive())
         {
             pMissile->SetOwner(m_pOwner, Vec3(-3,0,-7));

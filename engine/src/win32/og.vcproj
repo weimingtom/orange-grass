@@ -182,6 +182,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogactorbullet.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactorbullet.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogactorlandbot.cpp"
 					>
 				</File>

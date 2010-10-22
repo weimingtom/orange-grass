@@ -80,6 +80,12 @@ bool CViewerScene::Init ()
 		std::list<IOGActorParams*>::const_iterator iter = ActorsParamsList.begin();
 		for (; iter != ActorsParamsList.end(); ++iter)
 		{
+			if ((*iter)->type == OG_ACTOR_MISSILE ||
+				(*iter)->type == OG_ACTOR_PLASMAMISSILE)
+			{
+				continue;
+			}
+
 			CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
 			cmd.SetEventCustomData(ResLoadEventData(wxT((*iter)->alias.c_str()), 
 				wxT("Models"), 

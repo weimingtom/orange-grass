@@ -50,6 +50,9 @@ public:
 	// Get model alias
 	virtual const std::string& GetAlias () const;
 
+	// Set weapon
+	virtual void SetWeapon (const std::string& _WeaponAlias) {}
+
 	// Get active state
 	virtual bool IsActive () const { return m_bActive; }
 

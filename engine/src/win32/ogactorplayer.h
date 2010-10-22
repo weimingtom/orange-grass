@@ -43,7 +43,6 @@ public:
 
 protected:
 
-    COGWeapon           m_Weapon;
     COGOrientWorker     m_OrientWorker;
     COGStabilizeWorker  m_StraightenWorker;
     unsigned long       m_CoolDown;
