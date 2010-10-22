@@ -73,12 +73,21 @@ bool COGAppSettings::Init (const std::string& _File)
 	IOGGroupNode* pGameNode = m_pReader->OpenGroupNode(pSource, pRoot, "Game");
 	if (pGameNode != NULL)
 	{
-		std::string level_0 = m_pReader->ReadStringParam(pGameNode, "level_0");
-		m_pGlobalVars->SetSVar("level_0", level_0);
-
-		std::string level_1 = m_pReader->ReadStringParam(pGameNode, "level_1");
-		m_pGlobalVars->SetSVar("level_1", level_1);
-
+		IOGGroupNode* pLevelsNode = m_pReader->OpenGroupNode(pSource, pGameNode, "Levels");
+		if (pLevelsNode)
+		{
+			IOGGroupNode* pLevelNode = m_pReader->OpenGroupNode(pSource, pLevelsNode, "Level");
+			while (pLevelNode)
+			{
+				IOGLevelParams level;
+				level.alias = m_pReader->ReadStringParam(pLevelNode, "alias");
+				level.player_actor = m_pReader->ReadStringParam(pLevelNode, "player");
+				level.weapon = m_pReader->ReadStringParam(pLevelNode, "weapon");
+				GetGameSequence()->AddLevel(level);
+				pLevelNode = m_pReader->ReadNextNode(pLevelNode);
+			}
+			m_pReader->CloseGroupNode(pLevelsNode);
+		}
 		m_pReader->CloseGroupNode(pGameNode);
 	}
 	m_pReader->CloseGroupNode(pRoot);

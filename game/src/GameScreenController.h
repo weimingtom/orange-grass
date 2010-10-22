@@ -75,7 +75,6 @@ private:
 	MATRIX			m_mProjection; 
 	MATRIX			m_mView;
 
-	std::string		m_CurLevel;
 	float			m_fFOV;
 	float			m_fZNear;
 	float			m_fZFar;

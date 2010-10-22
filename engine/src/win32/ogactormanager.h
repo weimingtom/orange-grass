@@ -56,6 +56,7 @@ private:
 
 	IOGGlobalVarsTable* m_pGlobalVars;
     TActorsList			m_ActorsList;
+    TActorsList			m_MissileActorsList;
 	IOGActor*			m_pPlayersActor;
 	float				m_fViewDistance;
 };

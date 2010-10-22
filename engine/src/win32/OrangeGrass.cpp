@@ -24,6 +24,7 @@
 #include "ogglobalvarstable.h"
 #include "ogsettingsreader.h"
 #include "ogappsettings.h"
+#include "oggamesequence.h"
 
 
 static IOGResourceMgr* g_pResourceMgr = NULL;
@@ -41,6 +42,7 @@ static IOGActorParamsMgr* g_pActorParamsMgr = NULL;
 static IOGGlobalVarsTable* g_pGlobalVars = NULL;
 static IOGSettingsReader* g_pSettingsReader = NULL;
 static IOGAppSettings* g_pAppSettings = NULL;
+static IOGGameSequence* g_pGameSequence = NULL;
 
 
 IOGResourceMgr* GetResourceMgr ()
@@ -206,4 +208,14 @@ IOGAppSettings* GetAppSettings ()
 		g_pAppSettings = new COGAppSettings ();
 	}
 	return g_pAppSettings;
+}
+
+
+IOGGameSequence* GetGameSequence ()
+{
+	if (g_pGameSequence == NULL)
+	{
+		g_pGameSequence = new COGGameSequence ();
+	}
+	return g_pGameSequence;
 }

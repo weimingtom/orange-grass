@@ -25,6 +25,7 @@
 #include "IOGGlobalVarsTable.h"
 #include "IOGSettingsReader.h"
 #include "IOGAppSettings.h"
+#include "IOGGameSequence.h"
 #include "common.h"
 
 
@@ -44,5 +45,6 @@ IOGActorParamsMgr* GetActorParamsMgr ();
 IOGGlobalVarsTable* GetGlobalVars ();
 IOGSettingsReader* GetSettingsReader ();
 IOGAppSettings* GetAppSettings ();
+IOGGameSequence* GetGameSequence ();
 
 #endif

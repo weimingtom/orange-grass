@@ -34,13 +34,21 @@ COGActorManager::~COGActorManager ()
 // Clear actors manager
 void COGActorManager::Clear ()
 {
-	m_pPlayersActor = NULL;
+	OG_SAFE_DELETE(m_pPlayersActor);
+
     TActorsList::iterator iter = m_ActorsList.begin();
     for (; iter != m_ActorsList.end(); ++iter)
     {
 		OG_SAFE_DELETE((*iter));
 	}
 	m_ActorsList.clear();
+
+	TActorsList::iterator m_iter = m_MissileActorsList.begin();
+    for (; m_iter != m_MissileActorsList.end(); ++m_iter)
+    {
+		OG_SAFE_DELETE((*m_iter));
+	}
+	m_MissileActorsList.clear();
 }
 
 
@@ -149,12 +157,22 @@ void COGActorManager::AddActor (IOGActor* _pActor)
 
     switch (_pActor->GetType())
 	{
-    case OG_ACTOR_PLAYER:
+	case OG_ACTOR_NONE:
+		break;
+
+	case OG_ACTOR_MISSILE:
+	case OG_ACTOR_PLASMAMISSILE:
+	    m_MissileActorsList.push_back(_pActor);
+		break;
+
+	case OG_ACTOR_PLAYER:
 		m_pPlayersActor = _pActor;
         break;
-    }
 
-    m_ActorsList.push_back(_pActor);
+	default:
+	    m_ActorsList.push_back(_pActor);
+		break;
+    }
 }
 
 
@@ -164,6 +182,7 @@ void COGActorManager::DestroyActor (IOGActor* _pActor)
 	if (_pActor == m_pPlayersActor)
 	{
 		OG_SAFE_DELETE(m_pPlayersActor);
+		return;
 	}
 
 	TActorsList::iterator iter = std::find(m_ActorsList.begin(), m_ActorsList.end(), _pActor);
@@ -180,6 +199,8 @@ void COGActorManager::Update (unsigned long _ElapsedTime)
 {
 	IOGCamera* pCamera = GetRenderer()->GetCamera();
 	float fCameraZ = pCamera->GetPosition().z;
+
+	m_pPlayersActor->Update(_ElapsedTime);
 
     TActorsList::iterator iter = m_ActorsList.begin();
     for (; iter != m_ActorsList.end(); ++iter)
@@ -208,30 +229,34 @@ void COGActorManager::Update (unsigned long _ElapsedTime)
 		}
 		pActor->Update(_ElapsedTime);
     }
+
+    TActorsList::iterator m_iter = m_MissileActorsList.begin();
+    for (; m_iter != m_MissileActorsList.end(); ++m_iter)
+    {
+		(*m_iter)->Update(_ElapsedTime);
+	}
 }
 
 
 // Update actors in editor.
 void COGActorManager::UpdateEditor (unsigned long _ElapsedTime)
 {
-    TActorsList::iterator iter = m_ActorsList.begin();
+	m_pPlayersActor->UpdateEditor(_ElapsedTime);
+
+	TActorsList::iterator iter = m_ActorsList.begin();
     for (; iter != m_ActorsList.end(); ++iter)
     {
         IOGActor* pActor = (*iter);
-		switch (pActor->GetType())
-		{
-		case OG_ACTOR_MISSILE:
-		case OG_ACTOR_PLASMAMISSILE:
-			pActor->Activate(false);
-			break;
-
-		case OG_ACTOR_AIRBOT:
-		case OG_ACTOR_LANDBOT:
-			pActor->Activate(true);
-			break;
-		}
+		pActor->Activate(true);
 		pActor->UpdateEditor(_ElapsedTime);
     }
+
+	TActorsList::iterator m_iter = m_MissileActorsList.begin();
+    for (; m_iter != m_MissileActorsList.end(); ++m_iter)
+    {
+        IOGActor* pActor = (*m_iter);
+		pActor->Activate(false);
+	}
 }
 
 

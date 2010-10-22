@@ -33,7 +33,6 @@ CLoadScreenController::~CLoadScreenController()
 bool CLoadScreenController::Init ()
 {
 	m_pGlobalVars = GetGlobalVars();
-	m_CurLevel = m_pGlobalVars->GetSVar("level_0");
 	m_fFOV = m_pGlobalVars->GetFVar("FOV");
 	m_fZNear = m_pGlobalVars->GetFVar("z_near");
 	m_fZFar = m_pGlobalVars->GetFVar("z_far");
@@ -55,13 +54,25 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 		GetActorParamsMgr()->Init();
         GetLevelManager()->Init();
 
-		m_pCurLevel = GetLevelManager()->LoadLevel(m_CurLevel);
+		IOGLevelParams* pLevelParams = GetGameSequence()->GetLevel(0);
+
+		m_pCurLevel = GetLevelManager()->LoadLevel(pLevelParams->alias);
 		if (m_pCurLevel == NULL)
 		{
 			m_State = CSTATE_FAILED;
-			OG_LOG_ERROR("Failed to load level %s", m_CurLevel.c_str());
+			OG_LOG_ERROR("Failed to load level %s", pLevelParams->alias.c_str());
 			return;
 		}
+
+		Vec3 vCraftPos = m_pCurLevel->GetStartPosition();
+		vCraftPos.y = 80.0f;
+		IOGActor* pPlayerActor = GetActorManager()->CreateActor(
+			std::string(pLevelParams->player_actor),
+			vCraftPos, 
+			Vec3(0,0,0), 
+			Vec3(1,1,1));
+		GetActorManager()->AddActor(pPlayerActor);
+
 		m_bLoaded = true;
 		Deactivate();
 	}

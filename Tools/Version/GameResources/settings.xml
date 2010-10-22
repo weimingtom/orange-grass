@@ -12,9 +12,11 @@
 		cam_margins = "50.0"
 		cam_distance = "190.0"
 	/>
-	<Game
-		level_0 = "level_02"
-		level_1 = "level_02"
-		/>
+	<Game>
+		<Levels>
+			<Level alias = "level_02" player = "helicopter" weapon = "missile"/>
+			<Level alias = "level_02" player = "helicopter" weapon = "missile"/>
+		</Levels>
+	</Game>
 	
 </Settings>

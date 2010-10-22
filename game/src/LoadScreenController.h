@@ -54,7 +54,6 @@ private:
 	bool			m_bLoaded;
 	bool			m_bDisplayed;
 
-	std::string		m_CurLevel;
 	float			m_fFOV;
 	float			m_fZNear;
 	float			m_fZFar;

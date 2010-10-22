@@ -83,6 +83,13 @@ bool CEditorLevelScene::Init ()
 		std::list<IOGActorParams*>::const_iterator iter = ActorsParamsList.begin();
 		for (; iter != ActorsParamsList.end(); ++iter)
 		{
+			if ((*iter)->type == OG_ACTOR_MISSILE ||
+				(*iter)->type == OG_ACTOR_PLASMAMISSILE ||
+				(*iter)->type == OG_ACTOR_PLAYER )
+			{
+				continue;
+			}
+
 			CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
 			cmd.SetEventCustomData(ResLoadEventData(wxT((*iter)->alias.c_str()), 
 				wxT("Models"), 
@@ -126,8 +133,8 @@ void CEditorLevelScene::Update (unsigned long _ElapsedTime)
 
     if (m_pCurActor)
     {
-        m_pCurActor->GetPhysicalObject()->Update(10);
-        m_pCurActor->UpdateEditor(10);
+        m_pCurActor->GetPhysicalObject()->Update(0);
+        m_pCurActor->UpdateEditor(0);
     }
 }
 
@@ -292,6 +299,7 @@ void CEditorLevelScene::SetNewCurrentNodeForPlacement(const char* _pModelAlias)
             Vec3(0,0,0), 
             Vec3(0,0,0), 
             Vec3(1,1,1));
+		m_pCurActor->Activate(true);
 		m_CurActorType = m_pCurActor->GetType();
 	}
 	else
@@ -318,6 +326,7 @@ void CEditorLevelScene::PlaceCurrentNode (const Vec3& _vPos)
 		vIntersection, 
 		m_vCurRotation, 
 		m_vCurScaling);
+	m_pCurActor->Activate(true);
 }
 
 

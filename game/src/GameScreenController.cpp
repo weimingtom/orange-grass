@@ -44,7 +44,6 @@ bool CGameScreenController::Init ()
 
 	GetInput()->RegisterReceiver(this);
 
-	m_CurLevel = m_pGlobalVars->GetSVar("level_0");
 	m_fFOV = m_pGlobalVars->GetFVar("FOV");
 	m_fZNear = m_pGlobalVars->GetFVar("z_near");
 	m_fZFar = m_pGlobalVars->GetFVar("z_far");
@@ -63,7 +62,8 @@ bool CGameScreenController::Init ()
 	m_pCamera = m_pRenderer->GetCamera();
 	m_pRenderer->SetViewport(m_ScrWidth, m_ScrHeight, m_fZNear, m_fZFar, m_fFOV);
     
-    m_pCurLevel = GetLevelManager()->LoadLevel(m_CurLevel);
+	IOGLevelParams* pLevelParams = GetGameSequence()->GetLevel(0);
+	m_pCurLevel = GetLevelManager()->LoadLevel(pLevelParams->alias);
     m_pPlayer = GetActorManager()->GetPlayersActor();
 
 	UpdateCamera();
