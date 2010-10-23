@@ -46,6 +46,9 @@ public:
 	// start animation.
     virtual void StartAnimation (const std::string& _Alias);
 
+	// Get active point
+    virtual bool GetActivePoint (Vec3& _point, const std::string& _Alias);
+
 	// Get active state
 	virtual bool IsActive () const { return m_bActive; }
 

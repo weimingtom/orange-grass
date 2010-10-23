@@ -47,8 +47,6 @@ protected:
     COGStabilizeWorker  m_StraightenWorker;
     unsigned long       m_CoolDown;
     unsigned long       m_CoolDownMax;
-    unsigned long       m_WeaponCoolDown;
-    unsigned long       m_WeaponCoolDownMax;
 };
 
 

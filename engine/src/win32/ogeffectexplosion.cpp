@@ -23,14 +23,29 @@ void COGEffectExplosion::Init(OGEffectType _Type)
 	m_pTexture = GetResourceMgr()->GetTexture("explosion");
     m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
 
-    m_Frames.reserve(8);
-    for (unsigned int i = 0; i < 8; ++i)
+    m_Frames.reserve(7);
+    for (unsigned int i = 0; i < 7; ++i)
     {
         IOGMapping m = *m_pTexture->GetMapping(i+1);
         m_Frames.push_back(m);
     }
-
     m_BBList.reserve(MAX_PARTILES);
+
+	Vec4 color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    m_WaveMapping = *m_pTexture->GetMapping(10);
+    m_Wave.scale = 8.0f;
+    m_Wave.frame = 0.0f;
+    m_Wave.angle = 0.0f;
+    m_Wave.offset = Vec3(0,0,0);
+    m_Wave.pVertices[0].c = color;
+    m_Wave.pVertices[1].c = color;
+    m_Wave.pVertices[2].c = color;
+    m_Wave.pVertices[3].c = color;
+    m_Wave.pVertices[0].t = Vec2(m_WaveMapping.t1.x, m_WaveMapping.t0.y);
+    m_Wave.pVertices[1].t = Vec2(m_WaveMapping.t0.x, m_WaveMapping.t0.y);
+    m_Wave.pVertices[2].t = Vec2(m_WaveMapping.t1.x, m_WaveMapping.t1.y);
+    m_Wave.pVertices[3].t = Vec2(m_WaveMapping.t0.x, m_WaveMapping.t1.y);
+
     m_AABB.SetMinMax(Vec3(-1,-1,-1), Vec3(1,1,1));
 }
 
@@ -43,7 +58,7 @@ void COGEffectExplosion::Update (unsigned long _ElapsedTime)
 
 	float fFrameInc = 0.38f;
 	float fInitialScale = 8.0f;
-	float fScaleInc = 0.2f;
+	float fScaleInc = 0.6f;
 	int numVertsAtOnce = 5;
     float fRotateInc = 0.1f;
 	Vec4 color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -54,7 +69,7 @@ void COGEffectExplosion::Update (unsigned long _ElapsedTime)
     while (iter != m_BBList.end())
     {
         COGExplosionBillboard& particle = (*iter);
-        if (particle.frame < 7)
+        if (particle.frame < 6)
         {
             particle.scale += fScaleInc;
             particle.angle += fRotateInc;
@@ -74,6 +89,15 @@ void COGEffectExplosion::Update (unsigned long _ElapsedTime)
                 return;
             }
         }
+    }
+
+    if (m_Wave.pVertices[0].c.w >= 0.08f)
+    {
+        m_Wave.scale += 1.5f;
+        m_Wave.pVertices[0].c.w -= 0.08f;
+        m_Wave.pVertices[1].c.w -= 0.08f;
+        m_Wave.pVertices[2].c.w -= 0.08f;
+        m_Wave.pVertices[3].c.w -= 0.08f;
     }
 
     for (int n = 0; n < numVertsAtOnce; ++n)
@@ -142,6 +166,14 @@ void COGEffectExplosion::Render (const MATRIX& _mWorld, unsigned int _Frame)
 
 		m_pRenderer->DrawEffectBuffer(&particle.pVertices[0], 0, 4);
     }
+
+    Vec3 vWaveUp = Vec3(0,0,1) * m_Wave.scale;
+    Vec3 vWaveRight = Vec3(1,0,0) * m_Wave.scale;
+    m_Wave.pVertices[0].p = vOffset + vWaveRight + vWaveUp;
+    m_Wave.pVertices[1].p = vOffset - vWaveRight + vWaveUp;
+    m_Wave.pVertices[2].p = vOffset + vWaveRight - vWaveUp;
+    m_Wave.pVertices[3].p = vOffset - vWaveRight - vWaveUp;
+	m_pRenderer->DrawEffectBuffer(&m_Wave.pVertices[0], 0, 4);
 }
 
 

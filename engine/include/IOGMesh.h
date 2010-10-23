@@ -49,6 +49,9 @@ public:
 
     // Get mesh geometry
     virtual const std::vector<OGFace>& GetGeometry () const = 0;
+
+    // Get active point
+    virtual bool GetActivePoint (Vec3& _Point, const std::string& _Alias, unsigned int _Frame) = 0;
 };
 
 

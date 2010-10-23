@@ -241,7 +241,8 @@ void COGActorManager::Update (unsigned long _ElapsedTime)
 // Update actors in editor.
 void COGActorManager::UpdateEditor (unsigned long _ElapsedTime)
 {
-	m_pPlayersActor->UpdateEditor(_ElapsedTime);
+    if (m_pPlayersActor)
+	    m_pPlayersActor->UpdateEditor(_ElapsedTime);
 
 	TActorsList::iterator iter = m_ActorsList.begin();
     for (; iter != m_ActorsList.end(); ++iter)

@@ -60,6 +60,9 @@ public:
 	// Get animation
     virtual IOGAnimation* GetAnimation (const std::string& _Alias) {return NULL;}
 
+	// Get active point
+    virtual bool GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame) {return false;}
+
 private:
 
 	struct Cfg

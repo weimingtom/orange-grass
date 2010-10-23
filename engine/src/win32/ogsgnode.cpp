@@ -94,6 +94,29 @@ IOGPhysicalObject* COGSgNode::GetPhysics ()
 }
 
 
+// Get active point
+bool COGSgNode::GetActivePoint (Vec3& _point, const std::string& _Alias)
+{
+    IOGActivePoint pt;
+    if (!m_pRenderable->GetActivePoint(pt, _Alias, m_AnimFrame))
+        return false;
+
+    //MATRIX mModel;
+    //MatrixMultiply(mModel, pt.mLocalTM, m_pPhysics->GetWorldTransform());
+    //_point = pt.pos + Vec3(mModel.f[12], mModel.f[13], mModel.f[14]);
+    //MatrixVec3Multiply(_point, pt.pos, mModel);
+    //MatrixVec3Multiply(_point, pt.pos, pt.mLocalTM);
+
+    //VECTOR4 v_in, v_out;
+    //v_in.x = pt.pos.x; v_in.y = pt.pos.y; v_in.z = pt.pos.z; v_in.w = 1.0f;
+    //MatrixVec4Multiply(v_out, v_in, m_pPhysics->GetWorldTransform());
+    //_point.x = v_out.x; _point.y = v_out.y; _point.z = v_out.z;
+    _point = pt.pos;
+
+    return true;
+}
+
+
 // start animation.
 void COGSgNode::StartAnimation (const std::string& _Alias)
 {

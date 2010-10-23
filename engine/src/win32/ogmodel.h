@@ -60,7 +60,7 @@ public:
     virtual IOGAnimation* GetAnimation (const std::string& _Alias);
 
 	// Get active point
-	virtual IOGActivePoint* GetActivePoint (const std::string& _Alias);
+    virtual bool GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame);
 
 private:
 
@@ -78,6 +78,7 @@ private:
 		struct ActPoint
 		{
 			std::string alias;
+            std::string part_alias;
 			Vec3 pos;
 		};
 

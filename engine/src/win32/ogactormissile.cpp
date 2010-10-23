@@ -84,7 +84,9 @@ bool COGActorMissile::Create (IOGActorParams* _pParams,
 // Adding to actor manager event handler.
 void COGActorMissile::OnAddedToManager ()
 {
-	COGActorBullet::OnAddedToManager();
+    GetPhysics()->AddObject(m_pPhysicalObject);
+	GetSceneGraph()->AddEffectNode(m_pNode);
+    m_bAdded = true;
     m_pPhysicalObject->AddCollisionListener(this);
 }
 
@@ -94,6 +96,7 @@ void COGActorMissile::Update (unsigned long _ElapsedTime)
 {
 	if (m_FlightWorker.IsActive())
 	{
+        m_pHeadEffect->UpdatePosition(m_pPhysicalObject->GetPosition());
 		m_FlightWorker.Update(_ElapsedTime);
 		if (m_FlightWorker.IsFinished())
 		{
@@ -113,6 +116,9 @@ void COGActorMissile::Update (unsigned long _ElapsedTime)
 // Set active state
 void COGActorMissile::Activate (bool _bActive)
 {
+    if (_bActive == m_bActive)
+        return;
+
 	COGActorBullet::Activate(_bActive);
 
 	if (m_bActive)
@@ -145,5 +151,6 @@ bool COGActorMissile::OnCollision (const IOGCollision& _Collision)
 {
 	m_pPhysicalObject->Activate(false);
 	m_FlightWorker.Activate(false);
+	m_pHeadEffect->Stop();
     return true;
 }

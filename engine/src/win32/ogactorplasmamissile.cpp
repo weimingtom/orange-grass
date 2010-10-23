@@ -84,7 +84,9 @@ bool COGActorPlasmaMissile::Create (IOGActorParams* _pParams,
 // Adding to actor manager event handler.
 void COGActorPlasmaMissile::OnAddedToManager ()
 {
-	COGActorBullet::OnAddedToManager();
+    GetPhysics()->AddObject(m_pPhysicalObject);
+	GetSceneGraph()->AddEffectNode(m_pNode);
+    m_bAdded = true;
     m_pPhysicalObject->AddCollisionListener(this);
 }
 
@@ -106,6 +108,9 @@ void COGActorPlasmaMissile::Update (unsigned long _ElapsedTime)
 // Set active state
 void COGActorPlasmaMissile::Activate (bool _bActive)
 {
+    if (_bActive == m_bActive)
+        return;
+
 	COGActorBullet::Activate(_bActive);
 
 	m_FlightWorker.Reset();

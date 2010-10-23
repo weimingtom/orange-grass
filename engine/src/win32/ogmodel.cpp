@@ -63,15 +63,19 @@ bool COGModel::Load ()
         m_pAnimations[pAnim->name] = pAnim;
     }
 
-	std::list<Cfg::ActPoint>::const_iterator pt_iter = modelcfg.point_list.begin();
-	for (; pt_iter != modelcfg.point_list.end(); ++pt_iter)
-    {
-		const COGModel::Cfg::ActPoint& pt = (*pt_iter);
-        IOGActivePoint* pPt = new IOGActivePoint();
-		pPt->alias = pt.alias;
-		pPt->pos = pt.pos;
-        m_pActivePoints[pPt->alias] = pPt;
-    }
+	//std::list<Cfg::ActPoint>::const_iterator pt_iter = modelcfg.point_list.begin();
+	//for (; pt_iter != modelcfg.point_list.end(); ++pt_iter)
+ //   {
+	//	const COGModel::Cfg::ActPoint& pt = (*pt_iter);
+ //       IOGActivePoint* pPt = new IOGActivePoint();
+	//	pPt->alias = pt.alias;
+	//	pPt->pos = pt.pos;
+ //       if (!m_pMesh->GetIdByAlias(pPt->id, pt.part_alias))
+ //       {
+ //           OG_LOG_WARNING("Failed to attach active point %s to mesh %s", pt.alias.c_str(), modelcfg.mesh_alias.c_str());
+ //       }
+ //       m_pActivePoints[pPt->alias] = pPt;
+ //   }
 
 	m_LoadState = OG_RESSTATE_LOADED;
     return true;
@@ -130,6 +134,7 @@ bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
 		    COGModel::Cfg::ActPoint pt;
 		    pt.alias = m_pReader->ReadStringParam(pPointNode, "alias");
 		    pt.pos = m_pReader->ReadVec3Param(pPointNode, "x", "y", "z");
+            pt.part_alias = m_pReader->ReadStringParam(pPointNode, "part");
 		    _cfg.point_list.push_back(pt);
 		    pPointNode = m_pReader->ReadNextNode(pPointNode);
 	    }
@@ -229,7 +234,11 @@ IOGAnimation* COGModel::GetAnimation (const std::string& _Alias)
 
 
 // Get active point
-IOGActivePoint* COGModel::GetActivePoint (const std::string& _Alias)
+bool COGModel::GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame)
 {
-	return m_pActivePoints[_Alias];
+    if (!m_pMesh->GetActivePoint(_point.pos, _Alias, _Frame))
+        return false;
+
+    _point.alias = _Alias;
+    return true;
 }

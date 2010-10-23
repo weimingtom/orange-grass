@@ -13,6 +13,8 @@
 
 COGWeapon::COGWeapon()
 {
+    m_WeaponCoolDownMax = 200;
+    m_WeaponCoolDown = m_WeaponCoolDownMax;
 }
 
 
@@ -23,17 +25,15 @@ COGWeapon::~COGWeapon()
 
 
 // Create weapon.
-bool COGWeapon::Create (IOGActor* _pOwner, const std::string& _Alias)
+bool COGWeapon::Create (IOGActor* _pOwner, const std::string& _Alias, const Vec3& _vLaunchPos)
 {
     m_pOwner = _pOwner;
+    m_vLaunchPos = _vLaunchPos;
     Vec3 vStart = _pOwner->GetPhysicalObject()->GetPosition();
     for (int i = 0; i < 10; ++i)
     {
         IOGActor* pMissile = GetActorManager()->CreateActor(
-            _Alias, 
-            Vec3(0,0,0),
-            Vec3(0,0,0),
-            Vec3(1,1,1));
+            _Alias, Vec3(0,0,0), Vec3(0,0,0), Vec3(1,1,1));
         GetActorManager()->AddActor(pMissile);
         m_MissileList.push_back((COGActorBullet*)pMissile);
     }
@@ -50,9 +50,31 @@ void COGWeapon::Fire (const Vec3& _vTarget)
         COGActorBullet* pMissile = *iter;
         if (!pMissile->IsActive())
         {
-            pMissile->SetOwner(m_pOwner, Vec3(-3,0,-7));
+            pMissile->SetOwner(m_pOwner, m_vLaunchPos);
             pMissile->Fire(_vTarget);
+            m_WeaponCoolDown = 0;
             return;
         }
     }
+}
+
+
+// Update actor.
+void COGWeapon::Update (unsigned long _ElapsedTime)
+{
+    if (m_WeaponCoolDown < m_WeaponCoolDownMax)
+    {
+        m_WeaponCoolDown += _ElapsedTime;
+        if (m_WeaponCoolDown >= m_WeaponCoolDownMax)
+        {
+            m_WeaponCoolDown = m_WeaponCoolDownMax;
+        }
+    }
+}
+
+
+// Is ready.
+bool COGWeapon::IsReady () const
+{
+    return (m_WeaponCoolDown == m_WeaponCoolDownMax);
 }

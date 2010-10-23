@@ -136,7 +136,7 @@ void COGEffectMissileSmoke::Render (const MATRIX& _mWorld, unsigned int _Frame)
 		Vec3 vSRight = m_vCameraRight * particle.scale;
         if (particle.bDirty)
         {
-            particle.offset += Vec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
+            particle.offset += m_vCurPosition;//Vec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
             particle.bDirty = false;
         }
 		particle.pVertices[0].p = vSRight + vSUp + particle.offset;

@@ -16,6 +16,7 @@ COGMesh::COGMesh () :	m_pScene (NULL)
     m_pRenderer = GetRenderer();
 	m_pScene = (CPVRTModelPOD*)malloc(sizeof(CPVRTModelPOD));
 	memset(m_pScene, 0, sizeof(CPVRTModelPOD));
+    m_NumParts = 0;
 }
 
 
@@ -49,11 +50,28 @@ bool COGMesh::Load ()
 		return false;
 	}
 	
+    m_NumParts = 0;
 	m_BuffersList.reserve(m_pScene->nNumMesh);
+    m_PartList.reserve(m_pScene->nNumMesh);
 	for(unsigned int i = 0; i < m_pScene->nNumMesh; ++i)
 	{
+        if (IsActivePoint(i))
+        {
+            SPODNode* pNode = &m_pScene->pNode[i];
+            SPODMesh& Mesh = m_pScene->pMesh[i];
+            Vec3* pPtr = (Vec3*)Mesh.pInterleaved;
+            ActPoint pt;
+            pt.pos = *pPtr;
+            pt.part = i;
+            m_ActivePoints[std::string(pNode->pszName)] = pt;
+
+    		m_BuffersList.push_back(NULL);
+            continue;
+        }
 		IOGVertexBuffers* pBuffer = m_pRenderer->CreateVertexBuffer(&m_pScene->pMesh[i]);
 		m_BuffersList.push_back(pBuffer);
+        m_PartList.push_back(i);
+        ++m_NumParts;
 	}
 
     CalculateGeometry();
@@ -82,6 +100,7 @@ void COGMesh::Unload ()
 		OG_SAFE_DELETE((*iter));
 	}
 	m_BuffersList.clear();
+    m_PartList.clear();
 
 	m_LoadState = OG_RESSTATE_DEFINED;
 }
@@ -93,9 +112,10 @@ void COGMesh::Render (const MATRIX& _mWorld, unsigned int _Frame)
 	if (_Frame > m_pScene->nNumFrame)
 		return;
 
-	for (unsigned int i=0; i<m_pScene->nNumMesh; ++i)
+    std::vector<unsigned int>::iterator iter = m_PartList.begin();
+    for (; iter != m_PartList.end(); ++iter)
 	{
-		RenderPart(_mWorld, i, _Frame);
+		RenderPart(_mWorld, (*iter), _Frame);
 	}
 }
 
@@ -103,9 +123,6 @@ void COGMesh::Render (const MATRIX& _mWorld, unsigned int _Frame)
 // Render part of the mesh.
 void COGMesh::RenderPart (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame)
 {
-    if (_Part > GetNumRenderables() || _Frame > m_pScene->nNumFrame)
-        return;
-
 	m_pScene->SetFrame((float)_Frame);
 	const SPODNode& node = m_pScene->pNode[_Part];
 
@@ -118,14 +135,14 @@ void COGMesh::RenderPart (const MATRIX& _mWorld, unsigned int _Part, unsigned in
     MatrixMultiply(mModel, mNodeWorld, _mWorld);
 
     m_pRenderer->SetModelMatrix(mModel);
-    m_pRenderer->RenderMesh(m_BuffersList[node.nIdx]);
+    m_pRenderer->RenderMesh(m_BuffersList[_Part]);
 }
 
 
 // Get num renderable parts.
 unsigned int COGMesh::GetNumRenderables () const
 {
-    return m_pScene->nNumMesh;
+    return m_NumParts;
 }
 
 
@@ -144,9 +161,14 @@ void COGMesh::CalculateGeometry ()
 
 	m_AabbList.reserve(m_pScene->nNumMesh);
     m_Faces.reserve(4096);
-    for (unsigned int i=0; i<m_pScene->nNumMesh; ++i)
+    for (unsigned int i=0; i < m_pScene->nNumMesh; ++i)
 	{
-		SPODNode* pNode = &m_pScene->pNode[i];
+        if (IsActivePoint(i))
+        {
+            continue;
+        }
+
+        SPODNode* pNode = &m_pScene->pNode[i];
 		m_pScene->GetWorldMatrix(mModel, *pNode);
 
         SPODMesh& Mesh = m_pScene->pMesh[i];
@@ -170,10 +192,8 @@ void COGMesh::CalculateGeometry ()
                     unsigned short ind = *(((unsigned short*)Mesh.sFaces.pData) + n + k);
                     face.vertices[k] = *((Vec3*)((unsigned char*)(pPtr)+Mesh.sVertex.nStride * ind));
 
-                    VECTOR4 v_in, v_out;
-                    v_in.x = face.vertices[k].x; v_in.y = face.vertices[k].y; v_in.z = face.vertices[k].z; v_in.w = 1.0f;
-                    MatrixVec4Multiply(v_out, v_in, mModel);
-                    face.vertices[k].x = v_out.x; face.vertices[k].y = v_out.y; face.vertices[k].z = v_out.z;
+                    Vec3& v_out = face.vertices[k];
+                    MatrixVecMultiply(v_out, face.vertices[k], mModel);
 
 			        if (v_out.x < vMinCorner.x) vMinCorner.x = v_out.x;
 			        if (v_out.y < vMinCorner.y) vMinCorner.y = v_out.y;
@@ -190,8 +210,6 @@ void COGMesh::CalculateGeometry ()
 		m_AabbList.push_back(aabb);
 		m_AABB.EmbraceAABB(aabb);
 	}
-
-    //m_AABB.SetMinMax (vMinCorner, vMaxCorner);
 }
 
 
@@ -221,4 +239,37 @@ bool COGMesh::GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Ve
 		}
 	}
 	return false;
+}
+
+
+// Get active point
+bool COGMesh::GetActivePoint (Vec3& _Point, const std::string& _Alias, unsigned int _Frame)
+{
+    std::map<std::string, ActPoint>::iterator iter = m_ActivePoints.find(_Alias);
+    if (iter != m_ActivePoints.end())
+    {
+	    m_pScene->SetFrame((float)_Frame);
+        const SPODNode& node = m_pScene->pNode[iter->second.part];
+
+        // Gets the node model matrix
+        MATRIX mNodeWorld;
+        m_pScene->GetWorldMatrix(mNodeWorld, node);
+        
+        MatrixVecMultiply(_Point, iter->second.pos, mNodeWorld);
+        return true;
+    }
+    return false;
+}
+
+
+// check if active point.
+bool COGMesh::IsActivePoint (unsigned int _Part)
+{
+    char active_point_marker[] = "actpoint";
+    SPODNode* pNode = &m_pScene->pNode[_Part];
+    if (strstr(pNode->pszName, active_point_marker) == pNode->pszName)
+    {
+        return true;
+    }
+    return false;
 }

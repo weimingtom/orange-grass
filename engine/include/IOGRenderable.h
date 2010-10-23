@@ -23,6 +23,15 @@ enum RenderableType
 };
 
 
+struct IOGActivePoint
+{
+	std::string     alias;
+    MATRIX          mLocalTM;
+    unsigned int    id;
+	Vec3		    pos;
+};
+
+
 // Base renderable object interface.
 class IOGRenderable
 {
@@ -53,6 +62,9 @@ public:
 
 	// Get animation
     virtual IOGAnimation* GetAnimation (const std::string& _Alias) = 0;
+
+	// Get active point
+	virtual bool GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame) = 0;
 };
 
 #endif

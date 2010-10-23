@@ -140,9 +140,9 @@ void COGSceneGraph::Update (unsigned long _ElapsedTime)
     for (; iter != m_EffectNodesList.end(); ++iter)
     {
 		IOGSgNode* pNode = (*iter);
-		const MATRIX& mT = pNode->GetWorldTransform();
-		Vec3 vPos = Vec3(mT.f[12], mT.f[13], mT.f[14]);
-		((IOGEffect*)pNode->GetRenderable())->UpdatePosition(vPos);
+		//const MATRIX& mT = pNode->GetWorldTransform();
+		//Vec3 vPos = Vec3(mT.f[12], mT.f[13], mT.f[14]);
+		//((IOGEffect*)pNode->GetRenderable())->UpdatePosition(vPos);
         (*iter)->Update(_ElapsedTime);
     }
 }

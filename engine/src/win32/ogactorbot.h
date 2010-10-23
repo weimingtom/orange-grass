@@ -52,6 +52,8 @@ protected:
 
 	IOGEffect*  m_pExplosionEffect;
     IOGSgNode*  m_pExplosionNode;
+    IOGEffect*  m_pTrailEffect;
+    IOGSgNode*  m_pTrailNode;
 
 	COGWeapon*	m_pWeapon;
 };

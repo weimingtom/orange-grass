@@ -56,6 +56,14 @@ COGActorBot::~COGActorBot()
             OG_SAFE_DELETE(m_pExplosionNode);
 		m_pExplosionNode = NULL;
 	}
+	if (m_pTrailNode)
+	{
+        if (m_bAdded)
+		    GetSceneGraph()->RemoveNode(m_pTrailNode);
+        else
+            OG_SAFE_DELETE(m_pTrailNode);
+		m_pTrailNode = NULL;
+	}
     if (m_pPhysicalObject)
     {
         if (m_bAdded)
@@ -152,6 +160,9 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 		return false;
 	}
 
+	m_pTrailEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_MISSILESMOKE);
+	m_pTrailNode = GetSceneGraph()->CreateNode(m_pTrailEffect, m_pPhysicalObject);
+
     return true;
 }
 
@@ -178,6 +189,13 @@ void COGActorBot::OnAddedToManager ()
 	if (m_pExplosionNode)
 	{
 		GetSceneGraph()->AddEffectNode(m_pExplosionNode);
+        m_pExplosionNode->Activate(false);
+	}
+
+	if (m_pTrailNode)
+	{
+		GetSceneGraph()->AddEffectNode(m_pTrailNode);
+        m_pTrailNode->Activate(false);
 	}
 }
 
@@ -190,6 +208,16 @@ void COGActorBot::Update (unsigned long _ElapsedTime)
     if (m_Status == OG_ACTORSTATUS_FALLING)
     {
         m_pNodeDestruction->Update(_ElapsedTime);
+        Vec3 vTrail;
+        m_pNodeDestruction->GetActivePoint(vTrail, "actpointpart02");
+
+        MatrixVecMultiply(vTrail, vTrail, m_pPhysicalObject->GetWorldTransform());
+        //VECTOR4 v_in, v_out;
+        //v_in.x = vTrail.x; v_in.y = vTrail.y; v_in.z = vTrail.z; v_in.w = 1.0f;
+        //MatrixVec4Multiply(v_out, v_in, m_pPhysicalObject->GetWorldTransform());
+        //vTrail.x = v_out.x; vTrail.y = v_out.y; vTrail.z = v_out.z;
+
+        m_pTrailEffect->UpdatePosition(vTrail);
     }
     else
     {
@@ -206,6 +234,7 @@ bool COGActorBot::OnCollision (const IOGCollision& _Collision)
 {
 	if (m_pExplosionNode)
 	{
+        m_pExplosionNode->Activate(true);
 		m_pExplosionEffect->Start();
 	}
     if (m_pNodeDestruction)
@@ -218,6 +247,12 @@ bool COGActorBot::OnCollision (const IOGCollision& _Collision)
             m_pNodePropeller->Activate(false);
         }
     }
+    if (m_pTrailNode)
+    {
+        m_pTrailNode->Activate(true);
+        m_pTrailEffect->Start();
+        m_pTrailEffect->SetDirection(m_pPhysicalObject->GetDirection());
+    }
 
     return true;
 }
@@ -228,8 +263,11 @@ void COGActorBot::SetWeapon (const std::string& _WeaponAlias)
 {
 	OG_SAFE_DELETE(m_pWeapon);
 
+    Vec3 vOffset;
+    m_pNode->GetActivePoint(vOffset, "actpointweapon02");
+
 	m_pWeapon = new COGWeapon();
-    m_pWeapon->Create(this, _WeaponAlias);
+    m_pWeapon->Create(this, _WeaponAlias, /*Vec3(-3,0,-7)*/vOffset);
 }
 
 

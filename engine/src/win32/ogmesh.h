@@ -13,6 +13,7 @@
 #include "Geometry.h"
 #include "Mathematics.h"
 #include <vector>
+#include <map>
 #include "ogresource.h"
 #include "IOGVertexBuffers.h"
 #include "IOGRenderer.h"
@@ -54,10 +55,16 @@ public:
     // Get mesh geometry
     virtual const std::vector<OGFace>& GetGeometry () const {return m_Faces;}
 
+    // Get active point
+    virtual bool GetActivePoint (Vec3& _Point, const std::string& _Alias, unsigned int _Frame);
+
 protected:
 
 	// calculate geometry
 	virtual void CalculateGeometry ();
+
+    // check if active point.
+    bool IsActivePoint (unsigned int _Part);
 
 protected:
 	
@@ -70,11 +77,21 @@ protected:
 	// Bounds
 	IOGAabb					m_AABB;
 	std::vector<IOGAabb>	m_AabbList;
+    std::vector<unsigned int>   m_PartList;
 
     // Geometry (for mapeditor mostly)
 	std::vector<OGFace>     m_Faces;
 
+    struct ActPoint
+    {
+        Vec3 pos;
+        unsigned int part;
+    };
+    std::map<std::string, ActPoint> m_ActivePoints;
+
     IOGRenderer*    m_pRenderer;
+
+    unsigned int    m_NumParts;
 };
 
 
