@@ -83,7 +83,9 @@ void COGRenderer::SetViewport (
 #else
 	MatrixOrthoRH(m_mOrthoProj, (float)m_Height, (float)m_Width, -1, 1, true);
     MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(m_Height)/float(m_Width), m_fZNear, m_fZFar, true);
- 	m_pText->SetTextures(_Height, _Width, true);
+ 	m_pText->SetTextures(_Width, _Height, true);
+    //m_mTextProj.f[0] = 2.0f/(m_Width);
+    //m_mTextProj.f[5] = -2.0f/(m_Height);
     m_mTextProj.f[0] = 2.0f/(m_Height);
     m_mTextProj.f[5] = -2.0f/(m_Width);
 #endif
@@ -172,7 +174,11 @@ Vec3 COGRenderer::UnprojectCoords (int _X, int _Y)
     float* pMV = m_mView.f;
     float* pP = m_mProjection.f;
 	float x0, y0, z0;
+#ifdef WIN32
 	UnProject((float)_X, (float)(m_Height - _Y), 0.0f, pMV, pP, m_Width, m_Height, &x0, &y0, &z0);
+#else
+	UnProject((float)_Y, (float)_X, 0.0f, pMV, pP, m_Height, m_Width, &x0, &y0, &z0);
+#endif    
     return Vec3(x0, y0, z0);
 }
 

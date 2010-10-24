@@ -56,8 +56,8 @@ bool COGTextRenderer::SetTextures(
 	m_bScreenRotate = bRotate; 
 	if( m_bScreenRotate ) 
     {
-        m_WindowWidth = (float)dwScreenY;
-        m_WindowHeight = (float)dwScreenX;
+        //m_WindowWidth = (float)dwScreenY;
+        //m_WindowHeight = (float)dwScreenX;
 	}
 
 	/* Check whether textures are already set up just in case */
