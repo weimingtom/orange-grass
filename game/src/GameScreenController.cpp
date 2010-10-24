@@ -123,7 +123,7 @@ void CGameScreenController::RenderScene ()
     m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
 	m_pHUD->Render(Vec2(365, 231), Vec2((float)115.0f, (float)89.0f));
 	m_pRenderer->FinishRenderMode();
-
+/*
 	unsigned long fps = 0;
 	if (m_ElapsedTime > 0)
 	{
@@ -144,9 +144,12 @@ void CGameScreenController::RenderScene ()
 	m_pRenderer->DisplayString(Vec2(70.0f,16.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
 	m_pRenderer->DisplayString(Vec2(70.0f,20.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
 	m_pRenderer->DisplayString(Vec2(70.0f,24.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
-	GetStatistics()->Reset();
+*/
+    GetStatistics()->Reset();
+/*    
 #endif
 	m_pRenderer->FinishRenderMode();
+*/
 }
 
 

@@ -76,6 +76,15 @@
 		B294D263126390B300015F63 /* ogvertexbuffers_gles20.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B294D25D126390B300015F63 /* ogvertexbuffers_gles20.cpp */; };
 		B294D2721263928300015F63 /* ogactorbot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B294D2701263928300015F63 /* ogactorbot.cpp */; };
 		B294D2AC12639DAF00015F63 /* TouchScreen.mm in Sources */ = {isa = PBXBuildFile; fileRef = B294D2AB12639DAF00015F63 /* TouchScreen.mm */; };
+		B2959D1912748129005F5346 /* ogguibutton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D1712748129005F5346 /* ogguibutton.cpp */; };
+		B2959D24127481A4005F5346 /* ogactorbullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D1A127481A4005F5346 /* ogactorbullet.cpp */; };
+		B2959D25127481A4005F5346 /* ogactormissile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D1C127481A4005F5346 /* ogactormissile.cpp */; };
+		B2959D26127481A4005F5346 /* ogbotfallingworker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D1E127481A4005F5346 /* ogbotfallingworker.cpp */; };
+		B2959D27127481A4005F5346 /* ogbotflightworker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D20127481A4005F5346 /* ogbotflightworker.cpp */; };
+		B2959D28127481A4005F5346 /* oggamesequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D22127481A4005F5346 /* oggamesequence.cpp */; };
+		B2959D2D12748212005F5346 /* ogeffectexplosion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D2912748212005F5346 /* ogeffectexplosion.cpp */; };
+		B2959D2E12748212005F5346 /* ogeffectmissilesmoke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D2B12748212005F5346 /* ogeffectmissilesmoke.cpp */; };
+		B2959D311274829D005F5346 /* StartMenuScreenController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D2F1274829D005F5346 /* StartMenuScreenController.cpp */; };
 		B29C64CA1222D4BF00FF91DA /* oginputdispatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29C64C81222D4BF00FF91DA /* oginputdispatcher.cpp */; };
 		B29C64CD1222D4E100FF91DA /* ogactorplayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29C64CB1222D4E100FF91DA /* ogactorplayer.cpp */; };
 		B29C64D11222D50800FF91DA /* ogplayerphysicalobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29C64CF1222D50800FF91DA /* ogplayerphysicalobject.cpp */; };
@@ -295,6 +304,28 @@
 		B294D2701263928300015F63 /* ogactorbot.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactorbot.cpp; path = ../../engine/src/win32/ogactorbot.cpp; sourceTree = SOURCE_ROOT; };
 		B294D2711263928300015F63 /* ogactorbot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactorbot.h; path = ../../engine/src/win32/ogactorbot.h; sourceTree = SOURCE_ROOT; };
 		B294D2AB12639DAF00015F63 /* TouchScreen.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = TouchScreen.mm; path = TouchScreen/TouchScreen.mm; sourceTree = "<group>"; };
+		B2959D12127480B3005F5346 /* IOGGuiButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGGuiButton.h; path = ../../engine/include/IOGGuiButton.h; sourceTree = SOURCE_ROOT; };
+		B2959D13127480B3005F5346 /* IOGGuiSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGGuiSprite.h; path = ../../engine/include/IOGGuiSprite.h; sourceTree = SOURCE_ROOT; };
+		B2959D14127480CC005F5346 /* IOGCollisionListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGCollisionListener.h; path = ../../engine/include/IOGCollisionListener.h; sourceTree = SOURCE_ROOT; };
+		B2959D15127480E4005F5346 /* IOGGameSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGGameSequence.h; path = ../../engine/include/IOGGameSequence.h; sourceTree = SOURCE_ROOT; };
+		B2959D1712748129005F5346 /* ogguibutton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogguibutton.cpp; path = ../../engine/src/win32/ogguibutton.cpp; sourceTree = SOURCE_ROOT; };
+		B2959D1812748129005F5346 /* ogguibutton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogguibutton.h; path = ../../engine/src/win32/ogguibutton.h; sourceTree = SOURCE_ROOT; };
+		B2959D1A127481A4005F5346 /* ogactorbullet.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactorbullet.cpp; path = ../../engine/src/win32/ogactorbullet.cpp; sourceTree = SOURCE_ROOT; };
+		B2959D1B127481A4005F5346 /* ogactorbullet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactorbullet.h; path = ../../engine/src/win32/ogactorbullet.h; sourceTree = SOURCE_ROOT; };
+		B2959D1C127481A4005F5346 /* ogactormissile.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactormissile.cpp; path = ../../engine/src/win32/ogactormissile.cpp; sourceTree = SOURCE_ROOT; };
+		B2959D1D127481A4005F5346 /* ogactormissile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactormissile.h; path = ../../engine/src/win32/ogactormissile.h; sourceTree = SOURCE_ROOT; };
+		B2959D1E127481A4005F5346 /* ogbotfallingworker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogbotfallingworker.cpp; path = ../../engine/src/win32/ogbotfallingworker.cpp; sourceTree = SOURCE_ROOT; };
+		B2959D1F127481A4005F5346 /* ogbotfallingworker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogbotfallingworker.h; path = ../../engine/src/win32/ogbotfallingworker.h; sourceTree = SOURCE_ROOT; };
+		B2959D20127481A4005F5346 /* ogbotflightworker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogbotflightworker.cpp; path = ../../engine/src/win32/ogbotflightworker.cpp; sourceTree = SOURCE_ROOT; };
+		B2959D21127481A4005F5346 /* ogbotflightworker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogbotflightworker.h; path = ../../engine/src/win32/ogbotflightworker.h; sourceTree = SOURCE_ROOT; };
+		B2959D22127481A4005F5346 /* oggamesequence.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = oggamesequence.cpp; path = ../../engine/src/win32/oggamesequence.cpp; sourceTree = SOURCE_ROOT; };
+		B2959D23127481A4005F5346 /* oggamesequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oggamesequence.h; path = ../../engine/src/win32/oggamesequence.h; sourceTree = SOURCE_ROOT; };
+		B2959D2912748212005F5346 /* ogeffectexplosion.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogeffectexplosion.cpp; path = ../../engine/src/win32/ogeffectexplosion.cpp; sourceTree = SOURCE_ROOT; };
+		B2959D2A12748212005F5346 /* ogeffectexplosion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffectexplosion.h; path = ../../engine/src/win32/ogeffectexplosion.h; sourceTree = SOURCE_ROOT; };
+		B2959D2B12748212005F5346 /* ogeffectmissilesmoke.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogeffectmissilesmoke.cpp; path = ../../engine/src/win32/ogeffectmissilesmoke.cpp; sourceTree = SOURCE_ROOT; };
+		B2959D2C12748212005F5346 /* ogeffectmissilesmoke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffectmissilesmoke.h; path = ../../engine/src/win32/ogeffectmissilesmoke.h; sourceTree = SOURCE_ROOT; };
+		B2959D2F1274829D005F5346 /* StartMenuScreenController.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = StartMenuScreenController.cpp; sourceTree = "<group>"; };
+		B2959D301274829D005F5346 /* StartMenuScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartMenuScreenController.h; sourceTree = "<group>"; };
 		B29C64BD1222D36800FF91DA /* IOGInputDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGInputDispatcher.h; path = ../../engine/include/IOGInputDispatcher.h; sourceTree = SOURCE_ROOT; };
 		B29C64BE1222D36800FF91DA /* IOGInputReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGInputReceiver.h; path = ../../engine/include/IOGInputReceiver.h; sourceTree = SOURCE_ROOT; };
 		B29C64C81222D4BF00FF91DA /* oginputdispatcher.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = oginputdispatcher.cpp; path = ../../engine/src/win32/oginputdispatcher.cpp; sourceTree = SOURCE_ROOT; };
@@ -459,6 +490,8 @@
 			isa = PBXGroup;
 			children = (
 				13BEFA0710AB4DC200D19067 /* Interfaces */,
+				B2959D2F1274829D005F5346 /* StartMenuScreenController.cpp */,
+				B2959D301274829D005F5346 /* StartMenuScreenController.h */,
 				791406D60DBAD99A00C9A379 /* Delegate.h */,
 				791406D70DBAD99A00C9A379 /* Delegate.mm */,
 				B2032C92121826A8000C065B /* GameScreenController.cpp */,
@@ -474,6 +507,7 @@
 		13BEFA0610AB4DAC00D19067 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				B2959D1012748093005F5346 /* GUI */,
 				B29C64B91222D29300FF91DA /* Core */,
 				B29C64BA1222D2AA00FF91DA /* GameLogic */,
 				B29C64BB1222D2CE00FF91DA /* Graphics */,
@@ -645,6 +679,7 @@
 			isa = PBXGroup;
 			children = (
 				B2DE29DA12187BBF009C4A7E /* neonmath */,
+				79317ACE0EDB153800247E3D /* vfpmath */,
 				79317AC60EDB153800247E3D /* Matrix.cpp */,
 				79317AC70EDB153800247E3D /* Matrix.h */,
 				79317AC80EDB153800247E3D /* Quaternion.h */,
@@ -653,7 +688,6 @@
 				79317ACB0EDB153800247E3D /* Transform.cpp */,
 				79317ACC0EDB153800247E3D /* Transform.h */,
 				79317ACD0EDB153800247E3D /* Vector.h */,
-				79317ACE0EDB153800247E3D /* vfpmath */,
 			);
 			name = Math;
 			path = ../../sdk/Math;
@@ -717,6 +751,24 @@
 			name = TouchScreen;
 			sourceTree = "<group>";
 		};
+		B2959D1012748093005F5346 /* GUI */ = {
+			isa = PBXGroup;
+			children = (
+				B2959D12127480B3005F5346 /* IOGGuiButton.h */,
+				B2959D13127480B3005F5346 /* IOGGuiSprite.h */,
+			);
+			name = GUI;
+			sourceTree = "<group>";
+		};
+		B2959D16127480F6005F5346 /* GUI */ = {
+			isa = PBXGroup;
+			children = (
+				B2959D1712748129005F5346 /* ogguibutton.cpp */,
+				B2959D1812748129005F5346 /* ogguibutton.h */,
+			);
+			name = GUI;
+			sourceTree = "<group>";
+		};
 		B29C64B91222D29300FF91DA /* Core */ = {
 			isa = PBXGroup;
 			children = (
@@ -732,6 +784,7 @@
 		B29C64BA1222D2AA00FF91DA /* GameLogic */ = {
 			isa = PBXGroup;
 			children = (
+				B2959D15127480E4005F5346 /* IOGGameSequence.h */,
 				B2DF04F2125A363F002BE972 /* IOGActorParams.h */,
 				B2DF04F3125A363F002BE972 /* IOGActorParamsManager.h */,
 				B2032BEC1218239F000C065B /* IOGActorManager.h */,
@@ -787,6 +840,7 @@
 		B29C64C01222D38E00FF91DA /* Physics */ = {
 			isa = PBXGroup;
 			children = (
+				B2959D14127480CC005F5346 /* IOGCollisionListener.h */,
 				B2DF04F7125A369B002BE972 /* IOGPhysicalParams.h */,
 				B2032BFB1218239F000C065B /* IOGPhysics.h */,
 				B2032BFA1218239F000C065B /* IOGPhysicalObject.h */,
@@ -817,6 +871,7 @@
 		B29C64C31222D3F700FF91DA /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				B2959D16127480F6005F5346 /* GUI */,
 				B29C64C41222D40100FF91DA /* Core */,
 				B29C64C51222D40800FF91DA /* GameLogic */,
 				B29C64C61222D44400FF91DA /* Graphics */,
@@ -847,6 +902,16 @@
 		B29C64C51222D40800FF91DA /* GameLogic */ = {
 			isa = PBXGroup;
 			children = (
+				B2959D1A127481A4005F5346 /* ogactorbullet.cpp */,
+				B2959D1B127481A4005F5346 /* ogactorbullet.h */,
+				B2959D1C127481A4005F5346 /* ogactormissile.cpp */,
+				B2959D1D127481A4005F5346 /* ogactormissile.h */,
+				B2959D1E127481A4005F5346 /* ogbotfallingworker.cpp */,
+				B2959D1F127481A4005F5346 /* ogbotfallingworker.h */,
+				B2959D20127481A4005F5346 /* ogbotflightworker.cpp */,
+				B2959D21127481A4005F5346 /* ogbotflightworker.h */,
+				B2959D22127481A4005F5346 /* oggamesequence.cpp */,
+				B2959D23127481A4005F5346 /* oggamesequence.h */,
 				B294D2701263928300015F63 /* ogactorbot.cpp */,
 				B294D2711263928300015F63 /* ogactorbot.h */,
 				B2DF0501125A372E002BE972 /* ogactorparamsmgr.cpp */,
@@ -989,6 +1054,10 @@
 		B2AEFEC7124117570039DC17 /* Effects */ = {
 			isa = PBXGroup;
 			children = (
+				B2959D2912748212005F5346 /* ogeffectexplosion.cpp */,
+				B2959D2A12748212005F5346 /* ogeffectexplosion.h */,
+				B2959D2B12748212005F5346 /* ogeffectmissilesmoke.cpp */,
+				B2959D2C12748212005F5346 /* ogeffectmissilesmoke.h */,
 				B2AEFECF124117B00039DC17 /* ogplasmaeffect.cpp */,
 				B2AEFED0124117B00039DC17 /* ogplasmaeffect.h */,
 				B2AEFEC9124117940039DC17 /* ogeffect.cpp */,
@@ -1230,6 +1299,15 @@
 				B294D263126390B300015F63 /* ogvertexbuffers_gles20.cpp in Sources */,
 				B294D2721263928300015F63 /* ogactorbot.cpp in Sources */,
 				B294D2AC12639DAF00015F63 /* TouchScreen.mm in Sources */,
+				B2959D1912748129005F5346 /* ogguibutton.cpp in Sources */,
+				B2959D24127481A4005F5346 /* ogactorbullet.cpp in Sources */,
+				B2959D25127481A4005F5346 /* ogactormissile.cpp in Sources */,
+				B2959D26127481A4005F5346 /* ogbotfallingworker.cpp in Sources */,
+				B2959D27127481A4005F5346 /* ogbotflightworker.cpp in Sources */,
+				B2959D28127481A4005F5346 /* oggamesequence.cpp in Sources */,
+				B2959D2D12748212005F5346 /* ogeffectexplosion.cpp in Sources */,
+				B2959D2E12748212005F5346 /* ogeffectmissilesmoke.cpp in Sources */,
+				B2959D311274829D005F5346 /* StartMenuScreenController.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

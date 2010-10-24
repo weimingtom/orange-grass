@@ -36,15 +36,21 @@ static Accel *accel = NULL;
     TouchScreenValues* pVals = GetValuesTouchScreen();
     if (pVals->CountTouchesBegan > 0)
     {
-        float x = pVals->LocationXTouchesBegan/320.0f*480.0f;
-        float y = pVals->LocationYTouchesBegan/480.0f*320.0f;
+        float x = 480.0f - pVals->LocationYTouchesBegan;//pVals->LocationXTouchesBegan/320.0f*480.0f;
+        float y = pVals->LocationXTouchesBegan;//pVals->LocationYTouchesBegan/480.0f*320.0f;
         shell->OnPointerDown(x,y);
     }
-    else if (pVals->CountTouchesMoved > 0)
+    //else if (pVals->CountTouchesMoved > 0)
+    //{
+    //    float x = 480.0f - pVals->LocationYTouchesMoved;//pVals->LocationXTouchesMoved/320.0f*480.0f;
+    //    float y = pVals->LocationXTouchesMoved;//pVals->LocationYTouchesMoved/480.0f*320.0f;
+    //    shell->OnPointerDown(x,y);
+    //}
+    if (pVals->TouchesEnd)
     {
-        float x = pVals->LocationXTouchesMoved/320.0f*480.0f;
-        float y = pVals->LocationYTouchesMoved/480.0f*320.0f;
-        shell->OnPointerDown(x,y);
+        float x = 480.0f - pVals->LocationYTouchesEnded;//pVals->LocationXTouchesBegan/320.0f*480.0f;
+        float y = pVals->LocationXTouchesEnded;//pVals->LocationYTouchesBegan/480.0f*320.0f;
+        shell->OnPointerUp(x,y);
     }
     
 	shell->Update(30);
