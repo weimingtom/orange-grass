@@ -41,7 +41,7 @@ TouchScreenValues* GetValuesTouchScreen()
 	{
 		[self setMultipleTouchEnabled:YES];
 
-		TouchScreen.TouchesEnd = true;
+		TouchScreen.TouchesEnd = false;
 	}
 	
 	idFrame = self; 
