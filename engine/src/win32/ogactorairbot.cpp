@@ -111,6 +111,9 @@ void COGActorAirBot::Update (unsigned long _ElapsedTime)
 // collision event handler
 bool COGActorAirBot::OnCollision (const IOGCollision& _Collision)
 {
+    if (m_Status == OG_ACTORSTATUS_FALLING || m_Status == OG_ACTORSTATUS_DEAD)
+        return false;
+
 	if (COGActorBot::OnCollision(_Collision))
 	{
 		m_Status = OG_ACTORSTATUS_FALLING;
