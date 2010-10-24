@@ -120,13 +120,16 @@ void COGRenderer_GLES20::StartRenderMode(OGRenderMode _Mode)
 	
 	case OG_RENDERMODE_SPRITES:
 	    m_pCurShader = &m_SpriteShader;
-		glAlphaFunc(GL_GREATER, 0.1f);
+	    glEnable (GL_BLEND); 
+	    glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+	    glDisable(GL_ALPHA_TEST);
 		glDisable(GL_DEPTH_TEST);
 	    glDisable(GL_CULL_FACE);
         m_SpriteShader.SetProjectionMatrix(m_mOrthoProj);
 		EnableLight(false);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
         m_SpriteShader.Setup();
 		break;
 
@@ -174,6 +177,7 @@ void COGRenderer_GLES20::FinishRenderMode()
 	    glEnable(GL_CULL_FACE);
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
 		break;
 
 	case OG_RENDERMODE_TEXT:
@@ -224,9 +228,10 @@ void COGRenderer_GLES20::DrawEffectBuffer (void* _pBuffer, int _StartId, int _Nu
 void COGRenderer_GLES20::DrawSpriteBuffer (void* _pBuffer, int _StartId, int _NumVertices)
 {
     // vertex pointer
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 16, _pBuffer);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 32, _pBuffer);
 	// texture coord pointer
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 16, (void*)((char *)_pBuffer + 8));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 32, (void*)((char *)_pBuffer + 8));
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 32, (void*)((char *)_pBuffer + 16));
 	glDrawArrays(GL_TRIANGLE_STRIP, _StartId, _NumVertices);
 
 #ifdef STATISTICS

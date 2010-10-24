@@ -70,25 +70,22 @@ void COGRenderer::SetViewport (
 	m_fZNear = _fZNear;
 	m_fZFar = _fZFar;
 
-    for(int i=0; i<16; i++)
-    {
-        m_mTextProj.f[i]=0;
-    }
-    m_mTextProj.f[0] = 2.0f/(m_Width);
-    m_mTextProj.f[5] = -2.0f/(m_Height);
-    m_mTextProj.f[10] = 1.0f;
-    m_mTextProj.f[12] = -1.0f;
-    m_mTextProj.f[13] = 1.0f;
-    m_mTextProj.f[15] = 1.0f;
+    for(int i=0; i<16; i++){m_mTextProj.f[i]=0;}
+    m_mTextProj.f[10] = 1.0f; m_mTextProj.f[12] = -1.0f;
+    m_mTextProj.f[13] = 1.0f; m_mTextProj.f[15] = 1.0f;
 
 #ifdef WIN32
 	MatrixOrthoRH(m_mOrthoProj, (float)m_Width, (float)m_Height, -1, 1, false);
     MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(m_Width)/float(m_Height), m_fZNear, m_fZFar, false);
  	m_pText->SetTextures(_Width, _Height, false);
+    m_mTextProj.f[0] = 2.0f/(m_Width);
+    m_mTextProj.f[5] = -2.0f/(m_Height);
 #else
 	MatrixOrthoRH(m_mOrthoProj, (float)m_Height, (float)m_Width, -1, 1, true);
     MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(m_Height)/float(m_Width), m_fZNear, m_fZFar, true);
  	m_pText->SetTextures(_Height, _Width, true);
+    m_mTextProj.f[0] = 2.0f/(m_Height);
+    m_mTextProj.f[5] = -2.0f/(m_Width);
 #endif
 }
 

@@ -774,6 +774,18 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="GUI"
+				>
+				<File
+					RelativePath=".\ogguibutton.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogguibutton.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Interface"
@@ -989,6 +1001,18 @@
 				</File>
 				<File
 					RelativePath="..\..\include\IOGStatistics.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="GUI"
+				>
+				<File
+					RelativePath="..\..\include\IOGGuiButton.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGGuiSprite.h"
 					>
 				</File>
 			</Filter>

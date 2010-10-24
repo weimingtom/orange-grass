@@ -47,10 +47,10 @@ public:
 	virtual void Deactivate ();
 
     // Control vector change event handler.
-	virtual void OnVectorChanged (const Vec3& _vVec);
+	virtual bool OnVectorChanged (const Vec3& _vVec);
 
 	// Touch event handler.
-	virtual void OnTouch (const Vec2& _vPos);
+	virtual bool OnTouch (const Vec2& _vPos, IOGTouchParam _param);
 
 private:
 
@@ -68,6 +68,8 @@ private:
 	IOGRenderer*	m_pRenderer;
 	IOGCamera*		m_pCamera;
     IOGActor*       m_pPlayer;
+
+    IOGSprite*		m_pHUD;
 
 	ControllerState	m_State;
     ScreenType      m_Type;

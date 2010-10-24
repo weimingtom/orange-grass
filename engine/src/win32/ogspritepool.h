@@ -24,6 +24,12 @@ public:
 	// remove sprite.
 	virtual void RemoveSprite (IOGSprite* _pSprite);
 
+	// create button.
+	virtual IOGGuiButton* CreateButton ();
+
+	// desroy button.
+	virtual void DestroyButton (IOGGuiButton* _pBtn);
+
 private:
 };
 

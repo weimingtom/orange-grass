@@ -89,12 +89,16 @@ void COGSprite::Render (const Vec2& _vPos, const Vec2& _vSize)
 
 	m_Vertices[0].p	= Vec2(fRight, fTop);	
 	m_Vertices[0].t = Vec2(m_T1.x, m_T0.y); 
+	m_Vertices[0].c = Vec4(1.0f, 1.0f, 1.0f, 1.0f); 
 	m_Vertices[1].p	= Vec2(fLeft, fTop);	
 	m_Vertices[1].t = Vec2(m_T0.x, m_T0.y); 
+	m_Vertices[1].c = Vec4(1.0f, 1.0f, 1.0f, 1.0f); 
 	m_Vertices[2].p	= Vec2(fRight, fBottom);	
 	m_Vertices[2].t = Vec2(m_T1.x, m_T1.y); 
+	m_Vertices[2].c = Vec4(1.0f, 1.0f, 1.0f, 1.0f); 
 	m_Vertices[3].p	= Vec2(fLeft, fBottom);	
 	m_Vertices[3].t = Vec2(m_T0.x, m_T1.y); 
+	m_Vertices[3].c = Vec4(1.0f, 1.0f, 1.0f, 1.0f); 
 
 	GetRenderer()->SetTexture(m_pTexture);
     GetRenderer()->DrawSpriteBuffer(m_Vertices, 0, 4);

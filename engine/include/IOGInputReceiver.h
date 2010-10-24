@@ -10,16 +10,23 @@
 #define IOGINPUTRECEIVER_H_
 
 
+enum IOGTouchParam
+{
+    OG_TOUCH_DOWN,
+    OG_TOUCH_UP
+};
+
+
 class IOGInputReceiver
 {
 public:
 	virtual ~IOGInputReceiver() {}
 
 	// Control vector change event handler.
-	virtual void OnVectorChanged (const Vec3& _vVec) = 0;
+	virtual bool OnVectorChanged (const Vec3& _vVec) = 0;
 
 	// Touch event handler.
-	virtual void OnTouch (const Vec2& _vPos) = 0;
+	virtual bool OnTouch (const Vec2& _vPos, IOGTouchParam _param) = 0;
 };
 
 

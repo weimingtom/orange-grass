@@ -1,6 +1,11 @@
-Tools: ver. 0.11, 14-Oct-2010
+Tools: ver. 0.12, 24-Oct-2010
 
 ChangeList:
+
+0.12 (24-Oct-2010):
+- [OG] GUI
+- [OG] animation for destruction
+- [OG] level start and finish
 
 0.11 (14-Oct-2010):
 - [OG] added missile actor with missile smoke effect;

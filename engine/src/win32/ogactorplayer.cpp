@@ -51,7 +51,7 @@ void COGActorPlayer::OnAddedToManager ()
 
 
 // Control vector change event handler.
-void COGActorPlayer::OnVectorChanged (const Vec3& _vVec)
+bool COGActorPlayer::OnVectorChanged (const Vec3& _vVec)
 {
 	Vec3 v = _vVec;
 	if (v.length() > 1.0f)
@@ -59,12 +59,16 @@ void COGActorPlayer::OnVectorChanged (const Vec3& _vVec)
 		v.normalize();
 	}
     m_pPhysicalObject->Strafe(v.x);
+    return true;
 }
 
 
 // Touch event handler.
-void COGActorPlayer::OnTouch (const Vec2& _vPos)
+bool COGActorPlayer::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
 {
+    if (_param != OG_TOUCH_DOWN)
+        return false;
+
     Vec3 vP = GetRenderer()->UnprojectCoords((int)_vPos.x, (int)_vPos.y);
     Vec3 vCam = GetRenderer()->GetCamera()->GetPosition();
 
@@ -80,6 +84,7 @@ void COGActorPlayer::OnTouch (const Vec2& _vPos)
 
     m_CoolDown = 0;
     m_StraightenWorker.Activate(false);
+    return true;
 }
 
 

@@ -10,20 +10,21 @@
 #include "OrangeGrass.h"
 
 
-CLoadScreenController::CLoadScreenController() :	m_pResourceMgr(NULL),
-													m_State(CSTATE_NO),
+CLoadScreenController::CLoadScreenController() :	m_State(CSTATE_NO),
                                                     m_Type(SCRTYPE_LOAD),
 													m_pHUD(NULL),
                                                     m_pCurLevel(NULL),
 													m_bLoaded(false),
                                                     m_bDisplayed(false)
 {
+	m_pGlobalVars = GetGlobalVars();
+	m_pResourceMgr = GetResourceMgr();
+    m_pRenderer = GetRenderer();
 }
 
 
 CLoadScreenController::~CLoadScreenController()
 {	
-	m_pResourceMgr = NULL;
 	m_State = CSTATE_NO;
 	m_bLoaded = false;
 }
@@ -32,15 +33,8 @@ CLoadScreenController::~CLoadScreenController()
 // Initialize controller
 bool CLoadScreenController::Init ()
 {
-	m_pGlobalVars = GetGlobalVars();
-	m_fFOV = m_pGlobalVars->GetFVar("FOV");
-	m_fZNear = m_pGlobalVars->GetFVar("z_near");
-	m_fZFar = m_pGlobalVars->GetFVar("z_far");
 	m_ScrWidth = m_pGlobalVars->GetIVar("view_width");
 	m_ScrHeight = m_pGlobalVars->GetIVar("view_height");
-
-	GetRenderer()->SetViewport(m_ScrWidth, m_ScrHeight, m_fZNear, m_fZFar, m_fFOV);
-	m_pResourceMgr = GetResourceMgr();
 	
 	return true;
 }
@@ -59,8 +53,9 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 		m_pCurLevel = GetLevelManager()->LoadLevel(pLevelParams->alias);
 		if (m_pCurLevel == NULL)
 		{
-			m_State = CSTATE_FAILED;
 			OG_LOG_ERROR("Failed to load level %s", pLevelParams->alias.c_str());
+            Deactivate();
+			m_State = CSTATE_FAILED;
 			return;
 		}
 
@@ -83,12 +78,12 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 // Render controller scene
 void CLoadScreenController::RenderScene ()
 {
-	GetRenderer()->ClearFrame(Vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	m_pRenderer->ClearFrame(Vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-	GetRenderer()->StartRenderMode(OG_RENDERMODE_SPRITES);
+	m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
 	m_pHUD->Render(Vec2(0, 0), Vec2((float)m_ScrWidth, (float)m_ScrHeight));
-	GetRenderer()->FinishRenderMode();
-	GetRenderer()->Reset();
+	m_pRenderer->FinishRenderMode();
+	m_pRenderer->Reset();
 
 	m_bDisplayed = true;
 }

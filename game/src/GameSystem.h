@@ -11,6 +11,9 @@
 
 #include "IScreenController.h"
 #include <vector>
+#include "IOGResourceMgr.h"
+#include "IOGGlobalVarsTable.h"
+
 
 enum SystemState
 {
@@ -90,6 +93,14 @@ private:
 
 	std::vector<IScreenController*>	m_ScreenSequence;
 	int								m_CurModel;
+
+	IOGGlobalVarsTable* m_pGlobalVars;
+	IOGResourceMgr*	    m_pResourceMgr;
+	float			    m_fFOV;
+	float			    m_fZNear;
+	float			    m_fZFar;
+	int				    m_ScrWidth;
+	int				    m_ScrHeight;
 };
 
 

@@ -36,6 +36,7 @@ public:
 	{
 		Vec2 p;
 		Vec2 t;
+    	Vec4 c;
 	};
 	SprVert		m_Vertices[4];
 	

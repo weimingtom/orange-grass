@@ -30,6 +30,17 @@ CGameSystem::CGameSystem () :   m_pStartMenuScreen(NULL),
 
 	m_CurModel = -1;
 
+	GetAppSettings()->Init("settings.xml");
+	m_pGlobalVars = GetGlobalVars();
+	m_fFOV = m_pGlobalVars->GetFVar("FOV");
+	m_fZNear = m_pGlobalVars->GetFVar("z_near");
+	m_fZFar = m_pGlobalVars->GetFVar("z_far");
+	m_ScrWidth = m_pGlobalVars->GetIVar("view_width");
+	m_ScrHeight = m_pGlobalVars->GetIVar("view_height");
+    GetRenderer()->SetViewport(m_ScrWidth, m_ScrHeight, m_fZNear, m_fZFar, m_fFOV);
+	m_pResourceMgr = GetResourceMgr();
+    m_pResourceMgr->Init();
+
 	ChangeModel(1, 0, 0);
 }
 

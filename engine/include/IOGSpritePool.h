@@ -10,6 +10,7 @@
 #define IOGSPRITEPOOL_H_
 
 #include "IOGSprite.h"
+#include "IOGGuiButton.h"
 
 
 class IOGSpritePool
@@ -22,6 +23,12 @@ public:
 
 	// remove sprite.
 	virtual void RemoveSprite (IOGSprite* _pSprite) = 0;
+
+	// create button.
+	virtual IOGGuiButton* CreateButton () = 0;
+
+	// desroy button.
+	virtual void DestroyButton (IOGGuiButton* _pBtn) = 0;
 };
 
 #endif

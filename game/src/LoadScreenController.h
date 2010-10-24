@@ -14,6 +14,7 @@
 #include "IOGResourceMgr.h"
 #include "IOGLevel.h"
 #include "IOGGlobalVarsTable.h"
+#include "IOGRenderer.h"
 
 
 class CLoadScreenController : public IScreenController
@@ -46,7 +47,9 @@ public:
 private:
 	
 	IOGGlobalVarsTable* m_pGlobalVars;
-	IOGResourceMgr*	m_pResourceMgr;
+	IOGResourceMgr*	    m_pResourceMgr;
+	IOGRenderer*	    m_pRenderer;
+
 	ControllerState	m_State;
     ScreenType      m_Type;
 	IOGSprite*		m_pHUD;
@@ -54,9 +57,6 @@ private:
 	bool			m_bLoaded;
 	bool			m_bDisplayed;
 
-	float			m_fFOV;
-	float			m_fZNear;
-	float			m_fZFar;
 	int				m_ScrWidth;
 	int				m_ScrHeight;
 };

@@ -57,7 +57,10 @@ void COGInputDispatcher::OnPointerDown ( int _X, int _Y )
     std::vector<IOGInputReceiver*>::iterator iter = m_Receivers.begin();
     for (; iter != m_Receivers.end(); ++iter)
     {
-		(*iter)->OnTouch(Vec2((float)_X, (float)_Y));
+		if ((*iter)->OnTouch(Vec2((float)_X, (float)_Y), OG_TOUCH_DOWN))
+        {
+            break;
+        }
 	}
 }
 
@@ -72,6 +75,10 @@ void COGInputDispatcher::OnPointerUp ( int _X, int _Y )
     std::vector<IOGInputReceiver*>::iterator iter = m_Receivers.begin();
     for (; iter != m_Receivers.end(); ++iter)
     {
+		if ((*iter)->OnTouch(Vec2((float)_X, (float)_Y), OG_TOUCH_UP))
+        {
+            break;
+        }
 	}
 }
 
@@ -87,7 +94,10 @@ void COGInputDispatcher::OnPointerMove ( int _X, int _Y )
             std::vector<IOGInputReceiver*>::iterator iter = m_Receivers.begin();
             for (; iter != m_Receivers.end(); ++iter)
             {
-                (*iter)->OnVectorChanged(vVec);
+                if ((*iter)->OnVectorChanged(vVec))
+                {
+                    break;
+                }
             }
         }
 

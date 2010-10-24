@@ -44,9 +44,6 @@ bool CGameScreenController::Init ()
 
 	GetInput()->RegisterReceiver(this);
 
-	m_fFOV = m_pGlobalVars->GetFVar("FOV");
-	m_fZNear = m_pGlobalVars->GetFVar("z_near");
-	m_fZFar = m_pGlobalVars->GetFVar("z_far");
 	m_ScrWidth = m_pGlobalVars->GetIVar("view_width");
 	m_ScrHeight = m_pGlobalVars->GetIVar("view_height");
 	m_fCameraTargetDistance = m_pGlobalVars->GetFVar("cam_distance");
@@ -60,11 +57,12 @@ bool CGameScreenController::Init ()
 	m_pSg = GetSceneGraph();
 	m_pRenderer = GetRenderer();
 	m_pCamera = m_pRenderer->GetCamera();
-	m_pRenderer->SetViewport(m_ScrWidth, m_ScrHeight, m_fZNear, m_fZFar, m_fFOV);
     
 	IOGLevelParams* pLevelParams = GetGameSequence()->GetLevel(0);
 	m_pCurLevel = GetLevelManager()->LoadLevel(pLevelParams->alias);
     m_pPlayer = GetActorManager()->GetPlayersActor();
+
+	m_pHUD = m_pResourceMgr->GetSprite("hud");
 
 	UpdateCamera();
 	GetPhysics()->UpdateAll(1);
@@ -103,14 +101,6 @@ void CGameScreenController::RenderScene ()
 
 	m_pRenderer->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
 
- //   m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
- //   m_pSg->RenderAll(m_pCamera);
-	//m_pRenderer->FinishRenderMode();
- //   m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);
- //   m_pSg->RenderAllEffects(m_pCamera);
-	//m_pRenderer->FinishRenderMode();
-
-
 	m_pRenderer->EnableFog(true);
 
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
@@ -129,6 +119,10 @@ void CGameScreenController::RenderScene ()
 	m_pRenderer->FinishRenderMode();
 
     m_pRenderer->EnableFog(false);
+
+    m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
+	m_pHUD->Render(Vec2(365, 231), Vec2((float)115.0f, (float)89.0f));
+	m_pRenderer->FinishRenderMode();
 
 	unsigned long fps = 0;
 	if (m_ElapsedTime > 0)
@@ -173,14 +167,16 @@ void CGameScreenController::Deactivate ()
 
 
 // Control vector change event handler.
-void CGameScreenController::OnVectorChanged (const Vec3& _vVec)
+bool CGameScreenController::OnVectorChanged (const Vec3& _vVec)
 {
+    return false;
 }
 
 
 // Touch event handler.
-void CGameScreenController::OnTouch (const Vec2& _vPos)
+bool CGameScreenController::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
 {
+    return false;
 }
 
 

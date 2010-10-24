@@ -133,7 +133,9 @@ void COGRenderer_GLES11::StartRenderMode(OGRenderMode _Mode)
 		break;
 	
 	case OG_RENDERMODE_SPRITES:
-		glAlphaFunc(GL_GREATER, 0.1f);
+	    glEnable (GL_BLEND); 
+	    glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+	    glDisable(GL_ALPHA_TEST);
 		EnableLight(false);
 		glDisable(GL_DEPTH_TEST);
 	    glDisable(GL_CULL_FACE);
@@ -143,6 +145,7 @@ void COGRenderer_GLES11::StartRenderMode(OGRenderMode _Mode)
 		glLoadIdentity();
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);	
+		glEnableClientState(GL_COLOR_ARRAY);	
 		break;
 
 	case OG_RENDERMODE_TEXT:
@@ -187,6 +190,7 @@ void COGRenderer_GLES11::FinishRenderMode()
 	    glEnable(GL_CULL_FACE);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
 		break;
 
 	case OG_RENDERMODE_TEXT:
@@ -221,8 +225,9 @@ void COGRenderer_GLES11::DrawEffectBuffer (void* _pBuffer, int _StartId, int _Nu
 // Draw sprite buffer.
 void COGRenderer_GLES11::DrawSpriteBuffer (void* _pBuffer, int _StartId, int _NumVertices)
 {
-	glVertexPointer(2, GL_FLOAT, 16, _pBuffer);
-	glTexCoordPointer(2, GL_FLOAT, 16, (void*)((char *)_pBuffer + 8));
+	glVertexPointer(2, GL_FLOAT, 32, _pBuffer);
+	glTexCoordPointer(2, GL_FLOAT, 32, (void*)((char *)_pBuffer + 8));
+	glColorPointer(4, GL_FLOAT, 32, (void*)((char *)_pBuffer + 16));
 	glDrawArrays(GL_TRIANGLE_STRIP, _StartId, _NumVertices);
 
 #ifdef STATISTICS

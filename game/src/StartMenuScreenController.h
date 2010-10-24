@@ -10,11 +10,12 @@
 #define STARTMENUSCREENCONTROLLER_H_
 
 #include "IScreenController.h"
-#include "IOGSprite.h"
+#include "IOGSpritePool.h"
 #include "IOGResourceMgr.h"
 #include "IOGLevel.h"
 #include "IOGGlobalVarsTable.h"
 #include "IOGInputReceiver.h"
+#include "IOGRenderer.h"
 
 
 class CStartMenuScreenController : public IScreenController, public IOGInputReceiver
@@ -45,26 +46,25 @@ public:
 	virtual void Deactivate ();
 
     // Control vector change event handler.
-	virtual void OnVectorChanged (const Vec3& _vVec);
+	virtual bool OnVectorChanged (const Vec3& _vVec);
 
 	// Touch event handler.
-	virtual void OnTouch (const Vec2& _vPos);
+	virtual bool OnTouch (const Vec2& _vPos, IOGTouchParam _param);
 	
 private:
 	
 	IOGGlobalVarsTable* m_pGlobalVars;
-	IOGResourceMgr*	m_pResourceMgr;
+	IOGResourceMgr*	    m_pResourceMgr;
+	IOGRenderer*	    m_pRenderer;
+
 	ControllerState	m_State;
     ScreenType      m_Type;
-	IOGSprite*		m_pHUD;
 	bool			m_bLoaded;
-	bool			m_bDisplayed;
 
-	float			m_fFOV;
-	float			m_fZNear;
-	float			m_fZFar;
-	int				m_ScrWidth;
-	int				m_ScrHeight;
+    IOGSprite*		m_pLogo;
+    IOGSprite*		m_pBack;
+    IOGGuiButton*   m_pNewBtn;
+    IOGGuiButton*   m_pExitBtn;
 };
 
 #endif

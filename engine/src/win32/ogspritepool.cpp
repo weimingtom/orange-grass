@@ -9,6 +9,7 @@
 #include "OrangeGrass.h"
 #include "ogspritepool.h"
 #include "ogsprite.h"
+#include "ogguibutton.h"
 
 
 COGSpritePool::COGSpritePool ()
@@ -31,4 +32,18 @@ void COGSpritePool::AddSprite (IOGSprite* _pSprite)
 void COGSpritePool::RemoveSprite (IOGSprite* _pSprite)
 {
 	OG_SAFE_DELETE(_pSprite);
+}
+
+
+// create button.
+IOGGuiButton* COGSpritePool::CreateButton ()
+{
+    return new COGGuiButton();
+}
+
+
+// desroy button.
+void COGSpritePool::DestroyButton (IOGGuiButton* _pBtn)
+{
+    OG_SAFE_DELETE(_pBtn);
 }
