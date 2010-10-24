@@ -119,7 +119,7 @@ struct Vec2
 		@Function			Vec2
 		@Description		Blank constructor.
 		*****************************************************************************/
-	Vec2() {}
+	Vec2() {x = y = 0;}
 	/*!***************************************************************************
 		@Function			Vec2
 		@Input				fX	X component of vector
@@ -391,7 +391,7 @@ struct Vec3 : public VECTOR3
  @Function			Vec3
  @Description		Blank constructor.
 *****************************************************************************/
-	Vec3(){}
+    Vec3() { x = y = z = 0; }
 /*!***************************************************************************
  @Function			Vec3
  @Input				fX	X component of vector
@@ -526,29 +526,7 @@ struct Vec3 : public VECTOR3
 		out.z = VERTTYPEDIV(lhs,rhs.z);
 		return out;
 	}
-    
-    /*!***************************************************************************
-     @Function			==
-     @Input				rhs a vector
-     @Returns			result of comparison
-     @Description		componentwise comparison
-     ****************************************************************************/
-	bool operator==(const Vec3& rhs)
-	{
-		return (x==rhs.x && y==rhs.y && z==rhs.z);
-	}
-    
-    /*!***************************************************************************
-     @Function			!=
-     @Input				rhs a vector
-     @Returns			result of comparison
-     @Description		componentwise comparison
-     ****************************************************************************/
-	bool operator!=(const Vec3& rhs)
-	{
-		return (x!=rhs.x || y!=rhs.y || z!=rhs.z);
-	}
-    
+
 /*!***************************************************************************
  @Function			*
  @Input				rhs a PVRTMat3
@@ -625,29 +603,51 @@ struct Vec3 : public VECTOR3
 		z = VERTTYPEDIV(z,rhs);
 		return *this;
 	}
-    
-    /*!***************************************************************************
-     @Function			[] - r/o
-     @Input				index
-     @Returns			component value
-     @Description		Get components by index
-     ****************************************************************************/
+
+/*!***************************************************************************
+ @Function			==
+ @Input				rhs a vector
+ @Returns			result of comparison
+ @Description		componentwise comparison
+****************************************************************************/
+	bool operator==(const Vec3& rhs)
+	{
+		return (x==rhs.x && y==rhs.y && z==rhs.z);
+	}
+
+/*!***************************************************************************
+ @Function			!=
+ @Input				rhs a vector
+ @Returns			result of comparison
+ @Description		componentwise comparison
+****************************************************************************/
+	bool operator!=(const Vec3& rhs)
+	{
+		return (x!=rhs.x || y!=rhs.y || z!=rhs.z);
+	}
+
+/*!***************************************************************************
+ @Function			[] - r/o
+ @Input				index
+ @Returns			component value
+ @Description		Get components by index
+****************************************************************************/
     VERTTYPE operator [] ( int _ComponentIndex ) const
     {
 	    return ( (VERTTYPE *)this) [ _ComponentIndex ];
     }
-    
-    /*!***************************************************************************
-     @Function			[] - w
-     @Input				index
-     @Returns			component value
-     @Description		Set components by index
-     ****************************************************************************/
+
+/*!***************************************************************************
+ @Function			[] - w
+ @Input				index
+ @Returns			component value
+ @Description		Set components by index
+****************************************************************************/
     VERTTYPE& operator [] ( int _ComponentIndex )
     {
 	    return ( (VERTTYPE *)this) [ _ComponentIndex ];
     }
-    
+
 	// FUNCTIONS
 /*!***************************************************************************
  @Function			lenSqr
@@ -749,7 +749,7 @@ struct Vec3 : public VECTOR3
  @Returns			scalar product
  @Description		calculate the scalar product of two VECTOR3s
 ****************************************************************************/
-	Vec3 cross(const Vec3& rhs)
+	Vec3 cross(const Vec3& rhs) const
 	{
 		Vec3 out;
 		out.x = VERTTYPEMUL(y,rhs.z)-VERTTYPEMUL(z,rhs.y);
@@ -779,7 +779,7 @@ struct Vec4 : public VECTOR4
  @Function			Vec4
  @Description		Blank constructor.
 *****************************************************************************/
-	Vec4(){}
+	Vec4(){x = y = z = w = 0;}
 
 /*!***************************************************************************
  @Function			Vec3
