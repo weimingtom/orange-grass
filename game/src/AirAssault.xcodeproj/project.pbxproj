@@ -440,8 +440,8 @@
 		13044A0510A4A9EB00D0903C /* og */ = {
 			isa = PBXGroup;
 			children = (
-				B29C64C31222D3F700FF91DA /* Sources */,
 				13BEFA0610AB4DAC00D19067 /* Interfaces */,
+				B29C64C31222D3F700FF91DA /* Sources */,
 			);
 			name = og;
 			sourceTree = "<group>";
@@ -920,8 +920,6 @@
 				B2DF0504125A372E002BE972 /* ogactorplasmamissile.h */,
 				B2DF0505125A372E002BE972 /* ogmissileflightworker.cpp */,
 				B2DF0506125A372E002BE972 /* ogmissileflightworker.h */,
-				B2DF0507125A372E002BE972 /* ogmissilephysicalobject.cpp */,
-				B2DF0508125A372E002BE972 /* ogmissilephysicalobject.h */,
 				B2DF0509125A372E002BE972 /* ogorientworker.cpp */,
 				B2DF050A125A372E002BE972 /* ogorientworker.h */,
 				B2DF050B125A372E002BE972 /* ogstabilizeworker.cpp */,
@@ -1007,6 +1005,8 @@
 		B29C64CE1222D4EC00FF91DA /* Physics */ = {
 			isa = PBXGroup;
 			children = (
+				B2DF0507125A372E002BE972 /* ogmissilephysicalobject.cpp */,
+				B2DF0508125A372E002BE972 /* ogmissilephysicalobject.h */,
 				B2032C3A1218248A000C065B /* ogstaticphysicalobject.cpp */,
 				B2032C3B1218248A000C065B /* ogstaticphysicalobject.h */,
 				B2032C2C1218248A000C065B /* ogphysicalobject.cpp */,
