@@ -102,9 +102,6 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 			return pObj;
 		}
 		break;
-
-	default:
-		return NULL;
 	}
 
 	return NULL;

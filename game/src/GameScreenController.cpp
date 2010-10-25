@@ -165,6 +165,8 @@ void CGameScreenController::Activate ()
 void CGameScreenController::Deactivate ()
 {
 	m_State = CSTATE_INACTIVE;
+	if (m_pCurLevel)
+		GetLevelManager()->UnloadLevel(m_pCurLevel);
     //GetInput()->UnregisterReceiver(this);
 }
 

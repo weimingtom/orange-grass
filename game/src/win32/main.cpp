@@ -41,6 +41,7 @@ void Initialize ()
 /// Application shutdown.
 void Shutdown()
 {
+	OG_SAFE_DELETE(pGameSystem);
     PostQuitMessage(0);
 }
 

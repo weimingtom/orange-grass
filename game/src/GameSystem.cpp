@@ -51,6 +51,7 @@ CGameSystem::~CGameSystem ()
     OG_SAFE_DELETE(m_pStartMenuScreen);
     OG_SAFE_DELETE(m_pLoadScreen);
     OG_SAFE_DELETE(m_pGameScreen);
+	OG_SAFE_DELETE(m_pResourceMgr);
     m_pCurScreen = NULL;
 }
 
