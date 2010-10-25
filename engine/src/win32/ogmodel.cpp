@@ -63,20 +63,6 @@ bool COGModel::Load ()
         m_pAnimations[pAnim->name] = pAnim;
     }
 
-	//std::list<Cfg::ActPoint>::const_iterator pt_iter = modelcfg.point_list.begin();
-	//for (; pt_iter != modelcfg.point_list.end(); ++pt_iter)
- //   {
-	//	const COGModel::Cfg::ActPoint& pt = (*pt_iter);
- //       IOGActivePoint* pPt = new IOGActivePoint();
-	//	pPt->alias = pt.alias;
-	//	pPt->pos = pt.pos;
- //       if (!m_pMesh->GetIdByAlias(pPt->id, pt.part_alias))
- //       {
- //           OG_LOG_WARNING("Failed to attach active point %s to mesh %s", pt.alias.c_str(), modelcfg.mesh_alias.c_str());
- //       }
- //       m_pActivePoints[pPt->alias] = pPt;
- //   }
-
 	m_LoadState = OG_RESSTATE_LOADED;
     return true;
 }
@@ -125,22 +111,6 @@ bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
         m_pReader->CloseGroupNode(pAnimationsNode);
     }
 
-	IOGGroupNode* pPointsNode = m_pReader->OpenGroupNode(pSource, NULL, "ActivePoints");
-    if (pPointsNode)
-    {
-	    IOGGroupNode* pPointNode = m_pReader->OpenGroupNode(pSource, pPointsNode, "Point");
-	    while (pPointNode != NULL)
-	    {
-		    COGModel::Cfg::ActPoint pt;
-		    pt.alias = m_pReader->ReadStringParam(pPointNode, "alias");
-		    pt.pos = m_pReader->ReadVec3Param(pPointNode, "x", "y", "z");
-            pt.part_alias = m_pReader->ReadStringParam(pPointNode, "part");
-		    _cfg.point_list.push_back(pt);
-		    pPointNode = m_pReader->ReadNextNode(pPointNode);
-	    }
-        m_pReader->CloseGroupNode(pPointsNode);
-    }
-
 	m_pReader->CloseSource(pSource);
 	return true;
 }
@@ -162,13 +132,6 @@ void COGModel::Unload ()
 		OG_SAFE_DELETE(iter->second);
 	}
     m_pAnimations.clear();
-
-    std::map<std::string, IOGActivePoint*>::iterator point_iter= m_pActivePoints.begin();
-	for (; point_iter != m_pActivePoints.end(); ++point_iter)
-	{
-		OG_SAFE_DELETE(point_iter->second);
-	}
-    m_pActivePoints.clear();
 
 	m_LoadState = OG_RESSTATE_DEFINED;
 }

@@ -75,18 +75,10 @@ private:
             int looped;
 		};
 
-		struct ActPoint
-		{
-			std::string alias;
-            std::string part_alias;
-			Vec3 pos;
-		};
-
 		std::string mesh_alias;
 		std::string texture_alias;
 		std::string material_type;
 		std::list<Anim> anim_list;
-		std::list<ActPoint> point_list;
 	};
 
 	// Load model configuration
@@ -101,7 +93,6 @@ private:
 	IOGSettingsReader*	m_pReader;
 
 	std::map<std::string, IOGAnimation*>	m_pAnimations;
-	std::map<std::string, IOGActivePoint*>	m_pActivePoints;
 };
 
 

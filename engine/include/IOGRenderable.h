@@ -25,10 +25,8 @@ enum RenderableType
 
 struct IOGActivePoint
 {
-	std::string     alias;
-    MATRIX          mLocalTM;
-    unsigned int    id;
-	Vec3		    pos;
+    std::string     alias;
+    Vec3		    pos;
 };
 
 
