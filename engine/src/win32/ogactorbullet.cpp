@@ -8,7 +8,6 @@
  */
 #include "OrangeGrass.h"
 #include "ogactorbullet.h"
-#include "IOGMath.h"
 
 
 COGActorBullet::COGActorBullet()

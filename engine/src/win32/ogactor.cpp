@@ -8,7 +8,6 @@
  */
 #include "OrangeGrass.h"
 #include "ogactor.h"
-#include "IOGMath.h"
 
 
 COGActor::COGActor() :	m_bActive(true),

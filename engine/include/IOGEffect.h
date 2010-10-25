@@ -9,7 +9,7 @@
 #ifndef IOGEFFECT_H_
 #define IOGEFFECT_H_
 
-#include "IOGMath.h"
+#include "Mathematics.h"
 #include "IOGRenderable.h"
 
 

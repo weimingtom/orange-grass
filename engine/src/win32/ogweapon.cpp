@@ -8,7 +8,6 @@
  */
 #include "OrangeGrass.h"
 #include "ogweapon.h"
-#include "IOGMath.h"
 
 
 COGWeapon::COGWeapon()

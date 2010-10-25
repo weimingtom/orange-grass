@@ -8,7 +8,6 @@
  */
 #include "OrangeGrass.h"
 #include "ogactorplasmamissile.h"
-#include "IOGMath.h"
 
 
 COGActorPlasmaMissile::COGActorPlasmaMissile()

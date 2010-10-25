@@ -8,7 +8,6 @@
  */
 #include "OrangeGrass.h"
 #include "ogterrain.h"
-#include "IOGMath.h"
 
 
 COGTerrain::COGTerrain () :	m_pMesh(NULL),

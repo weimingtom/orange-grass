@@ -8,7 +8,6 @@
  */
 #include "OrangeGrass.h"
 #include "ogactorairbot.h"
-#include "IOGMath.h"
 
 
 COGActorAirBot::COGActorAirBot()

@@ -8,7 +8,6 @@
  */
 #include "OrangeGrass.h"
 #include "ogactorstatic.h"
-#include "IOGMath.h"
 
 
 COGActorStatic::COGActorStatic()

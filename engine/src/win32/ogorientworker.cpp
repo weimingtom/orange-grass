@@ -8,7 +8,6 @@
  */
 #include "OrangeGrass.h"
 #include "ogorientworker.h"
-#include "IOGMath.h"
 
 
 COGOrientWorker::COGOrientWorker()

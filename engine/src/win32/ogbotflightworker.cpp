@@ -8,7 +8,6 @@
  */
 #include "OrangeGrass.h"
 #include "ogbotflightworker.h"
-#include "IOGMath.h"
 
 
 COGBotFlightWorker::COGBotFlightWorker()

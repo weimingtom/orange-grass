@@ -8,7 +8,6 @@
  */
 #include "OrangeGrass.h"
 #include "ogactorbot.h"
-#include "IOGMath.h"
 
 
 COGActorBot::COGActorBot() :    m_pModelPropeller(NULL),

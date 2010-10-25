@@ -8,7 +8,6 @@
  */
 #include "OrangeGrass.h"
 #include "ogstabilizeworker.h"
-#include "IOGMath.h"
 
 
 COGStabilizeWorker::COGStabilizeWorker()
