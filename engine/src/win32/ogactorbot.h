@@ -37,7 +37,10 @@ public:
 	virtual bool OnCollision (const IOGCollision& _Collision);
 
 	// Set weapon
-	virtual void SetWeapon (const std::string& _WeaponAlias);
+	virtual void SetWeapon (IOGWeaponParams* _pWeaponParams);
+
+	// Get weapon
+	virtual IOGWeapon* GetWeapon () {return m_pWeapon;}
 
 	// Set active state
 	virtual void Activate (bool _bActive);

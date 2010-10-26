@@ -70,6 +70,7 @@ private:
     IOGActor*       m_pPlayer;
 
     IOGSprite*		m_pHUD;
+    IOGSprite*		m_pWeaponIcon;
 
 	ControllerState	m_State;
     ScreenType      m_Type;

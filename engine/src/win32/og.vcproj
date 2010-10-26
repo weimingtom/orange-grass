@@ -915,6 +915,10 @@
 					RelativePath="..\..\include\IOGGameSequence.h"
 					>
 				</File>
+				<File
+					RelativePath="..\..\include\IOGWeapon.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="Math"
@@ -1009,10 +1013,6 @@
 				>
 				<File
 					RelativePath="..\..\include\IOGGuiButton.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\IOGGuiSprite.h"
 					>
 				</File>
 			</Filter>

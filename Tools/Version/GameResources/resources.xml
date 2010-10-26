@@ -23,6 +23,7 @@
 	<Texture alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller.pvr" />
 	<Texture alias="land_02" file="Models/Land_objects_02/land_02.pvr" />
 	<Texture alias="land_02_objs" file="Models/Land_objects_02/land_02_objs.pvr" />
+	<Texture alias="weapons" file="Textures/Weapons/weapons.pvr" />
 </Textures>
 <Meshes>
 	<Mesh alias="helicopter_body" file="Models/Helicopter/helicopter_body.POD"/>
@@ -80,4 +81,6 @@
 	<Sprite alias="new_n" texture="gui" x="0" y="231" width="222" height="42"/>
 	<Sprite alias="new_pr" texture="gui" x="222" y="231" width="222" height="42"/>
 	<Sprite alias="hud" texture="hud" x="0" y="0" width="115" height="89"/>
+	<Sprite alias="weapon_missile01" texture="weapons" x="0" y="0" width="64" height="64"/>
+	<Sprite alias="weapon_plasma01" texture="weapons" x="64" y="0" width="64" height="64"/>
 </Sprites>

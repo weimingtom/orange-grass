@@ -12,6 +12,7 @@
 #include "IOGSgNode.h"
 #include "IOGActorParams.h"
 #include "IOGPhysicalObject.h"
+#include "IOGWeapon.h"
 
 
 enum OGActorStatus
@@ -51,8 +52,11 @@ public:
 	// Get model alias
 	virtual const std::string& GetAlias () const = 0;
 
-	// Set weapon
-	virtual void SetWeapon (const std::string& _WeaponAlias) = 0;
+	// Set weapon parameters.
+	virtual void SetWeapon (IOGWeaponParams* _pWeaponParams) = 0;
+
+	// Get weapon
+	virtual IOGWeapon* GetWeapon () = 0;
 
 	// Get active state
 	virtual bool IsActive () const = 0;

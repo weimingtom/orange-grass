@@ -33,6 +33,16 @@ enum OGTeam
 };
 
 
+struct IOGWeaponParams
+{
+	std::string		alias;
+	unsigned int	hitpoints;
+	unsigned int	cooldown;
+	std::string		actor;
+	std::string		icon_texture;
+};
+
+
 struct IOGGameplayParams
 {
 	IOGGameplayParams()

@@ -51,7 +51,10 @@ public:
 	virtual const std::string& GetAlias () const;
 
 	// Set weapon
-	virtual void SetWeapon (const std::string& _WeaponAlias) {}
+	virtual void SetWeapon (IOGWeaponParams* _pWeaponParams) {}
+
+	// Get weapon
+	virtual IOGWeapon* GetWeapon () {return NULL;}
 
 	// Get active state
 	virtual bool IsActive () const { return m_bActive; }

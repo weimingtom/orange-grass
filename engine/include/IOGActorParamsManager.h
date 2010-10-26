@@ -24,6 +24,9 @@ public:
 	// get params by alias.
 	virtual IOGActorParams* GetParams (const std::string& _Alias) = 0;
 
+	// get weapon params by alias.
+	virtual IOGWeaponParams* GetWeaponParams (const std::string& _Alias) = 0;
+
 	// get params list.
 	virtual void GetParamsList (std::list<IOGActorParams*>& _List) = 0;
 };

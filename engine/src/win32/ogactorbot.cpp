@@ -211,10 +211,6 @@ void COGActorBot::Update (unsigned long _ElapsedTime)
         m_pNodeDestruction->GetActivePoint(vTrail, "actpointpart02");
 
         MatrixVecMultiply(vTrail, vTrail, m_pPhysicalObject->GetWorldTransform());
-        //VECTOR4 v_in, v_out;
-        //v_in.x = vTrail.x; v_in.y = vTrail.y; v_in.z = vTrail.z; v_in.w = 1.0f;
-        //MatrixVec4Multiply(v_out, v_in, m_pPhysicalObject->GetWorldTransform());
-        //vTrail.x = v_out.x; vTrail.y = v_out.y; vTrail.z = v_out.z;
 
         m_pTrailEffect->UpdatePosition(vTrail);
     }
@@ -258,7 +254,7 @@ bool COGActorBot::OnCollision (const IOGCollision& _Collision)
 
 
 // Set weapon
-void COGActorBot::SetWeapon (const std::string& _WeaponAlias)
+void COGActorBot::SetWeapon (IOGWeaponParams* _pWeaponParams)
 {
 	OG_SAFE_DELETE(m_pWeapon);
 
@@ -266,7 +262,7 @@ void COGActorBot::SetWeapon (const std::string& _WeaponAlias)
     m_pNode->GetActivePoint(vOffset, "actpointweapon02");
 
 	m_pWeapon = new COGWeapon();
-    m_pWeapon->Create(this, _WeaponAlias, /*Vec3(-3,0,-7)*/vOffset);
+    m_pWeapon->Create(this, _pWeaponParams, vOffset);
 }
 
 
