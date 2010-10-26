@@ -14,6 +14,8 @@
 #include "ogspriteshader.h"
 #include "ogcoloreffectshader.h"
 #include "ogtextshader.h"
+#include "ogshadowmodelshader.h"
+#include "ogrendertarget.h"
 
 
 class COGRenderer_GLES20 : public COGRenderer
@@ -55,17 +57,24 @@ public:
     // Draw sprite buffer.
     virtual void DrawSpriteBuffer (void* _pBuffer, int _StartId, int _NumVertices);
 
+    // Draw shadow texture.
+    virtual void DrawShadowTexture ();
+
 protected:
 
 	MATRIX	m_mWorld;
     bool    m_bLightEnabled;
     bool    m_bFogEnabled;
+	MATRIX	m_mSMProjection;
 
     COGModelShader          m_ModelShader;
     COGSpriteShader         m_SpriteShader;
     COGColorEffectShader    m_ColorEffectShader;
     COGTextShader           m_TextShader;
+    COGShadowModelShader    m_ShadowModelShader;
     IOGShader*              m_pCurShader;
+
+    COGRenderTarget*        m_pRT;
 };
 
 #endif

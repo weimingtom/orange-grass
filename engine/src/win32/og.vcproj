@@ -583,6 +583,14 @@
 								>
 							</File>
 							<File
+								RelativePath=".\ogshadowmodelshader.cpp"
+								>
+							</File>
+							<File
+								RelativePath=".\ogshadowmodelshader.h"
+								>
+							</File>
+							<File
 								RelativePath=".\ogspriteshader.cpp"
 								>
 							</File>

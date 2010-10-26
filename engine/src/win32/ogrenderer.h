@@ -67,6 +67,9 @@ public:
 		unsigned int Colour, 
 		const char * const pszFormat, ...);
 
+    // Draw shadow texture.
+    virtual void DrawShadowTexture () {}
+
 protected:
 
     IOGTexture*         m_pCurTexture;
