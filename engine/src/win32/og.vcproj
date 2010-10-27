@@ -174,6 +174,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogactorbonus.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactorbonus.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogactorbot.cpp"
 					>
 				</File>

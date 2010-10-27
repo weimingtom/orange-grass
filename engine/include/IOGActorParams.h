@@ -21,7 +21,8 @@ enum OGActorType
 	OG_ACTOR_AIRBOT,
 	OG_ACTOR_PLAYER,
 	OG_ACTOR_PLASMAMISSILE,
-	OG_ACTOR_MISSILE
+	OG_ACTOR_MISSILE,
+	OG_ACTOR_BONUS
 };
 
 
@@ -97,6 +98,10 @@ inline OGActorType ParseActorType (const std::string& _ActorTypeStr)
     else if (_ActorTypeStr.compare(std::string("missile")) == 0)
     {
         return OG_ACTOR_MISSILE;
+    }
+    else if (_ActorTypeStr.compare(std::string("bonus")) == 0)
+    {
+        return OG_ACTOR_BONUS;
     }
     return OG_ACTOR_NONE;
 }

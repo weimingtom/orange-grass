@@ -19,4 +19,5 @@
 	<Actor alias="helicopter" file="Actors/helicopter.xml" />
 	<Actor alias="bot_helicopter" file="Actors/bot_helicopter.xml" />
 	<Actor alias="bot_plane_small" file="Actors/bot_plane_small.xml" />
+	<Actor alias="bonus_01" file="Actors/bonus_01.xml" />
 </Actors>

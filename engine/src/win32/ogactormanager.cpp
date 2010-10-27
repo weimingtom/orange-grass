@@ -14,6 +14,7 @@
 #include "ogactorplayer.h"
 #include "ogactorplasmamissile.h"
 #include "ogactormissile.h"
+#include "ogactorbonus.h"
 #include "IOGMath.h"
 #include <algorithm>
 
@@ -140,6 +141,18 @@ IOGActor* COGActorManager::CreateActor (
 		}
 		break;
 
+	case OG_ACTOR_BONUS:
+		{
+			COGActorBonus* pActor = new COGActorBonus();
+			if (pActor->Create(pParams, _vPos, _vRot, _vScale) == false)
+			{
+				OG_SAFE_DELETE(pActor);
+				return NULL;
+			}
+			return pActor;
+		}
+		break;
+
 	case OG_ACTOR_NONE:
 	default:
 		OG_LOG_ERROR("Trying to create actor of unknown type %d from model %s", pParams->type, _Alias.c_str());
@@ -210,6 +223,7 @@ void COGActorManager::Update (unsigned long _ElapsedTime)
 		{
 		case OG_ACTOR_AIRBOT:
 		case OG_ACTOR_LANDBOT:
+		case OG_ACTOR_BONUS:
 			{
 				float fObjectZ = pActor->GetPhysicalObject()->GetPosition().z;
 				if (fObjectZ <= fCameraZ)

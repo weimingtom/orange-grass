@@ -21,6 +21,7 @@
 	</Texture>
 	<Texture alias="helicopter_body" file="Models/Helicopter/helicopter_body.pvr" />
 	<Texture alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller.pvr" />
+	<Texture alias="bonus_01" file="Models/Bonuses/bonus_01.pvr" />
 	<Texture alias="land_02" file="Models/Land_objects_02/land_02.pvr" />
 	<Texture alias="land_02_objs" file="Models/Land_objects_02/land_02_objs.pvr" />
 	<Texture alias="weapons" file="Textures/Weapons/weapons.pvr" />
@@ -31,6 +32,7 @@
 	<Mesh alias="helicopter_destruction" file="Models/Helicopter/helicopter_destruction.POD"/>
 	<Mesh alias="bot_plane_small" file="Models/Bot_plane_small/bot_plane_small.POD"/>
 	<Mesh alias="bot_plane_small_destruction" file="Models/Bot_plane_small/bot_plane_small_destruction.POD"/>
+	<Mesh alias="bonus_01" file="Models/Bonuses/bonus_01.POD"/>
 	<Mesh alias="bush_01" file="Models/Land_objects_02/bush/bush_01.POD"/>
 	<Mesh alias="palm_01" file="Models/Land_objects_02/palm/palm_01.POD" />
 	<Mesh alias="palm_02" file="Models/Land_objects_02/palm/palm_02.POD" />
@@ -53,6 +55,7 @@
 	<Model alias="helicopter_destruction" file="Models/Helicopter/helicopter_destruction.xml"/>
 	<Model alias="bot_plane_small" file="Models/Bot_plane_small/bot_plane_small.xml"/>
 	<Model alias="bot_plane_small_destruction" file="Models/Bot_plane_small/bot_plane_small_destruction.xml"/>
+	<Model alias="bonus_01" file="Models/Bonuses/bonus_01.xml"/>
 	<Model alias="bush_01" file="Models/Land_objects_02/bush/bush_01.xml"/>
 	<Model alias="palm_01" file="Models/Land_objects_02/palm/palm_01.xml" />
 	<Model alias="palm_02" file="Models/Land_objects_02/palm/palm_02.xml" />
