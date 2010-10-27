@@ -41,8 +41,9 @@ public:
 
 protected:
 
-    COGBotFlightWorker		m_FlightWorker;
-    COGBotFallingWorker		m_FallingWorker;
+    COGBotFlightWorker	m_FlightWorker;
+    COGBotFallingWorker	m_FallingWorker;
+    IOGActor*           m_pBonus;
 };
 
 

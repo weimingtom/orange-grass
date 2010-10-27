@@ -12,6 +12,7 @@
 
 COGActorAirBot::COGActorAirBot()
 {
+    m_pBonus = NULL;
 }
 
 
@@ -115,6 +116,11 @@ bool COGActorAirBot::OnCollision (const IOGCollision& _Collision)
 
 	if (COGActorBot::OnCollision(_Collision))
 	{
+        m_pBonus = GetActorManager()->CreateActor(
+            "bonus_01", m_pPhysicalObject->GetPosition(), 
+            m_pPhysicalObject->GetRotation(), Vec3(1,1,1));
+        GetActorManager()->AddActor(m_pBonus);
+        m_pBonus->Activate(true);
 		m_Status = OG_ACTORSTATUS_FALLING;
 		m_FallingWorker.Activate(true);
 		return true;
