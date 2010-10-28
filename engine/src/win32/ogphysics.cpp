@@ -13,6 +13,7 @@
 #include "oglandphysicalobject.h"
 #include "ogplayerphysicalobject.h"
 #include "ogmissilephysicalobject.h"
+#include "ogbonusphysicalobject.h"
 #include <algorithm>
 
 
@@ -52,6 +53,12 @@ void COGPhysics::Clear ()
 		OG_SAFE_DELETE((*iter));
 	}
 	m_MissileObjList.clear();
+
+    for (iter = m_BonusObjList.begin(); iter != m_BonusObjList.end(); ++iter)
+    {
+		OG_SAFE_DELETE((*iter));
+	}
+	m_BonusObjList.clear();
 }
 
 
@@ -102,6 +109,14 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 			return pObj;
 		}
 		break;
+
+	case OG_PHYSICS_BONUS:
+		{
+			COGBonusPhysicalObject* pObj = new COGBonusPhysicalObject();
+			pObj->Create (_Aabb, _pParams, _pActor);
+			return pObj;
+		}
+		break;
 	}
 
 	return NULL;
@@ -119,6 +134,10 @@ void COGPhysics::AddObject (IOGPhysicalObject* _pObject)
 
 	case OG_PHYSICS_MISSILE:
 		m_MissileObjList.push_back(_pObject);
+		break;
+
+	case OG_PHYSICS_BONUS:
+		m_BonusObjList.push_back(_pObject);
 		break;
 
     case OG_PHYSICS_LANDBOT:
@@ -161,6 +180,15 @@ void COGPhysics::RemoveObject (IOGPhysicalObject* _pObject)
 		}
 		break;
 
+	case OG_PHYSICS_BONUS:
+		iter = std::find(m_BonusObjList.begin(), m_BonusObjList.end(), _pObject);
+		if (iter != m_BonusObjList.end())
+		{
+			OG_SAFE_DELETE((*iter));
+			m_BonusObjList.erase(iter);
+		}
+		break;
+
     case OG_PHYSICS_LANDBOT:
 	case OG_PHYSICS_AIRBOT:
 		iter = std::find(m_BotObjList.begin(), m_BotObjList.end(), _pObject);
@@ -193,6 +221,12 @@ void COGPhysics::Update (unsigned long _ElapsedTime)
 
     std::list<IOGPhysicalObject*>::iterator iter = m_BotObjList.begin();
     for (; iter != m_BotObjList.end(); ++iter)
+    {
+		(*iter)->Update(_ElapsedTime);
+    }
+
+    iter = m_BonusObjList.begin();
+    for (; iter != m_BonusObjList.end(); ++iter)
     {
 		(*iter)->Update(_ElapsedTime);
     }
@@ -232,6 +266,11 @@ void COGPhysics::UpdateAll (unsigned long _ElapsedTime)
     }
 
 	for (iter = m_MissileObjList.begin(); iter != m_MissileObjList.end(); ++iter)
+    {
+		(*iter)->Update(_ElapsedTime);
+    }
+
+	for (iter = m_BonusObjList.begin(); iter != m_BonusObjList.end(); ++iter)
     {
 		(*iter)->Update(_ElapsedTime);
     }

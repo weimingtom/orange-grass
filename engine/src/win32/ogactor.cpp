@@ -15,9 +15,9 @@ COGActor::COGActor() :	m_bActive(true),
 						m_pParams(NULL),
                         m_pNode(NULL),
                         m_pPhysicalObject(NULL),
-                        m_pModel(NULL)
+                        m_pModel(NULL),
+						m_Status(OG_ACTORSTATUS_ALIVE)
 {
-	m_Status = OG_ACTORSTATUS_ALIVE;
 }
 
 
@@ -38,7 +38,32 @@ void COGActor::OnAddedToManager ()
 // Update actor.
 void COGActor::Update (unsigned long _ElapsedTime)
 {
+	switch (m_Status)
+	{
+	case OG_ACTORSTATUS_ALIVE:
+		UpdateAlive(_ElapsedTime);
+		break;
+
+	case OG_ACTORSTATUS_FALLING:
+		UpdateFalling(_ElapsedTime);
+		break;
+
+	default:
+		break;
+	}
+}
+
+
+// Update alive actor.
+void COGActor::UpdateAlive (unsigned long _ElapsedTime)
+{
     m_pNode->Update(_ElapsedTime);
+}
+
+
+// Update falling actor.
+void COGActor::UpdateFalling (unsigned long _ElapsedTime)
+{
 }
 
 
@@ -80,6 +105,9 @@ const std::string& COGActor::GetAlias () const
 // Set active state
 void COGActor::Activate (bool _bActive)
 {
+	if (_bActive == m_bActive || m_Status == OG_ACTORSTATUS_DEAD)
+		return;
+
 	m_bActive = _bActive;
 	m_pPhysicalObject->Activate(m_bActive);
 	m_pNode->Activate(m_bActive);

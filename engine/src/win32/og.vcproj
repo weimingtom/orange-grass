@@ -706,6 +706,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogbonusphysicalobject.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogbonusphysicalobject.h"
+					>
+				</File>
+				<File
 					RelativePath=".\oglandphysicalobject.cpp"
 					>
 				</File>

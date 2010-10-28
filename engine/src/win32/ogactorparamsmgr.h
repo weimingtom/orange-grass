@@ -51,6 +51,10 @@ private:
     std::map<std::string, IOGActorParams*>	m_ParamsList;
     std::map<std::string, IOGWeaponParams*>	m_WeaponParamsList;
 	IOGSettingsReader*	m_pReader;
+
+	std::map<std::string, OGActorType>		m_ActorTypeLookup;
+	std::map<std::string, OGPhysicsType>	m_PhysicsTypeLookup;
+	std::map<std::string, OGWeaponPos>		m_WeaponPosLookup;
 };
 
 #endif

@@ -50,8 +50,7 @@ bool COGPhysicalObject::RespondOnCollision (const IOGCollision& _Collision)
 	if (!m_pListener)
 		return false;
 
-	m_pListener->OnCollision(_Collision);
-	return true;
+	return m_pListener->OnCollision(_Collision);
 }
 
 

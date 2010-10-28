@@ -122,47 +122,37 @@ void COGActorBonus::OnAddedToManager ()
 // Set active state
 void COGActorBonus::Activate (bool _bActive)
 {
-	if (m_Status == OG_ACTORSTATUS_DEAD || _bActive == m_bActive)
+	if (_bActive == m_bActive || m_Status == OG_ACTORSTATUS_DEAD)
 		return;
 
 	COGActor::Activate(_bActive);
-
-	if (m_bActive)
-	{
-	}
-	else
-	{
-	}
 }
 
 
-// Update actor.
-void COGActorBonus::Update (unsigned long _ElapsedTime)
+// Update alive actor.
+void COGActorBonus::UpdateAlive (unsigned long _ElapsedTime)
 {
-	if (m_Status != OG_ACTORSTATUS_DEAD)
-		COGActor::Update(_ElapsedTime);
+	COGActor::UpdateAlive(_ElapsedTime);
+}
 
-	switch (m_Status)
+
+// Update falling actor.
+void COGActorBonus::UpdateFalling (unsigned long _ElapsedTime)
+{
+	COGActor::UpdateFalling(_ElapsedTime);
+
+	if (m_pPickEffect)
 	{
-	case OG_ACTORSTATUS_ALIVE:
-		break;
-
-	case OG_ACTORSTATUS_FALLING:
+		if (m_pPickEffect->GetStatus() == OG_EFFECTSTATUS_INACTIVE)
 		{
-			if (m_pPickEffect)
-			{
-				if (m_pPickEffect->GetStatus() == OG_EFFECTSTATUS_INACTIVE)
-					m_Status = OG_ACTORSTATUS_DEAD;
-			}
-			else
-			{
-				m_Status = OG_ACTORSTATUS_DEAD;
-			}
+			m_Status = OG_ACTORSTATUS_DEAD;
+			Activate(false);
 		}
-		break;
-
-	case OG_ACTORSTATUS_DEAD:
-		break;
+	}
+	else
+	{
+		m_Status = OG_ACTORSTATUS_DEAD;
+		Activate(false);
 	}
 }
 
@@ -180,7 +170,6 @@ bool COGActorBonus::OnCollision (const IOGCollision& _Collision)
 		{
 			m_pPickEffect->Start();
 		}
-		Activate(false);
 		return true;
 	}
 	return false;

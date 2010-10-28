@@ -20,7 +20,7 @@ public:
 	virtual ~IOGWeapon() {}
 
 	// Create weapon.
-	virtual bool Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams, const Vec3& _vLaunchPos) = 0;
+	virtual bool Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams) = 0;
 
 	// Fire missile.
 	virtual void Fire (const Vec3& _vTarget) = 0;

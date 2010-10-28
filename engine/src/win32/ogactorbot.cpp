@@ -199,31 +199,6 @@ void COGActorBot::OnAddedToManager ()
 }
 
 
-// Update actor.
-void COGActorBot::Update (unsigned long _ElapsedTime)
-{
-    COGActor::Update(_ElapsedTime);
-
-    if (m_Status == OG_ACTORSTATUS_FALLING)
-    {
-        m_pNodeDestruction->Update(_ElapsedTime);
-        Vec3 vTrail;
-        m_pNodeDestruction->GetActivePoint(vTrail, "actpointpart02");
-
-        MatrixVecMultiply(vTrail, vTrail, m_pPhysicalObject->GetWorldTransform());
-
-        m_pTrailEffect->UpdatePosition(vTrail);
-    }
-    else
-    {
-        if (m_pNodePropeller)
-        {
-    	    m_pNodePropeller->Update(_ElapsedTime);
-        }
-    }
-}
-
-
 // collision event handler
 bool COGActorBot::OnCollision (const IOGCollision& _Collision)
 {
@@ -258,20 +233,62 @@ void COGActorBot::SetWeapon (IOGWeaponParams* _pWeaponParams)
 {
 	OG_SAFE_DELETE(m_pWeapon);
 
-    Vec3 vOffset;
-    m_pNode->GetActivePoint(vOffset, "actpointweapon02");
-
-	m_pWeapon = new COGWeapon();
-    m_pWeapon->Create(this, _pWeaponParams, vOffset);
+	if (_pWeaponParams)
+	{
+		m_pWeapon = new COGWeapon();
+		m_pWeapon->Create(this, _pWeaponParams);
+	}
 }
 
 
 // Set active state
 void COGActorBot::Activate (bool _bActive)
 {
+	if (_bActive == m_bActive || m_Status == OG_ACTORSTATUS_DEAD)
+		return;
+
 	COGActor::Activate(_bActive);
+
 	if (m_pNodePropeller)
 	{
 		m_pNodePropeller->Activate(_bActive);
+	}
+
+	if (!m_bActive)
+	{
+	    if (m_pTrailNode)
+			m_pTrailNode->Activate(false);
+		if (m_pExplosionNode)
+			m_pExplosionNode->Activate(false);
+	}
+}
+
+
+// Update alive actor.
+void COGActorBot::UpdateAlive (unsigned long _ElapsedTime)
+{
+	COGActor::UpdateAlive(_ElapsedTime);
+
+	if (m_pNodePropeller)
+	{
+		m_pNodePropeller->Update(_ElapsedTime);
+	}
+}
+
+
+// Update falling actor.
+void COGActorBot::UpdateFalling (unsigned long _ElapsedTime)
+{
+	COGActor::UpdateFalling(_ElapsedTime);
+
+	if (m_pNodeDestruction && m_pTrailEffect)
+	{
+		m_pNodeDestruction->Update(_ElapsedTime);
+		Vec3 vTrail;
+		if (m_pNodeDestruction->GetActivePoint(vTrail, "actpointpart02"))
+		{
+			MatrixVecMultiply(vTrail, vTrail, m_pPhysicalObject->GetWorldTransform());
+			m_pTrailEffect->UpdatePosition(vTrail);
+		}
 	}
 }

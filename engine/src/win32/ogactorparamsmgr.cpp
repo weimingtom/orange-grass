@@ -13,6 +13,27 @@
 COGActorParamsMgr::COGActorParamsMgr ()
 {
 	m_pReader = GetSettingsReader();
+
+	m_ActorTypeLookup["static"] = OG_ACTOR_STATIC;
+	m_ActorTypeLookup["land_bot"] = OG_ACTOR_LANDBOT;
+	m_ActorTypeLookup["air_bot"] = OG_ACTOR_AIRBOT;
+	m_ActorTypeLookup["player"] = OG_ACTOR_PLAYER;
+	m_ActorTypeLookup["plasma_missile"] = OG_ACTOR_PLASMAMISSILE;
+	m_ActorTypeLookup["missile"] = OG_ACTOR_MISSILE;
+	m_ActorTypeLookup["bonus"] = OG_ACTOR_BONUS;
+
+	m_PhysicsTypeLookup["static"] = OG_PHYSICS_STATIC;
+	m_PhysicsTypeLookup["land_bot"] = OG_PHYSICS_LANDBOT;
+	m_PhysicsTypeLookup["air_bot"] = OG_PHYSICS_AIRBOT;
+	m_PhysicsTypeLookup["player"] = OG_PHYSICS_PLAYER;
+	m_PhysicsTypeLookup["missile"] = OG_PHYSICS_MISSILE;
+	m_PhysicsTypeLookup["bonus"] = OG_PHYSICS_BONUS;
+
+	m_WeaponPosLookup["center"] = POS_CENTER;
+	m_WeaponPosLookup["left"] = POS_LEFT;
+	m_WeaponPosLookup["right"] = POS_RIGHT;
+	m_WeaponPosLookup["left_right"] = POS_LEFTRIGHT;
+	m_WeaponPosLookup["center_left_right"] = POS_CENTERLEFTRIGHT;
 }
 
 
@@ -188,6 +209,7 @@ bool COGActorParamsMgr::LoadWeaponParamsConfig (const std::string& _Alias, const
 		pParam->icon_texture = m_pReader->ReadStringParam(pNode, "icon_texture");
 		pParam->hitpoints = (unsigned int)m_pReader->ReadIntParam(pNode, "hitpoints");
 		pParam->cooldown = (unsigned int)m_pReader->ReadIntParam(pNode, "cooldown");
+		pParam->pos = (IOGWeaponParams::OGWeaponPos)m_pReader->ReadIntParam(pNode, "position");
 		m_pReader->CloseGroupNode(pNode);
 	}
 

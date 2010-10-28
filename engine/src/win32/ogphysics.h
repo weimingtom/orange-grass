@@ -52,6 +52,7 @@ private:
 	std::list<IOGPhysicalObject*>	m_StaticObjList;
 	std::list<IOGPhysicalObject*>	m_BotObjList;
 	std::list<IOGPhysicalObject*>	m_MissileObjList;
+	std::list<IOGPhysicalObject*>	m_BonusObjList;
 
 	Vec3    m_vLeftBorder[3];
     Vec3    m_vRightBorder[3];

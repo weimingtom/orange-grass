@@ -26,11 +26,16 @@ COGWeapon::~COGWeapon()
 
 
 // Create weapon.
-bool COGWeapon::Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams, const Vec3& _vLaunchPos)
+bool COGWeapon::Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams)
 {
     m_pOwner = _pOwner;
 	m_pWeaponParams = _pWeaponParams;
-    m_vLaunchPos = _vLaunchPos;
+
+	if (!m_pOwner->GetSgNode()->GetActivePoint(m_vLaunchPos, "actpointweapon02"))
+	{
+		return false;
+	}
+
 	m_WeaponCoolDownMax = m_pWeaponParams->cooldown;
     Vec3 vStart = _pOwner->GetPhysicalObject()->GetPosition();
     for (int i = 0; i < 10; ++i)

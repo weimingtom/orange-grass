@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Params>
 	<Physics 
-		max_speed = "0.8" 
-		acceleration = "0.3" 
+		max_speed = "0.1" 
+		acceleration = "0.02" 
 		max_strafe_speed = "0.0" 
 		roll_speed = "0.0" 
 		max_roll_angle = "0.0" 
@@ -14,6 +14,7 @@
 		model = "plasma_01"
 		model_propeller = ""
 		model_destruction = ""
+		position = "1"
 		icon = "Models/Land_objects_02/no_ed.bmp"
 		/>
 </Params>

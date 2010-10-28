@@ -10,7 +10,7 @@
 #include "ogplayerphysicalobject.h"
 
 
-COGPlayerPhysicalObject::COGPlayerPhysicalObject () : COGPhysicalObject()
+COGPlayerPhysicalObject::COGPlayerPhysicalObject ()
 {
     m_vStrafeVec = Vec3(0,0,0);
     m_fRolling = 0.0f;

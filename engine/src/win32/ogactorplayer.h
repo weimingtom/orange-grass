@@ -38,8 +38,10 @@ public:
 	// Touch event handler.
 	virtual bool OnTouch (const Vec2& _vPos, IOGTouchParam _param);
 
-	// Update actor.
-	virtual void Update (unsigned long _ElapsedTime);
+protected:
+
+	// Update alive actor.
+	virtual void UpdateAlive (unsigned long _ElapsedTime);
 
 protected:
 

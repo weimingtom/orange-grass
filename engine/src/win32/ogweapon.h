@@ -21,7 +21,7 @@ public:
 	virtual ~COGWeapon();
 
 	// Create weapon.
-	virtual bool Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams, const Vec3& _vLaunchPos);
+	virtual bool Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams);
 
 	// Fire missile.
 	virtual void Fire (const Vec3& _vTarget);

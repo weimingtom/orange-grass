@@ -12,7 +12,6 @@
 
 COGActorAirBot::COGActorAirBot()
 {
-    m_pBonus = NULL;
 }
 
 
@@ -48,7 +47,7 @@ void COGActorAirBot::OnAddedToManager ()
 // Set active state
 void COGActorAirBot::Activate (bool _bActive)
 {
-	if (m_Status == OG_ACTORSTATUS_DEAD || _bActive == m_bActive)
+	if (_bActive == m_bActive || m_Status == OG_ACTORSTATUS_DEAD)
 		return;
 
 	COGActorBot::Activate(_bActive);
@@ -65,45 +64,35 @@ void COGActorAirBot::Activate (bool _bActive)
 }
 
 
-// Update actor.
-void COGActorAirBot::Update (unsigned long _ElapsedTime)
+// Update alive actor.
+void COGActorAirBot::UpdateAlive (unsigned long _ElapsedTime)
 {
-	if (m_Status != OG_ACTORSTATUS_DEAD)
-		COGActorBot::Update(_ElapsedTime);
+	COGActorBot::UpdateAlive(_ElapsedTime);
 
-	switch (m_Status)
+	if (m_FlightWorker.IsActive())
 	{
-	case OG_ACTORSTATUS_ALIVE:
+		m_FlightWorker.Update(_ElapsedTime);
+		if (m_FlightWorker.IsFinished())
 		{
-			if (m_FlightWorker.IsActive())
-			{
-				m_FlightWorker.Update(_ElapsedTime);
-				if (m_FlightWorker.IsFinished())
-				{
-					Activate(false);
-				}
-			}
+			Activate(false);
 		}
-		break;
+	}
+}
 
-	case OG_ACTORSTATUS_FALLING:
-		{
-			if (m_FallingWorker.IsActive())
-			{
-				m_FallingWorker.Update(_ElapsedTime);
-				if (m_FallingWorker.IsFinished())
-				{
-					m_Status = OG_ACTORSTATUS_DEAD;
-					Activate(false);
-				}
-			}
-		}
-		break;
 
-	case OG_ACTORSTATUS_DEAD:
+// Update falling actor.
+void COGActorAirBot::UpdateFalling (unsigned long _ElapsedTime)
+{
+	COGActorBot::UpdateFalling(_ElapsedTime);
+
+	if (m_FallingWorker.IsActive())
+	{
+		m_FallingWorker.Update(_ElapsedTime);
+		if (m_FallingWorker.IsFinished())
 		{
+			m_Status = OG_ACTORSTATUS_DEAD;
+			Activate(false);
 		}
-		break;
 	}
 }
 
@@ -111,14 +100,14 @@ void COGActorAirBot::Update (unsigned long _ElapsedTime)
 // collision event handler
 bool COGActorAirBot::OnCollision (const IOGCollision& _Collision)
 {
-    if (m_Status == OG_ACTORSTATUS_FALLING || m_Status == OG_ACTORSTATUS_DEAD)
+    if (m_Status != OG_ACTORSTATUS_ALIVE)
         return false;
 
 	if (COGActorBot::OnCollision(_Collision))
 	{
-        m_pBonus = GetActorManager()->CreateActor(
+        IOGActor* m_pBonus = GetActorManager()->CreateActor(
             "bonus_01", m_pPhysicalObject->GetPosition(), 
-            m_pPhysicalObject->GetRotation(), Vec3(1,1,1));
+            Vec3(0,0,0), Vec3(1,1,1));
         GetActorManager()->AddActor(m_pBonus);
         m_pBonus->Activate(true);
 		m_Status = OG_ACTORSTATUS_FALLING;

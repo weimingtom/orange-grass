@@ -34,11 +34,22 @@ enum OGTeam
 };
 
 
+enum OGWeaponPos
+{
+	POS_CENTER	= 0,
+	POS_LEFT,
+	POS_RIGHT,
+	POS_LEFTRIGHT,
+	POS_CENTERLEFTRIGHT
+};
+
+
 struct IOGWeaponParams
 {
 	std::string		alias;
 	unsigned int	hitpoints;
 	unsigned int	cooldown;
+	OGWeaponPos		pos;
 	std::string		actor;
 	std::string		icon_texture;
 };

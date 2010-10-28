@@ -29,9 +29,6 @@ public:
 	// Adding to actor manager event handler.
 	virtual void OnAddedToManager ();
 
-	// Update actor.
-	virtual void Update (unsigned long _ElapsedTime);
-
 	// Set active state
 	virtual void Activate (bool _bActive);
 
@@ -40,6 +37,14 @@ public:
 
     // collision event handler
 	virtual bool OnCollision (const IOGCollision& _Collision);
+
+protected:
+
+	// Update alive actor.
+	virtual void UpdateAlive (unsigned long _ElapsedTime);
+
+	// Update falling actor.
+	virtual void UpdateFalling (unsigned long _ElapsedTime);
 
 protected:
 

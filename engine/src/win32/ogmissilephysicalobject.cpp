@@ -10,7 +10,7 @@
 #include "ogmissilephysicalobject.h"
 
 
-COGMissilePhysicalObject::COGMissilePhysicalObject () : COGPhysicalObject()
+COGMissilePhysicalObject::COGMissilePhysicalObject ()
 {
 }
 
@@ -46,15 +46,15 @@ bool COGMissilePhysicalObject::CheckCollision (IOGPhysicalObject* _pObject)
         return false;
 
 	const IOGObb& obb = _pObject->GetOBB();
-    if (/*obb.CheckLineIntersection(m_vPrevPosition, m_vPosition)*/Dist3D(m_vPosition, obb.m_vCenter) <= obb.m_Aabb.GetRadius())
+    //if (obb.CheckLineIntersection(m_vPrevPosition, m_vPosition))
+    if (Dist3D(m_vPosition, obb.m_vCenter) <= obb.m_Aabb.GetRadius())
     {
         IOGCollision collision;
         collision.pActorMissile = m_pActor;
 		collision.pActorBot = _pObject->GetActor();
         if (m_pListener->OnCollision(collision))
         {
-			_pObject->RespondOnCollision(collision);
-            return true;
+			return _pObject->RespondOnCollision(collision);
         }
     }
     return false;

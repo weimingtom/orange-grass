@@ -90,8 +90,8 @@ void COGActorPlasmaMissile::OnAddedToManager ()
 }
 
 
-// Update actor.
-void COGActorPlasmaMissile::Update (unsigned long _ElapsedTime)
+// Update alive actor.
+void COGActorPlasmaMissile::UpdateAlive (unsigned long _ElapsedTime)
 {
 	if (m_FlightWorker.IsActive())
 	{
@@ -101,6 +101,16 @@ void COGActorPlasmaMissile::Update (unsigned long _ElapsedTime)
 			Activate(false);
 		}
 	}
+}
+
+
+// Update falling actor.
+void COGActorPlasmaMissile::UpdateFalling (unsigned long _ElapsedTime)
+{
+    if (!m_bActive)
+        return;
+
+	Activate(false);
 }
 
 
@@ -116,6 +126,7 @@ void COGActorPlasmaMissile::Activate (bool _bActive)
 	m_FlightWorker.Activate(m_bActive);
 	if (m_bActive)
 	{
+		m_Status = OG_ACTORSTATUS_ALIVE;
 		m_FlightWorker.Reset();
 		m_FlightWorker.Activate(true);
 		m_pHeadEffect->Start();
@@ -144,6 +155,10 @@ void COGActorPlasmaMissile::Fire (const Vec3& _vTarget)
 // collision event handler
 bool COGActorPlasmaMissile::OnCollision (const IOGCollision& _Collision)
 {
+	if (!m_bActive || m_Status != OG_ACTORSTATUS_ALIVE)
+		return false;
+
+	m_Status = OG_ACTORSTATUS_FALLING;
 	m_pPhysicalObject->Activate(false);
 	m_FlightWorker.Activate(false);
     return true;

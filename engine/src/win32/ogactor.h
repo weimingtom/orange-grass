@@ -72,6 +72,14 @@ public:
 
 protected:
 
+	// Update alive actor.
+	virtual void UpdateAlive (unsigned long _ElapsedTime);
+
+	// Update falling actor.
+	virtual void UpdateFalling (unsigned long _ElapsedTime);
+
+protected:
+
     bool				m_bActive;
 	bool                m_bAdded;
 	IOGActorParams*		m_pParams;

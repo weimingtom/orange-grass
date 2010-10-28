@@ -27,9 +27,6 @@ public:
 		const Vec3& _vRot,
         const Vec3& _vScale);
 
-	// Update actor.
-	virtual void Update (unsigned long _ElapsedTime);
-
 	// Adding to actor manager event handler.
 	virtual void OnAddedToManager ();
 
@@ -44,6 +41,14 @@ public:
 
 	// Set active state
 	virtual void Activate (bool _bActive);
+
+protected:
+
+	// Update alive actor.
+	virtual void UpdateAlive (unsigned long _ElapsedTime);
+
+	// Update falling actor.
+	virtual void UpdateFalling (unsigned long _ElapsedTime);
 
 protected:
 

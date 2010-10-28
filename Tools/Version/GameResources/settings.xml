@@ -14,7 +14,7 @@
 	/>
 	<Game>
 		<Levels>
-			<Level alias = "level_02" player = "helicopter" weapon = "missile_01"/>
+			<Level alias = "level_02" player = "helicopter" weapon = "plasma_01"/>
 			<Level alias = "level_02" player = "helicopter" weapon = "missile_01"/>
 		</Levels>
 	</Game>

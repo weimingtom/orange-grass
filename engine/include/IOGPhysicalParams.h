@@ -20,7 +20,8 @@ enum OGPhysicsType
 	OG_PHYSICS_LANDBOT,
 	OG_PHYSICS_AIRBOT,
 	OG_PHYSICS_PLAYER,
-	OG_PHYSICS_MISSILE
+	OG_PHYSICS_MISSILE,
+	OG_PHYSICS_BONUS
 };
 
 
@@ -69,6 +70,10 @@ inline OGPhysicsType ParsePhysicsType (const std::string& _PhysicsTypeStr)
     else if (_PhysicsTypeStr.compare(std::string("missile")) == 0)
     {
         return OG_PHYSICS_MISSILE;
+    }
+    else if (_PhysicsTypeStr.compare(std::string("bonus")) == 0)
+    {
+        return OG_PHYSICS_BONUS;
     }
     return OG_PHYSICS_NONE;
 }

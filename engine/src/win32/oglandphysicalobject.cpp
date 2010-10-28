@@ -10,7 +10,7 @@
 #include "oglandphysicalobject.h"
 
 
-COGLandPhysicalObject::COGLandPhysicalObject () : COGPhysicalObject()
+COGLandPhysicalObject::COGLandPhysicalObject ()
 {
 }
 

@@ -88,11 +88,11 @@ bool COGActorPlayer::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
 }
 
 
-// Update actor.
-void COGActorPlayer::Update (unsigned long _ElapsedTime)
+// Update alive actor.
+void COGActorPlayer::UpdateAlive (unsigned long _ElapsedTime)
 {
-    COGActorBot::Update(_ElapsedTime);
-    
+    COGActorBot::UpdateAlive(_ElapsedTime);
+
     if (m_pWeapon)
         m_pWeapon->Update(_ElapsedTime);
     
