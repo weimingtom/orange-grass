@@ -29,11 +29,11 @@ COGActorParamsMgr::COGActorParamsMgr ()
 	m_PhysicsTypeLookup["missile"] = OG_PHYSICS_MISSILE;
 	m_PhysicsTypeLookup["bonus"] = OG_PHYSICS_BONUS;
 
-	m_WeaponPosLookup["center"] = POS_CENTER;
-	m_WeaponPosLookup["left"] = POS_LEFT;
-	m_WeaponPosLookup["right"] = POS_RIGHT;
-	m_WeaponPosLookup["left_right"] = POS_LEFTRIGHT;
-	m_WeaponPosLookup["center_left_right"] = POS_CENTERLEFTRIGHT;
+	m_WeaponPosLookup["center"] = OG_WEAPONPOS_CENTER;
+	m_WeaponPosLookup["left"] = OG_WEAPONPOS_LEFT;
+	m_WeaponPosLookup["right"] = OG_WEAPONPOS_RIGHT;
+	m_WeaponPosLookup["left_right"] = OG_WEAPONPOS_LEFTRIGHT;
+	m_WeaponPosLookup["center_left_right"] = OG_WEAPONPOS_CENTERLEFTRIGHT;
 }
 
 
@@ -209,7 +209,7 @@ bool COGActorParamsMgr::LoadWeaponParamsConfig (const std::string& _Alias, const
 		pParam->icon_texture = m_pReader->ReadStringParam(pNode, "icon_texture");
 		pParam->hitpoints = (unsigned int)m_pReader->ReadIntParam(pNode, "hitpoints");
 		pParam->cooldown = (unsigned int)m_pReader->ReadIntParam(pNode, "cooldown");
-		pParam->pos = (IOGWeaponParams::OGWeaponPos)m_pReader->ReadIntParam(pNode, "position");
+		pParam->pos = ParseWeaponPositionType(m_pReader->ReadStringParam(pNode, "position"));
 		m_pReader->CloseGroupNode(pNode);
 	}
 
@@ -231,4 +231,40 @@ void COGActorParamsMgr::GetParamsList (std::list<IOGActorParams*>& _List)
 	{
 		_List.push_back(iter->second);
 	}	
+}
+
+
+// Parse the actor type string and convert it to internal type
+OGActorType COGActorParamsMgr::ParseActorType (const std::string& _ActorTypeStr) const
+{
+    std::map<std::string, OGActorType>::const_iterator iter = m_ActorTypeLookup.find(_ActorTypeStr);
+    if (iter != m_ActorTypeLookup.end())
+    {
+        return iter->second;
+    }
+    return OG_ACTOR_NONE;
+}
+
+
+// Parse the physics type string and convert it to internal type
+OGPhysicsType COGActorParamsMgr::ParsePhysicsType (const std::string& _PhysicsTypeStr) const
+{
+    std::map<std::string, OGPhysicsType>::const_iterator iter = m_PhysicsTypeLookup.find(_PhysicsTypeStr);
+    if (iter != m_PhysicsTypeLookup.end())
+    {
+        return iter->second;
+    }
+    return OG_PHYSICS_NONE;
+}
+
+
+// Parse the weapon position type string and convert it to internal type
+OGWeaponPos COGActorParamsMgr::ParseWeaponPositionType (const std::string& _WeaponPosTypeStr) const
+{
+    std::map<std::string, OGWeaponPos>::const_iterator iter = m_WeaponPosLookup.find(_WeaponPosTypeStr);
+    if (iter != m_WeaponPosLookup.end())
+    {
+        return iter->second;
+    }
+    return OG_WEAPONPOS_NONE;
 }

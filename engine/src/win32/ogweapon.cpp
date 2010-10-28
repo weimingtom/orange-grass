@@ -31,11 +31,6 @@ bool COGWeapon::Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams)
     m_pOwner = _pOwner;
 	m_pWeaponParams = _pWeaponParams;
 
-	if (!m_pOwner->GetSgNode()->GetActivePoint(m_vLaunchPos, "actpointweapon02"))
-	{
-		return false;
-	}
-
 	m_WeaponCoolDownMax = m_pWeaponParams->cooldown;
     Vec3 vStart = _pOwner->GetPhysicalObject()->GetPosition();
     for (int i = 0; i < 10; ++i)
@@ -52,17 +47,60 @@ bool COGWeapon::Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams)
 // Fire missile.
 void COGWeapon::Fire (const Vec3& _vTarget)
 {
+    Vec3 launches[3];
+    int NumLaunch = 0;
+
+    switch (m_pWeaponParams->pos)
+    {
+    case OG_WEAPONPOS_LEFT:
+        NumLaunch = 1;
+        m_pOwner->GetSgNode()->GetActivePoint(launches[0], "actpointweapon01");
+        break;
+
+    case OG_WEAPONPOS_RIGHT:
+        NumLaunch = 1;
+        m_pOwner->GetSgNode()->GetActivePoint(launches[0], "actpointweapon02");
+        break;
+
+    case OG_WEAPONPOS_CENTER:
+        NumLaunch = 1;
+        m_pOwner->GetSgNode()->GetActivePoint(launches[0], "actpointweapon03");
+        break;
+
+    case OG_WEAPONPOS_LEFTRIGHT:
+        NumLaunch = 2;
+        m_pOwner->GetSgNode()->GetActivePoint(launches[0], "actpointweapon01");
+        m_pOwner->GetSgNode()->GetActivePoint(launches[1], "actpointweapon02");
+        break;
+
+    case OG_WEAPONPOS_CENTERLEFTRIGHT:
+        NumLaunch = 3;
+        m_pOwner->GetSgNode()->GetActivePoint(launches[0], "actpointweapon03");
+        m_pOwner->GetSgNode()->GetActivePoint(launches[1], "actpointweapon01");
+        m_pOwner->GetSgNode()->GetActivePoint(launches[2], "actpointweapon02");
+        break;
+    }
+
+    int CurLaunch = NumLaunch;
     std::list<COGActorBullet*>::iterator iter = m_MissileList.begin();
     for (; iter != m_MissileList.end(); ++iter)
     {
         COGActorBullet* pMissile = *iter;
         if (!pMissile->IsActive())
         {
-            pMissile->SetOwner(m_pOwner, m_vLaunchPos);
+            pMissile->SetOwner(m_pOwner, launches[NumLaunch - CurLaunch]);
             pMissile->Fire(_vTarget);
-            m_WeaponCoolDown = 0;
-            return;
+            --CurLaunch;
+            if (CurLaunch == 0)
+            {
+                m_WeaponCoolDown = 0;
+                return;
+            }
         }
+    }
+    if (CurLaunch != NumLaunch)
+    {
+        m_WeaponCoolDown = 0;
     }
 }
 

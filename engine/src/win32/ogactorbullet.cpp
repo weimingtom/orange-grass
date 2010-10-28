@@ -26,7 +26,11 @@ COGActorBullet::~COGActorBullet()
 void COGActorBullet::SetOwner (IOGActor* _pOwner, const Vec3& _vLaunchOffset)
 {
     m_pOwner = _pOwner;
-    m_vLaunchOffset = _vLaunchOffset;
+
+    MatrixVecMultiply(
+        m_vLaunchOffset, 
+        _vLaunchOffset, 
+        m_pOwner->GetPhysicalObject()->GetWorldTransform());
 }
 
 

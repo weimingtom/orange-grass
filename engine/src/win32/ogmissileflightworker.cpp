@@ -38,7 +38,7 @@ void COGMissileFlightWorker::Update (unsigned long _ElapsedTime)
 
 	Vec3 vCurPos = m_pActor->GetPhysicalObject()->GetPosition();
 	float fDist = Dist2D(vCurPos, m_vStartPos);
-	if (fDist > 300.0f)
+	if (fDist > 120.0f)
 	{
 		Activate(false);
 		m_bFinished = true;

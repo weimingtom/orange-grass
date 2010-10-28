@@ -4,6 +4,7 @@
 		actor = "plasma_01"
 		hitpoints = "200"
 		cooldown = "200"
+		position = "left_right"
 		icon_texture = "weapon_plasma01"
 		/>
 </Weapon>

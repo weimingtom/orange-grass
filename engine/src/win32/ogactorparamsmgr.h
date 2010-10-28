@@ -46,6 +46,15 @@ private:
 	// Load weapon params configuration
 	bool LoadWeaponParamsConfig (const std::string& _Alias, const std::string& _Path);
 
+    // Parse the actor type string and convert it to internal type
+    OGActorType ParseActorType (const std::string& _ActorTypeStr) const;
+
+    // Parse the physics type string and convert it to internal type
+    OGPhysicsType ParsePhysicsType (const std::string& _PhysicsTypeStr) const;
+
+    // Parse the weapon position type string and convert it to internal type
+    OGWeaponPos ParseWeaponPositionType (const std::string& _WeaponPosTypeStr) const;
+
 private:
 
     std::map<std::string, IOGActorParams*>	m_ParamsList;

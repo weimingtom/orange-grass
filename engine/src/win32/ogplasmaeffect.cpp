@@ -73,9 +73,11 @@ void COGPlasmaEffect::Render (const MATRIX& _mWorld, unsigned int _Frame)
 		particle.pVertices[1].p = -vSRight + vSUp + particle.offset;
 		particle.pVertices[2].p = vSRight - vSUp + particle.offset;
 		particle.pVertices[3].p = -vSRight - vSUp + particle.offset;
+
+		m_pRenderer->DrawEffectBuffer(&particle.pVertices[0], 0, 4);
 	}
 
-    m_pRenderer->DrawEffectBuffer(m_Vertices, 0, PLASMA_VERTICES);
+    //m_pRenderer->DrawEffectBuffer(m_Vertices, 0, PLASMA_VERTICES);
 }
 
 
@@ -83,6 +85,7 @@ void COGPlasmaEffect::Render (const MATRIX& _mWorld, unsigned int _Frame)
 void COGPlasmaEffect::Start ()
 {
 	m_Status = OG_EFFECTSTATUS_STARTED;
+    Update(0);
 }
 
 

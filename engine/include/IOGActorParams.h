@@ -36,11 +36,12 @@ enum OGTeam
 
 enum OGWeaponPos
 {
-	POS_CENTER	= 0,
-	POS_LEFT,
-	POS_RIGHT,
-	POS_LEFTRIGHT,
-	POS_CENTERLEFTRIGHT
+    OG_WEAPONPOS_NONE = -1,
+	OG_WEAPONPOS_CENTER,
+	OG_WEAPONPOS_LEFT,
+	OG_WEAPONPOS_RIGHT,
+	OG_WEAPONPOS_LEFTRIGHT,
+	OG_WEAPONPOS_CENTERLEFTRIGHT
 };
 
 
@@ -81,41 +82,5 @@ struct IOGActorParams
 	std::string			model_destruction;
 	std::string			icon;
 };
-
-
-// Parse the actor type string and convert it to internal type
-inline OGActorType ParseActorType (const std::string& _ActorTypeStr)
-{
-	if (_ActorTypeStr.compare(std::string("static")) == 0)
-    {
-        return OG_ACTOR_STATIC;
-    }
-    else if (_ActorTypeStr.compare(std::string("land_bot")) == 0)
-    {
-        return OG_ACTOR_LANDBOT;
-    }
-    else if (_ActorTypeStr.compare(std::string("air_bot")) == 0)
-    {
-        return OG_ACTOR_AIRBOT;
-    }
-    else if (_ActorTypeStr.compare(std::string("player")) == 0)
-    {
-        return OG_ACTOR_PLAYER;
-    }
-    else if (_ActorTypeStr.compare(std::string("plasma_missile")) == 0)
-    {
-        return OG_ACTOR_PLASMAMISSILE;
-    }
-    else if (_ActorTypeStr.compare(std::string("missile")) == 0)
-    {
-        return OG_ACTOR_MISSILE;
-    }
-    else if (_ActorTypeStr.compare(std::string("bonus")) == 0)
-    {
-        return OG_ACTOR_BONUS;
-    }
-    return OG_ACTOR_NONE;
-}
-
 
 #endif

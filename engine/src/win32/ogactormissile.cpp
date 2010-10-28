@@ -138,6 +138,7 @@ void COGActorMissile::Activate (bool _bActive)
 		m_FlightWorker.Activate(true);
 		m_pHeadEffect->Start();
 		m_pHeadEffect->SetDirection(Vec3(0,0,1));
+        m_pPhysicalObject->Update(1);
 	}
 	else
 	{
@@ -150,9 +151,8 @@ void COGActorMissile::Fire (const Vec3& _vTarget)
 {
 	COGActorBullet::Fire(_vTarget);
 
-    Vec3 vPos = m_pOwner->GetPhysicalObject()->GetPosition() + m_vLaunchOffset;
     Vec3 vRot = m_pOwner->GetPhysicalObject()->GetRotation();
-	m_pPhysicalObject->SetWorldTransform(vPos, vRot, Vec3(1,1,1));
+	m_pPhysicalObject->SetWorldTransform(m_vLaunchOffset, vRot, Vec3(1,1,1));
     Activate(true);
 }
 

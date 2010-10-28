@@ -14,7 +14,6 @@
 		model = "missile_01"
 		model_propeller = ""
 		model_destruction = ""
-		position = "1"
 		icon = "Models/Land_objects_02/no_ed.bmp"
 		/>
 </Params>

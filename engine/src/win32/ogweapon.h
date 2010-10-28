@@ -40,7 +40,6 @@ protected:
     std::list<COGActorBullet*>  m_MissileList;
     IOGActor*                   m_pOwner;
 	IOGWeaponParams*			m_pWeaponParams;
-    Vec3                        m_vLaunchPos;
     unsigned long               m_WeaponCoolDown;
     unsigned long               m_WeaponCoolDownMax;
 };
