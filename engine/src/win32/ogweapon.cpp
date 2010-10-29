@@ -33,6 +33,7 @@ bool COGWeapon::Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams)
 
 	m_WeaponCoolDownMax = m_pWeaponParams->cooldown;
     Vec3 vStart = _pOwner->GetPhysicalObject()->GetPosition();
+	m_MissileList.reserve(10);
     for (int i = 0; i < 10; ++i)
     {
         IOGActor* pMissile = GetActorManager()->CreateActor(
@@ -45,7 +46,7 @@ bool COGWeapon::Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams)
 
 
 // Fire missile.
-void COGWeapon::Fire (const Vec3& _vTarget)
+void COGWeapon::Fire ()
 {
     Vec3 launches[3];
     int NumLaunch = 0;
@@ -82,14 +83,14 @@ void COGWeapon::Fire (const Vec3& _vTarget)
     }
 
     int CurLaunch = NumLaunch;
-    std::list<COGActorBullet*>::iterator iter = m_MissileList.begin();
+    TMissileList::iterator iter = m_MissileList.begin();
     for (; iter != m_MissileList.end(); ++iter)
     {
         COGActorBullet* pMissile = *iter;
         if (!pMissile->IsActive())
         {
             pMissile->SetOwner(m_pOwner, launches[NumLaunch - CurLaunch]);
-            pMissile->Fire(_vTarget);
+            pMissile->Fire();
             --CurLaunch;
             if (CurLaunch == 0)
             {

@@ -38,6 +38,9 @@ public:
 	// Touch event handler.
 	virtual bool OnTouch (const Vec2& _vPos, IOGTouchParam _param);
 
+    // collision event handler
+	virtual bool OnCollision (const IOGCollision& _Collision);
+
 protected:
 
 	// Update alive actor.

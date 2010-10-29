@@ -32,8 +32,8 @@ public:
 	// Set active state
 	virtual void Activate (bool _bActive);
 
-	// Fire to target.
-	virtual void Fire (const Vec3& _vTarget);
+	// Fire.
+	virtual void Fire ();
 
     // collision event handler
 	virtual bool OnCollision (const IOGCollision& _Collision);

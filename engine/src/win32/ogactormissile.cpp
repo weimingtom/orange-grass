@@ -18,22 +18,6 @@ COGActorMissile::COGActorMissile()
 
 COGActorMissile::~COGActorMissile()
 {
-	if (m_pNode)
-	{
-        if (m_bAdded)
-		    GetSceneGraph()->RemoveNode(m_pNode);
-        else
-            OG_SAFE_DELETE(m_pNode);
-		m_pNode = NULL;
-	}
-    if (m_pPhysicalObject)
-    {
-        if (m_bAdded)
-            GetPhysics()->RemoveObject(m_pPhysicalObject);
-        else
-            OG_SAFE_DELETE(m_pPhysicalObject);
-        m_pPhysicalObject = NULL;
-    }
 }
 
 
@@ -47,18 +31,18 @@ bool COGActorMissile::Create (IOGActorParams* _pParams,
 
 	if (m_pParams->type == OG_ACTOR_NONE)
 	{
-		OG_LOG_ERROR("Creating COGActorMissile from model %s failed, actor type is OG_ACTOR_NONE", _pParams->model_alias.c_str());
+		OG_LOG_ERROR("Creating COGActorMissile from model %s failed, actor type is OG_ACTOR_NONE", m_pParams->model_alias.c_str());
 		return false;
 	}
 
 	m_pHeadEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_MISSILESMOKE);
 	if (!m_pHeadEffect)
 	{
-		OG_LOG_ERROR("Creating COGActorMissile failed, cannot get effect %s", _pParams->model_alias.c_str());
+		OG_LOG_ERROR("Creating COGActorMissile failed, cannot get effect %s", m_pParams->model_alias.c_str());
 		return false;
 	}
 	
-    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pHeadEffect->GetAABB(), this);
+    m_pPhysicalObject = m_pPhysics->CreateObject(&m_pParams->physics, m_pHeadEffect->GetAABB(), this);
     if (!m_pPhysicalObject)
 	{
 		OG_LOG_ERROR("Creating COGActorMissile failed, cannot create physical object");
@@ -66,7 +50,7 @@ bool COGActorMissile::Create (IOGActorParams* _pParams,
 	}
 	m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);
 
-	m_pNode = GetSceneGraph()->CreateNode(m_pHeadEffect, m_pPhysicalObject);
+	m_pNode = m_pSg->CreateNode(m_pHeadEffect, m_pPhysicalObject);
 	if (!m_pNode)
 	{
 		OG_LOG_ERROR("Creating COGActorMissile failed, cannot create SG node");
@@ -83,9 +67,9 @@ bool COGActorMissile::Create (IOGActorParams* _pParams,
 // Adding to actor manager event handler.
 void COGActorMissile::OnAddedToManager ()
 {
-    GetPhysics()->AddObject(m_pPhysicalObject);
-	GetSceneGraph()->AddEffectNode(m_pNode);
-    m_bAdded = true;
+    COGActor::OnAddedToManager();
+
+	m_pSg->AddEffectNode(m_pNode);
     m_pPhysicalObject->AddCollisionListener(this);
 }
 
@@ -146,10 +130,10 @@ void COGActorMissile::Activate (bool _bActive)
 }
 
 
-// Fire to target.
-void COGActorMissile::Fire (const Vec3& _vTarget)
+// Fire.
+void COGActorMissile::Fire ()
 {
-	COGActorBullet::Fire(_vTarget);
+	COGActorBullet::Fire();
 
     Vec3 vRot = m_pOwner->GetPhysicalObject()->GetRotation();
 	m_pPhysicalObject->SetWorldTransform(m_vLaunchOffset, vRot, Vec3(1,1,1));

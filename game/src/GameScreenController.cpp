@@ -192,7 +192,7 @@ bool CGameScreenController::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
 		IOGWeapon* pWeapon = m_pPlayer->GetWeapon();
 		if (pWeapon && pWeapon->IsReady())
 		{
-			pWeapon->Fire(Vec3(0,0,0));
+			pWeapon->Fire();
 		}
 		return true;
 	}

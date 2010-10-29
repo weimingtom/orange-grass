@@ -19,30 +19,14 @@ COGActorBonus::COGActorBonus()
 
 COGActorBonus::~COGActorBonus()
 {
-	if (m_pNode)
-	{
-        if (m_bAdded)
-		    GetSceneGraph()->RemoveNode(m_pNode);
-        else
-            OG_SAFE_DELETE(m_pNode);
-		m_pNode = NULL;
-	}
 	if (m_pPickNode)
 	{
         if (m_bAdded)
-		    GetSceneGraph()->RemoveNode(m_pPickNode);
+		    m_pSg->RemoveNode(m_pPickNode);
         else
             OG_SAFE_DELETE(m_pPickNode);
 		m_pPickNode = NULL;
 	}
-    if (m_pPhysicalObject)
-    {
-        if (m_bAdded)
-            GetPhysics()->RemoveObject(m_pPhysicalObject);
-        else
-            OG_SAFE_DELETE(m_pPhysicalObject);
-        m_pPhysicalObject = NULL;
-    }
 }
 
 
@@ -59,14 +43,14 @@ bool COGActorBonus::Create (IOGActorParams* _pParams,
 		return false;
 	}
 
-	m_pModel = GetResourceMgr()->GetModel(_pParams->model_alias);
+	m_pModel = GetResourceMgr()->GetModel(m_pParams->model_alias);
 	if (!m_pModel)
 	{
 		OG_LOG_ERROR("Creating COGActorBonus failed, cannot get model %s", m_pParams->model_alias.c_str());
 		return false;
 	}
 	
-    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pModel->GetAABB(), this);
+    m_pPhysicalObject = m_pPhysics->CreateObject(&m_pParams->physics, m_pModel->GetAABB(), this);
     if (!m_pPhysicalObject)
 	{
 		OG_LOG_ERROR("Creating COGActorBonus failed, cannot create physical object");
@@ -74,25 +58,25 @@ bool COGActorBonus::Create (IOGActorParams* _pParams,
 	}
 	m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);
 
-	m_pNode = GetSceneGraph()->CreateNode(m_pModel, m_pPhysicalObject);
+	m_pNode = m_pSg->CreateNode(m_pModel, m_pPhysicalObject);
 	if (!m_pNode)
 	{
 		OG_LOG_ERROR("Creating COGActorBonus failed, cannot create SG node");
 		return false;
 	}
 
-	//m_pPickEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_BONUSPICK);
-	//if (!m_pPickEffect)
-	//{
-	//	OG_LOG_ERROR("Creating COGActorBonus failed, cannot get effect");
-	//	return false;
-	//}
-	//m_pPickNode = GetSceneGraph()->CreateNode(m_pPickEffect, m_pPhysicalObject);
-	//if (!m_pPickNode)
-	//{
-	//	OG_LOG_ERROR("Creating COGActorBonus failed, cannot create SG node");
-	//	return false;
-	//}
+	m_pPickEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_BONUSPICK);
+	if (!m_pPickEffect)
+	{
+		OG_LOG_ERROR("Creating COGActorBonus failed, cannot get effect");
+		return false;
+	}
+	m_pPickNode = m_pSg->CreateNode(m_pPickEffect, m_pPhysicalObject);
+	if (!m_pPickNode)
+	{
+		OG_LOG_ERROR("Creating COGActorBonus failed, cannot create SG node");
+		return false;
+	}
 
     Activate(false);
 
@@ -104,6 +88,7 @@ bool COGActorBonus::Create (IOGActorParams* _pParams,
 void COGActorBonus::OnAddedToManager ()
 {
     COGActor::OnAddedToManager();
+	m_pSg->AddNode(m_pNode);
 	m_pPhysicalObject->AddCollisionListener(this);
 
     if (m_pNode)
@@ -126,6 +111,11 @@ void COGActorBonus::Activate (bool _bActive)
 		return;
 
 	COGActor::Activate(_bActive);
+
+	if (!m_bActive)
+	{
+		m_pPickNode->Activate(false);
+	}
 }
 
 
@@ -145,14 +135,14 @@ void COGActorBonus::UpdateFalling (unsigned long _ElapsedTime)
 	{
 		if (m_pPickEffect->GetStatus() == OG_EFFECTSTATUS_INACTIVE)
 		{
-			m_Status = OG_ACTORSTATUS_DEAD;
 			Activate(false);
+			m_Status = OG_ACTORSTATUS_DEAD;
 		}
 	}
 	else
 	{
-		m_Status = OG_ACTORSTATUS_DEAD;
 		Activate(false);
+		m_Status = OG_ACTORSTATUS_DEAD;
 	}
 }
 
@@ -163,14 +153,11 @@ bool COGActorBonus::OnCollision (const IOGCollision& _Collision)
     if (m_Status != OG_ACTORSTATUS_ALIVE)
         return false;
 
-	if (COGActor::OnCollision(_Collision))
+	m_Status = OG_ACTORSTATUS_FALLING;
+	if (m_pPickEffect)
 	{
-		m_Status = OG_ACTORSTATUS_FALLING;
-		if (m_pPickEffect)
-		{
-			m_pPickEffect->Start();
-		}
-		return true;
+		m_pPickNode->Activate(true);
+		m_pPickEffect->Start();
 	}
-	return false;
+	return true;
 }

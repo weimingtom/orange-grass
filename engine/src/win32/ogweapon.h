@@ -11,7 +11,7 @@
 
 #include "ogactorbullet.h"
 #include "IOGWeapon.h"
-#include <list>
+#include <vector>
 
 
 class COGWeapon : public IOGWeapon
@@ -23,8 +23,8 @@ public:
 	// Create weapon.
 	virtual bool Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams);
 
-	// Fire missile.
-	virtual void Fire (const Vec3& _vTarget);
+	// Fire.
+	virtual void Fire ();
 
 	// Update actor.
 	virtual void Update (unsigned long _ElapsedTime);
@@ -37,11 +37,13 @@ public:
 
 protected:
 
-    std::list<COGActorBullet*>  m_MissileList;
-    IOGActor*                   m_pOwner;
-	IOGWeaponParams*			m_pWeaponParams;
-    unsigned long               m_WeaponCoolDown;
-    unsigned long               m_WeaponCoolDownMax;
+	typedef std::vector<COGActorBullet*>	TMissileList;
+
+	TMissileList		m_MissileList;
+    IOGActor*			m_pOwner;
+	IOGWeaponParams*	m_pWeaponParams;
+    unsigned long		m_WeaponCoolDown;
+    unsigned long		m_WeaponCoolDownMax;
 };
 
 

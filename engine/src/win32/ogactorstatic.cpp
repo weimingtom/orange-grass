@@ -17,22 +17,6 @@ COGActorStatic::COGActorStatic()
 
 COGActorStatic::~COGActorStatic()
 {
-	if (m_pNode)
-	{
-        if (m_bAdded)
-		    GetSceneGraph()->RemoveNode(m_pNode);
-        else
-            OG_SAFE_DELETE(m_pNode);
-		m_pNode = NULL;
-	}
-    if (m_pPhysicalObject)
-    {
-        if (m_bAdded)
-            GetPhysics()->RemoveObject(m_pPhysicalObject);
-        else
-            OG_SAFE_DELETE(m_pPhysicalObject);
-        m_pPhysicalObject = NULL;
-    }
 }
 
 
@@ -45,18 +29,18 @@ bool COGActorStatic::Create (IOGActorParams* _pParams,
 	m_pParams = _pParams;
 	if (m_pParams->type == OG_ACTOR_NONE)
 	{
-		OG_LOG_ERROR("Creating COGActorStatic from model %s failed, actor type is OG_ACTOR_NONE", _pParams->model_alias.c_str());
+		OG_LOG_ERROR("Creating COGActorStatic from model %s failed, actor type is OG_ACTOR_NONE", m_pParams->model_alias.c_str());
 		return false;
 	}
 
-	m_pModel = GetResourceMgr()->GetModel(_pParams->model_alias);
+	m_pModel = GetResourceMgr()->GetModel(m_pParams->model_alias);
 	if (!m_pModel)
 	{
-		OG_LOG_ERROR("Creating COGActorStatic failed, cannot get model %s", _pParams->model_alias.c_str());
+		OG_LOG_ERROR("Creating COGActorStatic failed, cannot get model %s", m_pParams->model_alias.c_str());
 		return false;
 	}
 	
-    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pModel->GetAABB(), this);
+    m_pPhysicalObject = m_pPhysics->CreateObject(&m_pParams->physics, m_pModel->GetAABB(), this);
     if (!m_pPhysicalObject)
 	{
 		OG_LOG_ERROR("Creating COGActorStatic failed, cannot create physical object");
@@ -64,7 +48,7 @@ bool COGActorStatic::Create (IOGActorParams* _pParams,
 	}
 	m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);
 
-	m_pNode = GetSceneGraph()->CreateNode(m_pModel, m_pPhysicalObject);
+	m_pNode = m_pSg->CreateNode(m_pModel, m_pPhysicalObject);
 	if (!m_pNode)
 	{
 		OG_LOG_ERROR("Creating COGActorStatic failed, cannot create SG node");
@@ -78,7 +62,6 @@ bool COGActorStatic::Create (IOGActorParams* _pParams,
 // Adding to actor manager event handler.
 void COGActorStatic::OnAddedToManager ()
 {
-    GetPhysics()->AddObject(m_pPhysicalObject);
-	GetSceneGraph()->AddStaticNode(m_pNode, m_pModel->GetTexture());
-    m_bAdded = true;
+    COGActor::OnAddedToManager();
+	m_pSg->AddStaticNode(m_pNode, m_pModel->GetTexture());
 }

@@ -461,6 +461,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\ogeffectbonuspick.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogeffectbonuspick.h"
+						>
+					</File>
+					<File
 						RelativePath=".\ogeffectexplosion.cpp"
 						>
 					</File>

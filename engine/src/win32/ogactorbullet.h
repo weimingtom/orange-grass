@@ -21,12 +21,20 @@ public:
 	// Set owner.
 	virtual void SetOwner (IOGActor* _pOwner, const Vec3& _vLaunchOffset);
 
-	// Fire to target.
-	virtual void Fire (const Vec3& _vTarget);
+	// Set target.
+	virtual void SetTarget (IOGActor* _pTarget);
+
+	// Set target.
+	virtual void SetTarget (const Vec3& _vTarget);
+
+	// Fire.
+	virtual void Fire ();
 
 protected:
 
 	IOGActor*   m_pOwner;
+	IOGActor*   m_pTarget;
+	Vec3		m_vTarget;
     Vec3        m_vLaunchOffset;
 };
 

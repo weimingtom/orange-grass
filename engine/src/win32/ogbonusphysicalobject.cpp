@@ -31,3 +31,27 @@ void COGBonusPhysicalObject::Create (const IOGAabb& _Aabb,
     m_pActor = (IOGActor*)_pParentActor;
     m_Obb.Create(m_Aabb);
 }
+
+
+// check collision.
+bool COGBonusPhysicalObject::CheckCollision (IOGPhysicalObject* _pObject)
+{
+    if (!m_pListener)
+        return false;
+
+	if (!m_bActive)
+		return false;
+
+	const IOGObb& obb = _pObject->GetOBB();
+    if (Dist3D(m_vPosition, obb.m_vCenter) <= obb.m_Aabb.GetRadius())
+    {
+        IOGCollision collision;
+        collision.pActorMissile = m_pActor;
+		collision.pActorBot = _pObject->GetActor();
+        if (m_pListener->OnCollision(collision))
+        {
+			return _pObject->RespondOnCollision(collision);
+        }
+    }
+    return false;
+}

@@ -102,7 +102,7 @@ void COGActorPlayer::UpdateAlive (unsigned long _ElapsedTime)
 		if (m_OrientWorker.IsFinished())
 		{
             if (m_pWeapon && m_pWeapon->IsReady())
-				m_pWeapon->Fire(Vec3(0,0,0));
+				m_pWeapon->Fire();
             m_CoolDown = 0;
             m_StraightenWorker.Activate(false);
 		}
@@ -129,4 +129,18 @@ void COGActorPlayer::UpdateAlive (unsigned long _ElapsedTime)
             }
         }
     }
+}
+
+
+// collision event handler
+bool COGActorPlayer::OnCollision (const IOGCollision& _Collision)
+{
+    if (m_Status != OG_ACTORSTATUS_ALIVE)
+        return false;
+
+	if (((IOGActor*)_Collision.pActorMissile)->GetType() == OG_ACTOR_BONUS)
+	{
+		return true;
+	}
+	return false;
 }

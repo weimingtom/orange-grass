@@ -18,19 +18,36 @@ COGActor::COGActor() :	m_bActive(true),
                         m_pModel(NULL),
 						m_Status(OG_ACTORSTATUS_ALIVE)
 {
+	m_pSg = GetSceneGraph();
+	m_pPhysics = GetPhysics();
 }
 
 
 COGActor::~COGActor()
 {
+	if (m_pNode)
+	{
+        if (m_bAdded)
+		    m_pSg->RemoveNode(m_pNode);
+        else
+            OG_SAFE_DELETE(m_pNode);
+		m_pNode = NULL;
+	}
+    if (m_pPhysicalObject)
+    {
+        if (m_bAdded)
+            m_pPhysics->RemoveObject(m_pPhysicalObject);
+        else
+            OG_SAFE_DELETE(m_pPhysicalObject);
+        m_pPhysicalObject = NULL;
+    }
 }
 
 
 // Adding to actor manager event handler.
 void COGActor::OnAddedToManager ()
 {
-    GetPhysics()->AddObject(m_pPhysicalObject);
-	GetSceneGraph()->AddNode(m_pNode);
+    m_pPhysics->AddObject(m_pPhysicalObject);
     m_bAdded = true;
 }
 

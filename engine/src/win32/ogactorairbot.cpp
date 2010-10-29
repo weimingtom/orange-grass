@@ -90,8 +90,8 @@ void COGActorAirBot::UpdateFalling (unsigned long _ElapsedTime)
 		m_FallingWorker.Update(_ElapsedTime);
 		if (m_FallingWorker.IsFinished())
 		{
-			m_Status = OG_ACTORSTATUS_DEAD;
 			Activate(false);
+			m_Status = OG_ACTORSTATUS_DEAD;
 		}
 	}
 }

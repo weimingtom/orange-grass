@@ -87,6 +87,9 @@ protected:
     IOGPhysicalObject*  m_pPhysicalObject;
 	IOGModel*	        m_pModel;
 	OGActorStatus		m_Status;
+
+	IOGSceneGraph*		m_pSg;
+	IOGPhysics*			m_pPhysics;
 };
 
 

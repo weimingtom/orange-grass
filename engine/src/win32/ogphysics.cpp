@@ -229,6 +229,7 @@ void COGPhysics::Update (unsigned long _ElapsedTime)
     for (; iter != m_BonusObjList.end(); ++iter)
     {
 		(*iter)->Update(_ElapsedTime);
+		(*iter)->CheckCollision(m_pPlayer);
     }
 
     iter = m_MissileObjList.begin();

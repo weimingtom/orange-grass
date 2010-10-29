@@ -23,7 +23,7 @@ public:
 	virtual bool Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams) = 0;
 
 	// Fire missile.
-	virtual void Fire (const Vec3& _vTarget) = 0;
+	virtual void Fire () = 0;
 
 	// Update actor.
 	virtual void Update (unsigned long _ElapsedTime) = 0;

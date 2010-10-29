@@ -13,12 +13,14 @@
 COGActorBullet::COGActorBullet()
 {
     m_pOwner = NULL;
+	m_pTarget = NULL;
 }
 
 
 COGActorBullet::~COGActorBullet()
 {
     m_pOwner = NULL;
+	m_pTarget = NULL;
 }
 
 
@@ -34,7 +36,21 @@ void COGActorBullet::SetOwner (IOGActor* _pOwner, const Vec3& _vLaunchOffset)
 }
 
 
-// Fire to target.
-void COGActorBullet::Fire (const Vec3& _vTarget)
+// Set target.
+void COGActorBullet::SetTarget (IOGActor* _pTarget)
+{
+	m_pTarget = _pTarget;
+}
+
+
+// Set target.
+void COGActorBullet::SetTarget (const Vec3& _vTarget)
+{
+	m_vTarget = _vTarget;
+}
+
+
+// Fire.
+void COGActorBullet::Fire ()
 {
 }

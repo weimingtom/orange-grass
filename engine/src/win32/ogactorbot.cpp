@@ -23,18 +23,10 @@ COGActorBot::COGActorBot() :    m_pModelPropeller(NULL),
 
 COGActorBot::~COGActorBot()
 {
-	if (m_pNode)
-	{
-        if (m_bAdded)
-		    GetSceneGraph()->RemoveNode(m_pNode);
-        else
-            OG_SAFE_DELETE(m_pNode);
-		m_pNode = NULL;
-	}
 	if (m_pNodePropeller)
 	{
         if (m_bAdded)
-		    GetSceneGraph()->RemoveNode(m_pNodePropeller);
+		    m_pSg->RemoveNode(m_pNodePropeller);
         else
             OG_SAFE_DELETE(m_pNodePropeller);
 		m_pNodePropeller = NULL;
@@ -42,7 +34,7 @@ COGActorBot::~COGActorBot()
 	if (m_pNodeDestruction)
 	{
         if (m_bAdded)
-		    GetSceneGraph()->RemoveNode(m_pNodeDestruction);
+		    m_pSg->RemoveNode(m_pNodeDestruction);
         else
             OG_SAFE_DELETE(m_pNodeDestruction);
 		m_pNodeDestruction = NULL;
@@ -50,7 +42,7 @@ COGActorBot::~COGActorBot()
 	if (m_pExplosionNode)
 	{
         if (m_bAdded)
-		    GetSceneGraph()->RemoveNode(m_pExplosionNode);
+		    m_pSg->RemoveNode(m_pExplosionNode);
         else
             OG_SAFE_DELETE(m_pExplosionNode);
 		m_pExplosionNode = NULL;
@@ -58,19 +50,11 @@ COGActorBot::~COGActorBot()
 	if (m_pTrailNode)
 	{
         if (m_bAdded)
-		    GetSceneGraph()->RemoveNode(m_pTrailNode);
+		    m_pSg->RemoveNode(m_pTrailNode);
         else
             OG_SAFE_DELETE(m_pTrailNode);
 		m_pTrailNode = NULL;
 	}
-    if (m_pPhysicalObject)
-    {
-        if (m_bAdded)
-            GetPhysics()->RemoveObject(m_pPhysicalObject);
-        else
-            OG_SAFE_DELETE(m_pPhysicalObject);
-        m_pPhysicalObject = NULL;
-    }
 	OG_SAFE_DELETE(m_pWeapon);
 }
 
@@ -88,7 +72,7 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 		return false;
 	}
 
-	m_pModel = GetResourceMgr()->GetModel(_pParams->model_alias);
+	m_pModel = GetResourceMgr()->GetModel(m_pParams->model_alias);
 	if (!m_pModel)
 	{
 		OG_LOG_ERROR("Creating COGActorBot failed, cannot get model %s", m_pParams->model_alias.c_str());
@@ -96,7 +80,7 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 	}
     if (!m_pParams->model_propeller_alias.empty())
     {
-	    m_pModelPropeller = GetResourceMgr()->GetModel(_pParams->model_propeller_alias);
+	    m_pModelPropeller = GetResourceMgr()->GetModel(m_pParams->model_propeller_alias);
 	    if (!m_pModelPropeller)
 	    {
 		    OG_LOG_ERROR("Creating COGActorBot failed, cannot get propeller model %s", m_pParams->model_propeller_alias.c_str());
@@ -105,7 +89,7 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
     }
     if (!m_pParams->model_destruction.empty())
     {
-	    m_pModelDestruction = GetResourceMgr()->GetModel(_pParams->model_destruction);
+	    m_pModelDestruction = GetResourceMgr()->GetModel(m_pParams->model_destruction);
 	    if (!m_pModelDestruction)
 	    {
 		    OG_LOG_ERROR("Creating COGActorBot failed, cannot get destruction model %s", m_pParams->model_destruction.c_str());
@@ -113,7 +97,7 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 	    }
     }
 	
-    m_pPhysicalObject = GetPhysics()->CreateObject(&m_pParams->physics, m_pModel->GetAABB(), this);
+    m_pPhysicalObject = m_pPhysics->CreateObject(&m_pParams->physics, m_pModel->GetAABB(), this);
     if (!m_pPhysicalObject)
 	{
 		OG_LOG_ERROR("Creating COGActorBot failed, cannot create physical object");
@@ -121,7 +105,7 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 	}
 	m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);
 
-	m_pNode = GetSceneGraph()->CreateNode(m_pModel, m_pPhysicalObject);
+	m_pNode = m_pSg->CreateNode(m_pModel, m_pPhysicalObject);
 	if (!m_pNode)
 	{
 		OG_LOG_ERROR("Creating COGActorBot failed, cannot create SG node");
@@ -129,7 +113,7 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 	}
     if (m_pModelPropeller)
     {
-	    m_pNodePropeller = GetSceneGraph()->CreateNode(m_pModelPropeller, m_pPhysicalObject);
+	    m_pNodePropeller = m_pSg->CreateNode(m_pModelPropeller, m_pPhysicalObject);
 	    if (!m_pNodePropeller)
 	    {
 		    OG_LOG_ERROR("Creating COGActorBot failed, cannot create SG node");
@@ -138,7 +122,7 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
     }
     if (m_pModelDestruction)
     {
-	    m_pNodeDestruction = GetSceneGraph()->CreateNode(m_pModelDestruction, m_pPhysicalObject);
+	    m_pNodeDestruction = m_pSg->CreateNode(m_pModelDestruction, m_pPhysicalObject);
 	    if (!m_pNodeDestruction)
 	    {
 		    OG_LOG_ERROR("Creating COGActorBot failed, cannot create SG node");
@@ -152,7 +136,7 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 		OG_LOG_ERROR("Creating COGActorBot failed, cannot get effect");
 		return false;
 	}
-	m_pExplosionNode = GetSceneGraph()->CreateNode(m_pExplosionEffect, m_pPhysicalObject);
+	m_pExplosionNode = m_pSg->CreateNode(m_pExplosionEffect, m_pPhysicalObject);
 	if (!m_pExplosionNode)
 	{
 		OG_LOG_ERROR("Creating COGActorBot failed, cannot create SG node");
@@ -160,7 +144,7 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 	}
 
 	m_pTrailEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_MISSILESMOKE);
-	m_pTrailNode = GetSceneGraph()->CreateNode(m_pTrailEffect, m_pPhysicalObject);
+	m_pTrailNode = m_pSg->CreateNode(m_pTrailEffect, m_pPhysicalObject);
 
     return true;
 }
@@ -170,30 +154,31 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 void COGActorBot::OnAddedToManager ()
 {
     COGActor::OnAddedToManager();
+	m_pSg->AddNode(m_pNode);
 
 	m_pPhysicalObject->AddCollisionListener(this);
 
     if (m_pNodePropeller)
     {
-    	GetSceneGraph()->AddTransparentNode(m_pNodePropeller);
+    	m_pSg->AddTransparentNode(m_pNodePropeller);
         m_pNodePropeller->StartAnimation("idle");
     }
 
     if (m_pNodeDestruction)
     {
-    	GetSceneGraph()->AddTransparentNode(m_pNodeDestruction);
+    	m_pSg->AddTransparentNode(m_pNodeDestruction);
         m_pNodeDestruction->Activate(false);
     }
 
 	if (m_pExplosionNode)
 	{
-		GetSceneGraph()->AddEffectNode(m_pExplosionNode);
+		m_pSg->AddEffectNode(m_pExplosionNode);
         m_pExplosionNode->Activate(false);
 	}
 
 	if (m_pTrailNode)
 	{
-		GetSceneGraph()->AddEffectNode(m_pTrailNode);
+		m_pSg->AddEffectNode(m_pTrailNode);
         m_pTrailNode->Activate(false);
 	}
 }

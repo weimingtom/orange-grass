@@ -23,6 +23,9 @@ public:
         const IOGAabb& _Aabb, 
         IOGPhysicalParams* _pParams, 
         void* _pParentActor);
+
+    // check collision.
+    virtual bool CheckCollision (IOGPhysicalObject* _pObject);
 };
 
 #endif
