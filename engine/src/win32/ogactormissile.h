@@ -49,6 +49,8 @@ protected:
 protected:
 
     IOGEffect*				m_pHeadEffect;
+    IOGEffect*				m_pCollisionEffect;
+    IOGSgNode*              m_pCollisionEffectNode;
 	COGMissileFlightWorker	m_FlightWorker;
 };
 

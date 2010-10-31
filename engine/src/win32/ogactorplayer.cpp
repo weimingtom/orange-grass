@@ -140,9 +140,12 @@ bool COGActorPlayer::OnCollision (const IOGCollision& _Collision)
     if (m_Status != OG_ACTORSTATUS_ALIVE)
         return false;
 
-	if (((IOGActor*)_Collision.pActorMissile)->GetType() == OG_ACTOR_BONUS)
-	{
-		return true;
-	}
-	return false;
+	return COGActorBot::OnCollision(_Collision);
+}
+
+
+// Respond on collision with missile.
+bool COGActorPlayer::RespondOnBonusCollision (IOGActor* _pBonus)
+{
+    return true;
 }

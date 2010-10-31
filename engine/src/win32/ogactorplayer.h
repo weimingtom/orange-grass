@@ -46,6 +46,9 @@ protected:
 	// Update alive actor.
 	virtual void UpdateAlive (unsigned long _ElapsedTime);
 
+	// Respond on collision with missile.
+	virtual bool RespondOnBonusCollision (IOGActor* _pBonus);
+
 protected:
 
     COGOrientWorker     m_OrientWorker;

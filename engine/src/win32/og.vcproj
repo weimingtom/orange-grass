@@ -469,6 +469,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\ogeffectcollision.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogeffectcollision.h"
+						>
+					</File>
+					<File
 						RelativePath=".\ogeffectexplosion.cpp"
 						>
 					</File>

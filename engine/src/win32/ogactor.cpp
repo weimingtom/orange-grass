@@ -17,7 +17,9 @@ COGActor::COGActor() :	m_bActive(true),
                         m_pPhysicalObject(NULL),
                         m_pModel(NULL),
 						m_Status(OG_ACTORSTATUS_ALIVE),
-                        m_Team(TEAM_NEUTRAL)
+                        m_Team(TEAM_NEUTRAL),
+                        m_DamagePoints(0),
+                        m_Hitpoints(UINT_MAX)
 {
 	m_pSg = GetSceneGraph();
 	m_pPhysics = GetPhysics();
@@ -110,6 +112,13 @@ void COGActor::SetTeam (OGTeam _Team)
 OGTeam COGActor::GetTeam () const
 {
     return m_Team;
+}
+
+
+// Get damage points.
+unsigned int COGActor::GetDamagePoints () const
+{
+    return m_DamagePoints;
 }
 
 

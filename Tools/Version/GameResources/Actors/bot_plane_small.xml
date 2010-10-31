@@ -18,7 +18,7 @@
 		/>
 	<Logic
 		team = "2"
-		max_hitpoints = "200"
+		max_hitpoints = "300"
 		weapon = "bot_missile_01"
 		/>
 </Params>

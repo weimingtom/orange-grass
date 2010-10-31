@@ -36,11 +36,12 @@ bool COGWeapon::Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams)
 	m_MissileList.reserve(10);
     for (int i = 0; i < 10; ++i)
     {
-        IOGActor* pMissile = GetActorManager()->CreateActor(
+        COGActorBullet* pMissile = (COGActorBullet*)GetActorManager()->CreateActor(
 			m_pWeaponParams->actor, Vec3(0,0,0), Vec3(0,0,0), Vec3(1,1,1));
         pMissile->SetTeam(_pOwner->GetTeam());
+        pMissile->SetDamagePoints(m_pWeaponParams->hitpoints);
         GetActorManager()->AddActor(pMissile);
-        m_MissileList.push_back((COGActorBullet*)pMissile);
+        m_MissileList.push_back(pMissile);
     }
     return true;
 }

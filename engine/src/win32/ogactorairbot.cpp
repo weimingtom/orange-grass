@@ -99,9 +99,8 @@ void COGActorAirBot::UpdateFalling (unsigned long _ElapsedTime)
 		m_FallingWorker.Update(_ElapsedTime);
 		if (m_FallingWorker.IsFinished())
 		{
-			Activate(false);
-			m_Status = OG_ACTORSTATUS_DEAD;
-		}
+            SetDeadStatus();
+        }
 	}
 }
 
@@ -114,14 +113,31 @@ bool COGActorAirBot::OnCollision (const IOGCollision& _Collision)
 
 	if (COGActorBot::OnCollision(_Collision))
 	{
-        IOGActor* m_pBonus = GetActorManager()->CreateActor(
-            "bonus_01", m_pPhysicalObject->GetPosition(), 
-            Vec3(0,0,0), Vec3(1,1,1));
-        GetActorManager()->AddActor(m_pBonus);
-        m_pBonus->Activate(true);
-		m_Status = OG_ACTORSTATUS_FALLING;
-		m_FallingWorker.Activate(true);
-		return true;
+   		return true;
 	}
 	return false;
+}
+
+
+// Set actor status.
+void COGActorAirBot::SetFallingStatus ()
+{
+    COGActorBot::SetFallingStatus();
+
+    IOGActor* m_pBonus = GetActorManager()->CreateActor(
+        "bonus_02", m_pPhysicalObject->GetPosition(), 
+        Vec3(0,0,0), Vec3(1,1,1));
+    GetActorManager()->AddActor(m_pBonus);
+    m_pBonus->Activate(true);
+    m_Status = OG_ACTORSTATUS_FALLING;
+    m_FallingWorker.Activate(true);
+}
+
+
+// Set actor status.
+void COGActorAirBot::SetDeadStatus ()
+{
+	Activate(false);
+
+    COGActorBot::SetDeadStatus();
 }

@@ -27,6 +27,9 @@ public:
 	// Set target.
 	virtual void SetTarget (const Vec3& _vTarget);
 
+	// Set damage points.
+	virtual void SetDamagePoints (unsigned int _DamagePoints);
+
 	// Fire.
 	virtual void Fire ();
 

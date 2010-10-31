@@ -42,6 +42,9 @@ public:
 	// Set active state
 	virtual void Activate (bool _bActive);
 
+	// Receive damage
+	virtual void ReceiveDamage (unsigned int _Damage);
+
 protected:
 
 	// Update alive actor.
@@ -49,6 +52,18 @@ protected:
 
 	// Update falling actor.
 	virtual void UpdateFalling (unsigned long _ElapsedTime);
+
+	// Set actor status.
+	virtual void SetFallingStatus ();
+
+	// Set actor status.
+	virtual void SetDeadStatus ();
+
+	// Respond on collision with missile.
+	virtual bool RespondOnMissileCollision (IOGActor* _pMissile);
+
+	// Respond on collision with missile.
+	virtual bool RespondOnBonusCollision (IOGActor* _pBonus);
 
 protected:
 

@@ -44,6 +44,12 @@ protected:
 	// Update falling actor.
 	virtual void UpdateFalling (unsigned long _ElapsedTime);
 
+	// Set actor status.
+	virtual void SetFallingStatus ();
+
+	// Set actor status.
+	virtual void SetDeadStatus ();
+
 protected:
 
     COGBotFlightWorker	m_FlightWorker;

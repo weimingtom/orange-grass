@@ -57,6 +57,9 @@ bool COGActorMissile::Create (IOGActorParams* _pParams,
 		return false;
 	}
 
+    m_pCollisionEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_COLLISION);
+	m_pCollisionEffectNode = m_pSg->CreateNode(m_pCollisionEffect, m_pPhysicalObject);
+
 	m_FlightWorker.Create(this);
     Activate(false);
 
@@ -71,6 +74,9 @@ void COGActorMissile::OnAddedToManager ()
 
 	m_pSg->AddEffectNode(m_pNode);
     m_pPhysicalObject->AddCollisionListener(this);
+
+    m_pSg->AddEffectNode(m_pCollisionEffectNode);
+    m_pCollisionEffectNode->Activate(false);
 }
 
 
@@ -100,7 +106,8 @@ void COGActorMissile::UpdateAlive (unsigned long _ElapsedTime)
 // Update falling actor.
 void COGActorMissile::UpdateFalling (unsigned long _ElapsedTime)
 {
-	if (m_pHeadEffect->GetStatus() == OG_EFFECTSTATUS_INACTIVE)
+	if (m_pHeadEffect->GetStatus() == OG_EFFECTSTATUS_INACTIVE && 
+        m_pCollisionEffect->GetStatus() == OG_EFFECTSTATUS_INACTIVE)
 	{
 		Activate(false);
 	}
@@ -126,6 +133,7 @@ void COGActorMissile::Activate (bool _bActive)
 	}
 	else
 	{
+        m_pCollisionEffectNode->Activate(false);
 	}
 }
 
@@ -151,5 +159,10 @@ bool COGActorMissile::OnCollision (const IOGCollision& _Collision)
 	m_FlightWorker.Activate(false);
 	m_Status = OG_ACTORSTATUS_FALLING;
 	m_pHeadEffect->Stop();
+
+    m_pCollisionEffectNode->Activate(true);
+	m_pCollisionEffect->SetDirection(Vec3(0,0,1));
+    m_pCollisionEffect->Start();
+
     return true;
 }

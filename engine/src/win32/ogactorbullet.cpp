@@ -50,6 +50,13 @@ void COGActorBullet::SetTarget (const Vec3& _vTarget)
 }
 
 
+// Set damage points.
+void COGActorBullet::SetDamagePoints (unsigned int _DamagePoints)
+{
+    m_DamagePoints = _DamagePoints;
+}
+
+
 // Fire.
 void COGActorBullet::Fire ()
 {

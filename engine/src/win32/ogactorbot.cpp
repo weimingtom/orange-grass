@@ -72,6 +72,8 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 		return false;
 	}
 
+    m_Hitpoints = m_pParams->gameplay.max_hitpoints;
+
 	m_pModel = GetResourceMgr()->GetModel(m_pParams->model_alias);
 	if (!m_pModel)
 	{
@@ -194,29 +196,25 @@ void COGActorBot::OnAddedToManager ()
 // collision event handler
 bool COGActorBot::OnCollision (const IOGCollision& _Collision)
 {
-	if (m_pExplosionNode)
-	{
-        m_pExplosionNode->Activate(true);
-		m_pExplosionEffect->Start();
-	}
-    if (m_pNodeDestruction)
+    if (m_Status != OG_ACTORSTATUS_ALIVE)
+        return false;
+
+    IOGActor* pMissile = (IOGActor*)_Collision.pActorMissile;
+    OGActorType type = pMissile->GetType();
+    switch (type)
     {
-        m_pNodeDestruction->Activate(true);
-        m_pNodeDestruction->StartAnimation("idle");
-        m_pNode->Activate(false);
-        if (m_pNodePropeller)
-        {
-            m_pNodePropeller->Activate(false);
-        }
-    }
-    if (m_pTrailNode)
-    {
-        m_pTrailNode->Activate(true);
-        m_pTrailEffect->Start();
-        m_pTrailEffect->SetDirection(m_pPhysicalObject->GetDirection());
+    case OG_ACTOR_MISSILE:
+    case OG_ACTOR_PLASMAMISSILE:
+        return RespondOnMissileCollision(pMissile);
+
+    case OG_ACTOR_BONUS:
+        return RespondOnBonusCollision(pMissile);
+
+    default:
+        return false;
     }
 
-    return true;
+    return false;
 }
 
 
@@ -283,4 +281,74 @@ void COGActorBot::UpdateFalling (unsigned long _ElapsedTime)
 			m_pTrailEffect->UpdatePosition(vTrail);
 		}
 	}
+}
+
+
+// Receive damage
+void COGActorBot::ReceiveDamage (unsigned int _Damage)
+{
+    if (m_Status != OG_ACTORSTATUS_ALIVE || !m_bActive)
+        return;
+
+    if (m_Hitpoints > _Damage)
+    {
+        m_Hitpoints -= _Damage;
+    }
+    else
+    {
+        m_Hitpoints = 0;
+        SetFallingStatus();
+    }
+}
+
+
+// Set actor status.
+void COGActorBot::SetFallingStatus ()
+{
+	if (m_pExplosionNode)
+	{
+        m_pExplosionNode->Activate(true);
+		m_pExplosionEffect->Start();
+	}
+    if (m_pNodeDestruction)
+    {
+        m_pNodeDestruction->Activate(true);
+        m_pNodeDestruction->StartAnimation("idle");
+        m_pNode->Activate(false);
+        if (m_pNodePropeller)
+        {
+            m_pNodePropeller->Activate(false);
+        }
+    }
+    if (m_pTrailNode)
+    {
+        m_pTrailNode->Activate(true);
+        m_pTrailEffect->Start();
+        m_pTrailEffect->SetDirection(m_pPhysicalObject->GetDirection());
+    }
+
+    m_Status = OG_ACTORSTATUS_FALLING;
+}
+
+
+// Set actor status.
+void COGActorBot::SetDeadStatus ()
+{
+    m_Status = OG_ACTORSTATUS_DEAD;
+}
+
+
+// Respond on collision with missile.
+bool COGActorBot::RespondOnMissileCollision (IOGActor* _pMissile)
+{
+    unsigned int damage = _pMissile->GetDamagePoints();
+    ReceiveDamage(damage);
+    return true;
+}
+
+
+// Respond on collision with missile.
+bool COGActorBot::RespondOnBonusCollision (IOGActor* _pBonus)
+{
+    return false;
 }

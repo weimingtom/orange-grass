@@ -46,6 +46,9 @@ public:
 	// Get actor team.
 	virtual OGTeam GetTeam () const = 0;
 
+	// Get damage points.
+	virtual unsigned int GetDamagePoints () const = 0;
+
 	// Get scene graph node.
 	virtual IOGSgNode* GetSgNode () = 0;
 

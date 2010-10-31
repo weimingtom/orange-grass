@@ -11,6 +11,7 @@
 #include "ogeffectmissilesmoke.h"
 #include "ogeffectexplosion.h"
 #include "ogeffectbonuspick.h"
+#include "ogeffectcollision.h"
 #include "OrangeGrass.h"
 #include <algorithm>
 
@@ -62,7 +63,15 @@ IOGEffect* COGEffectsManager::CreateEffect (OGEffectType _Type)
 		}
 		break;
 
-	default:
+	case OG_EFFECT_COLLISION:
+		{
+			COGEffectCollision* pEffect = new COGEffectCollision();
+			pEffect->Init(_Type);
+			return pEffect;
+		}
+		break;
+
+    default:
 	case OG_EFFECT_NO:
 		return NULL;
 	}
