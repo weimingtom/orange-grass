@@ -1,6 +1,12 @@
-Tools: ver. 0.12, 24-Oct-2010
+Tools: ver. 0.13, 31-Oct-2010
 
 ChangeList:
+
+0.13 (31-Oct-2010):
+- [OG] Weapon parameters
+- [OG] bot firing
+- [OG] active points support
+- [OG] bonuses
 
 0.12 (24-Oct-2010):
 - [OG] GUI
