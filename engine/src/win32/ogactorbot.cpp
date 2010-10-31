@@ -146,6 +146,13 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 	m_pTrailEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_MISSILESMOKE);
 	m_pTrailNode = m_pSg->CreateNode(m_pTrailEffect, m_pPhysicalObject);
 
+    SetTeam(m_pParams->gameplay.team);
+
+    if (!m_pParams->gameplay.weapon.empty())
+    {
+        SetWeapon(GetActorParamsMgr()->GetWeaponParams(m_pParams->gameplay.weapon));
+    }
+
     return true;
 }
 

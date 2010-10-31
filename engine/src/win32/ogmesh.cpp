@@ -50,14 +50,14 @@ bool COGMesh::Load ()
 	}
 	
     m_NumParts = 0;
-	m_BuffersList.reserve(m_pScene->nNumMesh);
-    m_PartList.reserve(m_pScene->nNumMesh);
-	for(unsigned int i = 0; i < m_pScene->nNumMesh; ++i)
+	m_BuffersList.reserve(m_pScene->nNumMeshNode);
+    m_PartList.reserve(m_pScene->nNumMeshNode);
+    for(unsigned int i = 0; i < m_pScene->nNumMeshNode; ++i)
 	{
         if (IsActivePoint(i))
         {
             SPODNode* pNode = &m_pScene->pNode[i];
-            SPODMesh& Mesh = m_pScene->pMesh[i];
+            SPODMesh& Mesh = m_pScene->pMesh[pNode->nIdx];
             Vec3* pPtr = (Vec3*)Mesh.pInterleaved;
             ActPoint pt;
             pt.pos = *pPtr;
@@ -158,9 +158,9 @@ void COGMesh::CalculateGeometry ()
 	MATRIX mModel;
     Vec3 v, vMinCorner, vMaxCorner;
 
-	m_AabbList.reserve(m_pScene->nNumMesh);
+	m_AabbList.reserve(m_pScene->nNumMeshNode);
     m_Faces.reserve(4096);
-    for (unsigned int i=0; i < m_pScene->nNumMesh; ++i)
+    for (unsigned int i=0; i < m_pScene->nNumMeshNode; ++i)
 	{
         if (IsActivePoint(i))
         {
@@ -170,7 +170,7 @@ void COGMesh::CalculateGeometry ()
         SPODNode* pNode = &m_pScene->pNode[i];
 		m_pScene->GetWorldMatrix(mModel, *pNode);
 
-        SPODMesh& Mesh = m_pScene->pMesh[i];
+        SPODMesh& Mesh = m_pScene->pMesh[pNode->nIdx];
 
         Vec3* pPtr = (Vec3*)Mesh.pInterleaved;
 		

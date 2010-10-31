@@ -16,4 +16,9 @@
 		model_destruction = "bot_plane_small_destruction"
 		icon = "Models/Bot_plane_small/bot_plane_small_ed.bmp"
 		/>
+	<Logic
+		team = "2"
+		max_hitpoints = "200"
+		weapon = "bot_missile_01"
+		/>
 </Params>

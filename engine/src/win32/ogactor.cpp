@@ -16,7 +16,8 @@ COGActor::COGActor() :	m_bActive(true),
                         m_pNode(NULL),
                         m_pPhysicalObject(NULL),
                         m_pModel(NULL),
-						m_Status(OG_ACTORSTATUS_ALIVE)
+						m_Status(OG_ACTORSTATUS_ALIVE),
+                        m_Team(TEAM_NEUTRAL)
 {
 	m_pSg = GetSceneGraph();
 	m_pPhysics = GetPhysics();
@@ -95,6 +96,20 @@ void COGActor::UpdateEditor (unsigned long _ElapsedTime)
 OGActorType COGActor::GetType () const
 {
 	return m_pParams->type;
+}
+
+
+// Set actor team.
+void COGActor::SetTeam (OGTeam _Team)
+{
+    m_Team = _Team;
+}
+
+
+// Get actor team.
+OGTeam COGActor::GetTeam () const
+{
+    return m_Team;
 }
 
 

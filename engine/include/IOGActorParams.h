@@ -67,6 +67,7 @@ struct IOGGameplayParams
 
 	unsigned int	max_hitpoints;
 	unsigned int	hitpoints;
+    std::string     weapon;
 	OGTeam			team;
 };
 

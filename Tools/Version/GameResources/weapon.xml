@@ -2,4 +2,5 @@
 <Weapons>
 	<Weapon alias="plasma_01" file="Weapons/plasma_01.xml" />
 	<Weapon alias="missile_01" file="Weapons/missile_01.xml" />
+	<Weapon alias="bot_missile_01" file="Weapons/bot_missile_01.xml" />
 </Weapons>

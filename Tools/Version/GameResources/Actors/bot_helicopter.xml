@@ -16,4 +16,9 @@
 		model_destruction = "helicopter_destruction"
 		icon = "Models/Helicopter/bot_helicopter_ed.bmp"
 		/>
+	<Logic
+		team = "2"
+		max_hitpoints = "200"
+		weapon = ""
+		/>
 </Params>

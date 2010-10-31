@@ -31,6 +31,8 @@ bool COGActorPlayer::Create (IOGActorParams* _pParams,
     if (!COGActorBot::Create(_pParams, _vPos, _vRot, _vScale))
         return false;
 
+    SetTeam(TEAM_PLAYER);
+
     m_OrientWorker.Create(this);
     m_OrientWorker.Activate(false);
     m_CoolDownMax = 500;

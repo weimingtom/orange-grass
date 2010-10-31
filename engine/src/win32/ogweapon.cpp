@@ -38,6 +38,7 @@ bool COGWeapon::Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams)
     {
         IOGActor* pMissile = GetActorManager()->CreateActor(
 			m_pWeaponParams->actor, Vec3(0,0,0), Vec3(0,0,0), Vec3(1,1,1));
+        pMissile->SetTeam(_pOwner->GetTeam());
         GetActorManager()->AddActor(pMissile);
         m_MissileList.push_back((COGActorBullet*)pMissile);
     }

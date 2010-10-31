@@ -235,13 +235,29 @@ void COGPhysics::Update (unsigned long _ElapsedTime)
     iter = m_MissileObjList.begin();
     for (; iter != m_MissileObjList.end(); ++iter)
     {
-		(*iter)->Update(_ElapsedTime);
-
-        std::list<IOGPhysicalObject*>::iterator coll_iter = m_BotObjList.begin();
-        for (; coll_iter != m_BotObjList.end(); ++coll_iter)
+        IOGPhysicalObject* pMissile = (*iter);
+		pMissile->Update(_ElapsedTime);
+        OGTeam team = ((IOGActor*)pMissile->GetActor())->GetTeam();
+        switch (team)
         {
-            if ((*iter)->CheckCollision((*coll_iter)))
-                break;
+        case TEAM_PLAYER:
+            {
+                std::list<IOGPhysicalObject*>::iterator coll_iter = m_BotObjList.begin();
+                for (; coll_iter != m_BotObjList.end(); ++coll_iter)
+                {
+                    if (pMissile->CheckCollision((*coll_iter)))
+                        break;
+                }
+            }
+            break;
+
+        case TEAM_ENEMY:
+            {
+                if (pMissile->CheckCollision(m_pPlayer))
+                {
+                }
+            }
+            break;
         }
     }
 }

@@ -40,6 +40,12 @@ public:
 	// Get actor type.
 	virtual OGActorType GetType () const = 0;
 
+	// Set actor team.
+	virtual void SetTeam (OGTeam _Team) = 0;
+
+	// Get actor team.
+	virtual OGTeam GetTeam () const = 0;
+
 	// Get scene graph node.
 	virtual IOGSgNode* GetSgNode () = 0;
 

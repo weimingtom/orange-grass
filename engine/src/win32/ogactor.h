@@ -38,6 +38,12 @@ public:
 	// Get actor type.
 	virtual OGActorType GetType () const;
 
+	// Set actor team.
+	virtual void SetTeam (OGTeam _Team);
+
+	// Get actor team.
+	virtual OGTeam GetTeam () const;
+
 	// Get scene graph node.
 	virtual IOGSgNode* GetSgNode ();
 
@@ -87,6 +93,7 @@ protected:
     IOGPhysicalObject*  m_pPhysicalObject;
 	IOGModel*	        m_pModel;
 	OGActorStatus		m_Status;
+    OGTeam              m_Team;
 
 	IOGSceneGraph*		m_pSg;
 	IOGPhysics*			m_pPhysics;

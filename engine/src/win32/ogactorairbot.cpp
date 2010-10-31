@@ -71,6 +71,15 @@ void COGActorAirBot::UpdateAlive (unsigned long _ElapsedTime)
 
 	if (m_FlightWorker.IsActive())
 	{
+        if (m_pWeapon)
+        {
+            m_pWeapon->Update(_ElapsedTime);
+            if (m_pWeapon->IsReady())
+            {
+                m_pWeapon->Fire();
+            }
+        }
+
 		m_FlightWorker.Update(_ElapsedTime);
 		if (m_FlightWorker.IsFinished())
 		{

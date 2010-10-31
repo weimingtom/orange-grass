@@ -179,6 +179,7 @@ bool COGActorParamsMgr::LoadParamsConfig (const std::string& _Alias, const std::
 		pParam->gameplay.team = (OGTeam)m_pReader->ReadIntParam(pLogicNode, "team");
 		pParam->gameplay.max_hitpoints = m_pReader->ReadIntParam(pLogicNode, "max_hitpoints");
 		pParam->gameplay.hitpoints = pParam->gameplay.max_hitpoints;
+        pParam->gameplay.weapon = m_pReader->ReadStringParam(pLogicNode, "weapon");
 		m_pReader->CloseGroupNode(pLogicNode);
 	}
 
