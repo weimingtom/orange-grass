@@ -53,6 +53,7 @@ protected:
 	Vec3							m_vPrevPosition;
 	Vec3							m_vCurPosition;
 	bool							m_bPositionUpdated;
+	IOGMapping*						m_pMapping;
 };
 
 

@@ -11,6 +11,7 @@
 
 #include "IOGSprite.h"
 #include "ogresource.h"
+#include "IOGRenderer.h"
 
 
 class COGSprite : public IOGSprite, public COGResource
@@ -18,9 +19,9 @@ class COGSprite : public IOGSprite, public COGResource
 public:
 	COGSprite();
 	virtual ~COGSprite();
-		
+
 	// Initialize sprite.
-	virtual void SetMapping (const Vec2& _vT0, const Vec2& _vT1);
+	virtual void SetMapping (unsigned int _Mapping);
 
     // Load resource.
     virtual bool Load ();
@@ -40,11 +41,12 @@ public:
 	};
 	SprVert		m_Vertices[4];
 	
-	IOGTexture*	m_pTexture;
-	Vec2		m_T0;
-	Vec2		m_T1;
-	Vec2		m_Pos;
-	Vec2		m_Size;
+	IOGRenderer*	m_pRenderer;
+
+	IOGTexture*		m_pTexture;
+	IOGMapping*		m_pMapping;
+	unsigned int	m_MappingId;
+	Vec4			m_Color;
 };
 
 

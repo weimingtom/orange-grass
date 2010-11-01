@@ -46,9 +46,9 @@ protected:
 	
 protected:
 
-    std::vector<IOGMapping>             m_Frames;
+    std::vector<IOGMapping*>            m_Frames;
     std::vector<COGExplosionBillboard>  m_BBList;
-    IOGMapping                          m_WaveMapping;
+    IOGMapping*                         m_pWaveMapping;
     COGExplosionBillboard               m_Wave;
 };
 

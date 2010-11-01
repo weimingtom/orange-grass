@@ -18,6 +18,7 @@
 #include <string>
 #include <map>
 #include <list>
+#include "IOGSettingsReader.h"
 
 
 class COGResourceMgr : public IOGResourceMgr
@@ -107,8 +108,7 @@ private:
 		{
 			std::string alias;
 			std::string texture;
-			Vec2		pos;
-			Vec2		size;
+			unsigned int mapping;
 		};
 
 		typedef std::list<TextureResourceCfg>	TTextureCfg;
@@ -135,6 +135,8 @@ private:
 	std::map<std::string, COGTerrain*>	m_TerrainList;
 	std::map<std::string, COGSprite*>	m_SpriteList;
 	std::string							m_ResPath;
+
+	IOGSettingsReader*					m_pReader;
 };
 
 #endif

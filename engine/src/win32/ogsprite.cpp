@@ -14,24 +14,29 @@ static int m_HalfScrWidth = 0;
 static int m_HalfScrHeight = 0;
 
 
-COGSprite::COGSprite() : m_pTexture(NULL)
+COGSprite::COGSprite() :	m_pTexture(NULL),
+							m_pMapping(NULL),
+							m_MappingId(0)
 {
+	m_pRenderer = GetRenderer();
 	m_HalfScrWidth = GetGlobalVars()->GetIVar("view_width") / 2;
 	m_HalfScrHeight = GetGlobalVars()->GetIVar("view_height") / 2;
+	m_Color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 
 COGSprite::~COGSprite()
 {
 	m_pTexture = NULL;
+	m_pMapping = NULL;
+	m_MappingId = 0;
 }
 
 
 // Initialize sprite.
-void COGSprite::SetMapping (const Vec2& _vPos, const Vec2& _vSize)
+void COGSprite::SetMapping (unsigned int _Mapping)
 {
-	m_Pos = _vPos;
-	m_Size = _vSize;
+	m_MappingId = _Mapping;
 }
 
 
@@ -50,10 +55,11 @@ bool COGSprite::Load ()
 	m_pTexture = GetResourceMgr()->GetTexture(m_ResourceFile);
 	if (m_pTexture)
 	{
-		m_T0 = Vec2(m_Pos.x / m_pTexture->GetWidth(), (m_pTexture->GetHeight() - m_Pos.y - m_Size.y) / m_pTexture->GetHeight());
-		m_T1 = Vec2(
-			(m_Pos.x + m_Size.x) / m_pTexture->GetWidth(), 
-			(m_pTexture->GetHeight() - m_Pos.y) / m_pTexture->GetHeight() );
+		m_pMapping = m_pTexture->GetMapping(m_MappingId);
+		if (!m_pMapping)
+		{
+			return false;
+		}
 	}
 	else
 	{
@@ -74,6 +80,7 @@ void COGSprite::Unload ()
 	}
 
 	m_pTexture = NULL;
+	m_pMapping = NULL;
 
 	m_LoadState = OG_RESSTATE_DEFINED;
 }
@@ -88,18 +95,18 @@ void COGSprite::Render (const Vec2& _vPos, const Vec2& _vSize)
 	float fBottom = m_HalfScrHeight-_vPos.y;
 
 	m_Vertices[0].p	= Vec2(fRight, fTop);	
-	m_Vertices[0].t = Vec2(m_T1.x, m_T0.y); 
-	m_Vertices[0].c = Vec4(1.0f, 1.0f, 1.0f, 1.0f); 
+	m_Vertices[0].t = Vec2(m_pMapping->t1.x, m_pMapping->t0.y); 
+	m_Vertices[0].c = m_Color;
 	m_Vertices[1].p	= Vec2(fLeft, fTop);	
-	m_Vertices[1].t = Vec2(m_T0.x, m_T0.y); 
-	m_Vertices[1].c = Vec4(1.0f, 1.0f, 1.0f, 1.0f); 
+	m_Vertices[1].t = Vec2(m_pMapping->t0.x, m_pMapping->t0.y); 
+	m_Vertices[1].c = m_Color;
 	m_Vertices[2].p	= Vec2(fRight, fBottom);	
-	m_Vertices[2].t = Vec2(m_T1.x, m_T1.y); 
-	m_Vertices[2].c = Vec4(1.0f, 1.0f, 1.0f, 1.0f); 
+	m_Vertices[2].t = Vec2(m_pMapping->t1.x, m_pMapping->t1.y); 
+	m_Vertices[2].c = m_Color;
 	m_Vertices[3].p	= Vec2(fLeft, fBottom);	
-	m_Vertices[3].t = Vec2(m_T0.x, m_T1.y); 
-	m_Vertices[3].c = Vec4(1.0f, 1.0f, 1.0f, 1.0f); 
+	m_Vertices[3].t = Vec2(m_pMapping->t0.x, m_pMapping->t1.y); 
+	m_Vertices[3].c = m_Color;
 
-	GetRenderer()->SetTexture(m_pTexture);
-    GetRenderer()->DrawSpriteBuffer(m_Vertices, 0, 4);
+	m_pRenderer->SetTexture(m_pTexture);
+    m_pRenderer->DrawSpriteBuffer(m_Vertices, 0, 4);
 }

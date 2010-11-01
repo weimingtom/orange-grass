@@ -1,7 +1,25 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Textures>
-	<Texture alias="gui" file="Textures/UI/gui.pvr" />
-	<Texture alias="hud" file="Textures/UI/hud.pvr" />
+	<Texture alias="load_scr" file="Textures/UI/load.pvr" >
+		<Mappings>
+			<Mapping x="0" y="0" width="480" height="320"/>
+			<Mapping x="0" y="320" width="256" height="128"/>
+		</Mappings>
+	</Texture>
+	<Texture alias="gui" file="Textures/UI/gui.pvr" >
+		<Mappings>
+			<Mapping x="0" y="0" width="334" height="189"/>
+			<Mapping x="0" y="189" width="222" height="42"/>
+			<Mapping x="222" y="189" width="222" height="42"/>
+			<Mapping x="0" y="231" width="222" height="42"/>
+			<Mapping x="222" y="231" width="222" height="42"/>
+		</Mappings>
+	</Texture>
+	<Texture alias="hud" file="Textures/UI/hud.pvr" >
+		<Mappings>
+			<Mapping x="0" y="0" width="115" height="89"/>
+		</Mappings>
+	</Texture>
 	<Texture alias="plasma_01" file="Textures/FX/plasma_head1.pvr" />
 	<Texture alias="smoke_01" file="Textures/FX/smoke_01.pvr" />
 	<Texture alias="explosion" file="Textures/FX/effects.pvr">
@@ -25,7 +43,12 @@
 	<Texture alias="bonus_02" file="Models/Bonuses/bonus_02.pvr" />
 	<Texture alias="land_02" file="Models/Land_objects_02/land_02.pvr" />
 	<Texture alias="land_02_objs" file="Models/Land_objects_02/land_02_objs.pvr" />
-	<Texture alias="weapons" file="Textures/Weapons/weapons.pvr" />
+	<Texture alias="weapons" file="Textures/Weapons/weapons.pvr" >
+		<Mappings>
+			<Mapping x="0" y="0" width="64" height="64"/>
+			<Mapping x="64" y="0" width="64" height="64"/>
+		</Mappings>
+	</Texture>
 </Textures>
 <Meshes>
 	<Mesh alias="helicopter_body" file="Models/Helicopter/helicopter_body.POD"/>
@@ -79,14 +102,14 @@
 	<Terrain alias="level_02" file="Levels/Level_02/level_02.xml" />
 </Terrains>
 <Sprites>
-	<Sprite alias="load_scr" texture="load_scr" x="0" y="0" width="480" height="320"/>
-	<Sprite alias="logo" texture="load_scr" x="0" y="320" width="256" height="128"/>
-	<Sprite alias="back" texture="gui" x="0" y="0" width="334" height="189"/>
-	<Sprite alias="exit_n" texture="gui" x="0" y="189" width="222" height="42"/>
-	<Sprite alias="exit_pr" texture="gui" x="222" y="189" width="222" height="42"/>
-	<Sprite alias="new_n" texture="gui" x="0" y="231" width="222" height="42"/>
-	<Sprite alias="new_pr" texture="gui" x="222" y="231" width="222" height="42"/>
-	<Sprite alias="hud" texture="hud" x="0" y="0" width="115" height="89"/>
-	<Sprite alias="weapon_missile01" texture="weapons" x="0" y="0" width="64" height="64"/>
-	<Sprite alias="weapon_plasma01" texture="weapons" x="64" y="0" width="64" height="64"/>
+	<Sprite alias="load_scr" texture="load_scr" mapping="1"/>
+	<Sprite alias="logo" texture="load_scr" mapping="2"/>
+	<Sprite alias="back" texture="gui" mapping="1"/>
+	<Sprite alias="exit_n" texture="gui" mapping="2"/>
+	<Sprite alias="exit_pr" texture="gui" mapping="3"/>
+	<Sprite alias="new_n" texture="gui" mapping="4"/>
+	<Sprite alias="new_pr" texture="gui" mapping="5"/>
+	<Sprite alias="hud" texture="hud" mapping="1"/>
+	<Sprite alias="weapon_missile01" texture="weapons" mapping="1"/>
+	<Sprite alias="weapon_plasma01" texture="weapons" mapping="2"/>
 </Sprites>

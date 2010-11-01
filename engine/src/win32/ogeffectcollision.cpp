@@ -120,7 +120,6 @@ void COGEffectCollision::Render (const MATRIX& _mWorld, unsigned int _Frame)
         MatrixVecMultiply(particle.pVertices[2].p, vSRight - vSUp, mR);
         MatrixVecMultiply(particle.pVertices[3].p, -vSRight - vSUp, mR);
 
-        //particle.offset = vOffset;
 		particle.pVertices[0].p += particle.offset + vOffset;
 		particle.pVertices[1].p += particle.offset + vOffset;
 		particle.pVertices[2].p += particle.offset + vOffset;

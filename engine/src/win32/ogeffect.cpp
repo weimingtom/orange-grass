@@ -10,7 +10,7 @@
 #include "OrangeGrass.h"
 
 
-COGEffect::COGEffect()
+COGEffect::COGEffect() :	m_pTexture(NULL)
 {
 	m_Status = OG_EFFECTSTATUS_INACTIVE;
     m_pRenderer = GetRenderer();

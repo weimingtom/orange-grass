@@ -26,13 +26,12 @@ void COGEffectExplosion::Init(OGEffectType _Type)
     m_Frames.reserve(7);
     for (unsigned int i = 0; i < 7; ++i)
     {
-        IOGMapping m = *m_pTexture->GetMapping(i+1);
-        m_Frames.push_back(m);
+        m_Frames.push_back(m_pTexture->GetMapping(i+1));
     }
     m_BBList.reserve(MAX_PARTILES);
 
 	Vec4 color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
-    m_WaveMapping = *m_pTexture->GetMapping(10);
+    m_pWaveMapping = m_pTexture->GetMapping(10);
     m_Wave.scale = 8.0f;
     m_Wave.frame = 0.0f;
     m_Wave.angle = 0.0f;
@@ -41,10 +40,10 @@ void COGEffectExplosion::Init(OGEffectType _Type)
     m_Wave.pVertices[1].c = color;
     m_Wave.pVertices[2].c = color;
     m_Wave.pVertices[3].c = color;
-    m_Wave.pVertices[0].t = Vec2(m_WaveMapping.t1.x, m_WaveMapping.t0.y);
-    m_Wave.pVertices[1].t = Vec2(m_WaveMapping.t0.x, m_WaveMapping.t0.y);
-    m_Wave.pVertices[2].t = Vec2(m_WaveMapping.t1.x, m_WaveMapping.t1.y);
-    m_Wave.pVertices[3].t = Vec2(m_WaveMapping.t0.x, m_WaveMapping.t1.y);
+    m_Wave.pVertices[0].t = Vec2(m_pWaveMapping->t1.x, m_pWaveMapping->t0.y);
+    m_Wave.pVertices[1].t = Vec2(m_pWaveMapping->t0.x, m_pWaveMapping->t0.y);
+    m_Wave.pVertices[2].t = Vec2(m_pWaveMapping->t1.x, m_pWaveMapping->t1.y);
+    m_Wave.pVertices[3].t = Vec2(m_pWaveMapping->t0.x, m_pWaveMapping->t1.y);
 
     m_AABB.SetMinMax(Vec3(-1,-1,-1), Vec3(1,1,1));
 }
@@ -64,6 +63,8 @@ void COGEffectExplosion::Update (unsigned long _ElapsedTime)
 	Vec4 color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	int r_min = -4;
 	int r_max = 4;
+	float fWaveAlphaDec = 0.08f;
+	float fWaveScaleInc = 1.5f;
 
     std::vector<COGExplosionBillboard>::iterator iter = m_BBList.begin();
     while (iter != m_BBList.end())
@@ -74,10 +75,6 @@ void COGEffectExplosion::Update (unsigned long _ElapsedTime)
             particle.scale += fScaleInc;
             particle.angle += fRotateInc;
             particle.frame += fFrameInc;
-    		//particle.pVertices[0].c.w -= fAlphaFade;
-    		//particle.pVertices[1].c.w -= fAlphaFade;
-    		//particle.pVertices[2].c.w -= fAlphaFade;
-    		//particle.pVertices[3].c.w -= fAlphaFade;
             ++iter;
         }
         else
@@ -91,13 +88,13 @@ void COGEffectExplosion::Update (unsigned long _ElapsedTime)
         }
     }
 
-    if (m_Wave.pVertices[0].c.w >= 0.08f)
+    if (m_Wave.pVertices[0].c.w >= fWaveAlphaDec)
     {
-        m_Wave.scale += 1.5f;
-        m_Wave.pVertices[0].c.w -= 0.08f;
-        m_Wave.pVertices[1].c.w -= 0.08f;
-        m_Wave.pVertices[2].c.w -= 0.08f;
-        m_Wave.pVertices[3].c.w -= 0.08f;
+        m_Wave.scale += fWaveScaleInc;
+        m_Wave.pVertices[0].c.w -= fWaveAlphaDec;
+        m_Wave.pVertices[1].c.w -= fWaveAlphaDec;
+        m_Wave.pVertices[2].c.w -= fWaveAlphaDec;
+        m_Wave.pVertices[3].c.w -= fWaveAlphaDec;
     }
 
     for (int n = 0; n < numVertsAtOnce; ++n)
@@ -151,18 +148,16 @@ void COGEffectExplosion::Render (const MATRIX& _mWorld, unsigned int _Frame)
         MatrixVecMultiply(particle.pVertices[2].p, vSRight - vSUp, mR);
         MatrixVecMultiply(particle.pVertices[3].p, -vSRight - vSUp, mR);
 
-        //particle.offset = vOffset;
 		particle.pVertices[0].p += particle.offset + vOffset;
 		particle.pVertices[1].p += particle.offset + vOffset;
 		particle.pVertices[2].p += particle.offset + vOffset;
 		particle.pVertices[3].p += particle.offset + vOffset;
 
-        int cur_fr = (int)particle.frame;
-
-        particle.pVertices[0].t = Vec2(m_Frames[cur_fr].t1.x, m_Frames[cur_fr].t0.y);
-        particle.pVertices[1].t = Vec2(m_Frames[cur_fr].t0.x, m_Frames[cur_fr].t0.y);
-        particle.pVertices[2].t = Vec2(m_Frames[cur_fr].t1.x, m_Frames[cur_fr].t1.y);
-        particle.pVertices[3].t = Vec2(m_Frames[cur_fr].t0.x, m_Frames[cur_fr].t1.y);
+		IOGMapping* pMapping = m_Frames[(unsigned int)particle.frame];
+        particle.pVertices[0].t = Vec2(pMapping->t1.x, pMapping->t0.y);
+        particle.pVertices[1].t = Vec2(pMapping->t0.x, pMapping->t0.y);
+        particle.pVertices[2].t = Vec2(pMapping->t1.x, pMapping->t1.y);
+        particle.pVertices[3].t = Vec2(pMapping->t0.x, pMapping->t1.y);
 
 		m_pRenderer->DrawEffectBuffer(&particle.pVertices[0], 0, 4);
     }

@@ -1,5 +1,5 @@
 /*
- *  ogresourcemgr.mm
+ *  ogresourcemgr.cpp
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 07.11.09.
@@ -10,7 +10,6 @@
 #include "OrangeGrass.h"
 #include "ogresourcemgr.h"
 #include "Pathes.h"
-#include "tinyxml.h"
 
 
 COGResourceMgr::COGResourceMgr ()
@@ -22,6 +21,7 @@ COGResourceMgr::COGResourceMgr ()
 #else
 	m_ResPath = std::string(path) + std::string("GameResources");
 #endif
+	m_pReader = GetSettingsReader();
 }
 
 
@@ -31,13 +31,13 @@ COGResourceMgr::~COGResourceMgr ()
 	for( ; texture_iter != m_TextureList.end(); ++texture_iter )
 	{
 		OG_SAFE_DELETE (texture_iter->second);
-	}	
+	}
 
 	std::map<std::string, COGMesh*>::iterator mesh_iter = m_MeshList.begin();
 	for( ; mesh_iter != m_MeshList.end(); ++mesh_iter )
 	{
 		OG_SAFE_DELETE (mesh_iter->second);
-	}	
+	}
 	
 	std::map<std::string, COGModel*>::iterator model_iter = m_ModelList.begin();
 	for( ; model_iter != m_ModelList.end(); ++model_iter )
@@ -62,17 +62,7 @@ COGResourceMgr::~COGResourceMgr ()
 // load from file.
 bool COGResourceMgr::Init ()
 {
-	COGTexture* pLoadScr = new COGTexture ();
-	pLoadScr->Init ("load_scr", m_ResPath + std::string("/Textures/UI/load.pvr"));
-	if (!pLoadScr->Load ())
-	{
-		OG_SAFE_DELETE(pLoadScr);
-		return false;
-	}
-	m_TextureList["load_scr"] = pLoadScr;
-
 	GetMaterialManager()->Init();
-
 	return true;
 }
 
@@ -146,7 +136,7 @@ bool COGResourceMgr::Load ()
 	{
 		COGSprite* pSprite = new COGSprite ();
 		pSprite->Init ((*spriter).alias, (*spriter).texture);
-		pSprite->SetMapping((*spriter).pos, (*spriter).size);
+		pSprite->SetMapping((*spriter).mapping);
 		m_SpriteList[(*spriter).alias] = pSprite;
 	}
 
@@ -157,120 +147,108 @@ bool COGResourceMgr::Load ()
 // Load resource manager configuration
 bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
 {
-	int index = 0;
-	std::string file_path;
-	file_path = m_ResPath + std::string("/resources.xml");
+	IOGSettingsSource* pSource = m_pReader->OpenSource(GetFullPath("resources.xml"));
+	if (!pSource)
+		return false;
 
-    TiXmlDocument* pXmlSettings = new TiXmlDocument ("resources.xml");
-	if (!pXmlSettings->LoadFile (file_path.c_str()))
+	IOGGroupNode* pTexturesRoot = m_pReader->OpenGroupNode(pSource, NULL, "Textures");
+	if (pTexturesRoot)
 	{
-		OG_SAFE_DELETE(pXmlSettings);
-        return false;
-	}
-    TiXmlHandle* hDoc = new TiXmlHandle (pXmlSettings);
-
-	TiXmlHandle hTexturesRoot = hDoc->FirstChild ( "Textures" );
-	index = 0;
-	TiXmlHandle TextureHandle = hTexturesRoot.Child ( "Texture", index );
-	while (TextureHandle.Node ())
-	{
-		TiXmlElement* pElement = TextureHandle.Element();
-		Cfg::TextureResourceCfg rescfg;
-		rescfg.alias = std::string(pElement->Attribute ("alias"));
-		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
-
-		TiXmlHandle hMappingsRoot = TextureHandle.FirstChild ( "Mappings" );
-		unsigned int mapindex = 0;
-		TiXmlHandle MappingHandle = hMappingsRoot.Child ( "Mapping", mapindex );
-		while (MappingHandle.Node ())
+		IOGGroupNode* pTextureNode = m_pReader->OpenGroupNode(pSource, pTexturesRoot, "Texture");
+		while (pTextureNode)
 		{
-			TiXmlElement* pMappingElement = MappingHandle.Element();
-			int x, y, w, h;
-			pMappingElement->Attribute("x", &x);
-			pMappingElement->Attribute("y", &y);
-			pMappingElement->Attribute("width", &w);
-			pMappingElement->Attribute("height", &h);
-			Cfg::TextureResourceCfg::MappingCfg mapcfg;
-			mapcfg.pos = Vec2((float)x, (float)y);
-			mapcfg.size = Vec2((float)w, (float)h);
-			rescfg.mappings.push_back(mapcfg);
-			MappingHandle = hMappingsRoot.Child ( "Mapping", ++mapindex );
+			Cfg::TextureResourceCfg rescfg;
+			rescfg.alias = m_pReader->ReadStringParam(pTextureNode, "alias");
+			rescfg.file = GetFullPath(m_pReader->ReadStringParam(pTextureNode, "file"));
+
+			IOGGroupNode* pMappingRoot = m_pReader->OpenGroupNode(pSource, pTextureNode, "Mappings");
+			if (pMappingRoot)
+			{
+				IOGGroupNode* pMappingNode = m_pReader->OpenGroupNode(pSource, pMappingRoot, "Mapping");
+				while (pMappingNode)
+				{
+					Cfg::TextureResourceCfg::MappingCfg mapcfg;
+					mapcfg.pos = m_pReader->ReadVec2Param(pMappingNode, "x", "y");
+					mapcfg.size = m_pReader->ReadVec2Param(pMappingNode, "width", "height");
+					rescfg.mappings.push_back(mapcfg);
+
+					pMappingNode = m_pReader->ReadNextNode(pMappingNode);
+				}
+				m_pReader->CloseGroupNode(pMappingRoot);
+			}
+
+			_cfg.texture_cfg_list.push_back(rescfg);
+			pTextureNode = m_pReader->ReadNextNode(pTextureNode);
 		}
-
-		_cfg.texture_cfg_list.push_back(rescfg);
-
-		TextureHandle = hTexturesRoot.Child ( "Texture", ++index );
+		m_pReader->CloseGroupNode(pTexturesRoot);
 	}
 
-	TiXmlHandle hMeshesRoot = hDoc->FirstChild ( "Meshes" );
-	index = 0;
-	TiXmlHandle MeshHandle = hMeshesRoot.Child ( "Mesh", index );
-	while (MeshHandle.Node ())
+	IOGGroupNode* pMeshesRoot = m_pReader->OpenGroupNode(pSource, NULL, "Meshes");
+	if (pMeshesRoot)
 	{
-		TiXmlElement* pElement = MeshHandle.Element();
+		IOGGroupNode* pMeshNode = m_pReader->OpenGroupNode(pSource, pMeshesRoot, "Mesh");
+		while (pMeshNode)
+		{
+			Cfg::MeshResourceCfg rescfg;
+			rescfg.alias = m_pReader->ReadStringParam(pMeshNode, "alias");
+			rescfg.file = GetFullPath(m_pReader->ReadStringParam(pMeshNode, "file"));
+			_cfg.mesh_cfg_list.push_back(rescfg);
 
-		Cfg::MeshResourceCfg rescfg;
-		rescfg.alias = std::string(pElement->Attribute ("alias"));
-		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
-		_cfg.mesh_cfg_list.push_back(rescfg);
-
-		MeshHandle = hMeshesRoot.Child ( "Mesh", ++index );
+			pMeshNode = m_pReader->ReadNextNode(pMeshNode);
+		}
+		m_pReader->CloseGroupNode(pMeshesRoot);
 	}
 
-	TiXmlHandle hModelsRoot = hDoc->FirstChild ( "Models" );
-	index = 0;
-	TiXmlHandle ModelHandle = hModelsRoot.Child ( "Model", index );
-	while (ModelHandle.Node ())
+	IOGGroupNode* pModelsRoot = m_pReader->OpenGroupNode(pSource, NULL, "Models");
+	if (pModelsRoot)
 	{
-		TiXmlElement* pElement = ModelHandle.Element();
+		IOGGroupNode* pModelNode = m_pReader->OpenGroupNode(pSource, pModelsRoot, "Model");
+		while (pModelNode)
+		{
+			Cfg::ModelResourceCfg rescfg;
+			rescfg.alias = m_pReader->ReadStringParam(pModelNode, "alias");
+			rescfg.file = GetFullPath(m_pReader->ReadStringParam(pModelNode, "file"));
+			_cfg.model_cfg_list.push_back(rescfg);
 
-		Cfg::ModelResourceCfg rescfg;
-		rescfg.alias = std::string(pElement->Attribute ("alias"));
-		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
-		_cfg.model_cfg_list.push_back(rescfg);
-
-		ModelHandle = hModelsRoot.Child ( "Model", ++index );
+			pModelNode = m_pReader->ReadNextNode(pModelNode);
+		}
+		m_pReader->CloseGroupNode(pModelsRoot);
 	}
 
-	TiXmlHandle hTerrainsRoot = hDoc->FirstChild ( "Terrains" );
-	index = 0;
-	TiXmlHandle TerrainHandle = hTerrainsRoot.Child ( "Terrain", index );
-	while (TerrainHandle.Node ())
+	IOGGroupNode* pTerrainsRoot = m_pReader->OpenGroupNode(pSource, NULL, "Terrains");
+	if (pTerrainsRoot)
 	{
-		TiXmlElement* pElement = TerrainHandle.Element();
+		IOGGroupNode* pTerrainNode = m_pReader->OpenGroupNode(pSource, pTerrainsRoot, "Terrain");
+		while (pTerrainNode)
+		{
+			Cfg::TerrainResourceCfg rescfg;
+			rescfg.alias = m_pReader->ReadStringParam(pTerrainNode, "alias");
+			rescfg.file = GetFullPath(m_pReader->ReadStringParam(pTerrainNode, "file"));
+			_cfg.terrain_cfg_list.push_back(rescfg);
 
-		Cfg::TerrainResourceCfg rescfg;
-		rescfg.alias = std::string(pElement->Attribute ("alias"));
-		rescfg.file = m_ResPath + std::string("/") + std::string(pElement->Attribute ("file"));
-		_cfg.terrain_cfg_list.push_back(rescfg);
-
-		TerrainHandle = hTerrainsRoot.Child ( "Terrain", ++index );
+			pTerrainNode = m_pReader->ReadNextNode(pTerrainNode);
+		}
+		m_pReader->CloseGroupNode(pTerrainsRoot);
 	}
 
-	TiXmlHandle hSpritesRoot = hDoc->FirstChild ( "Sprites" );
-	index = 0;
-	TiXmlHandle SpriteHandle = hSpritesRoot.Child ( "Sprite", index );
-	while (SpriteHandle.Node ())
+	IOGGroupNode* pSpritesRoot = m_pReader->OpenGroupNode(pSource, NULL, "Sprites");
+	if (pSpritesRoot)
 	{
-		TiXmlElement* pElement = SpriteHandle.Element();
+		IOGGroupNode* pSpriteNode = m_pReader->OpenGroupNode(pSource, pSpritesRoot, "Sprite");
+		while (pSpriteNode)
+		{
+			Cfg::SpriteResourceCfg rescfg;
+			rescfg.alias = m_pReader->ReadStringParam(pSpriteNode, "alias");
+			rescfg.texture = m_pReader->ReadStringParam(pSpriteNode, "texture");
+			rescfg.mapping = (unsigned int)m_pReader->ReadIntParam(pSpriteNode, "mapping");
+			_cfg.sprite_cfg_list.push_back(rescfg);
 
-		Cfg::SpriteResourceCfg rescfg;
-		rescfg.alias = std::string(pElement->Attribute ("alias"));
-		rescfg.texture = std::string(pElement->Attribute ("texture"));
-		int x, y, w, h;
-		pElement->Attribute("x", &x);
-		pElement->Attribute("y", &y);
-		pElement->Attribute("width", &w);
-		pElement->Attribute("height", &h);
-		rescfg.pos = Vec2((float)x, (float)y);
-		rescfg.size = Vec2((float)w, (float)h);
-		_cfg.sprite_cfg_list.push_back(rescfg);
-
-		SpriteHandle = hSpritesRoot.Child ( "Sprite", ++index );
+			pSpriteNode = m_pReader->ReadNextNode(pSpriteNode);
+		}
+		m_pReader->CloseGroupNode(pSpritesRoot);
 	}
 
-	OG_SAFE_DELETE(hDoc);
-	OG_SAFE_DELETE(pXmlSettings);
+	m_pReader->CloseSource(pSource);
 	return true;
 }
 

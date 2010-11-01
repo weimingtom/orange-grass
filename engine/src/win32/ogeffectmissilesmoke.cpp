@@ -19,6 +19,7 @@ COGEffectMissileSmoke::~COGEffectMissileSmoke()
 void COGEffectMissileSmoke::Init(OGEffectType _Type)
 {
 	m_pTexture = GetResourceMgr()->GetTexture("smoke_01");
+	m_pMapping = m_pTexture->GetMapping(0);
     m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
 
 	m_bPositionUpdated = false;
@@ -81,13 +82,9 @@ void COGEffectMissileSmoke::Update (unsigned long _ElapsedTime)
 				particle.scale = fInitialScale;
                 particle.angle = rand() * 0.01f;
 				particle.bDirty = true;
-				particle.pVertices[0].t = Vec2(1.0f, 0.0f);
 				particle.pVertices[0].c = color;
-				particle.pVertices[1].t = Vec2(0.0f, 0.0f);
 				particle.pVertices[1].c = color;
-				particle.pVertices[2].t = Vec2(1.0f, 1.0f);
 				particle.pVertices[2].c = color;
-				particle.pVertices[3].t = Vec2(0.0f, 1.0f);
 				particle.pVertices[3].c = color;
 				m_BBList.push_back(particle);
 			}
@@ -128,30 +125,42 @@ void COGEffectMissileSmoke::Render (const MATRIX& _mWorld, unsigned int _Frame)
 	m_pRenderer->SetMaterial(m_pMaterial);
 	m_pRenderer->SetTexture(m_pTexture);
 
+    MATRIX mR;
+	BBVert* pVert = NULL;
     std::vector<COGSmokeBillboard>::iterator iter = m_BBList.begin();
     for (; iter != m_BBList.end(); ++iter)
     {
         COGSmokeBillboard& particle = (*iter);
-		Vec3 vSUp = m_vCameraUp * particle.scale;
-		Vec3 vSRight = m_vCameraRight * particle.scale;
         if (particle.bDirty)
         {
-            particle.offset += m_vCurPosition;//Vec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
+            particle.offset += m_vCurPosition;
             particle.bDirty = false;
         }
-		particle.pVertices[0].p = vSRight + vSUp + particle.offset;
-		particle.pVertices[1].p = -vSRight + vSUp + particle.offset;
-		particle.pVertices[2].p = vSRight - vSUp + particle.offset;
-		particle.pVertices[3].p = -vSRight - vSUp + particle.offset;
 
-        particle.pVertices[0].t = Vec2(1.0f, 0.0f);
-        particle.pVertices[1].t = Vec2(0.0f, 0.0f);
-        particle.pVertices[2].t = Vec2(1.0f, 1.0f);
-        particle.pVertices[3].t = Vec2(0.0f, 1.0f);
-        Rotate2DPoint(particle.pVertices[0].t.x, particle.pVertices[0].t.y, particle.angle, 0.5f, 0.5f);
-        Rotate2DPoint(particle.pVertices[1].t.x, particle.pVertices[1].t.y, particle.angle, 0.5f, 0.5f);
-        Rotate2DPoint(particle.pVertices[2].t.x, particle.pVertices[2].t.y, particle.angle, 0.5f, 0.5f);
-        Rotate2DPoint(particle.pVertices[3].t.x, particle.pVertices[3].t.y, particle.angle, 0.5f, 0.5f);
+        MatrixRotationAxis(mR, particle.angle, m_vCameraLook.x, m_vCameraLook.y, m_vCameraLook.z);
+
+        Vec3 vSUp = m_vCameraUp * particle.scale;
+		Vec3 vSRight = m_vCameraRight * particle.scale;
+
+		pVert = &particle.pVertices[0];
+        MatrixVecMultiply(pVert->p, vSRight + vSUp, mR);
+		pVert->p += particle.offset;
+        pVert->t.x = m_pMapping->t1.x; pVert->t.y = m_pMapping->t0.y;
+
+		pVert = &particle.pVertices[1];
+        MatrixVecMultiply(pVert->p, -vSRight + vSUp, mR);
+		pVert->p += particle.offset;
+        pVert->t.x = m_pMapping->t0.x; pVert->t.y = m_pMapping->t0.y;
+
+		pVert = &particle.pVertices[2];
+        MatrixVecMultiply(pVert->p, vSRight - vSUp, mR);
+		pVert->p += particle.offset;
+        pVert->t.x = m_pMapping->t1.x; pVert->t.y = m_pMapping->t1.y;
+
+		pVert = &particle.pVertices[3];
+        MatrixVecMultiply(pVert->p, -vSRight - vSUp, mR);
+		pVert->p += particle.offset;
+        pVert->t.x = m_pMapping->t0.x; pVert->t.y = m_pMapping->t1.y;
 
 		m_pRenderer->DrawEffectBuffer(&particle.pVertices[0], 0, 4);
     }
