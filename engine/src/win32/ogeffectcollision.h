@@ -35,19 +35,26 @@ public:
 
 protected:
 
-    struct COGCollisionBillboard
+    struct ParticleFormat
     {
+        bool    bDirty;
         float   frame;
 	    float	scale;
         float   angle;
-	    Vec3	offset;
 	    BBVert	pVertices[4];
     };
 	
 protected:
 
-    std::vector<IOGMapping>             m_Frames;
-    std::vector<COGCollisionBillboard>  m_BBList;
+    std::vector<IOGMapping*>    m_Frames;
+    ParticleFormat              m_BB;
+
+    unsigned int                m_MappingStartId;
+    unsigned int                m_MappingFinishId;
+	float                       m_fFrameInc;
+	float                       m_fInitialScale;
+	float                       m_fScaleInc;
+    float                       m_fRotateInc;
 };
 
 

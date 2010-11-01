@@ -10,30 +10,61 @@
 #include "OrangeGrass.h"
 
 
+float COGEffectBonusPick::m_fAlphaInc;
+float COGEffectBonusPick::m_fScaleInc;
+float COGEffectBonusPick::m_fInitialScale;
+std::string COGEffectBonusPick::m_Texture;
+unsigned int COGEffectBonusPick::m_MappingId;
+
+
 COGEffectBonusPick::~COGEffectBonusPick()
 {
+}
+
+
+// Load params.
+bool COGEffectBonusPick::LoadParams ()
+{
+	IOGSettingsReader* pReader = GetSettingsReader();
+
+    IOGSettingsSource* pSource = pReader->OpenSource(GetResourceMgr()->GetFullPath("Effects/bonuspick.xml"));
+	if (!pSource)
+		return false;
+
+	IOGGroupNode* pRoot = pReader->OpenGroupNode(pSource, NULL, "Effect");
+	if (pRoot)
+	{
+		m_fAlphaInc = pReader->ReadFloatParam(pRoot, "alpha_inc");
+		m_fScaleInc = pReader->ReadFloatParam(pRoot, "scale_inc");
+		m_fInitialScale = pReader->ReadFloatParam(pRoot, "initial_scale");
+		m_Texture = pReader->ReadStringParam(pRoot, "texture");
+		m_MappingId = (unsigned int)pReader->ReadIntParam(pRoot, "mapping");
+    	pReader->CloseGroupNode(pRoot);
+	}
+	pReader->CloseSource(pSource);
+	return true;
 }
 
 
 // Initialize effect.
 void COGEffectBonusPick::Init(OGEffectType _Type)
 {
-	m_pTexture = GetResourceMgr()->GetTexture("explosion");
+	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
     m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
 
 	Vec4 color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
-    m_WaveMapping = *m_pTexture->GetMapping(10);
-    m_Wave.scale = 8.0f;
+    m_pWaveMapping = m_pTexture->GetMapping(m_MappingId);
+    m_Wave.scale = m_fInitialScale;
     m_Wave.angle = 0.0f;
     m_Wave.offset = Vec3(0,0,0);
     m_Wave.pVertices[0].c = color;
-    m_Wave.pVertices[0].t = Vec2(m_WaveMapping.t1.x, m_WaveMapping.t0.y);
+    m_Wave.pVertices[0].t = Vec2(m_pWaveMapping->t1.x, m_pWaveMapping->t0.y);
     m_Wave.pVertices[1].c = color;
-    m_Wave.pVertices[1].t = Vec2(m_WaveMapping.t0.x, m_WaveMapping.t0.y);
+    m_Wave.pVertices[1].t = Vec2(m_pWaveMapping->t0.x, m_pWaveMapping->t0.y);
     m_Wave.pVertices[2].c = color;
-    m_Wave.pVertices[2].t = Vec2(m_WaveMapping.t1.x, m_WaveMapping.t1.y);
+    m_Wave.pVertices[2].t = Vec2(m_pWaveMapping->t1.x, m_pWaveMapping->t1.y);
     m_Wave.pVertices[3].c = color;
-    m_Wave.pVertices[3].t = Vec2(m_WaveMapping.t0.x, m_WaveMapping.t1.y);
+    m_Wave.pVertices[3].t = Vec2(m_pWaveMapping->t0.x, m_pWaveMapping->t1.y);
 
     m_AABB.SetMinMax(Vec3(-1,-1,-1), Vec3(1,1,1));
 }
@@ -45,16 +76,13 @@ void COGEffectBonusPick::Update (unsigned long _ElapsedTime)
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-	float fAlphaInc = 0.08f;
-	float fScaleInc = 1.5f;
-
-    if (m_Wave.pVertices[0].c.w >= fAlphaInc)
+    if (m_Wave.pVertices[0].c.w >= m_fAlphaInc)
     {
-        m_Wave.scale += fScaleInc;
-        m_Wave.pVertices[0].c.w -= fAlphaInc;
-        m_Wave.pVertices[1].c.w -= fAlphaInc;
-        m_Wave.pVertices[2].c.w -= fAlphaInc;
-        m_Wave.pVertices[3].c.w -= fAlphaInc;
+        m_Wave.scale += m_fScaleInc;
+        m_Wave.pVertices[0].c.w -= m_fAlphaInc;
+        m_Wave.pVertices[1].c.w -= m_fAlphaInc;
+        m_Wave.pVertices[2].c.w -= m_fAlphaInc;
+        m_Wave.pVertices[3].c.w -= m_fAlphaInc;
     }
 	else
 	{

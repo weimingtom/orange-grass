@@ -5,6 +5,8 @@
 
 #define TIMER_ID	1
 #define TIMER_RATE	30
+#define SCR_WIDTH	480
+#define SCR_HEIGHT	320
 
 
 CGameSystem*    pGameSystem = NULL;

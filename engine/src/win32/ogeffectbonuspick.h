@@ -9,7 +9,7 @@
 #ifndef OGEFFECTBONUSPICK_H_
 #define OGEFFECTBONUSPICK_H_
 
-#include "OGEffect.h"
+#include "ogeffect.h"
 #include <vector>
 
 
@@ -33,9 +33,12 @@ public:
 	// Stop.
 	virtual void Stop ();
 
+    // Load params.
+    static bool LoadParams ();
+
 protected:
 
-    struct COGBonusPickBillboard
+    struct ParticleFormat
     {
 	    float	scale;
         float   angle;
@@ -45,8 +48,14 @@ protected:
 	
 protected:
 
-    IOGMapping              m_WaveMapping;
-    COGBonusPickBillboard	m_Wave;
+    IOGMapping*             m_pWaveMapping;
+    ParticleFormat	        m_Wave;
+
+    static float            m_fAlphaInc;
+	static float            m_fScaleInc;
+	static float            m_fInitialScale;
+    static std::string      m_Texture;
+    static unsigned int     m_MappingId;
 };
 
 
