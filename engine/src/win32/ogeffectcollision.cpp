@@ -10,17 +10,50 @@
 #include "OrangeGrass.h"
 
 
+unsigned int COGEffectCollision::m_MappingStartId;
+unsigned int COGEffectCollision::m_MappingFinishId;
+float COGEffectCollision::m_fFrameInc;
+float COGEffectCollision::m_fInitialScale;
+float COGEffectCollision::m_fScaleInc;
+float COGEffectCollision::m_fRotateInc;
+std::string COGEffectCollision::m_Texture;
+
+
 COGEffectCollision::~COGEffectCollision()
 {
+}
+
+
+// Load params.
+bool COGEffectCollision::LoadParams ()
+{
+	IOGSettingsReader* pReader = GetSettingsReader();
+
+    IOGSettingsSource* pSource = pReader->OpenSource(GetResourceMgr()->GetFullPath("Effects/collision.xml"));
+	if (!pSource)
+		return false;
+
+	IOGGroupNode* pRoot = pReader->OpenGroupNode(pSource, NULL, "Effect");
+	if (pRoot)
+	{
+		m_fFrameInc = pReader->ReadFloatParam(pRoot, "frame_inc");
+		m_fScaleInc = pReader->ReadFloatParam(pRoot, "scale_inc");
+		m_fRotateInc = pReader->ReadFloatParam(pRoot, "rotate_inc");
+		m_fInitialScale = pReader->ReadFloatParam(pRoot, "initial_scale");
+		m_Texture = pReader->ReadStringParam(pRoot, "texture");
+		m_MappingStartId = (unsigned int)pReader->ReadIntParam(pRoot, "mapping_start");
+		m_MappingFinishId = (unsigned int)pReader->ReadIntParam(pRoot, "mapping_finish");
+    	pReader->CloseGroupNode(pRoot);
+	}
+	pReader->CloseSource(pSource);
+	return true;
 }
 
 
 // Initialize effect.
 void COGEffectCollision::Init(OGEffectType _Type)
 {
-    m_MappingStartId = 1;
-    m_MappingFinishId = 7;
-	m_pTexture = GetResourceMgr()->GetTexture("explosion");
+	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
     m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
 
     m_Frames.reserve(m_MappingFinishId - m_MappingStartId + 1);
@@ -40,16 +73,12 @@ void COGEffectCollision::Update (unsigned long _ElapsedTime)
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-	float fFrameInc = 0.38f;
-	float fInitialScale = 1.0f;
-	float fScaleInc = 0.3f;
-    float fRotateInc = 0.1f;
 	Vec4 color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
     if (m_BB.bDirty)
     {
         m_BB.bDirty = false;
-        m_BB.scale = fInitialScale;
+        m_BB.scale = m_fInitialScale;
         m_BB.frame = 0.0f;
         m_BB.angle = GetRandomRange(-314,314) * 0.01f;
         m_BB.pVertices[0].c = color;
@@ -61,9 +90,9 @@ void COGEffectCollision::Update (unsigned long _ElapsedTime)
     {
         if (m_BB.frame < m_Frames.size() - 1)
         {
-            m_BB.scale += fScaleInc;
-            m_BB.angle += fRotateInc;
-            m_BB.frame += fFrameInc;
+            m_BB.scale += m_fScaleInc;
+            m_BB.angle += m_fRotateInc;
+            m_BB.frame += m_fFrameInc;
         }
         else
         {

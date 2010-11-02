@@ -33,6 +33,9 @@ public:
 	// Stop.
 	virtual void Stop ();
 
+    // Load params.
+    static bool LoadParams ();
+
 protected:
 
     struct ParticleFormat
@@ -49,12 +52,13 @@ protected:
     std::vector<IOGMapping*>    m_Frames;
     ParticleFormat              m_BB;
 
-    unsigned int                m_MappingStartId;
-    unsigned int                m_MappingFinishId;
-	float                       m_fFrameInc;
-	float                       m_fInitialScale;
-	float                       m_fScaleInc;
-    float                       m_fRotateInc;
+    static unsigned int         m_MappingStartId;
+    static unsigned int         m_MappingFinishId;
+	static float                m_fFrameInc;
+	static float                m_fInitialScale;
+	static float                m_fScaleInc;
+    static float                m_fRotateInc;
+    static std::string          m_Texture;
 };
 
 

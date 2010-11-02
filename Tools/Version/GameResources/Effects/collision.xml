@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Effect
+	frame_inc = "0.38" 
+	scale_inc = "0.3" 
+	rotate_inc = "0.1" 
+	initial_scale = "1.0" 
+	texture = "explosion" 
+	mapping_start = "1"
+	mapping_finish = "7"
+/>

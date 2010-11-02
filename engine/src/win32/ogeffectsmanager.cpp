@@ -19,6 +19,7 @@
 COGEffectsManager::COGEffectsManager ()
 {
     COGEffectBonusPick::LoadParams();
+    COGEffectCollision::LoadParams();
 }
 
 
