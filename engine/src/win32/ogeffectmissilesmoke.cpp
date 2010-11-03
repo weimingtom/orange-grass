@@ -10,16 +10,54 @@
 #include "OrangeGrass.h"
 
 
+float			COGEffectMissileSmoke::m_fAlphaFade;
+float			COGEffectMissileSmoke::m_fInitialScale;
+float			COGEffectMissileSmoke::m_fScaleInc;
+unsigned int	COGEffectMissileSmoke::m_numVertsAtOnce;
+float			COGEffectMissileSmoke::m_fRotateInc;
+Vec4			COGEffectMissileSmoke::m_color;
+std::string     COGEffectMissileSmoke::m_Texture;
+unsigned int    COGEffectMissileSmoke::m_MappingId;
+
+
 COGEffectMissileSmoke::~COGEffectMissileSmoke()
 {
+}
+
+
+
+// Load params.
+bool COGEffectMissileSmoke::LoadParams ()
+{
+	IOGSettingsReader* pReader = GetSettingsReader();
+
+    IOGSettingsSource* pSource = pReader->OpenSource(GetResourceMgr()->GetFullPath("Effects/missilesmoke.xml"));
+	if (!pSource)
+		return false;
+
+	IOGGroupNode* pRoot = pReader->OpenGroupNode(pSource, NULL, "Effect");
+	if (pRoot)
+	{
+		m_fAlphaFade = pReader->ReadFloatParam(pRoot, "alpha_fade");
+		m_fScaleInc = pReader->ReadFloatParam(pRoot, "scale_inc");
+		m_fRotateInc = pReader->ReadFloatParam(pRoot, "rotate_inc");
+		m_fInitialScale = pReader->ReadFloatParam(pRoot, "initial_scale");
+		m_numVertsAtOnce = (unsigned int)pReader->ReadIntParam(pRoot, "particles_at_once");
+		m_Texture = pReader->ReadStringParam(pRoot, "texture");
+		m_MappingId = (unsigned int)pReader->ReadIntParam(pRoot, "mapping");
+		m_color = pReader->ReadVec4Param(pRoot, "r", "g", "b", "a");
+    	pReader->CloseGroupNode(pRoot);
+	}
+	pReader->CloseSource(pSource);
+	return true;
 }
 
 
 // Initialize effect.
 void COGEffectMissileSmoke::Init(OGEffectType _Type)
 {
-	m_pTexture = GetResourceMgr()->GetTexture("smoke_01");
-	m_pMapping = m_pTexture->GetMapping(0);
+	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
+	m_pMapping = m_pTexture->GetMapping(m_MappingId);
     m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
 
 	m_bPositionUpdated = false;
@@ -34,26 +72,18 @@ void COGEffectMissileSmoke::Update (unsigned long _ElapsedTime)
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-	float fAlphaFade = 0.01f;
-	float fInitialScale = 2.0f;
-	float fScaleInc = 0.1f;
-	int numVertsAtOnce = 3;
-	unsigned int maxSmokeParticles = 60;
-    float fRotateInc = 0.1f;
-	Vec4 color = Vec4(0.6f, 0.6f, 0.6f, 0.2f);
-
-    std::vector<COGSmokeBillboard>::iterator iter = m_BBList.begin();
+    std::vector<ParticleFormat>::iterator iter = m_BBList.begin();
     while (iter != m_BBList.end())
     {
-        COGSmokeBillboard& particle = (*iter);
-        if (particle.pVertices[0].c.w >= fAlphaFade)
+        ParticleFormat& particle = (*iter);
+        if (particle.pVertices[0].c.w >= m_fAlphaFade)
         {
-            particle.scale += fScaleInc;
-            particle.angle += fRotateInc;
-    		particle.pVertices[0].c.w -= fAlphaFade;
-    		particle.pVertices[1].c.w -= fAlphaFade;
-    		particle.pVertices[2].c.w -= fAlphaFade;
-    		particle.pVertices[3].c.w -= fAlphaFade;
+            particle.scale += m_fScaleInc;
+            particle.angle += m_fRotateInc;
+    		particle.pVertices[0].c.w -= m_fAlphaFade;
+    		particle.pVertices[1].c.w -= m_fAlphaFade;
+    		particle.pVertices[2].c.w -= m_fAlphaFade;
+    		particle.pVertices[3].c.w -= m_fAlphaFade;
             ++iter;
         }
         else
@@ -73,21 +103,18 @@ void COGEffectMissileSmoke::Update (unsigned long _ElapsedTime)
 		float fDist = vDir.length();
 		vDir.normalize();
 
-		for (int n = 0; n < numVertsAtOnce; ++n)
+		for (unsigned int n = 0; n < m_numVertsAtOnce; ++n)
 		{
-			//if (m_BBList.size() < maxSmokeParticles-1)
-			{
-				COGSmokeBillboard particle;
-				particle.offset = vDir * (fDist * (float)n);
-				particle.scale = fInitialScale;
-                particle.angle = rand() * 0.01f;
-				particle.bDirty = true;
-				particle.pVertices[0].c = color;
-				particle.pVertices[1].c = color;
-				particle.pVertices[2].c = color;
-				particle.pVertices[3].c = color;
-				m_BBList.push_back(particle);
-			}
+			ParticleFormat particle;
+			particle.offset = vDir * (fDist * (float)n);
+			particle.scale = m_fInitialScale;
+			particle.angle = rand() * 0.01f;
+			particle.bDirty = true;
+			particle.pVertices[0].c = m_color;
+			particle.pVertices[1].c = m_color;
+			particle.pVertices[2].c = m_color;
+			particle.pVertices[3].c = m_color;
+			m_BBList.push_back(particle);
 		}
 	}
 }
@@ -127,10 +154,10 @@ void COGEffectMissileSmoke::Render (const MATRIX& _mWorld, unsigned int _Frame)
 
     MATRIX mR;
 	BBVert* pVert = NULL;
-    std::vector<COGSmokeBillboard>::iterator iter = m_BBList.begin();
+    std::vector<ParticleFormat>::iterator iter = m_BBList.begin();
     for (; iter != m_BBList.end(); ++iter)
     {
-        COGSmokeBillboard& particle = (*iter);
+        ParticleFormat& particle = (*iter);
         if (particle.bDirty)
         {
             particle.offset += m_vCurPosition;

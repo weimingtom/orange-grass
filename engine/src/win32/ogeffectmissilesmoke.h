@@ -36,9 +36,12 @@ public:
 	// Stop.
 	virtual void Stop ();
 
+    // Load params.
+    static bool LoadParams ();
+
 protected:
 
-	struct COGSmokeBillboard
+	struct ParticleFormat
 	{
 		bool    bDirty;
 		float	scale;
@@ -49,11 +52,20 @@ protected:
 
 protected:
 
-    std::vector<COGSmokeBillboard>  m_BBList;
-	Vec3							m_vPrevPosition;
-	Vec3							m_vCurPosition;
-	bool							m_bPositionUpdated;
-	IOGMapping*						m_pMapping;
+    std::vector<ParticleFormat>	m_BBList;
+	Vec3						m_vPrevPosition;
+	Vec3						m_vCurPosition;
+	bool						m_bPositionUpdated;
+	IOGMapping*					m_pMapping;
+
+	static float			m_fAlphaFade;
+	static float			m_fInitialScale;
+	static float			m_fScaleInc;
+	static unsigned int		m_numVertsAtOnce;
+    static float			m_fRotateInc;
+	static Vec4				m_color;
+    static std::string      m_Texture;
+    static unsigned int     m_MappingId;
 };
 
 
