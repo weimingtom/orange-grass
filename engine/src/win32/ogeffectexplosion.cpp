@@ -9,7 +9,23 @@
 #include "ogeffectexplosion.h"
 #include "OrangeGrass.h"
 
-#define MAX_PARTILES 6
+
+std::string COGEffectExplosion::m_Texture = std::string("explosion");
+unsigned int COGEffectExplosion::m_MaxParticles = 6;
+unsigned int COGEffectExplosion::m_MappingStartId = 1;
+unsigned int COGEffectExplosion::m_MappingFinishId = 7;
+float COGEffectExplosion::m_fFrameInc = 0.38f;
+float COGEffectExplosion::m_fInitialScale = 8.0f;
+float COGEffectExplosion::m_fScaleInc = 0.6f;
+unsigned int COGEffectExplosion::m_numVertsAtOnce = 5;
+float COGEffectExplosion::m_fRotateInc = 0.1f;
+int COGEffectExplosion::m_offset_min = -4;
+int	COGEffectExplosion::m_offset_max = 4;
+
+float COGEffectExplosion::m_fWaveInitialScale = 8.0f;
+float COGEffectExplosion::m_fWaveAlphaDec = 0.08f;
+float COGEffectExplosion::m_fWaveScaleInc = 1.5f;
+unsigned int COGEffectExplosion::m_WaveMappingId = 10;
 
 
 COGEffectExplosion::~COGEffectExplosion()
@@ -20,26 +36,26 @@ COGEffectExplosion::~COGEffectExplosion()
 // Initialize effect.
 void COGEffectExplosion::Init(OGEffectType _Type)
 {
-	m_pTexture = GetResourceMgr()->GetTexture("explosion");
+	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
     m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
 
-    m_Frames.reserve(7);
-    for (unsigned int i = 0; i < 7; ++i)
+    m_Frames.reserve(m_MappingFinishId - m_MappingStartId + 1);
+    for (unsigned int i = m_MappingStartId; i <= m_MappingFinishId; ++i)
     {
-        m_Frames.push_back(m_pTexture->GetMapping(i+1));
+        m_Frames.push_back(m_pTexture->GetMapping(i));
     }
-    m_BBList.reserve(MAX_PARTILES);
+    m_BBList.reserve(m_MaxParticles);
 
-	Vec4 color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
-    m_pWaveMapping = m_pTexture->GetMapping(10);
-    m_Wave.scale = 8.0f;
+	m_color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    m_pWaveMapping = m_pTexture->GetMapping(m_WaveMappingId);
+    m_Wave.scale = m_fWaveInitialScale;
     m_Wave.frame = 0.0f;
     m_Wave.angle = 0.0f;
     m_Wave.offset = Vec3(0,0,0);
-    m_Wave.pVertices[0].c = color;
-    m_Wave.pVertices[1].c = color;
-    m_Wave.pVertices[2].c = color;
-    m_Wave.pVertices[3].c = color;
+    m_Wave.pVertices[0].c = m_color;
+    m_Wave.pVertices[1].c = m_color;
+    m_Wave.pVertices[2].c = m_color;
+    m_Wave.pVertices[3].c = m_color;
     m_Wave.pVertices[0].t = Vec2(m_pWaveMapping->t1.x, m_pWaveMapping->t0.y);
     m_Wave.pVertices[1].t = Vec2(m_pWaveMapping->t0.x, m_pWaveMapping->t0.y);
     m_Wave.pVertices[2].t = Vec2(m_pWaveMapping->t1.x, m_pWaveMapping->t1.y);
@@ -55,26 +71,15 @@ void COGEffectExplosion::Update (unsigned long _ElapsedTime)
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-	float fFrameInc = 0.38f;
-	float fInitialScale = 8.0f;
-	float fScaleInc = 0.6f;
-	int numVertsAtOnce = 5;
-    float fRotateInc = 0.1f;
-	Vec4 color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
-	int r_min = -4;
-	int r_max = 4;
-	float fWaveAlphaDec = 0.08f;
-	float fWaveScaleInc = 1.5f;
-
-    std::vector<COGExplosionBillboard>::iterator iter = m_BBList.begin();
+    std::vector<ParticleFormat>::iterator iter = m_BBList.begin();
     while (iter != m_BBList.end())
     {
-        COGExplosionBillboard& particle = (*iter);
-        if (particle.frame < 6)
+        ParticleFormat& particle = (*iter);
+        if (particle.frame < m_Frames.size() - 1)
         {
-            particle.scale += fScaleInc;
-            particle.angle += fRotateInc;
-            particle.frame += fFrameInc;
+            particle.scale += m_fScaleInc;
+            particle.angle += m_fRotateInc;
+            particle.frame += m_fFrameInc;
             ++iter;
         }
         else
@@ -88,31 +93,32 @@ void COGEffectExplosion::Update (unsigned long _ElapsedTime)
         }
     }
 
-    if (m_Wave.pVertices[0].c.w >= fWaveAlphaDec)
+    if (m_Wave.pVertices[0].c.w >= m_fWaveAlphaDec)
     {
-        m_Wave.scale += fWaveScaleInc;
-        m_Wave.pVertices[0].c.w -= fWaveAlphaDec;
-        m_Wave.pVertices[1].c.w -= fWaveAlphaDec;
-        m_Wave.pVertices[2].c.w -= fWaveAlphaDec;
-        m_Wave.pVertices[3].c.w -= fWaveAlphaDec;
+        m_Wave.scale += m_fWaveScaleInc;
+        m_Wave.pVertices[0].c.w -= m_fWaveAlphaDec;
+        m_Wave.pVertices[1].c.w -= m_fWaveAlphaDec;
+        m_Wave.pVertices[2].c.w -= m_fWaveAlphaDec;
+        m_Wave.pVertices[3].c.w -= m_fWaveAlphaDec;
     }
 
-    for (int n = 0; n < numVertsAtOnce; ++n)
+	Vec4 color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    for (unsigned int n = 0; n < m_numVertsAtOnce; ++n)
     {
-        if (m_BBList.size() < MAX_PARTILES-1)
+        if (m_BBList.size() < m_MaxParticles-1)
         {
-            COGExplosionBillboard particle;
+            ParticleFormat particle;
             particle.offset = Vec3(
-				(float)GetRandomRange(r_min,r_max),
-				(float)GetRandomRange(r_min,r_max),
-				(float)GetRandomRange(r_min,r_max));
-            particle.scale = fInitialScale;
+				(float)GetRandomRange(m_offset_min,m_offset_max),
+				(float)GetRandomRange(m_offset_min,m_offset_max),
+				(float)GetRandomRange(m_offset_min,m_offset_max));
+            particle.scale = m_fInitialScale;
             particle.frame = 0.0f;
             particle.angle = GetRandomRange(-314,314) * 0.01f;
-            particle.pVertices[0].c = color;
-            particle.pVertices[1].c = color;
-            particle.pVertices[2].c = color;
-            particle.pVertices[3].c = color;
+            particle.pVertices[0].c = m_color;
+            particle.pVertices[1].c = m_color;
+            particle.pVertices[2].c = m_color;
+            particle.pVertices[3].c = m_color;
             m_BBList.push_back(particle);
         }
     }
@@ -133,10 +139,10 @@ void COGEffectExplosion::Render (const MATRIX& _mWorld, unsigned int _Frame)
 
     MATRIX mR;
     Vec3 vOffset = Vec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
-    std::vector<COGExplosionBillboard>::iterator iter = m_BBList.begin();
+    std::vector<ParticleFormat>::iterator iter = m_BBList.begin();
     for (; iter != m_BBList.end(); ++iter)
     {
-        COGExplosionBillboard& particle = (*iter);
+        ParticleFormat& particle = (*iter);
 
         MatrixRotationAxis(mR, particle.angle, m_vCameraLook.x, m_vCameraLook.y, m_vCameraLook.z);
 

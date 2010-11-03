@@ -35,7 +35,7 @@ public:
 
 protected:
 
-    struct COGExplosionBillboard
+    struct ParticleFormat
     {
         float   frame;
 	    float	scale;
@@ -46,10 +46,29 @@ protected:
 	
 protected:
 
-    std::vector<IOGMapping*>            m_Frames;
-    std::vector<COGExplosionBillboard>  m_BBList;
-    IOGMapping*                         m_pWaveMapping;
-    COGExplosionBillboard               m_Wave;
+    std::vector<IOGMapping*>    m_Frames;
+    std::vector<ParticleFormat>	m_BBList;
+    IOGMapping*                 m_pWaveMapping;
+    ParticleFormat              m_Wave;
+
+	Vec4						m_color;
+
+    static std::string          m_Texture;
+	static unsigned int			m_MaxParticles;
+    static unsigned int         m_MappingStartId;
+    static unsigned int         m_MappingFinishId;
+	static float				m_fFrameInc;
+	static float				m_fInitialScale;
+	static float				m_fScaleInc;
+	static unsigned int			m_numVertsAtOnce;
+    static float				m_fRotateInc;
+	static int					m_offset_min;
+	static int					m_offset_max;
+
+	static float				m_fWaveInitialScale;
+	static float				m_fWaveAlphaDec;
+	static float				m_fWaveScaleInc;
+    static unsigned int         m_WaveMappingId;
 };
 
 
