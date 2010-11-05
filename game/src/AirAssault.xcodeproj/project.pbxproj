@@ -66,6 +66,10 @@
 		B2032C97121826A8000C065B /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2032C93121826A8000C065B /* GameSystem.cpp */; };
 		B2032C98121826A8000C065B /* LoadScreenController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2032C95121826A8000C065B /* LoadScreenController.cpp */; };
 		B25618C212188A4200941752 /* AirAssault.app in Resources */ = {isa = PBXBuildFile; fileRef = B25618C112188A4200941752 /* AirAssault.app */; };
+		B293FA34127B2ED9000D2799 /* ogactorbonus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B293FA32127B2ED9000D2799 /* ogactorbonus.cpp */; };
+		B293FA37127B2EFF000D2799 /* ogeffectbonuspick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B293FA35127B2EFF000D2799 /* ogeffectbonuspick.cpp */; };
+		B293FA3A127B2F4B000D2799 /* ogshadowmodelshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B293FA38127B2F4B000D2799 /* ogshadowmodelshader.cpp */; };
+		B293FA3D127B2F8B000D2799 /* ogbonusphysicalobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B293FA3B127B2F8B000D2799 /* ogbonusphysicalobject.cpp */; };
 		B294D2511263906E00015F63 /* ogcoloreffectshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B294D24B1263906E00015F63 /* ogcoloreffectshader.cpp */; };
 		B294D2521263906E00015F63 /* ogspriteshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B294D24D1263906E00015F63 /* ogspriteshader.cpp */; };
 		B294D2531263906E00015F63 /* ogtextshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B294D24F1263906E00015F63 /* ogtextshader.cpp */; };
@@ -85,6 +89,8 @@
 		B2959D2D12748212005F5346 /* ogeffectexplosion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D2912748212005F5346 /* ogeffectexplosion.cpp */; };
 		B2959D2E12748212005F5346 /* ogeffectmissilesmoke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D2B12748212005F5346 /* ogeffectmissilesmoke.cpp */; };
 		B2959D311274829D005F5346 /* StartMenuScreenController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D2F1274829D005F5346 /* StartMenuScreenController.cpp */; };
+		B299F2C312847877001B95B0 /* ogactortargetedmissile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B299F2C112847877001B95B0 /* ogactortargetedmissile.cpp */; };
+		B299F2C6128478C2001B95B0 /* ogeffectcollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B299F2C4128478C2001B95B0 /* ogeffectcollision.cpp */; };
 		B29C64CA1222D4BF00FF91DA /* oginputdispatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29C64C81222D4BF00FF91DA /* oginputdispatcher.cpp */; };
 		B29C64CD1222D4E100FF91DA /* ogactorplayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29C64CB1222D4E100FF91DA /* ogactorplayer.cpp */; };
 		B29C64D11222D50800FF91DA /* ogplayerphysicalobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29C64CF1222D50800FF91DA /* ogplayerphysicalobject.cpp */; };
@@ -283,6 +289,15 @@
 		B2032CA712182ACC000C065B /* OpenGL2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpenGL2.h; path = ../../engine/sdk/OpenGL2/include/OpenGL2.h; sourceTree = SOURCE_ROOT; };
 		B25618C112188A4200941752 /* AirAssault.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = AirAssault.app; path = "build/Debug-iphoneos/AirAssault.app"; sourceTree = "<group>"; };
 		B28B45B7121A57DE0038E7B2 /* POD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = POD.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B293FA31127B2EA9000D2799 /* IOGWeapon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGWeapon.h; path = ../../engine/include/IOGWeapon.h; sourceTree = SOURCE_ROOT; };
+		B293FA32127B2ED9000D2799 /* ogactorbonus.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactorbonus.cpp; path = ../../engine/src/win32/ogactorbonus.cpp; sourceTree = SOURCE_ROOT; };
+		B293FA33127B2ED9000D2799 /* ogactorbonus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactorbonus.h; path = ../../engine/src/win32/ogactorbonus.h; sourceTree = SOURCE_ROOT; };
+		B293FA35127B2EFF000D2799 /* ogeffectbonuspick.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogeffectbonuspick.cpp; path = ../../engine/src/win32/ogeffectbonuspick.cpp; sourceTree = SOURCE_ROOT; };
+		B293FA36127B2EFF000D2799 /* ogeffectbonuspick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffectbonuspick.h; path = ../../engine/src/win32/ogeffectbonuspick.h; sourceTree = SOURCE_ROOT; };
+		B293FA38127B2F4B000D2799 /* ogshadowmodelshader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogshadowmodelshader.cpp; path = ../../engine/src/win32/ogshadowmodelshader.cpp; sourceTree = SOURCE_ROOT; };
+		B293FA39127B2F4B000D2799 /* ogshadowmodelshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogshadowmodelshader.h; path = ../../engine/src/win32/ogshadowmodelshader.h; sourceTree = SOURCE_ROOT; };
+		B293FA3B127B2F8B000D2799 /* ogbonusphysicalobject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogbonusphysicalobject.cpp; path = ../../engine/src/win32/ogbonusphysicalobject.cpp; sourceTree = SOURCE_ROOT; };
+		B293FA3C127B2F8B000D2799 /* ogbonusphysicalobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogbonusphysicalobject.h; path = ../../engine/src/win32/ogbonusphysicalobject.h; sourceTree = SOURCE_ROOT; };
 		B294D24A1263902A00015F63 /* IOGVertexBuffers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGVertexBuffers.h; path = ../../engine/include/IOGVertexBuffers.h; sourceTree = SOURCE_ROOT; };
 		B294D24B1263906E00015F63 /* ogcoloreffectshader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogcoloreffectshader.cpp; path = ../../engine/src/win32/ogcoloreffectshader.cpp; sourceTree = SOURCE_ROOT; };
 		B294D24C1263906E00015F63 /* ogcoloreffectshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogcoloreffectshader.h; path = ../../engine/src/win32/ogcoloreffectshader.h; sourceTree = SOURCE_ROOT; };
@@ -326,6 +341,10 @@
 		B2959D2C12748212005F5346 /* ogeffectmissilesmoke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffectmissilesmoke.h; path = ../../engine/src/win32/ogeffectmissilesmoke.h; sourceTree = SOURCE_ROOT; };
 		B2959D2F1274829D005F5346 /* StartMenuScreenController.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = StartMenuScreenController.cpp; sourceTree = "<group>"; };
 		B2959D301274829D005F5346 /* StartMenuScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartMenuScreenController.h; sourceTree = "<group>"; };
+		B299F2C112847877001B95B0 /* ogactortargetedmissile.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactortargetedmissile.cpp; path = ../../engine/src/win32/ogactortargetedmissile.cpp; sourceTree = SOURCE_ROOT; };
+		B299F2C212847877001B95B0 /* ogactortargetedmissile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactortargetedmissile.h; path = ../../engine/src/win32/ogactortargetedmissile.h; sourceTree = SOURCE_ROOT; };
+		B299F2C4128478C2001B95B0 /* ogeffectcollision.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogeffectcollision.cpp; path = ../../engine/src/win32/ogeffectcollision.cpp; sourceTree = SOURCE_ROOT; };
+		B299F2C5128478C2001B95B0 /* ogeffectcollision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffectcollision.h; path = ../../engine/src/win32/ogeffectcollision.h; sourceTree = SOURCE_ROOT; };
 		B29C64BD1222D36800FF91DA /* IOGInputDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGInputDispatcher.h; path = ../../engine/include/IOGInputDispatcher.h; sourceTree = SOURCE_ROOT; };
 		B29C64BE1222D36800FF91DA /* IOGInputReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGInputReceiver.h; path = ../../engine/include/IOGInputReceiver.h; sourceTree = SOURCE_ROOT; };
 		B29C64C81222D4BF00FF91DA /* oginputdispatcher.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = oginputdispatcher.cpp; path = ../../engine/src/win32/oginputdispatcher.cpp; sourceTree = SOURCE_ROOT; };
@@ -769,9 +788,99 @@
 			name = GUI;
 			sourceTree = "<group>";
 		};
+		B299F2CD1284796E001B95B0 /* Renderers */ = {
+			isa = PBXGroup;
+			children = (
+				B299F2CE1284797D001B95B0 /* GLES11 */,
+				B299F2CF1284798D001B95B0 /* GLES20 */,
+				B294D254126390B300015F63 /* ogtextrenderer_data.h */,
+				B294D259126390B300015F63 /* ogtextrenderer.cpp */,
+				B294D25A126390B300015F63 /* ogtextrenderer.h */,
+				B2B11C991226E8E7001E7ADE /* ogrenderer.cpp */,
+				B2B11C9A1226E8E7001E7ADE /* ogrenderer.h */,
+			);
+			name = Renderers;
+			sourceTree = "<group>";
+		};
+		B299F2CE1284797D001B95B0 /* GLES11 */ = {
+			isa = PBXGroup;
+			children = (
+				B294D255126390B300015F63 /* ogtextrenderer_gles11.cpp */,
+				B294D256126390B300015F63 /* ogtextrenderer_gles11.h */,
+				B294D25B126390B300015F63 /* ogvertexbuffers_gles11.cpp */,
+				B294D25C126390B300015F63 /* ogvertexbuffers_gles11.h */,
+				B2DF0521125A378E002BE972 /* ogrenderer_gles11.cpp */,
+				B2DF0522125A378E002BE972 /* ogrenderer_gles11.h */,
+			);
+			name = GLES11;
+			sourceTree = "<group>";
+		};
+		B299F2CF1284798D001B95B0 /* GLES20 */ = {
+			isa = PBXGroup;
+			children = (
+				B2DF0519125A373E002BE972 /* Shaders */,
+				B294D257126390B300015F63 /* ogtextrenderer_gles20.cpp */,
+				B294D258126390B300015F63 /* ogtextrenderer_gles20.h */,
+				B294D25D126390B300015F63 /* ogvertexbuffers_gles20.cpp */,
+				B294D25E126390B300015F63 /* ogvertexbuffers_gles20.h */,
+				B2DF0523125A378E002BE972 /* ogrenderer_gles20.cpp */,
+				B2DF0524125A378E002BE972 /* ogrenderer_gles20.h */,
+			);
+			name = GLES20;
+			sourceTree = "<group>";
+		};
+		B299F2D012847A24001B95B0 /* Workers */ = {
+			isa = PBXGroup;
+			children = (
+				B2959D1E127481A4005F5346 /* ogbotfallingworker.cpp */,
+				B2959D1F127481A4005F5346 /* ogbotfallingworker.h */,
+				B2959D20127481A4005F5346 /* ogbotflightworker.cpp */,
+				B2959D21127481A4005F5346 /* ogbotflightworker.h */,
+				B2DF0505125A372E002BE972 /* ogmissileflightworker.cpp */,
+				B2DF0506125A372E002BE972 /* ogmissileflightworker.h */,
+				B2DF0509125A372E002BE972 /* ogorientworker.cpp */,
+				B2DF050A125A372E002BE972 /* ogorientworker.h */,
+				B2DF050B125A372E002BE972 /* ogstabilizeworker.cpp */,
+				B2DF050C125A372E002BE972 /* ogstabilizeworker.h */,
+				B2DF050F125A372E002BE972 /* ogworker.cpp */,
+				B2DF0510125A372E002BE972 /* ogworker.h */,
+			);
+			name = Workers;
+			sourceTree = "<group>";
+		};
+		B299F2D112847A68001B95B0 /* Actors */ = {
+			isa = PBXGroup;
+			children = (
+				B2032C0B1218248A000C065B /* ogactor.cpp */,
+				B2032C0C1218248A000C065B /* ogactor.h */,
+				B299F2C112847877001B95B0 /* ogactortargetedmissile.cpp */,
+				B299F2C212847877001B95B0 /* ogactortargetedmissile.h */,
+				B293FA32127B2ED9000D2799 /* ogactorbonus.cpp */,
+				B293FA33127B2ED9000D2799 /* ogactorbonus.h */,
+				B2959D1A127481A4005F5346 /* ogactorbullet.cpp */,
+				B2959D1B127481A4005F5346 /* ogactorbullet.h */,
+				B2959D1C127481A4005F5346 /* ogactormissile.cpp */,
+				B2959D1D127481A4005F5346 /* ogactormissile.h */,
+				B294D2701263928300015F63 /* ogactorbot.cpp */,
+				B294D2711263928300015F63 /* ogactorbot.h */,
+				B2DF0503125A372E002BE972 /* ogactorplasmamissile.cpp */,
+				B2DF0504125A372E002BE972 /* ogactorplasmamissile.h */,
+				B29C64CB1222D4E100FF91DA /* ogactorplayer.cpp */,
+				B29C64CC1222D4E100FF91DA /* ogactorplayer.h */,
+				B2032C0D1218248A000C065B /* ogactorairbot.cpp */,
+				B2032C0E1218248A000C065B /* ogactorairbot.h */,
+				B2032C0F1218248A000C065B /* ogactorlandbot.cpp */,
+				B2032C101218248A000C065B /* ogactorlandbot.h */,
+				B2032C131218248A000C065B /* ogactorstatic.cpp */,
+				B2032C141218248A000C065B /* ogactorstatic.h */,
+			);
+			name = Actors;
+			sourceTree = "<group>";
+		};
 		B29C64B91222D29300FF91DA /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				B293FA31127B2EA9000D2799 /* IOGWeapon.h */,
 				B2DF04F1125A3622002BE972 /* IOGSettingsReader.h */,
 				B2DF04EF125A360C002BE972 /* IOGAppSettings.h */,
 				B2DF04F0125A360C002BE972 /* IOGGlobalVarsTable.h */,
@@ -902,44 +1011,16 @@
 		B29C64C51222D40800FF91DA /* GameLogic */ = {
 			isa = PBXGroup;
 			children = (
-				B2959D1A127481A4005F5346 /* ogactorbullet.cpp */,
-				B2959D1B127481A4005F5346 /* ogactorbullet.h */,
-				B2959D1C127481A4005F5346 /* ogactormissile.cpp */,
-				B2959D1D127481A4005F5346 /* ogactormissile.h */,
-				B2959D1E127481A4005F5346 /* ogbotfallingworker.cpp */,
-				B2959D1F127481A4005F5346 /* ogbotfallingworker.h */,
-				B2959D20127481A4005F5346 /* ogbotflightworker.cpp */,
-				B2959D21127481A4005F5346 /* ogbotflightworker.h */,
+				B299F2D112847A68001B95B0 /* Actors */,
+				B299F2D012847A24001B95B0 /* Workers */,
 				B2959D22127481A4005F5346 /* oggamesequence.cpp */,
 				B2959D23127481A4005F5346 /* oggamesequence.h */,
-				B294D2701263928300015F63 /* ogactorbot.cpp */,
-				B294D2711263928300015F63 /* ogactorbot.h */,
 				B2DF0501125A372E002BE972 /* ogactorparamsmgr.cpp */,
 				B2DF0502125A372E002BE972 /* ogactorparamsmgr.h */,
-				B2DF0503125A372E002BE972 /* ogactorplasmamissile.cpp */,
-				B2DF0504125A372E002BE972 /* ogactorplasmamissile.h */,
-				B2DF0505125A372E002BE972 /* ogmissileflightworker.cpp */,
-				B2DF0506125A372E002BE972 /* ogmissileflightworker.h */,
-				B2DF0509125A372E002BE972 /* ogorientworker.cpp */,
-				B2DF050A125A372E002BE972 /* ogorientworker.h */,
-				B2DF050B125A372E002BE972 /* ogstabilizeworker.cpp */,
-				B2DF050C125A372E002BE972 /* ogstabilizeworker.h */,
 				B2DF050D125A372E002BE972 /* ogweapon.cpp */,
 				B2DF050E125A372E002BE972 /* ogweapon.h */,
-				B2DF050F125A372E002BE972 /* ogworker.cpp */,
-				B2DF0510125A372E002BE972 /* ogworker.h */,
-				B29C64CB1222D4E100FF91DA /* ogactorplayer.cpp */,
-				B29C64CC1222D4E100FF91DA /* ogactorplayer.h */,
-				B2032C0B1218248A000C065B /* ogactor.cpp */,
-				B2032C0C1218248A000C065B /* ogactor.h */,
-				B2032C0D1218248A000C065B /* ogactorairbot.cpp */,
-				B2032C0E1218248A000C065B /* ogactorairbot.h */,
-				B2032C0F1218248A000C065B /* ogactorlandbot.cpp */,
-				B2032C101218248A000C065B /* ogactorlandbot.h */,
 				B2032C111218248A000C065B /* ogactormanager.cpp */,
 				B2032C121218248A000C065B /* ogactormanager.h */,
-				B2032C131218248A000C065B /* ogactorstatic.cpp */,
-				B2032C141218248A000C065B /* ogactorstatic.h */,
 			);
 			name = GameLogic;
 			sourceTree = "<group>";
@@ -947,28 +1028,13 @@
 		B29C64C61222D44400FF91DA /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
-				B2DF0519125A373E002BE972 /* Shaders */,
+				B299F2CD1284796E001B95B0 /* Renderers */,
 				B2AEFEC7124117570039DC17 /* Effects */,
 				B2B11C921226E8BA001E7ADE /* Materials */,
 				B2DF051D125A378E002BE972 /* oganimationcontroller.cpp */,
 				B2DF051E125A378E002BE972 /* oganimationcontroller.h */,
-				B294D254126390B300015F63 /* ogtextrenderer_data.h */,
-				B294D255126390B300015F63 /* ogtextrenderer_gles11.cpp */,
-				B294D256126390B300015F63 /* ogtextrenderer_gles11.h */,
-				B294D257126390B300015F63 /* ogtextrenderer_gles20.cpp */,
-				B294D258126390B300015F63 /* ogtextrenderer_gles20.h */,
-				B294D259126390B300015F63 /* ogtextrenderer.cpp */,
-				B294D25A126390B300015F63 /* ogtextrenderer.h */,
-				B294D25B126390B300015F63 /* ogvertexbuffers_gles11.cpp */,
-				B294D25C126390B300015F63 /* ogvertexbuffers_gles11.h */,
-				B294D25D126390B300015F63 /* ogvertexbuffers_gles20.cpp */,
-				B294D25E126390B300015F63 /* ogvertexbuffers_gles20.h */,
 				B2DF051F125A378E002BE972 /* oggrutility.cpp */,
 				B2DF0520125A378E002BE972 /* oggrutility.h */,
-				B2DF0521125A378E002BE972 /* ogrenderer_gles11.cpp */,
-				B2DF0522125A378E002BE972 /* ogrenderer_gles11.h */,
-				B2DF0523125A378E002BE972 /* ogrenderer_gles20.cpp */,
-				B2DF0524125A378E002BE972 /* ogrenderer_gles20.h */,
 				B2AEFED51241180B0039DC17 /* ogfog.cpp */,
 				B2AEFED61241180B0039DC17 /* ogfog.h */,
 				B2AEFED71241180B0039DC17 /* ogrendertarget.cpp */,
@@ -977,8 +1043,6 @@
 				B2AEFEDA1241180B0039DC17 /* ogspritepool.h */,
 				B2032C3C1218248A000C065B /* ogterrain.cpp */,
 				B2032C3D1218248A000C065B /* ogterrain.h */,
-				B2B11C991226E8E7001E7ADE /* ogrenderer.cpp */,
-				B2B11C9A1226E8E7001E7ADE /* ogrenderer.h */,
 				B2032C3E1218248A000C065B /* ogtexture.cpp */,
 				B2032C3F1218248A000C065B /* ogtexture.h */,
 				B2032C381218248A000C065B /* ogsprite.cpp */,
@@ -1005,6 +1069,8 @@
 		B29C64CE1222D4EC00FF91DA /* Physics */ = {
 			isa = PBXGroup;
 			children = (
+				B293FA3B127B2F8B000D2799 /* ogbonusphysicalobject.cpp */,
+				B293FA3C127B2F8B000D2799 /* ogbonusphysicalobject.h */,
 				B2DF0507125A372E002BE972 /* ogmissilephysicalobject.cpp */,
 				B2DF0508125A372E002BE972 /* ogmissilephysicalobject.h */,
 				B2032C3A1218248A000C065B /* ogstaticphysicalobject.cpp */,
@@ -1054,6 +1120,10 @@
 		B2AEFEC7124117570039DC17 /* Effects */ = {
 			isa = PBXGroup;
 			children = (
+				B299F2C4128478C2001B95B0 /* ogeffectcollision.cpp */,
+				B299F2C5128478C2001B95B0 /* ogeffectcollision.h */,
+				B293FA35127B2EFF000D2799 /* ogeffectbonuspick.cpp */,
+				B293FA36127B2EFF000D2799 /* ogeffectbonuspick.h */,
 				B2959D2912748212005F5346 /* ogeffectexplosion.cpp */,
 				B2959D2A12748212005F5346 /* ogeffectexplosion.h */,
 				B2959D2B12748212005F5346 /* ogeffectmissilesmoke.cpp */,
@@ -1124,6 +1194,8 @@
 		B2DF0519125A373E002BE972 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				B293FA38127B2F4B000D2799 /* ogshadowmodelshader.cpp */,
+				B293FA39127B2F4B000D2799 /* ogshadowmodelshader.h */,
 				B294D24B1263906E00015F63 /* ogcoloreffectshader.cpp */,
 				B294D24C1263906E00015F63 /* ogcoloreffectshader.h */,
 				B294D24D1263906E00015F63 /* ogspriteshader.cpp */,
@@ -1308,6 +1380,12 @@
 				B2959D2D12748212005F5346 /* ogeffectexplosion.cpp in Sources */,
 				B2959D2E12748212005F5346 /* ogeffectmissilesmoke.cpp in Sources */,
 				B2959D311274829D005F5346 /* StartMenuScreenController.cpp in Sources */,
+				B293FA34127B2ED9000D2799 /* ogactorbonus.cpp in Sources */,
+				B293FA37127B2EFF000D2799 /* ogeffectbonuspick.cpp in Sources */,
+				B293FA3A127B2F4B000D2799 /* ogshadowmodelshader.cpp in Sources */,
+				B293FA3D127B2F8B000D2799 /* ogbonusphysicalobject.cpp in Sources */,
+				B299F2C312847877001B95B0 /* ogactortargetedmissile.cpp in Sources */,
+				B299F2C6128478C2001B95B0 /* ogeffectcollision.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
