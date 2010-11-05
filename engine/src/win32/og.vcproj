@@ -254,6 +254,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogactortargetedmissile.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactortargetedmissile.h"
+					>
+				</File>
+				<File
 					RelativePath=".\oggamesequence.cpp"
 					>
 				</File>
