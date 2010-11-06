@@ -111,11 +111,11 @@ void COGActorBonus::Activate (bool _bActive)
 		return;
 
 	COGActor::Activate(_bActive);
-
-	if (!m_bActive)
-	{
-		m_pPickNode->Activate(false);
-	}
+	m_pPickNode->Activate(m_bActive);
+    if (m_bActive)
+    {
+        m_pPickEffect->Start();
+    }
 }
 
 
@@ -130,6 +130,7 @@ void COGActorBonus::UpdateAlive (unsigned long _ElapsedTime)
 void COGActorBonus::UpdateFalling (unsigned long _ElapsedTime)
 {
 	COGActor::UpdateFalling(_ElapsedTime);
+    m_pNode->Update(_ElapsedTime);
 
 	if (m_pPickEffect)
 	{
@@ -156,8 +157,7 @@ bool COGActorBonus::OnCollision (const IOGCollision& _Collision)
 	m_Status = OG_ACTORSTATUS_FALLING;
 	if (m_pPickEffect)
 	{
-		m_pPickNode->Activate(true);
-		m_pPickEffect->Start();
+        m_pPickEffect->Stop();
 	}
 	return true;
 }

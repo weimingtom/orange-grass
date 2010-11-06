@@ -69,7 +69,9 @@ private:
 	IOGCamera*		m_pCamera;
     IOGActor*       m_pPlayer;
 
-    IOGSprite*		m_pHUD;
+    IOGSprite*		m_pLifeHUD;
+    IOGSprite*		m_pSpecHUD;
+    IOGSprite*		m_pWeaponHUD;
     IOGSprite*		m_pWeaponIcon;
 
 	ControllerState	m_State;

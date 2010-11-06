@@ -35,6 +35,12 @@ public:
 	// Fire.
 	virtual void Fire ();
 
+	// Set target.
+	virtual void SetTarget (const Vec3& _vTarget);
+
+	// Set target.
+	virtual void SetTarget (IOGActor* _pTarget);
+
     // collision event handler
 	virtual bool OnCollision (const IOGCollision& _Collision);
 

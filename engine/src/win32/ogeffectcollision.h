@@ -52,6 +52,8 @@ protected:
     std::vector<IOGMapping*>    m_Frames;
     ParticleFormat              m_BB;
 
+    IOGPointLight*              m_pLight;
+
     static unsigned int         m_MappingStartId;
     static unsigned int         m_MappingFinishId;
 	static float                m_fFrameInc;

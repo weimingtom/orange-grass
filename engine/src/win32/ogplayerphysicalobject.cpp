@@ -41,7 +41,7 @@ void COGPlayerPhysicalObject::Create (const IOGAabb& _Aabb,
 void COGPlayerPhysicalObject::Strafe (float _fDir)
 {
     m_vStrafeVec += Vec3(_fDir,0,0);
-    //m_fRolling += _fDir;
+    m_fRolling += _fDir;
 	m_bUpdated = false;
 }
 
@@ -57,14 +57,18 @@ void COGPlayerPhysicalObject::Update (unsigned long _ElapsedTime)
     m_vPosition += vStrafeDist;
     OG_CLAMP(m_vPosition.x, vLeftBorder.x, vRightBorder.x);
 
-    //m_vRotation.z += m_fRolling * m_pParams->fRollSpeed * _ElapsedTime;
-    //OG_CLAMP(m_vRotation.z, -m_pParams->fMaxRollAngle, m_pParams->fMaxRollAngle);
+    m_vRotation.z += m_fRolling * m_pParams->fRollSpeed * _ElapsedTime;
+    OG_CLAMP(m_vRotation.z, -m_pParams->fMaxRollAngle, m_pParams->fMaxRollAngle);
+    m_vRotation.x += fabsf(m_fRolling) * m_pParams->fRollSpeed * _ElapsedTime;
+    OG_CLAMP(m_vRotation.x, -m_pParams->fMaxRollAngle, m_pParams->fMaxRollAngle);
 
     COGPhysicalObject::Update(_ElapsedTime);
 
     m_vStrafeVec.x /= 1.08f;
-    //m_fRolling /= 1.08f;
-    //m_vRotation.z /= 1.08f;
+    m_fRolling /= 1.08f;
+
+    m_vRotation.z /= 1.08f;
+    m_vRotation.x /= 1.08f;
     	
 	m_bUpdated = false;
 }

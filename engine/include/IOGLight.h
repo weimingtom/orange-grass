@@ -12,22 +12,39 @@
 #include "Mathematics.h"
 
 
+struct IOGPointLight
+{
+    Vec4 vColor;
+    float fIntensity;
+    Vec3 vPosition;
+};
+
+
 class IOGLight
 {
 public:
 	virtual ~IOGLight () {}
 
 	// set light color.
-	virtual void SetColor (const Vec4& _vColor) = 0;
+	virtual void SetMainLightColor (const Vec4& _vColor) = 0;
 
 	// get light color.
-	virtual const Vec4& GetColor () const = 0;
+	virtual const Vec4& GetMainLightColor () const = 0;
 
 	// set light direction.
-	virtual void SetDirection (const Vec3& _vDirection) = 0;
+	virtual void SetMainLightDirection (const Vec3& _vDirection) = 0;
 
 	// get light direction.
-	virtual const Vec3& GetDirection () const = 0;
+	virtual const Vec3& GetMainLightDirection () const = 0;
+
+	// add light.
+	virtual IOGPointLight* CreatePointLight () = 0;
+
+	// add light.
+	virtual void DestroyPointLight (IOGPointLight* _pLight) = 0;
+
+	// get light.
+	virtual IOGPointLight* GetPointLight (unsigned int _Id) = 0;
 };
 
 #endif

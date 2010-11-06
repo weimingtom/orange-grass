@@ -2,7 +2,7 @@
 <Effect
 	alpha_inc = "0.08" 
 	scale_inc = "1.5" 
-	initial_scale = "8.0" 
+	initial_scale = "3.0" 
 	texture = "explosion" 
-	mapping = "10"
+	mapping = "11"
 />

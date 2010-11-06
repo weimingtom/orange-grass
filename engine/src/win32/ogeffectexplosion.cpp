@@ -36,6 +36,7 @@ COGEffectExplosion::~COGEffectExplosion()
 // Initialize effect.
 void COGEffectExplosion::Init(OGEffectType _Type)
 {
+    m_pLight = NULL;
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
     m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
 
@@ -175,6 +176,12 @@ void COGEffectExplosion::Render (const MATRIX& _mWorld, unsigned int _Frame)
     m_Wave.pVertices[2].p = vOffset + vWaveRight - vWaveUp;
     m_Wave.pVertices[3].p = vOffset - vWaveRight - vWaveUp;
 	m_pRenderer->DrawEffectBuffer(&m_Wave.pVertices[0], 0, 4);
+
+    if (m_pLight)
+    {
+        m_pLight->vPosition = vOffset;
+        m_pLight->fIntensity -= (m_fWaveAlphaDec*80.0f);
+    }
 }
 
 
@@ -182,6 +189,14 @@ void COGEffectExplosion::Render (const MATRIX& _mWorld, unsigned int _Frame)
 void COGEffectExplosion::Start ()
 {
 	m_Status = OG_EFFECTSTATUS_STARTED;
+
+    m_pLight = m_pRenderer->GetLight()->CreatePointLight();
+    if (m_pLight)
+    {
+        m_pLight->vColor = Vec4(1, 1, 0, 1);
+        m_pLight->fIntensity = 100.0f;
+    }
+
     m_BBList.clear();
 }
 
@@ -189,6 +204,12 @@ void COGEffectExplosion::Start ()
 // Stop.
 void COGEffectExplosion::Stop ()
 {
-	m_Status = OG_EFFECTSTATUS_INACTIVE;
+    if (m_pLight)
+    {
+        m_pRenderer->GetLight()->DestroyPointLight(m_pLight);
+        m_pLight = NULL;
+    }
+
+    m_Status = OG_EFFECTSTATUS_INACTIVE;
     m_BBList.clear();
 }

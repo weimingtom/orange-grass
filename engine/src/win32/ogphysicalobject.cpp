@@ -227,12 +227,22 @@ void COGPhysicalObject::Update (unsigned long _ElapsedTime)
 	WorldMatrixFromTransforms(m_mWorld, m_vPosition, m_vRotation, m_vScaling);
 	m_Obb.UpdateTransform(m_mWorld);
 
-    MatrixVec3Multiply(m_vLook, Vec3(0,0,-1), m_mWorld);
+    MATRIX mR;
+    MatrixRotationY(mR, m_vRotation.y);
+
+    MatrixVec3Multiply(m_vLook, Vec3(0,0,-1), mR);
 	m_vLook.normalize();
-    MatrixVec3Multiply(m_vRight, Vec3(1,0,0), m_mWorld);
+    MatrixVec3Multiply(m_vRight, Vec3(1,0,0), mR);
 	m_vRight.normalize();
-    MatrixVec3Multiply(m_vUp, Vec3(0,1,0), m_mWorld);
+    MatrixVec3Multiply(m_vUp, Vec3(0,1,0), mR);
 	m_vUp.normalize();
+
+    //MatrixVec3Multiply(m_vLook, Vec3(0,0,-1), m_mWorld);
+    //m_vLook.normalize();
+    //MatrixVec3Multiply(m_vRight, Vec3(1,0,0), m_mWorld);
+    //m_vRight.normalize();
+    //MatrixVec3Multiply(m_vUp, Vec3(0,1,0), m_mWorld);
+    //m_vUp.normalize();
 
     m_bUpdated = true;
 }

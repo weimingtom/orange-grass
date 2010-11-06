@@ -53,6 +53,7 @@ bool COGEffectCollision::LoadParams ()
 // Initialize effect.
 void COGEffectCollision::Init(OGEffectType _Type)
 {
+    m_pLight = NULL;
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
     m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
 
@@ -139,6 +140,12 @@ void COGEffectCollision::Render (const MATRIX& _mWorld, unsigned int _Frame)
     m_BB.pVertices[3].t = Vec2(pMapping->t0.x, pMapping->t1.y);
 
     m_pRenderer->DrawEffectBuffer(&m_BB.pVertices[0], 0, 4);
+
+    if (m_pLight)
+    {
+        m_pLight->vPosition = vOffset;
+        m_pLight->fIntensity = ((m_Frames.size()-(unsigned int)m_BB.frame) * 2.0f);
+    }
 }
 
 
@@ -147,6 +154,12 @@ void COGEffectCollision::Start ()
 {
 	m_Status = OG_EFFECTSTATUS_STARTED;
     m_BB.bDirty = true;
+    m_pLight = m_pRenderer->GetLight()->CreatePointLight();
+    if (m_pLight)
+    {
+        m_pLight->vColor = Vec4(1, 1, 0, 1);
+        m_pLight->fIntensity = 20.0f;
+    }
 }
 
 
@@ -155,4 +168,9 @@ void COGEffectCollision::Stop ()
 {
 	m_Status = OG_EFFECTSTATUS_INACTIVE;
     m_BB.bDirty = true;
+    if (m_pLight)
+    {
+        m_pRenderer->GetLight()->DestroyPointLight(m_pLight);
+        m_pLight = NULL;
+    }
 }

@@ -1,22 +1,22 @@
 /*
- *  OGEffectMissileSmoke.h
+ *  OGEffectTrailSmoke.h
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 11.11.09.
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#ifndef OGEFFECTMISSILESMOKE_H_
-#define OGEFFECTMISSILESMOKE_H_
+#ifndef OGEFFECTTRAILSMOKE_H_
+#define OGEFFECTTRAILSMOKE_H_
 
 #include "OGEffect.h"
 #include <vector>
 
 
-class COGEffectMissileSmoke : public COGEffect
+class COGEffectTrailSmoke : public COGEffect
 {
 public:
-	virtual ~COGEffectMissileSmoke();
+	virtual ~COGEffectTrailSmoke();
 
 	// Initialize effect.
 	virtual void Init(OGEffectType _Type);
@@ -58,11 +58,6 @@ protected:
 	bool						m_bPositionUpdated;
 	IOGMapping*					m_pMapping;
 
-    ParticleFormat	            m_Glow;
-	IOGMapping*					m_pGlowMapping;
-
-    IOGPointLight*              m_pLight;
-
 	static float			m_fAlphaFade;
 	static float			m_fInitialScale;
 	static float			m_fScaleInc;
@@ -71,8 +66,6 @@ protected:
 	static Vec4				m_color;
     static std::string      m_Texture;
     static unsigned int     m_MappingId;
-
-    static unsigned int     m_GlowMappingId;
 };
 
 

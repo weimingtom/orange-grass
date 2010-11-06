@@ -3,7 +3,7 @@
 	<Params 
 		actor = "missile_01"
 		hitpoints = "200"
-		cooldown = "3000"
+		cooldown = "2000"
 		position = "left_right"
 		icon_texture = "weapon_missile01"
 		/>

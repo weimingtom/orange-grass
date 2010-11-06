@@ -62,38 +62,66 @@ void COGRenderer_GLES11::EnableLight (bool _bEnable)
 {
 	if (_bEnable)
 	{
-        const Vec3& vD = m_pLight->GetDirection();
+        const Vec3& vD = m_pLight->GetMainLightDirection();
         Vec4 vDir = Vec4(vD.x, vD.y, vD.z, 0.0f);
         glLightfv(GL_LIGHT0, GL_POSITION, (VERTTYPE*)&vDir);
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, (VERTTYPE*)&m_pLight->GetColor());
-	    glLightfv(GL_LIGHT0, GL_AMBIENT, (VERTTYPE*)&m_pLight->GetColor());
-	    glLightfv(GL_LIGHT0, GL_SPECULAR, (VERTTYPE*)&m_pLight->GetColor());
+        glLightfv(GL_LIGHT0, GL_DIFFUSE, (VERTTYPE*)&m_pLight->GetMainLightColor());
+	    glLightfv(GL_LIGHT0, GL_AMBIENT, (VERTTYPE*)&m_pLight->GetMainLightColor());
+	    glLightfv(GL_LIGHT0, GL_SPECULAR, (VERTTYPE*)&m_pLight->GetMainLightColor());
 		glEnable(GL_LIGHTING);
 		glEnable(GL_LIGHT0);
+
+        unsigned int Id = 0;
+        IOGPointLight* pLight = m_pLight->GetPointLight(Id);
+        while (pLight)
+        {
+            Vec4 vDir = Vec4(pLight->vPosition.x, pLight->vPosition.y, pLight->vPosition.z, 1.0f);
+            OG_CLAMP(pLight->fIntensity, 1.0f, 100.0f);
+            float fAttentuation = 0.01f / pLight->fIntensity;
+
+            glLightfv(GL_LIGHT0+Id+1, GL_POSITION, (VERTTYPE*)&vDir);
+            glLightfv(GL_LIGHT0+Id+1, GL_DIFFUSE, (VERTTYPE*)&pLight->vColor);
+            glLightfv(GL_LIGHT0+Id+1, GL_AMBIENT, (VERTTYPE*)&pLight->vColor);
+            glLightfv(GL_LIGHT0+Id+1, GL_SPECULAR, (VERTTYPE*)&pLight->vColor);
+            glLightf(GL_LIGHT0+Id+1, GL_CONSTANT_ATTENUATION, 0.0f);
+            glLightf(GL_LIGHT0+Id+1, GL_LINEAR_ATTENUATION, 0.0f);
+            glLightf(GL_LIGHT0+Id+1, GL_QUADRATIC_ATTENUATION, fAttentuation);
+            glEnable(GL_LIGHT0+Id+1);
+
+            ++Id;
+            pLight = m_pLight->GetPointLight(Id);
+        }
 	}
 	else
 	{
 		glDisable(GL_LIGHTING);
 		glDisable(GL_LIGHT0);
-	}
+
+        unsigned int Id = 0;
+        while (m_pLight->GetPointLight(Id))
+        {
+    		glDisable(GL_LIGHT0+Id+1);
+            ++Id;
+        }
+    }
 }
 
 
 // Enable scene fog.
 void COGRenderer_GLES11::EnableFog (bool _bEnable)
 {
-	if (_bEnable)
+    if (_bEnable)
     {
         const float* pColor = (const float*)&m_pFog->GetColor();
-    	glFogf(GL_FOG_MODE, GL_LINEAR);
-	    glHint(GL_FOG_HINT, GL_DONT_CARE);
+        glFogf(GL_FOG_MODE, GL_LINEAR);
+        glHint(GL_FOG_HINT, GL_DONT_CARE);
         glFogfv(GL_FOG_COLOR, pColor);
         glFogf(GL_FOG_START, m_pFog->GetStart());
         glFogf(GL_FOG_END, m_pFog->GetEnd());
         glFogf(GL_FOG_DENSITY, m_pFog->GetDensity());
-		glEnable(GL_FOG);
+        glEnable(GL_FOG);
     }
-	else
+    else
     {
 		glDisable(GL_FOG);
     }

@@ -61,7 +61,9 @@ bool CGameScreenController::Init ()
 	m_pCurLevel = GetLevelManager()->LoadLevel(pLevelParams->alias);
     m_pPlayer = GetActorManager()->GetPlayersActor();
 
-	m_pHUD = m_pResourceMgr->GetSprite("hud");
+	m_pLifeHUD = m_pResourceMgr->GetSprite("life_hud");
+	m_pSpecHUD = m_pResourceMgr->GetSprite("spec_hud");
+	m_pWeaponHUD = m_pResourceMgr->GetSprite("weapon_hud");
 	m_pWeaponIcon = m_pResourceMgr->GetSprite(m_pPlayer->GetWeapon()->GetParams()->icon_texture);
 
 	UpdateCamera();
@@ -121,8 +123,11 @@ void CGameScreenController::RenderScene ()
     m_pRenderer->EnableFog(false);
 
     m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
-	m_pHUD->Render(Vec2(365, 231), Vec2(115.0f, 89.0f));
-	m_pWeaponIcon->Render(Vec2(398, 243), Vec2(64.0f, 64.0f));
+	m_pWeaponHUD->Render(Vec2(420, 260), Vec2(60.0f, 60.0f));
+	m_pWeaponIcon->Render(Vec2(430, 270), Vec2(40.0f, 40.0f));
+	m_pLifeHUD->Render(Vec2(0, 0), Vec2(256.0f, 32.0f));
+	m_pSpecHUD->Render(Vec2(0, 40), Vec2(90.0f, 60.0f));
+
 	m_pRenderer->FinishRenderMode();
 /*
 	unsigned long fps = 0;
@@ -182,8 +187,8 @@ bool CGameScreenController::OnVectorChanged (const Vec3& _vVec)
 // Touch event handler.
 bool CGameScreenController::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
 {
-	Vec2 vPos = Vec2(365, 231);
-	Vec2 vSize = Vec2(115.0f, 89.0f);
+	Vec2 vPos = Vec2(420, 260);
+	Vec2 vSize = Vec2(60.0f, 60.0f);
     if (_vPos.x >= vPos.x && 
         _vPos.y >= vPos.y &&
         _vPos.x <= vPos.x + vSize.x && 
@@ -192,7 +197,7 @@ bool CGameScreenController::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
 		IOGWeapon* pWeapon = m_pPlayer->GetWeapon();
 		if (pWeapon && pWeapon->IsReady())
 		{
-			pWeapon->Fire();
+			pWeapon->Fire(NULL, false);
 		}
 		return true;
 	}

@@ -1,37 +1,37 @@
 /*
- *  ogeffectmissilesmoke.cpp
+ *  ogeffecttrailsmoke.cpp
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 08.11.09.
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "ogeffectmissilesmoke.h"
+#include "ogeffecttrailsmoke.h"
 #include "OrangeGrass.h"
 
 
-float			COGEffectMissileSmoke::m_fAlphaFade;
-float			COGEffectMissileSmoke::m_fInitialScale;
-float			COGEffectMissileSmoke::m_fScaleInc;
-unsigned int	COGEffectMissileSmoke::m_numVertsAtOnce;
-float			COGEffectMissileSmoke::m_fRotateInc;
-Vec4			COGEffectMissileSmoke::m_color;
-std::string     COGEffectMissileSmoke::m_Texture;
-unsigned int    COGEffectMissileSmoke::m_MappingId;
-unsigned int    COGEffectMissileSmoke::m_GlowMappingId;
+float			COGEffectTrailSmoke::m_fAlphaFade;
+float			COGEffectTrailSmoke::m_fInitialScale;
+float			COGEffectTrailSmoke::m_fScaleInc;
+unsigned int	COGEffectTrailSmoke::m_numVertsAtOnce;
+float			COGEffectTrailSmoke::m_fRotateInc;
+Vec4			COGEffectTrailSmoke::m_color;
+std::string     COGEffectTrailSmoke::m_Texture;
+unsigned int    COGEffectTrailSmoke::m_MappingId;
 
 
-COGEffectMissileSmoke::~COGEffectMissileSmoke()
+COGEffectTrailSmoke::~COGEffectTrailSmoke()
 {
 }
 
 
+
 // Load params.
-bool COGEffectMissileSmoke::LoadParams ()
+bool COGEffectTrailSmoke::LoadParams ()
 {
 	IOGSettingsReader* pReader = GetSettingsReader();
 
-    IOGSettingsSource* pSource = pReader->OpenSource(GetResourceMgr()->GetFullPath("Effects/missilesmoke.xml"));
+    IOGSettingsSource* pSource = pReader->OpenSource(GetResourceMgr()->GetFullPath("Effects/trailsmoke.xml"));
 	if (!pSource)
 		return false;
 
@@ -45,7 +45,6 @@ bool COGEffectMissileSmoke::LoadParams ()
 		m_numVertsAtOnce = (unsigned int)pReader->ReadIntParam(pRoot, "particles_at_once");
 		m_Texture = pReader->ReadStringParam(pRoot, "texture");
 		m_MappingId = (unsigned int)pReader->ReadIntParam(pRoot, "mapping");
-		m_GlowMappingId = (unsigned int)pReader->ReadIntParam(pRoot, "glow_mapping");
 		m_color = pReader->ReadVec4Param(pRoot, "r", "g", "b", "a");
     	pReader->CloseGroupNode(pRoot);
 	}
@@ -55,30 +54,20 @@ bool COGEffectMissileSmoke::LoadParams ()
 
 
 // Initialize effect.
-void COGEffectMissileSmoke::Init(OGEffectType _Type)
+void COGEffectTrailSmoke::Init(OGEffectType _Type)
 {
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
 	m_pMapping = m_pTexture->GetMapping(m_MappingId);
-	m_pGlowMapping = m_pTexture->GetMapping(m_GlowMappingId);
     m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
 
 	m_bPositionUpdated = false;
     m_BBList.reserve(60);
-
-    m_Glow.bDirty = false;
-    m_Glow.scale = 2.0f;
-    m_Glow.angle = GetRandomRange(-314,314) * 0.01f;
-    m_Glow.pVertices[0].c = Vec4(1.0f,1.0f,1.0f,0.6f);
-    m_Glow.pVertices[1].c = Vec4(1.0f,1.0f,1.0f,0.6f);
-    m_Glow.pVertices[2].c = Vec4(1.0f,1.0f,1.0f,0.6f);
-    m_Glow.pVertices[3].c = Vec4(1.0f,1.0f,1.0f,0.6f);
-
     m_AABB.SetMinMax(Vec3(-1,-1,-1), Vec3(1,1,1));
 }
 
 
 // Update.
-void COGEffectMissileSmoke::Update (unsigned long _ElapsedTime)
+void COGEffectTrailSmoke::Update (unsigned long _ElapsedTime)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
@@ -103,7 +92,6 @@ void COGEffectMissileSmoke::Update (unsigned long _ElapsedTime)
             if (m_BBList.empty())
             {
                 m_Status = OG_EFFECTSTATUS_INACTIVE;
-                //m_pRenderer->GetLight()->DestroyPointLight(m_pLight);
                 return;
             }
         }
@@ -133,7 +121,7 @@ void COGEffectMissileSmoke::Update (unsigned long _ElapsedTime)
 
 
 // Update position.
-void COGEffectMissileSmoke::UpdatePosition (const Vec3& _vPosition)
+void COGEffectTrailSmoke::UpdatePosition (const Vec3& _vPosition)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
@@ -153,7 +141,7 @@ void COGEffectMissileSmoke::UpdatePosition (const Vec3& _vPosition)
 
 
 // Render.
-void COGEffectMissileSmoke::Render (const MATRIX& _mWorld, unsigned int _Frame)
+void COGEffectTrailSmoke::Render (const MATRIX& _mWorld, unsigned int _Frame)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
@@ -203,57 +191,19 @@ void COGEffectMissileSmoke::Render (const MATRIX& _mWorld, unsigned int _Frame)
 
 		m_pRenderer->DrawEffectBuffer(&particle.pVertices[0], 0, 4);
     }
-
-    if (m_Status != OG_EFFECTSTATUS_STOPPED)
-    {
-        MatrixRotationAxis(mR, m_Glow.angle, m_vCameraLook.x, m_vCameraLook.y, m_vCameraLook.z);
-
-        Vec3 vSUp = m_vCameraUp * m_Glow.scale;
-        Vec3 vSRight = m_vCameraRight * m_Glow.scale;
-
-        pVert = &m_Glow.pVertices[0];
-        MatrixVecMultiply(pVert->p, vSRight + vSUp, mR);
-        pVert->p += m_vCurPosition;
-        pVert->t.x = m_pGlowMapping->t1.x; pVert->t.y = m_pGlowMapping->t0.y;
-
-        pVert = &m_Glow.pVertices[1];
-        MatrixVecMultiply(pVert->p, -vSRight + vSUp, mR);
-        pVert->p += m_vCurPosition;
-        pVert->t.x = m_pGlowMapping->t0.x; pVert->t.y = m_pGlowMapping->t0.y;
-
-        pVert = &m_Glow.pVertices[2];
-        MatrixVecMultiply(pVert->p, vSRight - vSUp, mR);
-        pVert->p += m_vCurPosition;
-        pVert->t.x = m_pGlowMapping->t1.x; pVert->t.y = m_pGlowMapping->t1.y;
-
-        pVert = &m_Glow.pVertices[3];
-        MatrixVecMultiply(pVert->p, -vSRight - vSUp, mR);
-        pVert->p += m_vCurPosition;
-        pVert->t.x = m_pGlowMapping->t0.x; pVert->t.y = m_pGlowMapping->t1.y;
-
-        m_pRenderer->DrawEffectBuffer(&m_Glow.pVertices[0], 0, 4);
-    }
-
-    //if (m_pLight)
-    //{
-    //    m_pLight->vPosition = m_vCurPosition;
-    //    m_pLight->vColor = Vec4(1, 0, 0, 1);
-    //    m_pLight->fIntensity = 10.0f;
-    //}
 }
 
 
 // Start.
-void COGEffectMissileSmoke::Start ()
+void COGEffectTrailSmoke::Start ()
 {
 	m_Status = OG_EFFECTSTATUS_STARTED;
-    //m_pLight = m_pRenderer->GetLight()->CreatePointLight();
     m_BBList.clear();
 }
 
 
 // Stop.
-void COGEffectMissileSmoke::Stop ()
+void COGEffectTrailSmoke::Stop ()
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;

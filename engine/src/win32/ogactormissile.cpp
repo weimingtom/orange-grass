@@ -149,6 +149,22 @@ void COGActorMissile::Fire ()
 }
 
 
+// Set target.
+void COGActorMissile::SetTarget (const Vec3& _vTarget)
+{
+    COGActorBullet::SetTarget(_vTarget);
+    m_FlightWorker.SetTarget(_vTarget);
+}
+
+
+// Set target.
+void COGActorMissile::SetTarget (IOGActor* _pTarget)
+{
+    COGActorBullet::SetTarget(_pTarget);
+    m_FlightWorker.SetTarget(_pTarget);
+}
+
+
 // collision event handler
 bool COGActorMissile::OnCollision (const IOGCollision& _Collision)
 {

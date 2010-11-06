@@ -9,6 +9,7 @@
 #include "ogeffectsmanager.h"
 #include "ogplasmaeffect.h"
 #include "ogeffectmissilesmoke.h"
+#include "ogeffecttrailsmoke.h"
 #include "ogeffectexplosion.h"
 #include "ogeffectbonuspick.h"
 #include "ogeffectcollision.h"
@@ -21,6 +22,7 @@ COGEffectsManager::COGEffectsManager ()
     COGEffectBonusPick::LoadParams();
     COGEffectCollision::LoadParams();
     COGEffectMissileSmoke::LoadParams();
+    COGEffectTrailSmoke::LoadParams();
 }
 
 
@@ -69,6 +71,14 @@ IOGEffect* COGEffectsManager::CreateEffect (OGEffectType _Type)
 	case OG_EFFECT_COLLISION:
 		{
 			COGEffectCollision* pEffect = new COGEffectCollision();
+			pEffect->Init(_Type);
+			return pEffect;
+		}
+		break;
+
+	case OG_EFFECT_TRAILSMOKE:
+		{
+			COGEffectTrailSmoke* pEffect = new COGEffectTrailSmoke();
 			pEffect->Init(_Type);
 			return pEffect;
 		}

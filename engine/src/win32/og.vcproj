@@ -509,6 +509,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\ogeffecttrailsmoke.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogeffecttrailsmoke.h"
+						>
+					</File>
+					<File
 						RelativePath=".\ogplasmaeffect.cpp"
 						>
 					</File>

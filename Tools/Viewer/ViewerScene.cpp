@@ -57,8 +57,8 @@ bool CViewerScene::Init ()
 
 	Vec3 vLightDir = Vec3(0,1,0);
 	Vec4 vLightColor = Vec4(1,1,1,1);
-	m_pRenderer->GetLight()->SetDirection(vLightDir);
-	m_pRenderer->GetLight()->SetColor(vLightColor);
+	m_pRenderer->GetLight()->SetMainLightDirection(vLightDir);
+	m_pRenderer->GetLight()->SetMainLightColor(vLightColor);
 
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);

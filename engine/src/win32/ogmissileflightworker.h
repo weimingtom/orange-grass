@@ -27,12 +27,41 @@ public:
 	// Set active state.
 	virtual void Activate (bool _bActive);
 
+	// Set target.
+	virtual void SetTarget (const Vec3& _vTarget);
+
+	// Set target.
+	virtual void SetTarget (IOGActor* _pTarget);
+
 	// Reset worker.
 	virtual void Reset ();
 
 protected:
 
+	// Update actor.
+	virtual void UpdateStraight (unsigned long _ElapsedTime);
+
+	// Update actor.
+	virtual void UpdateTargeted (unsigned long _ElapsedTime);
+
+protected:
+
+    enum FlightStatus
+    {
+        WRK_STATUS_LAUNCH,
+        WRK_STATUS_TARGETING,
+        WRK_STATUS_STRAIGHT
+    };
+
     Vec3		m_vStartPos;
+
+    Vec3        m_vTarget;
+    IOGActor*   m_pTarget;
+    bool        m_bTargeted;
+    float       m_fFlightDistance;
+
+    FlightStatus    m_FlightStatus;
+    float           m_fPrevDistToTarget;
 };
 
 

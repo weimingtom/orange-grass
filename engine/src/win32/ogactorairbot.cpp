@@ -76,7 +76,11 @@ void COGActorAirBot::UpdateAlive (unsigned long _ElapsedTime)
             m_pWeapon->Update(_ElapsedTime);
             if (m_pWeapon->IsReady())
             {
-                m_pWeapon->Fire();
+                IOGActor* pPlayer = GetActorManager()->GetPlayersActor();
+                if (pPlayer)
+                {
+                    m_pWeapon->Fire(pPlayer, true);
+                }
             }
         }
 
@@ -123,14 +127,9 @@ bool COGActorAirBot::OnCollision (const IOGCollision& _Collision)
 void COGActorAirBot::SetFallingStatus ()
 {
     COGActorBot::SetFallingStatus();
-
-    IOGActor* m_pBonus = GetActorManager()->CreateActor(
-        "bonus_02", m_pPhysicalObject->GetPosition(), 
-        Vec3(0,0,0), Vec3(1,1,1));
-    GetActorManager()->AddActor(m_pBonus);
-    m_pBonus->Activate(true);
-    m_Status = OG_ACTORSTATUS_FALLING;
     m_FallingWorker.Activate(true);
+
+    ThrowBonus();
 }
 
 
@@ -140,4 +139,36 @@ void COGActorAirBot::SetDeadStatus ()
 	Activate(false);
 
     COGActorBot::SetDeadStatus();
+}
+
+
+// Throw bonus.
+void COGActorAirBot::ThrowBonus ()
+{
+    int i = GetRandomRange(0, 3);
+    switch(i)
+    {
+    case 0:
+        break;
+
+    case 1:
+        {
+            IOGActor* m_pBonus = GetActorManager()->CreateActor(
+                "bonus_01", m_pPhysicalObject->GetPosition(), 
+                Vec3(0,0,0), Vec3(1,1,1));
+            GetActorManager()->AddActor(m_pBonus);
+            m_pBonus->Activate(true);
+        }
+        break;
+
+    case 2:
+        {
+            IOGActor* m_pBonus = GetActorManager()->CreateActor(
+                "bonus_02", m_pPhysicalObject->GetPosition(), 
+                Vec3(0,0,0), Vec3(1,1,1));
+            GetActorManager()->AddActor(m_pBonus);
+            m_pBonus->Activate(true);
+        }
+        break;
+    }
 }

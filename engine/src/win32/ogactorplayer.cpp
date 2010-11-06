@@ -104,7 +104,7 @@ void COGActorPlayer::UpdateAlive (unsigned long _ElapsedTime)
 		if (m_OrientWorker.IsFinished())
 		{
             if (m_pWeapon && m_pWeapon->IsReady())
-				m_pWeapon->Fire();
+				m_pWeapon->Fire(NULL, false);
             m_CoolDown = 0;
             m_StraightenWorker.Activate(false);
 		}

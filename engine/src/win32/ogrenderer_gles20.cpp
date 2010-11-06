@@ -104,7 +104,7 @@ void COGRenderer_GLES20::StartRenderMode(OGRenderMode _Mode)
         m_ModelShader.SetProjectionMatrix(m_mProjection);
         m_ModelShader.SetViewMatrix(m_mView);
 		EnableLight(true);
-        m_ModelShader.SetLightDir(m_pLight->GetDirection());
+        m_ModelShader.SetLightDir(m_pLight->GetMainLightDirection());
         m_ModelShader.SetFogParams(m_pFog->GetStart(), m_pFog->GetEnd(), m_pFog->GetColor());
         m_ModelShader.Setup();
 		glEnableVertexAttribArray(0);

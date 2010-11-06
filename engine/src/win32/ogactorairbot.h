@@ -50,6 +50,9 @@ protected:
 	// Set actor status.
 	virtual void SetDeadStatus ();
 
+	// Throw bonus.
+	virtual void ThrowBonus ();
+
 protected:
 
     COGBotFlightWorker	m_FlightWorker;

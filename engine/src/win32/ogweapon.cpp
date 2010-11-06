@@ -48,7 +48,7 @@ bool COGWeapon::Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams)
 
 
 // Fire missile.
-void COGWeapon::Fire ()
+void COGWeapon::Fire (IOGActor* _pTarget, bool _bFollow)
 {
     Vec3 launches[3];
     int NumLaunch = 0;
@@ -93,6 +93,17 @@ void COGWeapon::Fire ()
         {
             pMissile->SetOwner(m_pOwner, launches[NumLaunch - CurLaunch]);
             pMissile->Fire();
+            if (_pTarget)
+            {
+                if (_bFollow)
+                {
+                    pMissile->SetTarget(_pTarget);
+                }
+                else
+                {
+                    pMissile->SetTarget(_pTarget->GetPhysicalObject()->GetPosition());
+                }
+            }
             --CurLaunch;
             if (CurLaunch == 0)
             {

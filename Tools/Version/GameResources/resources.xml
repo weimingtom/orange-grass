@@ -15,9 +15,11 @@
 			<Mapping x="222" y="231" width="222" height="42"/>
 		</Mappings>
 	</Texture>
-	<Texture alias="hud" file="Textures/UI/hud.pvr" >
+	<Texture alias="hud" file="Textures/UI/hud_2.pvr" >
 		<Mappings>
-			<Mapping x="0" y="0" width="115" height="89"/>
+			<Mapping x="0" y="0" width="256" height="32"/>
+			<Mapping x="0" y="102" width="90" height="60"/>
+			<Mapping x="0" y="196" width="60" height="60"/>
 		</Mappings>
 	</Texture>
 	<Texture alias="plasma_01" file="Textures/FX/plasma_head1.pvr" />
@@ -35,6 +37,7 @@
 
 			<Mapping x="0" y="256" width="128" height="128"/>
 			<Mapping x="0" y="384" width="128" height="128"/>
+			<Mapping x="480" y="480" width="32" height="32"/>
 		</Mappings>
 	</Texture>
 	<Texture alias="helicopter_body" file="Models/Helicopter/helicopter_body.pvr" />
@@ -100,6 +103,7 @@
 </Models>
 <Terrains>
 	<Terrain alias="level_02" file="Levels/Level_02/level_02.xml" />
+	<Terrain alias="level_01" file="Levels/Level_01/level_01.xml" />
 </Terrains>
 <Sprites>
 	<Sprite alias="load_scr" texture="load_scr" mapping="1"/>
@@ -109,7 +113,9 @@
 	<Sprite alias="exit_pr" texture="gui" mapping="3"/>
 	<Sprite alias="new_n" texture="gui" mapping="4"/>
 	<Sprite alias="new_pr" texture="gui" mapping="5"/>
-	<Sprite alias="hud" texture="hud" mapping="1"/>
+	<Sprite alias="life_hud" texture="hud" mapping="1"/>
+	<Sprite alias="spec_hud" texture="hud" mapping="2"/>
+	<Sprite alias="weapon_hud" texture="hud" mapping="3"/>
 	<Sprite alias="weapon_missile01" texture="weapons" mapping="1"/>
 	<Sprite alias="weapon_plasma01" texture="weapons" mapping="2"/>
 </Sprites>
