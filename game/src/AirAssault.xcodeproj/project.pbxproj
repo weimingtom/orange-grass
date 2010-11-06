@@ -89,6 +89,7 @@
 		B2959D2D12748212005F5346 /* ogeffectexplosion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D2912748212005F5346 /* ogeffectexplosion.cpp */; };
 		B2959D2E12748212005F5346 /* ogeffectmissilesmoke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D2B12748212005F5346 /* ogeffectmissilesmoke.cpp */; };
 		B2959D311274829D005F5346 /* StartMenuScreenController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D2F1274829D005F5346 /* StartMenuScreenController.cpp */; };
+		B296060F1286001700B46ACC /* ogeffecttrailsmoke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B296060D1286001700B46ACC /* ogeffecttrailsmoke.cpp */; };
 		B299F2C312847877001B95B0 /* ogactortargetedmissile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B299F2C112847877001B95B0 /* ogactortargetedmissile.cpp */; };
 		B299F2C6128478C2001B95B0 /* ogeffectcollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B299F2C4128478C2001B95B0 /* ogeffectcollision.cpp */; };
 		B29C64CA1222D4BF00FF91DA /* oginputdispatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29C64C81222D4BF00FF91DA /* oginputdispatcher.cpp */; };
@@ -341,6 +342,8 @@
 		B2959D2C12748212005F5346 /* ogeffectmissilesmoke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffectmissilesmoke.h; path = ../../engine/src/win32/ogeffectmissilesmoke.h; sourceTree = SOURCE_ROOT; };
 		B2959D2F1274829D005F5346 /* StartMenuScreenController.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = StartMenuScreenController.cpp; sourceTree = "<group>"; };
 		B2959D301274829D005F5346 /* StartMenuScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartMenuScreenController.h; sourceTree = "<group>"; };
+		B296060D1286001700B46ACC /* ogeffecttrailsmoke.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogeffecttrailsmoke.cpp; path = ../../engine/src/win32/ogeffecttrailsmoke.cpp; sourceTree = SOURCE_ROOT; };
+		B296060E1286001700B46ACC /* ogeffecttrailsmoke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffecttrailsmoke.h; path = ../../engine/src/win32/ogeffecttrailsmoke.h; sourceTree = SOURCE_ROOT; };
 		B299F2C112847877001B95B0 /* ogactortargetedmissile.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactortargetedmissile.cpp; path = ../../engine/src/win32/ogactortargetedmissile.cpp; sourceTree = SOURCE_ROOT; };
 		B299F2C212847877001B95B0 /* ogactortargetedmissile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactortargetedmissile.h; path = ../../engine/src/win32/ogactortargetedmissile.h; sourceTree = SOURCE_ROOT; };
 		B299F2C4128478C2001B95B0 /* ogeffectcollision.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogeffectcollision.cpp; path = ../../engine/src/win32/ogeffectcollision.cpp; sourceTree = SOURCE_ROOT; };
@@ -1120,6 +1123,8 @@
 		B2AEFEC7124117570039DC17 /* Effects */ = {
 			isa = PBXGroup;
 			children = (
+				B296060D1286001700B46ACC /* ogeffecttrailsmoke.cpp */,
+				B296060E1286001700B46ACC /* ogeffecttrailsmoke.h */,
 				B299F2C4128478C2001B95B0 /* ogeffectcollision.cpp */,
 				B299F2C5128478C2001B95B0 /* ogeffectcollision.h */,
 				B293FA35127B2EFF000D2799 /* ogeffectbonuspick.cpp */,
@@ -1386,6 +1391,7 @@
 				B293FA3D127B2F8B000D2799 /* ogbonusphysicalobject.cpp in Sources */,
 				B299F2C312847877001B95B0 /* ogactortargetedmissile.cpp in Sources */,
 				B299F2C6128478C2001B95B0 /* ogeffectcollision.cpp in Sources */,
+				B296060F1286001700B46ACC /* ogeffecttrailsmoke.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
