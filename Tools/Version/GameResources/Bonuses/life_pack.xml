@@ -2,7 +2,7 @@
 <Bonus>
 	<Params 
 		actor = "bonus_01"
-		value = "200"
+		value = "1000"
 		cooldown = "0"
 		type = "life_pack"
 		icon_texture = "bonus_lifepack"

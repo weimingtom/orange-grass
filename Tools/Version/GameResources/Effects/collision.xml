@@ -4,7 +4,7 @@
 	scale_inc = "0.3" 
 	rotate_inc = "0.1" 
 	initial_scale = "1.0" 
-	texture = "explosion" 
+	texture = "effects" 
 	mapping_start = "1"
 	mapping_finish = "7"
 />

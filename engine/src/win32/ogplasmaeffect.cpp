@@ -18,8 +18,9 @@ COGPlasmaEffect::~COGPlasmaEffect()
 // Initialize effect.
 void COGPlasmaEffect::Init(OGEffectType _Type)
 {
-	m_pTexture = GetResourceMgr()->GetTexture("plasma_01");
+	m_pTexture = GetResourceMgr()->GetTexture("effects");
     m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
+	m_pMapping = m_pTexture->GetMapping(12);
 
 	Vec4 color = Vec4(1.0f, 0.0f, 0.0f, 0.2f);
 
@@ -28,13 +29,13 @@ void COGPlasmaEffect::Init(OGEffectType _Type)
 		COGBillboard& particle = m_Particles[i];
 		particle.scale = ((float)MAX_PLASMA_PARTILES - i) / 4.5f;
 		particle.pVertices = &m_Vertices[i * 4];
-		particle.pVertices[0].t = Vec2(1.0f, 0.0f);
+        particle.pVertices[0].t = Vec2(m_pMapping->t1.x, m_pMapping->t0.y);
+        particle.pVertices[1].t = Vec2(m_pMapping->t0.x, m_pMapping->t0.y);
+        particle.pVertices[2].t = Vec2(m_pMapping->t1.x, m_pMapping->t1.y);
+        particle.pVertices[3].t = Vec2(m_pMapping->t0.x, m_pMapping->t1.y);
 		particle.pVertices[0].c = color;
-		particle.pVertices[1].t = Vec2(0.0f, 0.0f);
 		particle.pVertices[1].c = color;
-		particle.pVertices[2].t = Vec2(1.0f, 1.0f);
 		particle.pVertices[2].c = color;
-		particle.pVertices[3].t = Vec2(0.0f, 1.0f);
 		particle.pVertices[3].c = color;
 	}
     m_AABB.SetMinMax(Vec3(-1,-1,-1), Vec3(1,1,1));

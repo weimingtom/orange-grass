@@ -10,7 +10,7 @@
 #include "OrangeGrass.h"
 
 
-std::string COGEffectExplosion::m_Texture = std::string("explosion");
+std::string COGEffectExplosion::m_Texture = std::string("effects");
 unsigned int COGEffectExplosion::m_MaxParticles = 6;
 unsigned int COGEffectExplosion::m_MappingStartId = 1;
 unsigned int COGEffectExplosion::m_MappingFinishId = 7;

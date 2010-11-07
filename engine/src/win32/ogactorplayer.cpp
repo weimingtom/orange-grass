@@ -156,6 +156,17 @@ bool COGActorPlayer::RespondOnBonusCollision (IOGActor* _pBonus)
         {
             m_SpecParamsList.push_back(*pBonusParams);
         }
+
+        switch (pBonusParams->type)
+        {
+        case OG_BONUS_LIFEPACK:
+            m_Hitpoints += pBonusParams->value;
+            OG_CLAMP(m_Hitpoints, 0, m_pParams->gameplay.max_hitpoints);
+            break;
+
+        case OG_BONUS_SHIELD:
+            break;
+        }
         return true;
     }
 

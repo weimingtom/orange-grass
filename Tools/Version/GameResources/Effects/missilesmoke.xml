@@ -5,7 +5,7 @@
 	rotate_inc = "0.1" 
 	initial_scale = "2.0" 
 	particles_at_once = "3"
-	texture = "explosion" 
+	texture = "effects" 
 	mapping = "5"
 	glow_mapping = "9"
 	r = "0.6" g = "0.6" b = "0.6" a = "0.2"

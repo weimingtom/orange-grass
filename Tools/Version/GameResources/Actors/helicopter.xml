@@ -18,7 +18,7 @@
 		/>
 	<Logic
 		team = "1"
-		max_hitpoints = "20000"
+		max_hitpoints = "10000"
 		weapon = ""
 		/>
 </Params>
