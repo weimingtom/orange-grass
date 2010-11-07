@@ -95,6 +95,8 @@ void COGActorPlayer::UpdateAlive (unsigned long _ElapsedTime)
 {
     COGActorBot::UpdateAlive(_ElapsedTime);
 
+    UpdateSpecParams(_ElapsedTime);
+
     if (m_pWeapon)
         m_pWeapon->Update(_ElapsedTime);
     
@@ -147,5 +149,41 @@ bool COGActorPlayer::OnCollision (const IOGCollision& _Collision)
 // Respond on collision with missile.
 bool COGActorPlayer::RespondOnBonusCollision (IOGActor* _pBonus)
 {
-    return true;
+    IOGBonusParams* pBonusParams = _pBonus->GetBonusParams();
+    if (pBonusParams)
+    {
+        if (pBonusParams->cooldown > 0)
+        {
+            m_SpecParamsList.push_back(*pBonusParams);
+        }
+        return true;
+    }
+
+    return false;
+}
+
+
+// Get special params
+void COGActorPlayer::GetSpecialParams (std::vector<IOGBonusParams>& _ParamsList)
+{
+    _ParamsList = m_SpecParamsList;
+}
+
+
+// Update special params.
+void COGActorPlayer::UpdateSpecParams (unsigned long _ElapsedTime)
+{
+    std::vector<IOGBonusParams>::iterator iter = m_SpecParamsList.begin();
+    while (iter != m_SpecParamsList.end())
+    {
+        if ((*iter).value > _ElapsedTime)
+        {
+            (*iter).value -= _ElapsedTime;
+            ++iter;
+        }
+        else
+        {
+            iter = m_SpecParamsList.erase(iter);
+        }
+    }
 }

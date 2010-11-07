@@ -57,10 +57,10 @@ void COGPlayerPhysicalObject::Update (unsigned long _ElapsedTime)
     m_vPosition += vStrafeDist;
     OG_CLAMP(m_vPosition.x, vLeftBorder.x, vRightBorder.x);
 
-    m_vRotation.z += m_fRolling * m_pParams->fRollSpeed * _ElapsedTime;
+    m_vRotation.z += m_fRolling * /*m_pParams->fRollSpeed*/0.0008f * _ElapsedTime;
     OG_CLAMP(m_vRotation.z, -m_pParams->fMaxRollAngle, m_pParams->fMaxRollAngle);
-    m_vRotation.x += fabsf(m_fRolling) * m_pParams->fRollSpeed * _ElapsedTime;
-    OG_CLAMP(m_vRotation.x, -m_pParams->fMaxRollAngle, m_pParams->fMaxRollAngle);
+    m_vRotation.x += fabsf(m_fRolling) * /*m_pParams->fRollSpeed*/0.0002f * _ElapsedTime;
+    OG_CLAMP(m_vRotation.x, /*-m_pParams->fMaxRollAngle, m_pParams->fMaxRollAngle*/-0.4f, 0.4f);
 
     COGPhysicalObject::Update(_ElapsedTime);
 

@@ -34,6 +34,12 @@ public:
     // collision event handler
 	virtual bool OnCollision (const IOGCollision& _Collision);
 
+	// Set bonus parameters.
+    virtual void SetBonusParams (IOGBonusParams* _pBonusParams) {m_pBonusParams = _pBonusParams;}
+
+	// Get bonus params
+    virtual IOGBonusParams* GetBonusParams () {return m_pBonusParams;}
+
 protected:
 
 	// Update alive actor.
@@ -44,8 +50,9 @@ protected:
 
 protected:
 
-	IOGEffect*  m_pPickEffect;
-    IOGSgNode*  m_pPickNode;
+	IOGEffect*      m_pPickEffect;
+    IOGSgNode*      m_pPickNode;
+    IOGBonusParams* m_pBonusParams;
 };
 
 

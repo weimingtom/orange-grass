@@ -49,6 +49,9 @@ public:
 	// Get damage points.
 	virtual unsigned int GetDamagePoints () const = 0;
 
+	// Get hitpoints.
+    virtual unsigned int GetHitPoints () const = 0;
+
 	// Get scene graph node.
 	virtual IOGSgNode* GetSgNode () = 0;
 
@@ -66,6 +69,15 @@ public:
 
 	// Get weapon
 	virtual IOGWeapon* GetWeapon () = 0;
+
+	// Set bonus parameters.
+	virtual void SetBonusParams (IOGBonusParams* _pBonusParams) = 0;
+
+	// Get bonus params
+	virtual IOGBonusParams* GetBonusParams () = 0;
+
+	// Get special params
+    virtual void GetSpecialParams (std::vector<IOGBonusParams>& _ParamsList) = 0;
 
 	// Get active state
 	virtual bool IsActive () const = 0;

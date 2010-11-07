@@ -398,14 +398,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\ogspritepool.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ogspritepool.h"
-					>
-				</File>
-				<File
 					RelativePath=".\ogterrain.cpp"
 					>
 				</File>
@@ -834,11 +826,43 @@
 				Name="GUI"
 				>
 				<File
+					RelativePath=".\ogguibonusbar.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogguibonusbar.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogguibutton.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\ogguibutton.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogguilifebar.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogguilifebar.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogguiweaponpanel.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogguiweaponpanel.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogspritepool.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogspritepool.h"
 					>
 				</File>
 			</Filter>
@@ -913,10 +937,6 @@
 				</File>
 				<File
 					RelativePath="..\..\include\IOGSprite.h"
-					>
-				</File>
-				<File
-					RelativePath="..\..\include\IOGSpritePool.h"
 					>
 				</File>
 				<File
@@ -1068,7 +1088,23 @@
 				Name="GUI"
 				>
 				<File
+					RelativePath="..\..\include\IOGGuiBonusbar.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\IOGGuiButton.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGGuiLifebar.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGGuiWeaponPanel.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGSpritePool.h"
 					>
 				</File>
 			</Filter>

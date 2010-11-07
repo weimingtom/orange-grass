@@ -146,29 +146,28 @@ void COGActorAirBot::SetDeadStatus ()
 void COGActorAirBot::ThrowBonus ()
 {
     int i = GetRandomRange(0, 3);
+    IOGBonusParams* pBonusParams = NULL;
     switch(i)
     {
     case 0:
         break;
 
     case 1:
-        {
-            IOGActor* m_pBonus = GetActorManager()->CreateActor(
-                "bonus_01", m_pPhysicalObject->GetPosition(), 
-                Vec3(0,0,0), Vec3(1,1,1));
-            GetActorManager()->AddActor(m_pBonus);
-            m_pBonus->Activate(true);
-        }
+        pBonusParams = GetActorParamsMgr()->GetBonusParams("life_pack");
         break;
 
     case 2:
-        {
-            IOGActor* m_pBonus = GetActorManager()->CreateActor(
-                "bonus_02", m_pPhysicalObject->GetPosition(), 
-                Vec3(0,0,0), Vec3(1,1,1));
-            GetActorManager()->AddActor(m_pBonus);
-            m_pBonus->Activate(true);
-        }
+        pBonusParams = GetActorParamsMgr()->GetBonusParams("shield");
         break;
+    }
+
+    if (pBonusParams)
+    {
+        IOGActor* m_pBonus = GetActorManager()->CreateActor(
+            pBonusParams->actor, m_pPhysicalObject->GetPosition(), 
+            Vec3(0,0,0), Vec3(1,1,1));
+        GetActorManager()->AddActor(m_pBonus);
+        m_pBonus->SetBonusParams(pBonusParams);
+        m_pBonus->Activate(true);
     }
 }

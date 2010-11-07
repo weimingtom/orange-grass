@@ -41,10 +41,16 @@ public:
     // collision event handler
 	virtual bool OnCollision (const IOGCollision& _Collision);
 
+	// Get special params
+    virtual void GetSpecialParams (std::vector<IOGBonusParams>& _ParamsList);
+
 protected:
 
 	// Update alive actor.
 	virtual void UpdateAlive (unsigned long _ElapsedTime);
+
+	// Update special params.
+	virtual void UpdateSpecParams (unsigned long _ElapsedTime);
 
 	// Respond on collision with missile.
 	virtual bool RespondOnBonusCollision (IOGActor* _pBonus);
@@ -55,6 +61,7 @@ protected:
     COGStabilizeWorker  m_StraightenWorker;
     unsigned long       m_CoolDown;
     unsigned long       m_CoolDownMax;
+    std::vector<IOGBonusParams> m_SpecParamsList;
 };
 
 

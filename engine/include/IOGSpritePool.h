@@ -11,6 +11,9 @@
 
 #include "IOGSprite.h"
 #include "IOGGuiButton.h"
+#include "IOGGuiLifebar.h"
+#include "IOGGuiBonusbar.h"
+#include "IOGGuiWeaponPanel.h"
 
 
 class IOGSpritePool
@@ -29,6 +32,24 @@ public:
 
 	// desroy button.
 	virtual void DestroyButton (IOGGuiButton* _pBtn) = 0;
+
+	// create life bar.
+	virtual IOGGuiLifebar* CreateLifebar () = 0;
+
+	// desroy life bar.
+	virtual void DestroyLifebar (IOGGuiLifebar* _pBar) = 0;
+
+	// create bonus bar.
+	virtual IOGGuiBonusbar* CreateBonusbar () = 0;
+
+	// desroy bonus bar.
+	virtual void DestroyBonusbar (IOGGuiBonusbar* _pBar) = 0;
+
+	// create weapon panel.
+	virtual IOGGuiWeaponPanel* CreateWeaponPanel () = 0;
+
+	// desroy weapon panel.
+	virtual void DestroyWeaponPanel (IOGGuiWeaponPanel* _pPanel) = 0;
 };
 
 #endif

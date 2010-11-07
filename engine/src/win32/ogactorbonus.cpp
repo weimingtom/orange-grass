@@ -14,11 +14,13 @@ COGActorBonus::COGActorBonus()
 {
 	m_pPickEffect = NULL;
 	m_pPickNode = NULL;
+    m_pBonusParams = NULL;
 }
 
 
 COGActorBonus::~COGActorBonus()
 {
+    m_pBonusParams = NULL;
 	if (m_pPickNode)
 	{
         if (m_bAdded)

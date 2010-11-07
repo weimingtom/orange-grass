@@ -56,6 +56,25 @@ struct IOGWeaponParams
 };
 
 
+enum OGBonusType
+{
+    OG_BONUS_NONE = -1,
+	OG_BONUS_LIFEPACK,
+	OG_BONUS_SHIELD,
+};
+
+
+struct IOGBonusParams
+{
+	std::string		alias;
+	unsigned int	value;
+	unsigned int	cooldown;
+	OGBonusType		type;
+	std::string		actor;
+	std::string		icon_texture;
+};
+
+
 struct IOGGameplayParams
 {
 	IOGGameplayParams()

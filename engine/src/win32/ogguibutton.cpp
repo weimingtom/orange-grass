@@ -1,5 +1,5 @@
 /*
- *  OGGuiButton.h
+ *  OGGuiButton.cpp
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 11.11.09.

@@ -30,7 +30,23 @@ public:
 	// desroy button.
 	virtual void DestroyButton (IOGGuiButton* _pBtn);
 
-private:
+	// create life bar.
+	virtual IOGGuiLifebar* CreateLifebar ();
+
+	// desroy life bar.
+	virtual void DestroyLifebar (IOGGuiLifebar* _pBar);
+
+	// create bonus bar.
+	virtual IOGGuiBonusbar* CreateBonusbar ();
+
+	// desroy bonus bar.
+	virtual void DestroyBonusbar (IOGGuiBonusbar* _pBar);
+
+	// create weapon panel.
+	virtual IOGGuiWeaponPanel* CreateWeaponPanel ();
+
+	// desroy weapon panel.
+	virtual void DestroyWeaponPanel (IOGGuiWeaponPanel* _pPanel);
 };
 
 #endif

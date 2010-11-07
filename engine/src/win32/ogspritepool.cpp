@@ -10,6 +10,9 @@
 #include "ogspritepool.h"
 #include "ogsprite.h"
 #include "ogguibutton.h"
+#include "ogguilifebar.h"
+#include "ogguibonusbar.h"
+#include "ogguiweaponpanel.h"
 
 
 COGSpritePool::COGSpritePool ()
@@ -46,4 +49,46 @@ IOGGuiButton* COGSpritePool::CreateButton ()
 void COGSpritePool::DestroyButton (IOGGuiButton* _pBtn)
 {
     OG_SAFE_DELETE(_pBtn);
+}
+
+
+// create life bar.
+IOGGuiLifebar* COGSpritePool::CreateLifebar ()
+{
+    return new COGGuiLifebar();
+}
+
+
+// desroy life bar.
+void COGSpritePool::DestroyLifebar (IOGGuiLifebar* _pBar)
+{
+    OG_SAFE_DELETE(_pBar);
+}
+
+
+// create bonus bar.
+IOGGuiBonusbar* COGSpritePool::CreateBonusbar ()
+{
+    return new COGGuiBonusbar();
+}
+
+
+// desroy bonus bar.
+void COGSpritePool::DestroyBonusbar (IOGGuiBonusbar* _pBar)
+{
+    OG_SAFE_DELETE(_pBar);
+}
+
+
+// create weapon panel.
+IOGGuiWeaponPanel* COGSpritePool::CreateWeaponPanel ()
+{
+    return new COGGuiWeaponPanel();
+}
+
+
+// desroy weapon panel.
+void COGSpritePool::DestroyWeaponPanel (IOGGuiWeaponPanel* _pPanel)
+{
+    OG_SAFE_DELETE(_pPanel);
 }

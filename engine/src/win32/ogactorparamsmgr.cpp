@@ -34,6 +34,9 @@ COGActorParamsMgr::COGActorParamsMgr ()
 	m_WeaponPosLookup["right"] = OG_WEAPONPOS_RIGHT;
 	m_WeaponPosLookup["left_right"] = OG_WEAPONPOS_LEFTRIGHT;
 	m_WeaponPosLookup["center_left_right"] = OG_WEAPONPOS_CENTERLEFTRIGHT;
+
+	m_BonusTypeLookup["life_pack"] = OG_BONUS_LIFEPACK;
+	m_BonusTypeLookup["shield"] = OG_BONUS_SHIELD;
 }
 
 
@@ -50,6 +53,12 @@ COGActorParamsMgr::~COGActorParamsMgr ()
 	{
 		OG_SAFE_DELETE (witer->second);
 	}	
+
+	std::map<std::string, IOGBonusParams*>::iterator biter = m_BonusParamsList.begin();
+	for( ; biter != m_BonusParamsList.end(); ++biter )
+	{
+		OG_SAFE_DELETE (biter->second);
+	}	
 }
 
 
@@ -60,6 +69,9 @@ bool COGActorParamsMgr::Init ()
 		return false;
 
 	if (!InitWeaponParams())
+		return false;
+
+	if (!InitBonusParams())
 		return false;
 
 	return true;
@@ -87,6 +99,42 @@ IOGWeaponParams* COGActorParamsMgr::GetWeaponParams (const std::string& _Alias)
 		return pParam;
 	}
     return NULL;
+}
+
+
+// get bonus params by alias.
+IOGBonusParams* COGActorParamsMgr::GetBonusParams (const std::string& _Alias)
+{
+	IOGBonusParams* pParam = m_BonusParamsList[_Alias];
+	if (pParam)
+	{
+		return pParam;
+	}
+    return NULL;
+}
+
+
+// load from config file.
+bool COGActorParamsMgr::InitBonusParams ()
+{
+	IOGSettingsSource* pSource = m_pReader->OpenSource(GetResourceMgr()->GetFullPath("bonus.xml"));
+	if (!pSource)
+		return false;
+
+	IOGGroupNode* pRoot = m_pReader->OpenGroupNode(pSource, NULL, "Bonuses");
+	IOGGroupNode* pBonusNode = m_pReader->OpenGroupNode(pSource, pRoot, "Bonus");
+	for (; pBonusNode != NULL; )
+	{
+		std::string alias = m_pReader->ReadStringParam(pBonusNode, "alias");
+		std::string file = m_pReader->ReadStringParam(pBonusNode, "file");
+		file = GetResourceMgr()->GetFullPath(file);
+		LoadBonusParamsConfig(alias, file);
+
+		pBonusNode = m_pReader->ReadNextNode(pBonusNode);
+	}
+	m_pReader->CloseGroupNode(pRoot);
+	m_pReader->CloseSource(pSource);
+	return true;
 }
 
 
@@ -223,6 +271,37 @@ bool COGActorParamsMgr::LoadWeaponParamsConfig (const std::string& _Alias, const
 }
 
 
+// Load bonus params configuration
+bool COGActorParamsMgr::LoadBonusParamsConfig (const std::string& _Alias, const std::string& _Path)
+{
+	IOGSettingsSource* pSource = m_pReader->OpenSource(_Path);
+	if (!pSource)
+		return false;
+
+	IOGBonusParams* pParam = new IOGBonusParams;
+	pParam->alias = _Alias;
+
+	IOGGroupNode* pRoot = m_pReader->OpenGroupNode(pSource, NULL, "Bonus");
+	IOGGroupNode* pNode = m_pReader->OpenGroupNode(pSource, pRoot, "Params");
+	if (pNode != NULL)
+	{
+		pParam->actor = m_pReader->ReadStringParam(pNode, "actor");
+		pParam->icon_texture = m_pReader->ReadStringParam(pNode, "icon_texture");
+		pParam->value = (unsigned int)m_pReader->ReadIntParam(pNode, "value");
+		pParam->cooldown = (unsigned int)m_pReader->ReadIntParam(pNode, "cooldown");
+		pParam->type = ParseBonusType(m_pReader->ReadStringParam(pNode, "type"));
+		m_pReader->CloseGroupNode(pNode);
+	}
+
+	m_BonusParamsList[_Alias] = pParam;
+
+	m_pReader->CloseGroupNode(pRoot);
+	m_pReader->CloseSource(pSource);
+
+	return true;
+}
+
+
 // get params list.
 void COGActorParamsMgr::GetParamsList (std::list<IOGActorParams*>& _List)
 {
@@ -268,4 +347,16 @@ OGWeaponPos COGActorParamsMgr::ParseWeaponPositionType (const std::string& _Weap
         return iter->second;
     }
     return OG_WEAPONPOS_NONE;
+}
+
+
+// Parse the bonus type string and convert it to internal type
+OGBonusType COGActorParamsMgr::ParseBonusType (const std::string& _BonusTypeStr) const
+{
+    std::map<std::string, OGBonusType>::const_iterator iter = m_BonusTypeLookup.find(_BonusTypeStr);
+    if (iter != m_BonusTypeLookup.end())
+    {
+        return iter->second;
+    }
+    return OG_BONUS_NONE;
 }

@@ -33,6 +33,10 @@ CGameScreenController::~CGameScreenController()
 	m_pCamera = NULL;
     m_pPlayer = NULL;
 
+    m_pLifeHUD = NULL;
+    m_pSpecHUD = NULL;
+    m_pWeaponHUD = NULL;
+
 	m_State = CSTATE_NO;
 	m_pCurLevel = NULL;
 }
@@ -61,10 +65,15 @@ bool CGameScreenController::Init ()
 	m_pCurLevel = GetLevelManager()->LoadLevel(pLevelParams->alias);
     m_pPlayer = GetActorManager()->GetPlayersActor();
 
-	m_pLifeHUD = m_pResourceMgr->GetSprite("life_hud");
-	m_pSpecHUD = m_pResourceMgr->GetSprite("spec_hud");
-	m_pWeaponHUD = m_pResourceMgr->GetSprite("weapon_hud");
-	m_pWeaponIcon = m_pResourceMgr->GetSprite(m_pPlayer->GetWeapon()->GetParams()->icon_texture);
+    m_pLifeHUD = GetSpritePool()->CreateLifebar();
+    m_pLifeHUD->Load();
+
+    m_pSpecHUD = GetSpritePool()->CreateBonusbar();
+    m_pSpecHUD->Load();
+
+	m_pWeaponHUD = GetSpritePool()->CreateWeaponPanel();
+    m_pWeaponHUD->Load();
+    m_pWeaponHUD->UpdateData(m_pPlayer->GetWeapon()->GetParams()->icon_texture);
 
 	UpdateCamera();
 	GetPhysics()->UpdateAll(1);
@@ -85,6 +94,24 @@ void CGameScreenController::Update (unsigned long _ElapsedTime)
     GetPhysics()->Update(_ElapsedTime);
     GetActorManager()->Update(_ElapsedTime);
 	m_pSg->Update(_ElapsedTime);
+
+    if (m_pPlayer)
+    {
+        unsigned int Life = m_pPlayer->GetHitPoints();
+        unsigned int MaxLife = m_pPlayer->GetParams()->gameplay.max_hitpoints;
+        m_pLifeHUD->UpdateData(Life, MaxLife);
+        
+        m_pSpecHUD->ResetData();
+        std::vector<IOGBonusParams> SpecParamsList;
+        m_pPlayer->GetSpecialParams(SpecParamsList);
+        for (unsigned int i = 0; i < SpecParamsList.size(); ++i)
+        {
+            IOGBonusParams& bonus = SpecParamsList[i];
+            m_pSpecHUD->SetData(i, bonus.icon_texture, bonus.value, bonus.cooldown);
+        }
+        //m_pSpecHUD->SetData(0, "bonus_lifepack", 100, 200);
+        //m_pSpecHUD->SetData(1, "bonus_shield", 0, 0);
+    }
 
 	if (CheckFinishCondition())
 	{
@@ -123,12 +150,11 @@ void CGameScreenController::RenderScene ()
     m_pRenderer->EnableFog(false);
 
     m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
-	m_pWeaponHUD->Render(Vec2(420, 260), Vec2(60.0f, 60.0f));
-	m_pWeaponIcon->Render(Vec2(430, 270), Vec2(40.0f, 40.0f));
-	m_pLifeHUD->Render(Vec2(0, 0), Vec2(256.0f, 32.0f));
-	m_pSpecHUD->Render(Vec2(0, 40), Vec2(90.0f, 60.0f));
-
+	m_pWeaponHUD->Render();
+    m_pLifeHUD->Render();
+	m_pSpecHUD->Render();
 	m_pRenderer->FinishRenderMode();
+
 /*
 	unsigned long fps = 0;
 	if (m_ElapsedTime > 0)
@@ -180,6 +206,11 @@ void CGameScreenController::Deactivate ()
 // Control vector change event handler.
 bool CGameScreenController::OnVectorChanged (const Vec3& _vVec)
 {
+    if (m_State != CSTATE_ACTIVE)
+    {
+        return false;
+    }
+
     return false;
 }
 
@@ -187,13 +218,13 @@ bool CGameScreenController::OnVectorChanged (const Vec3& _vVec)
 // Touch event handler.
 bool CGameScreenController::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
 {
-	Vec2 vPos = Vec2(420, 260);
-	Vec2 vSize = Vec2(60.0f, 60.0f);
-    if (_vPos.x >= vPos.x && 
-        _vPos.y >= vPos.y &&
-        _vPos.x <= vPos.x + vSize.x && 
-        _vPos.y <= vPos.y + vSize.y)
-	{
+    if (m_State != CSTATE_ACTIVE)
+    {
+        return false;
+    }
+
+    if (_param == OG_TOUCH_DOWN && m_pWeaponHUD->IsHit(_vPos))
+    {
 		IOGWeapon* pWeapon = m_pPlayer->GetWeapon();
 		if (pWeapon && pWeapon->IsReady())
 		{

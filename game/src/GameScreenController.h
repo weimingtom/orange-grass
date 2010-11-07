@@ -17,6 +17,7 @@
 #include "IOGActorManager.h"
 #include "IOGRenderer.h"
 #include "IOGGlobalVarsTable.h"
+#include "IOGSpritePool.h"
 
 
 class CGameScreenController : public IScreenController, public IOGInputReceiver
@@ -69,10 +70,9 @@ private:
 	IOGCamera*		m_pCamera;
     IOGActor*       m_pPlayer;
 
-    IOGSprite*		m_pLifeHUD;
-    IOGSprite*		m_pSpecHUD;
-    IOGSprite*		m_pWeaponHUD;
-    IOGSprite*		m_pWeaponIcon;
+    IOGGuiLifebar*      m_pLifeHUD;
+    IOGGuiBonusbar*	    m_pSpecHUD;
+    IOGGuiWeaponPanel*	m_pWeaponHUD;
 
 	ControllerState	m_State;
     ScreenType      m_Type;
