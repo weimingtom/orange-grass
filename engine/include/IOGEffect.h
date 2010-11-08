@@ -28,7 +28,8 @@ enum OGEffectType
     OG_EFFECT_EXPLOSION,
     OG_EFFECT_BONUSPICK,
     OG_EFFECT_COLLISION,
-	OG_EFFECT_TRAILSMOKE
+	OG_EFFECT_TRAILSMOKE,
+	OG_EFFECT_GAUSS
 };
 
 
@@ -48,6 +49,9 @@ public:
 
 	// Get direction.
 	virtual const Vec3& GetDirection () const = 0;
+
+	// Set start and finish positions.
+	virtual void SetStartFinishPositions (const Vec3& _vStartPos, const Vec3& _vFinishPos) = 0;
 
 	// Update.
 	virtual void Update (unsigned long _ElapsedTime) = 0;

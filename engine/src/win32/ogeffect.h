@@ -41,6 +41,9 @@ public:
 	// Get direction.
 	virtual const Vec3& GetDirection () const { return m_Direction; }
 
+	// Set start and finish positions.
+    virtual void SetStartFinishPositions (const Vec3& _vStartPos, const Vec3& _vFinishPos) {}
+
 	// Update.
 	virtual void Update (unsigned long _ElapsedTime) = 0;
 

@@ -21,6 +21,7 @@ COGActorParamsMgr::COGActorParamsMgr ()
 	m_ActorTypeLookup["plasma_missile"] = OG_ACTOR_PLASMAMISSILE;
 	m_ActorTypeLookup["missile"] = OG_ACTOR_MISSILE;
 	m_ActorTypeLookup["bonus"] = OG_ACTOR_BONUS;
+	m_ActorTypeLookup["gaussray"] = OG_ACTOR_GAUSSRAY;
 
 	m_PhysicsTypeLookup["static"] = OG_PHYSICS_STATIC;
 	m_PhysicsTypeLookup["land_bot"] = OG_PHYSICS_LANDBOT;

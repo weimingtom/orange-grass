@@ -65,6 +65,8 @@ protected:
 	static float            m_fInitialScale;
     static std::string      m_Texture;
     static unsigned int     m_MappingId;
+
+    static float            m_fGlowAlphaInc;
 };
 
 

@@ -14,6 +14,7 @@
 #include "ogactorplayer.h"
 #include "ogactorplasmamissile.h"
 #include "ogactormissile.h"
+#include "ogactorgaussray.h"
 #include "ogactorbonus.h"
 #include "IOGMath.h"
 #include <algorithm>
@@ -141,6 +142,18 @@ IOGActor* COGActorManager::CreateActor (
 		}
 		break;
 
+	case OG_ACTOR_GAUSSRAY:
+		{
+			COGActorGaussRay* pActor = new COGActorGaussRay();
+			if (pActor->Create(pParams, _vPos, _vRot, _vScale) == false)
+			{
+				OG_SAFE_DELETE(pActor);
+				return NULL;
+			}
+			return pActor;
+		}
+		break;
+
 	case OG_ACTOR_BONUS:
 		{
 			COGActorBonus* pActor = new COGActorBonus();
@@ -175,6 +188,7 @@ void COGActorManager::AddActor (IOGActor* _pActor)
 
 	case OG_ACTOR_MISSILE:
 	case OG_ACTOR_PLASMAMISSILE:
+	case OG_ACTOR_GAUSSRAY:
 	    m_MissileActorsList.push_back(_pActor);
 		break;
 

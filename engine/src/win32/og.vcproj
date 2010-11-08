@@ -198,6 +198,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogactorgaussray.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogactorgaussray.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogactorlandbot.cpp"
 					>
 				</File>
@@ -251,14 +259,6 @@
 				</File>
 				<File
 					RelativePath=".\ogactorstatic.h"
-					>
-				</File>
-				<File
-					RelativePath=".\ogactortargetedmissile.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\ogactortargetedmissile.h"
 					>
 				</File>
 				<File
@@ -482,6 +482,14 @@
 					</File>
 					<File
 						RelativePath=".\ogeffectexplosion.h"
+						>
+					</File>
+					<File
+						RelativePath=".\ogeffectgauss.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogeffectgauss.h"
 						>
 					</File>
 					<File

@@ -1,23 +1,22 @@
 /*
- *  OGActorTargetedMissile.h
+ *  OGActorGaussRay.h
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 11.11.09.
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#ifndef OGACTORTARGETEDMISSILE_H_
-#define OGACTORTARGETEDMISSILE_H_
+#ifndef OGACTORGAUSSRAY_H_
+#define OGACTORGAUSSRAY_H_
 
 #include "ogactorbullet.h"
-#include "ogmissileflightworker.h"
 
 
-class COGActorTargetedMissile : public COGActorBullet
+class COGActorGaussRay : public COGActorBullet
 {
 public:
-	COGActorTargetedMissile();
-	virtual ~COGActorTargetedMissile();
+	COGActorGaussRay();
+	virtual ~COGActorGaussRay();
 
 	// Create actor.
 	virtual bool Create (
@@ -51,7 +50,6 @@ protected:
     IOGEffect*				m_pHeadEffect;
     IOGEffect*				m_pCollisionEffect;
     IOGSgNode*              m_pCollisionEffectNode;
-	COGMissileFlightWorker	m_FlightWorker;
 };
 
 

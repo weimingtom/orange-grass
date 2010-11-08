@@ -16,6 +16,8 @@ float COGEffectBonusPick::m_fInitialScale;
 std::string COGEffectBonusPick::m_Texture;
 unsigned int COGEffectBonusPick::m_MappingId;
 
+float COGEffectBonusPick::m_fGlowAlphaInc = 0.08f;
+
 
 COGEffectBonusPick::~COGEffectBonusPick()
 {
@@ -145,18 +147,18 @@ void COGEffectBonusPick::Update (unsigned long _ElapsedTime)
 
     case OG_EFFECTSTATUS_STOPPED:
         {
-            if (m_Glow.pVertices[0].c.w >= m_fAlphaInc)
+            if (m_Glow.pVertices[0].c.w >= m_fGlowAlphaInc)
             {
                 m_Glow.scale += 2.0f;//m_fScaleInc;
-                m_Glow.pVertices[0].c.w -= m_fAlphaInc;
-                m_Glow.pVertices[1].c.w -= m_fAlphaInc;
-                m_Glow.pVertices[2].c.w -= m_fAlphaInc;
-                m_Glow.pVertices[3].c.w -= m_fAlphaInc;
+                m_Glow.pVertices[0].c.w -= m_fGlowAlphaInc;
+                m_Glow.pVertices[1].c.w -= m_fGlowAlphaInc;
+                m_Glow.pVertices[2].c.w -= m_fGlowAlphaInc;
+                m_Glow.pVertices[3].c.w -= m_fGlowAlphaInc;
             }
             else
             {
-                m_Status = OG_EFFECTSTATUS_INACTIVE;
-                return;
+                //m_Status = OG_EFFECTSTATUS_INACTIVE;
+                //return;
             }
 
             for (int i = 0; i < MAXPART; ++i)
@@ -171,11 +173,11 @@ void COGEffectBonusPick::Update (unsigned long _ElapsedTime)
                     p.pVertices[2].c.w -= m_fAlphaInc;
                     p.pVertices[3].c.w -= m_fAlphaInc;
                 }
-                //else
-                //{
-                //    m_Status = OG_EFFECTSTATUS_INACTIVE;
-                //    return;
-                //}
+                else
+                {
+                    m_Status = OG_EFFECTSTATUS_INACTIVE;
+                    return;
+                }
             }
         }
         break;
@@ -209,19 +211,27 @@ void COGEffectBonusPick::Render (const MATRIX& _mWorld, unsigned int _Frame)
         Vec3 vWaveUp = m_vCameraUp * p.scale;
         Vec3 vWaveRight = m_vCameraRight * p.scale;
 
-        if (p.axis == 0)
-            MatrixRotationX(mR, p.tilt);
-        else if (p.axis == 1)
-            MatrixRotationY(mR, p.tilt);
-        else
-            MatrixRotationZ(mR, p.tilt);
-        p.offset = Vec3(10, 0, 0);
-        if (p.bDirty)
+        if (m_Status == OG_EFFECTSTATUS_STARTED)
         {
-            p.bDirty = false;
+            if (p.axis == 0)
+                MatrixRotationX(mR, p.tilt);
+            else if (p.axis == 1)
+                MatrixRotationY(mR, p.tilt);
+            else
+                MatrixRotationZ(mR, p.tilt);
+            p.offset = Vec3(10, 0, 0);
+            if (p.bDirty)
+            {
+                p.bDirty = false;
+            }
+            Rotate2DPoint(p.offset.x, p.offset.z, p.angle, 0, 0);
+            MatrixVec3Multiply(p.offset, p.offset, mR);
         }
-        Rotate2DPoint(p.offset.x, p.offset.z, p.angle, 0, 0);
-        MatrixVec3Multiply(p.offset, p.offset, mR);
+        else if (m_Status == OG_EFFECTSTATUS_STOPPED)
+        {
+            Vec3 vDir = (p.pVertices[0].p - vOffset).normalized();
+            p.offset += vDir * 3;
+        }
 
         p.pVertices[0].p = vOffset + p.offset + vWaveRight + vWaveUp;
         p.pVertices[1].p = vOffset + p.offset - vWaveRight + vWaveUp;

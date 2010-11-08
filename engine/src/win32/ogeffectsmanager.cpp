@@ -13,6 +13,7 @@
 #include "ogeffectexplosion.h"
 #include "ogeffectbonuspick.h"
 #include "ogeffectcollision.h"
+#include "ogeffectgauss.h"
 #include "OrangeGrass.h"
 #include <algorithm>
 
@@ -79,6 +80,14 @@ IOGEffect* COGEffectsManager::CreateEffect (OGEffectType _Type)
 	case OG_EFFECT_TRAILSMOKE:
 		{
 			COGEffectTrailSmoke* pEffect = new COGEffectTrailSmoke();
+			pEffect->Init(_Type);
+			return pEffect;
+		}
+		break;
+
+	case OG_EFFECT_GAUSS:
+		{
+			COGEffectGauss* pEffect = new COGEffectGauss();
 			pEffect->Init(_Type);
 			return pEffect;
 		}
