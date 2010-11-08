@@ -1,6 +1,13 @@
-Tools: ver. 0.13, 31-Oct-2010
+Tools: ver. 0.14, 8-Nov-2010
 
 ChangeList:
+
+0.14 (08-Nov-2010):
+- [OG] Bonus parameters
+- [OG] updated helicopter physics
+- [OG] updated effect system
+- [OG] some HUD added;
+- [OG] dynamical lighting experiments
 
 0.13 (31-Oct-2010):
 - [OG] Weapon parameters
