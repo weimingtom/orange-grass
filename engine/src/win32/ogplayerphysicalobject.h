@@ -24,16 +24,19 @@ public:
         IOGPhysicalParams* _pParams,
         void* _pParentActor);
 
-	// strafe.
-	virtual void Strafe (float _fDir);
-
 	// Update transforms.
 	virtual void Update (unsigned long _ElapsedTime);
 
 protected:
 
-    Vec3    m_vStrafeVec;
-    float   m_fRolling;
+	// Bound object position to be in level space.
+	virtual bool BoundPosition ();
+
+	// Stabilize rotation.
+	virtual bool StabilizeRotation ();
+
+protected:
+
 	IOGPhysics*	m_pPhysics;
 };
 

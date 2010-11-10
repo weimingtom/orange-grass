@@ -73,6 +73,9 @@ public:
 	// accelerate.
 	virtual void Accelerate (float _fDir);
 
+	// move.
+	virtual void Move (const Vec3& _vDir);
+
 	// fall.
 	virtual void Fall () {}
 
@@ -96,24 +99,43 @@ public:
 
 protected:
 
+	// Update directions.
+	virtual void UpdateDirections ();
+
+	// Bound object position to be in level space.
+	virtual bool BoundPosition ();
+
+	// Stabilize rotation.
+	virtual bool StabilizeRotation ();
+
+protected:
+
 	OGPhysicsType	m_Type;
     MATRIX          m_mWorld;
-    Vec3            m_vPosition;
+
+	Vec3            m_vPosition;
     Vec3            m_vRotation;
     Vec3            m_vScaling;
-    Vec3            m_vUp;
+    Vec3            m_vPrevPosition;
+
+	Vec3            m_vUp;
     Vec3            m_vLook;
     Vec3            m_vRight;
-    Vec3            m_vMove;
+
+	Vec3            m_vMove;
+	Vec3            m_vAcceleration;
     Vec3            m_vTorque;
-    Vec3            m_vPrevPosition;
+    float			m_fStrafe;
+
 	IOGAabb			m_Aabb;
 	IOGObb			m_Obb;
+
 	bool			m_bUpdated;
 	bool			m_bActive;
-    IOGPhysicalParams*	m_pParams;
+
+	IOGPhysicalParams*		m_pParams;
     IOGCollisionListener*   m_pListener;
-    IOGActor*       m_pActor;
+    IOGActor*				m_pActor;
 };
 
 #endif

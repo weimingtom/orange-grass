@@ -6,6 +6,8 @@
 		max_strafe_speed = "0.0" 
 		roll_speed = "0.0" 
 		max_roll_angle = "0.0"
+		pitch_speed = "0.0" 
+		max_pitch_angle = "0.0"
 		torque = "0.0"
 		type = "bonus"
 		/>

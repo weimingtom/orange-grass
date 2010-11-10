@@ -12,8 +12,6 @@
 
 COGPlayerPhysicalObject::COGPlayerPhysicalObject ()
 {
-    m_vStrafeVec = Vec3(0,0,0);
-    m_fRolling = 0.0f;
 	m_pPhysics = GetPhysics();
 }
 
@@ -33,42 +31,33 @@ void COGPlayerPhysicalObject::Create (const IOGAabb& _Aabb,
 	m_Aabb = _Aabb;
     m_pActor = (IOGActor*)_pParentActor;
     m_Obb.Create(m_Aabb);
-    m_vStrafeVec = Vec3(0,0,0);
-}
-
-
-// strafe.
-void COGPlayerPhysicalObject::Strafe (float _fDir)
-{
-    m_vStrafeVec += Vec3(_fDir,0,0);
-    m_fRolling += _fDir;
-	m_bUpdated = false;
 }
 
 
 // Update transforms.
 void COGPlayerPhysicalObject::Update (unsigned long _ElapsedTime)
 {
-    m_vPosition += Vec3(0,0,-1.0f) * (m_pParams->fMaxSpeed * _ElapsedTime);
-
-    Vec3 vLeftBorder, vRightBorder;
-    m_pPhysics->GetBordersAtPoint(m_vPosition, vLeftBorder, vRightBorder);
-    Vec3 vStrafeDist = m_vStrafeVec * (m_pParams->fStrafeMaxSpeed * _ElapsedTime);
-    m_vPosition += vStrafeDist;
-    OG_CLAMP(m_vPosition.x, vLeftBorder.x, vRightBorder.x);
-
-    m_vRotation.z += m_fRolling * /*m_pParams->fRollSpeed*/0.0008f * _ElapsedTime;
-    OG_CLAMP(m_vRotation.z, -m_pParams->fMaxRollAngle, m_pParams->fMaxRollAngle);
-    m_vRotation.x += fabsf(m_fRolling) * /*m_pParams->fRollSpeed*/0.0002f * _ElapsedTime;
-    OG_CLAMP(m_vRotation.x, /*-m_pParams->fMaxRollAngle, m_pParams->fMaxRollAngle*/-0.4f, 0.4f);
-
     COGPhysicalObject::Update(_ElapsedTime);
-
-    m_vStrafeVec.x /= 1.08f;
-    m_fRolling /= 1.08f;
-
-    m_vRotation.z /= 1.08f;
-    m_vRotation.x /= 1.08f;
     	
 	m_bUpdated = false;
+}
+
+
+// Bound object position to be in level space.
+bool COGPlayerPhysicalObject::BoundPosition ()
+{
+	Vec3 vLeftBorder, vRightBorder;
+	m_pPhysics->GetBordersAtPoint(m_vPosition, vLeftBorder, vRightBorder);
+	OG_CLAMP(m_vPosition.x, vLeftBorder.x, vRightBorder.x);
+	return true;
+}
+
+
+// Stabilize rotation.
+bool COGPlayerPhysicalObject::StabilizeRotation ()
+{
+    m_vRotation.z /= 1.08f;
+    m_vRotation.x /= 1.08f;
+
+	return true;
 }

@@ -23,6 +23,11 @@ public:
         const IOGAabb& _Aabb, 
         IOGPhysicalParams* _pParams,
         void* _pParentActor);
+
+protected:
+
+	// Update directions.
+	virtual void UpdateDirections ();
 };
 
 #endif

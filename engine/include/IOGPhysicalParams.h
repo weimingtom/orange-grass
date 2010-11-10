@@ -35,6 +35,8 @@ struct IOGPhysicalParams
         fStrafeMaxSpeed = 0.0f;
 	    fRollSpeed = 0.0f;
 	    fMaxRollAngle = 0.0f;
+	    fPitchSpeed = 0.0f;
+	    fMaxPitchAngle = 0.0f;
 	    fTorque = 0.0f;
     }
 
@@ -44,6 +46,8 @@ struct IOGPhysicalParams
 	float fStrafeMaxSpeed;
 	float fRollSpeed;
 	float fMaxRollAngle;
+	float fPitchSpeed;
+	float fMaxPitchAngle;
 	float fTorque;
 };
 

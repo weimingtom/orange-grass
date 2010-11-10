@@ -26,6 +26,11 @@ public:
 
     // check collision.
     virtual bool CheckCollision (IOGPhysicalObject* _pObject);
+
+protected:
+
+	// Update directions.
+	virtual void UpdateDirections ();
 };
 
 #endif

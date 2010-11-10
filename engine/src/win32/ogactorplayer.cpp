@@ -94,6 +94,7 @@ bool COGActorPlayer::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
 void COGActorPlayer::UpdateAlive (unsigned long _ElapsedTime)
 {
     COGActorBot::UpdateAlive(_ElapsedTime);
+	m_pPhysicalObject->Move(Vec3(0, 0, -1.0f));
 
     UpdateSpecParams(_ElapsedTime);
 

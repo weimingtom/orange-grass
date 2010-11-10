@@ -70,6 +70,9 @@ public:
 	// accelerate.
 	virtual void Accelerate (float _fDir) = 0;
 
+	// move.
+	virtual void Move (const Vec3& _vDir) = 0;
+
 	// fall.
 	virtual void Fall () = 0;
 
