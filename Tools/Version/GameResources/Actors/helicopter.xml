@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Params>
+	<!--max_speed = "0.66"  -->
 	<Physics 
 		max_speed = "0.66" 
 		acceleration = "0.0" 

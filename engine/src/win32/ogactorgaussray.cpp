@@ -103,6 +103,7 @@ void COGActorGaussRay::Activate (bool _bActive)
 		m_Status = OG_ACTORSTATUS_ALIVE;
 		m_pHeadEffect->Start();
 		m_pHeadEffect->SetDirection(Vec3(0,0,1));
+        m_pHeadEffect->SetStartFinishPositions(m_vLaunchOffset, m_vTarget);
         m_pPhysicalObject->Update(1);
 	}
 	else
@@ -120,6 +121,7 @@ void COGActorGaussRay::Fire ()
     Vec3 vRot = m_pOwner->GetPhysicalObject()->GetRotation();
 	m_pPhysicalObject->SetWorldTransform(m_vLaunchOffset, vRot, Vec3(1,1,1));
     Activate(true);
+
 }
 
 
@@ -130,4 +132,11 @@ bool COGActorGaussRay::OnCollision (const IOGCollision& _Collision)
 		return false;
 
     return false;
+}
+
+
+// Set target.
+void COGActorGaussRay::SetTarget (const Vec3& _vTarget)
+{
+    COGActorBullet::SetTarget(_vTarget);
 }

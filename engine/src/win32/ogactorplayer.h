@@ -61,6 +61,7 @@ protected:
     COGStabilizeWorker  m_StraightenWorker;
     unsigned long       m_CoolDown;
     unsigned long       m_CoolDownMax;
+    Vec3                m_vTarget;
     std::vector<IOGBonusParams> m_SpecParamsList;
 };
 

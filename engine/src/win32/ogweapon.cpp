@@ -119,6 +119,69 @@ void COGWeapon::Fire (IOGActor* _pTarget, bool _bFollow)
 }
 
 
+// Fire.
+void COGWeapon::Fire (const Vec3& _vTarget)
+{
+    Vec3 launches[3];
+    int NumLaunch = 0;
+
+    switch (m_pWeaponParams->pos)
+    {
+    case OG_WEAPONPOS_LEFT:
+        NumLaunch = 1;
+        m_pOwner->GetSgNode()->GetActivePoint(launches[0], "actpointweapon01");
+        break;
+
+    case OG_WEAPONPOS_RIGHT:
+        NumLaunch = 1;
+        m_pOwner->GetSgNode()->GetActivePoint(launches[0], "actpointweapon02");
+        break;
+
+    case OG_WEAPONPOS_CENTER:
+        NumLaunch = 1;
+        m_pOwner->GetSgNode()->GetActivePoint(launches[0], "actpointweapon03");
+        break;
+
+    case OG_WEAPONPOS_LEFTRIGHT:
+        NumLaunch = 2;
+        m_pOwner->GetSgNode()->GetActivePoint(launches[0], "actpointweapon01");
+        m_pOwner->GetSgNode()->GetActivePoint(launches[1], "actpointweapon02");
+        break;
+
+    case OG_WEAPONPOS_CENTERLEFTRIGHT:
+        NumLaunch = 3;
+        m_pOwner->GetSgNode()->GetActivePoint(launches[0], "actpointweapon03");
+        m_pOwner->GetSgNode()->GetActivePoint(launches[1], "actpointweapon01");
+        m_pOwner->GetSgNode()->GetActivePoint(launches[2], "actpointweapon02");
+        break;
+    }
+
+    int CurLaunch = NumLaunch;
+    TMissileList::iterator iter = m_MissileList.begin();
+    for (; iter != m_MissileList.end(); ++iter)
+    {
+        COGActorBullet* pMissile = *iter;
+        if (!pMissile->IsActive())
+        {
+            pMissile->SetOwner(m_pOwner, launches[NumLaunch - CurLaunch]);
+            pMissile->SetTarget(_vTarget);
+            pMissile->Fire();
+
+            --CurLaunch;
+            if (CurLaunch == 0)
+            {
+                m_WeaponCoolDown = 0;
+                return;
+            }
+        }
+    }
+    if (CurLaunch != NumLaunch)
+    {
+        m_WeaponCoolDown = 0;
+    }
+}
+
+
 // Update actor.
 void COGWeapon::Update (unsigned long _ElapsedTime)
 {

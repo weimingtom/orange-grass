@@ -22,21 +22,24 @@ COGFog::~COGFog ()
 // set light color.
 void COGFog::SetColor (const Vec4& _vColor)
 {
-	m_Color = Vec4(0.08f, 0.08f, 0.05f, 1.0f);//_vColor;
+	//m_Color = _vColor;
+	m_Color = Vec4(0.08f, 0.08f, 0.05f, 1.0f);
 }
 
 
 // set fog start.
 void COGFog::SetStart (float _fStart)
 {
-	m_fStart = 200.0f;//_fStart;
+	//m_fStart = _fStart;
+	m_fStart = 200.0f;
 }
 
 
 // set fog end.
 void COGFog::SetEnd (float _fEnd)
 {
-	m_fEnd = 250.0f;//_fEnd;
+	//m_fEnd = _fEnd;
+	m_fEnd = 250.0f;
 }
 
 

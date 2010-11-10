@@ -79,6 +79,7 @@ bool COGActorPlayer::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
         m_pPhysicalObject->GetPosition().y, 
         vCam, 
         vDir);
+    m_vTarget = vPoint;
 
     m_OrientWorker.Reset();
     m_OrientWorker.SetTarget(vPoint);
@@ -107,7 +108,10 @@ void COGActorPlayer::UpdateAlive (unsigned long _ElapsedTime)
 		if (m_OrientWorker.IsFinished())
 		{
             if (m_pWeapon && m_pWeapon->IsReady())
-				m_pWeapon->Fire(NULL, false);
+            {
+                m_pWeapon->Fire(m_vTarget);
+				//m_pWeapon->Fire(NULL, false);
+            }
             m_CoolDown = 0;
             m_StraightenWorker.Activate(false);
 		}

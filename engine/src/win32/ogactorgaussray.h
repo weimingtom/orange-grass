@@ -37,6 +37,9 @@ public:
     // collision event handler
 	virtual bool OnCollision (const IOGCollision& _Collision);
 
+	// Set target.
+	virtual void SetTarget (const Vec3& _vTarget);
+
 protected:
 
 	// Update alive actor.
