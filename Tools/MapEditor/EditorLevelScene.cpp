@@ -85,6 +85,8 @@ bool CEditorLevelScene::Init ()
 		{
 			if ((*iter)->type == OG_ACTOR_MISSILE ||
 				(*iter)->type == OG_ACTOR_PLASMAMISSILE ||
+				(*iter)->type == OG_ACTOR_GAUSSRAY ||
+				(*iter)->type == OG_ACTOR_BONUS ||
 				(*iter)->type == OG_ACTOR_PLAYER )
 			{
 				continue;

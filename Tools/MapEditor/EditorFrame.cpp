@@ -116,12 +116,14 @@ bool CEditorFrame::Create(wxWindow * parent,
 
     m_pCanvas = new CEditorCanvas(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 
-	m_pToolsNotebook = new wxAuiNotebook(this, ID_TOOLSNOTEBOOK, wxDefaultPosition, wxSize(148, appSize.y), 
+	m_pToolsNotebook = new wxAuiNotebook(this, ID_TOOLSNOTEBOOK, wxDefaultPosition, wxSize(200, appSize.y), 
 		wxAUI_NB_DEFAULT_STYLE|wxNO_BORDER);
 	m_pToolsPage1 = new wxPanel(m_pToolsNotebook, wxID_ANY);
 	m_pToolsPage2 = new wxPanel(m_pToolsNotebook, wxID_ANY);
+	m_pToolsPage3 = new wxPanel(m_pToolsNotebook, wxID_ANY);
 	m_pToolsNotebook->AddPage(m_pToolsPage1, _("Level settings"));
 	m_pToolsNotebook->AddPage(m_pToolsPage2, _("Game logic"));
+	m_pToolsNotebook->AddPage(m_pToolsPage3, _("Lighting"));
 
     m_pObjectsList = new wxSimpleHtmlListBox();
     m_pObjectsList->Create(this, wxID_ANY, wxDefaultPosition, wxSize(148, appSize.y), 0, NULL, 0);
@@ -137,6 +139,7 @@ bool CEditorFrame::Create(wxWindow * parent,
     GetToolSettings()->SetEditMode(EDITMODE_OBJECTS);
 
 	CreateSettingsPanelControls(m_pToolsPage1);
+	CreateLightingPanelControls(m_pToolsPage3);
 
 	GetEventHandlersTable()->AddEventHandler(EVENTID_LEVELLOAD, this);
 
@@ -160,11 +163,18 @@ void CEditorFrame::CreateSettingsPanelControls(wxPanel* _pPanel)
 	m_pSettingsTree->Expand(m_pSettingsTree->GetRootItem());
 	m_pSettingsTree->Expand(RangeRoot);
 	m_pSettingsTree->Connect(wxEVT_COMMAND_TREE_SEL_CHANGED, wxTreeEventHandler(CEditorFrame::OnSettingsSwitch), NULL, this);
+}
+
+
+/// Create lighting panel
+void CEditorFrame::CreateLightingPanelControls(wxPanel* _pPanel)
+{
+	wxSize panelSize = _pPanel->GetSize();
 
 	int rightBorder = panelSize.GetWidth()*0.85f;
 
 	wxSize szClrDesc = wxSize(panelSize.GetWidth(), 160);
-	wxPoint posClrDesc = wxPoint(0, posSettingsTree.y + szSettingsTree.y + 15);
+	wxPoint posClrDesc = wxPoint(0, 15);
 	wxStaticBox* ClrDesc = new wxStaticBox(_pPanel, wxID_ANY, _T("Lighting:"), posClrDesc, szClrDesc);
 	wxSize szClr = wxSize(rightBorder, 30);
 	wxPoint posClr = wxPoint(posClrDesc.x + 5, posClrDesc.y + 15);
@@ -211,10 +221,6 @@ void CEditorFrame::PopulateToolbar(wxToolBarBase* toolBar)
     {
         Tool_open,
         Tool_save,
-        Tool_help,
-        Tool_ed_obj,
-        Tool_ed_adj,
-        Tool_ed_set,
         Tool_Max
     };
 
@@ -222,10 +228,6 @@ void CEditorFrame::PopulateToolbar(wxToolBarBase* toolBar)
 
     toolBarBitmaps[Tool_open] = wxBitmap(wxT("Resources\\open.bmp"), wxBITMAP_TYPE_BMP);
     toolBarBitmaps[Tool_save] = wxBitmap(wxT("Resources\\save.bmp"), wxBITMAP_TYPE_BMP);
-    toolBarBitmaps[Tool_help] = wxBitmap(wxT("Resources\\help.bmp"), wxBITMAP_TYPE_BMP);
-    toolBarBitmaps[Tool_ed_obj] = wxBitmap(wxT("Resources\\ed_obj.bmp"), wxBITMAP_TYPE_BMP);
-    toolBarBitmaps[Tool_ed_adj] = wxBitmap(wxT("Resources\\ed_adj.bmp"), wxBITMAP_TYPE_BMP);
-    toolBarBitmaps[Tool_ed_set] = wxBitmap(wxT("Resources\\ed_set.bmp"), wxBITMAP_TYPE_BMP);
 
     int w = toolBarBitmaps[Tool_open].GetWidth();
     int h = toolBarBitmaps[Tool_open].GetHeight();
@@ -235,9 +237,6 @@ void CEditorFrame::PopulateToolbar(wxToolBarBase* toolBar)
     toolBar->AddTool(wxID_OPEN, wxT("Open"), toolBarBitmaps[Tool_open], wxT("Open level"), wxITEM_NORMAL);
     toolBar->AddTool(wxID_SAVE, wxT("Save"), toolBarBitmaps[Tool_save], wxT("Save level"), wxITEM_NORMAL);
     toolBar->AddSeparator();
-    //toolBar->AddTool(ID_DEF_OBJECTS, wxT("Objects"), toolBarBitmaps[Tool_ed_obj], wxT("Objects"), wxITEM_NORMAL);
-    //toolBar->AddTool(ID_DEF_ADJUST, wxT("Adjust"), toolBarBitmaps[Tool_ed_adj], wxT("Adjust"), wxITEM_NORMAL);
-    //toolBar->AddTool(ID_DEF_SETTINGS, wxT("Settings"), toolBarBitmaps[Tool_ed_set], wxT("Settings"), wxITEM_NORMAL);
     toolBar->Realize();
 }
 

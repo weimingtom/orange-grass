@@ -116,6 +116,9 @@ private:
 	/// Create settings panel
 	void CreateSettingsPanelControls(wxPanel* _pPanel);
 
+	/// Create lighting panel
+	void CreateLightingPanelControls(wxPanel* _pPanel);
+
 	/// Fire update event.
 	void FireUpdateEvent();
 
@@ -131,10 +134,14 @@ private:
     wxAuiNotebook*          m_pToolsNotebook;
 	wxPanel*                m_pToolsPage1;
 	wxPanel*                m_pToolsPage2;
+	wxPanel*                m_pToolsPage3;
+
 	wxTreeCtrl*				m_pSettingsTree;
+
 	wxColourPickerCtrl*		m_pColorPicker;
 	wxSlider*				m_pXDirSlider;
 	wxSlider*				m_pZDirSlider;
+
 	wxColourPickerCtrl*		m_pFogColorPicker;
 	wxSlider*				m_pFogNearSlider;
 	wxSlider*				m_pFogFarSlider;
