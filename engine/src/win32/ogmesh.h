@@ -47,7 +47,7 @@ public:
 	virtual const IOGAabb& GetAABB () const;
 
 	// Get part AABB
-	virtual const IOGAabb& GetAABB (unsigned int _Part) const {return m_AabbList[_Part];}
+	virtual const IOGAabb& GetAABB (unsigned int _Part) const;
 
     // Get ray intersection
     virtual bool GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos);
@@ -64,29 +64,37 @@ protected:
 	virtual void CalculateGeometry ();
 
     // check if active point.
-    bool IsActivePoint (unsigned int _Part);
+    bool IsActivePoint (unsigned int _Id);
 
 protected:
-	
-	// Vertex Buffer Object (VBO) list
-	std::vector<IOGVertexBuffers*>	m_BuffersList;
-	
-	// 3D Model
-	CPVRTModelPOD*	m_pScene;
-
-	// Bounds
-	IOGAabb					m_AABB;
-	std::vector<IOGAabb>	m_AabbList;
-    std::vector<unsigned int>   m_PartList;
-
-    // Geometry (for mapeditor mostly)
-	std::vector<OGFace>     m_Faces;
 
     struct ActPoint
     {
         Vec3 pos;
         unsigned int part;
     };
+
+    struct SubMesh
+    {
+        unsigned int        part;
+        bool                transparent;
+        IOGAabb*            aabb;
+        IOGVertexBuffers*   buffer;
+    };
+
+protected:
+	
+	// 3D Model
+	CPVRTModelPOD*	m_pScene;
+
+	// Bounds
+	IOGAabb					m_AABB;
+
+    std::vector<SubMesh>    m_SubMeshes;
+
+    // Geometry (for mapeditor mostly)
+	std::vector<OGFace>     m_Faces;
+
     std::map<std::string, ActPoint> m_ActivePoints;
 
     IOGRenderer*    m_pRenderer;

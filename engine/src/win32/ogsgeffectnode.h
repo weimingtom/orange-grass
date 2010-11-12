@@ -1,26 +1,26 @@
 /*
- *  ogsgnode.h
+ *  ogsgeffectnode.h
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 12.11.09.
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#ifndef OGSGNODE_H_
-#define OGSGNODE_H_
+#ifndef OGSGEFFECTNODE_H_
+#define OGSGEFFECTNODE_H_
 
 #include "Mathematics.h"
 #include "IOGSgNode.h"
 #include "IOGAnimationController.h"
 
 
-class COGSgNode : public IOGSgNode
+class COGSgEffectNode : public IOGSgNode
 {
-	COGSgNode ();
+	COGSgEffectNode ();
 
 public:
-	COGSgNode (IOGModel* _pRenderable, IOGPhysicalObject* _pPhysics);
-	virtual ~COGSgNode ();
+	COGSgEffectNode (IOGEffect* _pRenderable, IOGPhysicalObject* _pPhysics);
+	virtual ~COGSgEffectNode ();
 
 	// get world transform.
 	virtual const MATRIX& GetWorldTransform () const;
@@ -38,10 +38,10 @@ public:
 	virtual IOGPhysicalObject* GetPhysics ();
 
 	// Get type of the renderable.
-    virtual RenderableType GetRenderableType () const {return OG_RENDERABLE_MODEL;}
+    virtual RenderableType GetRenderableType () const {return OG_RENDERABLE_EFFECT;}
 
 	// get animation controller.
-    virtual IOGAnimationController* GetAnimator () { return m_pAnimator;}
+    virtual IOGAnimationController* GetAnimator () { return NULL; }
 
 	// start animation.
     virtual void StartAnimation (const std::string& _Alias);
@@ -55,13 +55,14 @@ public:
 	// Set active state
 	virtual void Activate (bool _bActive);
 
+	// Set billboard basis vectors.
+	void SetBillboardVectors (const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight);
+
 protected:
 
     bool					m_bActive;
-    IOGModel*               m_pRenderable;
+    IOGEffect*              m_pRenderable;
     IOGPhysicalObject*      m_pPhysics;
-    IOGAnimationController* m_pAnimator;
-    unsigned int            m_AnimFrame;
 };
 
 #endif

@@ -11,20 +11,21 @@
 #include "oganimationcontroller.h"
 
 
-COGSgNode::COGSgNode () :   m_pRenderable(NULL),
-                            m_pPhysics(NULL),
-                            m_pAnimator(NULL),
-							m_bActive(false)
+COGSgNode::COGSgNode () :
+    m_pRenderable(NULL),
+    m_pPhysics(NULL),
+    m_pAnimator(NULL),
+    m_bActive(false)
 {
     m_AnimFrame = 0;
 }
 
 
-COGSgNode::COGSgNode (IOGRenderable* _pRenderable,
-                      IOGPhysicalObject* _pPhysics) :   m_pRenderable(_pRenderable),
-                                                        m_pPhysics(_pPhysics),
-                                                        m_pAnimator(NULL),
-														m_bActive(true)
+COGSgNode::COGSgNode (IOGModel* _pRenderable, IOGPhysicalObject* _pPhysics) :   
+    m_pRenderable(_pRenderable),
+    m_pPhysics(_pPhysics),
+    m_pAnimator(NULL),
+    m_bActive(true)
 {
     m_pAnimator = new COGAnimationController();
     m_AnimFrame = 0;
@@ -64,7 +65,6 @@ void COGSgNode::Update (unsigned long _ElapsedTime)
         m_pAnimator->UpdateAnimation(_ElapsedTime);
         m_AnimFrame = (unsigned int)m_pAnimator->GetCurrentAnimationProgress();
     }
-    m_pRenderable->Update(_ElapsedTime);
 }
 
 
@@ -76,13 +76,6 @@ void COGSgNode::Render ()
 
     const MATRIX& mWorld = m_pPhysics->GetWorldTransform();
     m_pRenderable->Render(mWorld, m_AnimFrame);
-}
-
-
-// get renderable.
-IOGRenderable* COGSgNode::GetRenderable ()
-{
-    return m_pRenderable;
 }
 
 

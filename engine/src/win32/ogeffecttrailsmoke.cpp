@@ -141,7 +141,7 @@ void COGEffectTrailSmoke::UpdatePosition (const Vec3& _vPosition)
 
 
 // Render.
-void COGEffectTrailSmoke::Render (const MATRIX& _mWorld, unsigned int _Frame)
+void COGEffectTrailSmoke::Render (const MATRIX& _mWorld)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;

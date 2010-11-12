@@ -29,36 +29,15 @@ bool COGActorMissile::Create (IOGActorParams* _pParams,
 {
 	m_pParams = _pParams;
 
-	if (m_pParams->type == OG_ACTOR_NONE)
-	{
-		OG_LOG_ERROR("Creating COGActorMissile from model %s failed, actor type is OG_ACTOR_NONE", m_pParams->model_alias.c_str());
-		return false;
-	}
-
 	m_pHeadEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_MISSILESMOKE);
-	if (!m_pHeadEffect)
-	{
-		OG_LOG_ERROR("Creating COGActorMissile failed, cannot get effect %s", m_pParams->model_alias.c_str());
-		return false;
-	}
 	
     m_pPhysicalObject = m_pPhysics->CreateObject(&m_pParams->physics, m_pHeadEffect->GetAABB(), this);
-    if (!m_pPhysicalObject)
-	{
-		OG_LOG_ERROR("Creating COGActorMissile failed, cannot create physical object");
-        return false;
-	}
 	m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);
 
-	m_pNode = m_pSg->CreateNode(m_pHeadEffect, m_pPhysicalObject);
-	if (!m_pNode)
-	{
-		OG_LOG_ERROR("Creating COGActorMissile failed, cannot create SG node");
-		return false;
-	}
+	m_pNode = m_pSg->CreateEffectNode(m_pHeadEffect, m_pPhysicalObject);
 
     m_pCollisionEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_COLLISION);
-	m_pCollisionEffectNode = m_pSg->CreateNode(m_pCollisionEffect, m_pPhysicalObject);
+	m_pCollisionEffectNode = m_pSg->CreateEffectNode(m_pCollisionEffect, m_pPhysicalObject);
 
 	m_FlightWorker.Create(this);
     Activate(false);

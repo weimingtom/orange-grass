@@ -56,7 +56,7 @@ void COGPlasmaEffect::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGPlasmaEffect::Render (const MATRIX& _mWorld, unsigned int _Frame)
+void COGPlasmaEffect::Render (const MATRIX& _mWorld)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
@@ -77,8 +77,6 @@ void COGPlasmaEffect::Render (const MATRIX& _mWorld, unsigned int _Frame)
 
 		m_pRenderer->DrawEffectBuffer(&particle.pVertices[0], 0, 4);
 	}
-
-    //m_pRenderer->DrawEffectBuffer(m_Vertices, 0, PLASMA_VERTICES);
 }
 
 

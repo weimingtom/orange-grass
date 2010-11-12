@@ -48,6 +48,9 @@
 	</Texture>
 	<Texture alias="helicopter_body" file="Models/Helicopter/helicopter_body.pvr" />
 	<Texture alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller.pvr" />
+	<Texture alias="helicopter_big_body" file="Models/Helicopter_big/helicopter_big.pvr" />
+	<Texture alias="propeller" file="Common/propeller.pvr" />
+	<Texture alias="checker" file="Common/checker.pvr" />
 	<Texture alias="bonus_01" file="Models/Bonuses/bonus_01.pvr" />
 	<Texture alias="bonus_02" file="Models/Bonuses/bonus_02.pvr" />
 	<Texture alias="land_02" file="Models/Land_objects_02/land_02.pvr" />
@@ -67,6 +70,9 @@
 	<Mesh alias="helicopter_body" file="Models/Helicopter/helicopter_body.POD"/>
 	<Mesh alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller_anim.POD"/>
 	<Mesh alias="helicopter_destruction" file="Models/Helicopter/helicopter_destruction.POD"/>
+	<Mesh alias="helicopter_big_body" file="Models/Helicopter_big/helicopter_big_body.POD"/>
+	<Mesh alias="helicopter_big_propeller" file="Models/Helicopter_big/helicopter_big_propeller.POD"/>
+	<Mesh alias="helicopter_big_destruction" file="Models/Helicopter_big/helicopter_big_destruction.POD"/>
 	<Mesh alias="bot_plane_small" file="Models/Bot_plane_small/bot_plane_small.POD"/>
 	<Mesh alias="bot_plane_small_destruction" file="Models/Bot_plane_small/bot_plane_small_destruction.POD"/>
 	<Mesh alias="bonus_01" file="Models/Bonuses/bonus_01.POD"/>
@@ -91,6 +97,9 @@
 	<Model alias="helicopter_body" file="Models/Helicopter/helicopter_body.xml"/>
 	<Model alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller.xml"/>
 	<Model alias="helicopter_destruction" file="Models/Helicopter/helicopter_destruction.xml"/>
+	<Model alias="helicopter_big_body" file="Models/Helicopter_big/helicopter_big_body.xml"/>
+	<Model alias="helicopter_big_propeller" file="Models/Helicopter_big/helicopter_big_propeller.xml"/>
+	<Model alias="helicopter_big_destruction" file="Models/Helicopter_big/helicopter_big_destruction.xml"/>
 	<Model alias="bot_plane_small" file="Models/Bot_plane_small/bot_plane_small.xml"/>
 	<Model alias="bot_plane_small_destruction" file="Models/Bot_plane_small/bot_plane_small_destruction.xml"/>
 	<Model alias="bonus_01" file="Models/Bonuses/bonus_01.xml"/>

@@ -112,7 +112,7 @@ void COGTerrain::Unload ()
 
 
 // Render terrain.
-void COGTerrain::Render (const MATRIX& _mWorld, unsigned int _Frame)
+void COGTerrain::Render (const MATRIX& _mWorld)
 {
 	IOGCamera* pCamera = GetRenderer()->GetCamera();
 	float fCameraZ = pCamera->GetPosition().z;
@@ -137,17 +137,8 @@ void COGTerrain::Render (const MATRIX& _mWorld, unsigned int _Frame)
 }
 
 
-// Render.
-void COGTerrain::Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame)
-{
-    m_pRenderer->SetMaterial(m_pMaterial);
-    m_pRenderer->SetTexture(m_TextureList[_Part]);
-	m_pMesh->RenderPart (_mWorld, _Part, 0);
-}
-
-
 // Render all.
-void COGTerrain::RenderAll (const MATRIX& _mWorld, unsigned int _Frame)
+void COGTerrain::RenderAll (const MATRIX& _mWorld)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_TextureList[0]);
@@ -156,12 +147,6 @@ void COGTerrain::RenderAll (const MATRIX& _mWorld, unsigned int _Frame)
     {
 		m_pMesh->RenderPart (_mWorld, i, 0);
     }
-}
-
-
-// Update mesh animation.
-void COGTerrain::Update (unsigned long _ElapsedTime)
-{
 }
 
 

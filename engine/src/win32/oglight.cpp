@@ -25,8 +25,8 @@ COGLight::~COGLight ()
 // set light color.
 void COGLight::SetMainLightColor (const Vec4& _vColor)
 {
-	//m_vColor = _vColor;
-	m_vColor = Vec4(0.5f, 0.5f, 0.4f, 1.0f);
+	m_vColor = _vColor;
+	//m_vColor = Vec4(0.5f, 0.5f, 0.4f, 1.0f);
 }
 
 

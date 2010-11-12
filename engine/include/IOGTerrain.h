@@ -14,16 +14,25 @@
 #include "IOGMesh.h"
 
 
-class IOGTerrain : public IOGRenderable
+class IOGTerrain
 {
 public:
 	virtual ~IOGTerrain() {}
+
+	// Render terrain.
+	virtual void Render (const MATRIX& _mWorld) = 0;
+
+	// Render all.
+	virtual void RenderAll (const MATRIX& _mWorld) = 0;
 
     // Get ray intersection
     virtual bool GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos) = 0;
 
     // Get mesh geometry
     virtual const std::vector<OGFace>& GetGeometry () const = 0;
+
+	// Get combined AABB
+	virtual const IOGAabb& GetAABB () const = 0;
 };
 
 

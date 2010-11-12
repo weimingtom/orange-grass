@@ -127,7 +127,7 @@ void COGEffectExplosion::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGEffectExplosion::Render (const MATRIX& _mWorld, unsigned int _Frame)
+void COGEffectExplosion::Render (const MATRIX& _mWorld)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;

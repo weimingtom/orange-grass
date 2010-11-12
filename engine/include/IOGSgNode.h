@@ -32,11 +32,11 @@ public:
 	// Get OBB
 	virtual const IOGObb& GetOBB () const = 0;
 
-	// get renderable.
-	virtual IOGRenderable* GetRenderable () = 0;
-
 	// get physics.
 	virtual IOGPhysicalObject* GetPhysics () = 0;
+
+	// Get type of the renderable.
+	virtual RenderableType GetRenderableType () const = 0;
 
 	// start animation.
     virtual void StartAnimation (const std::string& _Alias) = 0;

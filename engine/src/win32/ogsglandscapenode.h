@@ -1,26 +1,27 @@
 /*
- *  ogsgnode.h
+ *  ogsglandscapenode.h
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 12.11.09.
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#ifndef OGSGNODE_H_
-#define OGSGNODE_H_
+#ifndef OGSGLANDSCAPENODE_H_
+#define OGSGLANDSCAPENODE_H_
 
 #include "Mathematics.h"
 #include "IOGSgNode.h"
 #include "IOGAnimationController.h"
+#include "IOGTerrain.h"
 
 
-class COGSgNode : public IOGSgNode
+class COGSgLandscapeNode : public IOGSgNode
 {
-	COGSgNode ();
+	COGSgLandscapeNode ();
 
 public:
-	COGSgNode (IOGModel* _pRenderable, IOGPhysicalObject* _pPhysics);
-	virtual ~COGSgNode ();
+	COGSgLandscapeNode (IOGTerrain* _pRenderable);
+	virtual ~COGSgLandscapeNode ();
 
 	// get world transform.
 	virtual const MATRIX& GetWorldTransform () const;
@@ -31,6 +32,9 @@ public:
 	// render.
 	virtual void Render ();
 
+	// render all nodes.
+	void RenderAll ();
+
 	// update transform.
 	virtual void Update (unsigned long _ElapsedTime);
 
@@ -38,10 +42,10 @@ public:
 	virtual IOGPhysicalObject* GetPhysics ();
 
 	// Get type of the renderable.
-    virtual RenderableType GetRenderableType () const {return OG_RENDERABLE_MODEL;}
+    virtual RenderableType GetRenderableType () const {return OG_RENDERABLE_TERRAIN;}
 
 	// get animation controller.
-    virtual IOGAnimationController* GetAnimator () { return m_pAnimator;}
+    virtual IOGAnimationController* GetAnimator () { return NULL; }
 
 	// start animation.
     virtual void StartAnimation (const std::string& _Alias);
@@ -58,10 +62,9 @@ public:
 protected:
 
     bool					m_bActive;
-    IOGModel*               m_pRenderable;
-    IOGPhysicalObject*      m_pPhysics;
-    IOGAnimationController* m_pAnimator;
-    unsigned int            m_AnimFrame;
+    IOGTerrain*             m_pRenderable;
+    IOGObb                  m_OBB;
+    MATRIX                  m_World;
 };
 
 #endif

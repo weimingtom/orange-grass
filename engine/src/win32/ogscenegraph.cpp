@@ -9,6 +9,8 @@
 #include "OrangeGrass.h"
 #include "ogscenegraph.h"
 #include "ogsgnode.h"
+#include "ogsgeffectnode.h"
+#include "ogsglandscapenode.h"
 #include <algorithm>
 
 
@@ -41,9 +43,25 @@ void COGSceneGraph::Clear ()
 
 
 // Create scene graph node
-IOGSgNode* COGSceneGraph::CreateNode (IOGRenderable* _pRenderable, IOGPhysicalObject* _pPhysics)
+IOGSgNode* COGSceneGraph::CreateNode (IOGModel* _pRenderable, IOGPhysicalObject* _pPhysics)
 {
     COGSgNode* pNode = new COGSgNode(_pRenderable, _pPhysics);
+    return pNode;
+}
+
+
+// Create scene graph effect node
+IOGSgNode* COGSceneGraph::CreateEffectNode (IOGEffect* _pRenderable, IOGPhysicalObject* _pPhysics)
+{
+    COGSgEffectNode* pNode = new COGSgEffectNode(_pRenderable, _pPhysics);
+    return pNode;
+}
+
+
+// Create scene graph landscape node
+IOGSgNode* COGSceneGraph::CreateLandscapeNode (IOGTerrain* _pRenderable)
+{
+    COGSgLandscapeNode* pNode = new COGSgLandscapeNode(_pRenderable);
     return pNode;
 }
 
@@ -80,6 +98,7 @@ void COGSceneGraph::AddTransparentNode (IOGSgNode* _pNode)
 // Add landscape scene graph node
 void COGSceneGraph::AddLandscapeNode (IOGSgNode* _pNode)
 {
+    OG_SAFE_DELETE(m_pLandscapeNode);
 	m_pLandscapeNode = _pNode;
 }
 
@@ -97,7 +116,7 @@ void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
     if (!_pNode)
         return;
 
-    switch (_pNode->GetRenderable()->GetRenderableType())
+    switch (_pNode->GetRenderableType())
     {
     case OG_RENDERABLE_MODEL:
         {
@@ -139,9 +158,6 @@ void COGSceneGraph::Update (unsigned long _ElapsedTime)
     for (; iter != m_EffectNodesList.end(); ++iter)
     {
 		IOGSgNode* pNode = (*iter);
-		//const MATRIX& mT = pNode->GetWorldTransform();
-		//Vec3 vPos = Vec3(mT.f[12], mT.f[13], mT.f[14]);
-		//((IOGEffect*)pNode->GetRenderable())->UpdatePosition(vPos);
         (*iter)->Update(_ElapsedTime);
     }
 }
@@ -162,14 +178,10 @@ void COGSceneGraph::RenderScene (IOGCamera* _pCamera)
 // Render landscape.
 void COGSceneGraph::RenderLandscape (IOGCamera* _pCamera)
 {
-	if (!m_pLandscapeNode)
+	if (m_pLandscapeNode)
 	{
-		return;
+        m_pLandscapeNode->Render();
 	}
-
-	MATRIX mT;
-    MatrixIdentity(mT);
-	m_pLandscapeNode->GetRenderable()->Render(mT, 0);
 }
 
 
@@ -188,14 +200,14 @@ void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
     TNodesList::iterator iter = m_EffectNodesList.begin();
     for (; iter != m_EffectNodesList.end(); ++iter)
     {
-		IOGSgNode* pNode = (*iter);
+		COGSgEffectNode* pNode = (COGSgEffectNode*)(*iter);
 		float fObjectZ = pNode->GetOBB().m_vCenter.z;
 
 		if (fObjectZ <= fCameraZ)
 		{
 			if ((fCameraZ - fObjectZ) < m_fViewDistance)
 			{
-                ((IOGEffect*)pNode->GetRenderable())->SetBillboardVectors(vLook, vUp, vRight);
+                pNode->SetBillboardVectors(vLook, vUp, vRight);
 				pNode->Render();
 			}
 		}
@@ -224,8 +236,8 @@ void COGSceneGraph::RenderAllEffects (IOGCamera* _pCamera)
     TNodesList::iterator iter = m_EffectNodesList.begin();
     for (; iter != m_EffectNodesList.end(); ++iter)
     {
-		IOGSgNode* pNode = (*iter);
-        ((IOGEffect*)pNode->GetRenderable())->SetBillboardVectors(vLook, vUp, vRight);
+		COGSgEffectNode* pNode = (COGSgEffectNode*)(*iter);
+        pNode->SetBillboardVectors(vLook, vUp, vRight);
         pNode->Render();
     }
 }
@@ -236,9 +248,7 @@ void COGSceneGraph::RenderAll (IOGCamera* _pCamera)
 {
 	if (m_pLandscapeNode)
 	{
-		MATRIX mT;
-		MatrixIdentity(mT);
-		m_pLandscapeNode->GetRenderable()->RenderAll(mT, 0);
+		((COGSgLandscapeNode*)m_pLandscapeNode)->RenderAll();
 	}
 
 	RenderWholeNodesList(_pCamera, m_NodesList);

@@ -153,7 +153,7 @@ void COGEffectMissileSmoke::UpdatePosition (const Vec3& _vPosition)
 
 
 // Render.
-void COGEffectMissileSmoke::Render (const MATRIX& _mWorld, unsigned int _Frame)
+void COGEffectMissileSmoke::Render (const MATRIX& _mWorld)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;

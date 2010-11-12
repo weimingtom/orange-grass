@@ -29,17 +29,8 @@ public:
 	// Unload resource.
 	virtual void Unload ();
 
-	// Update.
-	virtual void Update (unsigned long _ElapsedTime);
-
 	// Render mesh.
 	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame);
-
-	// Render.
-	virtual void Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame);
-
-	// Render all.
-	virtual void RenderAll (const MATRIX& _mWorld, unsigned int _Frame);
 
     // Get num renderable parts.
 	virtual unsigned int GetNumRenderables () const;

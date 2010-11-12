@@ -28,7 +28,7 @@ public:
 	virtual void UpdatePosition (const Vec3& _vPosition);
 
 	// Render.
-	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame);
+	virtual void Render (const MATRIX& _mWorld);
 
 	// Start.
 	virtual void Start ();

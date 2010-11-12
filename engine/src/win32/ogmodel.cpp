@@ -137,34 +137,12 @@ void COGModel::Unload ()
 }
 
 
-// Update.
-void COGModel::Update (unsigned long _ElapsedTime)
-{
-}
-
-
 // Render mesh.
 void COGModel::Render (const MATRIX& _mWorld, unsigned int _Frame)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
 	m_pMesh->Render (_mWorld, _Frame);
-}
-
-		
-// Render.
-void COGModel::Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame)
-{
-    m_pRenderer->SetMaterial(m_pMaterial);
-    m_pRenderer->SetTexture(m_pTexture);
-	m_pMesh->RenderPart (_mWorld, _Part, _Frame);
-}
-
-
-// Render all.
-void COGModel::RenderAll (const MATRIX& _mWorld, unsigned int _Frame)
-{
-	Render(_mWorld, _Frame);
 }
 
 

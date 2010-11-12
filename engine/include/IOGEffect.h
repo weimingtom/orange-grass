@@ -33,7 +33,7 @@ enum OGEffectType
 };
 
 
-class IOGEffect : public IOGRenderable
+class IOGEffect
 {
 public:
 	virtual ~IOGEffect() {}
@@ -59,6 +59,9 @@ public:
 	// Update position.
 	virtual void UpdatePosition (const Vec3& _vPosition) = 0;
 
+	// Render.
+	virtual void Render (const MATRIX& _mWorld) = 0;
+
 	// Start.
 	virtual void Start () = 0;
 
@@ -70,6 +73,9 @@ public:
 
 	// Get effect type.
 	virtual OGEffectType GetType() const = 0;
+
+	// Get combined AABB
+	virtual const IOGAabb& GetAABB () const = 0;
 };
 
 #endif

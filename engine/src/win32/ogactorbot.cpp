@@ -66,87 +66,37 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
                           const Vec3& _vScale)
 {
 	m_pParams = _pParams;
-	if (m_pParams->type == OG_ACTOR_NONE)
-	{
-		OG_LOG_ERROR("Creating COGActorBot from model %s failed, actor type is OG_ACTOR_NONE", m_pParams->model_alias.c_str());
-		return false;
-	}
 
     m_Hitpoints = m_pParams->gameplay.max_hitpoints;
 
 	m_pModel = GetResourceMgr()->GetModel(m_pParams->model_alias);
-	if (!m_pModel)
-	{
-		OG_LOG_ERROR("Creating COGActorBot failed, cannot get model %s", m_pParams->model_alias.c_str());
-		return false;
-	}
     if (!m_pParams->model_propeller_alias.empty())
     {
 	    m_pModelPropeller = GetResourceMgr()->GetModel(m_pParams->model_propeller_alias);
-	    if (!m_pModelPropeller)
-	    {
-		    OG_LOG_ERROR("Creating COGActorBot failed, cannot get propeller model %s", m_pParams->model_propeller_alias.c_str());
-		    return false;
-	    }
     }
     if (!m_pParams->model_destruction.empty())
     {
 	    m_pModelDestruction = GetResourceMgr()->GetModel(m_pParams->model_destruction);
-	    if (!m_pModelDestruction)
-	    {
-		    OG_LOG_ERROR("Creating COGActorBot failed, cannot get destruction model %s", m_pParams->model_destruction.c_str());
-		    return false;
-	    }
     }
 	
     m_pPhysicalObject = m_pPhysics->CreateObject(&m_pParams->physics, m_pModel->GetAABB(), this);
-    if (!m_pPhysicalObject)
-	{
-		OG_LOG_ERROR("Creating COGActorBot failed, cannot create physical object");
-        return false;
-	}
 	m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);
 
 	m_pNode = m_pSg->CreateNode(m_pModel, m_pPhysicalObject);
-	if (!m_pNode)
-	{
-		OG_LOG_ERROR("Creating COGActorBot failed, cannot create SG node");
-		return false;
-	}
     if (m_pModelPropeller)
     {
 	    m_pNodePropeller = m_pSg->CreateNode(m_pModelPropeller, m_pPhysicalObject);
-	    if (!m_pNodePropeller)
-	    {
-		    OG_LOG_ERROR("Creating COGActorBot failed, cannot create SG node");
-		    return false;
-	    }
     }
     if (m_pModelDestruction)
     {
 	    m_pNodeDestruction = m_pSg->CreateNode(m_pModelDestruction, m_pPhysicalObject);
-	    if (!m_pNodeDestruction)
-	    {
-		    OG_LOG_ERROR("Creating COGActorBot failed, cannot create SG node");
-		    return false;
-	    }
     }
 
 	m_pExplosionEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_EXPLOSION);
-	if (!m_pExplosionEffect)
-	{
-		OG_LOG_ERROR("Creating COGActorBot failed, cannot get effect");
-		return false;
-	}
-	m_pExplosionNode = m_pSg->CreateNode(m_pExplosionEffect, m_pPhysicalObject);
-	if (!m_pExplosionNode)
-	{
-		OG_LOG_ERROR("Creating COGActorBot failed, cannot create SG node");
-		return false;
-	}
+	m_pExplosionNode = m_pSg->CreateEffectNode(m_pExplosionEffect, m_pPhysicalObject);
 
 	m_pTrailEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_TRAILSMOKE);
-	m_pTrailNode = m_pSg->CreateNode(m_pTrailEffect, m_pPhysicalObject);
+	m_pTrailNode = m_pSg->CreateEffectNode(m_pTrailEffect, m_pPhysicalObject);
 
     SetTeam(m_pParams->gameplay.team);
 

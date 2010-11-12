@@ -190,7 +190,7 @@ void COGEffectBonusPick::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGEffectBonusPick::Render (const MATRIX& _mWorld, unsigned int _Frame)
+void COGEffectBonusPick::Render (const MATRIX& _mWorld)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;

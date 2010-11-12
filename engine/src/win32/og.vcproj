@@ -718,6 +718,22 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogsgeffectnode.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogsgeffectnode.h"
+					>
+				</File>
+				<File
+					RelativePath=".\ogsglandscapenode.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogsglandscapenode.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogsgnode.cpp"
 					>
 				</File>

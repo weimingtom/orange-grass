@@ -14,7 +14,7 @@
 #include "IOGMesh.h"
 
 
-class IOGModel : public IOGRenderable
+class IOGModel
 {
 public:
 	virtual ~IOGModel() {}
@@ -24,6 +24,18 @@ public:
 
 	// Get texture
 	virtual IOGTexture* GetTexture () = 0;
+
+	// Render mesh.
+	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame) = 0;
+
+	// Get combined AABB
+	virtual const IOGAabb& GetAABB () const = 0;
+
+	// Get animation
+    virtual IOGAnimation* GetAnimation (const std::string& _Alias) = 0;
+
+	// Get active point
+    virtual bool GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame) = 0;
 };
 
 

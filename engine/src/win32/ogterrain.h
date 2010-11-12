@@ -31,16 +31,10 @@ public:
 	virtual void Unload ();
 
 	// Render terrain.
-	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame);
-
-	// Render.
-	virtual void Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame);
+	virtual void Render (const MATRIX& _mWorld);
 
 	// Render all.
-	virtual void RenderAll (const MATRIX& _mWorld, unsigned int _Frame);
-
-	// Update mesh animation.
-	virtual void Update (unsigned long _ElapsedTime);
+	virtual void RenderAll (const MATRIX& _mWorld);
 
     // Get num renderable parts.
 	virtual unsigned int GetNumRenderables () const;
@@ -56,12 +50,6 @@ public:
 
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const;
-
-	// Get animation
-    virtual IOGAnimation* GetAnimation (const std::string& _Alias) {return NULL;}
-
-	// Get active point
-    virtual bool GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame) {return false;}
 
 private:
 

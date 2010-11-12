@@ -52,17 +52,16 @@ public:
 
 private:
 
-    IOGTerrain*			m_pTerrain;
-	IOGPhysicalParams	m_TerrainPhysicsParams;
-	Vec3		m_vStartPos;
-	Vec3		m_vFinishPos;
-	Vec3		m_vLightDir;
-	Vec3		m_vLightColor;
-	float		m_fActiveWidth;
-	Vec4		m_vFogColor;
-	float		m_fFogStart;
-	float		m_fFogEnd;
-	float		m_fFogDensity;
+    IOGTerrain*	m_pTerrain;
+    Vec3		m_vStartPos;
+    Vec3		m_vFinishPos;
+    Vec3		m_vLightDir;
+    Vec3		m_vLightColor;
+    float		m_fActiveWidth;
+    Vec4		m_vFogColor;
+    float		m_fFogStart;
+    float		m_fFogEnd;
+    float		m_fFogDensity;
 };
 
 #endif

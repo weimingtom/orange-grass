@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Params>
+	<Physics 
+		max_speed = "0.66" 
+		acceleration = "0.01" 
+		max_strafe_speed = "0.33" 
+		roll_speed = "0.0002" 
+		max_roll_angle = "0.5"
+		pitch_speed = "0.0002" 
+		max_pitch_angle = "0.4"
+		torque = "0.15"
+		type = "air_bot"
+		/>
+	<Actor 
+		type = "air_bot"
+		model = "helicopter_big_body"
+		model_propeller = "helicopter_big_propeller"
+		model_destruction = "helicopter_big_destruction"
+		icon = "Models/Helicopter_big/helicopter_big_ed.bmp"
+		/>
+	<Logic
+		team = "2"
+		max_hitpoints = "300"
+		weapon = ""
+		/>
+</Params>

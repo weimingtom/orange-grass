@@ -50,10 +50,9 @@ bool COGMesh::Load ()
 	}
 	
     m_NumParts = 0;
-	m_BuffersList.reserve(m_pScene->nNumMeshNode);
-    m_PartList.reserve(m_pScene->nNumMeshNode);
+    m_SubMeshes.reserve(m_pScene->nNumMeshNode);
     for(unsigned int i = 0; i < m_pScene->nNumMeshNode; ++i)
-	{
+    {
         if (IsActivePoint(i))
         {
             SPODNode* pNode = &m_pScene->pNode[i];
@@ -63,67 +62,68 @@ bool COGMesh::Load ()
             pt.pos = *pPtr;
             pt.part = i;
             m_ActivePoints[std::string(pNode->pszName)] = pt;
-
-    		m_BuffersList.push_back(NULL);
             continue;
         }
-		IOGVertexBuffers* pBuffer = m_pRenderer->CreateVertexBuffer(&m_pScene->pMesh[i]);
-		m_BuffersList.push_back(pBuffer);
-        m_PartList.push_back(i);
+
+        SubMesh submesh;
+        submesh.transparent = false;
+        submesh.part = i;
+        submesh.buffer = m_pRenderer->CreateVertexBuffer(&m_pScene->pMesh[i]);
+        m_SubMeshes.push_back(submesh);
         ++m_NumParts;
-	}
+    }
 
     CalculateGeometry();
 
-	m_LoadState = OG_RESSTATE_LOADED;
+    m_LoadState = OG_RESSTATE_LOADED;
 
-	return true;
+    return true;
 }
 
 
 // Unload resource.
 void COGMesh::Unload ()
 {
-	if (m_LoadState != OG_RESSTATE_LOADED)
-	{
-		return;
-	}
-
-	memset(m_pScene, 0, sizeof(CPVRTModelPOD));
-	m_Faces.clear();
-	m_AABB.SetMinMax(Vec3(0,0,0), Vec3(0,0,0));
-
-	std::vector<IOGVertexBuffers*>::iterator iter = m_BuffersList.begin();
-    for (; iter != m_BuffersList.end(); ++iter)
+    if (m_LoadState != OG_RESSTATE_LOADED)
     {
-		OG_SAFE_DELETE((*iter));
-	}
-	m_BuffersList.clear();
-    m_PartList.clear();
+        return;
+    }
 
-	m_LoadState = OG_RESSTATE_DEFINED;
+    memset(m_pScene, 0, sizeof(CPVRTModelPOD));
+    m_Faces.clear();
+    m_AABB.SetMinMax(Vec3(0,0,0), Vec3(0,0,0));
+
+    std::vector<SubMesh>::iterator iter = m_SubMeshes.begin();
+    for (; iter != m_SubMeshes.end(); ++iter)
+    {
+        OG_SAFE_DELETE((*iter).buffer);
+        OG_SAFE_DELETE((*iter).aabb);
+    }
+    m_SubMeshes.clear();
+
+    m_LoadState = OG_RESSTATE_DEFINED;
 }
 
 
 // Render mesh.
 void COGMesh::Render (const MATRIX& _mWorld, unsigned int _Frame)
 {
-	if (_Frame > m_pScene->nNumFrame)
-		return;
+    if (_Frame > m_pScene->nNumFrame)
+        return;
 
-    std::vector<unsigned int>::iterator iter = m_PartList.begin();
-    for (; iter != m_PartList.end(); ++iter)
-	{
-		RenderPart(_mWorld, (*iter), _Frame);
-	}
+    for (unsigned int i = 0; i < m_NumParts; ++i)
+    {
+        RenderPart(_mWorld, i, _Frame);
+    }
 }
 
 
 // Render part of the mesh.
 void COGMesh::RenderPart (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame)
 {
-	m_pScene->SetFrame((float)_Frame);
-	const SPODNode& node = m_pScene->pNode[_Part];
+    SubMesh& submesh = m_SubMeshes[_Part];
+    m_pScene->SetFrame((float)_Frame);
+    const SPODNode& node = m_pScene->pNode[submesh.part];
 
     // Gets the node model matrix
     MATRIX mNodeWorld;
@@ -134,7 +134,7 @@ void COGMesh::RenderPart (const MATRIX& _mWorld, unsigned int _Part, unsigned in
     MatrixMultiply(mModel, mNodeWorld, _mWorld);
 
     m_pRenderer->SetModelMatrix(mModel);
-    m_pRenderer->RenderMesh(m_BuffersList[_Part]);
+    m_pRenderer->RenderMesh(submesh.buffer);
 }
 
 
@@ -158,8 +158,8 @@ void COGMesh::CalculateGeometry ()
 	MATRIX mModel;
     Vec3 v, vMinCorner, vMaxCorner;
 
-	m_AabbList.reserve(m_pScene->nNumMeshNode);
     m_Faces.reserve(4096);
+    unsigned int Part = 0;
     for (unsigned int i=0; i < m_pScene->nNumMeshNode; ++i)
 	{
         if (IsActivePoint(i))
@@ -205,9 +205,10 @@ void COGMesh::CalculateGeometry ()
             }
         }
 
-		IOGAabb aabb = IOGAabb(vMinCorner, vMaxCorner);
-		m_AabbList.push_back(aabb);
-		m_AABB.EmbraceAABB(aabb);
+        IOGAabb* pAabb = new IOGAabb(vMinCorner, vMaxCorner);
+        m_SubMeshes[Part].aabb = pAabb;
+		m_AABB.EmbraceAABB(*pAabb);
+        ++Part;
 	}
 }
 
@@ -216,6 +217,13 @@ void COGMesh::CalculateGeometry ()
 const IOGAabb& COGMesh::GetAABB () const
 {
 	return m_AABB;
+}
+
+
+// Get part AABB
+const IOGAabb& COGMesh::GetAABB (unsigned int _Part) const 
+{
+    return *(m_SubMeshes[_Part].aabb);
 }
 
 
@@ -262,10 +270,10 @@ bool COGMesh::GetActivePoint (Vec3& _Point, const std::string& _Alias, unsigned 
 
 
 // check if active point.
-bool COGMesh::IsActivePoint (unsigned int _Part)
+bool COGMesh::IsActivePoint (unsigned int _Id)
 {
     char active_point_marker[] = "actpoint";
-    SPODNode* pNode = &m_pScene->pNode[_Part];
+    SPODNode* pNode = &m_pScene->pNode[_Id];
     if (strstr(pNode->pszName, active_point_marker) == pNode->pszName)
     {
         return true;

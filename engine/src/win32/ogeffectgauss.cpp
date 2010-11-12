@@ -49,7 +49,7 @@ void COGEffectGauss::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGEffectGauss::Render (const MATRIX& _mWorld, unsigned int _Frame)
+void COGEffectGauss::Render (const MATRIX& _mWorld)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE || !m_bPosReady)
 		return;

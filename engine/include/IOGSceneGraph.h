@@ -12,6 +12,9 @@
 #include "IOGSgNode.h"
 #include "IOGCamera.h"
 #include "IOGTexture.h"
+#include "IOGEffect.h"
+#include "IOGTerrain.h"
+#include "IOGModel.h"
 
 
 class IOGSceneGraph
@@ -24,7 +27,13 @@ public:
 	virtual void Clear () = 0;
 
 	// Create scene graph node
-	virtual IOGSgNode* CreateNode (IOGRenderable* _pRenderable, IOGPhysicalObject* _pPhysics) = 0;
+	virtual IOGSgNode* CreateNode (IOGModel* _pRenderable, IOGPhysicalObject* _pPhysics) = 0;
+
+	// Create scene graph effect node
+	virtual IOGSgNode* CreateEffectNode (IOGEffect* _pRenderable, IOGPhysicalObject* _pPhysics) = 0;
+
+	// Create scene graph landscape node
+	virtual IOGSgNode* CreateLandscapeNode (IOGTerrain* _pRenderable) = 0;
 
 	// Add scene graph node
 	virtual void AddNode (IOGSgNode* _pNode) = 0;

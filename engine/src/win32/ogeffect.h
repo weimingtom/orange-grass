@@ -51,16 +51,7 @@ public:
 	virtual void UpdatePosition (const Vec3& _vPosition);
 
 	// Render.
-	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame) = 0;
-
-	// Render.
-	virtual void Render (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame);
-
-	// Render all.
-	virtual void RenderAll (const MATRIX& _mWorld, unsigned int _Frame);
-
-    // Get num renderable parts.
-    virtual unsigned int GetNumRenderables () const {return 1;}
+	virtual void Render (const MATRIX& _mWorld) = 0;
 
 	// Get combined AABB
     virtual const IOGAabb& GetAABB () const {return m_AABB;}
@@ -79,12 +70,6 @@ public:
 
 	// Get type of the renderable.
 	virtual RenderableType GetRenderableType () const { return OG_RENDERABLE_EFFECT; }
-
-	// Get animation
-    virtual IOGAnimation* GetAnimation (const std::string& _Alias) {return NULL;}
-
-	// Get active point
-    virtual bool GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame) {return false;}
 
 protected:
 	
