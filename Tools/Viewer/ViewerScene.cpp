@@ -55,6 +55,10 @@ bool CViewerScene::Init ()
 	Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
 	m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
 
+	m_fHorViewAngle = m_fVerViewAngle = 0.0f;
+	m_vCamUp = vUp;
+	m_vCamPos = m_pCamera->GetPosition();
+
 	Vec3 vLightDir = Vec3(0,1,0);
 	Vec4 vLightColor = Vec4(1,1,1,1);
 	m_pRenderer->GetLight()->SetMainLightDirection(vLightDir);
@@ -81,7 +85,8 @@ bool CViewerScene::Init ()
 		for (; iter != ActorsParamsList.end(); ++iter)
 		{
 			if ((*iter)->type == OG_ACTOR_MISSILE ||
-				(*iter)->type == OG_ACTOR_PLASMAMISSILE)
+				(*iter)->type == OG_ACTOR_PLASMAMISSILE ||
+				(*iter)->type == OG_ACTOR_GAUSSRAY )
 			{
 				continue;
 			}
@@ -230,7 +235,88 @@ void CViewerScene::CameraMove (float _fX, float _fZ)
 }
 
 
+// Camera rotate
+void CViewerScene::CameraRotate (float _fAngleH, float _fAngleV)
+{
+	////m_fHorViewAngle += _fAngleH;
+	////m_fVerViewAngle += _fAngleV;
+	//Vec3 vTarget (0, 0, 0);
+
+	//MATRIX mR;
+	//MatrixRotationY(mR, _fAngleH);
+	//Vec3 vDir, vRight;
+	//MatrixVec3Multiply(vDir, Vec3(0.0f, 1.0f, 0.4f), mR);
+	//MatrixVec3Multiply(vRight, Vec3(1.0f, 0.0f, 0.0f), mR);
+	//vDir = vDir.normalize();
+	//Vec3 vUp = vDir.cross (vRight);
+
+	//vDir.normalize();
+	//vRight.normalize();
+
+	//MATRIX mV;
+	//MatrixRotationX(mV, _fAngleV);
+	//MatrixVec3Multiply(vDir, vDir, mV);
+	//MatrixVec3Multiply(vRight, vRight, mV);
+	//vDir = vDir.normalize();
+	//vUp = vDir.cross (vRight);
+
+	//m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
+}
+
+
 // Camera rotate horizontally
 void CViewerScene::CameraRotateHor (float _fAngle)
 {
+	m_fHorViewAngle += _fAngle;
+	Vec3 vTarget (0, 0, 0);
+
+	MATRIX mR;
+	MatrixRotationY(mR, m_fHorViewAngle);
+	Vec3 vDir, vRight;
+	MatrixVec3Multiply(vDir, Vec3(0.0f, 1.0f, 0.4f), mR);
+	MatrixVec3Multiply(vRight, Vec3(1.0f, 0.0f, 0.0f), mR);
+	vDir = vDir.normalize();
+	Vec3 vUp = vDir.cross (vRight);
+	m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
+
+	//Vec3 vTarget (0, 0, 0);
+
+	//MATRIX mR;
+	//MatrixRotationY(mR, _fAngle);
+	//Vec3 vDir, vRight;
+	//MatrixVec3Multiply(vDir, m_pCamera->GetDirection(), mR);
+	//MatrixVec3Multiply(vRight, m_pCamera->GetRight(), mR);
+	//vDir.normalize();
+	//Vec3 vUp = vDir.cross (vRight);
+	//OG_LOG_INFO("Dir = [%f, %f, %f]", vDir.x, vDir.y, vDir.z);
+	//OG_LOG_INFO("Right = [%f, %f, %f]", vRight.x, vRight.y, vRight.z);
+	//m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
+}
+
+
+// Camera rotate vertically
+void CViewerScene::CameraRotateVer (float _fAngle)
+{
+	//m_fVerViewAngle += _fAngle;
+	//Vec3 vTarget (0, 0, 0);
+	//
+	//MATRIX mR;
+	//MatrixRotationX(mR, m_fVerViewAngle);
+	//Vec3 vDir, vRight;
+	//MatrixVec3Multiply(vDir, Vec3(0.0f, 1.0f, 0.4f), mR);
+	//MatrixVec3Multiply(vRight, Vec3(1.0f, 0.0f, 0.0f), mR);
+	//vDir = vDir.normalize();
+	//Vec3 vUp = vDir.cross (vRight);
+	//m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
+
+	Vec3 vTarget (0, 0, 0);
+	
+	MATRIX mR;
+	MatrixRotationX(mR, _fAngle);
+	Vec3 vDir, vRight;
+	MatrixVec3Multiply(vDir, m_pCamera->GetDirection(), mR);
+	MatrixVec3Multiply(vRight, m_pCamera->GetRight(), mR);
+	vDir.normalize();
+	Vec3 vUp = vDir.cross (vRight);
+	m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
 }

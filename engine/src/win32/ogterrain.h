@@ -16,6 +16,7 @@
 #include "ogresource.h"
 #include "IOGRenderer.h"
 #include "IOGSettingsReader.h"
+#include "ogmesh.h"
 
 
 class COGTerrain : public IOGTerrain, public COGResource
@@ -61,6 +62,7 @@ private:
 		};
 
 		std::string mesh_alias;
+		std::string mesh_file;
 		std::vector<TextureCfg> texture_cfg_list;
 	};
 
@@ -69,7 +71,7 @@ private:
 	
 private:
 
-	IOGMesh*					m_pMesh;	
+	COGMesh*					m_pMesh;	
 	std::vector<IOGTexture*>	m_TextureList;
     IOGMaterial*				m_pMaterial;
     IOGRenderer*                m_pRenderer;

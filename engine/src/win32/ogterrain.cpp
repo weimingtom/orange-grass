@@ -45,7 +45,11 @@ bool COGTerrain::Load ()
 		return false;
 	}
 
-    m_pMesh = GetResourceMgr()->GetMesh(cfg.mesh_alias);
+	m_pMesh = new COGMesh ();
+	m_pMesh->Init(cfg.mesh_alias, cfg.mesh_file);
+	if (!m_pMesh->Load())
+		return false;
+
     m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_SOLID);
 
 	std::vector<Cfg::TextureCfg>::const_iterator iter;
@@ -74,6 +78,7 @@ bool COGTerrain::LoadConfig (COGTerrain::Cfg& _cfg)
 	if (pMeshNode != NULL)
 	{
 		_cfg.mesh_alias = m_pReader->ReadStringParam(pMeshNode, "alias");
+		_cfg.mesh_file = GetResourceMgr()->GetFullPath(m_pReader->ReadStringParam(pMeshNode, "file"));
 		m_pReader->CloseGroupNode(pMeshNode);
 	}
 
@@ -104,6 +109,7 @@ void COGTerrain::Unload ()
 		return;
 	}
 
+	OG_SAFE_DELETE(m_pMesh);
 	m_pMaterial = NULL;
 	m_TextureList.clear();
 

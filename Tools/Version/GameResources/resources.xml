@@ -49,8 +49,8 @@
 	<Texture alias="helicopter_body" file="Models/Helicopter/helicopter_body.pvr" />
 	<Texture alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller.pvr" />
 	<Texture alias="helicopter_big_body" file="Models/Helicopter_big/helicopter_big.pvr" />
-	<Texture alias="propeller" file="Common/propeller.pvr" />
-	<Texture alias="checker" file="Common/checker.pvr" />
+	<Texture alias="propeller" file="Models/Common/propeller.pvr" />
+	<Texture alias="checker" file="Models/Common/checker.pvr" />
 	<Texture alias="bonus_01" file="Models/Bonuses/bonus_01.pvr" />
 	<Texture alias="bonus_02" file="Models/Bonuses/bonus_02.pvr" />
 	<Texture alias="land_02" file="Models/Land_objects_02/land_02.pvr" />
@@ -91,7 +91,6 @@
 	<Mesh alias="stone_06" file="Models/Land_objects_02/stone/stone_06.POD"/>
 	<Mesh alias="stone_07" file="Models/Land_objects_02/stone/stone_07.POD"/>
 	<Mesh alias="rock_01" file="Models/Land_objects_02/rock/rock_01.POD"/>
-	<Mesh alias="level_02" file="Levels/Level_02/level_02.POD"/>
 </Meshes>
 <Models>
 	<Model alias="helicopter_body" file="Models/Helicopter/helicopter_body.xml"/>
@@ -118,11 +117,10 @@
 	<Model alias="stone_06" file="Models/Land_objects_02/stone/stone_06.xml"/>
 	<Model alias="stone_07" file="Models/Land_objects_02/stone/stone_07.xml"/>
 	<Model alias="rock_01" file="Models/Land_objects_02/rock/rock_01.xml"/>
-	<Model alias="level_02" file="Models/Land_objects_02/level_02.xml"/>
 </Models>
 <Terrains>
-	<Terrain alias="level_02" file="Levels/Level_02/level_02.xml" />
 	<Terrain alias="level_01" file="Levels/Level_01/level_01.xml" />
+	<Terrain alias="level_02" file="Levels/Level_02/level_02.xml" />
 </Terrains>
 <Sprites>
 	<Sprite alias="load_scr" texture="load_scr" mapping="1"/>

@@ -27,11 +27,14 @@ public:
 	// get camera direction.
 	virtual const Vec3& GetDirection () const { return m_Direction; }
 	
+	// get camera up.
+	virtual const Vec3& GetUp () const { return m_Up; }
+	
+	// get camera right.
+	virtual const Vec3& GetRight () const { return m_Right; }
+	
 	// get camera target.
 	virtual const Vec3& GetTarget () const { return m_Target; }
-	
-	// rotate view.
-	virtual void RotateView (float _fAngle, const Vec3& _vAxis);
 
 	// move camera in defined direction
 	virtual void Strafe(float _fSpeed, const Vec3& _vDir);
@@ -55,6 +58,7 @@ private:
 	Vec3		m_Direction;
 	Vec3		m_Target;
 	Vec3		m_Up;
+	Vec3		m_Right;
 	bool		m_bDirty;
 };
 

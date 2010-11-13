@@ -1,5 +1,5 @@
 /*
- *  ogcamera.mm
+ *  ogcamera.cpp
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 14.11.09.
@@ -27,33 +27,8 @@ void COGCamera::Setup (const Vec3& _vPosition, const Vec3& _vTarget, const Vec3&
 	m_Up = _vUp;
 	m_Direction = m_Target - m_Position;
 	m_Direction.normalize();
-	m_bDirty = true;
-}
-
-
-// rotate view.
-void COGCamera::RotateView (float _fAngle, const Vec3& _vAxis)
-{
-	Vec3 vNewView;
-	Vec3 vView = m_Target - m_Position;		
-	float cosTheta = cosf(_fAngle);
-	float sinTheta = sinf(_fAngle);
-	
-	vNewView.x  = (cosTheta + (1 - cosTheta) * _vAxis.x * _vAxis.x) * vView.x;
-	vNewView.x += ((1 - cosTheta) * _vAxis.x * _vAxis.y - _vAxis.z * sinTheta)	* vView.y;
-	vNewView.x += ((1 - cosTheta) * _vAxis.x * _vAxis.z + _vAxis.y * sinTheta)	* vView.z;
-	
-	vNewView.y  = ((1 - cosTheta) * _vAxis.x * _vAxis.y + _vAxis.z * sinTheta)	* vView.x;
-	vNewView.y += (cosTheta + (1 - cosTheta) * _vAxis.y * _vAxis.y)	* vView.y;
-	vNewView.y += ((1 - cosTheta) * _vAxis.y * _vAxis.z - _vAxis.x * sinTheta)	* vView.z;
-	
-	vNewView.z  = ((1 - cosTheta) * _vAxis.x * _vAxis.z - _vAxis.y * sinTheta)	* vView.x;
-	vNewView.z += ((1 - cosTheta) * _vAxis.y * _vAxis.z + _vAxis.x * sinTheta)	* vView.y;
-	vNewView.z += (cosTheta + (1 - cosTheta) * _vAxis.z * _vAxis.z)	* vView.z;
-	
-	m_Target = m_Position + vNewView;
-	m_Direction = m_Target - m_Position;
-	m_Direction.normalize();
+	m_Right = m_Direction.cross(m_Up);
+	m_Right.normalize();
 	m_bDirty = true;
 }
 
@@ -65,8 +40,6 @@ void COGCamera::Strafe(float _fSpeed, const Vec3& _vDir)
 	m_Position.z += _vDir.z * _fSpeed;
 	m_Target.x += _vDir.x * _fSpeed;
 	m_Target.z += _vDir.z * _fSpeed;
-	m_Direction = m_Target - m_Position;
-	m_Direction.normalize();
 	m_bDirty = true;
 }
 
@@ -74,9 +47,6 @@ void COGCamera::Strafe(float _fSpeed, const Vec3& _vDir)
 // move camera forward/backward
 void COGCamera::Move(float _fSpeed)
 {
-	m_Direction = m_Target - m_Position;
-	m_Direction.normalize();
-	
 	m_Position.x += m_Direction.x * _fSpeed;
 	m_Position.y += m_Direction.y * _fSpeed;
 	m_Position.z += m_Direction.z * _fSpeed;

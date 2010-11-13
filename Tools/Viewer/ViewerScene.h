@@ -44,9 +44,15 @@ public:
 
 	// Camera move
 	void CameraMove (float _fX, float _fZ);
+	
+	// Camera rotate
+	void CameraRotate (float _fAngleH, float _fAngleV);
 
 	// Camera rotate horizontally
 	void CameraRotateHor (float _fAngle);
+
+	// Camera rotate vertically
+	void CameraRotateVer (float _fAngle);
 
 	// Set AABB mode
 	void SetAABBMode (bool _bEnable) {m_bShowAABB = _bEnable;}
@@ -78,6 +84,11 @@ private:
     bool            m_bInited;
     float			m_fFineAngleStep;
     float			m_fCoarseAngleStep;
+
+	float			m_fHorViewAngle;
+	float			m_fVerViewAngle;
+	Vec3			m_vCamUp;
+	Vec3			m_vCamPos;
 
 	int				m_ResX;
 	int				m_ResY;
