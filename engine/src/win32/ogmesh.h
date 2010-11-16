@@ -34,8 +34,17 @@ public:
 	// Render mesh.
 	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame);
 
+	// Render solid parts of the mesh.
+	virtual void RenderSolidParts (const MATRIX& _mWorld, unsigned int _Frame);
+
+	// Render transparent parts of the mesh.
+	virtual void RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame);
+
 	// Render part of the mesh.
 	virtual void RenderPart (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame);
+
+	// Check if has submeshes of the following type
+	virtual bool HasSubmeshesOfType(SubMeshType _Type) const;
 
     // Get num renderable parts.
 	virtual unsigned int GetNumRenderables () const;
@@ -66,6 +75,9 @@ protected:
     // check if active point.
     bool IsActivePoint (unsigned int _Id);
 
+    // get sub-mesh type.
+    SubMeshType GetSubMeshType (unsigned int _Id);
+
 protected:
 
     struct ActPoint
@@ -77,7 +89,7 @@ protected:
     struct SubMesh
     {
         unsigned int        part;
-        bool                transparent;
+        SubMeshType         type;
         IOGAabb*            aabb;
         IOGVertexBuffers*   buffer;
     };
@@ -91,6 +103,9 @@ protected:
 	IOGAabb					m_AABB;
 
     std::vector<SubMesh>    m_SubMeshes;
+
+	std::vector<unsigned int>	m_SolidParts;
+	std::vector<unsigned int>	m_TransparentParts;
 
     // Geometry (for mapeditor mostly)
 	std::vector<OGFace>     m_Faces;

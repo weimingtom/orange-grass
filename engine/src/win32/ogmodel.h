@@ -32,6 +32,15 @@ public:
 	// Render mesh.
 	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame);
 
+	// Render solid parts of the mesh.
+	virtual void RenderSolidParts (const MATRIX& _mWorld, unsigned int _Frame);
+
+	// Render transparent parts of the mesh.
+	virtual void RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame);
+
+	// Check if has submeshes of the following type
+	virtual bool HasSubmeshesOfType(SubMeshType _Type) const;
+
     // Get num renderable parts.
 	virtual unsigned int GetNumRenderables () const;
 
@@ -80,6 +89,7 @@ private:
 	IOGMesh*	    m_pMesh;	
 	IOGTexture*	    m_pTexture;
     IOGMaterial*    m_pMaterial;
+    IOGMaterial*    m_pTransparentMaterial;
     IOGRenderer*    m_pRenderer;
 	IOGSettingsReader*	m_pReader;
 

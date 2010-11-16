@@ -28,6 +28,15 @@ public:
 	// Render mesh.
 	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame) = 0;
 
+	// Render solid parts of the mesh.
+	virtual void RenderSolidParts (const MATRIX& _mWorld, unsigned int _Frame) = 0;
+
+	// Render transparent parts of the mesh.
+	virtual void RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame) = 0;
+
+	// Check if has submeshes of the following type
+	virtual bool HasSubmeshesOfType(SubMeshType _Type) const = 0;
+
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const = 0;
 

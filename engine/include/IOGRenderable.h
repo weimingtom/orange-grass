@@ -23,6 +23,13 @@ enum RenderableType
 };
 
 
+enum SubMeshType
+{
+	OG_SUBMESH_BODY			= 0,
+	OG_SUBMESH_PROPELLER	= 1
+};
+
+
 struct IOGActivePoint
 {
     std::string     alias;

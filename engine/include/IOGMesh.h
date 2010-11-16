@@ -11,6 +11,7 @@
 
 #include "Mathematics.h"
 #include "IOGAabb.h"
+#include "IOGRenderable.h"
 #include <vector>
 
 
@@ -29,11 +30,20 @@ public:
 	// Render mesh.
 	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame) = 0;
 
+	// Render solid parts of the mesh.
+	virtual void RenderSolidParts (const MATRIX& _mWorld, unsigned int _Frame) = 0;
+
+	// Render transparent parts of the mesh.
+	virtual void RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame) = 0;
+
 	// Render part of the mesh.
 	virtual void RenderPart (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame) = 0;
 
     // Get num renderable parts.
 	virtual unsigned int GetNumRenderables () const = 0;
+
+	// Check if has submeshes of the following type
+	virtual bool HasSubmeshesOfType(SubMeshType _Type) const = 0;
 
     // Get num animation frames.
 	virtual unsigned int GetNumFrames () const = 0;

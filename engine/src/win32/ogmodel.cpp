@@ -13,7 +13,8 @@
 
 COGModel::COGModel() :	m_pMesh(NULL),
 						m_pTexture(NULL),
-                        m_pMaterial(NULL)
+                        m_pMaterial(NULL),
+						m_pTransparentMaterial(NULL)
 {
     m_pRenderer = GetRenderer();
 	m_pReader = GetSettingsReader();
@@ -49,6 +50,11 @@ bool COGModel::Load ()
 	m_pMesh = GetResourceMgr()->GetMesh(modelcfg.mesh_alias);
 	m_pTexture = GetResourceMgr()->GetTexture(modelcfg.texture_alias);
 	m_pMaterial = GetMaterialManager()->GetMaterial(modelcfg.material_type);
+
+	if (m_pMesh->HasSubmeshesOfType(OG_SUBMESH_PROPELLER))
+	{
+		m_pTransparentMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
+	}
 
 	std::list<Cfg::Anim>::const_iterator anim_iter = modelcfg.anim_list.begin();
 	for (; anim_iter != modelcfg.anim_list.end(); ++anim_iter)
@@ -125,6 +131,7 @@ void COGModel::Unload ()
 	}
 
 	OG_SAFE_DELETE(m_pMaterial);
+	OG_SAFE_DELETE(m_pTransparentMaterial);
 
     std::map<std::string, IOGAnimation*>::iterator iter= m_pAnimations.begin();
 	for (; iter != m_pAnimations.end(); ++iter)
@@ -143,6 +150,31 @@ void COGModel::Render (const MATRIX& _mWorld, unsigned int _Frame)
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
 	m_pMesh->Render (_mWorld, _Frame);
+}
+
+
+// Render solid parts of the mesh.
+void COGModel::RenderSolidParts (const MATRIX& _mWorld, unsigned int _Frame)
+{
+    m_pRenderer->SetMaterial(m_pMaterial);
+    m_pRenderer->SetTexture(m_pTexture);
+	m_pMesh->RenderSolidParts(_mWorld, _Frame);
+}
+
+
+// Render transparent parts of the mesh.
+void COGModel::RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame)
+{
+    m_pRenderer->SetMaterial(m_pTransparentMaterial);
+    m_pRenderer->SetTexture(m_pTexture);
+	m_pMesh->RenderTransparentParts(_mWorld, _Frame);
+}
+
+
+// Check if has submeshes of the following type
+bool COGModel::HasSubmeshesOfType(SubMeshType _Type) const
+{
+	return m_pMesh->HasSubmeshesOfType(_Type);
 }
 
 

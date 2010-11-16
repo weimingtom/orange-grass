@@ -51,6 +51,8 @@ bool COGMesh::Load ()
 	
     m_NumParts = 0;
     m_SubMeshes.reserve(m_pScene->nNumMeshNode);
+	m_SolidParts.reserve(m_pScene->nNumMeshNode);
+	m_TransparentParts.reserve(m_pScene->nNumMeshNode);
     for(unsigned int i = 0; i < m_pScene->nNumMeshNode; ++i)
     {
         if (IsActivePoint(i))
@@ -66,10 +68,15 @@ bool COGMesh::Load ()
         }
 
         SubMesh submesh;
-        submesh.transparent = false;
+        submesh.type = GetSubMeshType(i);
         submesh.part = i;
         submesh.buffer = m_pRenderer->CreateVertexBuffer(&m_pScene->pMesh[i]);
         m_SubMeshes.push_back(submesh);
+		switch (submesh.type)
+		{
+		case OG_SUBMESH_BODY: m_SolidParts.push_back(m_NumParts); break;
+		case OG_SUBMESH_PROPELLER: m_TransparentParts.push_back(m_NumParts); break;
+		}
         ++m_NumParts;
     }
 
@@ -100,6 +107,8 @@ void COGMesh::Unload ()
         OG_SAFE_DELETE((*iter).aabb);
     }
     m_SubMeshes.clear();
+	m_SolidParts.clear();
+	m_TransparentParts.clear();
 
     m_LoadState = OG_RESSTATE_DEFINED;
 }
@@ -111,10 +120,33 @@ void COGMesh::Render (const MATRIX& _mWorld, unsigned int _Frame)
     if (_Frame > m_pScene->nNumFrame)
         return;
 
-    for (unsigned int i = 0; i < m_NumParts; ++i)
-    {
-        RenderPart(_mWorld, i, _Frame);
-    }
+	RenderSolidParts(_mWorld, _Frame);
+    //for (unsigned int i = 0; i < m_NumParts; ++i)
+    //{
+    //    RenderPart(_mWorld, i, _Frame);
+    //}
+}
+
+
+// Render solid parts of the mesh.
+void COGMesh::RenderSolidParts (const MATRIX& _mWorld, unsigned int _Frame)
+{
+	std::vector<unsigned int>::const_iterator iter = m_SolidParts.begin();
+	for (; iter != m_SolidParts.end(); ++iter)
+	{
+        RenderPart(_mWorld, *iter, _Frame);
+	}
+}
+
+
+// Render transparent parts of the mesh.
+void COGMesh::RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame)
+{
+	std::vector<unsigned int>::const_iterator iter = m_TransparentParts.begin();
+	for (; iter != m_TransparentParts.end(); ++iter)
+	{
+        RenderPart(_mWorld, *iter, _Frame);
+	}
 }
 
 
@@ -213,6 +245,21 @@ void COGMesh::CalculateGeometry ()
 }
 
 
+// Check if has submeshes of the following type
+bool COGMesh::HasSubmeshesOfType(SubMeshType _Type) const
+{
+	switch (_Type)
+	{
+	case OG_SUBMESH_BODY: 
+		return !m_SolidParts.empty();
+
+	case OG_SUBMESH_PROPELLER: 
+		return !m_TransparentParts.empty();
+	}
+	return false;
+}
+
+
 // Get combined AABB
 const IOGAabb& COGMesh::GetAABB () const
 {
@@ -279,4 +326,19 @@ bool COGMesh::IsActivePoint (unsigned int _Id)
         return true;
     }
     return false;
+}
+
+
+// get sub-mesh type.
+SubMeshType COGMesh::GetSubMeshType (unsigned int _Id)
+{
+    SPODNode* pNode = &m_pScene->pNode[_Id];
+
+	char propeller_prefix[] = "propeller";
+    if (strstr(pNode->pszName, propeller_prefix) == pNode->pszName)
+    {
+        return OG_SUBMESH_PROPELLER;
+    }
+
+	return OG_SUBMESH_BODY;
 }
