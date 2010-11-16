@@ -17,10 +17,11 @@
 	<Actor alias="cactus_01" file="Actors/cactus_01.xml" />
 	<Actor alias="cactus_02" file="Actors/cactus_02.xml" />
 	<Actor alias="cactus_03" file="Actors/cactus_03.xml" />
+	<Actor alias="oil_tank" file="Actors/oil_tank.xml" />
 	<Actor alias="helicopter" file="Actors/helicopter.xml" />
-	<Actor alias="bot_helicopter" file="Actors/bot_helicopter.xml" />
-	<Actor alias="bot_helicopter_big" file="Actors/bot_helicopter_big.xml" />
-	<Actor alias="bot_plane_small" file="Actors/bot_plane_small.xml" />
+	<Actor alias="bot_helicopter" file="Actors/helicopter_small.xml" />
+	<Actor alias="bot_helicopter_big" file="Actors/helicopter_medium.xml" />
+	<Actor alias="bot_plane_small" file="Actors/plane_small.xml" />
 	<Actor alias="bonus_01" file="Actors/bonus_01.xml" />
 	<Actor alias="bonus_02" file="Actors/bonus_02.xml" />
 </Actors>

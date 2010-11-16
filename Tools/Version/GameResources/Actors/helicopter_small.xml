@@ -11,12 +11,13 @@
 		torque = "0.15"
 		type = "air_bot"
 		/>
+		<!--model_destruction = "helicopter_destruction"-->
 	<Actor 
 		type = "air_bot"
-		model = "helicopter_big_body"
-		model_propeller = "helicopter_big_propeller"
-		model_destruction = "helicopter_big_destruction"
-		icon = "Models/Helicopter_big/helicopter_big_ed.bmp"
+		model = "helicopter_small"
+		model_propeller = ""
+		model_destruction = ""
+		icon = "Models/units/helicopter_small/helicopter_small_ed.bmp"
 		/>
 	<Logic
 		team = "2"

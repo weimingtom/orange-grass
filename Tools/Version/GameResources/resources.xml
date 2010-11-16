@@ -46,11 +46,8 @@
 			<Mapping x="416" y="384" width="64" height="128"/>
 		</Mappings>
 	</Texture>
-	<Texture alias="helicopter_body" file="Models/Helicopter/helicopter_body.pvr" />
-	<Texture alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller.pvr" />
-	<Texture alias="helicopter_big_body" file="Models/Helicopter_big/helicopter_big.pvr" />
-	<Texture alias="propeller" file="Models/Common/propeller.pvr" />
-	<Texture alias="checker" file="Models/Common/checker.pvr" />
+	<Texture alias="units" file="Models/units/units.pvr" />
+	<Texture alias="objects" file="Models/objects/objects.pvr" />
 	<Texture alias="bonus_01" file="Models/Bonuses/bonus_01.pvr" />
 	<Texture alias="bonus_02" file="Models/Bonuses/bonus_02.pvr" />
 	<Texture alias="land_02" file="Models/Land_objects_02/land_02.pvr" />
@@ -67,14 +64,10 @@
 	</Texture>
 </Textures>
 <Meshes>
-	<Mesh alias="helicopter_body" file="Models/Helicopter/helicopter_body.POD"/>
-	<Mesh alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller_anim.POD"/>
-	<Mesh alias="helicopter_destruction" file="Models/Helicopter/helicopter_destruction.POD"/>
-	<Mesh alias="helicopter_big_body" file="Models/Helicopter_big/helicopter_big_body.POD"/>
-	<Mesh alias="helicopter_big_propeller" file="Models/Helicopter_big/helicopter_big_propeller.POD"/>
-	<Mesh alias="helicopter_big_destruction" file="Models/Helicopter_big/helicopter_big_destruction.POD"/>
-	<Mesh alias="bot_plane_small" file="Models/Bot_plane_small/bot_plane_small.POD"/>
-	<Mesh alias="bot_plane_small_destruction" file="Models/Bot_plane_small/bot_plane_small_destruction.POD"/>
+	<Mesh alias="helicopter_small" file="Models/units/helicopter_small/helicopter_small.POD"/>
+	<Mesh alias="helicopter_medium" file="Models/units/helicopter_medium/helicopter_medium.POD"/>
+	<Mesh alias="plane_small" file="Models/units/plane_small/plane_small.POD"/>
+	<Mesh alias="oil_tank" file="Models/objects/oil_tank/oil_tank.POD"/>
 	<Mesh alias="bonus_01" file="Models/Bonuses/bonus_01.POD"/>
 	<Mesh alias="bonus_02" file="Models/Bonuses/bonus_02.POD"/>
 	<Mesh alias="bush_01" file="Models/Land_objects_02/bush/bush_01.POD"/>
@@ -93,14 +86,10 @@
 	<Mesh alias="rock_01" file="Models/Land_objects_02/rock/rock_01.POD"/>
 </Meshes>
 <Models>
-	<Model alias="helicopter_body" file="Models/Helicopter/helicopter_body.xml"/>
-	<Model alias="helicopter_propeller" file="Models/Helicopter/helicopter_propeller.xml"/>
-	<Model alias="helicopter_destruction" file="Models/Helicopter/helicopter_destruction.xml"/>
-	<Model alias="helicopter_big_body" file="Models/Helicopter_big/helicopter_big_body.xml"/>
-	<Model alias="helicopter_big_propeller" file="Models/Helicopter_big/helicopter_big_propeller.xml"/>
-	<Model alias="helicopter_big_destruction" file="Models/Helicopter_big/helicopter_big_destruction.xml"/>
-	<Model alias="bot_plane_small" file="Models/Bot_plane_small/bot_plane_small.xml"/>
-	<Model alias="bot_plane_small_destruction" file="Models/Bot_plane_small/bot_plane_small_destruction.xml"/>
+	<Model alias="helicopter_small" file="Models/units/helicopter_small/helicopter_small.xml"/>
+	<Model alias="helicopter_medium" file="Models/units/helicopter_medium/helicopter_medium.xml"/>
+	<Model alias="plane_small" file="Models/units/plane_small/plane_small.xml"/>
+	<Model alias="oil_tank" file="Models/objects/oil_tank/oil_tank.xml"/>
 	<Model alias="bonus_01" file="Models/Bonuses/bonus_01.xml"/>
 	<Model alias="bonus_02" file="Models/Bonuses/bonus_02.xml"/>
 	<Model alias="bush_01" file="Models/Land_objects_02/bush/bush_01.xml"/>

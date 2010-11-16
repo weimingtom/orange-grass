@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<Mesh alias = "helicopter_big_propeller"/>
-<Material texture = "helicopter_propeller" type = "tex_alpha"/>
-<Animations>
-	<Animation name = "idle" start_frame="1" end_frame = "100" speed = "5" looped = "1"/>
-</Animations>
