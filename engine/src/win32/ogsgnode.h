@@ -31,6 +31,9 @@ public:
 	// render.
 	virtual void Render ();
 
+	// render.
+	virtual void RenderTransparent ();
+
 	// update transform.
 	virtual void Update (unsigned long _ElapsedTime);
 

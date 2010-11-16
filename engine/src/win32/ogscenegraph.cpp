@@ -120,11 +120,8 @@ void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
     {
     case OG_RENDERABLE_MODEL:
         {
-	        if (RemoveNodeFromList(_pNode, m_NodesList))
-		        return;
-
-            if (RemoveNodeFromList(_pNode, m_TransparentNodesList))
-		        return;
+	        RemoveNodeFromList(_pNode, m_NodesList);
+            RemoveNodeFromList(_pNode, m_TransparentNodesList);
 
 	        TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
 	        for (; s_iter != m_StaticNodes.end(); ++s_iter)
@@ -218,7 +215,21 @@ void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 // Render transparent nodes.
 void COGSceneGraph::RenderTransparentNodes (IOGCamera* _pCamera)
 {
-	RenderNodesList(_pCamera, m_TransparentNodesList);
+	float fCameraZ = _pCamera->GetPosition().z;
+    TNodesList::iterator iter = m_TransparentNodesList.begin();
+    for (; iter != m_TransparentNodesList.end(); ++iter)
+    {
+		COGSgNode* pNode = (COGSgNode*)(*iter);
+		float fObjectZ = pNode->GetOBB().m_vCenter.z;
+
+		if (fObjectZ <= fCameraZ)
+		{
+			if ((fCameraZ - fObjectZ) < m_fViewDistance)
+			{
+                pNode->RenderTransparent();
+			}
+		}
+    }
 }
 
 

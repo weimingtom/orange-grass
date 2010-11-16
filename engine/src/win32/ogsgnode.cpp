@@ -79,6 +79,17 @@ void COGSgNode::Render ()
 }
 
 
+// render transparent parts.
+void COGSgNode::RenderTransparent ()
+{
+	if (!m_bActive)
+		return;
+
+    const MATRIX& mWorld = m_pPhysics->GetWorldTransform();
+    m_pRenderable->RenderTransparentParts(mWorld, m_AnimFrame);
+}
+
+
 // get physics.
 IOGPhysicalObject* COGSgNode::GetPhysics ()
 {

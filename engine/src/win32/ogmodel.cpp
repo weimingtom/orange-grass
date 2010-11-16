@@ -130,8 +130,8 @@ void COGModel::Unload ()
 		return;
 	}
 
-	OG_SAFE_DELETE(m_pMaterial);
-	OG_SAFE_DELETE(m_pTransparentMaterial);
+	m_pMaterial=NULL;
+	m_pTransparentMaterial=NULL;
 
     std::map<std::string, IOGAnimation*>::iterator iter= m_pAnimations.begin();
 	for (; iter != m_pAnimations.end(); ++iter)
