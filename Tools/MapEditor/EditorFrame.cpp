@@ -11,8 +11,8 @@
 #define ID_DEF_ABOUT		10000
 #define ID_DEF_AABB			10002
 #define ID_DEF_ADJUST		10003
-#define ID_DEF_SETTINGS		10004
-#define ID_DEF_OBJECTS		10005
+#define ID_DEF_EDITORVIEW	10004
+#define ID_DEF_GAMEVIEW		10005
 #define ID_NOTEBOOK         10007
 #define ID_TOOLSNOTEBOOK    10008
 #define CTRLID_XDIRSLIDER	10009
@@ -43,6 +43,8 @@ BEGIN_EVENT_TABLE(CEditorFrame, wxFrame)
     EVT_MENU (wxID_EXIT,		CEditorFrame::OnExit)
     EVT_MENU (wxID_OPEN,		CEditorFrame::OnOpenLevel)
     EVT_MENU (wxID_SAVE,		CEditorFrame::OnSaveLevel)
+    EVT_MENU (ID_DEF_EDITORVIEW,CEditorFrame::OnEditorView)
+    EVT_MENU (ID_DEF_GAMEVIEW,  CEditorFrame::OnGameView)
     EVT_MENU (ID_DEF_ABOUT,		CEditorFrame::OnAboutDlg)
     EVT_MENU (ID_DEF_AABB,		CEditorFrame::OnBounds)
     EVT_RESLOAD(wxID_ANY,       CEditorFrame::OnLoadResource)
@@ -184,7 +186,7 @@ void CEditorFrame::CreateLightingPanelControls(wxPanel* _pPanel)
 	wxStaticBox* FogClrDesc = new wxStaticBox(_pPanel, wxID_ANY, _T("Fog:"), posFogClrDesc, szFogClrDesc);
 	wxSize szFogClr = wxSize(rightBorder, 30);
 	wxPoint posFogClr = wxPoint(posFogClrDesc.x + 5, posFogClrDesc.y + 15);
-	m_pFogColorPicker = new wxColourPickerCtrl(_pPanel, CTRLID_FOGCOLORSLIDER, wxColor(0xFFFFFFFF), posFogClr, szFogClr, wxCLRP_DEFAULT_STYLE | wxCLRP_SHOW_LABEL);	m_pFogNearSlider = new wxSlider(_pPanel, CTRLID_FOGNEARSLIDER, 0, -100, 100, wxPoint(posFogClrDesc.x + 5, posFogClrDesc.y + 60), wxSize(rightBorder, 40), wxSL_LABELS);	m_pFogFarSlider = new wxSlider(_pPanel, CTRLID_FOGFARSLIDER, 0, -100, 100, wxPoint(posFogClrDesc.x + 5, posFogClrDesc.y + 105), wxSize(rightBorder, 40), wxSL_LABELS);}
+	m_pFogColorPicker = new wxColourPickerCtrl(_pPanel, CTRLID_FOGCOLORSLIDER, wxColor(0xFFFFFFFF), posFogClr, szFogClr, wxCLRP_DEFAULT_STYLE | wxCLRP_SHOW_LABEL);	m_pFogNearSlider = new wxSlider(_pPanel, CTRLID_FOGNEARSLIDER, 0, 0, 600, wxPoint(posFogClrDesc.x + 5, posFogClrDesc.y + 60), wxSize(rightBorder, 40), wxSL_LABELS);	m_pFogFarSlider = new wxSlider(_pPanel, CTRLID_FOGFARSLIDER, 0, 0, 600, wxPoint(posFogClrDesc.x + 5, posFogClrDesc.y + 105), wxSize(rightBorder, 40), wxSL_LABELS);}
 
 
 /// @brief App exit handler.
@@ -221,6 +223,8 @@ void CEditorFrame::PopulateToolbar(wxToolBarBase* toolBar)
     {
         Tool_open,
         Tool_save,
+        Tool_editor,
+        Tool_game,
         Tool_Max
     };
 
@@ -228,6 +232,8 @@ void CEditorFrame::PopulateToolbar(wxToolBarBase* toolBar)
 
     toolBarBitmaps[Tool_open] = wxBitmap(wxT("Resources\\open.bmp"), wxBITMAP_TYPE_BMP);
     toolBarBitmaps[Tool_save] = wxBitmap(wxT("Resources\\save.bmp"), wxBITMAP_TYPE_BMP);
+    toolBarBitmaps[Tool_editor] = wxBitmap(wxT("Resources\\ed_obj.bmp"), wxBITMAP_TYPE_BMP);
+    toolBarBitmaps[Tool_game] = wxBitmap(wxT("Resources\\ed_set.bmp"), wxBITMAP_TYPE_BMP);
 
     int w = toolBarBitmaps[Tool_open].GetWidth();
     int h = toolBarBitmaps[Tool_open].GetHeight();
@@ -237,6 +243,8 @@ void CEditorFrame::PopulateToolbar(wxToolBarBase* toolBar)
     toolBar->AddTool(wxID_OPEN, wxT("Open"), toolBarBitmaps[Tool_open], wxT("Open level"), wxITEM_NORMAL);
     toolBar->AddTool(wxID_SAVE, wxT("Save"), toolBarBitmaps[Tool_save], wxT("Save level"), wxITEM_NORMAL);
     toolBar->AddSeparator();
+    toolBar->AddTool(ID_DEF_EDITORVIEW, wxT("Editor camera"), toolBarBitmaps[Tool_editor], wxT("Editor camera"), wxITEM_RADIO);
+    toolBar->AddTool(ID_DEF_GAMEVIEW, wxT("Game camera"), toolBarBitmaps[Tool_game], wxT("Game camera"), wxITEM_RADIO);
     toolBar->Realize();
 }
 
@@ -269,6 +277,28 @@ void CEditorFrame::SetSettingsMode()
 	GetToolSettings()->SetEditMode(EDITMODE_SETTINGS);
 	CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
 	ToolCmdEventData cmdData (CMD_EDITMODE_SETTINGS, true);
+	cmd.SetEventCustomData(cmdData);
+	GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
+}
+
+
+/// @brief Editor view handler.
+/// @param event - event structute.
+void CEditorFrame::OnEditorView(wxCommandEvent& event)
+{
+	CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
+	ToolCmdEventData cmdData (CMD_VIEW_EDITOR, true);
+	cmd.SetEventCustomData(cmdData);
+	GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
+}
+
+
+/// @brief Game view handler.
+/// @param event - event structute.
+void CEditorFrame::OnGameView(wxCommandEvent& event)
+{
+	CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
+	ToolCmdEventData cmdData (CMD_VIEW_GAME, true);
 	cmd.SetEventCustomData(cmdData);
 	GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
 }
@@ -450,6 +480,10 @@ void CEditorFrame::OnFogColorChange(wxColourPickerEvent& event)
 {
 	SetSettingsMode();
 
+	wxColour clr = event.GetColour();
+	Vec4 vFogColor = Vec4(clr.Red()/255.0f, clr.Green()/255.0f, clr.Blue()/255.0f, 1.0f);
+    GetRenderer()->GetFog()->SetColor(vFogColor);
+
 	FireUpdateEvent();
 }
 
@@ -460,6 +494,9 @@ void CEditorFrame::OnFogNearSlider(wxScrollEvent& event)
 {
 	SetSettingsMode();
 
+    float fNear = (float)m_pFogNearSlider->GetValue();
+    GetRenderer()->GetFog()->SetStart(fNear);
+
 	FireUpdateEvent();
 }
 
@@ -469,6 +506,9 @@ void CEditorFrame::OnFogNearSlider(wxScrollEvent& event)
 void CEditorFrame::OnFogFarSlider(wxScrollEvent& event)
 {
 	SetSettingsMode();
+
+    float fFar = (float)m_pFogFarSlider->GetValue();
+    GetRenderer()->GetFog()->SetEnd(fFar);
 
 	FireUpdateEvent();
 }
@@ -482,16 +522,27 @@ void CEditorFrame::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& event
 
 	IOGLight* pMainLight = GetRenderer()->GetLightMgr()->GetLight(0);
 
-	wxColour clr = wxColour(
+	wxColour difclr = wxColour(
 		(unsigned char)(pMainLight->vDiffuseColor.x * 255.0f),
 		(unsigned char)(pMainLight->vDiffuseColor.y * 255.0f),
 		(unsigned char)(pMainLight->vDiffuseColor.z * 255.0f),
 		255);
-	m_pColorPicker->SetColour(clr);
+	m_pColorPicker->SetColour(difclr);
+
+    Vec4 vFogColor = GetRenderer()->GetFog()->GetColor();
+	wxColour fogclr = wxColour(
+		(unsigned char)(vFogColor.x * 255.0f),
+		(unsigned char)(vFogColor.y * 255.0f),
+		(unsigned char)(vFogColor.z * 255.0f),
+		255);
+	m_pFogColorPicker->SetColour(fogclr);
 
 	Vec3 vD = pMainLight->vPosition.normalized();
 	m_pXDirSlider->SetValue((int)(vD.x * 100.0f));
 	m_pZDirSlider->SetValue((int)(vD.z * 100.0f));
+
+    m_pFogNearSlider->SetValue((int)(GetRenderer()->GetFog()->GetStart()));
+    m_pFogFarSlider->SetValue((int)(GetRenderer()->GetFog()->GetEnd()));
 
 	FireUpdateEvent();
 }

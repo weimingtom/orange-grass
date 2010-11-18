@@ -160,6 +160,7 @@ void COGEffectCollision::Start ()
         m_pLight->vDiffuseColor = Vec4(1, 1, 0, 1);
         m_pLight->vAmbientColor = Vec4(1, 1, 0, 1);
         m_pLight->vSpecularColor = Vec4(1, 1, 0, 1);
+        m_pLight->type = OG_LIGHT_POINT;
         m_pLight->fIntensity = 20.0f;
     }
 }

@@ -169,6 +169,8 @@ void COGEffectExplosion::Render (const MATRIX& _mWorld)
 		m_pRenderer->DrawEffectBuffer(&particle.pVertices[0], 0, 4);
     }
 
+    m_pRenderer->SetBlend(OG_BLEND_ALPHABLEND);
+
     Vec3 vWaveUp = Vec3(0,0,1) * m_Wave.scale;
     Vec3 vWaveRight = Vec3(1,0,0) * m_Wave.scale;
     m_Wave.pVertices[0].p = vOffset + vWaveRight + vWaveUp;
@@ -196,6 +198,7 @@ void COGEffectExplosion::Start ()
         m_pLight->vDiffuseColor = Vec4(1, 1, 0, 1);
         m_pLight->vSpecularColor = Vec4(1, 1, 0, 1);
         m_pLight->vAmbientColor = Vec4(1, 1, 0, 1);
+        m_pLight->type = OG_LIGHT_POINT;
         m_pLight->fIntensity = 100.0f;
     }
 

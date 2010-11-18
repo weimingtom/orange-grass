@@ -52,7 +52,7 @@ CEditorCanvas::CEditorCanvas (  wxWindow *parent,
 	GetEventHandlersTable()->AddEventHandler(EVENTID_RESSWITCH, this);
 	GetEventHandlersTable()->AddEventHandler(EVENTID_TOOLCMD, this);
 	GetEventHandlersTable()->AddEventHandler(EVENTID_LEVELLOAD, this);
-	m_timer.Start(100);
+	m_timer.Start(33);
 
 	bRmb = bLmb = false;
 	mouse_x = mouse_y = 0;
@@ -130,7 +130,7 @@ void CEditorCanvas::OnTimer(wxTimerEvent& event)
 	}
 
     g_pScene->Init();
-    g_pScene->Update(10);
+    g_pScene->Update(33);
     g_pScene->RenderScene();
 
 	SwapBuffers();
@@ -357,6 +357,14 @@ void CEditorCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
         break;
 
 	case CMD_UPDATE:
+        break;
+
+	case CMD_VIEW_EDITOR:
+        g_pScene->CameraMode(CAMMODE_EDITOR);
+        break;
+
+	case CMD_VIEW_GAME:
+        g_pScene->CameraMode(CAMMODE_GAME);
         break;
 	}
 }

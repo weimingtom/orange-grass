@@ -17,6 +17,11 @@
 #include "IOGRenderer.h"
 #include <ToolFramework.h>
 
+enum CamModes
+{
+    CAMMODE_EDITOR,
+    CAMMODE_GAME
+};
 
 class CEditorLevelScene
 {
@@ -90,6 +95,9 @@ public:
 	// Camera move
 	void CameraMove (float _fX, float _fZ);
 
+	// Set camera mode
+	void CameraMode (CamModes mode);
+
 	// Camera move
 	void SetAABBMode (bool _bEnable) {m_bShowAABB = _bEnable;}
 
@@ -134,6 +142,8 @@ private:
 	int				m_ResX;
 	int				m_ResY;
 	TerrainEditMode	m_EditorMode;
+
+    CamModes        m_CamMode;
 };
 
 #endif

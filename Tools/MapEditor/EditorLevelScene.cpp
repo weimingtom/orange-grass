@@ -14,7 +14,9 @@
 
 CEditorLevelScene::CEditorLevelScene()
 {
-	m_pCurLevel = NULL;
+	GetAppSettings()->Init("settings.xml");
+
+    m_pCurLevel = NULL;
 	m_pCurActor = NULL;
 	m_pPickedActor = NULL;
 	m_vCurScaling = Vec3(1,1,1);
@@ -25,6 +27,7 @@ CEditorLevelScene::CEditorLevelScene()
     m_bInited = false;
 	m_ResX = m_ResY = 0;
 	m_EditorMode = EDITMODE_OBJECTS;
+    m_CamMode = CAMMODE_EDITOR;
 
 	m_fFineAngleStep = TO_RADIAN(2.0f);
     m_fCoarseAngleStep = TO_RADIAN(45.0f);
@@ -53,11 +56,7 @@ bool CEditorLevelScene::Init ()
 	m_pActorMgr = GetActorManager();
 	m_pLevelMgr = GetLevelManager();
 
-    Vec3 vTarget (200, 0, -100);
-	Vec3 vDir (0, 1.0f, 0.4f);
-	vDir = vDir.normalize();
-	Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
-	m_pCamera->Setup (vTarget + (vDir* m_fCameraDistance), vTarget, vUp);
+    CameraMode(m_CamMode);
 
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);
@@ -129,7 +128,7 @@ void CEditorLevelScene::SetViewport (int _Width, int _Height)
 void CEditorLevelScene::Update (unsigned long _ElapsedTime)
 {
 	GetPhysics()->UpdateAll(0);
-    m_pActorMgr->UpdateEditor(10);
+    m_pActorMgr->UpdateEditor(33);
 	m_pCamera->Update();
 	m_mView = m_pCamera->GetViewMatrix();
 
@@ -148,6 +147,11 @@ void CEditorLevelScene::RenderScene ()
 
 	if (m_pCurLevel)
     {
+        if (m_CamMode == CAMMODE_GAME)
+        {
+            m_pRenderer->EnableFog(true);
+        }
+
 		m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
         m_pSg->RenderAll(m_pCamera);
 
@@ -160,6 +164,11 @@ void CEditorLevelScene::RenderScene ()
         }
 
         m_pRenderer->FinishRenderMode();
+
+        if (m_CamMode == CAMMODE_GAME)
+        {
+            m_pRenderer->EnableFog(false);
+        }
     }
     m_pRenderer->Reset();
 
@@ -233,6 +242,8 @@ bool CEditorLevelScene::LoadLevel (const std::string& _LevelName)
 	{
 		pPlayerActor->GetPhysicalObject()->SetPosition(vCraftPos);
 	}
+
+    CameraMode(m_CamMode);
 
 	return true;
 }
@@ -514,4 +525,49 @@ void CEditorLevelScene::CameraZoom (float _fFactor)
 void CEditorLevelScene::CameraMove (float _fX, float _fZ)
 {
 	m_pCamera->Strafe(5.5f, Vec3(_fX, 0, _fZ));
+}
+
+
+// Set camera mode
+void CEditorLevelScene::CameraMode (CamModes mode)
+{
+    m_CamMode = mode;
+
+    switch(mode)
+    {
+    case CAMMODE_EDITOR:
+        {
+            Vec3 vTarget (200, 0, -100);
+            if (m_pCurLevel)
+            {
+                vTarget = m_pActorMgr->GetPlayersActor()->GetPhysicalObject()->GetPosition();
+            }
+	        Vec3 vDir (0, 1.0f, 0.4f);
+	        vDir = vDir.normalize();
+	        Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
+	        m_pCamera->Setup (vTarget + (vDir* m_fCameraDistance), vTarget, vUp);
+            m_pCamera->Update();
+        }
+        break;
+
+    case CAMMODE_GAME:
+        {
+        	Vec3 vCameraDir = GetGlobalVars()->GetVec3Var("cam_dir");
+	        Vec3 vCameraOffset = GetGlobalVars()->GetVec3Var("cam_offset");
+        	float fCameraTargetDistance = GetGlobalVars()->GetFVar("cam_distance");
+
+            Vec3 vTarget (200, m_fAirBotHeight, -100);
+            if (m_pCurLevel)
+            {
+                vTarget = m_pActorMgr->GetPlayersActor()->GetPhysicalObject()->GetPosition() + vCameraOffset;
+            }
+
+            Vec3 vPos = vTarget + (vCameraDir * fCameraTargetDistance);
+
+	        Vec3 vUp = vCameraDir.cross (Vec3(1, 0, 0));
+	        m_pCamera->Setup (vPos, vTarget, vUp);
+            m_pCamera->Update();
+        }
+        break;
+    }
 }

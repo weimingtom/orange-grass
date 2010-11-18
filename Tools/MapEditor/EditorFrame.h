@@ -70,6 +70,14 @@ private:
     /// @brief Set Settings mode.
     void SetSettingsMode();
 
+    /// @brief Editor view handler.
+    /// @param event - event structute.
+    void OnEditorView(wxCommandEvent& event);
+
+    /// @brief Game view handler.
+    /// @param event - event structute.
+    void OnGameView(wxCommandEvent& event);
+
     /// @brief Level open handler.
     /// @param event - event structute.
     void OnOpenLevel(wxCommandEvent& event);
