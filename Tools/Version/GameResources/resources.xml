@@ -85,10 +85,6 @@
 	<Model alias="stone_07" file="Models/Land_objects_02/stone/stone_07.xml"/>
 	<Model alias="rock_01" file="Models/Land_objects_02/rock/rock_01.xml"/>
 </Models>
-<Terrains>
-	<Terrain alias="level_01" file="Levels/Level_01/level_01.xml" />
-	<Terrain alias="level_02" file="Levels/Level_02/level_02.xml" />
-</Terrains>
 <Sprites>
 	<Sprite alias="load_scr" texture="load_scr" mapping="1"/>
 	<Sprite alias="logo" texture="load_scr" mapping="2"/>
