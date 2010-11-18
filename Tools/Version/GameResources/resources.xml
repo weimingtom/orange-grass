@@ -63,28 +63,6 @@
 		</Mappings>
 	</Texture>
 </Textures>
-<Meshes>
-	<Mesh alias="helicopter_small" file="Models/units/helicopter_small/helicopter_small.POD"/>
-	<Mesh alias="helicopter_medium" file="Models/units/helicopter_medium/helicopter_medium.POD"/>
-	<Mesh alias="plane_small" file="Models/units/plane_small/plane_small.POD"/>
-	<Mesh alias="oil_tank" file="Models/objects/oil_tank/oil_tank.POD"/>
-	<Mesh alias="bonus_01" file="Models/Bonuses/bonus_01.POD"/>
-	<Mesh alias="bonus_02" file="Models/Bonuses/bonus_02.POD"/>
-	<Mesh alias="bush_01" file="Models/Land_objects_02/bush/bush_01.POD"/>
-	<Mesh alias="palm_01" file="Models/Land_objects_02/palm/palm_01.POD" />
-	<Mesh alias="palm_02" file="Models/Land_objects_02/palm/palm_02.POD" />
-	<Mesh alias="cactus_01" file="Models/Land_objects_02/cactus/cactus_01.POD"/>
-	<Mesh alias="cactus_02" file="Models/Land_objects_02/cactus/cactus_02.POD"/>
-	<Mesh alias="cactus_03" file="Models/Land_objects_02/cactus/cactus_03.POD"/>
-	<Mesh alias="stone_01" file="Models/Land_objects_02/stone/stone_01.POD"/>
-	<Mesh alias="stone_02" file="Models/Land_objects_02/stone/stone_02.POD"/>
-	<Mesh alias="stone_03" file="Models/Land_objects_02/stone/stone_03.POD"/>
-	<Mesh alias="stone_04" file="Models/Land_objects_02/stone/stone_04.POD"/>
-	<Mesh alias="stone_05" file="Models/Land_objects_02/stone/stone_05.POD"/>
-	<Mesh alias="stone_06" file="Models/Land_objects_02/stone/stone_06.POD"/>
-	<Mesh alias="stone_07" file="Models/Land_objects_02/stone/stone_07.POD"/>
-	<Mesh alias="rock_01" file="Models/Land_objects_02/rock/rock_01.POD"/>
-</Meshes>
 <Models>
 	<Model alias="helicopter_small" file="Models/units/helicopter_small/helicopter_small.xml"/>
 	<Model alias="helicopter_medium" file="Models/units/helicopter_medium/helicopter_medium.xml"/>

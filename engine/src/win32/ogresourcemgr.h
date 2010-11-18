@@ -13,7 +13,6 @@
 #include "ogtexture.h"
 #include "ogmesh.h"
 #include "ogmodel.h"
-#include "ogterrain.h"
 #include "ogsprite.h"
 #include <string>
 #include <map>
@@ -42,14 +41,8 @@ public:
 	// get texture.
 	virtual IOGTexture* GetTexture (const std::string& _Alias);
 	
-	// get mesh.
-	virtual IOGMesh* GetMesh (const std::string& _Alias);
-	
 	// get model.
 	virtual IOGModel* GetModel (const std::string& _Alias);
-
-	// get terrain.
-	virtual IOGTerrain* GetTerrain (const std::string& _Alias);
 
 	// get sprite.
 	virtual IOGSprite* GetSprite (const std::string& _Alias);
@@ -57,14 +50,8 @@ public:
 	// release texture.
 	virtual void ReleaseTexture (IOGTexture* _pTexture);
 		
-	// release mesh.
-	virtual void ReleaseMesh (IOGMesh* _pMesh);
-		
 	// release model.
 	virtual void ReleaseModel (IOGModel* _pModel);
-
-	// release terrain.
-	virtual void ReleaseTerrain (IOGTerrain* _pTerrain);
 
 	// release sprite.
 	virtual void ReleaseSprite (IOGSprite* _pSprite);
@@ -86,19 +73,7 @@ private:
 			std::list<MappingCfg> mappings;
 		};
 
-		struct MeshResourceCfg
-		{
-			std::string alias;
-			std::string file;
-		};
-
 		struct ModelResourceCfg
-		{
-			std::string alias;
-			std::string file;
-		};
-
-		struct TerrainResourceCfg
 		{
 			std::string alias;
 			std::string file;
@@ -112,15 +87,11 @@ private:
 		};
 
 		typedef std::list<TextureResourceCfg>	TTextureCfg;
-		typedef std::list<MeshResourceCfg>		TMeshCfg;
 		typedef std::list<ModelResourceCfg>		TModelCfg;
-		typedef std::list<TerrainResourceCfg>	TTerrainCfg;
 		typedef std::list<SpriteResourceCfg>	TSpriteCfg;
 
 		TTextureCfg	texture_cfg_list;
-		TMeshCfg	mesh_cfg_list;
 		TModelCfg	model_cfg_list;
-		TTerrainCfg	terrain_cfg_list;
 		TSpriteCfg	sprite_cfg_list;
 	};
 
@@ -130,9 +101,7 @@ private:
 private:
 
 	std::map<std::string, COGTexture*>	m_TextureList;
-	std::map<std::string, COGMesh*>		m_MeshList;
 	std::map<std::string, COGModel*>	m_ModelList;
-	std::map<std::string, COGTerrain*>	m_TerrainList;
 	std::map<std::string, COGSprite*>	m_SpriteList;
 	std::string							m_ResPath;
 

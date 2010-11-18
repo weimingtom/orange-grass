@@ -14,6 +14,7 @@
 #include "ogresource.h"
 #include "IOGRenderer.h"
 #include "IOGSettingsReader.h"
+#include "ogmesh.h"
 #include <map>
 
 
@@ -75,7 +76,7 @@ private:
             int looped;
 		};
 
-		std::string mesh_alias;
+		std::string mesh_file;
 		std::string texture_alias;
 		std::string blend_type;
 		std::list<Anim> anim_list;
@@ -86,7 +87,7 @@ private:
 
 private:
 
-	IOGMesh*	    m_pMesh;	
+	COGMesh*	    m_pMesh;	
 	IOGTexture*	    m_pTexture;
 	OGBlendType		m_Blend;
     IOGMaterial*    m_pMaterial;

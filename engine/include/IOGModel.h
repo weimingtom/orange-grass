@@ -11,7 +11,10 @@
 
 #include "IOGRenderable.h"
 #include "IOGTexture.h"
-#include "IOGMesh.h"
+#include "Mathematics.h"
+#include "IOGAabb.h"
+#include "IOGRenderable.h"
+#include <vector>
 
 
 class IOGModel

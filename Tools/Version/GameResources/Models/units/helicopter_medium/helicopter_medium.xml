@@ -1,3 +1,3 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<Mesh alias = "helicopter_medium"/>
+<Mesh file="Models/units/helicopter_medium/helicopter_medium.POD"/>
 <Material texture = "units" blend = "solid"/>

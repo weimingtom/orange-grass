@@ -908,10 +908,6 @@
 					>
 				</File>
 				<File
-					RelativePath="..\..\include\IOGMesh.h"
-					>
-				</File>
-				<File
 					RelativePath="..\..\include\IOGModel.h"
 					>
 				</File>

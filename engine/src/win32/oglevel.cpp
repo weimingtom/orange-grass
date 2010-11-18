@@ -12,7 +12,9 @@
 
 COGLevel::COGLevel () : m_pTerrain(NULL)
 {
-    m_vStartPos = Vec3(150,0,-100);
+	m_pReader = GetSettingsReader();
+
+	m_vStartPos = Vec3(150,0,-100);
 	m_vFinishPos = Vec3(150,0,-1000);
     m_fActiveWidth = 200.0f;
 
@@ -32,6 +34,29 @@ COGLevel::~COGLevel ()
 }
 
 
+// Load level configuration
+bool COGLevel::LoadConfig (COGLevel::Cfg& _cfg)
+{
+	IOGSettingsSource* pSource = m_pReader->OpenSource(m_ResourceFile);
+	if (!pSource)
+	{
+		OG_LOG_ERROR("Failed to load level config file %s", m_ResourceFile.c_str());
+		return false;
+	}
+
+	IOGGroupNode* pLevelNode = m_pReader->OpenGroupNode(pSource, NULL, "Level");
+	if (pLevelNode != NULL)
+	{
+		_cfg.terrain_file = GetResourceMgr()->GetFullPath(m_pReader->ReadStringParam(pLevelNode, "terrain_file"));
+		_cfg.scene_file = GetResourceMgr()->GetFullPath(m_pReader->ReadStringParam(pLevelNode, "scene_file"));
+		m_pReader->CloseGroupNode(pLevelNode);
+	}
+
+	m_pReader->CloseSource(pSource);
+	return true;
+}
+
+
 // load scene from file.
 bool COGLevel::Load ()
 {
@@ -44,19 +69,29 @@ bool COGLevel::Load ()
         return true;    
 	}
 
-    m_pTerrain = GetResourceMgr()->GetTerrain(m_ResourceAlias);
-    if (m_pTerrain == NULL)
+	Cfg cfg;
+	if (!LoadConfig(cfg))
+	{
+        OG_LOG_ERROR("Failed to load level from config");
+		return false;
+	}
+
+	m_SceneFile = cfg.scene_file;
+
+    m_pTerrain = new COGTerrain();
+	m_pTerrain->Init(std::string(""), cfg.terrain_file);
+	if (!m_pTerrain->Load())
     {
-        OG_LOG_ERROR("Failed to load terrain %s while loading level", m_ResourceAlias.c_str());
+        OG_LOG_ERROR("Failed to load terrain from %s", cfg.terrain_file.c_str());
         return false;
     }
 	IOGSgNode* pTerrainSg = GetSceneGraph()->CreateLandscapeNode(m_pTerrain);
 	GetSceneGraph()->AddLandscapeNode(pTerrainSg);
 
-    FILE* pIn = fopen(m_ResourceFile.c_str(), "rb");
+    FILE* pIn = fopen(cfg.scene_file.c_str(), "rb");
     if (pIn == NULL)
     {
-        OG_LOG_WARNING("No level scene found in file %s", m_ResourceFile.c_str());
+		OG_LOG_WARNING("No level scene found in file %s", cfg.scene_file.c_str());
 
         GetRenderer()->GetLight()->SetMainLightDirection(Vec3(m_vLightDir.x, m_vLightDir.y, m_vLightDir.z));
         GetRenderer()->GetLight()->SetMainLightColor(Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f));
@@ -177,8 +212,11 @@ void COGLevel::Unload ()
 		return;
 	}
 
-	GetResourceMgr()->ReleaseTerrain(m_pTerrain);
-	m_pTerrain = NULL;
+	if (m_pTerrain)
+	{
+		m_pTerrain->Unload();
+		OG_SAFE_DELETE(m_pTerrain);
+	}
 	GetActorManager()->Clear();
 	GetSceneGraph()->Clear();
 	GetPhysics()->Clear();
@@ -201,10 +239,10 @@ bool COGLevel::Save ()
 	m_vLightDir = Vec3(vL.x, vL.y, vL.z);
 	m_vLightColor = Vec3(vC.x, vC.y, vC.z);
 
-    FILE* pOut = fopen(m_ResourceFile.c_str(), "wb");
+    FILE* pOut = fopen(m_SceneFile.c_str(), "wb");
 	if (pOut == NULL)
 	{
-		OG_LOG_WARNING("Level saving failure: cannot open file %s for write", m_ResourceFile.c_str());
+		OG_LOG_WARNING("Level saving failure: cannot open file %s for write", m_SceneFile.c_str());
 		return false;
 	}
     

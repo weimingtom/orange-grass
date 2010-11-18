@@ -8,7 +8,6 @@
  */
 #include "OpenGL2.h"
 #include "..\\include\\IOGGraphicsHelpers.h"
-#include "IOGMesh.h"
 #include <vector>
 
 

@@ -45,7 +45,7 @@ bool COGTerrain::Load ()
 	}
 
 	m_pMesh = new COGMesh ();
-	m_pMesh->Init(cfg.mesh_alias, cfg.mesh_file);
+	m_pMesh->Init(std::string(""), cfg.mesh_file);
 	if (!m_pMesh->Load())
 		return false;
 
@@ -76,7 +76,6 @@ bool COGTerrain::LoadConfig (COGTerrain::Cfg& _cfg)
 	IOGGroupNode* pMeshNode = m_pReader->OpenGroupNode(pSource, NULL, "Mesh");
 	if (pMeshNode != NULL)
 	{
-		_cfg.mesh_alias = m_pReader->ReadStringParam(pMeshNode, "alias");
 		_cfg.mesh_file = GetResourceMgr()->GetFullPath(m_pReader->ReadStringParam(pMeshNode, "file"));
 		m_pReader->CloseGroupNode(pMeshNode);
 	}
@@ -108,9 +107,14 @@ void COGTerrain::Unload ()
 		return;
 	}
 
-	OG_SAFE_DELETE(m_pMesh);
+	if (m_pMesh)
+	{
+		m_pMesh->Unload();
+		OG_SAFE_DELETE(m_pMesh);
+	}
+
 	m_Blend = OG_BLEND_NO;
-	m_pMaterial = NULL;
+	OG_SAFE_DELETE(m_pMaterial);
 	m_TextureList.clear();
 
 	m_LoadState = OG_RESSTATE_DEFINED;

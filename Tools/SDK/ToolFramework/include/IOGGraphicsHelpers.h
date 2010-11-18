@@ -10,7 +10,7 @@
 #define IOGGRAPHICSHELPERS_H_
 
 #include "IOGObb.h"
-#include "IOGMesh.h"
+#include "IOGRenderable.h"
 #include <vector>
 
 

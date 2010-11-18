@@ -46,8 +46,8 @@ private:
 	{
 		struct LevelCfg
 		{
-			std::string level_alias;
-			std::string level_file;
+			std::string alias;
+			std::string file;
 		};
 
 		std::vector<LevelCfg> level_cfg_list;

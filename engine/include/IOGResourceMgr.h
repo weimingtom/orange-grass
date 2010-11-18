@@ -10,9 +10,7 @@
 #define IOGRESOURCEMGR_H_
 
 #include "IOGTexture.h"
-#include "IOGMesh.h"
 #include "IOGModel.h"
-#include "IOGTerrain.h"
 #include "IOGSprite.h"
 #include <string>
 
@@ -37,14 +35,8 @@ public:
 	// get texture.
 	virtual IOGTexture* GetTexture (const std::string& _Alias) = 0;
 
-	// get mesh.
-	virtual IOGMesh* GetMesh (const std::string& _Alias) = 0;
-
 	// get model.
 	virtual IOGModel* GetModel (const std::string& _Alias) = 0;
-
-	// get terrain.
-	virtual IOGTerrain* GetTerrain (const std::string& _Alias) = 0;
 
 	// get sprite.
 	virtual IOGSprite* GetSprite (const std::string& _Alias) = 0;
@@ -52,14 +44,8 @@ public:
 	// release texture.
 	virtual void ReleaseTexture (IOGTexture* _pTexture) = 0;
 		
-	// release mesh.
-	virtual void ReleaseMesh (IOGMesh* _pMesh) = 0;
-		
 	// release model.
 	virtual void ReleaseModel (IOGModel* _pModel) = 0;
-
-	// release terrain.
-	virtual void ReleaseTerrain (IOGTerrain* _pTerrain) = 0;
 
 	// release sprite.
 	virtual void ReleaseSprite (IOGSprite* _pSprite) = 0;

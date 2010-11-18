@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<Mesh alias = "bonus_02"/>
+<Mesh file="Models/Bonuses/bonus_02.POD"/>
 <Material texture = "bonus_02" blend = "solid"/>
 <Animations>
 	<Animation name = "idle" start_frame="1" end_frame = "99" speed = "3" looped = "1"/>

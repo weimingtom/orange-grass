@@ -11,7 +11,6 @@
 
 #include "IOGRenderable.h"
 #include "IOGTexture.h"
-#include "IOGMesh.h"
 
 
 class IOGTerrain

@@ -33,14 +33,6 @@ bool COGLevelManager::Init ()
 		return false;
 	}
 
-	std::vector<Cfg::LevelCfg>::const_iterator iter = cfg.level_cfg_list.begin();
-	for (; iter != cfg.level_cfg_list.end(); ++iter)
-	{
-		COGLevel* pLevel = new COGLevel ();
-		pLevel->Init ((*iter).level_alias, (*iter).level_file);
-		m_LevelList[(*iter).level_alias] = pLevel;
-	}
-
     return true;
 }
 
@@ -57,10 +49,14 @@ bool COGLevelManager::LoadConfig (COGLevelManager::Cfg& _cfg)
 	for (; pLevelNode != NULL; )
 	{
 		Cfg::LevelCfg lev_cfg;
-		lev_cfg.level_alias = m_pReader->ReadStringParam(pLevelNode, "terrain");
-		lev_cfg.level_file = m_pReader->ReadStringParam(pLevelNode, "scene_file");
-		lev_cfg.level_file = GetResourceMgr()->GetFullPath(lev_cfg.level_file);
+		lev_cfg.alias = m_pReader->ReadStringParam(pLevelNode, "alias");
+		lev_cfg.file = GetResourceMgr()->GetFullPath(m_pReader->ReadStringParam(pLevelNode, "file"));
 		_cfg.level_cfg_list.push_back(lev_cfg);
+
+		COGLevel* pLevel = new COGLevel ();
+		pLevel->Init (lev_cfg.alias, lev_cfg.file);
+		m_LevelList[lev_cfg.alias] = pLevel;
+
 		pLevelNode = m_pReader->ReadNextNode(pLevelNode);
 	}
 	m_pReader->CloseGroupNode(pRoot);
@@ -72,18 +68,24 @@ bool COGLevelManager::LoadConfig (COGLevelManager::Cfg& _cfg)
 // load level.
 IOGLevel* COGLevelManager::LoadLevel (const std::string& _Alias)
 {
-    COGLevel* pLevel = m_LevelList[_Alias];
-    if (pLevel == NULL)
+	COGLevel* pLevel = m_LevelList[_Alias];
+    if (pLevel)
     {
-        return NULL;
-    }
+		switch (pLevel->GetLoadState())
+		{
+			case OG_RESSTATE_LOADED:
+				return pLevel;
 
-    if (!pLevel->Load())
-    {
-        return NULL;
-    }
+			case OG_RESSTATE_DEFINED:
+				if (pLevel->Load() == false)
+					return NULL;
+				return pLevel;
 
-    return pLevel;
+			default:
+				return NULL;
+		}
+    }
+    return NULL;
 }
 
 

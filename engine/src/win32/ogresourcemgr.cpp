@@ -32,23 +32,11 @@ COGResourceMgr::~COGResourceMgr ()
 	{
 		OG_SAFE_DELETE (texture_iter->second);
 	}
-
-	std::map<std::string, COGMesh*>::iterator mesh_iter = m_MeshList.begin();
-	for( ; mesh_iter != m_MeshList.end(); ++mesh_iter )
-	{
-		OG_SAFE_DELETE (mesh_iter->second);
-	}
 	
 	std::map<std::string, COGModel*>::iterator model_iter = m_ModelList.begin();
 	for( ; model_iter != m_ModelList.end(); ++model_iter )
 	{
 		OG_SAFE_DELETE (model_iter->second);
-	}
-	
-	std::map<std::string, COGTerrain*>::iterator terra_iter = m_TerrainList.begin();
-	for( ; terra_iter != m_TerrainList.end(); ++terra_iter )
-	{
-		OG_SAFE_DELETE (terra_iter->second);
 	}
 	
 	std::map<std::string, COGSprite*>::iterator spr_iter = m_SpriteList.begin();
@@ -106,28 +94,12 @@ bool COGResourceMgr::Load ()
 		m_TextureList[(*texiter).alias] = pTexture;
 	}
 
-	Cfg::TMeshCfg::const_iterator meshiter;
-	for (meshiter = cfg.mesh_cfg_list.begin(); meshiter != cfg.mesh_cfg_list.end(); ++meshiter)
-	{
-		COGMesh* pMesh = new COGMesh ();
-		pMesh->Init ((*meshiter).alias, (*meshiter).file);
-		m_MeshList[(*meshiter).alias] = pMesh;
-	}
-
 	Cfg::TModelCfg::const_iterator modeliter;
 	for (modeliter = cfg.model_cfg_list.begin(); modeliter != cfg.model_cfg_list.end(); ++modeliter)
 	{
 		COGModel* pModel = new COGModel ();
 		pModel->Init ((*modeliter).alias, (*modeliter).file);
 		m_ModelList[(*modeliter).alias] = pModel;
-	}
-
-	Cfg::TTerrainCfg::const_iterator terraiter;
-	for (terraiter = cfg.terrain_cfg_list.begin(); terraiter != cfg.terrain_cfg_list.end(); ++terraiter)
-	{
-		COGTerrain* pTerrain = new COGTerrain ();
-		pTerrain->Init ((*terraiter).alias, (*terraiter).file);
-		m_TerrainList[(*terraiter).alias] = pTerrain;
 	}
 
 	Cfg::TSpriteCfg::const_iterator spriter;
@@ -182,22 +154,6 @@ bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
 		m_pReader->CloseGroupNode(pTexturesRoot);
 	}
 
-	IOGGroupNode* pMeshesRoot = m_pReader->OpenGroupNode(pSource, NULL, "Meshes");
-	if (pMeshesRoot)
-	{
-		IOGGroupNode* pMeshNode = m_pReader->OpenGroupNode(pSource, pMeshesRoot, "Mesh");
-		while (pMeshNode)
-		{
-			Cfg::MeshResourceCfg rescfg;
-			rescfg.alias = m_pReader->ReadStringParam(pMeshNode, "alias");
-			rescfg.file = GetFullPath(m_pReader->ReadStringParam(pMeshNode, "file"));
-			_cfg.mesh_cfg_list.push_back(rescfg);
-
-			pMeshNode = m_pReader->ReadNextNode(pMeshNode);
-		}
-		m_pReader->CloseGroupNode(pMeshesRoot);
-	}
-
 	IOGGroupNode* pModelsRoot = m_pReader->OpenGroupNode(pSource, NULL, "Models");
 	if (pModelsRoot)
 	{
@@ -212,22 +168,6 @@ bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
 			pModelNode = m_pReader->ReadNextNode(pModelNode);
 		}
 		m_pReader->CloseGroupNode(pModelsRoot);
-	}
-
-	IOGGroupNode* pTerrainsRoot = m_pReader->OpenGroupNode(pSource, NULL, "Terrains");
-	if (pTerrainsRoot)
-	{
-		IOGGroupNode* pTerrainNode = m_pReader->OpenGroupNode(pSource, pTerrainsRoot, "Terrain");
-		while (pTerrainNode)
-		{
-			Cfg::TerrainResourceCfg rescfg;
-			rescfg.alias = m_pReader->ReadStringParam(pTerrainNode, "alias");
-			rescfg.file = GetFullPath(m_pReader->ReadStringParam(pTerrainNode, "file"));
-			_cfg.terrain_cfg_list.push_back(rescfg);
-
-			pTerrainNode = m_pReader->ReadNextNode(pTerrainNode);
-		}
-		m_pReader->CloseGroupNode(pTerrainsRoot);
 	}
 
 	IOGGroupNode* pSpritesRoot = m_pReader->OpenGroupNode(pSource, NULL, "Sprites");
@@ -276,30 +216,6 @@ IOGTexture* COGResourceMgr::GetTexture (const std::string& _Alias)
 }
 
 
-// get mesh
-IOGMesh* COGResourceMgr::GetMesh (const std::string& _Alias)
-{
-	COGMesh* pMesh = m_MeshList[_Alias];
-    if (pMesh)
-    {
-		switch (pMesh->GetLoadState())
-		{
-			case OG_RESSTATE_LOADED:
-				return pMesh;
-
-			case OG_RESSTATE_DEFINED:
-				if (pMesh->Load() == false)
-					return NULL;
-				return pMesh;
-
-			default:
-				return NULL;
-		}
-    }
-    return NULL;
-}
-
-
 // get model
 IOGModel* COGResourceMgr::GetModel (const std::string& _Alias)
 {
@@ -315,30 +231,6 @@ IOGModel* COGResourceMgr::GetModel (const std::string& _Alias)
 				if (pModel->Load() == false)
 					return NULL;
 				return pModel;
-
-			default:
-				return NULL;
-		}
-    }
-    return NULL;
-}
-
-
-// get terrain.
-IOGTerrain* COGResourceMgr::GetTerrain (const std::string& _Alias)
-{
-	COGTerrain* pTerrain = m_TerrainList[_Alias];
-    if (pTerrain)
-    {
-		switch (pTerrain->GetLoadState())
-		{
-			case OG_RESSTATE_LOADED:
-				return pTerrain;
-
-			case OG_RESSTATE_DEFINED:
-				if (pTerrain->Load() == false)
-					return NULL;
-				return pTerrain;
 
 			default:
 				return NULL;
@@ -383,17 +275,6 @@ void COGResourceMgr::ReleaseTexture (IOGTexture* _pTexture)
 }
 
 
-// release mesh.
-void COGResourceMgr::ReleaseMesh (IOGMesh* _pMesh)
-{
-	COGMesh* pMesh = (COGMesh*)_pMesh;
-	if (pMesh)
-	{
-		pMesh->Unload();
-	}
-}
-
-
 // release model.
 void COGResourceMgr::ReleaseModel (IOGModel* _pModel)
 {
@@ -401,17 +282,6 @@ void COGResourceMgr::ReleaseModel (IOGModel* _pModel)
 	if (pModel)
 	{
 		pModel->Unload();
-	}
-}
-
-
-// release terrain.
-void COGResourceMgr::ReleaseTerrain (IOGTerrain* _pTerrain)
-{
-	COGTerrain* pTerrain = (COGTerrain*)_pTerrain;
-	if (pTerrain)
-	{
-		pTerrain->Unload();
 	}
 }
 

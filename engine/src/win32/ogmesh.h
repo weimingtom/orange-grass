@@ -9,7 +9,6 @@
 #ifndef OGMESH_H_
 #define OGMESH_H_
 
-#include "IOGMesh.h"
 #include "Geometry.h"
 #include "Mathematics.h"
 #include <vector>
@@ -17,9 +16,10 @@
 #include "ogresource.h"
 #include "IOGVertexBuffers.h"
 #include "IOGRenderer.h"
+#include "IOGRenderable.h"
 
 
-class COGMesh : public IOGMesh, public COGResource
+class COGMesh : public COGResource
 {
 public:
 	COGMesh ();

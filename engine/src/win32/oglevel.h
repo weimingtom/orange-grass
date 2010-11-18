@@ -10,8 +10,9 @@
 #define OGLEVEL_H_
 
 #include "IOGModel.h"
-#include "IOGTerrain.h"
+#include "ogterrain.h"
 #include "ogresource.h"
+#include "IOGSettingsReader.h"
 
 
 class COGLevel : public IOGLevel, public COGResource
@@ -52,7 +53,18 @@ public:
 
 private:
 
-    IOGTerrain*	m_pTerrain;
+	struct Cfg
+	{
+		std::string terrain_file;
+		std::string scene_file;
+	};
+
+	// Load level configuration
+	bool LoadConfig (COGLevel::Cfg& _cfg);
+
+private:
+
+    COGTerrain*	m_pTerrain;
     Vec3		m_vStartPos;
     Vec3		m_vFinishPos;
     Vec3		m_vLightDir;
@@ -62,6 +74,9 @@ private:
     float		m_fFogStart;
     float		m_fFogEnd;
     float		m_fFogDensity;
+
+	IOGSettingsReader*	m_pReader;
+	std::string			m_SceneFile;
 };
 
 #endif

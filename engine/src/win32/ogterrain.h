@@ -61,7 +61,6 @@ private:
 			std::string alias;
 		};
 
-		std::string mesh_alias;
 		std::string mesh_file;
 		std::vector<TextureCfg> texture_cfg_list;
 	};

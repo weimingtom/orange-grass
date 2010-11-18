@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<Mesh alias = "level_02" file="Levels/Level_02/level_02.POD"/>
-<Material>
-	<Texture alias = "land_02" />
-</Material>
+<Level 
+	terrain_file="Levels/Level_02/level_02_terrain.xml"
+	scene_file="Levels/Level_02/level_02.scn"
+	/>

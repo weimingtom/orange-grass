@@ -45,7 +45,14 @@ bool COGModel::Load ()
 		return false;
 	}
 
-	m_pMesh = GetResourceMgr()->GetMesh(modelcfg.mesh_alias);
+	m_pMesh = new COGMesh();
+	m_pMesh->Init(std::string(""), modelcfg.mesh_file);
+	if (!m_pMesh->Load())
+	{
+		OG_LOG_ERROR("Failed to load model's mesh %s", modelcfg.mesh_file.c_str());
+		return false;
+	}
+
 	m_pTexture = GetResourceMgr()->GetTexture(modelcfg.texture_alias);
 	m_Blend = m_pRenderer->ParseBlendType(modelcfg.blend_type);
 
@@ -80,7 +87,7 @@ bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
 	IOGGroupNode* pMeshNode = m_pReader->OpenGroupNode(pSource, NULL, "Mesh");
 	if (pMeshNode != NULL)
 	{
-		_cfg.mesh_alias = m_pReader->ReadStringParam(pMeshNode, "alias");
+		_cfg.mesh_file = GetResourceMgr()->GetFullPath(m_pReader->ReadStringParam(pMeshNode, "file"));
 		m_pReader->CloseGroupNode(pMeshNode);
 	}
 
@@ -123,7 +130,13 @@ void COGModel::Unload ()
 		return;
 	}
 
-	m_pMaterial = NULL;
+	if (m_pMesh)
+	{
+		m_pMesh->Unload();
+		OG_SAFE_DELETE(m_pMesh);
+	}
+
+	OG_SAFE_DELETE(m_pMaterial);
 	m_Blend = OG_BLEND_NO;
 
     std::map<std::string, IOGAnimation*>::iterator iter= m_pAnimations.begin();
