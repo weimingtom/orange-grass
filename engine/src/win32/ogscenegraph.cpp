@@ -268,7 +268,12 @@ void COGSceneGraph::RenderAll (IOGCamera* _pCamera)
 	{
 		RenderWholeNodesList(_pCamera, s_iter->second);
 	}
-	RenderWholeNodesList(_pCamera, m_TransparentNodesList);
+
+	TNodesList::iterator iter = m_TransparentNodesList.begin();
+    for (; iter != m_TransparentNodesList.end(); ++iter)
+    {
+        ((COGSgNode*)(*iter))->RenderTransparent();
+	}
 }
 
 
@@ -278,7 +283,6 @@ bool COGSceneGraph::RemoveNodeFromList(IOGSgNode* _pNode, TNodesList& _List)
 	TNodesList::iterator iter = std::find(_List.begin(), _List.end(), _pNode);
 	if (iter != _List.end())
 	{
-		OG_SAFE_DELETE((*iter));
 		_List.erase(iter);
 		return true;
 	}
@@ -289,11 +293,6 @@ bool COGSceneGraph::RemoveNodeFromList(IOGSgNode* _pNode, TNodesList& _List)
 // clear nodes list
 void COGSceneGraph::ClearNodesList(TNodesList& _List)
 {
-    TNodesList::iterator iter = _List.begin();
-    for (; iter != _List.end(); ++iter)
-    {
-		OG_SAFE_DELETE((*iter));
-	}
 	_List.clear();
 }
 

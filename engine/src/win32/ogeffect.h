@@ -81,7 +81,7 @@ protected:
 	OGEffectStatus	m_Status;
 	OGEffectType	m_Type;
 	IOGTexture*		m_pTexture;
-	IOGMaterial*	m_pMaterial;
+	OGBlendType		m_Blend;
 	IOGRenderer*	m_pRenderer;
 };
 

@@ -25,7 +25,7 @@ void COGEffectGauss::Init(OGEffectType _Type)
 {
     m_bPosReady = false;
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
-    m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
+    m_Blend = OG_BLEND_ALPHABLEND;
 
     m_Frames.reserve(m_MappingFinishId - m_MappingStartId + 1);
     for (unsigned int i = m_MappingStartId; i <= m_MappingFinishId; ++i)
@@ -57,7 +57,7 @@ void COGEffectGauss::Render (const MATRIX& _mWorld)
     MATRIX mId; 
     MatrixIdentity(mId);
     m_pRenderer->SetModelMatrix(mId);
-	m_pRenderer->SetMaterial(m_pMaterial);
+	m_pRenderer->SetBlend(m_Blend);
 	m_pRenderer->SetTexture(m_pTexture);
 
     Vec3 vOffset = Vec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);

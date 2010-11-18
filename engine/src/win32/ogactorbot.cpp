@@ -10,9 +10,7 @@
 #include "ogactorbot.h"
 
 
-COGActorBot::COGActorBot() :    m_pModelPropeller(NULL),
-                                m_pNodePropeller(NULL),
-								m_pModelDestruction(NULL),
+COGActorBot::COGActorBot() :    m_pModelDestruction(NULL),
                                 m_pNodeDestruction(NULL),
 								m_pExplosionEffect(NULL),
 								m_pExplosionNode(NULL),
@@ -23,37 +21,23 @@ COGActorBot::COGActorBot() :    m_pModelPropeller(NULL),
 
 COGActorBot::~COGActorBot()
 {
-	if (m_pNodePropeller)
-	{
-        if (m_bAdded)
-		    m_pSg->RemoveNode(m_pNodePropeller);
-        else
-            OG_SAFE_DELETE(m_pNodePropeller);
-		m_pNodePropeller = NULL;
-	}
 	if (m_pNodeDestruction)
 	{
         if (m_bAdded)
 		    m_pSg->RemoveNode(m_pNodeDestruction);
-        else
-            OG_SAFE_DELETE(m_pNodeDestruction);
-		m_pNodeDestruction = NULL;
+        OG_SAFE_DELETE(m_pNodeDestruction);
 	}
 	if (m_pExplosionNode)
 	{
         if (m_bAdded)
 		    m_pSg->RemoveNode(m_pExplosionNode);
-        else
-            OG_SAFE_DELETE(m_pExplosionNode);
-		m_pExplosionNode = NULL;
+        OG_SAFE_DELETE(m_pExplosionNode);
 	}
 	if (m_pTrailNode)
 	{
         if (m_bAdded)
 		    m_pSg->RemoveNode(m_pTrailNode);
-        else
-            OG_SAFE_DELETE(m_pTrailNode);
-		m_pTrailNode = NULL;
+        OG_SAFE_DELETE(m_pTrailNode);
 	}
 	OG_SAFE_DELETE(m_pWeapon);
 }
@@ -70,10 +54,6 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
     m_Hitpoints = m_pParams->gameplay.max_hitpoints;
 
 	m_pModel = GetResourceMgr()->GetModel(m_pParams->model_alias);
-    if (!m_pParams->model_propeller_alias.empty())
-    {
-	    m_pModelPropeller = GetResourceMgr()->GetModel(m_pParams->model_propeller_alias);
-    }
     if (!m_pParams->model_destruction.empty())
     {
 	    m_pModelDestruction = GetResourceMgr()->GetModel(m_pParams->model_destruction);
@@ -83,10 +63,6 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 	m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);
 
 	m_pNode = m_pSg->CreateNode(m_pModel, m_pPhysicalObject);
-    if (m_pModelPropeller)
-    {
-	    m_pNodePropeller = m_pSg->CreateNode(m_pModelPropeller, m_pPhysicalObject);
-    }
     if (m_pModelDestruction)
     {
 	    m_pNodeDestruction = m_pSg->CreateNode(m_pModelDestruction, m_pPhysicalObject);
@@ -120,12 +96,6 @@ void COGActorBot::OnAddedToManager ()
     }
 
 	m_pPhysicalObject->AddCollisionListener(this);
-
-    if (m_pNodePropeller)
-    {
-    	m_pSg->AddTransparentNode(m_pNodePropeller);
-        m_pNodePropeller->StartAnimation("idle");
-    }
 
     if (m_pNodeDestruction)
     {
@@ -193,11 +163,6 @@ void COGActorBot::Activate (bool _bActive)
 
 	COGActor::Activate(_bActive);
 
-	if (m_pNodePropeller)
-	{
-		m_pNodePropeller->Activate(_bActive);
-	}
-
 	if (!m_bActive)
 	{
 	    if (m_pTrailNode)
@@ -212,11 +177,6 @@ void COGActorBot::Activate (bool _bActive)
 void COGActorBot::UpdateAlive (unsigned long _ElapsedTime)
 {
 	COGActor::UpdateAlive(_ElapsedTime);
-
-	if (m_pNodePropeller)
-	{
-		m_pNodePropeller->Update(_ElapsedTime);
-	}
 }
 
 
@@ -269,10 +229,6 @@ void COGActorBot::SetFallingStatus ()
         m_pNodeDestruction->Activate(true);
         m_pNodeDestruction->StartAnimation("idle");
         m_pNode->Activate(false);
-        if (m_pNodePropeller)
-        {
-            m_pNodePropeller->Activate(false);
-        }
     }
     if (m_pTrailNode)
     {

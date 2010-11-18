@@ -32,9 +32,7 @@ COGActor::~COGActor()
 	{
         if (m_bAdded)
 		    m_pSg->RemoveNode(m_pNode);
-        else
-            OG_SAFE_DELETE(m_pNode);
-		m_pNode = NULL;
+        OG_SAFE_DELETE(m_pNode);
 	}
     if (m_pPhysicalObject)
     {

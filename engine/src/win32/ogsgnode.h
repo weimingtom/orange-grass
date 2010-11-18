@@ -65,6 +65,7 @@ protected:
     IOGPhysicalObject*      m_pPhysics;
     IOGAnimationController* m_pAnimator;
     unsigned int            m_AnimFrame;
+	float					m_fSpin;
 };
 
 #endif

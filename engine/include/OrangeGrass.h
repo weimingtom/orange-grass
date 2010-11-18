@@ -18,7 +18,6 @@
 #include "IOGPhysics.h"
 #include "IOGInputDispatcher.h"
 #include "IOGRenderer.h"
-#include "IOGMaterialManager.h"
 #include "IOGStatistics.h"
 #include "IOGEffectsManager.h"
 #include "IOGActorParamsManager.h"
@@ -37,7 +36,6 @@ IOGPhysics* GetPhysics ();
 IOGInputDispatcher* GetInput ();
 IOGRenderer* GetRenderer ();
 IOGRenderer* GetRendererGL11 ();
-IOGMaterialManager* GetMaterialManager ();
 IOGStatistics* GetStatistics ();
 IOGSpritePool* GetSpritePool ();
 IOGEffectsManager* GetEffectsManager ();

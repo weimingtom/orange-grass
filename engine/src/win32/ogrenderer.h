@@ -14,6 +14,8 @@
 #include "ogmesh.h"
 #include "ogrendertarget.h"
 #include "ogtextrenderer.h"
+#include <string>
+#include <map>
 
 
 class COGRenderer : public IOGRenderer
@@ -40,10 +42,16 @@ public:
 	virtual void SetMaterial (IOGMaterial* _pMaterial);
 
 	// add rendering command.
+	virtual void SetBlend (OGBlendType _Blend);
+
+	// add rendering command.
 	virtual void RenderMesh (void* _pMesh);
 
 	// clear frame buffer with the given color
 	virtual void ClearFrame (const Vec4& _vClearColor);
+
+	// Create material.
+	virtual IOGMaterial* CreateMaterial ();
 
 	// Get scene light.
 	virtual IOGLight* GetLight ();
@@ -70,11 +78,15 @@ public:
     // Draw shadow texture.
     virtual void DrawShadowTexture () {}
 
+    // Parse the blend type string and convert it to internal type
+    virtual OGBlendType ParseBlendType (const std::string& _BlendTypeStr) const;
+
 protected:
 
     IOGTexture*         m_pCurTexture;
     IOGMaterial*        m_pCurMaterial;
     IOGVertexBuffers*	m_pCurMesh;
+	OGBlendType			m_CurBlend;
 	IOGStatistics*		m_pStats;
 	IOGLight*			m_pLight;
 	IOGCamera*			m_pCamera;
@@ -90,6 +102,8 @@ protected:
 	float				m_fZFar;
 	float				m_fFOV;
 	OGRenderMode		m_Mode;
+
+	std::map<std::string, OGBlendType>	m_BlendTypeLookup;
 };
 
 #endif

@@ -17,7 +17,6 @@
 #include "ogrenderer_gles11.h"
 #include "ogrenderer_gles20.h"
 #include "ogspritepool.h"
-#include "ogmaterialmanager.h"
 #include "ogstatistics.h"
 #include "ogeffectsmanager.h"
 #include "ogactorparamsmgr.h"
@@ -34,7 +33,6 @@ static IOGActorManager* g_pActorMgr = NULL;
 static IOGPhysics* g_pPhysics = NULL;
 static IOGInputDispatcher* g_pInput = NULL;
 static IOGRenderer* g_pRenderer = NULL;
-static IOGMaterialManager* g_pMaterialMgr = NULL;
 static IOGStatistics* g_pStats = NULL;
 static IOGSpritePool* g_pSprPool = NULL;
 static IOGEffectsManager* g_pEffectsMgr = NULL;
@@ -128,16 +126,6 @@ IOGRenderer* GetRendererGL11 ()
 		g_pRenderer->Init();
 	}
 	return g_pRenderer;
-}
-
-
-IOGMaterialManager* GetMaterialManager ()
-{
-	if (g_pMaterialMgr == NULL)
-	{
-		g_pMaterialMgr = new COGMaterialManager ();
-	}
-	return g_pMaterialMgr;
 }
 
 

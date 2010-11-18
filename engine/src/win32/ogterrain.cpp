@@ -11,7 +11,8 @@
 
 
 COGTerrain::COGTerrain () :	m_pMesh(NULL),
-                            m_pMaterial(NULL)
+                            m_pMaterial(NULL),
+							m_Blend(OG_BLEND_NO)
 {
     m_pRenderer = GetRenderer();
 	m_pReader = GetSettingsReader();
@@ -22,8 +23,6 @@ COGTerrain::COGTerrain () :	m_pMesh(NULL),
 
 COGTerrain::~COGTerrain()
 {
-	m_pMesh = NULL;
-    OG_SAFE_DELETE(m_pMaterial);
 }
 
 
@@ -50,7 +49,7 @@ bool COGTerrain::Load ()
 	if (!m_pMesh->Load())
 		return false;
 
-    m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_SOLID);
+	m_Blend = OG_BLEND_SOLID;
 
 	std::vector<Cfg::TextureCfg>::const_iterator iter;
 	for (iter = cfg.texture_cfg_list.begin(); iter != cfg.texture_cfg_list.end(); ++iter)
@@ -110,6 +109,7 @@ void COGTerrain::Unload ()
 	}
 
 	OG_SAFE_DELETE(m_pMesh);
+	m_Blend = OG_BLEND_NO;
 	m_pMaterial = NULL;
 	m_TextureList.clear();
 
@@ -125,6 +125,8 @@ void COGTerrain::Render (const MATRIX& _mWorld)
 
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_TextureList[0]);
+	m_pRenderer->SetBlend(m_Blend);
+
     unsigned int numParts = m_pMesh->GetNumRenderables();
     for (unsigned int i = 0; i < numParts; ++i)
     {
@@ -148,7 +150,9 @@ void COGTerrain::RenderAll (const MATRIX& _mWorld)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_TextureList[0]);
-    unsigned int numParts = m_pMesh->GetNumRenderables();
+	m_pRenderer->SetBlend(m_Blend);
+
+	unsigned int numParts = m_pMesh->GetNumRenderables();
     for (unsigned int i = 0; i < numParts; ++i)
     {
 		m_pMesh->RenderPart (_mWorld, i, 0);

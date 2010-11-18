@@ -36,7 +36,7 @@ public:
 	virtual void RenderSolidParts (const MATRIX& _mWorld, unsigned int _Frame);
 
 	// Render transparent parts of the mesh.
-	virtual void RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame);
+	virtual void RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame, float _fSpin);
 
 	// Check if has submeshes of the following type
 	virtual bool HasSubmeshesOfType(SubMeshType _Type) const;
@@ -77,7 +77,7 @@ private:
 
 		std::string mesh_alias;
 		std::string texture_alias;
-		std::string material_type;
+		std::string blend_type;
 		std::list<Anim> anim_list;
 	};
 
@@ -88,9 +88,10 @@ private:
 
 	IOGMesh*	    m_pMesh;	
 	IOGTexture*	    m_pTexture;
+	OGBlendType		m_Blend;
     IOGMaterial*    m_pMaterial;
-    IOGMaterial*    m_pTransparentMaterial;
-    IOGRenderer*    m_pRenderer;
+
+	IOGRenderer*		m_pRenderer;
 	IOGSettingsReader*	m_pReader;
 
 	std::map<std::string, IOGAnimation*>	m_pAnimations;

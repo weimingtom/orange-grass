@@ -10,22 +10,19 @@
 #define IOGMATERIAL_H_
 
 
-enum OGMaterialType
-{
-    OG_MAT_NONE = -1,
-    OG_MAT_SOLID,
-    OG_MAT_ALPHATEST,
-    OG_MAT_TEXTUREALPHABLEND
-};
-
-
 class IOGMaterial
 {
 public:
 	virtual ~IOGMaterial () {}
+
+	// get material ambient.
+	virtual float GetAmbient () const = 0;
 		
-	// get material type.
-	virtual OGMaterialType GetType () const = 0;
+	// get material diffuse.
+	virtual float GetDiffuse () const = 0;
+		
+	// get material specular.
+	virtual float GetSpecular () const = 0;
 		
 	// apply the material.
 	virtual void Apply () const = 0;

@@ -62,7 +62,6 @@ COGResourceMgr::~COGResourceMgr ()
 // load from file.
 bool COGResourceMgr::Init ()
 {
-	GetMaterialManager()->Init();
 	return true;
 }
 

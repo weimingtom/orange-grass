@@ -58,7 +58,7 @@ void COGEffectTrailSmoke::Init(OGEffectType _Type)
 {
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
 	m_pMapping = m_pTexture->GetMapping(m_MappingId);
-    m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
+    m_Blend = OG_BLEND_ALPHABLEND;
 
 	m_bPositionUpdated = false;
     m_BBList.reserve(60);
@@ -149,7 +149,7 @@ void COGEffectTrailSmoke::Render (const MATRIX& _mWorld)
     MATRIX mId; 
     MatrixIdentity(mId);
     m_pRenderer->SetModelMatrix(mId);
-	m_pRenderer->SetMaterial(m_pMaterial);
+	m_pRenderer->SetBlend(m_Blend);
 	m_pRenderer->SetTexture(m_pTexture);
 
     MATRIX mR;

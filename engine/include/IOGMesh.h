@@ -34,7 +34,7 @@ public:
 	virtual void RenderSolidParts (const MATRIX& _mWorld, unsigned int _Frame) = 0;
 
 	// Render transparent parts of the mesh.
-	virtual void RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame) = 0;
+	virtual void RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame, float _fSpin) = 0;
 
 	// Render part of the mesh.
 	virtual void RenderPart (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame) = 0;

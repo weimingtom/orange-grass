@@ -121,10 +121,6 @@ void COGMesh::Render (const MATRIX& _mWorld, unsigned int _Frame)
         return;
 
 	RenderSolidParts(_mWorld, _Frame);
-    //for (unsigned int i = 0; i < m_NumParts; ++i)
-    //{
-    //    RenderPart(_mWorld, i, _Frame);
-    //}
 }
 
 
@@ -140,12 +136,27 @@ void COGMesh::RenderSolidParts (const MATRIX& _mWorld, unsigned int _Frame)
 
 
 // Render transparent parts of the mesh.
-void COGMesh::RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame)
+void COGMesh::RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame, float _fSpin)
 {
+	MATRIX mNodeWorld, mModel, mSpin;
 	std::vector<unsigned int>::const_iterator iter = m_TransparentParts.begin();
 	for (; iter != m_TransparentParts.end(); ++iter)
 	{
-        RenderPart(_mWorld, *iter, _Frame);
+		SubMesh& submesh = m_SubMeshes[*iter];
+		m_pScene->SetFrame((float)_Frame);
+		const SPODNode& node = m_pScene->pNode[submesh.part];
+
+		MatrixRotationY(mSpin, _fSpin);
+
+		// Gets the node model matrix
+		m_pScene->GetWorldMatrix(mNodeWorld, node);
+		MatrixMultiply(mNodeWorld, mSpin, mNodeWorld);
+
+		// Multiply on the global world transform
+		MatrixMultiply(mModel, mNodeWorld, _mWorld);
+
+		m_pRenderer->SetModelMatrix(mModel);
+		m_pRenderer->RenderMesh(submesh.buffer);
 	}
 }
 

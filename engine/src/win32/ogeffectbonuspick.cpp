@@ -52,7 +52,7 @@ bool COGEffectBonusPick::LoadParams ()
 void COGEffectBonusPick::Init(OGEffectType _Type)
 {
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
-    m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
+    m_Blend = OG_BLEND_ALPHABLEND;
 
     Vec4 color = Vec4(1.0f, 1.0f, 1.0f, 0.5f);
     m_pWaveMapping = m_pTexture->GetMapping(m_MappingId);
@@ -198,7 +198,7 @@ void COGEffectBonusPick::Render (const MATRIX& _mWorld)
     MATRIX mId; 
     MatrixIdentity(mId);
     m_pRenderer->SetModelMatrix(mId);
-	m_pRenderer->SetMaterial(m_pMaterial);
+	m_pRenderer->SetBlend(m_Blend);
 	m_pRenderer->SetTexture(m_pTexture);
 
     Vec3 vOffset = Vec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);

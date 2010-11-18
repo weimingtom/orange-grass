@@ -18,6 +18,7 @@ COGSgNode::COGSgNode () :
     m_bActive(false)
 {
     m_AnimFrame = 0;
+	m_fSpin = 0.0f;
 }
 
 
@@ -29,6 +30,7 @@ COGSgNode::COGSgNode (IOGModel* _pRenderable, IOGPhysicalObject* _pPhysics) :
 {
     m_pAnimator = new COGAnimationController();
     m_AnimFrame = 0;
+	m_fSpin = 0.0f;
 }
 
 
@@ -60,6 +62,8 @@ void COGSgNode::Update (unsigned long _ElapsedTime)
 	if (!m_bActive)
 		return;
 
+	m_fSpin += 0.5f;
+
     if (m_pAnimator->GetCurrentAnimation())
     {
         m_pAnimator->UpdateAnimation(_ElapsedTime);
@@ -86,7 +90,7 @@ void COGSgNode::RenderTransparent ()
 		return;
 
     const MATRIX& mWorld = m_pPhysics->GetWorldTransform();
-    m_pRenderable->RenderTransparentParts(mWorld, m_AnimFrame);
+    m_pRenderable->RenderTransparentParts(mWorld, m_AnimFrame, m_fSpin);
 }
 
 

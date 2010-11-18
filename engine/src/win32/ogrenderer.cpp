@@ -12,6 +12,7 @@
 #include "oglight.h"
 #include "ogcamera.h"
 #include "ogfog.h"
+#include "ogmaterial.h"
 #include "ogsprite.h"
 #include "oggrutility.h"
 
@@ -19,12 +20,18 @@
 COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
                                 m_pCurMaterial(NULL),
                                 m_pCurMesh(NULL),
+								m_CurBlend(OG_BLEND_NO),
 								m_pFog(NULL),
 								m_pLight(NULL),
 								m_pCamera(NULL),
 								m_pText(NULL)
 {
 	m_pStats = GetStatistics();
+
+	m_BlendTypeLookup["solid"] = OG_BLEND_SOLID;
+	m_BlendTypeLookup["test"] = OG_BLEND_ALPHATEST;
+	m_BlendTypeLookup["blend"] = OG_BLEND_ALPHABLEND;
+	m_BlendTypeLookup["add"] = OG_BLEND_ALPHAADD;
 }
 
 
@@ -107,14 +114,49 @@ void COGRenderer::SetTexture (IOGTexture* _pTexture)
 // add rendering command.
 void COGRenderer::SetMaterial (IOGMaterial* _pMaterial)
 {
-	if (m_Mode == OG_RENDERMODE_SHADOWMAP)
-		return;
-
     if (_pMaterial != m_pCurMaterial)
     {
         m_pCurMaterial = _pMaterial;
         m_pCurMaterial->Apply();
     }
+}
+
+
+// add rendering command.
+void COGRenderer::SetBlend (OGBlendType _Blend)
+{
+	if (m_CurBlend != _Blend)
+	{
+		m_CurBlend = _Blend;
+
+		switch (m_CurBlend)
+		{
+		case OG_BLEND_NO:
+			break;
+
+		case OG_BLEND_SOLID:
+			glDisable (GL_BLEND); 
+			glDisable (GL_ALPHA_TEST); 
+			break;
+
+		case OG_BLEND_ALPHATEST:
+			glAlphaFunc(GL_GREATER, 0.4f);
+			glEnable(GL_ALPHA_TEST);
+			break;
+
+		case OG_BLEND_ALPHABLEND:
+			glEnable (GL_BLEND); 
+			glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+			glDisable(GL_ALPHA_TEST);
+			break;
+
+		case OG_BLEND_ALPHAADD:
+			glEnable (GL_BLEND); 
+			glBlendFunc (GL_ONE, GL_ONE);
+			glDisable(GL_ALPHA_TEST);
+			break;
+		}
+	}
 }
 
 
@@ -159,12 +201,20 @@ IOGFog* COGRenderer::GetFog ()
 }
 
 
+// Create material.
+IOGMaterial* COGRenderer::CreateMaterial ()
+{
+	return new COGMaterial();
+}
+
+
 // reset renderer pipeline.
 void COGRenderer::Reset ()
 {
     m_pCurTexture = NULL;
     m_pCurMaterial = NULL;
     m_pCurMesh = NULL;
+	m_CurBlend = OG_BLEND_NO;
 }
 
 
@@ -196,4 +246,16 @@ void COGRenderer::DisplayString (const Vec2& _vPos,
 	va_end(args);
 
     m_pText->DisplayText(_vPos.x,_vPos.y,_fScale, Colour, Text);
+}
+
+
+// Parse the blend type string and convert it to internal type
+OGBlendType COGRenderer::ParseBlendType (const std::string& _BlendTypeStr) const
+{
+    std::map<std::string, OGBlendType>::const_iterator iter = m_BlendTypeLookup.find(_BlendTypeStr);
+    if (iter != m_BlendTypeLookup.end())
+    {
+        return iter->second;
+    }
+    return OG_BLEND_NO;
 }

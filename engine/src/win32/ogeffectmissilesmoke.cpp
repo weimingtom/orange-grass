@@ -60,7 +60,7 @@ void COGEffectMissileSmoke::Init(OGEffectType _Type)
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
 	m_pMapping = m_pTexture->GetMapping(m_MappingId);
 	m_pGlowMapping = m_pTexture->GetMapping(m_GlowMappingId);
-    m_pMaterial = GetMaterialManager()->GetMaterial(OG_MAT_TEXTUREALPHABLEND);
+    m_Blend = OG_BLEND_ALPHABLEND;
 
 	m_bPositionUpdated = false;
     m_BBList.reserve(60);
@@ -103,7 +103,6 @@ void COGEffectMissileSmoke::Update (unsigned long _ElapsedTime)
             if (m_BBList.empty())
             {
                 m_Status = OG_EFFECTSTATUS_INACTIVE;
-                //m_pRenderer->GetLight()->DestroyPointLight(m_pLight);
                 return;
             }
         }
@@ -161,7 +160,7 @@ void COGEffectMissileSmoke::Render (const MATRIX& _mWorld)
     MATRIX mId; 
     MatrixIdentity(mId);
     m_pRenderer->SetModelMatrix(mId);
-	m_pRenderer->SetMaterial(m_pMaterial);
+	m_pRenderer->SetBlend(m_Blend);
 	m_pRenderer->SetTexture(m_pTexture);
 
     MATRIX mR;
@@ -233,13 +232,6 @@ void COGEffectMissileSmoke::Render (const MATRIX& _mWorld)
 
         m_pRenderer->DrawEffectBuffer(&m_Glow.pVertices[0], 0, 4);
     }
-
-    //if (m_pLight)
-    //{
-    //    m_pLight->vPosition = m_vCurPosition;
-    //    m_pLight->vColor = Vec4(1, 0, 0, 1);
-    //    m_pLight->fIntensity = 10.0f;
-    //}
 }
 
 
@@ -247,7 +239,6 @@ void COGEffectMissileSmoke::Render (const MATRIX& _mWorld)
 void COGEffectMissileSmoke::Start ()
 {
 	m_Status = OG_EFFECTSTATUS_STARTED;
-    //m_pLight = m_pRenderer->GetLight()->CreatePointLight();
     m_BBList.clear();
 }
 

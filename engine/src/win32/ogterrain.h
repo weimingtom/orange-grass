@@ -74,6 +74,7 @@ private:
 	COGMesh*					m_pMesh;	
 	std::vector<IOGTexture*>	m_TextureList;
     IOGMaterial*				m_pMaterial;
+	OGBlendType					m_Blend;
     IOGRenderer*                m_pRenderer;
 	IOGSettingsReader*			m_pReader;
 	IOGGlobalVarsTable*			m_pGlobalVars;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Mesh alias = "bonus_01"/>
-<Material texture = "bonus_01" type = "solid"/>
+<Material texture = "bonus_01" blend = "solid"/>
 <Animations>
 	<Animation name = "idle" start_frame="1" end_frame = "99" speed = "3" looped = "1"/>
 </Animations>

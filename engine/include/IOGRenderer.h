@@ -27,6 +27,16 @@ enum OGRenderMode
 };
 
 
+enum OGBlendType
+{
+	OG_BLEND_NO,
+	OG_BLEND_SOLID,
+	OG_BLEND_ALPHATEST,
+	OG_BLEND_ALPHABLEND,
+	OG_BLEND_ALPHAADD,
+};
+
+
 class IOGRenderer
 {
 public:
@@ -48,6 +58,9 @@ public:
 
 	// add rendering command.
 	virtual void SetMaterial (IOGMaterial* _pMaterial) = 0;
+
+	// add rendering command.
+	virtual void SetBlend (OGBlendType _Blend) = 0;
 
 	// set model matrix.
 	virtual void SetModelMatrix (const MATRIX& _mModel) = 0;
@@ -76,6 +89,9 @@ public:
 	// Get fog.
 	virtual IOGFog* GetFog () = 0;
 
+	// Create material.
+	virtual IOGMaterial* CreateMaterial () = 0;
+
 	// Enable scene fog.
 	virtual void EnableFog (bool _bEnable) = 0;
 
@@ -102,6 +118,9 @@ public:
 
     // Draw shadow texture.
     virtual void DrawShadowTexture () = 0;
+
+    // Parse the blend type string and convert it to internal type
+    virtual OGBlendType ParseBlendType (const std::string& _BlendTypeStr) const = 0;
 };
 
 #endif

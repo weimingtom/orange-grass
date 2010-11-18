@@ -25,9 +25,7 @@ COGActorBonus::~COGActorBonus()
 	{
         if (m_bAdded)
 		    m_pSg->RemoveNode(m_pPickNode);
-        else
-            OG_SAFE_DELETE(m_pPickNode);
-		m_pPickNode = NULL;
+        OG_SAFE_DELETE(m_pPickNode);
 	}
 }
 
