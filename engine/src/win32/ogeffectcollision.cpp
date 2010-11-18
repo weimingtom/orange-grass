@@ -154,10 +154,12 @@ void COGEffectCollision::Start ()
 {
 	m_Status = OG_EFFECTSTATUS_STARTED;
     m_BB.bDirty = true;
-    m_pLight = m_pRenderer->GetLight()->CreatePointLight();
+    m_pLight = m_pRenderer->GetLightMgr()->CreateLight();
     if (m_pLight)
     {
-        m_pLight->vColor = Vec4(1, 1, 0, 1);
+        m_pLight->vDiffuseColor = Vec4(1, 1, 0, 1);
+        m_pLight->vAmbientColor = Vec4(1, 1, 0, 1);
+        m_pLight->vSpecularColor = Vec4(1, 1, 0, 1);
         m_pLight->fIntensity = 20.0f;
     }
 }
@@ -170,7 +172,7 @@ void COGEffectCollision::Stop ()
     m_BB.bDirty = true;
     if (m_pLight)
     {
-        m_pRenderer->GetLight()->DestroyPointLight(m_pLight);
+        m_pRenderer->GetLightMgr()->DestroyLight(m_pLight);
         m_pLight = NULL;
     }
 }

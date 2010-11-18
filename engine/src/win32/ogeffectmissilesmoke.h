@@ -61,8 +61,6 @@ protected:
     ParticleFormat	            m_Glow;
 	IOGMapping*					m_pGlowMapping;
 
-    IOGPointLight*              m_pLight;
-
 	static float			m_fAlphaFade;
 	static float			m_fInitialScale;
 	static float			m_fScaleInc;

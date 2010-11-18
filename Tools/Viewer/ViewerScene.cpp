@@ -61,8 +61,13 @@ bool CViewerScene::Init ()
 
 	Vec3 vLightDir = Vec3(0,1,0);
 	Vec4 vLightColor = Vec4(1,1,1,1);
-	m_pRenderer->GetLight()->SetMainLightDirection(vLightDir);
-	m_pRenderer->GetLight()->SetMainLightColor(vLightColor);
+	IOGLight* pMainLight = m_pRenderer->GetLightMgr()->CreateLight();
+	pMainLight->type = OG_LIGHT_DIRECTIONAL;
+	pMainLight->vPosition = vLightDir;
+	pMainLight->fIntensity = 100.0f;
+	pMainLight->vAmbientColor = Vec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
+	pMainLight->vDiffuseColor = Vec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
+	pMainLight->vSpecularColor = Vec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
 
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);

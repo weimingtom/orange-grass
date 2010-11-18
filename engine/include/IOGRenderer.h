@@ -75,7 +75,7 @@ public:
 	virtual void ClearFrame (const Vec4& _vClearColor) = 0;
 
 	// Get scene light.
-	virtual IOGLight* GetLight () = 0;
+	virtual IOGLightMgr* GetLightMgr () = 0;
 
 	// Create vertex buffer for mesh.
 	virtual IOGVertexBuffers* CreateVertexBuffer (const void* _pMeshData) = 0;

@@ -11,38 +11,23 @@
 #include <algorithm>
 
 
-COGLight::COGLight ()
+COGLightMgr::COGLightMgr ()
 {
     m_Lights.reserve(8);
 }
 
 
-COGLight::~COGLight ()
+COGLightMgr::~COGLightMgr ()
 {
-}
-
-
-// set light color.
-void COGLight::SetMainLightColor (const Vec4& _vColor)
-{
-	m_vColor = _vColor;
-	//m_vColor = Vec4(0.5f, 0.5f, 0.4f, 1.0f);
-}
-
-
-// set light direction.
-void COGLight::SetMainLightDirection (const Vec3& _vDirection)
-{
-	m_vDirection = _vDirection;
 }
 
 
 // add light.
-IOGPointLight* COGLight::CreatePointLight ()
+IOGLight* COGLightMgr::CreateLight ()
 {
     if (m_Lights.size() < 8)
     {
-        IOGPointLight* pLight = new IOGPointLight;
+        IOGLight* pLight = new IOGLight;
         m_Lights.push_back(pLight);
         return pLight;
     }
@@ -50,10 +35,10 @@ IOGPointLight* COGLight::CreatePointLight ()
 }
 
 
-// add light.
-void COGLight::DestroyPointLight (IOGPointLight* _pLight)
+// destroy light.
+void COGLightMgr::DestroyLight (IOGLight* _pLight)
 {
-	std::vector<IOGPointLight*>::iterator iter = std::find(m_Lights.begin(), m_Lights.end(), _pLight);
+	std::vector<IOGLight*>::iterator iter = std::find(m_Lights.begin(), m_Lights.end(), _pLight);
 	if (iter != m_Lights.end())
 	{
 		OG_SAFE_DELETE((*iter));
@@ -63,7 +48,7 @@ void COGLight::DestroyPointLight (IOGPointLight* _pLight)
 
 
 // get light.
-IOGPointLight* COGLight::GetPointLight (unsigned int _Id)
+IOGLight* COGLightMgr::GetLight (unsigned int _Id)
 {
     if (m_Lights.size() <= _Id)
     {

@@ -62,45 +62,50 @@ void COGRenderer_GLES11::EnableLight (bool _bEnable)
 {
 	if (_bEnable)
 	{
-        const Vec3& vD = m_pLight->GetMainLightDirection();
-        Vec4 vDir = Vec4(vD.x, vD.y, vD.z, 0.0f);
-        glLightfv(GL_LIGHT0, GL_POSITION, (VERTTYPE*)&vDir);
-        glLightfv(GL_LIGHT0, GL_DIFFUSE, (VERTTYPE*)&m_pLight->GetMainLightColor());
-	    glLightfv(GL_LIGHT0, GL_AMBIENT, (VERTTYPE*)&m_pLight->GetMainLightColor());
-	    glLightfv(GL_LIGHT0, GL_SPECULAR, (VERTTYPE*)&m_pLight->GetMainLightColor());
-		glEnable(GL_LIGHTING);
-		glEnable(GL_LIGHT0);
-
         unsigned int Id = 0;
-        IOGPointLight* pLight = m_pLight->GetPointLight(Id);
+        IOGLight* pLight = m_pLightMgr->GetLight(Id);
         while (pLight)
         {
-            Vec4 vDir = Vec4(pLight->vPosition.x, pLight->vPosition.y, pLight->vPosition.z, 1.0f);
-            OG_CLAMP(pLight->fIntensity, 1.0f, 100.0f);
-            float fAttentuation = 0.01f / pLight->fIntensity;
+            Vec4 vDir = Vec4(pLight->vPosition.x, pLight->vPosition.y, pLight->vPosition.z, 0.0f);
+			switch (pLight->type)
+			{
+			case OG_LIGHT_DIRECTIONAL:
+				{
+					vDir.w = 0.0f;
+				}
+				break;
 
-            glLightfv(GL_LIGHT0+Id+1, GL_POSITION, (VERTTYPE*)&vDir);
-            glLightfv(GL_LIGHT0+Id+1, GL_DIFFUSE, (VERTTYPE*)&pLight->vColor);
-            glLightfv(GL_LIGHT0+Id+1, GL_AMBIENT, (VERTTYPE*)&pLight->vColor);
-            glLightfv(GL_LIGHT0+Id+1, GL_SPECULAR, (VERTTYPE*)&pLight->vColor);
-            glLightf(GL_LIGHT0+Id+1, GL_CONSTANT_ATTENUATION, 0.0f);
-            glLightf(GL_LIGHT0+Id+1, GL_LINEAR_ATTENUATION, 0.0f);
-            glLightf(GL_LIGHT0+Id+1, GL_QUADRATIC_ATTENUATION, fAttentuation);
-            glEnable(GL_LIGHT0+Id+1);
+			case OG_LIGHT_POINT:
+				{
+					vDir.w = 1.0f;
+				    OG_CLAMP(pLight->fIntensity, 1.0f, 100.0f);
+			        float fAttentuation = 0.01f / pLight->fIntensity;
+
+					glLightf(GL_LIGHT0+Id, GL_CONSTANT_ATTENUATION, 0.0f);
+					glLightf(GL_LIGHT0+Id, GL_LINEAR_ATTENUATION, 0.0f);
+					glLightf(GL_LIGHT0+Id, GL_QUADRATIC_ATTENUATION, fAttentuation);
+				}
+				break;
+			}
+
+            glLightfv(GL_LIGHT0+Id, GL_POSITION, (VERTTYPE*)&vDir);
+			glLightfv(GL_LIGHT0+Id, GL_DIFFUSE, (VERTTYPE*)&pLight->vDiffuseColor);
+			glLightfv(GL_LIGHT0+Id, GL_AMBIENT, (VERTTYPE*)&pLight->vAmbientColor);
+			glLightfv(GL_LIGHT0+Id, GL_SPECULAR, (VERTTYPE*)&pLight->vSpecularColor);
+            glEnable(GL_LIGHT0+Id);
 
             ++Id;
-            pLight = m_pLight->GetPointLight(Id);
+            pLight = m_pLightMgr->GetLight(Id);
         }
 	}
 	else
 	{
 		glDisable(GL_LIGHTING);
-		glDisable(GL_LIGHT0);
 
         unsigned int Id = 0;
-        while (m_pLight->GetPointLight(Id))
+        while (m_pLightMgr->GetLight(Id))
         {
-    		glDisable(GL_LIGHT0+Id+1);
+    		glDisable(GL_LIGHT0+Id);
             ++Id;
         }
     }

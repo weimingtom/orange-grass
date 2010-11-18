@@ -53,7 +53,7 @@ protected:
 
 	Vec4						m_color;
 
-    IOGPointLight*              m_pLight;
+    IOGLight*					m_pLight;
 
     static std::string          m_Texture;
 	static unsigned int			m_MaxParticles;

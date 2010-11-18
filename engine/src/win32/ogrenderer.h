@@ -54,7 +54,7 @@ public:
 	virtual IOGMaterial* CreateMaterial ();
 
 	// Get scene light.
-	virtual IOGLight* GetLight ();
+	virtual IOGLightMgr* GetLightMgr ();
 
 	// Get main camera.
 	virtual IOGCamera* GetCamera ();
@@ -88,7 +88,7 @@ protected:
     IOGVertexBuffers*	m_pCurMesh;
 	OGBlendType			m_CurBlend;
 	IOGStatistics*		m_pStats;
-	IOGLight*			m_pLight;
+	IOGLightMgr*		m_pLightMgr;
 	IOGCamera*			m_pCamera;
 	IOGFog*				m_pFog;
 	COGTextRenderer*	m_pText;

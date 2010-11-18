@@ -393,10 +393,12 @@ void CEditorFrame::OnColorChange(wxColourPickerEvent& event)
 	if (pCurLevel)
 	{
 		wxColour clr = event.GetColour();
-		GetRenderer()->GetLight()->SetMainLightColor(Vec4(
-			clr.Red()/255.0f,
-			clr.Green()/255.0f,
-			clr.Blue()/255.0f, 1.0f));
+
+		IOGLight* pMainLight = GetRenderer()->GetLightMgr()->GetLight(0);
+		Vec3 vLightColor = Vec3(clr.Red()/255.0f, clr.Green()/255.0f, clr.Blue()/255.0f);
+		pMainLight->vAmbientColor = Vec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
+		pMainLight->vDiffuseColor = Vec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
+		pMainLight->vSpecularColor = Vec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
 	}
 
 	FireUpdateEvent();
@@ -409,11 +411,15 @@ void CEditorFrame::OnXDirSlider(wxScrollEvent& event)
 {
 	SetSettingsMode();
 
-	Vec3 vD = GetRenderer()->GetLight()->GetMainLightDirection();
-	vD.x = (float)event.GetPosition() / 100.0f;
-	vD.y = 1.0f;
-	vD.z = (float)m_pZDirSlider->GetValue() / 100.0f;
-	GetRenderer()->GetLight()->SetMainLightDirection(vD.normalized());
+	IOGLight* pMainLight = GetRenderer()->GetLightMgr()->GetLight(0);
+	if (pMainLight)
+	{
+		Vec3 vD = pMainLight->vPosition;
+		vD.x = (float)m_pXDirSlider->GetValue() / 100.0f;
+		vD.y = 1.0f;
+		vD.z = (float)event.GetPosition() / 100.0f;
+		pMainLight->vPosition = vD.normalized();
+	}
 
 	FireUpdateEvent();
 }
@@ -425,11 +431,15 @@ void CEditorFrame::OnZDirSlider(wxScrollEvent& event)
 {
 	SetSettingsMode();
 
-	Vec3 vD = GetRenderer()->GetLight()->GetMainLightDirection();
-	vD.x = (float)m_pXDirSlider->GetValue() / 100.0f;
-	vD.y = 1.0f;
-	vD.z = (float)event.GetPosition() / 100.0f;
-	GetRenderer()->GetLight()->SetMainLightDirection(vD.normalized());
+	IOGLight* pMainLight = GetRenderer()->GetLightMgr()->GetLight(0);
+	if (pMainLight)
+	{
+		Vec3 vD = pMainLight->vPosition;
+		vD.x = (float)event.GetPosition() / 100.0f;
+		vD.y = 1.0f;
+		vD.z = (float)m_pZDirSlider->GetValue() / 100.0f;
+		pMainLight->vPosition = vD.normalized();
+	}
 
 	FireUpdateEvent();
 }
@@ -469,13 +479,19 @@ void CEditorFrame::OnFogFarSlider(wxScrollEvent& event)
 void CEditorFrame::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& event )
 {
 	IOGLevel* pCurLevel = GetLevelManager()->LoadLevel(std::string(event.GetEventCustomData().m_Path));
-	Vec4 vC = GetRenderer()->GetLight()->GetMainLightColor();
+
+	IOGLight* pMainLight = GetRenderer()->GetLightMgr()->GetLight(0);
+
 	wxColour clr = wxColour(
-		(unsigned char)(vC.x * 255.0f),
-		(unsigned char)(vC.y * 255.0f),
-		(unsigned char)(vC.z * 255.0f),
+		(unsigned char)(pMainLight->vDiffuseColor.x * 255.0f),
+		(unsigned char)(pMainLight->vDiffuseColor.y * 255.0f),
+		(unsigned char)(pMainLight->vDiffuseColor.z * 255.0f),
 		255);
 	m_pColorPicker->SetColour(clr);
+
+	Vec3 vD = pMainLight->vPosition.normalized();
+	m_pXDirSlider->SetValue((int)(vD.x * 100.0f));
+	m_pZDirSlider->SetValue((int)(vD.z * 100.0f));
 
 	FireUpdateEvent();
 }

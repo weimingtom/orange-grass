@@ -22,7 +22,7 @@ COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
                                 m_pCurMesh(NULL),
 								m_CurBlend(OG_BLEND_NO),
 								m_pFog(NULL),
-								m_pLight(NULL),
+								m_pLightMgr(NULL),
 								m_pCamera(NULL),
 								m_pText(NULL)
 {
@@ -39,7 +39,7 @@ COGRenderer::~COGRenderer ()
 {
     OG_SAFE_DELETE(m_pText);
     OG_SAFE_DELETE(m_pFog);
-    OG_SAFE_DELETE(m_pLight);
+    OG_SAFE_DELETE(m_pLightMgr);
     OG_SAFE_DELETE(m_pCamera);
 }
 
@@ -55,7 +55,7 @@ bool COGRenderer::Init ()
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	Reset();
-	m_pLight = new COGLight ();
+	m_pLightMgr = new COGLightMgr ();
 	m_pCamera = new COGCamera ();
 	m_pFog = new COGFog ();
 
@@ -181,9 +181,9 @@ void COGRenderer::ClearFrame (const Vec4& _vClearColor)
 
 
 // Get scene light.
-IOGLight* COGRenderer::GetLight ()
+IOGLightMgr* COGRenderer::GetLightMgr ()
 {
-	return m_pLight;
+	return m_pLightMgr;
 }
 
 
