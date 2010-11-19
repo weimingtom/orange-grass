@@ -21,12 +21,9 @@ CEffectViewerScene::CEffectViewerScene()
 
 	m_fCameraDistance = 200.0f;
 	m_bShowAABB = false;
-	m_bShowGrid = true;
+	m_bShowGrid = false;
     m_bInited = false;
 	m_ResX = m_ResY = 0;
-
-	m_fFineAngleStep = TO_RADIAN(2.0f);
-    m_fCoarseAngleStep = TO_RADIAN(45.0f);
 }
 
 
@@ -52,15 +49,7 @@ bool CEffectViewerScene::Init ()
 	m_pCamera = m_pRenderer->GetCamera();
 	m_pActorMgr = GetActorManager();
 
-    Vec3 vTarget (0, 0, 0);
-	Vec3 vDir (0, 1.0f, 0.4f);
-	vDir = vDir.normalize();
-	Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
-	m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
-
-	m_fHorViewAngle = m_fVerViewAngle = 0.0f;
-	m_vCamUp = vUp;
-	m_vCamPos = m_pCamera->GetPosition();
+	UpdateCamera();
 
 	Vec3 vLightDir = Vec3(0,1,0);
 	Vec4 vLightColor = Vec4(1,1,1,1);
@@ -125,18 +114,31 @@ void CEffectViewerScene::SetViewport (int _Width, int _Height)
 // Update controller
 void CEffectViewerScene::Update (unsigned long _ElapsedTime)
 {
-	GetPhysics()->UpdateAll(33);
-    m_pSg->Update(33);
-	m_pCamera->Update();
-	m_mView = m_pCamera->GetViewMatrix();
-
 	if (m_pCurEffect)
 	{
 		if (m_pCurEffect->GetStatus() == OG_EFFECTSTATUS_INACTIVE)
 		{
 			m_pCurEffect->Start();
 		}
+
+		Vec3 vDir = Vec3(0,0,-1);
+
+		if (m_pCurEffect->IsDynamic())
+		{
+			m_pCurPhysics->SetPosition(m_pCurPhysics->GetPosition() + vDir * 1.0f);
+		}
+
+		Vec3 vPos = m_pCurPhysics->GetPosition();
+		m_pCurEffect->SetDirection(vDir);
+		m_pCurEffect->UpdatePosition(vPos);
+		m_pCurEffect->SetStartFinishPositions(vPos, vPos + (vDir * 50.0f));
 	}
+
+	GetPhysics()->UpdateAll(33);
+    m_pSg->Update(33);
+	UpdateCamera();
+	m_pCamera->Update();
+	m_mView = m_pCamera->GetViewMatrix();
 }
 
 
@@ -158,8 +160,7 @@ void CEffectViewerScene::RenderScene ()
 	unsigned long TextureSwitches;
 	unsigned long VBOSwitches;
 	unsigned long DrawCalls;
-	GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, 
-		VBOSwitches, DrawCalls);
+	GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, VBOSwitches, DrawCalls);
 	m_pRenderer->DisplayString(Vec2(85.0f, 2.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
 	m_pRenderer->DisplayString(Vec2(85.0f, 6.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
 	m_pRenderer->DisplayString(Vec2(85.0f,10.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
@@ -192,6 +193,13 @@ void CEffectViewerScene::RenderHelpers()
 
 	if (m_bShowGrid)
 	{
+		if (m_pCurPhysics)
+		{
+			glMatrixMode(GL_MODELVIEW);
+			MATRIX mWorld = m_pCurPhysics->GetWorldTransform();
+			MatrixMultiply(mWorld, mWorld, m_mView);
+			glLoadMatrixf(mWorld.f);
+		}
 		DrawCoordGrid(50, 2, 10);
 	}
 
@@ -231,51 +239,20 @@ void CEffectViewerScene::SetupEffect(const char* _pEffectAlias)
 // Camera zoom
 void CEffectViewerScene::CameraZoom (float _fFactor)
 {
-	m_pCamera->Move (_fFactor);
+	m_fCameraDistance -= _fFactor;
 }
 
 
-// Camera move
-void CEffectViewerScene::CameraMove (float _fX, float _fZ)
+// update camera
+void CEffectViewerScene::UpdateCamera()
 {
-	m_pCamera->Strafe(5.5f, Vec3(_fX, 0, _fZ));
-}
-
-
-// Camera rotate
-void CEffectViewerScene::CameraRotate (float _fAngleH, float _fAngleV)
-{
-}
-
-
-// Camera rotate horizontally
-void CEffectViewerScene::CameraRotateHor (float _fAngle)
-{
-	m_fHorViewAngle += _fAngle;
-	Vec3 vTarget (0, 0, 0);
-
-	MATRIX mR;
-	MatrixRotationY(mR, m_fHorViewAngle);
-	Vec3 vDir, vRight;
-	MatrixVec3Multiply(vDir, Vec3(0.0f, 1.0f, 0.4f), mR);
-	MatrixVec3Multiply(vRight, Vec3(1.0f, 0.0f, 0.0f), mR);
+    Vec3 vTarget (0, 0, 0);
+	if (m_pCurPhysics)
+	{
+		vTarget = m_pCurPhysics->GetPosition();
+	}
+	Vec3 vDir (0, 1.0f, 0.4f);
 	vDir = vDir.normalize();
-	Vec3 vUp = vDir.cross (vRight);
-	m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
-}
-
-
-// Camera rotate vertically
-void CEffectViewerScene::CameraRotateVer (float _fAngle)
-{
-	Vec3 vTarget (0, 0, 0);
-	
-	MATRIX mR;
-	MatrixRotationX(mR, _fAngle);
-	Vec3 vDir, vRight;
-	MatrixVec3Multiply(vDir, m_pCamera->GetDirection(), mR);
-	MatrixVec3Multiply(vRight, m_pCamera->GetRight(), mR);
-	vDir.normalize();
-	Vec3 vUp = vDir.cross (vRight);
+	Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
 	m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
 }

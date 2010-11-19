@@ -36,6 +36,9 @@ public:
 	// Stop.
 	virtual void Stop ();
 
+	// Is dynamic.
+	virtual bool IsDynamic () const {return true;}
+
     // Load params.
     static bool LoadParams ();
 

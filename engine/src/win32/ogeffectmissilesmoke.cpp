@@ -203,6 +203,8 @@ void COGEffectMissileSmoke::Render (const MATRIX& _mWorld)
 		m_pRenderer->DrawEffectBuffer(&particle.pVertices[0], 0, 4);
     }
 
+	m_pRenderer->SetBlend(OG_BLEND_ALPHAADD);
+
     if (m_Status != OG_EFFECTSTATUS_STOPPED)
     {
         MatrixRotationAxis(mR, m_Glow.angle, m_vCameraLook.x, m_vCameraLook.y, m_vCameraLook.z);

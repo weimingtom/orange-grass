@@ -25,7 +25,7 @@ void COGEffectGauss::Init(OGEffectType _Type)
 {
     m_bPosReady = false;
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
-    m_Blend = OG_BLEND_ALPHABLEND;
+    m_Blend = OG_BLEND_ALPHAADD;
 
     m_Frames.reserve(m_MappingFinishId - m_MappingStartId + 1);
     for (unsigned int i = m_MappingStartId; i <= m_MappingFinishId; ++i)
@@ -33,6 +33,12 @@ void COGEffectGauss::Init(OGEffectType _Type)
         m_Frames.push_back(m_pTexture->GetMapping(i));
     }
     m_BBList.reserve(16);
+
+	for (unsigned int n = 0; n < 4; ++n)
+	{
+		ParticleFormat particle;
+		m_BBList.push_back(particle);
+	}
 
 	m_color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
@@ -81,7 +87,6 @@ void COGEffectGauss::Render (const MATRIX& _mWorld)
 void COGEffectGauss::Start ()
 {
 	m_Status = OG_EFFECTSTATUS_STARTED;
-    m_BBList.clear();
 }
 
 
@@ -89,7 +94,6 @@ void COGEffectGauss::Start ()
 void COGEffectGauss::Stop ()
 {
     m_Status = OG_EFFECTSTATUS_INACTIVE;
-    m_BBList.clear();
     m_bPosReady = false;
 }
 
@@ -114,15 +118,16 @@ void COGEffectGauss::SetStartFinishPositions (const Vec3& _vStartPos, const Vec3
             Vec3 vStart = m_vStartPos + vDir * (fSegment * (float)n);
             Vec3 vFinish = m_vStartPos + vDir * (fSegment * ((float)n + 1.0f));
 
-            ParticleFormat particle;
+            ParticleFormat& particle = m_BBList[n];
             particle.offset = Vec3(0,0,0);
             particle.scale = 4.0f;
             particle.frame = 0.0f;
             particle.angle = 0.0f;
-            particle.pVertices[0].c = m_color;
-            particle.pVertices[1].c = m_color;
-            particle.pVertices[2].c = m_color;
-            particle.pVertices[3].c = m_color;
+
+			particle.pVertices[0].c = m_color;
+			particle.pVertices[1].c = m_color;
+			particle.pVertices[2].c = m_color;
+			particle.pVertices[3].c = m_color;
 
             Vec3 vSUp = Vec3(0,0,-1) * particle.scale;
             Vec3 vSRight = Vec3(1,0,0) * particle.scale;
@@ -131,8 +136,7 @@ void COGEffectGauss::SetStartFinishPositions (const Vec3& _vStartPos, const Vec3
             particle.pVertices[1].p = vFinish - vSRight;
             particle.pVertices[2].p = vStart + vSRight;
             particle.pVertices[3].p = vStart - vSRight;
-
-            m_BBList.push_back(particle);
+			m_BBList[n] = particle;
         }
     }
 }

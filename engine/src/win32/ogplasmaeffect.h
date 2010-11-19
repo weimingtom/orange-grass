@@ -27,6 +27,9 @@ public:
 	// Render.
 	virtual void Render (const MATRIX& _mWorld);
 
+	// Is dynamic.
+	virtual bool IsDynamic () const {return true;}
+
 	// Start.
 	virtual void Start ();
 

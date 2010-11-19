@@ -62,6 +62,9 @@ public:
 	// Stop.
 	virtual void Stop ();
 
+	// Is dynamic.
+	virtual bool IsDynamic () const {return false;}
+
 	// Get effect run status.
 	virtual OGEffectStatus GetStatus() const { return m_Status; }
 

@@ -61,7 +61,7 @@ bool CEffectViewerFrame::Create(wxWindow * parent,
 	wxMenu* pHelpMenu = new wxMenu ();
 	pWindowMenu->Append(wxID_EXIT, _T("&Close"));
 	wxMenuItem* pCoordItem = pWindowMenu->Append(ID_DEF_COORDGRID, _T("&Show coord. grid"), _T("Show coord. grid"), wxITEM_CHECK);
-	pCoordItem->Check(true);
+	pCoordItem->Check(false);
 	pWindowMenu->Append(ID_DEF_AABB, _T("Show &Bounds"), _T("Show bounds"), wxITEM_CHECK);
 	pHelpMenu->Append(ID_DEF_ABOUT, _T("&About"));
 	pMenuBar->Append(pWindowMenu, _T("&EffectViewer"));
