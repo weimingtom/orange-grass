@@ -10,7 +10,6 @@
 #define OGEFFECTSMANAGER_H_
 
 #include "IOGEffectsManager.h"
-#include <list>
 
 
 class COGEffectsManager : public IOGEffectsManager
@@ -22,8 +21,18 @@ public:
 	// create effect.
 	virtual IOGEffect* CreateEffect (OGEffectType _Type);
 
+	// create effect.
+	virtual IOGEffect* CreateEffect (const std::string& _TypeStr);
+
 	// destroy effect.
 	virtual void DestroyEffect (IOGEffect* _pEffect);
+
+	// get effects list (for editor).
+	virtual const std::map<std::string, OGEffectType>& GetEffectsList () const;
+
+protected:
+
+	std::map<std::string, OGEffectType>	m_EffectsLookup;
 };
 
 #endif

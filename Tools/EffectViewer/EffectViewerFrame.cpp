@@ -1,6 +1,6 @@
 #include <wx/wx.h>
 #include <wx/gdicmn.h>
-#include "ViewerFrame.h"
+#include "EffectViewerFrame.h"
 #include <ToolFramework.h>
 #include "sample.xpm"
 
@@ -14,12 +14,12 @@ const int ID_TOOLBAR = 500;
 static const long TOOLBAR_STYLE = wxTB_FLAT | wxTB_DOCKABLE | wxTB_TEXT;
 
 
-BEGIN_EVENT_TABLE(CViewerFrame, wxFrame)
-EVT_MENU (wxID_EXIT,    CViewerFrame::OnExit)
-EVT_MENU (ID_DEF_ABOUT, CViewerFrame::OnAboutDlg)
-EVT_MENU (ID_DEF_COORDGRID, CViewerFrame::OnCoordGrid)
-EVT_MENU (ID_DEF_AABB, CViewerFrame::OnBounds)
-EVT_RESLOAD( wxID_ANY, CViewerFrame::OnLoadResource )
+BEGIN_EVENT_TABLE(CEffectViewerFrame, wxFrame)
+EVT_MENU (wxID_EXIT,    CEffectViewerFrame::OnExit)
+EVT_MENU (ID_DEF_ABOUT, CEffectViewerFrame::OnAboutDlg)
+EVT_MENU (ID_DEF_COORDGRID, CEffectViewerFrame::OnCoordGrid)
+EVT_MENU (ID_DEF_AABB, CEffectViewerFrame::OnBounds)
+EVT_RESLOAD( wxID_ANY, CEffectViewerFrame::OnLoadResource )
 END_EVENT_TABLE()
 
 
@@ -29,7 +29,7 @@ END_EVENT_TABLE()
 /// @param pos - window position.
 /// @param size - window size.
 /// @param style - window style.
-CViewerFrame::CViewerFrame( wxWindow *parent, 
+CEffectViewerFrame::CEffectViewerFrame( wxWindow *parent, 
 						   wxWindowID id,
 						   const wxString & title,
 						   const wxPoint & pos,
@@ -41,7 +41,7 @@ CViewerFrame::CViewerFrame( wxWindow *parent,
 
 
 /// Create frame
-bool CViewerFrame::Create(wxWindow * parent, 
+bool CEffectViewerFrame::Create(wxWindow * parent, 
 						  wxWindowID id,
 						  const wxString & title,
 						  const wxPoint & pos,
@@ -64,7 +64,7 @@ bool CViewerFrame::Create(wxWindow * parent,
 	pCoordItem->Check(true);
 	pWindowMenu->Append(ID_DEF_AABB, _T("Show &Bounds"), _T("Show bounds"), wxITEM_CHECK);
 	pHelpMenu->Append(ID_DEF_ABOUT, _T("&About"));
-	pMenuBar->Append(pWindowMenu, _T("&Viewer"));
+	pMenuBar->Append(pWindowMenu, _T("&EffectViewer"));
 	pMenuBar->Append(pHelpMenu, _T("&Help"));
 	SetMenuBar(pMenuBar);
 
@@ -76,17 +76,14 @@ bool CViewerFrame::Create(wxWindow * parent,
 	m_pToolBar = CreateToolBar(style, ID_TOOLBAR);
 	PopulateToolbar(m_pToolBar);
 
-	m_pCanvas = new CViewerCanvas(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+	m_pCanvas = new CEffectViewerCanvas(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
 
 	wxSize treeSize = wxSize(appSize.x * 0.2, appSize.y);
 	m_pTree = new wxTreeCtrl(this, wxID_ANY, wxDefaultPosition, treeSize);
 	m_pTree->AddRoot(_T("Resources"));
-	AddResourceGroup (RESTYPE_MODEL, wxT("Static"));
-	AddResourceGroup (RESTYPE_MODEL, wxT("Units"));
-	AddResourceGroup (RESTYPE_MODEL, wxT("Bonuses"));
 	m_pTree->Expand(m_pTree->GetRootItem());
 	GetEventHandlersTable()->AddEventHandler(EVENTID_RESLOAD, this);
-	m_pTree->Connect( wxEVT_COMMAND_TREE_SEL_CHANGED, wxTreeEventHandler( CViewerFrame::OnResourceSwitch ), NULL, this );
+	m_pTree->Connect( wxEVT_COMMAND_TREE_SEL_CHANGED, wxTreeEventHandler( CEffectViewerFrame::OnResourceSwitch ), NULL, this );
 
 	m_Manager.SetManagedWindow(this);
 	m_Manager.AddPane(m_pCanvas, wxAuiPaneInfo().CenterPane());
@@ -98,7 +95,7 @@ bool CViewerFrame::Create(wxWindow * parent,
 
 
 /// Destructor
-CViewerFrame::~CViewerFrame()
+CEffectViewerFrame::~CEffectViewerFrame()
 {
 	m_Manager.UnInit();
 }
@@ -106,7 +103,7 @@ CViewerFrame::~CViewerFrame()
 
 /// @brief App exit handler.
 /// @param event - event structute.
-void CViewerFrame::OnExit( wxCommandEvent& WXUNUSED(event) )
+void CEffectViewerFrame::OnExit( wxCommandEvent& WXUNUSED(event) )
 {
 	Close(true);
 }
@@ -114,14 +111,14 @@ void CViewerFrame::OnExit( wxCommandEvent& WXUNUSED(event) )
 
 /// @brief About dialog handler.
 /// @param event - event structute.
-void CViewerFrame::OnAboutDlg( wxCommandEvent& WXUNUSED(event) )
+void CEffectViewerFrame::OnAboutDlg( wxCommandEvent& WXUNUSED(event) )
 {
 }
 
 
 /// @brief Coord. grid switch handler.
 /// @param event - event structute.
-void CViewerFrame::OnCoordGrid(wxCommandEvent& event)
+void CEffectViewerFrame::OnCoordGrid(wxCommandEvent& event)
 {
 	CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
 	ToolCmdEventData cmdData (CMD_COORDGRID, event.IsChecked ());
@@ -132,7 +129,7 @@ void CViewerFrame::OnCoordGrid(wxCommandEvent& event)
 
 /// @brief Bounds switch handler.
 /// @param event - event structute.
-void CViewerFrame::OnBounds(wxCommandEvent& event)
+void CEffectViewerFrame::OnBounds(wxCommandEvent& event)
 {
 	CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
 	ToolCmdEventData cmdData (CMD_AABB, event.IsChecked ());
@@ -143,7 +140,7 @@ void CViewerFrame::OnBounds(wxCommandEvent& event)
 
 /// @brief Populate the toolbar.
 /// @param toolBar - toolbar.
-void CViewerFrame::PopulateToolbar(wxToolBarBase* toolBar)
+void CEffectViewerFrame::PopulateToolbar(wxToolBarBase* toolBar)
 {
 	enum
 	{
@@ -172,7 +169,7 @@ void CViewerFrame::PopulateToolbar(wxToolBarBase* toolBar)
 
 
 /// @brief Adding resource group
-void CViewerFrame::AddResourceGroup ( ResourceType _type, const wxString& _name )
+void CEffectViewerFrame::AddResourceGroup ( ResourceType _type, const wxString& _name )
 {
 	ResourceGroup groupItem(_type, _name);
 	groupItem.item = m_pTree->AppendItem(m_pTree->GetRootItem(), groupItem.name, -1, -1, 0);
@@ -181,26 +178,18 @@ void CViewerFrame::AddResourceGroup ( ResourceType _type, const wxString& _name 
 
 
 /// @brief Resource loading event handler
-void CViewerFrame::OnLoadResource ( CommonToolEvent<ResLoadEventData>& event )
+void CEffectViewerFrame::OnLoadResource ( CommonToolEvent<ResLoadEventData>& event )
 {
 	const ResLoadEventData& evtData = event.GetEventCustomData();
 	wxString resourceText = evtData.m_Resource;
-	wxString resourceGroupText = evtData.m_ResourceGroup;
 
-	std::vector<ResourceGroup>::const_iterator iter = m_ResourceGroups.begin();
-	for (; iter != m_ResourceGroups.end(); ++iter)
-	{
-		if (resourceGroupText.CmpNoCase((*iter).name) == 0)
-		{
-			m_pTree->AppendItem((*iter).item, resourceText, -1, -1, new ResourceItem(RESTYPE_MODEL, resourceText) );
-			m_pTree->Expand((*iter).item);
-		}
-	}
+	m_pTree->AppendItem(m_pTree->GetRootItem(), resourceText, -1, -1, new ResourceItem(RESTYPE_MODEL, resourceText) );
+	m_pTree->Expand(m_pTree->GetRootItem());
 }
 
 
 /// @brief Resource switching event handler
-void CViewerFrame::OnResourceSwitch ( wxTreeEvent& event )
+void CEffectViewerFrame::OnResourceSwitch ( wxTreeEvent& event )
 {
 	if ( event.GetItem() == m_pTree->GetRootItem() )
 		return;

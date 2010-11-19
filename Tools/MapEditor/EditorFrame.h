@@ -95,8 +95,14 @@ private:
 	/// @brief Settings switching event handler
 	void OnSettingsSwitch ( wxTreeEvent& event );
 
-	/// @brief color event handler
-	void OnColorChange(wxColourPickerEvent& event);
+	/// @brief diffuse color event handler
+	void OnDiffuseColorChange(wxColourPickerEvent& event);
+
+	/// @brief ambient color event handler
+	void OnAmbientColorChange(wxColourPickerEvent& event);
+
+	/// @brief specular color event handler
+	void OnSpecularColorChange(wxColourPickerEvent& event);
 
 	/// @brief Light X direction slider event handler
 	/// @param event - event struct
@@ -146,10 +152,14 @@ private:
 
 	wxTreeCtrl*				m_pSettingsTree;
 
-	wxColourPickerCtrl*		m_pColorPicker;
+	// lighting controls
+	wxColourPickerCtrl*		m_pDifColorPicker;
+	wxColourPickerCtrl*		m_pAmbColorPicker;
+	wxColourPickerCtrl*		m_pSpcColorPicker;
 	wxSlider*				m_pXDirSlider;
 	wxSlider*				m_pZDirSlider;
 
+	// fog controls
 	wxColourPickerCtrl*		m_pFogColorPicker;
 	wxSlider*				m_pFogNearSlider;
 	wxSlider*				m_pFogFarSlider;

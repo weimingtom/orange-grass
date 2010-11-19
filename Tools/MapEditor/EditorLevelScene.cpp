@@ -147,6 +147,7 @@ void CEditorLevelScene::RenderScene ()
 
 	if (m_pCurLevel)
     {
+		m_pRenderer->EnableLight(true);
         if (m_CamMode == CAMMODE_GAME)
         {
             m_pRenderer->EnableFog(true);
@@ -169,6 +170,7 @@ void CEditorLevelScene::RenderScene ()
         {
             m_pRenderer->EnableFog(false);
         }
+		m_pRenderer->EnableLight(false);
     }
     m_pRenderer->Reset();
 

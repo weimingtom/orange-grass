@@ -140,7 +140,7 @@ void COGRenderer::SetBlend (OGBlendType _Blend)
 			break;
 
 		case OG_BLEND_ALPHATEST:
-			glAlphaFunc(GL_GREATER, 0.4f);
+			glAlphaFunc(GL_GREATER, 0.2f);
 			glEnable(GL_ALPHA_TEST);
 			break;
 

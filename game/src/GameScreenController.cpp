@@ -109,8 +109,6 @@ void CGameScreenController::Update (unsigned long _ElapsedTime)
             IOGBonusParams& bonus = SpecParamsList[i];
             m_pSpecHUD->SetData(i, bonus.icon_texture, bonus.value, bonus.cooldown);
         }
-        //m_pSpecHUD->SetData(0, "bonus_lifepack", 100, 200);
-        //m_pSpecHUD->SetData(1, "bonus_shield", 0, 0);
     }
 
 	if (CheckFinishCondition())
@@ -131,22 +129,26 @@ void CGameScreenController::RenderScene ()
 	m_pRenderer->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
 
     m_pRenderer->EnableFog(true);
+	m_pRenderer->EnableLight(true);
 
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
 	m_pSg->RenderLandscape(m_pCamera);
 	m_pSg->RenderScene(m_pCamera);
 	m_pRenderer->FinishRenderMode();
 
+	m_pRenderer->EnableLight(false);
+
     m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);
     m_pSg->RenderEffects(m_pCamera);
     m_pRenderer->FinishRenderMode();
 
-    m_pRenderer->Reset();
+	m_pRenderer->EnableLight(true);
 
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
     m_pSg->RenderTransparentNodes(m_pCamera);
 	m_pRenderer->FinishRenderMode();
 
+	m_pRenderer->EnableLight(false);
     m_pRenderer->EnableFog(false);
 
     m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
@@ -154,6 +156,8 @@ void CGameScreenController::RenderScene ()
     m_pLifeHUD->Render();
 	m_pSpecHUD->Render();
 	m_pRenderer->FinishRenderMode();
+
+	m_pRenderer->Reset();
 
 /*
 	unsigned long fps = 0;

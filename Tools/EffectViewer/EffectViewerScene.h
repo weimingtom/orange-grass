@@ -1,13 +1,13 @@
 /*
- *  ViewerScene.h
+ *  EffectViewerScene.h
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 11.11.09.
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#ifndef VIEWERSCENE_H_
-#define VIEWERSCENE_H_
+#ifndef EFFECTVIEWERSCENE_H_
+#define EFFECTVIEWERSCENE_H_
 
 #include "IOGResourceMgr.h"
 #include "IOGSceneGraph.h"
@@ -18,11 +18,11 @@
 #include <ToolFramework.h>
 
 
-class CViewerScene
+class CEffectViewerScene
 {
 public:
-	CViewerScene();
-	virtual ~CViewerScene();
+	CEffectViewerScene();
+	virtual ~CEffectViewerScene();
 
 	// Initialize scene
 	bool Init ();
@@ -36,8 +36,8 @@ public:
 	// Render controller scene
 	void RenderScene ();
 
-    // Setup model.
-    void SetupModel(const char* _pModelAlias);
+    // Setup effect.
+    void SetupEffect(const char* _pEffectAlias);
 
 	// Camera zoom
 	void CameraZoom (float _fFactor);
@@ -65,9 +65,6 @@ private:
     // Render scene helpers.
     void RenderHelpers();
 
-    // Convert actor type to group name.
-	std::string ActorTypeToGroupName(OGActorType type);
-
 private:
 		
 	IOGResourceMgr*		m_pResourceMgr;
@@ -79,7 +76,10 @@ private:
 	MATRIX			m_mProjection; 
 	MATRIX			m_mView;
 
-	IOGActor*		m_pCurActor;
+	IOGEffect*			m_pCurEffect;
+	IOGSgNode*			m_pCurNode;
+	IOGPhysicalObject*	m_pCurPhysics;
+	IOGPhysicalParams	m_PhysicalParams;
 
 	float	        m_fCameraDistance;
 	bool	        m_bShowAABB;

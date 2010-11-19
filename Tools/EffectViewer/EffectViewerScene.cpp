@@ -1,5 +1,5 @@
 /*
- *  ViewerScene.cpp
+ *  EffectViewerScene.cpp
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 11.11.09.
@@ -7,15 +7,18 @@
  *
  */
 #include "OpenGL2.h"
-#include "ViewerScene.h"
+#include "EffectViewerScene.h"
 #include "OrangeGrass.h"
 #include <IOGGraphicsHelpers.h>
 #include "IOGMath.h"
 
 
-CViewerScene::CViewerScene()
+CEffectViewerScene::CEffectViewerScene()
 {
-	m_pCurActor = NULL;
+	m_pCurEffect = NULL;
+	m_pCurNode = NULL;
+	m_pCurPhysics = NULL;
+
 	m_fCameraDistance = 200.0f;
 	m_bShowAABB = false;
 	m_bShowGrid = true;
@@ -27,14 +30,14 @@ CViewerScene::CViewerScene()
 }
 
 
-CViewerScene::~CViewerScene()
+CEffectViewerScene::~CEffectViewerScene()
 {
-    OG_SAFE_DELETE(m_pCurActor);
+	SetupEffect(NULL);
 }
 
 
 // Initialize scene
-bool CViewerScene::Init ()
+bool CEffectViewerScene::Init ()
 {
     if (m_bInited)
         return true;
@@ -82,33 +85,23 @@ bool CViewerScene::Init ()
         return false;
 	}
 
-	if (GetActorParamsMgr()->Init())
-	{
-		std::list<IOGActorParams*> ActorsParamsList;
-		GetActorParamsMgr()->GetParamsList(ActorsParamsList);
-		std::list<IOGActorParams*>::const_iterator iter = ActorsParamsList.begin();
-		for (; iter != ActorsParamsList.end(); ++iter)
-		{
-			if ((*iter)->type == OG_ACTOR_MISSILE ||
-				(*iter)->type == OG_ACTOR_PLASMAMISSILE ||
-				(*iter)->type == OG_ACTOR_GAUSSRAY )
-			{
-				continue;
-			}
-
-			CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
-			cmd.SetEventCustomData(ResLoadEventData(wxT((*iter)->alias.c_str()), 
-				wxT(ActorTypeToGroupName((*iter)->type).c_str()),
-				wxT((*iter)->icon.c_str())));
-			GetEventHandlersTable()->FireEvent(EVENTID_RESLOAD, &cmd);
-		}
-	}
-	else
+	if (GetActorParamsMgr()->Init() == false)
 	{
         return false;
 	}
 
-	SetupModel(NULL);
+	const std::map<std::string, OGEffectType>& effects = GetEffectsManager()->GetEffectsList();
+	std::map<std::string, OGEffectType>::const_iterator iter = effects.begin();
+	for (; iter != effects.end(); ++iter)
+	{
+		CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);
+		cmd.SetEventCustomData(ResLoadEventData(wxT(iter->first.c_str()), 
+			wxT("Effects"),
+			wxT("")));
+		GetEventHandlersTable()->FireEvent(EVENTID_RESLOAD, &cmd);
+	}
+
+	SetupEffect(NULL);
     m_bInited = true;
 
 	return true;
@@ -116,7 +109,7 @@ bool CViewerScene::Init ()
 
 
 // Setup viewport
-void CViewerScene::SetViewport (int _Width, int _Height)
+void CEffectViewerScene::SetViewport (int _Width, int _Height)
 {
 	m_ResX = _Width;
 	m_ResY = _Height;
@@ -130,27 +123,30 @@ void CViewerScene::SetViewport (int _Width, int _Height)
 
 
 // Update controller
-void CViewerScene::Update (unsigned long _ElapsedTime)
+void CEffectViewerScene::Update (unsigned long _ElapsedTime)
 {
-	GetPhysics()->UpdateAll(0);
-    m_pActorMgr->UpdateEditor(33);
+	GetPhysics()->UpdateAll(33);
     m_pSg->Update(33);
 	m_pCamera->Update();
 	m_mView = m_pCamera->GetViewMatrix();
+
+	if (m_pCurEffect)
+	{
+		if (m_pCurEffect->GetStatus() == OG_EFFECTSTATUS_INACTIVE)
+		{
+			m_pCurEffect->Start();
+		}
+	}
 }
 
 
 // Render controller scene
-void CViewerScene::RenderScene ()
+void CEffectViewerScene::RenderScene ()
 {
 	m_pRenderer->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
 
 	RenderHelpers();
 
-	m_pRenderer->EnableLight(true);
-    m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
-    m_pSg->RenderAll(m_pCamera);
-	m_pRenderer->FinishRenderMode();
 	m_pRenderer->EnableLight(false);
     m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);
     m_pSg->RenderAllEffects(m_pCamera);
@@ -179,7 +175,7 @@ void CViewerScene::RenderScene ()
 
 
 // Render scene helpers.
-void CViewerScene::RenderHelpers()
+void CEffectViewerScene::RenderHelpers()
 {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(m_mView.f);
@@ -188,9 +184,9 @@ void CViewerScene::RenderHelpers()
 
 	if (m_bShowAABB)
 	{
-        if (m_pCurActor)
+        if (m_pCurNode)
         {
-            DrawOBB(m_pCurActor->GetPhysicalObject()->GetOBB());
+			DrawOBB(m_pCurNode->GetOBB());
         }
 	}
 
@@ -204,52 +200,56 @@ void CViewerScene::RenderHelpers()
 }
 
 
-// Setup model.
-void CViewerScene::SetupModel(const char* _pModelAlias)
+// Setup effect.
+void CEffectViewerScene::SetupEffect(const char* _pEffectAlias)
 {
-    if (m_pCurActor)
+    if (m_pCurEffect)
     {
-        m_pActorMgr->DestroyActor(m_pCurActor);
+		m_pSg->RemoveNode(m_pCurNode);
+		GetPhysics()->RemoveObject(m_pCurPhysics);
+		m_pCurPhysics = NULL;
+		OG_SAFE_DELETE(m_pCurNode);
+		OG_SAFE_DELETE(m_pCurEffect);
     }
 
-	if (_pModelAlias != NULL)
+	if (_pEffectAlias != NULL)
 	{
-		m_pCurActor = m_pActorMgr->CreateActor(
-            _pModelAlias,
-            Vec3(0,0,0), 
-            Vec3(0,0,0), 
-            Vec3(1,1,1));
-        m_pActorMgr->AddActor(m_pCurActor);
-        m_pCurActor->Activate(true);
-	}
-	else
-	{
+		m_pCurEffect = GetEffectsManager()->CreateEffect(_pEffectAlias);
+
+	    m_pCurPhysics = GetPhysics()->CreateObject(&m_PhysicalParams, m_pCurEffect->GetAABB(), NULL);
+		m_pCurPhysics->SetWorldTransform(Vec3(0,0,0), Vec3(0,0,0), Vec3(1,1,1));
+		GetPhysics()->AddObject(m_pCurPhysics);
+
+		m_pCurNode = m_pSg->CreateEffectNode(m_pCurEffect, m_pCurPhysics);
+		m_pSg->AddEffectNode(m_pCurNode);
+        m_pCurNode->Activate(true);
+		m_pCurEffect->Start();
 	}
 }
 
 
 // Camera zoom
-void CViewerScene::CameraZoom (float _fFactor)
+void CEffectViewerScene::CameraZoom (float _fFactor)
 {
 	m_pCamera->Move (_fFactor);
 }
 
 
 // Camera move
-void CViewerScene::CameraMove (float _fX, float _fZ)
+void CEffectViewerScene::CameraMove (float _fX, float _fZ)
 {
 	m_pCamera->Strafe(5.5f, Vec3(_fX, 0, _fZ));
 }
 
 
 // Camera rotate
-void CViewerScene::CameraRotate (float _fAngleH, float _fAngleV)
+void CEffectViewerScene::CameraRotate (float _fAngleH, float _fAngleV)
 {
 }
 
 
 // Camera rotate horizontally
-void CViewerScene::CameraRotateHor (float _fAngle)
+void CEffectViewerScene::CameraRotateHor (float _fAngle)
 {
 	m_fHorViewAngle += _fAngle;
 	Vec3 vTarget (0, 0, 0);
@@ -262,37 +262,12 @@ void CViewerScene::CameraRotateHor (float _fAngle)
 	vDir = vDir.normalize();
 	Vec3 vUp = vDir.cross (vRight);
 	m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
-
-	//Vec3 vTarget (0, 0, 0);
-
-	//MATRIX mR;
-	//MatrixRotationY(mR, _fAngle);
-	//Vec3 vDir, vRight;
-	//MatrixVec3Multiply(vDir, m_pCamera->GetDirection(), mR);
-	//MatrixVec3Multiply(vRight, m_pCamera->GetRight(), mR);
-	//vDir.normalize();
-	//Vec3 vUp = vDir.cross (vRight);
-	//OG_LOG_INFO("Dir = [%f, %f, %f]", vDir.x, vDir.y, vDir.z);
-	//OG_LOG_INFO("Right = [%f, %f, %f]", vRight.x, vRight.y, vRight.z);
-	//m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
 }
 
 
 // Camera rotate vertically
-void CViewerScene::CameraRotateVer (float _fAngle)
+void CEffectViewerScene::CameraRotateVer (float _fAngle)
 {
-	//m_fVerViewAngle += _fAngle;
-	//Vec3 vTarget (0, 0, 0);
-	//
-	//MATRIX mR;
-	//MatrixRotationX(mR, m_fVerViewAngle);
-	//Vec3 vDir, vRight;
-	//MatrixVec3Multiply(vDir, Vec3(0.0f, 1.0f, 0.4f), mR);
-	//MatrixVec3Multiply(vRight, Vec3(1.0f, 0.0f, 0.0f), mR);
-	//vDir = vDir.normalize();
-	//Vec3 vUp = vDir.cross (vRight);
-	//m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
-
 	Vec3 vTarget (0, 0, 0);
 	
 	MATRIX mR;
@@ -303,31 +278,4 @@ void CViewerScene::CameraRotateVer (float _fAngle)
 	vDir.normalize();
 	Vec3 vUp = vDir.cross (vRight);
 	m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
-}
-
-
-// Convert actor type to group name.
-std::string CViewerScene::ActorTypeToGroupName(OGActorType type)
-{
-	switch (type)
-	{
-	case OG_ACTOR_STATIC:
-		return std::string("Static");
-
-	case OG_ACTOR_NONE:
-	case OG_ACTOR_PLASMAMISSILE:
-	case OG_ACTOR_MISSILE:
-	case OG_ACTOR_GAUSSRAY:
-		return std::string("Others");
-
-	case OG_ACTOR_LANDBOT:
-	case OG_ACTOR_AIRBOT:
-	case OG_ACTOR_PLAYER:
-		return std::string("Units");
-	
-	case OG_ACTOR_BONUS:
-		return std::string("Bonuses");
-	}
-
-	return std::string("Others");
 }

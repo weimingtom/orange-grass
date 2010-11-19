@@ -24,6 +24,14 @@ COGEffectsManager::COGEffectsManager ()
     COGEffectCollision::LoadParams();
     COGEffectMissileSmoke::LoadParams();
     COGEffectTrailSmoke::LoadParams();
+
+	m_EffectsLookup["plasma"] = OG_EFFECT_PLASMA;
+	m_EffectsLookup["missile_smoke"] = OG_EFFECT_MISSILESMOKE;
+	m_EffectsLookup["explosion"] = OG_EFFECT_EXPLOSION;
+	m_EffectsLookup["bonus_pick"] = OG_EFFECT_BONUSPICK;
+	m_EffectsLookup["collision"] = OG_EFFECT_COLLISION;
+	m_EffectsLookup["trail_smoke"] = OG_EFFECT_TRAILSMOKE;
+	m_EffectsLookup["gauss"] = OG_EFFECT_GAUSS;
 }
 
 
@@ -102,8 +110,22 @@ IOGEffect* COGEffectsManager::CreateEffect (OGEffectType _Type)
 }
 
 
+// create effect.
+IOGEffect* COGEffectsManager::CreateEffect (const std::string& _TypeStr)
+{
+	return CreateEffect(m_EffectsLookup[_TypeStr]);
+}
+
+
 // destroy effect.
 void COGEffectsManager::DestroyEffect (IOGEffect* _pEffect)
 {
 	OG_SAFE_DELETE(_pEffect);
+}
+
+
+// get effects list (for editor).
+const std::map<std::string, OGEffectType>& COGEffectsManager::GetEffectsList () const
+{
+	return m_EffectsLookup;
 }

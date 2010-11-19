@@ -11,6 +11,7 @@
 
 #include "IOGEffect.h"
 #include <string>
+#include <map>
 
 
 class IOGEffectsManager
@@ -21,8 +22,14 @@ public:
 	// create effect.
 	virtual IOGEffect* CreateEffect (OGEffectType _Type) = 0;
 
+	// create effect.
+	virtual IOGEffect* CreateEffect (const std::string& _TypeStr) = 0;
+
 	// destroy effect.
 	virtual void DestroyEffect (IOGEffect* _pEffect) = 0;
+
+	// get effects list (for editor).
+	virtual const std::map<std::string, OGEffectType>& GetEffectsList () const = 0;
 };
 
 #endif

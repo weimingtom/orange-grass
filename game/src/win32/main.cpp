@@ -35,6 +35,7 @@ void Initialize ()
     glewInit();
 
     glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+    glDisable(GL_CULL_FACE);
 
     pGameSystem = new CGameSystem();
 }

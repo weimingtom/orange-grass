@@ -140,13 +140,11 @@ void COGRenderer_GLES11::StartRenderMode(OGRenderMode _Mode)
 	switch(m_Mode)
 	{
 	case OG_RENDERMODE_GEOMETRY:
-	    glDisable(GL_CULL_FACE);
 	    glEnable(GL_DEPTH_TEST);
 	    glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(m_mProjection.f);
 		glMatrixMode(GL_MODELVIEW);
 		SetViewMatrix(m_pCamera->GetViewMatrix());
-		EnableLight(true);
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_NORMAL_ARRAY);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -157,8 +155,6 @@ void COGRenderer_GLES11::StartRenderMode(OGRenderMode _Mode)
 		glLoadMatrixf(m_mProjection.f);
 		glMatrixMode(GL_MODELVIEW);
 		SetViewMatrix(m_pCamera->GetViewMatrix());
-		EnableLight(false);
-		glDisable(GL_CULL_FACE);
         glDisable(GL_DEPTH_TEST);
         glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);	
@@ -166,12 +162,8 @@ void COGRenderer_GLES11::StartRenderMode(OGRenderMode _Mode)
 		break;
 	
 	case OG_RENDERMODE_SPRITES:
-	    glEnable (GL_BLEND); 
-	    glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-	    glDisable(GL_ALPHA_TEST);
-		EnableLight(false);
+		SetBlend(OG_BLEND_ALPHABLEND);
 		glDisable(GL_DEPTH_TEST);
-	    glDisable(GL_CULL_FACE);
 		glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(m_mOrthoProj.f);
 		glMatrixMode(GL_MODELVIEW);
@@ -182,9 +174,7 @@ void COGRenderer_GLES11::StartRenderMode(OGRenderMode _Mode)
 		break;
 
 	case OG_RENDERMODE_TEXT:
-		glAlphaFunc(GL_GREATER, 0.1f);
-		glDisable(GL_DEPTH_TEST);
-	    glDisable(GL_CULL_FACE);
+		SetBlend(OG_BLEND_ALPHATEST);
 		break;
 
 	case OG_RENDERMODE_SHADOWMAP:
@@ -211,7 +201,6 @@ void COGRenderer_GLES11::FinishRenderMode()
 	case OG_RENDERMODE_EFFECTS:
         glEnable(GL_DEPTH_TEST);
 		glDisable(GL_BLEND); 
-	    glDisable(GL_CULL_FACE);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);	
 		glDisableClientState(GL_COLOR_ARRAY);
@@ -220,7 +209,6 @@ void COGRenderer_GLES11::FinishRenderMode()
 	case OG_RENDERMODE_SPRITES:
 		glDisable(GL_BLEND); 
 		glEnable(GL_DEPTH_TEST);
-	    glEnable(GL_CULL_FACE);
 		glDisableClientState(GL_VERTEX_ARRAY);
 		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 		glDisableClientState(GL_COLOR_ARRAY);
@@ -230,7 +218,6 @@ void COGRenderer_GLES11::FinishRenderMode()
 		m_pText->Flush();
 		glDisable(GL_BLEND); 
 		glEnable(GL_DEPTH_TEST);
-	    glEnable(GL_CULL_FACE);
 		break;
 
 	case OG_RENDERMODE_SHADOWMAP:
