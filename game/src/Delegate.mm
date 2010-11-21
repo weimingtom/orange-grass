@@ -36,24 +36,18 @@ static Accel *accel = NULL;
     TouchScreenValues* pVals = GetValuesTouchScreen();
     if (pVals->CountTouchesBegan > 0)
     {
-        float x = 480.0f - pVals->LocationYTouchesBegan;//pVals->LocationXTouchesBegan/320.0f*480.0f;
-        float y = pVals->LocationXTouchesBegan;//pVals->LocationYTouchesBegan/480.0f*320.0f;
+        float x = 480.0f - pVals->LocationYTouchesBegan;
+        float y = pVals->LocationXTouchesBegan;
         shell->OnPointerDown(x,y);
     }
-    //else if (pVals->CountTouchesMoved > 0)
-    //{
-    //    float x = 480.0f - pVals->LocationYTouchesMoved;//pVals->LocationXTouchesMoved/320.0f*480.0f;
-    //    float y = pVals->LocationXTouchesMoved;//pVals->LocationYTouchesMoved/480.0f*320.0f;
-    //    shell->OnPointerDown(x,y);
-    //}
     if (pVals->TouchesEnd)
     {
-        float x = 480.0f - pVals->LocationYTouchesEnded;//pVals->LocationXTouchesBegan/320.0f*480.0f;
-        float y = pVals->LocationXTouchesEnded;//pVals->LocationYTouchesBegan/480.0f*320.0f;
+        float x = 480.0f - pVals->LocationYTouchesEnded;
+        float y = pVals->LocationXTouchesEnded;
         shell->OnPointerUp(x,y);
     }
     
-	shell->Update(30);
+	shell->Update(33);
     shell->Draw();
 	
     glFlush();
@@ -85,6 +79,15 @@ static Accel *accel = NULL;
 	
 	// create our rendering timer
 	[NSTimer scheduledTimerWithTimeInterval:(1.0 / kFPS) target:self selector:@selector(update) userInfo:nil repeats:YES];
+}
+
+
+- (void)applicationWillTerminate:(UIApplication *)application
+{
+    if (shell) {
+        delete shell;
+        shell = NULL;
+    }
 }
 
 
