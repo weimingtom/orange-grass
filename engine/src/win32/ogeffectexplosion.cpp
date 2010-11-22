@@ -202,6 +202,15 @@ void COGEffectExplosion::Start ()
         m_pLight->fIntensity = 100.0f;
     }
 
+    m_Wave.scale = m_fWaveInitialScale;
+    m_Wave.frame = 0.0f;
+    m_Wave.angle = 0.0f;
+    m_Wave.offset = Vec3(0,0,0);
+    m_Wave.pVertices[0].c.w = 1.0f;
+    m_Wave.pVertices[1].c.w = 1.0f;
+    m_Wave.pVertices[2].c.w = 1.0f;
+    m_Wave.pVertices[3].c.w = 1.0f;
+
     m_BBList.clear();
 }
 

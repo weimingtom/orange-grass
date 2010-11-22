@@ -17,24 +17,30 @@ class COGMaterial : public IOGMaterial
 public:
     COGMaterial ();
 	virtual ~COGMaterial ();
-		
+
 	// get material ambient.
-	virtual float GetAmbient () const;
-		
+	virtual const Vec4& GetAmbient () const;
+
 	// get material diffuse.
-	virtual float GetDiffuse () const;
-		
+	virtual const Vec4& GetDiffuse () const;
+
 	// get material specular.
-	virtual float GetSpecular () const;
-		
-	// apply the material.
-	virtual void Apply () const;
+	virtual const Vec4& GetSpecular () const;
+
+	// set material ambient.
+	virtual void SetAmbient (float _Value);
+
+	// set material diffuse.
+	virtual void SetDiffuse (float _Value);
+
+	// set material specular.
+	virtual void SetSpecular (float _Value);
 
 private:
 
-    float	m_fAmbient;
-    float	m_fDiffuse;
-    float	m_fSpecular;
+    Vec4	m_Ambient;
+    Vec4	m_Diffuse;
+    Vec4	m_Specular;
 };
 
 #endif

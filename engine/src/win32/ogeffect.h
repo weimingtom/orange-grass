@@ -11,16 +11,7 @@
 
 #include "IOGEffect.h"
 #include "IOGTexture.h"
-#include "IOGMaterial.h"
 #include "IOGRenderer.h"
-
-
-struct BBVert
-{
-	Vec3 p;
-	Vec2 t;
-	Vec4 c;
-};
 
 
 class COGEffect : public IOGEffect

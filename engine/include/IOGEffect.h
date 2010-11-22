@@ -33,6 +33,14 @@ enum OGEffectType
 };
 
 
+struct BBVert
+{
+	Vec3 p;
+	Vec2 t;
+	Vec4 c;
+};
+
+
 class IOGEffect
 {
 public:

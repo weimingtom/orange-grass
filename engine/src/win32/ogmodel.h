@@ -10,7 +10,6 @@
 #define OGMODEL_H_
 
 #include "IOGModel.h"
-#include "IOGMaterial.h"
 #include "ogresource.h"
 #include "IOGRenderer.h"
 #include "IOGSettingsReader.h"
@@ -57,11 +56,17 @@ public:
 	// Get texture
 	virtual IOGTexture* GetTexture () { return m_pTexture; }
 
+	// Get material
+	virtual IOGMaterial* GetMaterial () { return m_pMaterial; }
+
 	// Get animation
     virtual IOGAnimation* GetAnimation (const std::string& _Alias);
 
 	// Get active point
     virtual bool GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame);
+
+	// Save params
+	virtual bool SaveParams ();
 
 private:
 
@@ -78,7 +83,7 @@ private:
 
 		std::string mesh_file;
 		std::string texture_alias;
-		std::string blend_type;
+		OGBlendType blend_type;
 		std::list<Anim> anim_list;
 	};
 

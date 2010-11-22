@@ -78,9 +78,6 @@ public:
     // Draw shadow texture.
     virtual void DrawShadowTexture () {}
 
-    // Parse the blend type string and convert it to internal type
-    virtual OGBlendType ParseBlendType (const std::string& _BlendTypeStr) const;
-
 protected:
 
     IOGTexture*         m_pCurTexture;
@@ -102,8 +99,6 @@ protected:
 	float				m_fZFar;
 	float				m_fFOV;
 	OGRenderMode		m_Mode;
-
-	std::map<std::string, OGBlendType>	m_BlendTypeLookup;
 };
 
 #endif

@@ -54,7 +54,7 @@ bool COGModel::Load ()
 	}
 
 	m_pTexture = GetResourceMgr()->GetTexture(modelcfg.texture_alias);
-	m_Blend = m_pRenderer->ParseBlendType(modelcfg.blend_type);
+	m_Blend = modelcfg.blend_type;
 
 	std::list<Cfg::Anim>::const_iterator anim_iter = modelcfg.anim_list.begin();
 	for (; anim_iter != modelcfg.anim_list.end(); ++anim_iter)
@@ -95,7 +95,7 @@ bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
 	if (pMaterialNode != NULL)
 	{
 		_cfg.texture_alias = m_pReader->ReadStringParam(pMaterialNode, "texture");
-		_cfg.blend_type = m_pReader->ReadStringParam(pMaterialNode, "blend");
+		_cfg.blend_type = m_pReader->ReadBlendTypeParam(pMaterialNode, "blend");
 		m_pReader->CloseGroupNode(pMaterialNode);
 	}
 
@@ -118,6 +118,13 @@ bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
     }
 
 	m_pReader->CloseSource(pSource);
+	return true;
+}
+
+
+// Save params
+bool COGModel::SaveParams ()
+{
 	return true;
 }
 

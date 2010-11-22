@@ -57,11 +57,25 @@ void COGRenderer_GLES11::SetViewMatrix (const MATRIX& _mView)
 }
 
 
+// add rendering command.
+void COGRenderer_GLES11::SetMaterial (IOGMaterial* _pMaterial)
+{
+    if (_pMaterial != m_pCurMaterial)
+    {
+        m_pCurMaterial = _pMaterial;
+		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, &m_pCurMaterial->GetAmbient().x);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, &m_pCurMaterial->GetDiffuse().x);
+		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, &m_pCurMaterial->GetSpecular().x);
+    }
+}
+
+
 // Enable scene light.
 void COGRenderer_GLES11::EnableLight (bool _bEnable)
 {
 	if (_bEnable)
 	{
+		glDisable(GL_COLOR_MATERIAL);
         unsigned int Id = 0;
         IOGLight* pLight = m_pLightMgr->GetLight(Id);
         while (pLight)
@@ -140,7 +154,11 @@ void COGRenderer_GLES11::StartRenderMode(OGRenderMode _Mode)
 	switch(m_Mode)
 	{
 	case OG_RENDERMODE_GEOMETRY:
-	    glEnable(GL_DEPTH_TEST);
+		glDisableClientState(GL_COLOR_ARRAY);
+		//glTexEnvi(GL_TEXTURE_ENV, GL_COMBINE_ALPHA, GL_REPLACE);
+		//glTexEnvi(GL_TEXTURE_ENV, GL_SRC0_ALPHA, GL_TEXTURE);
+		//glTexEnvi(GL_TEXTURE_ENV, GL_OPERAND0_ALPHA, GL_SRC_ALPHA);
+		glEnable(GL_DEPTH_TEST);
 	    glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(m_mProjection.f);
 		glMatrixMode(GL_MODELVIEW);

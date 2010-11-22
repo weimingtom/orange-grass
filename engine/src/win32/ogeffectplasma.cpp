@@ -6,7 +6,7 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#include "ogplasmaeffect.h"
+#include "ogeffectplasma.h"
 #include "OrangeGrass.h"
 
 
@@ -19,10 +19,10 @@ COGPlasmaEffect::~COGPlasmaEffect()
 void COGPlasmaEffect::Init(OGEffectType _Type)
 {
 	m_pTexture = GetResourceMgr()->GetTexture("effects");
-    m_Blend = OG_BLEND_ALPHABLEND;
+    m_Blend = OG_BLEND_ALPHAADD;
 	m_pMapping = m_pTexture->GetMapping(12);
 
-	Vec4 color = Vec4(1.0f, 0.0f, 0.0f, 0.2f);
+	Vec4 color = Vec4(1.0f, 1.0f, 1.0f, 0.2f);
 
 	for (int i = 0; i < MAX_PLASMA_PARTILES; ++i)
 	{

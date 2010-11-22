@@ -473,6 +473,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\ogeffectplasma.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\ogeffectplasma.h"
+						>
+					</File>
+					<File
 						RelativePath=".\ogeffectsmanager.cpp"
 						>
 					</File>
@@ -488,14 +496,26 @@
 						RelativePath=".\ogeffecttrailsmoke.h"
 						>
 					</File>
-					<File
-						RelativePath=".\ogplasmaeffect.cpp"
+					<Filter
+						Name="Emitters"
 						>
-					</File>
-					<File
-						RelativePath=".\ogplasmaeffect.h"
-						>
-					</File>
+						<File
+							RelativePath=".\ogemitter.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogemitter.h"
+							>
+						</File>
+						<File
+							RelativePath=".\ogemittertrail.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogemittertrail.h"
+							>
+						</File>
+					</Filter>
 				</Filter>
 				<Filter
 					Name="Renderers"

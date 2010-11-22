@@ -12,9 +12,9 @@
 
 COGMaterial::COGMaterial ()
 {
-	m_fSpecular = 0.0f;
-	m_fAmbient = 1.0f;
-	m_fDiffuse = 1.0f;
+	m_Specular = Vec4(0.0f, 0.0f, 0.0f, 0.0f);
+	m_Ambient = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_Diffuse = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 
@@ -24,27 +24,51 @@ COGMaterial::~COGMaterial ()
 
 
 // get material ambient.
-float COGMaterial::GetAmbient () const
+const Vec4& COGMaterial::GetAmbient () const
 {
-	return m_fAmbient;
+	return m_Ambient;
 }
 
 
 // get material diffuse.
-float COGMaterial::GetDiffuse () const
+const Vec4& COGMaterial::GetDiffuse () const
 {
-	return m_fDiffuse;
+	return m_Diffuse;
 }
 
 
 // get material specular.
-float COGMaterial::GetSpecular () const
+const Vec4& COGMaterial::GetSpecular () const
 {
-	return m_fSpecular;
+	return m_Specular;
 }
 
 
-// apply the material.
-void COGMaterial::Apply () const
+// set material ambient.
+void COGMaterial::SetAmbient (float _Value)
 {
+	m_Ambient.x = _Value;
+	m_Ambient.y = _Value;
+	m_Ambient.z = _Value;
+	m_Ambient.w = _Value;
+}
+
+
+// set material diffuse.
+void COGMaterial::SetDiffuse (float _Value)
+{
+	m_Diffuse.x = _Value;
+	m_Diffuse.y = _Value;
+	m_Diffuse.z = _Value;
+	m_Diffuse.w = _Value;
+}
+
+
+// set material specular.
+void COGMaterial::SetSpecular (float _Value)
+{
+	m_Specular.x = _Value;
+	m_Specular.y = _Value;
+	m_Specular.z = _Value;
+	m_Specular.w = _Value;
 }

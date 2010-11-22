@@ -198,7 +198,7 @@ void COGEffectBonusPick::Render (const MATRIX& _mWorld)
     MATRIX mId; 
     MatrixIdentity(mId);
     m_pRenderer->SetModelMatrix(mId);
-	m_pRenderer->SetBlend(m_Blend);
+	m_pRenderer->SetBlend(OG_BLEND_ALPHABLEND);
 	m_pRenderer->SetTexture(m_pTexture);
 
     Vec3 vOffset = Vec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
@@ -240,6 +240,7 @@ void COGEffectBonusPick::Render (const MATRIX& _mWorld)
         m_pRenderer->DrawEffectBuffer(&p.pVertices[0], 0, 4);
     }
 
+	m_pRenderer->SetBlend(m_Blend);
     Vec3 vGlowUp = m_vCameraUp * m_Glow.scale;
     Vec3 vGlowRight = m_vCameraRight * m_Glow.scale;
     m_Glow.pVertices[0].p = vOffset + vGlowRight + vGlowUp;

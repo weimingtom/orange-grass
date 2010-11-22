@@ -11,6 +11,7 @@
 
 #include "IOGRenderable.h"
 #include "IOGTexture.h"
+#include "IOGMaterial.h"
 #include "Mathematics.h"
 #include "IOGAabb.h"
 #include "IOGRenderable.h"
@@ -25,8 +26,14 @@ public:
 	// Get model alias
 	virtual const std::string& GetAlias () const = 0;
 
+	// Save params
+	virtual bool SaveParams () = 0;
+
 	// Get texture
 	virtual IOGTexture* GetTexture () = 0;
+
+	// Get material
+	virtual IOGMaterial* GetMaterial () = 0;
 
 	// Render mesh.
 	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame) = 0;

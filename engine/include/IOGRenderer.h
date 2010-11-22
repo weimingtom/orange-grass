@@ -118,9 +118,6 @@ public:
 
     // Draw shadow texture.
     virtual void DrawShadowTexture () = 0;
-
-    // Parse the blend type string and convert it to internal type
-    virtual OGBlendType ParseBlendType (const std::string& _BlendTypeStr) const = 0;
 };
 
 #endif

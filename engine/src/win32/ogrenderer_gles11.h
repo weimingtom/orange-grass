@@ -30,6 +30,9 @@ public:
 	// set view matrix.
 	virtual void SetViewMatrix (const MATRIX& _mView);
 
+	// add rendering command.
+	virtual void SetMaterial (IOGMaterial* _pMaterial);
+
 	// Enable scene light.
 	virtual void EnableLight (bool _bEnable);
 

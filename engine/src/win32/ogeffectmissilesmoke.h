@@ -9,7 +9,7 @@
 #ifndef OGEFFECTMISSILESMOKE_H_
 #define OGEFFECTMISSILESMOKE_H_
 
-#include "OGEffect.h"
+#include "ogeffect.h"
 #include <vector>
 
 

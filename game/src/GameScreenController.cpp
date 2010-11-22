@@ -134,6 +134,7 @@ void CGameScreenController::RenderScene ()
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
 	m_pSg->RenderLandscape(m_pCamera);
 	m_pSg->RenderScene(m_pCamera);
+    m_pSg->RenderTransparentNodes(m_pCamera);
 	m_pRenderer->FinishRenderMode();
 
 	m_pRenderer->EnableLight(false);
@@ -142,13 +143,7 @@ void CGameScreenController::RenderScene ()
     m_pSg->RenderEffects(m_pCamera);
     m_pRenderer->FinishRenderMode();
 
-	m_pRenderer->EnableLight(true);
-
-	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
-    m_pSg->RenderTransparentNodes(m_pCamera);
-	m_pRenderer->FinishRenderMode();
-
-	m_pRenderer->EnableLight(false);
+	m_pRenderer->Reset();
     m_pRenderer->EnableFog(false);
 
     m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
