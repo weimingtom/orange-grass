@@ -28,13 +28,13 @@ public:
 	virtual const Vec4& GetSpecular () const;
 
 	// set material ambient.
-	virtual void SetAmbient (float _Value);
+	virtual void SetAmbient (const Vec4& _Value);
 
 	// set material diffuse.
-	virtual void SetDiffuse (float _Value);
+	virtual void SetDiffuse (const Vec4& _Value);
 
 	// set material specular.
-	virtual void SetSpecular (float _Value);
+	virtual void SetSpecular (const Vec4& _Value);
 
 private:
 

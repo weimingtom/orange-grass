@@ -84,6 +84,9 @@ private:
 		std::string mesh_file;
 		std::string texture_alias;
 		OGBlendType blend_type;
+        Vec4 material_ambient;
+        Vec4 material_diffuse;
+        Vec4 material_specular;
 		std::list<Anim> anim_list;
 	};
 

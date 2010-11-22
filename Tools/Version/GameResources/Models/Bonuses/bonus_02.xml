@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Mesh file="Models/Bonuses/bonus_02.POD"/>
-<Material texture = "bonus_02" blend = "solid"/>
+<Material texture = "bonus_02" blend = "solid">
+	<Ambient r = "1.0" g = "1.0" b = "1.0" a = "1.0" />
+	<Diffuse r = "1.0" g = "1.0" b = "1.0" a = "1.0" />
+	<Specular r = "0.0" g = "0.0" b = "0.0" a = "0.0" />
+</Material>
 <Animations>
 	<Animation name = "idle" start_frame="1" end_frame = "99" speed = "3" looped = "1"/>
 </Animations>

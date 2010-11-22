@@ -63,9 +63,12 @@ void COGRenderer_GLES11::SetMaterial (IOGMaterial* _pMaterial)
     if (_pMaterial != m_pCurMaterial)
     {
         m_pCurMaterial = _pMaterial;
-		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, &m_pCurMaterial->GetAmbient().x);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, &m_pCurMaterial->GetDiffuse().x);
-		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, &m_pCurMaterial->GetSpecular().x);
+        if (m_pCurMaterial)
+        {
+            glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, &m_pCurMaterial->GetAmbient().x);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, &m_pCurMaterial->GetDiffuse().x);
+            glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, &m_pCurMaterial->GetSpecular().x);
+        }
     }
 }
 

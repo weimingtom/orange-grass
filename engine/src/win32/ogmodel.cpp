@@ -54,6 +54,10 @@ bool COGModel::Load ()
 	}
 
 	m_pTexture = GetResourceMgr()->GetTexture(modelcfg.texture_alias);
+    m_pMaterial = m_pRenderer->CreateMaterial();
+    m_pMaterial->SetAmbient(modelcfg.material_ambient);
+    m_pMaterial->SetDiffuse(modelcfg.material_diffuse);
+    m_pMaterial->SetSpecular(modelcfg.material_specular);
 	m_Blend = modelcfg.blend_type;
 
 	std::list<Cfg::Anim>::const_iterator anim_iter = modelcfg.anim_list.begin();
@@ -96,6 +100,25 @@ bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
 	{
 		_cfg.texture_alias = m_pReader->ReadStringParam(pMaterialNode, "texture");
 		_cfg.blend_type = m_pReader->ReadBlendTypeParam(pMaterialNode, "blend");
+    	IOGGroupNode* pAmbientNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Ambient");
+        if (pAmbientNode)
+        {
+            _cfg.material_ambient = m_pReader->ReadVec4Param(pAmbientNode, "r", "g", "b", "a");
+    		m_pReader->CloseGroupNode(pAmbientNode);
+        }
+    	IOGGroupNode* pDiffuseNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Diffuse");
+        if (pDiffuseNode)
+        {
+            _cfg.material_diffuse = m_pReader->ReadVec4Param(pDiffuseNode, "r", "g", "b", "a");
+    		m_pReader->CloseGroupNode(pDiffuseNode);
+        }
+    	IOGGroupNode* pSpecularNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Specular");
+        if (pSpecularNode)
+        {
+            _cfg.material_specular = m_pReader->ReadVec4Param(pSpecularNode, "r", "g", "b", "a");
+    		m_pReader->CloseGroupNode(pSpecularNode);
+        }
+
 		m_pReader->CloseGroupNode(pMaterialNode);
 	}
 
