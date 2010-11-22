@@ -10,13 +10,13 @@
 #include "OrangeGrass.h"
 
 
-COGPlasmaEffect::~COGPlasmaEffect()
+COGEffectPlasma::~COGEffectPlasma()
 {
 }
 
 
 // Initialize effect.
-void COGPlasmaEffect::Init(OGEffectType _Type)
+void COGEffectPlasma::Init(OGEffectType _Type)
 {
 	m_pTexture = GetResourceMgr()->GetTexture("effects");
     m_Blend = OG_BLEND_ALPHAADD;
@@ -43,7 +43,7 @@ void COGPlasmaEffect::Init(OGEffectType _Type)
 
 
 // Update.
-void COGPlasmaEffect::Update (unsigned long _ElapsedTime)
+void COGEffectPlasma::Update (unsigned long _ElapsedTime)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
@@ -56,7 +56,7 @@ void COGPlasmaEffect::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGPlasmaEffect::Render (const MATRIX& _mWorld)
+void COGEffectPlasma::Render (const MATRIX& _mWorld)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
@@ -81,7 +81,7 @@ void COGPlasmaEffect::Render (const MATRIX& _mWorld)
 
 
 // Start.
-void COGPlasmaEffect::Start ()
+void COGEffectPlasma::Start ()
 {
 	m_Status = OG_EFFECTSTATUS_STARTED;
     Update(0);
@@ -89,7 +89,7 @@ void COGPlasmaEffect::Start ()
 
 
 // Stop.
-void COGPlasmaEffect::Stop ()
+void COGEffectPlasma::Stop ()
 {
 	m_Status = OG_EFFECTSTATUS_INACTIVE;
 }

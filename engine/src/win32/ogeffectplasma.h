@@ -6,17 +6,17 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#ifndef OGPLASMAEFFECT_H_
-#define OGPLASMAEFFECT_H_
+#ifndef OGEFFECTPLASMA_H_
+#define OGEFFECTPLASMA_H_
 
-#include "OGEffect.h"
+#include "ogeffect.h"
 #define MAX_PLASMA_PARTILES 12
 #define PLASMA_VERTICES     MAX_PLASMA_PARTILES*4
 
-class COGPlasmaEffect : public COGEffect
+class COGEffectPlasma : public COGEffect
 {
 public:
-	virtual ~COGPlasmaEffect();
+	virtual ~COGEffectPlasma();
 
 	// Initialize effect.
 	virtual void Init(OGEffectType _Type);

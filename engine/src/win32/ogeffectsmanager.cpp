@@ -7,7 +7,7 @@
  *
  */
 #include "ogeffectsmanager.h"
-#include "ogplasmaeffect.h"
+#include "ogeffectplasma.h"
 #include "ogeffectmissilesmoke.h"
 #include "ogeffecttrailsmoke.h"
 #include "ogeffectexplosion.h"
@@ -47,7 +47,7 @@ IOGEffect* COGEffectsManager::CreateEffect (OGEffectType _Type)
 	{
 	case OG_EFFECT_PLASMA:
 		{
-			COGPlasmaEffect* pEffect = new COGPlasmaEffect();
+			COGEffectPlasma* pEffect = new COGEffectPlasma();
 			pEffect->Init(_Type);
 			return pEffect;
 		}
