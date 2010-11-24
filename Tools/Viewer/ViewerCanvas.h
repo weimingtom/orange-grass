@@ -62,6 +62,10 @@ private:
     /// @param event - event structute.
 	void OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event );
 
+	/// @brief Material adjust event handler
+    /// @param event - event structute.
+	void OnMaterialAdjust ( CommonToolEvent<MtlAdjustEventData>& event );
+
     /// @brief Timer handler.
     /// @param event - event structute.
     void OnTimer(wxTimerEvent& event);

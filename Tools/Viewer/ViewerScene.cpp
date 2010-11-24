@@ -221,10 +221,40 @@ void CViewerScene::SetupModel(const char* _pModelAlias)
             Vec3(1,1,1));
         m_pActorMgr->AddActor(m_pCurActor);
         m_pCurActor->Activate(true);
+
+        IOGModel* pModel = m_pResourceMgr->GetModel(m_pCurActor->GetParams()->model_alias);
+        CommonToolEvent<MtlLoadEventData> cmd(EVENTID_MTLLOAD);
+        cmd.SetEventCustomData(MtlLoadEventData(
+            pModel->GetMaterial()->GetAmbient().x,
+            pModel->GetMaterial()->GetDiffuse().x,
+            pModel->GetMaterial()->GetSpecular().x));
+        GetEventHandlersTable()->FireEvent(EVENTID_MTLLOAD, &cmd);
 	}
 	else
 	{
 	}
+}
+
+
+// Adjust model material.
+void CViewerScene::AdjustMaterial(MtlType _type, float _val)
+{
+    if (m_pCurActor)
+    {
+        IOGModel* pModel = m_pResourceMgr->GetModel(m_pCurActor->GetParams()->model_alias);
+        switch(_type)
+        {
+        case MTLTYPE_DIF:
+            pModel->GetMaterial()->SetDiffuse(Vec4(_val, _val, _val, 1.0f));
+            break;
+        case MTLTYPE_AMB:
+            pModel->GetMaterial()->SetAmbient(Vec4(_val, _val, _val, 1.0f));
+            break;
+        case MTLTYPE_SPC:
+            pModel->GetMaterial()->SetSpecular(Vec4(_val, _val, _val, 1.0f));
+            break;
+        }
+    }
 }
 
 

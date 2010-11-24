@@ -62,11 +62,26 @@ private:
 	/// @brief Resource loading event handler
 	void OnLoadResource ( CommonToolEvent<ResLoadEventData>& event );
 
+	/// @brief Material loading event handler
+	void OnLoadMaterial ( CommonToolEvent<MtlLoadEventData>& event );
+
 	/// @brief Resource switching event handler
 	void OnResourceSwitch ( wxTreeEvent& event );
 
 	/// @brief Adding resource group
 	void AddResourceGroup ( ResourceType _type, const wxString& _name );
+
+	/// @brief Diffuse color slider event handler
+	/// @param event - event struct
+	void OnDiffuseSlider(wxScrollEvent& event);
+
+	/// @brief Ambient color slider event handler
+	/// @param event - event struct
+	void OnAmbientSlider(wxScrollEvent& event);
+
+	/// @brief Specular color slider event handler
+	/// @param event - event struct
+	void OnSpecularSlider(wxScrollEvent& event);
 
 private:
 
@@ -77,7 +92,12 @@ private:
     CViewerCanvas*				m_pCanvas;
 
 	wxTreeCtrl*					m_pTree;
-	std::vector<ResourceGroup>	m_ResourceGroups;
+    wxPanel*                    m_pSettingsPanel;
+	wxSlider*				    m_pAmbientSlider;
+	wxSlider*				    m_pDiffuseSlider;
+	wxSlider*				    m_pSpecularSlider;
+
+    std::vector<ResourceGroup>	m_ResourceGroups;
 	std::vector<ResourceItem>	m_ResourceItems;
 };
 

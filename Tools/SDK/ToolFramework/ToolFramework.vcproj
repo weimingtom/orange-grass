@@ -181,6 +181,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\src\MaterialAdjustEvent.h"
+			>
+		</File>
+		<File
+			RelativePath=".\src\MaterialLoadEvent.h"
+			>
+		</File>
+		<File
 			RelativePath=".\src\oggraphicshelpers.cpp"
 			>
 		</File>

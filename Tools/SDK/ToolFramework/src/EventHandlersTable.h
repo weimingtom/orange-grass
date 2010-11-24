@@ -3,6 +3,8 @@
 
 #include <wx/wx.h>
 #include "ResourceLoadingEvent.h"
+#include "MaterialLoadEvent.h"
+#include "MaterialAdjustEvent.h"
 #include "ResourceSwitchEvent.h"
 #include "ToolCommandEvent.h"
 #include "LevelLoadingEvent.h"

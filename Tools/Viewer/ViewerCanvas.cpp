@@ -17,6 +17,7 @@ BEGIN_EVENT_TABLE(CViewerCanvas, wxGLCanvas)
     EVT_KEY_DOWN( CViewerCanvas::OnKeyDown )
     EVT_KEY_UP( CViewerCanvas::OnKeyUp )
 	EVT_RESSWITCH( wxID_ANY, CViewerCanvas::OnResourceSwitch )
+	EVT_MTLADJUST( wxID_ANY, CViewerCanvas::OnMaterialAdjust )
 	EVT_TOOLCMD( wxID_ANY, CViewerCanvas::OnToolCmdEvent )
 	EVT_ENTER_WINDOW( CViewerCanvas::OnMouseEnter )
 	EVT_LEAVE_WINDOW( CViewerCanvas::OnMouseLeave )
@@ -55,6 +56,7 @@ CViewerCanvas::CViewerCanvas (  wxWindow *parent,
 	m_bLoaded = false;
 	GetEventHandlersTable()->AddEventHandler(EVENTID_RESSWITCH, this);
 	GetEventHandlersTable()->AddEventHandler(EVENTID_TOOLCMD, this);
+	GetEventHandlersTable()->AddEventHandler(EVENTID_MTLADJUST, this);
     m_timer.Start(33);
 }
 
@@ -179,6 +181,15 @@ void CViewerCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 		break;
 	}
 	Refresh ();
+}
+
+
+/// @brief Material adjust event handler
+/// @param event - event structute.
+void CViewerCanvas::OnMaterialAdjust ( CommonToolEvent<MtlAdjustEventData>& event )
+{
+	const MtlAdjustEventData& evtData = event.GetEventCustomData();
+    g_pScene->AdjustMaterial(evtData.m_type, evtData.m_val);
 }
 
 

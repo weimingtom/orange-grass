@@ -39,6 +39,9 @@ public:
     // Setup model.
     void SetupModel(const char* _pModelAlias);
 
+    // Adjust model material.
+    void AdjustMaterial(MtlType _type, float _val);
+
 	// Camera zoom
 	void CameraZoom (float _fFactor);
 

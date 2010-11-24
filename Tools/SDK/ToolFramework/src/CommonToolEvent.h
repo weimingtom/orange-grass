@@ -6,6 +6,8 @@ static const int EVENTID_TOOLCMD	= 32000;
 static const int EVENTID_RESLOAD	= 32001;
 static const int EVENTID_RESSWITCH	= 32002;
 static const int EVENTID_LEVELLOAD	= 32003;
+static const int EVENTID_MTLLOAD	= 32004;
+static const int EVENTID_MTLADJUST	= 32005;
 
 
 template <typename T>

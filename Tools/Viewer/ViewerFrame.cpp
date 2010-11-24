@@ -8,6 +8,9 @@
 #define ID_DEF_ABOUT		10000
 #define ID_DEF_COORDGRID	10001
 #define ID_DEF_AABB			10002
+#define ID_DEF_DIFCOLOR		10003
+#define ID_DEF_AMBCOLOR		10004
+#define ID_DEF_SPCCOLOR		10005
 
 const int ID_TOOLBAR = 500;
 
@@ -15,11 +18,15 @@ static const long TOOLBAR_STYLE = wxTB_FLAT | wxTB_DOCKABLE | wxTB_TEXT;
 
 
 BEGIN_EVENT_TABLE(CViewerFrame, wxFrame)
-EVT_MENU (wxID_EXIT,    CViewerFrame::OnExit)
-EVT_MENU (ID_DEF_ABOUT, CViewerFrame::OnAboutDlg)
-EVT_MENU (ID_DEF_COORDGRID, CViewerFrame::OnCoordGrid)
-EVT_MENU (ID_DEF_AABB, CViewerFrame::OnBounds)
-EVT_RESLOAD( wxID_ANY, CViewerFrame::OnLoadResource )
+    EVT_MENU (wxID_EXIT,    CViewerFrame::OnExit)
+    EVT_MENU (ID_DEF_ABOUT, CViewerFrame::OnAboutDlg)
+    EVT_MENU (ID_DEF_COORDGRID, CViewerFrame::OnCoordGrid)
+    EVT_MENU (ID_DEF_AABB, CViewerFrame::OnBounds)
+    EVT_RESLOAD( wxID_ANY, CViewerFrame::OnLoadResource )
+    EVT_MTLLOAD( wxID_ANY, CViewerFrame::OnLoadMaterial )
+	EVT_COMMAND_SCROLL(ID_DEF_DIFCOLOR, CViewerFrame::OnDiffuseSlider)
+	EVT_COMMAND_SCROLL(ID_DEF_AMBCOLOR, CViewerFrame::OnAmbientSlider)
+	EVT_COMMAND_SCROLL(ID_DEF_SPCCOLOR, CViewerFrame::OnSpecularSlider)
 END_EVENT_TABLE()
 
 
@@ -86,11 +93,19 @@ bool CViewerFrame::Create(wxWindow * parent,
 	AddResourceGroup (RESTYPE_MODEL, wxT("Bonuses"));
 	m_pTree->Expand(m_pTree->GetRootItem());
 	GetEventHandlersTable()->AddEventHandler(EVENTID_RESLOAD, this);
+	GetEventHandlersTable()->AddEventHandler(EVENTID_MTLLOAD, this);
 	m_pTree->Connect( wxEVT_COMMAND_TREE_SEL_CHANGED, wxTreeEventHandler( CViewerFrame::OnResourceSwitch ), NULL, this );
 
+	m_pSettingsPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, treeSize);
+	wxSize panelSize = m_pSettingsPanel->GetSize();
+	wxStaticText* DifClrDesc = new wxStaticText(m_pSettingsPanel, wxID_ANY, _T("Diffuse:"), wxPoint(5, 30), wxDefaultSize);
+	m_pDiffuseSlider = new wxSlider(m_pSettingsPanel, ID_DEF_DIFCOLOR, 0, 0, 100, wxPoint(50, 5), wxSize(panelSize.GetWidth()*0.65f, 50), wxSL_LABELS|wxSL_TICKS);    m_pDiffuseSlider->Enable(false);	wxStaticText* AmbClrDesc = new wxStaticText(m_pSettingsPanel, wxID_ANY, _T("Ambient:"), wxPoint(5, 85), wxDefaultSize);
+	m_pAmbientSlider = new wxSlider(m_pSettingsPanel, ID_DEF_AMBCOLOR, 0, 0, 100, wxPoint(50, 60), wxSize(panelSize.GetWidth()*0.65f, 50), wxSL_LABELS|wxSL_TICKS);    m_pAmbientSlider->Enable(false);	wxStaticText* SpcClrDesc = new wxStaticText(m_pSettingsPanel, wxID_ANY, _T("Specular:"), wxPoint(5, 140), wxDefaultSize);
+	m_pSpecularSlider = new wxSlider(m_pSettingsPanel, ID_DEF_SPCCOLOR, 0, 0, 100, wxPoint(50, 115), wxSize(panelSize.GetWidth()*0.65f, 50), wxSL_LABELS|wxSL_TICKS);    m_pSpecularSlider->Enable(false);
 	m_Manager.SetManagedWindow(this);
 	m_Manager.AddPane(m_pCanvas, wxAuiPaneInfo().CenterPane());
 	m_Manager.AddPane(m_pTree, wxAuiPaneInfo().Left().Layer(1).CloseButton(false).Caption(wxT("Tools")));
+	m_Manager.AddPane(m_pSettingsPanel, wxAuiPaneInfo().Right().Layer(1).CloseButton(false).Caption(wxT("Settings")));
 	m_Manager.Update();
 
 	return true;
@@ -199,6 +214,16 @@ void CViewerFrame::OnLoadResource ( CommonToolEvent<ResLoadEventData>& event )
 }
 
 
+/// @brief Material loading event handler
+void CViewerFrame::OnLoadMaterial ( CommonToolEvent<MtlLoadEventData>& event )
+{
+	const MtlLoadEventData& evtData = event.GetEventCustomData();
+    m_pAmbientSlider->Enable(true);    m_pDiffuseSlider->Enable(true);    m_pSpecularSlider->Enable(true);    m_pAmbientSlider->SetValue((int)(evtData.m_amb * 100.0f));
+    m_pDiffuseSlider->SetValue((int)(evtData.m_dif * 100.0f));
+    m_pSpecularSlider->SetValue((int)(evtData.m_spc * 100.0f));
+}
+
+
 /// @brief Resource switching event handler
 void CViewerFrame::OnResourceSwitch ( wxTreeEvent& event )
 {
@@ -212,4 +237,40 @@ void CViewerFrame::OnResourceSwitch ( wxTreeEvent& event )
 		cmd.SetEventCustomData(ResSwitchEventData(pData->name, pData->type));
 		GetEventHandlersTable()->FireEvent(EVENTID_RESSWITCH, &cmd);
 	}
+}
+
+
+/// @brief Diffuse color slider event handler
+/// @param event - event struct
+void CViewerFrame::OnDiffuseSlider(wxScrollEvent& event)
+{
+    float fDif = (float)m_pDiffuseSlider->GetValue() / 100.0f;
+
+    CommonToolEvent<MtlAdjustEventData> cmd(EVENTID_MTLADJUST);
+    cmd.SetEventCustomData(MtlAdjustEventData(MTLTYPE_DIF, fDif));
+    GetEventHandlersTable()->FireEvent(EVENTID_MTLADJUST, &cmd);
+}
+
+
+/// @brief Ambient color slider event handler
+/// @param event - event struct
+void CViewerFrame::OnAmbientSlider(wxScrollEvent& event)
+{
+    float fAmb = (float)m_pAmbientSlider->GetValue() / 100.0f;
+
+    CommonToolEvent<MtlAdjustEventData> cmd(EVENTID_MTLADJUST);
+    cmd.SetEventCustomData(MtlAdjustEventData(MTLTYPE_AMB, fAmb));
+    GetEventHandlersTable()->FireEvent(EVENTID_MTLADJUST, &cmd);
+}
+
+
+/// @brief Specular color slider event handler
+/// @param event - event struct
+void CViewerFrame::OnSpecularSlider(wxScrollEvent& event)
+{
+    float fSpc = (float)m_pSpecularSlider->GetValue() / 100.0f;
+
+    CommonToolEvent<MtlAdjustEventData> cmd(EVENTID_MTLADJUST);
+    cmd.SetEventCustomData(MtlAdjustEventData(MTLTYPE_SPC, fSpc));
+    GetEventHandlersTable()->FireEvent(EVENTID_MTLADJUST, &cmd);
 }
