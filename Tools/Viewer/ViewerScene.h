@@ -44,9 +44,6 @@ public:
 
 	// Camera zoom
 	void CameraZoom (float _fFactor);
-
-	// Camera move
-	void CameraMove (float _fX, float _fZ);
 	
 	// Camera rotate
 	void CameraRotate (float _fAngleH, float _fAngleV);

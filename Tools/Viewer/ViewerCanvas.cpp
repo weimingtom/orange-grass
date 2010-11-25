@@ -106,7 +106,6 @@ void CViewerCanvas::OnSize(wxSizeEvent& event)
     GetClientSize(&m_ResX, &m_ResY);
     if (GetContext())
     {
-        //SetCurrent();
 		g_pScene->SetViewport(m_ResX, m_ResY);
     }
 }
@@ -116,28 +115,6 @@ void CViewerCanvas::OnSize(wxSizeEvent& event)
 /// @param event - event structute.
 void CViewerCanvas::OnKeyDown( wxKeyEvent& event )
 {
-    switch (event.GetKeyCode())
-    {
-	case WXK_UP:
-		g_pScene->CameraMove(0.0f, -1.0f);
-		Refresh();
-		break;
-
-	case WXK_DOWN:
-		g_pScene->CameraMove(0.0f, 1.0f);
-		Refresh();
-		break;
-
-	case WXK_LEFT:
-		g_pScene->CameraMove(-1.0f, 0.0f);
-		Refresh();
-		break;
-
-	case WXK_RIGHT:
-		g_pScene->CameraMove(1.0f, 0.0f);
-		Refresh();
-		break;
-    }
     event.Skip();
 }
 
@@ -224,10 +201,16 @@ void CViewerCanvas::OnMouseMove(wxMouseEvent& event)
 		mouse_x = event.GetX();
 		mouse_y = event.GetY();
 
-		int delta_x = mouse_x - prev_x;
-		g_pScene->CameraRotateHor(delta_x > 0 ? 0.01f : -0.01f);
-		//int delta_y = mouse_y - prev_y;
-		//g_pScene->CameraRotateVer(delta_y > 0 ? 0.01f : -0.01f);
+		if (event.ControlDown())
+		{
+			int delta_y = mouse_y - prev_y;
+			g_pScene->CameraRotateVer(delta_y > 0 ? 0.01f : -0.01f);
+		}
+		else
+		{
+			int delta_x = mouse_x - prev_x;
+			g_pScene->CameraRotateHor(delta_x > 0 ? 0.01f : -0.01f);
+		}
 	}
 
 	mouse_x = event.GetX();

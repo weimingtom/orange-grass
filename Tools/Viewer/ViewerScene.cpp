@@ -261,14 +261,8 @@ void CViewerScene::AdjustMaterial(MtlType _type, float _val)
 // Camera zoom
 void CViewerScene::CameraZoom (float _fFactor)
 {
-	m_pCamera->Move (_fFactor);
-}
-
-
-// Camera move
-void CViewerScene::CameraMove (float _fX, float _fZ)
-{
-	m_pCamera->Strafe(5.5f, Vec3(_fX, 0, _fZ));
+	m_fCameraDistance -= _fFactor;
+	CameraRotateHor (0);
 }
 
 
@@ -281,30 +275,30 @@ void CViewerScene::CameraRotate (float _fAngleH, float _fAngleV)
 // Camera rotate horizontally
 void CViewerScene::CameraRotateHor (float _fAngle)
 {
-	m_fHorViewAngle += _fAngle;
-	Vec3 vTarget (0, 0, 0);
-
-	MATRIX mR;
-	MatrixRotationY(mR, m_fHorViewAngle);
-	Vec3 vDir, vRight;
-	MatrixVec3Multiply(vDir, Vec3(0.0f, 1.0f, 0.4f), mR);
-	MatrixVec3Multiply(vRight, Vec3(1.0f, 0.0f, 0.0f), mR);
-	vDir = vDir.normalize();
-	Vec3 vUp = vDir.cross (vRight);
-	m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
-
+	//m_fHorViewAngle += _fAngle;
 	//Vec3 vTarget (0, 0, 0);
 
 	//MATRIX mR;
-	//MatrixRotationY(mR, _fAngle);
+	//MatrixRotationY(mR, m_fHorViewAngle);
 	//Vec3 vDir, vRight;
-	//MatrixVec3Multiply(vDir, m_pCamera->GetDirection(), mR);
-	//MatrixVec3Multiply(vRight, m_pCamera->GetRight(), mR);
-	//vDir.normalize();
+	//MatrixVec3Multiply(vDir, Vec3(0.0f, 1.0f, 0.4f), mR);
+	//MatrixVec3Multiply(vRight, Vec3(1.0f, 0.0f, 0.0f), mR);
+	//vDir = vDir.normalize();
 	//Vec3 vUp = vDir.cross (vRight);
-	//OG_LOG_INFO("Dir = [%f, %f, %f]", vDir.x, vDir.y, vDir.z);
-	//OG_LOG_INFO("Right = [%f, %f, %f]", vRight.x, vRight.y, vRight.z);
 	//m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
+
+	Vec3 vTarget (0, 0, 0);
+
+	MATRIX mR;
+	MatrixRotationY(mR, _fAngle);
+	Vec3 vDir, vRight;
+	MatrixVec3Multiply(vDir, m_pCamera->GetDirection(), mR);
+	MatrixVec3Multiply(vRight, m_pCamera->GetRight(), mR);
+	vDir.normalize();
+	Vec3 vUp = vDir.cross (vRight);
+	OG_LOG_INFO("Dir = [%f, %f, %f]", vDir.x, vDir.y, vDir.z);
+	OG_LOG_INFO("Right = [%f, %f, %f]", vRight.x, vRight.y, vRight.z);
+	m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
 }
 
 
