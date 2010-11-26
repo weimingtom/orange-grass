@@ -57,21 +57,21 @@ bool COGEffectMissileSmoke::LoadParams ()
 // Initialize effect.
 void COGEffectMissileSmoke::Init(OGEffectType _Type)
 {
-	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
-	m_pMapping = m_pTexture->GetMapping(m_MappingId);
-	m_pGlowMapping = m_pTexture->GetMapping(m_GlowMappingId);
-    m_Blend = OG_BLEND_ALPHABLEND;
+	m_TrailEmitter.m_color = m_color;
+	m_TrailEmitter.m_fAlphaFade = m_fAlphaFade;
+	m_TrailEmitter.m_fInitialScale = m_fInitialScale;
+	m_TrailEmitter.m_fScaleInc = m_fScaleInc;
+	m_TrailEmitter.m_numVertsAtOnce = m_numVertsAtOnce;
+	m_TrailEmitter.m_fRotateInc = m_fRotateInc;
+	m_TrailEmitter.m_Texture = m_Texture;
+	m_TrailEmitter.m_MappingId = m_MappingId;
+	m_TrailEmitter.Init();
+
+	m_GlowEmitter.m_MappingId = m_GlowMappingId;
+	m_GlowEmitter.m_Texture = m_Texture;
+	m_GlowEmitter.Init();
 
 	m_bPositionUpdated = false;
-    m_BBList.reserve(60);
-
-    m_Glow.bDirty = false;
-    m_Glow.scale = 2.0f;
-    m_Glow.angle = GetRandomRange(-314,314) * 0.01f;
-    m_Glow.pVertices[0].c = Vec4(1.0f,1.0f,1.0f,0.6f);
-    m_Glow.pVertices[1].c = Vec4(1.0f,1.0f,1.0f,0.6f);
-    m_Glow.pVertices[2].c = Vec4(1.0f,1.0f,1.0f,0.6f);
-    m_Glow.pVertices[3].c = Vec4(1.0f,1.0f,1.0f,0.6f);
 
     m_AABB.SetMinMax(Vec3(-1,-1,-1), Vec3(1,1,1));
 }
@@ -83,71 +83,19 @@ void COGEffectMissileSmoke::Update (unsigned long _ElapsedTime)
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-    std::vector<ParticleFormat>::iterator iter = m_BBList.begin();
-    while (iter != m_BBList.end())
-    {
-        ParticleFormat& particle = (*iter);
-        if (particle.pVertices[0].c.w >= m_fAlphaFade)
-        {
-            particle.scale += m_fScaleInc;
-            particle.angle += m_fRotateInc;
-    		particle.pVertices[0].c.w -= m_fAlphaFade;
-    		particle.pVertices[1].c.w -= m_fAlphaFade;
-    		particle.pVertices[2].c.w -= m_fAlphaFade;
-    		particle.pVertices[3].c.w -= m_fAlphaFade;
-            ++iter;
-        }
-        else
-        {
-            iter = m_BBList.erase(iter);
-            if (m_BBList.empty())
-            {
-                m_Status = OG_EFFECTSTATUS_INACTIVE;
-                return;
-            }
-        }
-    }
-
-	if (m_Status == OG_EFFECTSTATUS_STARTED && m_bPositionUpdated && m_vCurPosition != m_vPrevPosition)
-	{
-		Vec3 vDir = m_vPrevPosition - m_vCurPosition;
-		float fDist = vDir.length();
-		vDir.normalize();
-
-		for (unsigned int n = 0; n < m_numVertsAtOnce; ++n)
-		{
-			ParticleFormat particle;
-			particle.offset = vDir * (fDist * (float)n);
-			particle.scale = m_fInitialScale;
-			particle.angle = rand() * 0.01f;
-			particle.bDirty = true;
-			particle.pVertices[0].c = m_color;
-			particle.pVertices[1].c = m_color;
-			particle.pVertices[2].c = m_color;
-			particle.pVertices[3].c = m_color;
-			m_BBList.push_back(particle);
-		}
-	}
+	m_TrailEmitter.Update(_ElapsedTime);
+	m_GlowEmitter.Update(_ElapsedTime);
+	m_Status = m_TrailEmitter.GetStatus();
 }
 
 
 // Update position.
 void COGEffectMissileSmoke::UpdatePosition (const Vec3& _vPosition)
 {
-	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
-		return;
+	COGEffect::UpdatePosition(_vPosition);
 
-	if (!m_bPositionUpdated)
-	{
-		m_vCurPosition = _vPosition;
-		m_vPrevPosition = _vPosition;
-		m_bPositionUpdated = true;
-	}
-	else
-	{
-		m_vPrevPosition = m_vCurPosition;
-		m_vCurPosition = _vPosition;
-	}
+	m_TrailEmitter.UpdatePosition(_vPosition);
+	m_GlowEmitter.UpdatePosition(_vPosition);
 }
 
 
@@ -157,83 +105,8 @@ void COGEffectMissileSmoke::Render (const MATRIX& _mWorld)
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-    MATRIX mId; 
-    MatrixIdentity(mId);
-    m_pRenderer->SetModelMatrix(mId);
-	m_pRenderer->SetBlend(m_Blend);
-	m_pRenderer->SetTexture(m_pTexture);
-
-    MATRIX mR;
-	BBVert* pVert = NULL;
-    std::vector<ParticleFormat>::iterator iter = m_BBList.begin();
-    for (; iter != m_BBList.end(); ++iter)
-    {
-        ParticleFormat& particle = (*iter);
-        if (particle.bDirty)
-        {
-            particle.offset += m_vCurPosition;
-            particle.bDirty = false;
-        }
-
-        MatrixRotationAxis(mR, particle.angle, m_vCameraLook.x, m_vCameraLook.y, m_vCameraLook.z);
-
-        Vec3 vSUp = m_vCameraUp * particle.scale;
-		Vec3 vSRight = m_vCameraRight * particle.scale;
-
-		pVert = &particle.pVertices[0];
-        MatrixVecMultiply(pVert->p, vSRight + vSUp, mR);
-		pVert->p += particle.offset;
-        pVert->t.x = m_pMapping->t1.x; pVert->t.y = m_pMapping->t0.y;
-
-		pVert = &particle.pVertices[1];
-        MatrixVecMultiply(pVert->p, -vSRight + vSUp, mR);
-		pVert->p += particle.offset;
-        pVert->t.x = m_pMapping->t0.x; pVert->t.y = m_pMapping->t0.y;
-
-		pVert = &particle.pVertices[2];
-        MatrixVecMultiply(pVert->p, vSRight - vSUp, mR);
-		pVert->p += particle.offset;
-        pVert->t.x = m_pMapping->t1.x; pVert->t.y = m_pMapping->t1.y;
-
-		pVert = &particle.pVertices[3];
-        MatrixVecMultiply(pVert->p, -vSRight - vSUp, mR);
-		pVert->p += particle.offset;
-        pVert->t.x = m_pMapping->t0.x; pVert->t.y = m_pMapping->t1.y;
-
-		m_pRenderer->DrawEffectBuffer(&particle.pVertices[0], 0, 4);
-    }
-
-	m_pRenderer->SetBlend(OG_BLEND_ALPHAADD);
-
-    if (m_Status != OG_EFFECTSTATUS_STOPPED)
-    {
-        MatrixRotationAxis(mR, m_Glow.angle, m_vCameraLook.x, m_vCameraLook.y, m_vCameraLook.z);
-
-        Vec3 vSUp = m_vCameraUp * m_Glow.scale;
-        Vec3 vSRight = m_vCameraRight * m_Glow.scale;
-
-        pVert = &m_Glow.pVertices[0];
-        MatrixVecMultiply(pVert->p, vSRight + vSUp, mR);
-        pVert->p += m_vCurPosition;
-        pVert->t.x = m_pGlowMapping->t1.x; pVert->t.y = m_pGlowMapping->t0.y;
-
-        pVert = &m_Glow.pVertices[1];
-        MatrixVecMultiply(pVert->p, -vSRight + vSUp, mR);
-        pVert->p += m_vCurPosition;
-        pVert->t.x = m_pGlowMapping->t0.x; pVert->t.y = m_pGlowMapping->t0.y;
-
-        pVert = &m_Glow.pVertices[2];
-        MatrixVecMultiply(pVert->p, vSRight - vSUp, mR);
-        pVert->p += m_vCurPosition;
-        pVert->t.x = m_pGlowMapping->t1.x; pVert->t.y = m_pGlowMapping->t1.y;
-
-        pVert = &m_Glow.pVertices[3];
-        MatrixVecMultiply(pVert->p, -vSRight - vSUp, mR);
-        pVert->p += m_vCurPosition;
-        pVert->t.x = m_pGlowMapping->t0.x; pVert->t.y = m_pGlowMapping->t1.y;
-
-        m_pRenderer->DrawEffectBuffer(&m_Glow.pVertices[0], 0, 4);
-    }
+	m_TrailEmitter.Render(_mWorld, m_vCameraLook, m_vCameraUp, m_vCameraRight);
+	m_GlowEmitter.Render(_mWorld, m_vCameraLook, m_vCameraUp, m_vCameraRight);
 }
 
 
@@ -241,7 +114,8 @@ void COGEffectMissileSmoke::Render (const MATRIX& _mWorld)
 void COGEffectMissileSmoke::Start ()
 {
 	m_Status = OG_EFFECTSTATUS_STARTED;
-    m_BBList.clear();
+	m_TrailEmitter.Start();
+	m_GlowEmitter.Start();
 }
 
 
@@ -252,4 +126,6 @@ void COGEffectMissileSmoke::Stop ()
 		return;
 
 	m_Status = OG_EFFECTSTATUS_STOPPED;
+	m_TrailEmitter.Stop();
+	m_GlowEmitter.Stop();
 }

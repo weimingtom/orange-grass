@@ -204,12 +204,14 @@ void CViewerCanvas::OnMouseMove(wxMouseEvent& event)
 		if (event.ControlDown())
 		{
 			int delta_y = mouse_y - prev_y;
-			g_pScene->CameraRotateVer(delta_y > 0 ? 0.01f : -0.01f);
+			float fV = (float)delta_y / (float)m_ResY;
+			g_pScene->CameraRotateVer(fV);
 		}
 		else
 		{
 			int delta_x = mouse_x - prev_x;
-			g_pScene->CameraRotateHor(delta_x > 0 ? 0.01f : -0.01f);
+			float fH = (float)delta_x / (float)m_ResX;
+			g_pScene->CameraRotateHor(fH);
 		}
 	}
 

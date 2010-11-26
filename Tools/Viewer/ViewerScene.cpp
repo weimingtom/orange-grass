@@ -50,13 +50,13 @@ bool CViewerScene::Init ()
 	m_pActorMgr = GetActorManager();
 
     Vec3 vTarget (0, 0, 0);
-	Vec3 vDir (0, 1.0f, 0.4f);
+	Vec3 vDir (0, -1.0f, 0.4f);
 	vDir = vDir.normalize();
 	Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
-	m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
+	m_pCamera->Setup (vTarget - (vDir*m_fCameraDistance), vTarget, vUp);
 
 	m_fHorViewAngle = m_fVerViewAngle = 0.0f;
-	m_vCamUp = vUp;
+	m_vCamUp = m_pCamera->GetUp();
 	m_vCamPos = m_pCamera->GetPosition();
 
 	Vec3 vLightDir = Vec3(0,1,0);
@@ -291,14 +291,17 @@ void CViewerScene::CameraRotateHor (float _fAngle)
 
 	MATRIX mR;
 	MatrixRotationY(mR, _fAngle);
+	//MatrixRotationAxis(mR, _fAngle, m_pCamera->GetUp().x, m_pCamera->GetUp().y, m_pCamera->GetUp().z);
+	//OG_LOG_INFO("OrgDir = [%f, %f, %f]", m_pCamera->GetDirection().x, m_pCamera->GetDirection().y, m_pCamera->GetDirection().z);
+	//OG_LOG_INFO("OrgRight = [%f, %f, %f]", m_pCamera->GetRight().x, m_pCamera->GetRight().y, m_pCamera->GetRight().z);
 	Vec3 vDir, vRight;
 	MatrixVec3Multiply(vDir, m_pCamera->GetDirection(), mR);
 	MatrixVec3Multiply(vRight, m_pCamera->GetRight(), mR);
 	vDir.normalize();
 	Vec3 vUp = vDir.cross (vRight);
-	OG_LOG_INFO("Dir = [%f, %f, %f]", vDir.x, vDir.y, vDir.z);
-	OG_LOG_INFO("Right = [%f, %f, %f]", vRight.x, vRight.y, vRight.z);
-	m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
+	//OG_LOG_INFO("Dir = [%f, %f, %f]", vDir.x, vDir.y, vDir.z);
+	//OG_LOG_INFO("Right = [%f, %f, %f]", vRight.x, vRight.y, vRight.z);
+	m_pCamera->Setup (vTarget - (vDir*m_fCameraDistance), vTarget, vUp);
 }
 
 
@@ -320,13 +323,13 @@ void CViewerScene::CameraRotateVer (float _fAngle)
 	Vec3 vTarget (0, 0, 0);
 	
 	MATRIX mR;
-	MatrixRotationX(mR, _fAngle);
+	MatrixRotationAxis(mR, _fAngle, m_pCamera->GetRight().x, m_pCamera->GetRight().y, m_pCamera->GetRight().z);
 	Vec3 vDir, vRight;
 	MatrixVec3Multiply(vDir, m_pCamera->GetDirection(), mR);
 	MatrixVec3Multiply(vRight, m_pCamera->GetRight(), mR);
 	vDir.normalize();
 	Vec3 vUp = vDir.cross (vRight);
-	m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
+	m_pCamera->Setup (vTarget - (vDir*m_fCameraDistance), vTarget, vUp);
 }
 
 

@@ -72,6 +72,9 @@ protected:
 	Vec3			m_vCameraUp;
 	Vec3			m_vCameraRight;
 	Vec3			m_Direction;
+	Vec3			m_vPrevPosition;
+	Vec3			m_vCurPosition;
+	bool			m_bPositionUpdated;
 	OGEffectStatus	m_Status;
 	OGEffectType	m_Type;
 	IOGTexture*		m_pTexture;

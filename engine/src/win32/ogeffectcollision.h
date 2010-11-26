@@ -9,7 +9,9 @@
 #ifndef OGEFFECTCOLLISION_H_
 #define OGEFFECTCOLLISION_H_
 
-#include "OGEffect.h"
+#include "ogeffect.h"
+#include "ogemitteranimatedbb.h"
+#include "ogemitterlightflash.h"
 #include <vector>
 
 
@@ -38,21 +40,8 @@ public:
 
 protected:
 
-    struct ParticleFormat
-    {
-        bool    bDirty;
-        float   frame;
-	    float	scale;
-        float   angle;
-	    BBVert	pVertices[4];
-    };
-	
-protected:
-
-    std::vector<IOGMapping*>    m_Frames;
-    ParticleFormat              m_BB;
-
-    IOGLight*					m_pLight;
+	COGEmitterAnimatedBB		m_AnimatedBBEmitter;
+	COGEmitterLightFlash		m_LightFlashEmitter;
 
     static unsigned int         m_MappingStartId;
     static unsigned int         m_MappingFinishId;
@@ -61,6 +50,9 @@ protected:
 	static float                m_fScaleInc;
     static float                m_fRotateInc;
     static std::string          m_Texture;
+
+	static float				m_fLightFadeFactor;
+	static float				m_fLightInitialIntensity;
 };
 
 

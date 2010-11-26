@@ -10,6 +10,8 @@
 #define OGEFFECTMISSILESMOKE_H_
 
 #include "ogeffect.h"
+#include "ogemittertrail.h"
+#include "ogemitterglow.h"
 #include <vector>
 
 
@@ -44,34 +46,17 @@ public:
 
 protected:
 
-	struct ParticleFormat
-	{
-		bool    bDirty;
-		float	scale;
-		float   angle;
-		Vec3	offset;
-		BBVert	pVertices[4];
-	};
-
-protected:
-
-    std::vector<ParticleFormat>	m_BBList;
-	Vec3						m_vPrevPosition;
-	Vec3						m_vCurPosition;
-	bool						m_bPositionUpdated;
-	IOGMapping*					m_pMapping;
-
-    ParticleFormat	            m_Glow;
-	IOGMapping*					m_pGlowMapping;
+	COGEmitterTrail			m_TrailEmitter;
+	COGEmitterGlow			m_GlowEmitter;
 
 	static float			m_fAlphaFade;
 	static float			m_fInitialScale;
 	static float			m_fScaleInc;
 	static unsigned int		m_numVertsAtOnce;
-    static float			m_fRotateInc;
+	static float			m_fRotateInc;
 	static Vec4				m_color;
-    static std::string      m_Texture;
-    static unsigned int     m_MappingId;
+	static std::string      m_Texture;
+	static unsigned int     m_MappingId;
 
     static unsigned int     m_GlowMappingId;
 };

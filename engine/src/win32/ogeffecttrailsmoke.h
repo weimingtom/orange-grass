@@ -9,7 +9,8 @@
 #ifndef OGEFFECTTRAILSMOKE_H_
 #define OGEFFECTTRAILSMOKE_H_
 
-#include "OGEffect.h"
+#include "ogeffect.h"
+#include "ogemittertrail.h"
 #include <vector>
 
 
@@ -44,22 +45,7 @@ public:
 
 protected:
 
-	struct ParticleFormat
-	{
-		bool    bDirty;
-		float	scale;
-		float   angle;
-		Vec3	offset;
-		BBVert	pVertices[4];
-	};
-
-protected:
-
-    std::vector<ParticleFormat>	m_BBList;
-	Vec3						m_vPrevPosition;
-	Vec3						m_vCurPosition;
-	bool						m_bPositionUpdated;
-	IOGMapping*					m_pMapping;
+	COGEmitterTrail			m_TrailEmitter;
 
 	static float			m_fAlphaFade;
 	static float			m_fInitialScale;

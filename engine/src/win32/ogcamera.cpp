@@ -27,7 +27,7 @@ void COGCamera::Setup (const Vec3& _vPosition, const Vec3& _vTarget, const Vec3&
 	m_Up = _vUp;
 	m_Direction = m_Target - m_Position;
 	m_Direction.normalize();
-	m_Right = m_Direction.cross(m_Up);
+	m_Right = m_Up.cross(m_Direction);
 	m_Right.normalize();
 	m_bDirty = true;
 }

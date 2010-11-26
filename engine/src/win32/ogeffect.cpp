@@ -14,6 +14,7 @@ COGEffect::COGEffect() :	m_pTexture(NULL)
 {
 	m_Status = OG_EFFECTSTATUS_INACTIVE;
     m_pRenderer = GetRenderer();
+	m_bPositionUpdated = false;
 }
 
 
@@ -41,6 +42,20 @@ void COGEffect::SetDirection (const Vec3& _vDir)
 // Update position.
 void COGEffect::UpdatePosition (const Vec3& _vPosition)
 {
+	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
+		return;
+
+	if (!m_bPositionUpdated)
+	{
+		m_vCurPosition = _vPosition;
+		m_vPrevPosition = _vPosition;
+		m_bPositionUpdated = true;
+	}
+	else
+	{
+		m_vPrevPosition = m_vCurPosition;
+		m_vCurPosition = _vPosition;
+	}
 }
 
 

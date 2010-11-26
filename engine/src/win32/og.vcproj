@@ -508,6 +508,38 @@
 							>
 						</File>
 						<File
+							RelativePath=".\ogemitteranimatedbb.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogemitteranimatedbb.h"
+							>
+						</File>
+						<File
+							RelativePath=".\ogemitterglow.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogemitterglow.h"
+							>
+						</File>
+						<File
+							RelativePath=".\ogemitterlightflash.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogemitterlightflash.h"
+							>
+						</File>
+						<File
+							RelativePath=".\ogemitterringwave.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogemitterringwave.h"
+							>
+						</File>
+						<File
 							RelativePath=".\ogemittertrail.cpp"
 							>
 						</File>
