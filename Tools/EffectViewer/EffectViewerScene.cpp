@@ -131,7 +131,7 @@ void CEffectViewerScene::Update (unsigned long _ElapsedTime)
 		Vec3 vPos = m_pCurPhysics->GetPosition();
 		m_pCurEffect->SetDirection(vDir);
 		m_pCurEffect->UpdatePosition(vPos);
-		m_pCurEffect->SetStartFinishPositions(vPos, vPos + (vDir * 50.0f));
+		m_pCurEffect->SetStartFinishPositions(vPos, vPos + (vDir * 100.0f));
 	}
 
 	GetPhysics()->UpdateAll(33);

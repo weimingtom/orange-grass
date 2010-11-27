@@ -1,6 +1,19 @@
-Tools: ver. 0.14, 8-Nov-2010
+Tools: ver. 0.15, 27-Nov-2010
 
 ChangeList:
+
+0.15 (27-Nov-2010):
+- [OG] added materials support;
+- [OG] mesh and terrain removed from resource config;
+- [OG] propeller nodes are replaced with transparent submesh and procedural animation;
+- [OG] added lighting color separation (ambient/diffuse/specular);
+- [OG] global effects refactoring started: wxtracting common emitters;
+- [OG] first draft of gauss effect;
+- [Viewer] added sliders to adjust material (not yet saving changes);
+- [Viewer] fixed camera rotation (mouse move to rotate horizontally, Ctrl+mouse move to rotate vertically);
+- [EffectViewer] first draft;
+- [Editor] added controls to adjust light color and fog;
+- [Editor] Editor and Game camera views are separated to different modes (buttons added to the panel);
 
 0.14 (08-Nov-2010):
 - [OG] Bonus parameters
