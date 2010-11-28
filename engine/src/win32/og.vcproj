@@ -540,6 +540,14 @@
 							>
 						</File>
 						<File
+							RelativePath=".\ogemitterscrollingray.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogemitterscrollingray.h"
+							>
+						</File>
+						<File
 							RelativePath=".\ogemittertrail.cpp"
 							>
 						</File>

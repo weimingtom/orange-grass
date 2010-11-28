@@ -148,6 +148,37 @@ bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
 // Save params
 bool COGModel::SaveParams ()
 {
+	IOGSettingsSource* pSource = m_pReader->OpenSource(m_ResourceFile);
+	if (!pSource)
+	{
+		OG_LOG_ERROR("Failed to load model config file %s", m_ResourceFile.c_str());
+		return false;
+	}
+
+	IOGGroupNode* pMaterialNode = m_pReader->OpenGroupNode(pSource, NULL, "Material");
+	if (pMaterialNode != NULL)
+	{
+    	IOGGroupNode* pAmbientNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Ambient");
+        if (pAmbientNode)
+        {
+            m_pReader->WriteVec4Param(pAmbientNode, "r", "g", "b", "a", m_pMaterial->GetAmbient());
+    		m_pReader->CloseGroupNode(pAmbientNode);
+        }
+    	IOGGroupNode* pDiffuseNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Diffuse");
+        if (pDiffuseNode)
+        {
+            m_pReader->WriteVec4Param(pDiffuseNode, "r", "g", "b", "a", m_pMaterial->GetDiffuse());
+    		m_pReader->CloseGroupNode(pDiffuseNode);
+        }
+    	IOGGroupNode* pSpecularNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Specular");
+        if (pSpecularNode)
+        {
+            m_pReader->WriteVec4Param(pSpecularNode, "r", "g", "b", "a", m_pMaterial->GetSpecular());
+    		m_pReader->CloseGroupNode(pSpecularNode);
+        }
+    }
+
+    m_pReader->SaveSource(pSource, m_ResourceFile);
 	return true;
 }
 

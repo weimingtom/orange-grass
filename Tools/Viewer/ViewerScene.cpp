@@ -21,9 +21,6 @@ CViewerScene::CViewerScene()
 	m_bShowGrid = true;
     m_bInited = false;
 	m_ResX = m_ResY = 0;
-
-	m_fFineAngleStep = TO_RADIAN(2.0f);
-    m_fCoarseAngleStep = TO_RADIAN(45.0f);
 }
 
 
@@ -54,10 +51,6 @@ bool CViewerScene::Init ()
 	vDir = vDir.normalize();
 	Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
 	m_pCamera->Setup (vTarget - (vDir*m_fCameraDistance), vTarget, vUp);
-
-	m_fHorViewAngle = m_fVerViewAngle = 0.0f;
-	m_vCamUp = m_pCamera->GetUp();
-	m_vCamPos = m_pCamera->GetPosition();
 
 	Vec3 vLightDir = Vec3(0,1,0);
 	Vec4 vLightColor = Vec4(1,1,1,1);
@@ -275,32 +268,15 @@ void CViewerScene::CameraRotate (float _fAngleH, float _fAngleV)
 // Camera rotate horizontally
 void CViewerScene::CameraRotateHor (float _fAngle)
 {
-	//m_fHorViewAngle += _fAngle;
-	//Vec3 vTarget (0, 0, 0);
-
-	//MATRIX mR;
-	//MatrixRotationY(mR, m_fHorViewAngle);
-	//Vec3 vDir, vRight;
-	//MatrixVec3Multiply(vDir, Vec3(0.0f, 1.0f, 0.4f), mR);
-	//MatrixVec3Multiply(vRight, Vec3(1.0f, 0.0f, 0.0f), mR);
-	//vDir = vDir.normalize();
-	//Vec3 vUp = vDir.cross (vRight);
-	//m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
-
 	Vec3 vTarget (0, 0, 0);
 
 	MATRIX mR;
 	MatrixRotationY(mR, _fAngle);
-	//MatrixRotationAxis(mR, _fAngle, m_pCamera->GetUp().x, m_pCamera->GetUp().y, m_pCamera->GetUp().z);
-	//OG_LOG_INFO("OrgDir = [%f, %f, %f]", m_pCamera->GetDirection().x, m_pCamera->GetDirection().y, m_pCamera->GetDirection().z);
-	//OG_LOG_INFO("OrgRight = [%f, %f, %f]", m_pCamera->GetRight().x, m_pCamera->GetRight().y, m_pCamera->GetRight().z);
 	Vec3 vDir, vRight;
 	MatrixVec3Multiply(vDir, m_pCamera->GetDirection(), mR);
 	MatrixVec3Multiply(vRight, m_pCamera->GetRight(), mR);
 	vDir.normalize();
 	Vec3 vUp = vDir.cross (vRight);
-	//OG_LOG_INFO("Dir = [%f, %f, %f]", vDir.x, vDir.y, vDir.z);
-	//OG_LOG_INFO("Right = [%f, %f, %f]", vRight.x, vRight.y, vRight.z);
 	m_pCamera->Setup (vTarget - (vDir*m_fCameraDistance), vTarget, vUp);
 }
 
@@ -308,18 +284,6 @@ void CViewerScene::CameraRotateHor (float _fAngle)
 // Camera rotate vertically
 void CViewerScene::CameraRotateVer (float _fAngle)
 {
-	//m_fVerViewAngle += _fAngle;
-	//Vec3 vTarget (0, 0, 0);
-	//
-	//MATRIX mR;
-	//MatrixRotationX(mR, m_fVerViewAngle);
-	//Vec3 vDir, vRight;
-	//MatrixVec3Multiply(vDir, Vec3(0.0f, 1.0f, 0.4f), mR);
-	//MatrixVec3Multiply(vRight, Vec3(1.0f, 0.0f, 0.0f), mR);
-	//vDir = vDir.normalize();
-	//Vec3 vUp = vDir.cross (vRight);
-	//m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
-
 	Vec3 vTarget (0, 0, 0);
 	
 	MATRIX mR;
@@ -357,4 +321,15 @@ std::string CViewerScene::ActorTypeToGroupName(OGActorType type)
 	}
 
 	return std::string("Others");
+}
+
+
+// Save changes.
+void CViewerScene::SaveChanges()
+{
+    if (m_pCurActor)
+    {
+        IOGModel* pModel = m_pResourceMgr->GetModel(m_pCurActor->GetParams()->model_alias);
+        pModel->SaveParams();
+    }
 }

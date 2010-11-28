@@ -41,9 +41,9 @@ public:
     /// @param event - event structute.
     void OnExit(wxCommandEvent& event);
 
-    /// @brief About dialog handler.
+    /// @brief Save button handler.
     /// @param event - event structute.
-    void OnAboutDlg(wxCommandEvent& event);
+    void OnSave(wxCommandEvent& event);
 
     /// @brief Coord. grid switch handler.
     /// @param event - event structute.

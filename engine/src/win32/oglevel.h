@@ -67,9 +67,13 @@ private:
     COGTerrain*	m_pTerrain;
     Vec3		m_vStartPos;
     Vec3		m_vFinishPos;
-    Vec3		m_vLightDir;
-    Vec3		m_vLightColor;
     float		m_fActiveWidth;
+
+    Vec3		m_vLightDir;
+    Vec3		m_vLightAmbColor;
+    Vec3		m_vLightDifColor;
+    Vec3		m_vLightSpcColor;
+
     Vec4		m_vFogColor;
     float		m_fFogStart;
     float		m_fFogEnd;

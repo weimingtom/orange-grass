@@ -156,6 +156,10 @@ void CViewerCanvas::OnToolCmdEvent ( CommonToolEvent<ToolCmdEventData>& event )
 	case CMD_AABB:
 		g_pScene->SetAABBMode(evtData.m_bSwitcher);
 		break;
+
+	case CMD_ITEM_SAVE:
+        g_pScene->SaveChanges();
+		break;
 	}
 	Refresh ();
 }
@@ -205,13 +209,13 @@ void CViewerCanvas::OnMouseMove(wxMouseEvent& event)
 		{
 			int delta_y = mouse_y - prev_y;
 			float fV = (float)delta_y / (float)m_ResY;
-			g_pScene->CameraRotateVer(fV);
+			g_pScene->CameraRotateVer(fV * 2.0f);
 		}
 		else
 		{
 			int delta_x = mouse_x - prev_x;
 			float fH = (float)delta_x / (float)m_ResX;
-			g_pScene->CameraRotateHor(fH);
+			g_pScene->CameraRotateHor(fH * 2.0f);
 		}
 	}
 

@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="ISO-8859-1" ?>
 <Mesh file="Models/Land_objects_02/cactus/cactus_02.POD" />
-<Material texture = "land_02_objs" blend = "solid">
-	<Ambient r = "1.0" g = "1.0" b = "1.0" a = "1.0" />
-	<Diffuse r = "1.0" g = "1.0" b = "1.0" a = "1.0" />
-	<Specular r = "0.0" g = "0.0" b = "0.0" a = "0.0" />
+<Material texture="land_02_objs" blend="solid">
+    <Ambient r="0.59" g="0.59" b="0.59" a="1" />
+    <Diffuse r="1" g="1" b="1" a="1" />
+    <Specular r="0" g="0" b="0" a="0" />
 </Material>

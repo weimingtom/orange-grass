@@ -18,6 +18,7 @@ enum CmdEvents
 	CMD_UPDATE,
 	CMD_VIEW_EDITOR,
 	CMD_VIEW_GAME,
+	CMD_ITEM_SAVE
 };
 
 

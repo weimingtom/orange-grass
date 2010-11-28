@@ -60,6 +60,9 @@ public:
 	// Set Grid mode
 	void SetGridMode (bool _bEnable) {m_bShowGrid = _bEnable;}
 
+    // Save changes.
+    void SaveChanges();
+
 private:
 
     // Render scene helpers.
@@ -85,13 +88,6 @@ private:
 	bool	        m_bShowAABB;
 	bool	        m_bShowGrid;
     bool            m_bInited;
-    float			m_fFineAngleStep;
-    float			m_fCoarseAngleStep;
-
-	float			m_fHorViewAngle;
-	float			m_fVerViewAngle;
-	Vec3			m_vCamUp;
-	Vec3			m_vCamPos;
 
 	int				m_ResX;
 	int				m_ResY;

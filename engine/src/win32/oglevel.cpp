@@ -19,7 +19,9 @@ COGLevel::COGLevel () : m_pTerrain(NULL)
     m_fActiveWidth = 200.0f;
 
 	m_vLightDir = Vec3(0,1,0);
-	m_vLightColor = Vec3(1,1,1);
+	m_vLightAmbColor = Vec3(1,1,1);
+	m_vLightDifColor = Vec3(1,1,1);
+	m_vLightSpcColor = Vec3(1,1,1);
 	
 	m_vFogColor = Vec4(0.8f, 0.9f, 0.5f, 1.0f);
 	m_fFogStart = 150.0f;
@@ -97,9 +99,9 @@ bool COGLevel::Load ()
 		pMainLight->type = OG_LIGHT_DIRECTIONAL;
 		pMainLight->vPosition = m_vLightDir;
 		pMainLight->fIntensity = 100.0f;
-		pMainLight->vAmbientColor = Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f);
-		pMainLight->vDiffuseColor = Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f);
-		pMainLight->vSpecularColor = Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f);
+		pMainLight->vAmbientColor = Vec4(m_vLightAmbColor.x, m_vLightAmbColor.y, m_vLightAmbColor.z, 1.0f);
+		pMainLight->vDiffuseColor = Vec4(m_vLightDifColor.x, m_vLightDifColor.y, m_vLightDifColor.z, 1.0f);
+		pMainLight->vSpecularColor = Vec4(m_vLightSpcColor.x, m_vLightSpcColor.y, m_vLightSpcColor.z, 1.0f);
 
 		GetRenderer()->GetFog()->SetColor(m_vFogColor);
 		GetRenderer()->GetFog()->SetStart(m_fFogStart);
@@ -146,16 +148,47 @@ bool COGLevel::Load ()
     fread(&m_vLightDir.z, sizeof(float), 1, pIn);
 
 	// Ver.2 and higher
-	if (ver >= 2)
+	if (ver == 2)
 	{
 		// Level active width
 	    fread(&m_fActiveWidth, sizeof(float), 1, pIn);
 
 		// Level light color
-		fread(&m_vLightColor.x, sizeof(float), 1, pIn);
-		fread(&m_vLightColor.y, sizeof(float), 1, pIn);
-		fread(&m_vLightColor.z, sizeof(float), 1, pIn);
+		fread(&m_vLightAmbColor.x, sizeof(float), 1, pIn);
+		fread(&m_vLightAmbColor.y, sizeof(float), 1, pIn);
+		fread(&m_vLightAmbColor.z, sizeof(float), 1, pIn);
+        m_vLightDifColor = m_vLightAmbColor;
+        m_vLightSpcColor = m_vLightAmbColor;
 	}
+    else if (ver >= 3)
+    {
+		// Level active width
+	    fread(&m_fActiveWidth, sizeof(float), 1, pIn);
+
+		// Level ambient light color
+		fread(&m_vLightAmbColor.x, sizeof(float), 1, pIn);
+		fread(&m_vLightAmbColor.y, sizeof(float), 1, pIn);
+		fread(&m_vLightAmbColor.z, sizeof(float), 1, pIn);
+
+		// Level diffuse light color
+		fread(&m_vLightDifColor.x, sizeof(float), 1, pIn);
+		fread(&m_vLightDifColor.y, sizeof(float), 1, pIn);
+		fread(&m_vLightDifColor.z, sizeof(float), 1, pIn);
+
+		// Level specular light color
+		fread(&m_vLightSpcColor.x, sizeof(float), 1, pIn);
+		fread(&m_vLightSpcColor.y, sizeof(float), 1, pIn);
+		fread(&m_vLightSpcColor.z, sizeof(float), 1, pIn);
+
+		// Level fog params
+	    fread(&m_fFogStart, sizeof(float), 1, pIn);
+	    fread(&m_fFogEnd, sizeof(float), 1, pIn);
+	    fread(&m_fFogDensity, sizeof(float), 1, pIn);
+		fread(&m_vFogColor.x, sizeof(float), 1, pIn);
+		fread(&m_vFogColor.y, sizeof(float), 1, pIn);
+		fread(&m_vFogColor.z, sizeof(float), 1, pIn);
+		fread(&m_vFogColor.w, sizeof(float), 1, pIn);
+    }
 
     GetPhysics()->SetLevelBorders(m_vStartPos, m_vFinishPos, m_fActiveWidth);
 
@@ -163,9 +196,9 @@ bool COGLevel::Load ()
 	pMainLight->type = OG_LIGHT_DIRECTIONAL;
 	pMainLight->vPosition = m_vLightDir;
 	pMainLight->fIntensity = 100.0f;
-	pMainLight->vAmbientColor = Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f);
-	pMainLight->vDiffuseColor = Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f);
-	pMainLight->vSpecularColor = Vec4(m_vLightColor.x, m_vLightColor.y, m_vLightColor.z, 1.0f);
+	pMainLight->vAmbientColor = Vec4(m_vLightAmbColor.x, m_vLightAmbColor.y, m_vLightAmbColor.z, 1.0f);
+	pMainLight->vDiffuseColor = Vec4(m_vLightDifColor.x, m_vLightDifColor.y, m_vLightDifColor.z, 1.0f);
+	pMainLight->vSpecularColor = Vec4(m_vLightSpcColor.x, m_vLightSpcColor.y, m_vLightSpcColor.z, 1.0f);
 
 	GetRenderer()->GetFog()->SetColor(m_vFogColor);
 	GetRenderer()->GetFog()->SetStart(m_fFogStart);
@@ -248,7 +281,14 @@ bool COGLevel::Save ()
 	
 	IOGLight* pMainLight = GetRenderer()->GetLightMgr()->GetLight(0);
 	m_vLightDir = pMainLight->vPosition;
-	m_vLightColor = Vec3(pMainLight->vDiffuseColor.x, pMainLight->vDiffuseColor.y, pMainLight->vDiffuseColor.z);
+	m_vLightAmbColor = Vec3(pMainLight->vAmbientColor.x, pMainLight->vAmbientColor.y, pMainLight->vAmbientColor.z);
+	m_vLightDifColor = Vec3(pMainLight->vDiffuseColor.x, pMainLight->vDiffuseColor.y, pMainLight->vDiffuseColor.z);
+	m_vLightSpcColor = Vec3(pMainLight->vSpecularColor.x, pMainLight->vSpecularColor.y, pMainLight->vSpecularColor.z);
+
+    m_fFogStart = GetRenderer()->GetFog()->GetStart();
+    m_fFogEnd = GetRenderer()->GetFog()->GetEnd();
+    m_fFogDensity = GetRenderer()->GetFog()->GetDensity();
+    m_vFogColor = GetRenderer()->GetFog()->GetColor();
 
     FILE* pOut = fopen(m_SceneFile.c_str(), "wb");
 	if (pOut == NULL)
@@ -282,10 +322,29 @@ bool COGLevel::Save ()
 	// Level active width
 	fwrite(&m_fActiveWidth, sizeof(float), 1, pOut);
 
-	// Level light color
-	fwrite(&m_vLightColor.x, sizeof(float), 1, pOut);
-	fwrite(&m_vLightColor.y, sizeof(float), 1, pOut);
-	fwrite(&m_vLightColor.z, sizeof(float), 1, pOut);
+	// Level ambient light color
+	fwrite(&m_vLightAmbColor.x, sizeof(float), 1, pOut);
+	fwrite(&m_vLightAmbColor.y, sizeof(float), 1, pOut);
+	fwrite(&m_vLightAmbColor.z, sizeof(float), 1, pOut);
+
+    // Level diffuse light color
+    fwrite(&m_vLightDifColor.x, sizeof(float), 1, pOut);
+    fwrite(&m_vLightDifColor.y, sizeof(float), 1, pOut);
+    fwrite(&m_vLightDifColor.z, sizeof(float), 1, pOut);
+
+    // Level specular light color
+    fwrite(&m_vLightSpcColor.x, sizeof(float), 1, pOut);
+    fwrite(&m_vLightSpcColor.y, sizeof(float), 1, pOut);
+    fwrite(&m_vLightSpcColor.z, sizeof(float), 1, pOut);
+
+    // Level fog params
+    fwrite(&m_fFogStart, sizeof(float), 1, pOut);
+    fwrite(&m_fFogEnd, sizeof(float), 1, pOut);
+    fwrite(&m_fFogDensity, sizeof(float), 1, pOut);
+    fwrite(&m_vFogColor.x, sizeof(float), 1, pOut);
+    fwrite(&m_vFogColor.y, sizeof(float), 1, pOut);
+    fwrite(&m_vFogColor.z, sizeof(float), 1, pOut);
+    fwrite(&m_vFogColor.w, sizeof(float), 1, pOut);
 
     // actors list
     const std::list<IOGActor*>& actors = GetActorManager()->GetActorsList();

@@ -18,15 +18,15 @@ static const long TOOLBAR_STYLE = wxTB_FLAT | wxTB_DOCKABLE | wxTB_TEXT;
 
 
 BEGIN_EVENT_TABLE(CViewerFrame, wxFrame)
-    EVT_MENU (wxID_EXIT,    CViewerFrame::OnExit)
-    EVT_MENU (ID_DEF_ABOUT, CViewerFrame::OnAboutDlg)
-    EVT_MENU (ID_DEF_COORDGRID, CViewerFrame::OnCoordGrid)
-    EVT_MENU (ID_DEF_AABB, CViewerFrame::OnBounds)
-    EVT_RESLOAD( wxID_ANY, CViewerFrame::OnLoadResource )
-    EVT_MTLLOAD( wxID_ANY, CViewerFrame::OnLoadMaterial )
-	EVT_COMMAND_SCROLL(ID_DEF_DIFCOLOR, CViewerFrame::OnDiffuseSlider)
-	EVT_COMMAND_SCROLL(ID_DEF_AMBCOLOR, CViewerFrame::OnAmbientSlider)
-	EVT_COMMAND_SCROLL(ID_DEF_SPCCOLOR, CViewerFrame::OnSpecularSlider)
+    EVT_MENU(wxID_EXIT,                 CViewerFrame::OnExit)
+    EVT_MENU(wxID_SAVE,                 CViewerFrame::OnSave)
+    EVT_MENU(ID_DEF_COORDGRID,          CViewerFrame::OnCoordGrid)
+    EVT_MENU(ID_DEF_AABB,               CViewerFrame::OnBounds)
+    EVT_RESLOAD(wxID_ANY,               CViewerFrame::OnLoadResource )
+    EVT_MTLLOAD(wxID_ANY,               CViewerFrame::OnLoadMaterial )
+    EVT_COMMAND_SCROLL(ID_DEF_DIFCOLOR, CViewerFrame::OnDiffuseSlider)
+    EVT_COMMAND_SCROLL(ID_DEF_AMBCOLOR, CViewerFrame::OnAmbientSlider)
+    EVT_COMMAND_SCROLL(ID_DEF_SPCCOLOR, CViewerFrame::OnSpecularSlider)
 END_EVENT_TABLE()
 
 
@@ -127,10 +127,14 @@ void CViewerFrame::OnExit( wxCommandEvent& WXUNUSED(event) )
 }
 
 
-/// @brief About dialog handler.
+/// @brief Save button handler.
 /// @param event - event structute.
-void CViewerFrame::OnAboutDlg( wxCommandEvent& WXUNUSED(event) )
+void CViewerFrame::OnSave(wxCommandEvent& event)
 {
+	CommonToolEvent<ToolCmdEventData> cmd(EVENTID_TOOLCMD);
+	ToolCmdEventData cmdData (CMD_ITEM_SAVE, true);
+	cmd.SetEventCustomData(cmdData);
+	GetEventHandlersTable()->FireEvent(EVENTID_TOOLCMD, &cmd);
 }
 
 
@@ -162,26 +166,22 @@ void CViewerFrame::PopulateToolbar(wxToolBarBase* toolBar)
 {
 	enum
 	{
-		Tool_open,
-		Tool_help,
+		Tool_save,
 		Tool_Max
 	};
 
 	wxBitmap toolBarBitmaps[Tool_Max];
 
-	toolBarBitmaps[Tool_open] = wxBitmap(wxT("Resources\\open.bmp"), wxBITMAP_TYPE_BMP);
-	toolBarBitmaps[Tool_help] = wxBitmap(wxT("Resources\\help.bmp"), wxBITMAP_TYPE_BMP);
+	toolBarBitmaps[Tool_save] = wxBitmap(wxT("Resources\\save.bmp"), wxBITMAP_TYPE_BMP);
 
-	int w = toolBarBitmaps[Tool_open].GetWidth();
-	int h = toolBarBitmaps[Tool_open].GetHeight();
+	int w = toolBarBitmaps[Tool_save].GetWidth();
+	int h = toolBarBitmaps[Tool_save].GetHeight();
 
 	toolBar->SetToolBitmapSize(wxSize(w, h));
 
-	toolBar->AddTool(wxID_OPEN, _T("Open"),
-		toolBarBitmaps[Tool_open], wxNullBitmap, wxITEM_NORMAL,
-		_T("Open file"), _T("This is help for open file tool"));
-	toolBar->AddSeparator();
-	toolBar->AddTool(wxID_HELP, _T("Help"), toolBarBitmaps[Tool_help], _T("Help button"), wxITEM_CHECK);
+	toolBar->AddTool(wxID_SAVE, _T("Save"),
+		toolBarBitmaps[Tool_save], wxNullBitmap, wxITEM_NORMAL,
+		_T("Save actor"), _T("Save the changes to actor"));
 	toolBar->Realize();
 }
 
