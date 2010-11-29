@@ -1,6 +1,12 @@
-Tools: ver. 0.15, 27-Nov-2010
+Tools: ver. 0.15.1, 29-Nov-2010
 
 ChangeList:
+
+0.15.1 (29-Nov-2010):
+- [Viewer] materials support - now able to save changes;
+- [Viewer] faster object rotation;
+- [Editor] saving/loading lighting and fog params;
+- [OG] added emitter for scrolling ray;
 
 0.15 (27-Nov-2010):
 - [OG] added materials support;
