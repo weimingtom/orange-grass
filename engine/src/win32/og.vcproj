@@ -532,11 +532,27 @@
 							>
 						</File>
 						<File
+							RelativePath=".\ogemitterpulseglow.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogemitterpulseglow.h"
+							>
+						</File>
+						<File
 							RelativePath=".\ogemitterringwave.cpp"
 							>
 						</File>
 						<File
 							RelativePath=".\ogemitterringwave.h"
+							>
+						</File>
+						<File
+							RelativePath=".\ogemitterrotatingsparks.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogemitterrotatingsparks.h"
 							>
 						</File>
 						<File

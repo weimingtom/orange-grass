@@ -29,11 +29,6 @@ void COGEmitterScrollingRay::Init()
 	m_bPositionUpdated = false;
     m_bPosReady = false;
 
-    m_fSegment = 50.0f;
-    m_fScale = 8.0f;
-    m_fSpeed = 1.0f;
-	m_color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
-
     m_Frames.reserve(m_MappingFinishId - m_MappingStartId + 1);
     for (unsigned int i = m_MappingStartId; i <= m_MappingFinishId; ++i)
     {

@@ -10,9 +10,8 @@
 #define OGEFFECTBONUSPICK_H_
 
 #include "ogeffect.h"
-#include <vector>
-
-#define MAXPART     10
+#include "ogemitterpulseglow.h"
+#include "ogemitterrotatingsparks.h"
 
 
 class COGEffectBonusPick : public COGEffect
@@ -40,25 +39,8 @@ public:
 
 protected:
 
-    struct ParticleFormat
-    {
-        bool    bDirty;
-	    float	scale;
-        float   angle;
-        float   tilt;
-        int     axis;
-	    Vec3	offset;
-	    BBVert	pVertices[4];
-    };
-	
-protected:
-
-    IOGMapping*             m_pWaveMapping;
-    IOGMapping*             m_pGlowMapping;
-
-    ParticleFormat          m_BB[MAXPART];
-    ParticleFormat          m_Glow;
-    int                     m_GlowPulse;
+	COGEmitterPulseGlow			m_GlowEmitter;
+	COGEmitterRotatingSparks	m_SparksEmitter;
 
     static float            m_fAlphaInc;
 	static float            m_fScaleInc;

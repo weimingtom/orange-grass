@@ -64,7 +64,6 @@ protected:
     std::vector<IOGMapping*>    m_Frames;
     std::list<ParticleFormat>	m_BBList;
 
-	Vec4						m_color;
     Vec3                        m_vStartPos;
     Vec3                        m_vFinishPos;
     Vec3                        m_Direction;
@@ -79,6 +78,7 @@ public:
     float           m_fSegment;
     float           m_fScale;
     float           m_fSpeed;
+	Vec4			m_color;
 };
 
 
