@@ -55,10 +55,13 @@ public:
 	std::string     m_Texture;
 	unsigned int	m_MappingStartId;
 	unsigned int	m_MappingFinishId;
+	Vec4			m_color;
 	float			m_fFrameInc;
 	float			m_fInitialScale;
 	float			m_fScaleInc;
 	float			m_fRotateInc;
+	float			m_fInitialAngleMin;
+	float			m_fInitialAngleMax;
 };
 
 

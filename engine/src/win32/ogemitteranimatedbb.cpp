@@ -12,6 +12,27 @@
 
 COGEmitterAnimatedBB::COGEmitterAnimatedBB()
 {
+	m_Texture = std::string("effects");
+	m_MappingStartId = 1;
+	m_MappingFinishId = 7;
+	m_fInitialAngleMin = -3.14f;
+	m_fInitialAngleMax = 3.14f;
+	m_color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_fFrameInc = 0.5f;
+	m_fInitialScale = 8.0f;
+	m_fScaleInc = 0.6f;
+	m_fRotateInc = 0.1f;
+
+	AddStringParam("texture", m_Texture);
+	AddIntParam("mapping_start", m_MappingStartId, 0, 255);
+	AddIntParam("mapping_finish", m_MappingFinishId, 0, 255);
+	AddFloatParam("init_angle_min", m_fInitialAngleMin, -7.0f, 7.0f);
+	AddFloatParam("init_angle_max", m_fInitialAngleMax, -7.0f, 7.0f);
+	AddFloatParam("init_scale", m_fInitialScale, 0.0f, 30.0f);
+	AddFloatParam("scale_inc", m_fScaleInc, 0.0f, 5.0f);
+	AddFloatParam("frame_inc", m_fFrameInc, 0.0f, 5.0f);
+	AddFloatParam("rotate_inc", m_fRotateInc, 0.0f, 5.0f);
+	AddColorParam("color", m_color);
 }
 
 
@@ -32,7 +53,6 @@ void COGEmitterAnimatedBB::Init()
         m_Frames.push_back(m_pTexture->GetMapping(i));
     }
 
-	Vec4 m_color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_BB.offset = Vec3(0,0,0);
 	m_BB.pVertices[0].c = m_color;
 	m_BB.pVertices[1].c = m_color;
@@ -109,7 +129,9 @@ void COGEmitterAnimatedBB::Start ()
 
 	m_BB.scale = m_fInitialScale;
 	m_BB.frame = 0.0f;
-	m_BB.angle = GetRandomRange(-314,314) * 0.01f;
+	m_BB.angle = GetRandomRange(
+		(int)(m_fInitialAngleMin * 100.0f), 
+		(int)(m_fInitialAngleMax * 100.0f)) * 0.01f;
 }
 
 
