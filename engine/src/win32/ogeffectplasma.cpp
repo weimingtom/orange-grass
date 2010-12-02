@@ -10,6 +10,11 @@
 #include "OrangeGrass.h"
 
 
+Vec4 COGEffectPlasma::m_color = Vec4(1.0f, 1.0f, 1.0f, 0.2f);
+std::string	COGEffectPlasma::m_Texture = std::string("effects");
+unsigned int COGEffectPlasma::m_MappingId = 12;
+
+
 COGEffectPlasma::~COGEffectPlasma()
 {
 }
@@ -18,26 +23,11 @@ COGEffectPlasma::~COGEffectPlasma()
 // Initialize effect.
 void COGEffectPlasma::Init(OGEffectType _Type)
 {
-	m_pTexture = GetResourceMgr()->GetTexture("effects");
-    m_Blend = OG_BLEND_ALPHAADD;
-	m_pMapping = m_pTexture->GetMapping(12);
+	m_ChainEmitter.m_color = m_color;
+    m_ChainEmitter.m_Texture = m_Texture;
+    m_ChainEmitter.m_MappingId = m_MappingId;
+	m_ChainEmitter.Init();
 
-	Vec4 color = Vec4(1.0f, 1.0f, 1.0f, 0.2f);
-
-	for (int i = 0; i < MAX_PLASMA_PARTILES; ++i)
-	{
-		COGBillboard& particle = m_Particles[i];
-		particle.scale = ((float)MAX_PLASMA_PARTILES - i) / 4.5f;
-		particle.pVertices = &m_Vertices[i * 4];
-        particle.pVertices[0].t = Vec2(m_pMapping->t1.x, m_pMapping->t0.y);
-        particle.pVertices[1].t = Vec2(m_pMapping->t0.x, m_pMapping->t0.y);
-        particle.pVertices[2].t = Vec2(m_pMapping->t1.x, m_pMapping->t1.y);
-        particle.pVertices[3].t = Vec2(m_pMapping->t0.x, m_pMapping->t1.y);
-		particle.pVertices[0].c = color;
-		particle.pVertices[1].c = color;
-		particle.pVertices[2].c = color;
-		particle.pVertices[3].c = color;
-	}
     m_AABB.SetMinMax(Vec3(-1,-1,-1), Vec3(1,1,1));
 }
 
@@ -48,10 +38,8 @@ void COGEffectPlasma::Update (unsigned long _ElapsedTime)
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-	for (int i = 0; i < MAX_PLASMA_PARTILES; ++i)
-	{
-		m_Particles[i].offset = m_Direction * (float)i;
-	}
+	m_ChainEmitter.Update(_ElapsedTime);
+	m_Status = m_ChainEmitter.GetStatus();
 }
 
 
@@ -61,22 +49,7 @@ void COGEffectPlasma::Render (const MATRIX& _mWorld)
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-    m_pRenderer->SetModelMatrix(_mWorld);
-	m_pRenderer->SetBlend(m_Blend);
-	m_pRenderer->SetTexture(m_pTexture);
-
-	for (int i = 0; i < MAX_PLASMA_PARTILES; ++i)
-	{
-		COGBillboard& particle = m_Particles[i];
-		Vec3 vSUp = m_vCameraUp * particle.scale;
-		Vec3 vSRight = m_vCameraRight * particle.scale;
-		particle.pVertices[0].p = vSRight + vSUp + particle.offset;
-		particle.pVertices[1].p = -vSRight + vSUp + particle.offset;
-		particle.pVertices[2].p = vSRight - vSUp + particle.offset;
-		particle.pVertices[3].p = -vSRight - vSUp + particle.offset;
-
-		m_pRenderer->DrawEffectBuffer(&particle.pVertices[0], 0, 4);
-	}
+	m_ChainEmitter.Render(_mWorld, m_vCameraLook, m_vCameraUp, m_vCameraRight);
 }
 
 
@@ -84,7 +57,7 @@ void COGEffectPlasma::Render (const MATRIX& _mWorld)
 void COGEffectPlasma::Start ()
 {
 	m_Status = OG_EFFECTSTATUS_STARTED;
-    Update(0);
+	m_ChainEmitter.Start();
 }
 
 
@@ -92,4 +65,12 @@ void COGEffectPlasma::Start ()
 void COGEffectPlasma::Stop ()
 {
 	m_Status = OG_EFFECTSTATUS_INACTIVE;
+	m_ChainEmitter.Stop();
+}
+
+
+// Set direction.
+void COGEffectPlasma::SetDirection (const Vec3& _vDir)
+{
+	m_ChainEmitter.SetDirection(_vDir);
 }

@@ -28,7 +28,7 @@ void COGEmitterPulseGlow::Init()
 
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
 	m_pMapping = m_pTexture->GetMapping(m_MappingId);
-    m_Blend = OG_BLEND_ALPHAADD;
+    m_Blend = OG_BLEND_ALPHABLEND;
 
     m_Glow.scale = 16.0f;
     m_Glow.pVertices[0].c = m_color;

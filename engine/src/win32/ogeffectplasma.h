@@ -10,8 +10,8 @@
 #define OGEFFECTPLASMA_H_
 
 #include "ogeffect.h"
-#define MAX_PLASMA_PARTILES 12
-#define PLASMA_VERTICES     MAX_PLASMA_PARTILES*4
+#include "ogemitterparticlechain.h"
+
 
 class COGEffectPlasma : public COGEffect
 {
@@ -36,20 +36,16 @@ public:
 	// Stop.
 	virtual void Stop ();
 
-protected:
-
-	struct COGBillboard
-	{
-		float	scale;
-		Vec3	offset;
-		BBVert*	pVertices;
-	};
+	// Set direction.
+	virtual void SetDirection (const Vec3& _vDir);
 
 protected:
 	
-	IOGMapping*		m_pMapping;
-	BBVert			m_Vertices[PLASMA_VERTICES];
-	COGBillboard	m_Particles[MAX_PLASMA_PARTILES];
+	COGEmitterParticleChain		m_ChainEmitter;
+
+	static Vec4					m_color;
+    static std::string			m_Texture;
+    static unsigned int			m_MappingId;
 };
 
 

@@ -532,6 +532,14 @@
 							>
 						</File>
 						<File
+							RelativePath=".\ogemitterparticlechain.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\ogemitterparticlechain.h"
+							>
+						</File>
+						<File
 							RelativePath=".\ogemitterpulseglow.cpp"
 							>
 						</File>
