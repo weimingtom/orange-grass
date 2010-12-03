@@ -20,7 +20,7 @@ public:
 	virtual ~COGEmitterGlow();
 
 	// Initialize emitter.
-	virtual void Init();
+	virtual void Init (IOGGroupNode* _pNode);
 
 	// Update.
 	virtual void Update (unsigned long _ElapsedTime);
@@ -38,10 +38,8 @@ protected:
 
 	struct ParticleFormat
 	{
-		bool    bDirty;
 		float	scale;
 		float   angle;
-		Vec3	offset;
 		BBVert	pVertices[4];
 	};
 
@@ -53,6 +51,10 @@ public:
 
     std::string     m_Texture;
     unsigned int    m_MappingId;
+	Vec4			m_color;
+	float			m_fInitialScale;
+	float			m_fInitialAngleMin;
+	float			m_fInitialAngleMax;
 };
 
 

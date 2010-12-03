@@ -12,6 +12,19 @@
 
 COGEmitterGlow::COGEmitterGlow()
 {
+	m_Texture = std::string("effects");
+	m_MappingId = 9;
+	m_fInitialScale = 2.0f;
+	m_fInitialAngleMin = -3.14f;
+	m_fInitialAngleMax = 3.14f;
+	m_color = Vec4(1.0f, 1.0f, 1.0f, 0.6f);
+
+	AddStringParam("texture", &m_Texture);
+	AddIntParam("mapping", &m_MappingId);
+	AddFloatParam("init_angle_min", &m_fInitialAngleMin);
+	AddFloatParam("init_angle_max", &m_fInitialAngleMax);
+	AddFloatParam("init_scale", &m_fInitialScale);
+	AddColorParam("color", &m_color);
 }
 
 
@@ -21,19 +34,22 @@ COGEmitterGlow::~COGEmitterGlow()
 
 
 // Initialize emitter.
-void COGEmitterGlow::Init()
+void COGEmitterGlow::Init (IOGGroupNode* _pNode)
 {
+	LoadParams(_pNode);
+
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
 	m_pMapping = m_pTexture->GetMapping(m_MappingId);
     m_Blend = OG_BLEND_ALPHAADD;
 
-	m_Glow.bDirty = false;
-	m_Glow.scale = 2.0f;
-	m_Glow.angle = GetRandomRange(-314,314) * 0.01f;
-	m_Glow.pVertices[0].c = Vec4(1.0f,1.0f,1.0f,0.6f);
-	m_Glow.pVertices[1].c = Vec4(1.0f,1.0f,1.0f,0.6f);
-	m_Glow.pVertices[2].c = Vec4(1.0f,1.0f,1.0f,0.6f);
-	m_Glow.pVertices[3].c = Vec4(1.0f,1.0f,1.0f,0.6f);
+	m_Glow.scale = m_fInitialScale;
+	m_Glow.angle = GetRandomRange(
+		(int)(m_fInitialAngleMin * 100.0f), 
+		(int)(m_fInitialAngleMax * 100.0f)) * 0.01f;
+	m_Glow.pVertices[0].c = m_color;
+	m_Glow.pVertices[1].c = m_color;
+	m_Glow.pVertices[2].c = m_color;
+	m_Glow.pVertices[3].c = m_color;
 
 	m_bPositionUpdated = false;
 }

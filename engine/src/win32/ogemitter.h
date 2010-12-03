@@ -12,30 +12,16 @@
 #include "IOGEffect.h"
 #include "IOGTexture.h"
 #include "IOGRenderer.h"
+#include "IOGSettingsReader.h"
 #include <vector>
 #include <string>
 #include <map>
 
 
-struct EmitterIntParam
-{
-	unsigned int value;
-	unsigned int min_value;
-	unsigned int max_value;
-};
-
-struct EmitterFloatParam
-{
-	float value;
-	float min_value;
-	float max_value;
-};
-
-
-typedef std::map<std::string, std::string>			TStringParamList;
-typedef std::map<std::string, EmitterIntParam>		TIntParamList;
-typedef std::map<std::string, EmitterFloatParam>	TFloatParamList;
-typedef std::map<std::string, Vec4>					TColorParamList;
+typedef std::map<std::string, std::string*>		TStringParamList;
+typedef std::map<std::string, unsigned int*>	TIntParamList;
+typedef std::map<std::string, float*>			TFloatParamList;
+typedef std::map<std::string, Vec4*>			TColorParamList;
 
 
 class COGEmitter
@@ -45,7 +31,7 @@ public:
 	virtual ~COGEmitter();
 
 	// Initialize emitter.
-	virtual void Init() = 0;
+	virtual void Init (IOGGroupNode* _pNode) = 0;
 
 	// Update.
 	virtual void Update (unsigned long _ElapsedTime) = 0;
@@ -66,54 +52,60 @@ public:
 	virtual OGEffectStatus GetStatus() const;
 
 	// get all string params.
-	virtual const TStringParamList& GetStringParams () const { return m_StringParams; }
+	virtual TStringParamList& GetStringParams () { return m_StringParams; }
 
 	// get all int params.
-	virtual const TIntParamList& GetIntParams () const { return m_IntParams; }
+	virtual TIntParamList& GetIntParams () { return m_IntParams; }
 
 	// get all float params.
-	virtual const TFloatParamList& GetFloatParams () const { return m_FloatParams; }
+	virtual TFloatParamList& GetFloatParams () { return m_FloatParams; }
 
 	// get all color params.
-	virtual const TColorParamList& GetColorParams () const { return m_ColorParams; }
-
-	// get string parameter.
-	virtual std::string GetStringParam (const std::string& _Alias) const;
+	virtual TColorParamList& GetColorParams () { return m_ColorParams; }
 
 	// set string parameter.
-	virtual void SetStringParam (const std::string& _Alias, const std::string& _Value);
-
-	// get int parameter.
-	virtual unsigned int GetIntParam (const std::string& _Alias) const;
+	virtual void SetStringParam (const std::string& _Alias, std::string* _pValue);
 
 	// set int parameter.
-	virtual void SetIntParam (const std::string& _Alias, unsigned int _Value);
-
-	// get float parameter.
-	virtual float GetFloatParam (const std::string& _Alias) const;
+	virtual void SetIntParam (const std::string& _Alias, unsigned int* _pValue);
 
 	// set float parameter.
-	virtual void SetFloatParam (const std::string& _Alias, float _Value);
-
-	// get color parameter.
-	virtual Vec4 GetColorParam (const std::string& _Alias) const;
+	virtual void SetFloatParam (const std::string& _Alias, float* _pValue);
 
 	// set color parameter.
-	virtual void SetColorParam (const std::string& _Alias, const Vec4& _Value);
+	virtual void SetColorParam (const std::string& _Alias, Vec4* _pValue);
+
+	// get string parameter.
+	virtual std::string* GetStringParam (const std::string& _Alias);
+
+	// get int parameter.
+	virtual unsigned int* GetIntParam (const std::string& _Alias);
+
+	// get float parameter.
+	virtual float* GetFloatParam (const std::string& _Alias);
+
+	// get color parameter.
+	virtual Vec4* GetColorParam (const std::string& _Alias);
 
 protected:
 
 	// add string param.
-	void AddStringParam (const std::string& _Alias, const std::string& _Value);
+	void AddStringParam (const std::string& _Alias, std::string* _pValue);
 
 	// add int param.
-	void AddIntParam (const std::string& _Alias, unsigned int _Value, unsigned int _Min, unsigned int _Max);
+	void AddIntParam (const std::string& _Alias, unsigned int* _pValue);
 
 	// add float param.
-	void AddFloatParam (const std::string& _Alias, float _Value, float _Min, float _Max);
+	void AddFloatParam (const std::string& _Alias, float* _pValue);
 
 	// add color param.
-	void AddColorParam (const std::string& _Alias, const Vec4& _Value);
+	void AddColorParam (const std::string& _Alias, Vec4* _pValue);
+
+	// Load parameters of the emitter.
+	void LoadParams (IOGGroupNode* _pNode);
+
+	// Save parameters of the emitter.
+	void SaveParams (IOGGroupNode* _pNode);
 
 protected:
 

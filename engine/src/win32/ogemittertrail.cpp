@@ -12,6 +12,23 @@
 
 COGEmitterTrail::COGEmitterTrail()
 {
+    m_Texture = std::string("effects");
+    m_MappingId = 5;
+	m_numVertsAtOnce = 3;
+	m_fAlphaFade = 0.01f;
+	m_fInitialScale = 2.0f;
+	m_fScaleInc = 0.1f;
+    m_fRotateInc = 0.1f;
+	m_color = Vec4(0.6f, 0.6f, 0.6f, 0.2f);
+
+	AddStringParam("texture", &m_Texture);
+	AddIntParam("mapping", &m_MappingId);
+	AddIntParam("particles_at_once", &m_numVertsAtOnce);
+	AddFloatParam("alpha_fade", &m_fAlphaFade);
+	AddFloatParam("scale_inc", &m_fScaleInc);
+	AddFloatParam("rotate_inc", &m_fRotateInc);
+	AddFloatParam("init_scale", &m_fInitialScale);
+	AddColorParam("color", &m_color);
 }
 
 
@@ -23,6 +40,8 @@ COGEmitterTrail::~COGEmitterTrail()
 // Initialize emitter.
 void COGEmitterTrail::Init()
 {
+	LoadParams(_pNode);
+
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
 	m_pMapping = m_pTexture->GetMapping(m_MappingId);
     m_Blend = OG_BLEND_ALPHABLEND;
