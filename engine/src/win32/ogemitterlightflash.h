@@ -20,7 +20,7 @@ public:
 	virtual ~COGEmitterLightFlash();
 
 	// Initialize emitter.
-	virtual void Init();
+	virtual void Init(IOGGroupNode* _pNode);
 
 	// Update.
 	virtual void Update (unsigned long _ElapsedTime);

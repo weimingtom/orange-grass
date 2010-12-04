@@ -21,7 +21,7 @@ COGEmitterRingWave::~COGEmitterRingWave()
 
 
 // Initialize emitter.
-void COGEmitterRingWave::Init()
+void COGEmitterRingWave::Init(IOGGroupNode* _pNode)
 {
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
 	m_pMapping = m_pTexture->GetMapping(m_MappingId);

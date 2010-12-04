@@ -63,11 +63,11 @@ void COGEffectCollision::Init(OGEffectType _Type)
 	m_AnimatedBBEmitter.m_fInitialScale = m_fInitialScale;
 	m_AnimatedBBEmitter.m_fScaleInc = m_fScaleInc;
 	m_AnimatedBBEmitter.m_fRotateInc = m_fRotateInc;
-	m_AnimatedBBEmitter.Init();
+	m_AnimatedBBEmitter.Init(NULL);
 
 	m_LightFlashEmitter.m_fFadeFactor = m_fLightFadeFactor;
 	m_LightFlashEmitter.m_fInitialIntensity = m_fLightInitialIntensity;
-	m_LightFlashEmitter.Init();
+	m_LightFlashEmitter.Init(NULL);
 
     m_AABB.SetMinMax(Vec3(-1,-1,-1), Vec3(1,1,1));
 }

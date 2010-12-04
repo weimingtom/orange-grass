@@ -55,7 +55,7 @@ void COGEffectBonusPick::Init(OGEffectType _Type)
 	m_GlowEmitter.m_fGlowAlphaInc = m_fGlowAlphaInc;
 	m_GlowEmitter.m_MappingId = 8;
 	m_GlowEmitter.m_Texture = m_Texture;
-	m_GlowEmitter.Init();
+	m_GlowEmitter.Init(NULL);
 
 	m_SparksEmitter.m_color = Vec4(1.0f, 1.0f, 1.0f, 0.5f);
 	m_SparksEmitter.m_fAlphaInc = m_fAlphaInc;
@@ -63,7 +63,7 @@ void COGEffectBonusPick::Init(OGEffectType _Type)
     m_SparksEmitter.m_MappingId = m_MappingId;
 	m_SparksEmitter.m_fScaleInc = m_fScaleInc;
 	m_SparksEmitter.m_fInitialScale = m_fInitialScale;
-	m_SparksEmitter.Init();
+	m_SparksEmitter.Init(NULL);
 
     m_AABB.SetMinMax(Vec3(-1,-1,-1), Vec3(1,1,1));
 }

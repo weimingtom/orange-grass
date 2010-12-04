@@ -21,7 +21,7 @@ COGEmitterRotatingSparks::~COGEmitterRotatingSparks()
 
 
 // Initialize emitter.
-void COGEmitterRotatingSparks::Init()
+void COGEmitterRotatingSparks::Init(IOGGroupNode* _pNode)
 {
     m_color = Vec4(1.0f, 1.0f, 1.0f, 0.5f);
 

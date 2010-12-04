@@ -202,7 +202,7 @@ void COGEmitter::LoadParams (IOGGroupNode* _pNode)
 				clr_iter->first + std::string("_r"),
 				clr_iter->first + std::string("_g"),
 				clr_iter->first + std::string("_b"),
-				clr_iter->first + std::string("_a")));
+				clr_iter->first + std::string("_a"));
 		}
 	}
 }

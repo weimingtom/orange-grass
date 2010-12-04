@@ -42,18 +42,18 @@ void COGEffectExplosion::Init(OGEffectType _Type)
 	m_AnimatedBBEmitter.m_fInitialScale = m_fInitialScale;
 	m_AnimatedBBEmitter.m_fScaleInc = m_fScaleInc;
 	m_AnimatedBBEmitter.m_fRotateInc = m_fRotateInc;
-	m_AnimatedBBEmitter.Init();
+	m_AnimatedBBEmitter.Init(NULL);
 
 	m_RingWaveEmitter.m_Texture = m_Texture;
 	m_RingWaveEmitter.m_MappingId = m_WaveMappingId;
 	m_RingWaveEmitter.m_fWaveInitialScale = m_fWaveInitialScale;
 	m_RingWaveEmitter.m_fWaveAlphaDec = m_fWaveAlphaDec;
 	m_RingWaveEmitter.m_fWaveScaleInc = m_fWaveScaleInc;
-	m_RingWaveEmitter.Init();
+	m_RingWaveEmitter.Init(NULL);
 
 	m_LightFlashEmitter.m_fFadeFactor = m_fLightFadeFactor;
 	m_LightFlashEmitter.m_fInitialIntensity = m_fLightInitialIntensity;
-	m_LightFlashEmitter.Init();
+	m_LightFlashEmitter.Init(NULL);
 
     m_AABB.SetMinMax(Vec3(-1,-1,-1), Vec3(1,1,1));
 }

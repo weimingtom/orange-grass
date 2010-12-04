@@ -63,7 +63,7 @@ void COGEffectTrailSmoke::Init(OGEffectType _Type)
 	m_TrailEmitter.m_fRotateInc = m_fRotateInc;
 	m_TrailEmitter.m_Texture = m_Texture;
 	m_TrailEmitter.m_MappingId = m_MappingId;
-	m_TrailEmitter.Init();
+	m_TrailEmitter.Init(NULL);
 
 	m_bPositionUpdated = false;
     m_AABB.SetMinMax(Vec3(-1,-1,-1), Vec3(1,1,1));

@@ -21,7 +21,7 @@ COGEmitterParticleChain::~COGEmitterParticleChain()
 
 
 // Initialize emitter.
-void COGEmitterParticleChain::Init()
+void COGEmitterParticleChain::Init(IOGGroupNode* _pNode)
 {
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
     m_Blend = OG_BLEND_ALPHAADD;

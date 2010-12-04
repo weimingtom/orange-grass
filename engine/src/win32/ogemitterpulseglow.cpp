@@ -21,7 +21,7 @@ COGEmitterPulseGlow::~COGEmitterPulseGlow()
 
 
 // Initialize emitter.
-void COGEmitterPulseGlow::Init()
+void COGEmitterPulseGlow::Init(IOGGroupNode* _pNode)
 {
 	m_MappingId = 8;
     m_color = Vec4(1.0f, 1.0f, 1.0f, 0.4f);

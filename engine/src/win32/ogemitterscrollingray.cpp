@@ -21,7 +21,7 @@ COGEmitterScrollingRay::~COGEmitterScrollingRay()
 
 
 // Initialize emitter.
-void COGEmitterScrollingRay::Init()
+void COGEmitterScrollingRay::Init(IOGGroupNode* _pNode)
 {
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
     m_Blend = OG_BLEND_ALPHAADD;

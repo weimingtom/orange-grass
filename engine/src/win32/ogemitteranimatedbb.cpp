@@ -23,16 +23,16 @@ COGEmitterAnimatedBB::COGEmitterAnimatedBB()
 	m_fScaleInc = 0.6f;
 	m_fRotateInc = 0.1f;
 
-	AddStringParam("texture", m_Texture);
-	AddIntParam("mapping_start", m_MappingStartId, 0, 255);
-	AddIntParam("mapping_finish", m_MappingFinishId, 0, 255);
-	AddFloatParam("init_angle_min", m_fInitialAngleMin, -7.0f, 7.0f);
-	AddFloatParam("init_angle_max", m_fInitialAngleMax, -7.0f, 7.0f);
-	AddFloatParam("init_scale", m_fInitialScale, 0.0f, 30.0f);
-	AddFloatParam("scale_inc", m_fScaleInc, 0.0f, 5.0f);
-	AddFloatParam("frame_inc", m_fFrameInc, 0.0f, 5.0f);
-	AddFloatParam("rotate_inc", m_fRotateInc, 0.0f, 5.0f);
-	AddColorParam("color", m_color);
+	AddStringParam("texture", &m_Texture);
+	AddIntParam("mapping_start", &m_MappingStartId);
+	AddIntParam("mapping_finish", &m_MappingFinishId);
+	AddFloatParam("init_angle_min", &m_fInitialAngleMin);
+	AddFloatParam("init_angle_max", &m_fInitialAngleMax);
+	AddFloatParam("init_scale", &m_fInitialScale);
+	AddFloatParam("scale_inc", &m_fScaleInc);
+	AddFloatParam("frame_inc", &m_fFrameInc);
+	AddFloatParam("rotate_inc", &m_fRotateInc);
+	AddColorParam("color", &m_color);
 }
 
 
@@ -42,8 +42,10 @@ COGEmitterAnimatedBB::~COGEmitterAnimatedBB()
 
 
 // Initialize emitter.
-void COGEmitterAnimatedBB::Init()
+void COGEmitterAnimatedBB::Init(IOGGroupNode* _pNode)
 {
+	LoadParams(_pNode);
+
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
     m_Blend = OG_BLEND_ALPHAADD;
 

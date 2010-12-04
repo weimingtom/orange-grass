@@ -21,7 +21,7 @@ COGEmitterLightFlash::~COGEmitterLightFlash()
 
 
 // Initialize emitter.
-void COGEmitterLightFlash::Init()
+void COGEmitterLightFlash::Init(IOGGroupNode* _pNode)
 {
 	m_color = Vec4(1, 1, 0, 1);
 	m_bPositionUpdated = false;

@@ -65,11 +65,11 @@ void COGEffectMissileSmoke::Init(OGEffectType _Type)
 	m_TrailEmitter.m_fRotateInc = m_fRotateInc;
 	m_TrailEmitter.m_Texture = m_Texture;
 	m_TrailEmitter.m_MappingId = m_MappingId;
-	m_TrailEmitter.Init();
+	m_TrailEmitter.Init(NULL);
 
 	m_GlowEmitter.m_MappingId = m_GlowMappingId;
 	m_GlowEmitter.m_Texture = m_Texture;
-	m_GlowEmitter.Init();
+	m_GlowEmitter.Init(NULL);
 
 	m_bPositionUpdated = false;
 

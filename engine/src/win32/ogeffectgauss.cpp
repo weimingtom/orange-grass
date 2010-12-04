@@ -36,7 +36,7 @@ void COGEffectGauss::Init(OGEffectType _Type)
     m_RayEmitter.m_fSpeed = m_fSpeed;
 	m_RayEmitter.m_Texture = m_Texture;
 	m_RayEmitter.m_color = m_color;
-	m_RayEmitter.Init();
+	m_RayEmitter.Init(NULL);
 
     m_AABB.SetMinMax(Vec3(-1,-1,-1), Vec3(1,1,1));
 }

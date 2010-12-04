@@ -38,7 +38,7 @@ COGEmitterTrail::~COGEmitterTrail()
 
 
 // Initialize emitter.
-void COGEmitterTrail::Init()
+void COGEmitterTrail::Init(IOGGroupNode* _pNode)
 {
 	LoadParams(_pNode);
 

@@ -26,7 +26,7 @@ void COGEffectPlasma::Init(OGEffectType _Type)
 	m_ChainEmitter.m_color = m_color;
     m_ChainEmitter.m_Texture = m_Texture;
     m_ChainEmitter.m_MappingId = m_MappingId;
-	m_ChainEmitter.Init();
+	m_ChainEmitter.Init(NULL);
 
     m_AABB.SetMinMax(Vec3(-1,-1,-1), Vec3(1,1,1));
 }
