@@ -12,8 +12,6 @@
 #include "ogemitter.h"
 #include <vector>
 
-#define MAX_PLASMA_PARTILES 12
-
 
 class COGEmitterParticleChain : public COGEmitter
 {
@@ -50,13 +48,14 @@ protected:
 
 protected:
 
-    ParticleFormat  m_BB[MAX_PLASMA_PARTILES];
+	std::vector<ParticleFormat>  m_BBList;
 	Vec3			m_Direction;
 
 public:
 
     std::string     m_Texture;
     unsigned int    m_MappingId;
+	unsigned int	m_NumParticles;
 	Vec4			m_color;
 };
 

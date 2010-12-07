@@ -54,6 +54,7 @@ public:
     unsigned int    m_MappingId;
     float           m_fGlowAlphaInc;
 	float			m_fAlphaInc;
+	float			m_fInitialScale;
 	Vec4			m_color;
 };
 

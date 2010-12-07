@@ -12,6 +12,21 @@
 
 COGEmitterScrollingRay::COGEmitterScrollingRay()
 {
+	m_Texture = std::string("effects");
+	m_MappingStartId = 13;
+	m_MappingFinishId = 14;
+	m_color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_fSegment = 50.0f;
+	m_fScale = 8.0f;
+	m_fSpeed = 1.0f;
+
+	AddStringParam("texture", &m_Texture);
+	AddIntParam("mapping_start", &m_MappingStartId);
+	AddIntParam("mapping_finish", &m_MappingFinishId);
+	AddFloatParam("segment", &m_fSegment);
+	AddFloatParam("scale", &m_fScale);
+	AddFloatParam("speed", &m_fSpeed);
+	AddColorParam("color", &m_color);
 }
 
 
@@ -23,6 +38,8 @@ COGEmitterScrollingRay::~COGEmitterScrollingRay()
 // Initialize emitter.
 void COGEmitterScrollingRay::Init(IOGGroupNode* _pNode)
 {
+	LoadParams(_pNode);
+
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
     m_Blend = OG_BLEND_ALPHAADD;
 

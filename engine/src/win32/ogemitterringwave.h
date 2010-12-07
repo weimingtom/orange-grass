@@ -38,9 +38,7 @@ protected:
 
 	struct ParticleFormat
 	{
-		bool    bDirty;
 		float	scale;
-		Vec3	offset;
 		BBVert	pVertices[4];
 	};
 
@@ -52,9 +50,9 @@ public:
 
     std::string     m_Texture;
     unsigned int    m_MappingId;
-	float			m_fWaveInitialScale;
-	float			m_fWaveAlphaDec;
-	float			m_fWaveScaleInc;
+	float			m_fInitialScale;
+	float			m_fAlphaDec;
+	float			m_fScaleInc;
 	Vec4			m_color;
 };
 

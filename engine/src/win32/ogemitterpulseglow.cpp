@@ -12,6 +12,19 @@
 
 COGEmitterPulseGlow::COGEmitterPulseGlow()
 {
+	m_Texture = std::string("effects");
+	m_MappingId = 8;
+	m_fInitialScale = 16.0f;
+	m_fGlowAlphaInc = 0.08f;
+	m_fAlphaInc = 0.02f;
+	m_color = Vec4(1.0f, 1.0f, 1.0f, 0.4f);
+
+	AddStringParam("texture", &m_Texture);
+	AddIntParam("mapping", &m_MappingId);
+	AddFloatParam("init_scale", &m_fInitialScale);
+	AddFloatParam("glow_alpha_inc", &m_fGlowAlphaInc);
+	AddFloatParam("alpha_inc", &m_fAlphaInc);
+	AddColorParam("color", &m_color);
 }
 
 
@@ -23,14 +36,13 @@ COGEmitterPulseGlow::~COGEmitterPulseGlow()
 // Initialize emitter.
 void COGEmitterPulseGlow::Init(IOGGroupNode* _pNode)
 {
-	m_MappingId = 8;
-    m_color = Vec4(1.0f, 1.0f, 1.0f, 0.4f);
+	LoadParams(_pNode);
 
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
 	m_pMapping = m_pTexture->GetMapping(m_MappingId);
     m_Blend = OG_BLEND_ALPHABLEND;
 
-    m_Glow.scale = 16.0f;
+    m_Glow.scale = m_fInitialScale;
     m_Glow.pVertices[0].c = m_color;
     m_Glow.pVertices[0].t = Vec2(m_pMapping->t1.x, m_pMapping->t0.y);
     m_Glow.pVertices[1].c = m_color;

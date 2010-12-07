@@ -12,6 +12,7 @@
 
 COGTerrain::COGTerrain () :	m_pMesh(NULL),
                             m_pMaterial(NULL),
+							m_pTexture(NULL),
 							m_Blend(OG_BLEND_NO)
 {
     m_pRenderer = GetRenderer();
@@ -49,14 +50,12 @@ bool COGTerrain::Load ()
 	if (!m_pMesh->Load())
 		return false;
 
+	m_pTexture = GetResourceMgr()->GetTexture(cfg.texture_alias);
+    m_pMaterial = m_pRenderer->CreateMaterial();
+    m_pMaterial->SetAmbient(cfg.material_ambient);
+    m_pMaterial->SetDiffuse(cfg.material_diffuse);
+    m_pMaterial->SetSpecular(cfg.material_specular);
 	m_Blend = OG_BLEND_SOLID;
-
-	std::vector<Cfg::TextureCfg>::const_iterator iter;
-	for (iter = cfg.texture_cfg_list.begin(); iter != cfg.texture_cfg_list.end(); ++iter)
-	{
-		IOGTexture* pTexture = GetResourceMgr()->GetTexture((*iter).alias);
-		m_TextureList.push_back(pTexture);
-	}
 
 	m_LoadState = OG_RESSTATE_LOADED;
 	return true;
@@ -83,18 +82,68 @@ bool COGTerrain::LoadConfig (COGTerrain::Cfg& _cfg)
 	IOGGroupNode* pMaterialNode = m_pReader->OpenGroupNode(pSource, NULL, "Material");
 	if (pMaterialNode != NULL)
 	{
-		IOGGroupNode* pTextureNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Texture");
-		for (; pTextureNode != NULL; )
-		{
-			Cfg::TextureCfg txcfg;
-			txcfg.alias = m_pReader->ReadStringParam(pTextureNode, "alias");
-			_cfg.texture_cfg_list.push_back(txcfg);
-			pTextureNode = m_pReader->ReadNextNode(pTextureNode);
-		}
+		_cfg.texture_alias = m_pReader->ReadStringParam(pMaterialNode, "texture");
+    	IOGGroupNode* pAmbientNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Ambient");
+        if (pAmbientNode)
+        {
+            _cfg.material_ambient = m_pReader->ReadVec4Param(pAmbientNode, "r", "g", "b", "a");
+    		m_pReader->CloseGroupNode(pAmbientNode);
+        }
+    	IOGGroupNode* pDiffuseNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Diffuse");
+        if (pDiffuseNode)
+        {
+            _cfg.material_diffuse = m_pReader->ReadVec4Param(pDiffuseNode, "r", "g", "b", "a");
+    		m_pReader->CloseGroupNode(pDiffuseNode);
+        }
+    	IOGGroupNode* pSpecularNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Specular");
+        if (pSpecularNode)
+        {
+            _cfg.material_specular = m_pReader->ReadVec4Param(pSpecularNode, "r", "g", "b", "a");
+    		m_pReader->CloseGroupNode(pSpecularNode);
+        }
+
 		m_pReader->CloseGroupNode(pMaterialNode);
 	}
 
 	m_pReader->CloseSource(pSource);
+	return true;
+}
+
+
+// Save params
+bool COGTerrain::SaveParams ()
+{
+	IOGSettingsSource* pSource = m_pReader->OpenSource(m_ResourceFile);
+	if (!pSource)
+	{
+		OG_LOG_ERROR("Failed to load terrain config file %s", m_ResourceFile.c_str());
+		return false;
+	}
+
+	IOGGroupNode* pMaterialNode = m_pReader->OpenGroupNode(pSource, NULL, "Material");
+	if (pMaterialNode != NULL)
+	{
+    	IOGGroupNode* pAmbientNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Ambient");
+        if (pAmbientNode)
+        {
+            m_pReader->WriteVec4Param(pAmbientNode, "r", "g", "b", "a", m_pMaterial->GetAmbient());
+    		m_pReader->CloseGroupNode(pAmbientNode);
+        }
+    	IOGGroupNode* pDiffuseNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Diffuse");
+        if (pDiffuseNode)
+        {
+            m_pReader->WriteVec4Param(pDiffuseNode, "r", "g", "b", "a", m_pMaterial->GetDiffuse());
+    		m_pReader->CloseGroupNode(pDiffuseNode);
+        }
+    	IOGGroupNode* pSpecularNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Specular");
+        if (pSpecularNode)
+        {
+            m_pReader->WriteVec4Param(pSpecularNode, "r", "g", "b", "a", m_pMaterial->GetSpecular());
+    		m_pReader->CloseGroupNode(pSpecularNode);
+        }
+    }
+
+    m_pReader->SaveSource(pSource, m_ResourceFile);
 	return true;
 }
 
@@ -115,7 +164,6 @@ void COGTerrain::Unload ()
 
 	m_Blend = OG_BLEND_NO;
 	OG_SAFE_DELETE(m_pMaterial);
-	m_TextureList.clear();
 
 	m_LoadState = OG_RESSTATE_DEFINED;
 }
@@ -128,7 +176,7 @@ void COGTerrain::Render (const MATRIX& _mWorld)
 	float fCameraZ = pCamera->GetPosition().z;
 
     m_pRenderer->SetMaterial(m_pMaterial);
-    m_pRenderer->SetTexture(m_TextureList[0]);
+    m_pRenderer->SetTexture(m_pTexture);
 	m_pRenderer->SetBlend(m_Blend);
 
     unsigned int numParts = m_pMesh->GetNumRenderables();
@@ -153,7 +201,7 @@ void COGTerrain::Render (const MATRIX& _mWorld)
 void COGTerrain::RenderAll (const MATRIX& _mWorld)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
-    m_pRenderer->SetTexture(m_TextureList[0]);
+    m_pRenderer->SetTexture(m_pTexture);
 	m_pRenderer->SetBlend(m_Blend);
 
 	unsigned int numParts = m_pMesh->GetNumRenderables();

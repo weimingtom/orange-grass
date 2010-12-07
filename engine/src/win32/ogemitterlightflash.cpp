@@ -12,6 +12,13 @@
 
 COGEmitterLightFlash::COGEmitterLightFlash()
 {
+	m_fFadeFactor = 0.64f;
+	m_fInitialIntensity = 100.0f;
+	m_color = Vec4(1, 1, 0, 1);
+
+	AddFloatParam("init_intensity", &m_fInitialIntensity);
+	AddFloatParam("fade_factor", &m_fFadeFactor);
+	AddColorParam("color", &m_color);
 }
 
 
@@ -23,7 +30,8 @@ COGEmitterLightFlash::~COGEmitterLightFlash()
 // Initialize emitter.
 void COGEmitterLightFlash::Init(IOGGroupNode* _pNode)
 {
-	m_color = Vec4(1, 1, 0, 1);
+	LoadParams(_pNode);
+
 	m_bPositionUpdated = false;
 	m_pLight = NULL;
 }

@@ -52,17 +52,21 @@ public:
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const;
 
+	// Get material
+	virtual IOGMaterial* GetMaterial () { return m_pMaterial; }
+
+	// Save params
+	virtual bool SaveParams ();
+
 private:
 
 	struct Cfg
 	{
-		struct TextureCfg
-		{
-			std::string alias;
-		};
-
+        Vec4 material_ambient;
+        Vec4 material_diffuse;
+        Vec4 material_specular;
 		std::string mesh_file;
-		std::vector<TextureCfg> texture_cfg_list;
+		std::string texture_alias;
 	};
 
 	// Load terrain configuration
@@ -71,7 +75,7 @@ private:
 private:
 
 	COGMesh*					m_pMesh;	
-	std::vector<IOGTexture*>	m_TextureList;
+	IOGTexture*					m_pTexture;
     IOGMaterial*				m_pMaterial;
 	OGBlendType					m_Blend;
     IOGRenderer*                m_pRenderer;

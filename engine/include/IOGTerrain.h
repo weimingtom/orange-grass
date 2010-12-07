@@ -18,6 +18,9 @@ class IOGTerrain
 public:
 	virtual ~IOGTerrain() {}
 
+	// Save params
+	virtual bool SaveParams () = 0;
+
 	// Render terrain.
 	virtual void Render (const MATRIX& _mWorld) = 0;
 
@@ -32,6 +35,9 @@ public:
 
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const = 0;
+
+	// Get material
+	virtual IOGMaterial* GetMaterial () = 0;
 };
 
 

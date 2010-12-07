@@ -46,9 +46,9 @@ void COGEffectExplosion::Init(OGEffectType _Type)
 
 	m_RingWaveEmitter.m_Texture = m_Texture;
 	m_RingWaveEmitter.m_MappingId = m_WaveMappingId;
-	m_RingWaveEmitter.m_fWaveInitialScale = m_fWaveInitialScale;
-	m_RingWaveEmitter.m_fWaveAlphaDec = m_fWaveAlphaDec;
-	m_RingWaveEmitter.m_fWaveScaleInc = m_fWaveScaleInc;
+	m_RingWaveEmitter.m_fInitialScale = m_fWaveInitialScale;
+	m_RingWaveEmitter.m_fAlphaDec = m_fWaveAlphaDec;
+	m_RingWaveEmitter.m_fScaleInc = m_fWaveScaleInc;
 	m_RingWaveEmitter.Init(NULL);
 
 	m_LightFlashEmitter.m_fFadeFactor = m_fLightFadeFactor;

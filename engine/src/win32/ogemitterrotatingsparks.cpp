@@ -12,6 +12,21 @@
 
 COGEmitterRotatingSparks::COGEmitterRotatingSparks()
 {
+    m_Texture = std::string("effects");
+    m_MappingId = 11;
+	m_NumParticles = 10;
+	m_fAlphaInc = 0.02f;
+	m_fScaleInc = 1.5f;
+	m_fInitialScale = 3.0f;
+    m_color = Vec4(1.0f, 1.0f, 1.0f, 0.5f);
+
+	AddStringParam("texture", &m_Texture);
+	AddIntParam("mapping", &m_MappingId);
+	AddIntParam("num_particles", &m_NumParticles);
+	AddFloatParam("alpha_inc", &m_fAlphaInc);
+	AddFloatParam("scale_inc", &m_fScaleInc);
+	AddFloatParam("init_scale", &m_fInitialScale);
+	AddColorParam("color", &m_color);
 }
 
 
@@ -23,16 +38,18 @@ COGEmitterRotatingSparks::~COGEmitterRotatingSparks()
 // Initialize emitter.
 void COGEmitterRotatingSparks::Init(IOGGroupNode* _pNode)
 {
-    m_color = Vec4(1.0f, 1.0f, 1.0f, 0.5f);
+	LoadParams(_pNode);
 
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
 	m_pMapping = m_pTexture->GetMapping(m_MappingId);
     m_Blend = OG_BLEND_ALPHABLEND;
 
+	m_BBList.reserve(m_NumParticles);
+
     int a = 0;
-    for (int i = 0; i < MAXPART; ++i)
+    for (unsigned int i = 0; i < m_NumParticles; ++i)
     {
-        ParticleFormat& p = m_BB[i];
+        ParticleFormat p;
         p.scale = m_fInitialScale;
         p.angle = 0.0f;
         p.axis = a;
@@ -52,6 +69,7 @@ void COGEmitterRotatingSparks::Init(IOGGroupNode* _pNode)
         ++a;
         if (a > 2)
             a = 0;
+		m_BBList.push_back(p);
     }
 
 	m_bPositionUpdated = false;
@@ -68,9 +86,10 @@ void COGEmitterRotatingSparks::Update (unsigned long _ElapsedTime)
     {
     case OG_EFFECTSTATUS_STARTED:
         {
-            for (int i = 0; i < MAXPART; ++i)
-            {
-                ParticleFormat& p = m_BB[i];
+			std::vector<ParticleFormat>::iterator iter = m_BBList.begin();
+			for (; iter != m_BBList.end(); ++iter)
+			{
+				ParticleFormat& p = (*iter);
                 p.angle += 0.1f;
             }
         }
@@ -78,9 +97,10 @@ void COGEmitterRotatingSparks::Update (unsigned long _ElapsedTime)
 
     case OG_EFFECTSTATUS_STOPPED:
         {
-            for (int i = 0; i < MAXPART; ++i)
-            {
-                ParticleFormat& p = m_BB[i];
+			std::vector<ParticleFormat>::iterator iter = m_BBList.begin();
+			for (; iter != m_BBList.end(); ++iter)
+			{
+				ParticleFormat& p = (*iter);
                 if (p.pVertices[0].c.w >= m_fAlphaInc)
                 {
                     p.angle += 0.1f;
@@ -120,9 +140,10 @@ void COGEmitterRotatingSparks::Render (const MATRIX& _mWorld, const Vec3& _vLook
     Vec3 vOffset = Vec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
 
     MATRIX mR;
-    for (int i = 0; i < MAXPART; ++i)
-    {
-        ParticleFormat& p = m_BB[i];
+	std::vector<ParticleFormat>::iterator iter = m_BBList.begin();
+	for (; iter != m_BBList.end(); ++iter)
+	{
+		ParticleFormat& p = (*iter);
 
         Vec3 vUp = _vUp * p.scale;
         Vec3 vRight = _vRight * p.scale;

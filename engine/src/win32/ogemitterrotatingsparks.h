@@ -12,8 +12,6 @@
 #include "ogemitter.h"
 #include <vector>
 
-#define MAXPART     10
-
 
 class COGEmitterRotatingSparks : public COGEmitter
 {
@@ -51,12 +49,13 @@ protected:
 
 protected:
 
-    ParticleFormat  m_BB[MAXPART];
+	std::vector<ParticleFormat>	m_BBList;
 
 public:
 
     std::string     m_Texture;
     unsigned int    m_MappingId;
+	unsigned int	m_NumParticles;
 	float			m_fAlphaInc;
 	float           m_fScaleInc;
 	float           m_fInitialScale;

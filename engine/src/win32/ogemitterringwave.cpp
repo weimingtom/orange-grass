@@ -12,6 +12,19 @@
 
 COGEmitterRingWave::COGEmitterRingWave()
 {
+	m_Texture = std::string("effects");
+	m_MappingId = 10;
+	m_fInitialScale = 8.0f;
+	m_fScaleInc = 1.5f;
+	m_fAlphaDec = 0.08f;
+	m_color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+
+	AddStringParam("texture", &m_Texture);
+	AddIntParam("mapping", &m_MappingId);
+	AddFloatParam("init_scale", &m_fInitialScale);
+	AddFloatParam("scale_inc", &m_fScaleInc);
+	AddFloatParam("alpha_dec", &m_fAlphaDec);
+	AddColorParam("color", &m_color);
 }
 
 
@@ -23,12 +36,12 @@ COGEmitterRingWave::~COGEmitterRingWave()
 // Initialize emitter.
 void COGEmitterRingWave::Init(IOGGroupNode* _pNode)
 {
+	LoadParams(_pNode);
+
 	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
 	m_pMapping = m_pTexture->GetMapping(m_MappingId);
     m_Blend = OG_BLEND_ALPHABLEND;
 
-	m_color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
-    m_Wave.offset = Vec3(0,0,0);
     m_Wave.pVertices[0].t = Vec2(m_pMapping->t1.x, m_pMapping->t0.y);
     m_Wave.pVertices[1].t = Vec2(m_pMapping->t0.x, m_pMapping->t0.y);
     m_Wave.pVertices[2].t = Vec2(m_pMapping->t1.x, m_pMapping->t1.y);
@@ -44,13 +57,13 @@ void COGEmitterRingWave::Update (unsigned long _ElapsedTime)
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-	if (m_Wave.pVertices[0].c.w >= m_fWaveAlphaDec)
+	if (m_Wave.pVertices[0].c.w >= m_fAlphaDec)
     {
-        m_Wave.scale += m_fWaveScaleInc;
-        m_Wave.pVertices[0].c.w -= m_fWaveAlphaDec;
-        m_Wave.pVertices[1].c.w -= m_fWaveAlphaDec;
-        m_Wave.pVertices[2].c.w -= m_fWaveAlphaDec;
-        m_Wave.pVertices[3].c.w -= m_fWaveAlphaDec;
+        m_Wave.scale += m_fScaleInc;
+        m_Wave.pVertices[0].c.w -= m_fAlphaDec;
+        m_Wave.pVertices[1].c.w -= m_fAlphaDec;
+        m_Wave.pVertices[2].c.w -= m_fAlphaDec;
+        m_Wave.pVertices[3].c.w -= m_fAlphaDec;
     }
 }
 
@@ -69,12 +82,12 @@ void COGEmitterRingWave::Render (const MATRIX& _mWorld, const Vec3& _vLook, cons
 
     Vec3 vOffset = Vec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
 
-    Vec3 vWaveUp = Vec3(0,0,1) * m_Wave.scale;
-    Vec3 vWaveRight = Vec3(1,0,0) * m_Wave.scale;
-    m_Wave.pVertices[0].p = vOffset + vWaveRight + vWaveUp;
-    m_Wave.pVertices[1].p = vOffset - vWaveRight + vWaveUp;
-    m_Wave.pVertices[2].p = vOffset + vWaveRight - vWaveUp;
-    m_Wave.pVertices[3].p = vOffset - vWaveRight - vWaveUp;
+    Vec3 vUp = Vec3(0,0,1) * m_Wave.scale;
+    Vec3 vRight = Vec3(1,0,0) * m_Wave.scale;
+    m_Wave.pVertices[0].p = vOffset + vRight + vUp;
+    m_Wave.pVertices[1].p = vOffset - vRight + vUp;
+    m_Wave.pVertices[2].p = vOffset + vRight - vUp;
+    m_Wave.pVertices[3].p = vOffset - vRight - vUp;
 	m_pRenderer->DrawEffectBuffer(&m_Wave.pVertices[0], 0, 4);
 }
 
@@ -84,7 +97,7 @@ void COGEmitterRingWave::Start ()
 {
 	m_Status = OG_EFFECTSTATUS_STARTED;
 
-    m_Wave.scale = m_fWaveInitialScale;
+    m_Wave.scale = m_fInitialScale;
     m_Wave.pVertices[0].c = m_color;
     m_Wave.pVertices[1].c = m_color;
     m_Wave.pVertices[2].c = m_color;
