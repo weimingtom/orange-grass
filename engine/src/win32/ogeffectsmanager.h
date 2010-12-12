@@ -19,20 +19,24 @@ public:
 	virtual ~COGEffectsManager ();
 
 	// create effect.
-	virtual IOGEffect* CreateEffect (OGEffectType _Type);
-
-	// create effect.
 	virtual IOGEffect* CreateEffect (const std::string& _TypeStr);
 
-	// destroy effect.
-	virtual void DestroyEffect (IOGEffect* _pEffect);
+	// create emitter.
+	virtual IOGEmitter* CreateEmitter (OGEmitterType _Type);
+
+	// create emitter.
+	virtual IOGEmitter* CreateEmitter (const std::string& _TypeStr);
 
 	// get effects list (for editor).
-	virtual const std::map<std::string, OGEffectType>& GetEffectsList () const;
+	virtual const std::map<std::string, EffectItem>& GetEffectsList () const;
+
+	// get emitters list (for editor).
+	virtual const std::map<std::string, OGEmitterType>& GetEmittersList () const;
 
 protected:
 
-	std::map<std::string, OGEffectType>	m_EffectsLookup;
+	std::map<std::string, EffectItem>	    m_EffectsLookup;
+	std::map<std::string, OGEmitterType>	m_EmittersLookup;
 };
 
 #endif

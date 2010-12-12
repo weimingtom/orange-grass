@@ -34,9 +34,6 @@ public:
 	// Stop.
 	virtual void Stop ();
 
-	// Set direction.
-    virtual void SetDirection (const Vec3& _vDir);
-
 protected:
 
     struct ParticleFormat
@@ -49,7 +46,6 @@ protected:
 protected:
 
 	std::vector<ParticleFormat>  m_BBList;
-	Vec3			m_Direction;
 
 public:
 

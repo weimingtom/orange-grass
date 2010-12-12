@@ -29,6 +29,9 @@ public:
 	// Set start and finish positions.
 	virtual void SetStartFinishPositions (const Vec3& _vStartPos, const Vec3& _vFinishPos);
 
+	// Set direction.
+    virtual void SetDirection (const Vec3& _vDir) {}
+
 	// Render.
 	virtual void Render (const MATRIX& _mWorld, const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight);
 
@@ -66,7 +69,6 @@ protected:
 
     Vec3                        m_vStartPos;
     Vec3                        m_vFinishPos;
-    Vec3                        m_Direction;
     bool                        m_bPosReady;
     float                       m_fRayLength;
 

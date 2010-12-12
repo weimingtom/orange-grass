@@ -433,67 +433,11 @@
 						>
 					</File>
 					<File
-						RelativePath=".\ogeffectbonuspick.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ogeffectbonuspick.h"
-						>
-					</File>
-					<File
-						RelativePath=".\ogeffectcollision.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ogeffectcollision.h"
-						>
-					</File>
-					<File
-						RelativePath=".\ogeffectexplosion.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ogeffectexplosion.h"
-						>
-					</File>
-					<File
-						RelativePath=".\ogeffectgauss.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ogeffectgauss.h"
-						>
-					</File>
-					<File
-						RelativePath=".\ogeffectmissilesmoke.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ogeffectmissilesmoke.h"
-						>
-					</File>
-					<File
-						RelativePath=".\ogeffectplasma.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ogeffectplasma.h"
-						>
-					</File>
-					<File
 						RelativePath=".\ogeffectsmanager.cpp"
 						>
 					</File>
 					<File
 						RelativePath=".\ogeffectsmanager.h"
-						>
-					</File>
-					<File
-						RelativePath=".\ogeffecttrailsmoke.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\ogeffecttrailsmoke.h"
 						>
 					</File>
 					<Filter
@@ -977,6 +921,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\IOGEffectsManager.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGEmitter.h"
 					>
 				</File>
 				<File

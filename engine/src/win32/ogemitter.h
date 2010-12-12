@@ -12,19 +12,10 @@
 #include "IOGEffect.h"
 #include "IOGTexture.h"
 #include "IOGRenderer.h"
-#include "IOGSettingsReader.h"
-#include <vector>
-#include <string>
-#include <map>
+#include "IOGEmitter.h"
 
 
-typedef std::map<std::string, std::string*>		TStringParamList;
-typedef std::map<std::string, unsigned int*>	TIntParamList;
-typedef std::map<std::string, float*>			TFloatParamList;
-typedef std::map<std::string, Vec4*>			TColorParamList;
-
-
-class COGEmitter
+class COGEmitter : public IOGEmitter
 {
 public:
 	COGEmitter();
@@ -39,6 +30,12 @@ public:
 	// Update position.
 	virtual void UpdatePosition (const Vec3& _vPosition);
 
+	// Set start and finish positions.
+    virtual void SetStartFinishPositions (const Vec3& _vStartPos, const Vec3& _vFinishPos) {}
+
+	// Set direction.
+    virtual void SetDirection (const Vec3& _vDir);
+
 	// Render.
 	virtual void Render (const MATRIX& _mWorld, const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight) = 0;
 
@@ -47,6 +44,9 @@ public:
 
 	// Stop.
 	virtual void Stop () = 0;
+
+	// Is dynamic.
+	virtual bool IsDynamic () const {return false;}
 
 	// Get effect run status.
 	virtual OGEffectStatus GetStatus() const;
@@ -111,6 +111,7 @@ protected:
 
 	Vec3						m_vPrevPosition;
 	Vec3						m_vCurPosition;
+	Vec3			            m_Direction;
 	bool						m_bPositionUpdated;
 	IOGMapping*					m_pMapping;
 	OGEffectStatus				m_Status;

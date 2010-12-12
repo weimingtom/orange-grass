@@ -39,16 +39,11 @@ public:
 
 protected:
 
-	COGEmitterPulseGlow			m_GlowEmitter;
-	COGEmitterRotatingSparks	m_SparksEmitter;
-
-    static float            m_fAlphaInc;
-	static float            m_fScaleInc;
-	static float            m_fInitialScale;
-    static std::string      m_Texture;
-    static unsigned int     m_MappingId;
-
-    static float            m_fGlowAlphaInc;
+    typedef std::vector<COGEmitter*>    TEmittersList;
+    TEmittersList                       m_Emitters;
+    COGEmitter*                         m_pMasterEmitter;
+	//COGEmitterPulseGlow			m_GlowEmitter;
+	//COGEmitterRotatingSparks	m_SparksEmitter;
 };
 
 

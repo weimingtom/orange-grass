@@ -34,6 +34,9 @@ public:
 	// Stop.
 	virtual void Stop ();
 
+	// Is dynamic.
+	virtual bool IsDynamic () const {return true;}
+
 protected:
 
 	struct ParticleFormat

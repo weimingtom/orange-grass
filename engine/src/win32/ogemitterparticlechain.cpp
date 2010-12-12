@@ -118,10 +118,3 @@ void COGEmitterParticleChain::Stop ()
 
 	m_Status = OG_EFFECTSTATUS_INACTIVE;
 }
-
-
-// Set direction.
-void COGEmitterParticleChain::SetDirection (const Vec3& _vDir)
-{
-	m_Direction = _vDir;
-}

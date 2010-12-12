@@ -21,7 +21,7 @@ public:
 	virtual ~COGEffect();
 
 	// Initialize effect.
-	virtual void Init(OGEffectType _Type) = 0;
+    virtual void Init(OGEffectType _Type, const std::string& _File);
 
 	// Set billboard basis vectors.
 	virtual void SetBillboardVectors (const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight);
@@ -29,20 +29,17 @@ public:
 	// Set direction.
 	virtual void SetDirection (const Vec3& _vDir);
 
-	// Get direction.
-	virtual const Vec3& GetDirection () const { return m_Direction; }
-
 	// Set start and finish positions.
-    virtual void SetStartFinishPositions (const Vec3& _vStartPos, const Vec3& _vFinishPos) {}
+    virtual void SetStartFinishPositions (const Vec3& _vStartPos, const Vec3& _vFinishPos);
 
 	// Update.
-	virtual void Update (unsigned long _ElapsedTime) = 0;
+	virtual void Update (unsigned long _ElapsedTime);
 
 	// Update position.
 	virtual void UpdatePosition (const Vec3& _vPosition);
 
 	// Render.
-	virtual void Render (const MATRIX& _mWorld) = 0;
+	virtual void Render (const MATRIX& _mWorld);
 
 	// Get combined AABB
     virtual const IOGAabb& GetAABB () const {return m_AABB;}
@@ -54,7 +51,7 @@ public:
 	virtual void Stop ();
 
 	// Is dynamic.
-	virtual bool IsDynamic () const {return false;}
+	virtual bool IsDynamic () const;
 
 	// Get effect run status.
 	virtual OGEffectStatus GetStatus() const { return m_Status; }
@@ -71,15 +68,12 @@ protected:
 	Vec3			m_vCameraLook;
 	Vec3			m_vCameraUp;
 	Vec3			m_vCameraRight;
-	Vec3			m_Direction;
-	Vec3			m_vPrevPosition;
-	Vec3			m_vCurPosition;
-	bool			m_bPositionUpdated;
 	OGEffectStatus	m_Status;
 	OGEffectType	m_Type;
-	IOGTexture*		m_pTexture;
-	OGBlendType		m_Blend;
-	IOGRenderer*	m_pRenderer;
+
+    typedef std::vector<IOGEmitter*>    TEmittersList;
+    TEmittersList                       m_Emitters;
+    IOGEmitter*                         m_pMasterEmitter;
 };
 
 

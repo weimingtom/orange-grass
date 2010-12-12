@@ -45,7 +45,7 @@ bool COGActorBonus::Create (IOGActorParams* _pParams,
 
 	m_pNode = m_pSg->CreateNode(m_pModel, m_pPhysicalObject);
 
-	m_pPickEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_BONUSPICK);
+	m_pPickEffect = GetEffectsManager()->CreateEffect("bonus_pick");
 	m_pPickNode = m_pSg->CreateEffectNode(m_pPickEffect, m_pPhysicalObject);
 
     Activate(false);

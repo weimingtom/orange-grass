@@ -29,14 +29,14 @@ bool COGActorMissile::Create (IOGActorParams* _pParams,
 {
 	m_pParams = _pParams;
 
-	m_pHeadEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_MISSILESMOKE);
+	m_pHeadEffect = GetEffectsManager()->CreateEffect("missile_smoke");
 	
     m_pPhysicalObject = m_pPhysics->CreateObject(&m_pParams->physics, m_pHeadEffect->GetAABB(), this);
 	m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);
 
 	m_pNode = m_pSg->CreateEffectNode(m_pHeadEffect, m_pPhysicalObject);
 
-    m_pCollisionEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_COLLISION);
+    m_pCollisionEffect = GetEffectsManager()->CreateEffect("collision");
 	m_pCollisionEffectNode = m_pSg->CreateEffectNode(m_pCollisionEffect, m_pPhysicalObject);
 
 	m_FlightWorker.Create(this);

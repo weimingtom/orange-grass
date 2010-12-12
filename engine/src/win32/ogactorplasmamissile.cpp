@@ -29,7 +29,7 @@ bool COGActorPlasmaMissile::Create (IOGActorParams* _pParams,
 {
 	m_pParams = _pParams;
 
-	m_pHeadEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_PLASMA);
+	m_pHeadEffect = GetEffectsManager()->CreateEffect("plasma");
 	
     m_pPhysicalObject = m_pPhysics->CreateObject(&m_pParams->physics, m_pHeadEffect->GetAABB(), this);
 	m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);

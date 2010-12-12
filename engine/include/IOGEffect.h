@@ -9,16 +9,8 @@
 #ifndef IOGEFFECT_H_
 #define IOGEFFECT_H_
 
-#include "Mathematics.h"
-#include "IOGRenderable.h"
+#include "IOGEmitter.h"
 
-
-enum OGEffectStatus
-{
-	OG_EFFECTSTATUS_INACTIVE,
-	OG_EFFECTSTATUS_STARTED,
-	OG_EFFECTSTATUS_STOPPED
-};
 
 enum OGEffectType
 {
@@ -47,16 +39,13 @@ public:
 	virtual ~IOGEffect() {}
 
 	// Initialize effect.
-	virtual void Init(OGEffectType _Type) = 0;
+	virtual void Init(OGEffectType _Type, const std::string& _File) = 0;
 
 	// Set billboard basis vectors.
 	virtual void SetBillboardVectors (const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight) = 0;
 
 	// Set direction.
 	virtual void SetDirection (const Vec3& _vDir) = 0;
-
-	// Get direction.
-	virtual const Vec3& GetDirection () const = 0;
 
 	// Set start and finish positions.
 	virtual void SetStartFinishPositions (const Vec3& _vStartPos, const Vec3& _vFinishPos) = 0;

@@ -43,6 +43,13 @@ void COGEmitter::UpdatePosition (const Vec3& _vPosition)
 }
 
 
+// Set direction.
+void COGEmitter::SetDirection (const Vec3& _vDir)
+{
+	m_Direction = _vDir;
+}
+
+
 // Get effect run status.
 OGEffectStatus COGEmitter::GetStatus() const 
 { 

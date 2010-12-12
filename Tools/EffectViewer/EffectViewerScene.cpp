@@ -79,8 +79,8 @@ bool CEffectViewerScene::Init ()
         return false;
 	}
 
-	const std::map<std::string, OGEffectType>& effects = GetEffectsManager()->GetEffectsList();
-	std::map<std::string, OGEffectType>::const_iterator iter = effects.begin();
+	const std::map<std::string, EffectItem>& effects = GetEffectsManager()->GetEffectsList();
+	std::map<std::string, EffectItem>::const_iterator iter = effects.begin();
 	for (; iter != effects.end(); ++iter)
 	{
 		CommonToolEvent<ResLoadEventData> cmd(EVENTID_RESLOAD);

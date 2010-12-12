@@ -68,10 +68,10 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 	    m_pNodeDestruction = m_pSg->CreateNode(m_pModelDestruction, m_pPhysicalObject);
     }
 
-	m_pExplosionEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_EXPLOSION);
+	m_pExplosionEffect = GetEffectsManager()->CreateEffect("explosion");
 	m_pExplosionNode = m_pSg->CreateEffectNode(m_pExplosionEffect, m_pPhysicalObject);
 
-	m_pTrailEffect = GetEffectsManager()->CreateEffect(OG_EFFECT_TRAILSMOKE);
+	m_pTrailEffect = GetEffectsManager()->CreateEffect("trail_smoke");
 	m_pTrailNode = m_pSg->CreateEffectNode(m_pTrailEffect, m_pPhysicalObject);
 
     SetTeam(m_pParams->gameplay.team);
