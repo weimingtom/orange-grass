@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<Effect
-	alpha_inc = "0.02" 
-	scale_inc = "1.5" 
-	initial_scale = "3.0" 
-	texture = "effects" 
-	mapping = "11"
-/>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Effect>
+	<Emitter
+		master = "1"
+		type = "animated_bb"
+		texture = "effects" 
+		mapping_start = "1"
+		mapping_finish = "7"
+		init_angle_min = "-3.14"
+		init_angle_max = "3.14"
+		frame_inc = "0.5" 
+		scale_inc = "0.6" 
+		rotate_inc = "0.1" 
+		init_scale = "8.0" 
+		color_r = "1.0" color_g = "1.0" color_b = "1.0" color_a = "1.0"
+	/>
+	<Emitter
+		master = "0"
+		type = "ring_wave"
+		texture = "effects" 
+		mapping = "10"
+		init_scale = "8.0" 
+		scale_inc = "1.5" 
+		alpha_dec = "0.08" 
+		color_r = "1.0" color_g = "1.0" color_b = "1.0" color_a = "1.0"
+	/>
+	<Emitter
+		master = "0"
+		type = "light_flash"
+		init_intensity = "100.0" 
+		fade_factor = "0.64"
+		color_r = "1.0" color_g = "1.0" color_b = "0.0" color_a = "1.0"
+	/>
+</Effect>
