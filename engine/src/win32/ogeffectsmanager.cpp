@@ -31,15 +31,15 @@ COGEffectsManager::COGEffectsManager ()
 	m_EffectsLookup["trail_smoke"] = EffectItem(OG_EFFECT_TRAILSMOKE, "Effects/trail_smoke.xml");
 	m_EffectsLookup["gauss"] = EffectItem(OG_EFFECT_GAUSS, "Effects/gauss.xml");
 
-	m_EmittersLookup["animated_bb"] = OG_EMITTER_ANIMATEDBB;
-	m_EmittersLookup["glow"] = OG_EMITTER_GLOW;
-	m_EmittersLookup["light_flash"] = OG_EMITTER_LIGHTFLASH;
-	m_EmittersLookup["particle_chain"] = OG_EMITTER_PARTICLECHAIN;
-	m_EmittersLookup["pulse_glow"] = OG_EMITTER_PULSEGLOW;
-	m_EmittersLookup["ring_wave"] = OG_EMITTER_RINGWAVE;
-	m_EmittersLookup["rotating_sparks"] = OG_EMITTER_ROTATINGSPARKS;
-	m_EmittersLookup["scrolling_ray"] = OG_EMITTER_SCROLLINGRAY;
-	m_EmittersLookup["trail"] = OG_EMITTER_TRAIL;
+    m_EmittersLookup[COGEmitterAnimatedBB::s_Alias] = COGEmitterAnimatedBB::s_Type;
+	m_EmittersLookup[COGEmitterGlow::s_Alias] = COGEmitterGlow::s_Type;
+	m_EmittersLookup[COGEmitterLightFlash::s_Alias] = COGEmitterLightFlash::s_Type;
+	m_EmittersLookup[COGEmitterParticleChain::s_Alias] = COGEmitterParticleChain::s_Type;
+	m_EmittersLookup[COGEmitterPulseGlow::s_Alias] = COGEmitterPulseGlow::s_Type;
+	m_EmittersLookup[COGEmitterRingWave::s_Alias] = COGEmitterRingWave::s_Type;
+	m_EmittersLookup[COGEmitterRotatingSparks::s_Alias] = COGEmitterRotatingSparks::s_Type;
+	m_EmittersLookup[COGEmitterScrollingRay::s_Alias] = COGEmitterScrollingRay::s_Type;
+	m_EmittersLookup[COGEmitterTrail::s_Alias] = COGEmitterTrail::s_Type;
 }
 
 

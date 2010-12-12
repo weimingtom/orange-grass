@@ -161,6 +161,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\src\EffectAdjustEvent.h"
+			>
+		</File>
+		<File
+			RelativePath=".\src\EffectLoadEvent.h"
+			>
+		</File>
+		<File
 			RelativePath=".\src\EventHandlersTable.cpp"
 			>
 		</File>

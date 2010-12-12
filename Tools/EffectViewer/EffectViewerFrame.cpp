@@ -3,6 +3,7 @@
 #include "EffectViewerFrame.h"
 #include <ToolFramework.h>
 #include "sample.xpm"
+#include "OrangeGrass.h"
 
 
 #define ID_DEF_ABOUT		10000
@@ -15,11 +16,12 @@ static const long TOOLBAR_STYLE = wxTB_FLAT | wxTB_DOCKABLE | wxTB_TEXT;
 
 
 BEGIN_EVENT_TABLE(CEffectViewerFrame, wxFrame)
-EVT_MENU (wxID_EXIT,    CEffectViewerFrame::OnExit)
-EVT_MENU (ID_DEF_ABOUT, CEffectViewerFrame::OnAboutDlg)
-EVT_MENU (ID_DEF_COORDGRID, CEffectViewerFrame::OnCoordGrid)
-EVT_MENU (ID_DEF_AABB, CEffectViewerFrame::OnBounds)
-EVT_RESLOAD( wxID_ANY, CEffectViewerFrame::OnLoadResource )
+    EVT_MENU (wxID_EXIT,                CEffectViewerFrame::OnExit)
+    EVT_MENU (ID_DEF_ABOUT,             CEffectViewerFrame::OnAboutDlg)
+    EVT_MENU (ID_DEF_COORDGRID,         CEffectViewerFrame::OnCoordGrid)
+    EVT_MENU (ID_DEF_AABB,              CEffectViewerFrame::OnBounds)
+    EVT_RESLOAD( wxID_ANY,              CEffectViewerFrame::OnLoadResource )
+    EVT_EFFECTLOAD(wxID_ANY,            CEffectViewerFrame::OnLoadEffect )
 END_EVENT_TABLE()
 
 
@@ -82,12 +84,17 @@ bool CEffectViewerFrame::Create(wxWindow * parent,
 	m_pTree = new wxTreeCtrl(this, wxID_ANY, wxDefaultPosition, treeSize);
 	m_pTree->AddRoot(_T("Resources"));
 	m_pTree->Expand(m_pTree->GetRootItem());
-	GetEventHandlersTable()->AddEventHandler(EVENTID_RESLOAD, this);
 	m_pTree->Connect( wxEVT_COMMAND_TREE_SEL_CHANGED, wxTreeEventHandler( CEffectViewerFrame::OnResourceSwitch ), NULL, this );
+
+    GetEventHandlersTable()->AddEventHandler(EVENTID_RESLOAD, this);
+	GetEventHandlersTable()->AddEventHandler(EVENTID_EFFECTLOAD, this);
+
+	m_pSettingsPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(appSize.x * 0.3, appSize.y));
 
 	m_Manager.SetManagedWindow(this);
 	m_Manager.AddPane(m_pCanvas, wxAuiPaneInfo().CenterPane());
 	m_Manager.AddPane(m_pTree, wxAuiPaneInfo().Left().Layer(1).CloseButton(false).Caption(wxT("Tools")));
+	m_Manager.AddPane(m_pSettingsPanel, wxAuiPaneInfo().Right().Layer(1).CloseButton(false).Caption(wxT("Settings")));
 	m_Manager.Update();
 
 	return true;
@@ -201,4 +208,34 @@ void CEffectViewerFrame::OnResourceSwitch ( wxTreeEvent& event )
 		cmd.SetEventCustomData(ResSwitchEventData(pData->name, pData->type));
 		GetEventHandlersTable()->FireEvent(EVENTID_RESSWITCH, &cmd);
 	}
+}
+
+
+/// @brief Effect loading event handler
+void CEffectViewerFrame::OnLoadEffect ( CommonToolEvent<EffectLoadEventData>& event )
+{
+	const EffectLoadEventData& evtData = event.GetEventCustomData();
+    IOGEffect* pEffect = (IOGEffect*)evtData.m_pData;
+    if (pEffect)
+    {
+        m_pSettingsPanel->DestroyChildren();
+	    wxSize panelSize = m_pSettingsPanel->GetSize();
+
+	    wxTreeCtrl* pTree = new wxTreeCtrl(m_pSettingsPanel, wxID_ANY, wxDefaultPosition, wxSize(panelSize.x, 100));
+	    pTree->AddRoot(_T("Emitters"));
+
+        TEmittersList& emitters = pEffect->GetEmitters();
+        TEmittersList::iterator iter = emitters.begin();
+        for (; iter != emitters.end(); ++iter)
+        {
+        	pTree->AppendItem(pTree->GetRootItem(), (*iter)->GetAlias(), -1, -1, 0);
+        }
+
+        pTree->Expand(pTree->GetRootItem());
+
+        wxGrid* grid = new wxGrid(m_pSettingsPanel, wxID_ANY, wxPoint( 0, 100 ), panelSize);
+        grid->CreateGrid(10, 2);
+        grid->SetColLabelValue(0, "Parameter");
+        grid->SetColLabelValue(1, "Value");
+    }
 }

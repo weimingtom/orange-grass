@@ -12,6 +12,9 @@
 #include "IOGEmitter.h"
 
 
+typedef std::vector<IOGEmitter*>    TEmittersList;
+
+
 enum OGEffectType
 {
 	OG_EFFECT_NO = 0,
@@ -76,6 +79,9 @@ public:
 
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const = 0;
+
+    // Get emitters list.
+    virtual TEmittersList& GetEmitters () = 0;
 };
 
 #endif

@@ -10,6 +10,10 @@
 #include "OrangeGrass.h"
 
 
+std::string COGEmitterPulseGlow::s_Alias = std::string("pulse_glow");
+OGEmitterType COGEmitterPulseGlow::s_Type = OG_EMITTER_PULSEGLOW;
+
+
 COGEmitterPulseGlow::COGEmitterPulseGlow()
 {
 	m_Texture = std::string("effects");

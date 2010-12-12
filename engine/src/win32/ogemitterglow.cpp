@@ -10,6 +10,10 @@
 #include "OrangeGrass.h"
 
 
+std::string COGEmitterGlow::s_Alias = std::string("glow");
+OGEmitterType COGEmitterGlow::s_Type = OG_EMITTER_GLOW;
+
+
 COGEmitterGlow::COGEmitterGlow()
 {
 	m_Texture = std::string("effects");

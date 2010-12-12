@@ -10,6 +10,10 @@
 #include "OrangeGrass.h"
 
 
+std::string COGEmitterScrollingRay::s_Alias = std::string("scrolling_ray");
+OGEmitterType COGEmitterScrollingRay::s_Type = OG_EMITTER_SCROLLINGRAY;
+
+
 COGEmitterScrollingRay::COGEmitterScrollingRay()
 {
 	m_Texture = std::string("effects");

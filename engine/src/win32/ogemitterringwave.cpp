@@ -10,6 +10,10 @@
 #include "OrangeGrass.h"
 
 
+std::string COGEmitterRingWave::s_Alias = std::string("ring_wave");
+OGEmitterType COGEmitterRingWave::s_Type = OG_EMITTER_RINGWAVE;
+
+
 COGEmitterRingWave::COGEmitterRingWave()
 {
 	m_Texture = std::string("effects");

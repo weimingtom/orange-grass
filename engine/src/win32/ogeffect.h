@@ -10,7 +10,6 @@
 #define OGEFFECT_H_
 
 #include "IOGEffect.h"
-#include "IOGTexture.h"
 #include "IOGRenderer.h"
 
 
@@ -62,19 +61,20 @@ public:
 	// Get type of the renderable.
 	virtual RenderableType GetRenderableType () const { return OG_RENDERABLE_EFFECT; }
 
+    // Get emitters list.
+    virtual TEmittersList& GetEmitters () { return m_Emitters; }
+
 protected:
 	
     IOGAabb         m_AABB;
-	Vec3			m_vCameraLook;
-	Vec3			m_vCameraUp;
-	Vec3			m_vCameraRight;
-	OGEffectStatus	m_Status;
-	OGEffectType	m_Type;
+    Vec3			m_vCameraLook;
+    Vec3			m_vCameraUp;
+    Vec3			m_vCameraRight;
+    OGEffectStatus	m_Status;
+    OGEffectType	m_Type;
 
-    typedef std::vector<IOGEmitter*>    TEmittersList;
-    TEmittersList                       m_Emitters;
-    IOGEmitter*                         m_pMasterEmitter;
+    TEmittersList   m_Emitters;
+    IOGEmitter*     m_pMasterEmitter;
 };
-
 
 #endif

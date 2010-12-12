@@ -10,6 +10,10 @@
 #include "OrangeGrass.h"
 
 
+std::string COGEmitterAnimatedBB::s_Alias = std::string("animated_bb");
+OGEmitterType COGEmitterAnimatedBB::s_Type = OG_EMITTER_ANIMATEDBB;
+
+
 COGEmitterAnimatedBB::COGEmitterAnimatedBB()
 {
 	m_Texture = std::string("effects");

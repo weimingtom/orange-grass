@@ -2,6 +2,8 @@
 #define EFFECTVIEWERFRAME_H_
 
 #include <wx/aui/aui.h>
+#include <wx/grid.h>
+#include <wx/generic/gridctrl.h>
 #include <ToolFramework.h>
 #include <vector>
 #include "EffectViewerCanvas.h"
@@ -62,6 +64,9 @@ private:
 	/// @brief Resource loading event handler
 	void OnLoadResource ( CommonToolEvent<ResLoadEventData>& event );
 
+	/// @brief Effect loading event handler
+	void OnLoadEffect ( CommonToolEvent<EffectLoadEventData>& event );
+
 	/// @brief Resource switching event handler
 	void OnResourceSwitch ( wxTreeEvent& event );
 
@@ -74,7 +79,9 @@ private:
 
     wxToolBar*					m_pToolBar;
 	wxAuiManager				m_Manager;
-    CEffectViewerCanvas*				m_pCanvas;
+    CEffectViewerCanvas*		m_pCanvas;
+
+    wxPanel*                    m_pSettingsPanel;
 
 	wxTreeCtrl*					m_pTree;
 	std::vector<ResourceGroup>	m_ResourceGroups;

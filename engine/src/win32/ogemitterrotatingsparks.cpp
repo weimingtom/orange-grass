@@ -10,6 +10,10 @@
 #include "OrangeGrass.h"
 
 
+std::string COGEmitterRotatingSparks::s_Alias = std::string("rotating_sparks");
+OGEmitterType COGEmitterRotatingSparks::s_Type = OG_EMITTER_ROTATINGSPARKS;
+
+
 COGEmitterRotatingSparks::COGEmitterRotatingSparks()
 {
     m_Texture = std::string("effects");

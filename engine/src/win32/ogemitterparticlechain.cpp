@@ -10,6 +10,10 @@
 #include "OrangeGrass.h"
 
 
+std::string COGEmitterParticleChain::s_Alias = std::string("particle_chain");
+OGEmitterType COGEmitterParticleChain::s_Type = OG_EMITTER_PARTICLECHAIN;
+
+
 COGEmitterParticleChain::COGEmitterParticleChain()
 {
 	m_Texture = std::string("effects");

@@ -51,6 +51,12 @@ public:
 	// Get effect run status.
 	virtual OGEffectStatus GetStatus() const;
 
+	// Get effect type.
+	virtual OGEmitterType GetType() const = 0;
+
+	// Get effect type.
+    virtual const std::string& GetAlias() const = 0;
+
 	// get all string params.
 	virtual TStringParamList& GetStringParams () { return m_StringParams; }
 

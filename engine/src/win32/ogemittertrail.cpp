@@ -10,6 +10,10 @@
 #include "OrangeGrass.h"
 
 
+std::string COGEmitterTrail::s_Alias = std::string("trail");
+OGEmitterType COGEmitterTrail::s_Type = OG_EMITTER_TRAIL;
+
+
 COGEmitterTrail::COGEmitterTrail()
 {
     m_Texture = std::string("effects");

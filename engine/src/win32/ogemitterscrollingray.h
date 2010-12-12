@@ -41,6 +41,12 @@ public:
 	// Stop.
 	virtual void Stop ();
 
+	// Get effect type.
+    virtual OGEmitterType GetType() const { return s_Type; }
+
+	// Get effect type.
+    virtual const std::string& GetAlias() const { return s_Alias; }
+
 protected:
 
     struct ParticleFormat
@@ -72,8 +78,6 @@ protected:
     bool                        m_bPosReady;
     float                       m_fRayLength;
 
-public:
-
     std::string     m_Texture;
     unsigned int    m_MappingStartId;
     unsigned int    m_MappingFinishId;
@@ -81,6 +85,11 @@ public:
     float           m_fScale;
     float           m_fSpeed;
 	Vec4			m_color;
+
+public:
+
+    static std::string     s_Alias;
+    static OGEmitterType   s_Type;
 };
 
 

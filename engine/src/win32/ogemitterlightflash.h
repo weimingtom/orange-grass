@@ -34,15 +34,24 @@ public:
 	// Stop.
 	virtual void Stop ();
 
+	// Get effect type.
+    virtual OGEmitterType GetType() const { return s_Type; }
+
+	// Get effect type.
+    virtual const std::string& GetAlias() const { return s_Alias; }
+
 protected:
 
     IOGLight*		m_pLight;
 
-public:
-
     float			m_fFadeFactor;
 	float			m_fInitialIntensity;
 	Vec4			m_color;
+
+public:
+
+    static std::string     s_Alias;
+    static OGEmitterType   s_Type;
 };
 
 

@@ -232,7 +232,11 @@ void CEffectViewerScene::SetupEffect(const char* _pEffectAlias)
 		m_pSg->AddEffectNode(m_pCurNode);
         m_pCurNode->Activate(true);
 		m_pCurEffect->Start();
-	}
+
+        CommonToolEvent<EffectLoadEventData> cmd(EVENTID_EFFECTLOAD);
+        cmd.SetEventCustomData(EffectLoadEventData(m_pCurEffect));
+        GetEventHandlersTable()->FireEvent(EVENTID_EFFECTLOAD, &cmd);
+    }
 }
 
 

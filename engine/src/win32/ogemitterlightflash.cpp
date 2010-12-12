@@ -10,6 +10,10 @@
 #include "OrangeGrass.h"
 
 
+std::string COGEmitterLightFlash::s_Alias = std::string("light_flash");
+OGEmitterType COGEmitterLightFlash::s_Type = OG_EMITTER_LIGHTFLASH;
+
+
 COGEmitterLightFlash::COGEmitterLightFlash()
 {
 	m_fFadeFactor = 0.64f;

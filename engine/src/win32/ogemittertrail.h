@@ -37,6 +37,12 @@ public:
 	// Is dynamic.
 	virtual bool IsDynamic () const {return true;}
 
+	// Get effect type.
+    virtual OGEmitterType GetType() const { return s_Type; }
+
+	// Get effect type.
+    virtual const std::string& GetAlias() const { return s_Alias; }
+
 protected:
 
 	struct ParticleFormat
@@ -52,8 +58,6 @@ protected:
 
     std::vector<ParticleFormat>	m_BBList;
 
-public:
-
 	float			m_fAlphaFade;
 	float			m_fInitialScale;
 	float			m_fScaleInc;
@@ -62,6 +66,11 @@ public:
 	Vec4			m_color;
     std::string     m_Texture;
     unsigned int    m_MappingId;
+
+public:
+
+    static std::string     s_Alias;
+    static OGEmitterType   s_Type;
 };
 
 
