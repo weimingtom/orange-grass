@@ -1,7 +1,7 @@
 #ifndef VIEWER_H_
 #define VIEWER_H_
 
-
+ 
 /// @brief Application class.
 class CViewerApp: public wxApp
 {
