@@ -7,8 +7,8 @@
 		view_distance = "300.0"
 	/>
 	<Camera
-		cam_offset_x = "0.0" cam_offset_y = "0.0" cam_offset_z = "-40.0"
-		cam_dir_x = "0.0" cam_dir_y = "0.6" cam_dir_z = "0.4"
+		cam_offset_x = "0.0" cam_offset_y = "0.0" cam_offset_z = "-15.0"
+		cam_dir_x = "0.0" cam_dir_y = "0.9" cam_dir_z = "0.1"
 		cam_margins = "50.0"
 		cam_distance = "190.0"
 	/>

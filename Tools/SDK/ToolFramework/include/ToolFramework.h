@@ -7,6 +7,7 @@
 #include "..\src\EventHandlersTable.h"
 #include "..\src\ToolSettings.h"
 #include "..\src\ListboxLogger.h"
+#include "..\src\GraphControl.h"
 
 
 #endif

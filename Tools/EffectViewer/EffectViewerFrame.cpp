@@ -221,21 +221,64 @@ void CEffectViewerFrame::OnLoadEffect ( CommonToolEvent<EffectLoadEventData>& ev
         m_pSettingsPanel->DestroyChildren();
 	    wxSize panelSize = m_pSettingsPanel->GetSize();
 
-	    wxTreeCtrl* pTree = new wxTreeCtrl(m_pSettingsPanel, wxID_ANY, wxDefaultPosition, wxSize(panelSize.x, 100));
+	    wxTreeCtrl* pTree = new wxTreeCtrl(m_pSettingsPanel, wxID_ANY, wxDefaultPosition, wxSize(panelSize.x, panelSize.y - 100));
 	    pTree->AddRoot(_T("Emitters"));
+
+		//wxGrid* grid = new wxGrid(m_pSettingsPanel, wxID_ANY, wxPoint( 0, 100 ), panelSize);
+		//grid->CreateGrid(0, 2);
+		//grid->SetColLabelValue(0, "Parameter");
+		//grid->SetColLabelValue(1, "Value");
+
+		neLine graph;
+		for (int i = 0; i < 33; ++i)
+		{
+			neCoord crd;
+			crd.y = 27;
+			crd.minutes = i;
+			graph.Add(crd);
+		}
+		neGraph* m_plot = new neGraph(m_pSettingsPanel, wxPoint(0, panelSize.y - 100), wxSize(panelSize.x, 100));
+		m_plot->AddData(graph);
+		m_plot->DrawGrid(true);
 
         TEmittersList& emitters = pEffect->GetEmitters();
         TEmittersList::iterator iter = emitters.begin();
         for (; iter != emitters.end(); ++iter)
         {
-        	pTree->AppendItem(pTree->GetRootItem(), (*iter)->GetAlias(), -1, -1, 0);
-        }
+        	wxTreeItemId itemid = pTree->AppendItem(pTree->GetRootItem(), (*iter)->GetAlias(), -1, -1, 0);
+			TStringParamList& strparams = (*iter)->GetStringParams();
+			TStringParamList::iterator strit = strparams.begin();
+			for (; strit != strparams.end(); ++strit)
+			{
+				EmitterParamItem* pItem = new EmitterParamItem(EMPRMTYPE_STRING, strit->second);
+				pTree->AppendItem(itemid, strit->first, -1, -1, pItem);
+			}
+
+			TIntParamList& intparams = (*iter)->GetIntParams();
+			TIntParamList::iterator intit = intparams.begin();
+			for (; intit != intparams.end(); ++intit)
+			{
+				EmitterParamItem* pItem = new EmitterParamItem(EMPRMTYPE_INT, intit->second);
+				pTree->AppendItem(itemid, intit->first, -1, -1, pItem);
+			}
+
+			TFloatParamList& fltparams = (*iter)->GetFloatParams();
+			TFloatParamList::iterator fltit = fltparams.begin();
+			for (; fltit != fltparams.end(); ++fltit)
+			{
+				EmitterParamItem* pItem = new EmitterParamItem(EMPRMTYPE_FLOAT, fltit->second);
+				pTree->AppendItem(itemid, fltit->first, -1, -1, pItem);
+			}
+
+			TColorParamList& clrparams = (*iter)->GetColorParams();
+			TColorParamList::iterator clrit = clrparams.begin();
+			for (; clrit != clrparams.end(); ++clrit)
+			{
+				EmitterParamItem* pItem = new EmitterParamItem(EMPRMTYPE_COLOR, clrit->second);
+				pTree->AppendItem(itemid, clrit->first, -1, -1, pItem);
+			}
+		}
 
         pTree->Expand(pTree->GetRootItem());
-
-        wxGrid* grid = new wxGrid(m_pSettingsPanel, wxID_ANY, wxPoint( 0, 100 ), panelSize);
-        grid->CreateGrid(10, 2);
-        grid->SetColLabelValue(0, "Parameter");
-        grid->SetColLabelValue(1, "Value");
     }
 }

@@ -38,4 +38,26 @@ struct ResourceItem : public wxTreeItemData
 	wxString		name;
 };
 
+
+enum EmitterParamType
+{
+	EMPRMTYPE_STRING,
+	EMPRMTYPE_INT,
+	EMPRMTYPE_FLOAT,
+	EMPRMTYPE_COLOR
+};
+
+
+struct EmitterParamItem : public wxTreeItemData
+{
+	EmitterParamItem (EmitterParamType _type, void* _data)
+	{
+		type = _type;
+		data = _data;
+	}
+
+	EmitterParamType	type;
+	void*				data;
+};
+
 #endif

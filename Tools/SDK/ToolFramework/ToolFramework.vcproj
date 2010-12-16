@@ -177,6 +177,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\src\GraphControl.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\src\GraphControl.h"
+			>
+		</File>
+		<File
 			RelativePath=".\src\LevelLoadingEvent.h"
 			>
 		</File>
