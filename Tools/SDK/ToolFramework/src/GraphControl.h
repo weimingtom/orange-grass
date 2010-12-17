@@ -5,52 +5,38 @@
 #include "wx/wx.h"
 
 
-struct neCoord
+struct SamplingData
 {
-    long minutes;
-    double y;
+    unsigned long msec;
+    float value;
 };
 
 
-class neLine
+typedef std::vector<SamplingData>	TSamplingData;
+
+class GraphControl : public wxScrolledWindow
 {
 public:
-    std::vector<neCoord> coords;
-    neLine() {line_name = "<empty>";}
-    neLine(std::vector<neCoord>,wxString name = "<empty>");
-    ~neLine(){};
-    void ClearItems(void);
-    wxString line_name;
-    void Add(neCoord in_coord){coords.push_back(in_coord);}
-};
-
-
-// define a scrollable canvas for drawing onto
-class neGraph: public wxScrolledWindow
-{
-public:
-    neGraph( wxWindow*, const wxPoint& _pt, const wxSize& _sz);
-    ~neGraph();
-    void AddData(const neLine& in_data) {graph = in_data;}
+    GraphControl( wxWindow*, const wxPoint& _pt, const wxSize& _sz);
+    virtual ~GraphControl();
+    void AddData(const TSamplingData& _Data) {m_Data = _Data;}
+	void SetScale(float _fScale) {m_fScale = _fScale;}
     void ClearGraph(void);
-    void DrawGrid(bool in ) { grid = in; }
+
 private:
-    void InitGraph(wxInitDialogEvent &event);
+
     void OnPaint(wxPaintEvent &event);
     void DrawAxes(wxDC& dc);
-    void DrawControls(void);
-    void FillAxes(wxDC& dc);
     void DrawData(wxDC& dc);
+
 private:
-    bool grid;
-    wxWindow *m_owner;
-    wxSize g_size;
-    neLine graph;
+    
+	float			m_fScale;
+    wxSize			m_size;
+    TSamplingData	m_Data;
+
     DECLARE_EVENT_TABLE();
 };
-
-
-std::string IntToString(int Input, int add_a_zero = 0);
 
 
 #endif

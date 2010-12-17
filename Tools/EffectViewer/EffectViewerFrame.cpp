@@ -229,17 +229,16 @@ void CEffectViewerFrame::OnLoadEffect ( CommonToolEvent<EffectLoadEventData>& ev
 		//grid->SetColLabelValue(0, "Parameter");
 		//grid->SetColLabelValue(1, "Value");
 
-		neLine graph;
-		for (int i = 0; i < 33; ++i)
+		TSamplingData graph;
+		for (int i = 0; i < 5; ++i)
 		{
-			neCoord crd;
-			crd.y = 27;
-			crd.minutes = i;
-			graph.Add(crd);
+			SamplingData crd;
+			crd.value = 27;
+			crd.msec = i;
+			graph.push_back(crd);
 		}
-		neGraph* m_plot = new neGraph(m_pSettingsPanel, wxPoint(0, panelSize.y - 100), wxSize(panelSize.x, 100));
+		GraphControl* m_plot = new GraphControl(m_pSettingsPanel, wxPoint(0, panelSize.y - 100), wxSize(panelSize.x, 100));
 		m_plot->AddData(graph);
-		m_plot->DrawGrid(true);
 
         TEmittersList& emitters = pEffect->GetEmitters();
         TEmittersList::iterator iter = emitters.begin();
