@@ -8,6 +8,7 @@
 #include "..\src\ToolSettings.h"
 #include "..\src\ListboxLogger.h"
 #include "..\src\GraphControl.h"
+#include "..\src\LinearParamDialog.h"
 
 
 #endif

@@ -189,6 +189,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\src\LinearParamDialog.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\src\LinearParamDialog.h"
+			>
+		</File>
+		<File
 			RelativePath=".\src\ListboxLogger.cpp"
 			>
 		</File>

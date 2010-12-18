@@ -52,7 +52,7 @@ bool CEffectViewerFrame::Create(wxWindow * parent,
 {
     int w, h;
     wxDisplaySize(&w, &h);
-    wxSize appSize = wxSize(w*0.5, h*0.5);
+    wxSize appSize = wxSize(w*0.7, h*0.7);
 
 	wxFrame::Create(parent, id, title, pos, appSize, style);
 
@@ -230,7 +230,7 @@ void CEffectViewerFrame::OnLoadEffect ( CommonToolEvent<EffectLoadEventData>& ev
 		//grid->SetColLabelValue(1, "Value");
 
 		TSamplingData graph;
-		for (int i = 0; i < 5; ++i)
+		for (int i = 0; i < 99; ++i)
 		{
 			SamplingData crd;
 			crd.value = 27;
@@ -279,5 +279,24 @@ void CEffectViewerFrame::OnLoadEffect ( CommonToolEvent<EffectLoadEventData>& ev
 		}
 
         pTree->Expand(pTree->GetRootItem());
+    	pTree->Connect(wxEVT_COMMAND_TREE_ITEM_ACTIVATED, wxTreeEventHandler(CEffectViewerFrame::OnParamSwitch), NULL, this );
+    }
+}
+
+
+/// @brief Param switching event handler
+void CEffectViewerFrame::OnParamSwitch ( wxTreeEvent& event )
+{
+	if ( event.GetItem() == m_pTree->GetRootItem() )
+		return;
+
+	EmitterParamItem* pData = (EmitterParamItem*)m_pTree->GetItemData(event.GetItem());
+	if(pData)
+	{
+        LinearParamDialog* linearDlg = new LinearParamDialog(this);
+        if ( linearDlg->ShowModal() == wxID_OK )
+        {
+        }
+        linearDlg->Destroy();
     }
 }

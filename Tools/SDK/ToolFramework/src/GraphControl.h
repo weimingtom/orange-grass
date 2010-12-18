@@ -33,6 +33,7 @@ private:
     
 	float			m_fScale;
     wxSize			m_size;
+    wxPoint         m_GraphOffset;
     TSamplingData	m_Data;
 
     DECLARE_EVENT_TABLE();

@@ -70,6 +70,9 @@ private:
 	/// @brief Resource switching event handler
 	void OnResourceSwitch ( wxTreeEvent& event );
 
+	/// @brief Param switching event handler
+	void OnParamSwitch ( wxTreeEvent& event );
+
 	/// @brief Adding resource group
 	void AddResourceGroup ( ResourceType _type, const wxString& _name );
 
