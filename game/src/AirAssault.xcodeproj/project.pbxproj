@@ -23,12 +23,8 @@
 		791F49C90E1755E800E927FE /* Streaming.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 791F499C0E1755E800E927FE /* Streaming.cpp */; };
 		791F49CA0E1755E800E927FE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 791F49A00E1755E800E927FE /* main.m */; };
 		791F49D00E1755E800E927FE /* Texture.mm in Sources */ = {isa = PBXBuildFile; fileRef = 791F49B40E1755E800E927FE /* Texture.mm */; };
-		791F49D10E1755E800E927FE /* DisplayText.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 791F49B60E1755E800E927FE /* DisplayText.cpp */; };
-		791F49D20E1755E800E927FE /* DisplayTextAPI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 791F49B80E1755E800E927FE /* DisplayTextAPI.cpp */; };
 		791F49D30E1755E800E927FE /* BoneBatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 791F49BB0E1755E800E927FE /* BoneBatch.cpp */; };
-		791F49D40E1755E800E927FE /* Model3DS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 791F49BD0E1755E800E927FE /* Model3DS.cpp */; };
 		791F49D50E1755E800E927FE /* ModelPOD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 791F49BF0E1755E800E927FE /* ModelPOD.cpp */; };
-		791F49D60E1755E800E927FE /* ModelPODWriteH.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 791F49C10E1755E800E927FE /* ModelPODWriteH.cpp */; };
 		791F49D70E1755E800E927FE /* TriStrip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 791F49C20E1755E800E927FE /* TriStrip.cpp */; };
 		791F49D80E1755E800E927FE /* Vertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 791F49C40E1755E800E927FE /* Vertex.cpp */; };
 		791F49D90E1755E800E927FE /* VertexLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 791F49C60E1755E800E927FE /* VertexLookup.cpp */; };
@@ -71,11 +67,19 @@
 		B28763E9129A0178004A7A69 /* ogguilifebar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B28763E5129A0178004A7A69 /* ogguilifebar.cpp */; };
 		B28763EA129A0178004A7A69 /* ogguiweaponpanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B28763E6129A0178004A7A69 /* ogguiweaponpanel.cpp */; };
 		B28763F1129A021D004A7A69 /* ogactorgaussray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B28763EF129A021D004A7A69 /* ogactorgaussray.cpp */; };
-		B28763F4129A026B004A7A69 /* ogeffectgauss.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B28763F2129A026B004A7A69 /* ogeffectgauss.cpp */; };
 		B28763F9129A02A5004A7A69 /* ogsgeffectnode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B28763F5129A02A4004A7A69 /* ogsgeffectnode.cpp */; };
 		B28763FA129A02A5004A7A69 /* ogsglandscapenode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B28763F7129A02A4004A7A69 /* ogsglandscapenode.cpp */; };
+		B287EEEA12C0393A00104017 /* ogemitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B287EED612C0393A00104017 /* ogemitter.cpp */; };
+		B287EEEB12C0393A00104017 /* ogemitteranimatedbb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B287EED812C0393A00104017 /* ogemitteranimatedbb.cpp */; };
+		B287EEEC12C0393A00104017 /* ogemitterglow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B287EEDA12C0393A00104017 /* ogemitterglow.cpp */; };
+		B287EEED12C0393A00104017 /* ogemitterlightflash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B287EEDC12C0393A00104017 /* ogemitterlightflash.cpp */; };
+		B287EEEE12C0393A00104017 /* ogemitterparticlechain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B287EEDE12C0393A00104017 /* ogemitterparticlechain.cpp */; };
+		B287EEEF12C0393A00104017 /* ogemitterpulseglow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B287EEE012C0393A00104017 /* ogemitterpulseglow.cpp */; };
+		B287EEF012C0393A00104017 /* ogemitterringwave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B287EEE212C0393A00104017 /* ogemitterringwave.cpp */; };
+		B287EEF112C0393A00104017 /* ogemitterrotatingsparks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B287EEE412C0393A00104017 /* ogemitterrotatingsparks.cpp */; };
+		B287EEF212C0393A00104017 /* ogemitterscrollingray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B287EEE612C0393A00104017 /* ogemitterscrollingray.cpp */; };
+		B287EEF312C0393A00104017 /* ogemittertrail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B287EEE812C0393A00104017 /* ogemittertrail.cpp */; };
 		B293FA34127B2ED9000D2799 /* ogactorbonus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B293FA32127B2ED9000D2799 /* ogactorbonus.cpp */; };
-		B293FA37127B2EFF000D2799 /* ogeffectbonuspick.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B293FA35127B2EFF000D2799 /* ogeffectbonuspick.cpp */; };
 		B293FA3A127B2F4B000D2799 /* ogshadowmodelshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B293FA38127B2F4B000D2799 /* ogshadowmodelshader.cpp */; };
 		B293FA3D127B2F8B000D2799 /* ogbonusphysicalobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B293FA3B127B2F8B000D2799 /* ogbonusphysicalobject.cpp */; };
 		B294D2511263906E00015F63 /* ogcoloreffectshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B294D24B1263906E00015F63 /* ogcoloreffectshader.cpp */; };
@@ -94,18 +98,13 @@
 		B2959D26127481A4005F5346 /* ogbotfallingworker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D1E127481A4005F5346 /* ogbotfallingworker.cpp */; };
 		B2959D27127481A4005F5346 /* ogbotflightworker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D20127481A4005F5346 /* ogbotflightworker.cpp */; };
 		B2959D28127481A4005F5346 /* oggamesequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D22127481A4005F5346 /* oggamesequence.cpp */; };
-		B2959D2D12748212005F5346 /* ogeffectexplosion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D2912748212005F5346 /* ogeffectexplosion.cpp */; };
-		B2959D2E12748212005F5346 /* ogeffectmissilesmoke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D2B12748212005F5346 /* ogeffectmissilesmoke.cpp */; };
 		B2959D311274829D005F5346 /* StartMenuScreenController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2959D2F1274829D005F5346 /* StartMenuScreenController.cpp */; };
-		B296060F1286001700B46ACC /* ogeffecttrailsmoke.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B296060D1286001700B46ACC /* ogeffecttrailsmoke.cpp */; };
-		B299F2C6128478C2001B95B0 /* ogeffectcollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B299F2C4128478C2001B95B0 /* ogeffectcollision.cpp */; };
 		B29C64CA1222D4BF00FF91DA /* oginputdispatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29C64C81222D4BF00FF91DA /* oginputdispatcher.cpp */; };
 		B29C64CD1222D4E100FF91DA /* ogactorplayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29C64CB1222D4E100FF91DA /* ogactorplayer.cpp */; };
 		B29C64D11222D50800FF91DA /* ogplayerphysicalobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B29C64CF1222D50800FF91DA /* ogplayerphysicalobject.cpp */; };
 		B29C65721222D76A00FF91DA /* GameResources in Resources */ = {isa = PBXBuildFile; fileRef = B29C650F1222D76A00FF91DA /* GameResources */; };
 		B2AEFECD124117940039DC17 /* ogeffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2AEFEC9124117940039DC17 /* ogeffect.cpp */; };
 		B2AEFECE124117940039DC17 /* ogeffectsmanager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2AEFECB124117940039DC17 /* ogeffectsmanager.cpp */; };
-		B2AEFED1124117B00039DC17 /* ogplasmaeffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2AEFECF124117B00039DC17 /* ogplasmaeffect.cpp */; };
 		B2AEFEDB1241180B0039DC17 /* ogfog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2AEFED51241180B0039DC17 /* ogfog.cpp */; };
 		B2AEFEDC1241180B0039DC17 /* ogrendertarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2AEFED71241180B0039DC17 /* ogrendertarget.cpp */; };
 		B2AEFEDD1241180B0039DC17 /* ogspritepool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2AEFED91241180B0039DC17 /* ogspritepool.cpp */; };
@@ -149,7 +148,6 @@
 		13B84D4410A3534A00129C64 /* Culling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Culling.h; path = ../../sdk/Include/Culling.h; sourceTree = SOURCE_ROOT; };
 		13B84D4510A3534A00129C64 /* Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Geometry.h; path = ../../sdk/Include/Geometry.h; sourceTree = SOURCE_ROOT; };
 		13B84D4610A3534A00129C64 /* GraphicsDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GraphicsDevice.h; path = ../../sdk/Include/GraphicsDevice.h; sourceTree = SOURCE_ROOT; };
-		13B84D4710A3534A00129C64 /* Log_retired.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Log_retired.h; path = ../../sdk/Include/Log_retired.h; sourceTree = SOURCE_ROOT; };
 		13B84D4810A3534A00129C64 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Macros.h; path = ../../sdk/Include/Macros.h; sourceTree = SOURCE_ROOT; };
 		13B84D4910A3534A00129C64 /* Mathematics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mathematics.h; path = ../../sdk/Include/Mathematics.h; sourceTree = SOURCE_ROOT; };
 		13B84D4A10A3534A00129C64 /* MemoryManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MemoryManager.h; path = ../../sdk/Include/MemoryManager.h; sourceTree = SOURCE_ROOT; };
@@ -160,7 +158,6 @@
 		13B84D4F10A3534A00129C64 /* Timing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Timing.h; path = ../../sdk/Include/Timing.h; sourceTree = SOURCE_ROOT; };
 		13B84D5010A3534A00129C64 /* TouchScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TouchScreen.h; path = ../../sdk/Include/TouchScreen.h; sourceTree = SOURCE_ROOT; };
 		13B84D5110A3534A00129C64 /* Type.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Type.h; path = ../../sdk/Include/Type.h; sourceTree = SOURCE_ROOT; };
-		13B84D5210A3534A00129C64 /* UI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UI.h; path = ../../sdk/Include/UI.h; sourceTree = SOURCE_ROOT; };
 		13BEF9F610AB275200D19067 /* IScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IScreenController.h; sourceTree = "<group>"; };
 		13BEF9F710AB298200D19067 /* LoadScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadScreenController.h; sourceTree = "<group>"; };
 		13BEFA1410AB55BF00D19067 /* GameScreenController.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; fileEncoding = 4; path = GameScreenController.h; sourceTree = "<group>"; };
@@ -182,17 +179,10 @@
 		791F49A00E1755E800E927FE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		791F49B30E1755E800E927FE /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
 		791F49B40E1755E800E927FE /* Texture.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Texture.mm; sourceTree = "<group>"; };
-		791F49B60E1755E800E927FE /* DisplayText.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisplayText.cpp; sourceTree = "<group>"; };
-		791F49B70E1755E800E927FE /* DisplayText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayText.h; sourceTree = "<group>"; };
-		791F49B80E1755E800E927FE /* DisplayTextAPI.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DisplayTextAPI.cpp; sourceTree = "<group>"; };
-		791F49B90E1755E800E927FE /* DisplayTextdat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayTextdat.h; sourceTree = "<group>"; };
 		791F49BB0E1755E800E927FE /* BoneBatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoneBatch.cpp; sourceTree = "<group>"; };
 		791F49BC0E1755E800E927FE /* BoneBatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoneBatch.h; sourceTree = "<group>"; };
-		791F49BD0E1755E800E927FE /* Model3DS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Model3DS.cpp; sourceTree = "<group>"; };
-		791F49BE0E1755E800E927FE /* Model3DS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Model3DS.h; sourceTree = "<group>"; };
 		791F49BF0E1755E800E927FE /* ModelPOD.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ModelPOD.cpp; sourceTree = "<group>"; };
 		791F49C00E1755E800E927FE /* ModelPOD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModelPOD.h; sourceTree = "<group>"; };
-		791F49C10E1755E800E927FE /* ModelPODWriteH.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ModelPODWriteH.cpp; sourceTree = "<group>"; };
 		791F49C20E1755E800E927FE /* TriStrip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TriStrip.cpp; sourceTree = "<group>"; };
 		791F49C30E1755E800E927FE /* TriStrip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TriStrip.h; sourceTree = "<group>"; };
 		791F49C40E1755E800E927FE /* Vertex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vertex.cpp; sourceTree = "<group>"; };
@@ -303,18 +293,35 @@
 		B28763EE129A01B6004A7A69 /* IOGGuiWeaponPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGGuiWeaponPanel.h; path = ../../engine/include/IOGGuiWeaponPanel.h; sourceTree = SOURCE_ROOT; };
 		B28763EF129A021D004A7A69 /* ogactorgaussray.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactorgaussray.cpp; path = ../../engine/src/win32/ogactorgaussray.cpp; sourceTree = SOURCE_ROOT; };
 		B28763F0129A021D004A7A69 /* ogactorgaussray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactorgaussray.h; path = ../../engine/src/win32/ogactorgaussray.h; sourceTree = SOURCE_ROOT; };
-		B28763F2129A026B004A7A69 /* ogeffectgauss.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogeffectgauss.cpp; path = ../../engine/src/win32/ogeffectgauss.cpp; sourceTree = SOURCE_ROOT; };
-		B28763F3129A026B004A7A69 /* ogeffectgauss.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffectgauss.h; path = ../../engine/src/win32/ogeffectgauss.h; sourceTree = SOURCE_ROOT; };
 		B28763F5129A02A4004A7A69 /* ogsgeffectnode.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogsgeffectnode.cpp; path = ../../engine/src/win32/ogsgeffectnode.cpp; sourceTree = SOURCE_ROOT; };
 		B28763F6129A02A4004A7A69 /* ogsgeffectnode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogsgeffectnode.h; path = ../../engine/src/win32/ogsgeffectnode.h; sourceTree = SOURCE_ROOT; };
 		B28763F7129A02A4004A7A69 /* ogsglandscapenode.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogsglandscapenode.cpp; path = ../../engine/src/win32/ogsglandscapenode.cpp; sourceTree = SOURCE_ROOT; };
 		B28763F8129A02A4004A7A69 /* ogsglandscapenode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogsglandscapenode.h; path = ../../engine/src/win32/ogsglandscapenode.h; sourceTree = SOURCE_ROOT; };
+		B287EED412C038A900104017 /* IOGEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGEmitter.h; path = ../../engine/include/IOGEmitter.h; sourceTree = SOURCE_ROOT; };
+		B287EED612C0393A00104017 /* ogemitter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitter.cpp; path = ../../engine/src/win32/ogemitter.cpp; sourceTree = SOURCE_ROOT; };
+		B287EED712C0393A00104017 /* ogemitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitter.h; path = ../../engine/src/win32/ogemitter.h; sourceTree = SOURCE_ROOT; };
+		B287EED812C0393A00104017 /* ogemitteranimatedbb.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitteranimatedbb.cpp; path = ../../engine/src/win32/ogemitteranimatedbb.cpp; sourceTree = SOURCE_ROOT; };
+		B287EED912C0393A00104017 /* ogemitteranimatedbb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitteranimatedbb.h; path = ../../engine/src/win32/ogemitteranimatedbb.h; sourceTree = SOURCE_ROOT; };
+		B287EEDA12C0393A00104017 /* ogemitterglow.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitterglow.cpp; path = ../../engine/src/win32/ogemitterglow.cpp; sourceTree = SOURCE_ROOT; };
+		B287EEDB12C0393A00104017 /* ogemitterglow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitterglow.h; path = ../../engine/src/win32/ogemitterglow.h; sourceTree = SOURCE_ROOT; };
+		B287EEDC12C0393A00104017 /* ogemitterlightflash.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitterlightflash.cpp; path = ../../engine/src/win32/ogemitterlightflash.cpp; sourceTree = SOURCE_ROOT; };
+		B287EEDD12C0393A00104017 /* ogemitterlightflash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitterlightflash.h; path = ../../engine/src/win32/ogemitterlightflash.h; sourceTree = SOURCE_ROOT; };
+		B287EEDE12C0393A00104017 /* ogemitterparticlechain.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitterparticlechain.cpp; path = ../../engine/src/win32/ogemitterparticlechain.cpp; sourceTree = SOURCE_ROOT; };
+		B287EEDF12C0393A00104017 /* ogemitterparticlechain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitterparticlechain.h; path = ../../engine/src/win32/ogemitterparticlechain.h; sourceTree = SOURCE_ROOT; };
+		B287EEE012C0393A00104017 /* ogemitterpulseglow.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitterpulseglow.cpp; path = ../../engine/src/win32/ogemitterpulseglow.cpp; sourceTree = SOURCE_ROOT; };
+		B287EEE112C0393A00104017 /* ogemitterpulseglow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitterpulseglow.h; path = ../../engine/src/win32/ogemitterpulseglow.h; sourceTree = SOURCE_ROOT; };
+		B287EEE212C0393A00104017 /* ogemitterringwave.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitterringwave.cpp; path = ../../engine/src/win32/ogemitterringwave.cpp; sourceTree = SOURCE_ROOT; };
+		B287EEE312C0393A00104017 /* ogemitterringwave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitterringwave.h; path = ../../engine/src/win32/ogemitterringwave.h; sourceTree = SOURCE_ROOT; };
+		B287EEE412C0393A00104017 /* ogemitterrotatingsparks.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitterrotatingsparks.cpp; path = ../../engine/src/win32/ogemitterrotatingsparks.cpp; sourceTree = SOURCE_ROOT; };
+		B287EEE512C0393A00104017 /* ogemitterrotatingsparks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitterrotatingsparks.h; path = ../../engine/src/win32/ogemitterrotatingsparks.h; sourceTree = SOURCE_ROOT; };
+		B287EEE612C0393A00104017 /* ogemitterscrollingray.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitterscrollingray.cpp; path = ../../engine/src/win32/ogemitterscrollingray.cpp; sourceTree = SOURCE_ROOT; };
+		B287EEE712C0393A00104017 /* ogemitterscrollingray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitterscrollingray.h; path = ../../engine/src/win32/ogemitterscrollingray.h; sourceTree = SOURCE_ROOT; };
+		B287EEE812C0393A00104017 /* ogemittertrail.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemittertrail.cpp; path = ../../engine/src/win32/ogemittertrail.cpp; sourceTree = SOURCE_ROOT; };
+		B287EEE912C0393A00104017 /* ogemittertrail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemittertrail.h; path = ../../engine/src/win32/ogemittertrail.h; sourceTree = SOURCE_ROOT; };
 		B28B45B7121A57DE0038E7B2 /* POD.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = POD.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B293FA31127B2EA9000D2799 /* IOGWeapon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGWeapon.h; path = ../../engine/include/IOGWeapon.h; sourceTree = SOURCE_ROOT; };
 		B293FA32127B2ED9000D2799 /* ogactorbonus.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactorbonus.cpp; path = ../../engine/src/win32/ogactorbonus.cpp; sourceTree = SOURCE_ROOT; };
 		B293FA33127B2ED9000D2799 /* ogactorbonus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactorbonus.h; path = ../../engine/src/win32/ogactorbonus.h; sourceTree = SOURCE_ROOT; };
-		B293FA35127B2EFF000D2799 /* ogeffectbonuspick.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogeffectbonuspick.cpp; path = ../../engine/src/win32/ogeffectbonuspick.cpp; sourceTree = SOURCE_ROOT; };
-		B293FA36127B2EFF000D2799 /* ogeffectbonuspick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffectbonuspick.h; path = ../../engine/src/win32/ogeffectbonuspick.h; sourceTree = SOURCE_ROOT; };
 		B293FA38127B2F4B000D2799 /* ogshadowmodelshader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogshadowmodelshader.cpp; path = ../../engine/src/win32/ogshadowmodelshader.cpp; sourceTree = SOURCE_ROOT; };
 		B293FA39127B2F4B000D2799 /* ogshadowmodelshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogshadowmodelshader.h; path = ../../engine/src/win32/ogshadowmodelshader.h; sourceTree = SOURCE_ROOT; };
 		B293FA3B127B2F8B000D2799 /* ogbonusphysicalobject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogbonusphysicalobject.cpp; path = ../../engine/src/win32/ogbonusphysicalobject.cpp; sourceTree = SOURCE_ROOT; };
@@ -355,16 +362,8 @@
 		B2959D21127481A4005F5346 /* ogbotflightworker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogbotflightworker.h; path = ../../engine/src/win32/ogbotflightworker.h; sourceTree = SOURCE_ROOT; };
 		B2959D22127481A4005F5346 /* oggamesequence.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = oggamesequence.cpp; path = ../../engine/src/win32/oggamesequence.cpp; sourceTree = SOURCE_ROOT; };
 		B2959D23127481A4005F5346 /* oggamesequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oggamesequence.h; path = ../../engine/src/win32/oggamesequence.h; sourceTree = SOURCE_ROOT; };
-		B2959D2912748212005F5346 /* ogeffectexplosion.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogeffectexplosion.cpp; path = ../../engine/src/win32/ogeffectexplosion.cpp; sourceTree = SOURCE_ROOT; };
-		B2959D2A12748212005F5346 /* ogeffectexplosion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffectexplosion.h; path = ../../engine/src/win32/ogeffectexplosion.h; sourceTree = SOURCE_ROOT; };
-		B2959D2B12748212005F5346 /* ogeffectmissilesmoke.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogeffectmissilesmoke.cpp; path = ../../engine/src/win32/ogeffectmissilesmoke.cpp; sourceTree = SOURCE_ROOT; };
-		B2959D2C12748212005F5346 /* ogeffectmissilesmoke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffectmissilesmoke.h; path = ../../engine/src/win32/ogeffectmissilesmoke.h; sourceTree = SOURCE_ROOT; };
 		B2959D2F1274829D005F5346 /* StartMenuScreenController.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; path = StartMenuScreenController.cpp; sourceTree = "<group>"; };
 		B2959D301274829D005F5346 /* StartMenuScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StartMenuScreenController.h; sourceTree = "<group>"; };
-		B296060D1286001700B46ACC /* ogeffecttrailsmoke.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogeffecttrailsmoke.cpp; path = ../../engine/src/win32/ogeffecttrailsmoke.cpp; sourceTree = SOURCE_ROOT; };
-		B296060E1286001700B46ACC /* ogeffecttrailsmoke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffecttrailsmoke.h; path = ../../engine/src/win32/ogeffecttrailsmoke.h; sourceTree = SOURCE_ROOT; };
-		B299F2C4128478C2001B95B0 /* ogeffectcollision.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogeffectcollision.cpp; path = ../../engine/src/win32/ogeffectcollision.cpp; sourceTree = SOURCE_ROOT; };
-		B299F2C5128478C2001B95B0 /* ogeffectcollision.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffectcollision.h; path = ../../engine/src/win32/ogeffectcollision.h; sourceTree = SOURCE_ROOT; };
 		B29C64BD1222D36800FF91DA /* IOGInputDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGInputDispatcher.h; path = ../../engine/include/IOGInputDispatcher.h; sourceTree = SOURCE_ROOT; };
 		B29C64BE1222D36800FF91DA /* IOGInputReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGInputReceiver.h; path = ../../engine/include/IOGInputReceiver.h; sourceTree = SOURCE_ROOT; };
 		B29C64C81222D4BF00FF91DA /* oginputdispatcher.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = oginputdispatcher.cpp; path = ../../engine/src/win32/oginputdispatcher.cpp; sourceTree = SOURCE_ROOT; };
@@ -378,8 +377,6 @@
 		B2AEFECA124117940039DC17 /* ogeffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffect.h; path = ../../engine/src/win32/ogeffect.h; sourceTree = SOURCE_ROOT; };
 		B2AEFECB124117940039DC17 /* ogeffectsmanager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogeffectsmanager.cpp; path = ../../engine/src/win32/ogeffectsmanager.cpp; sourceTree = SOURCE_ROOT; };
 		B2AEFECC124117940039DC17 /* ogeffectsmanager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffectsmanager.h; path = ../../engine/src/win32/ogeffectsmanager.h; sourceTree = SOURCE_ROOT; };
-		B2AEFECF124117B00039DC17 /* ogplasmaeffect.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogplasmaeffect.cpp; path = ../../engine/src/win32/ogplasmaeffect.cpp; sourceTree = SOURCE_ROOT; };
-		B2AEFED0124117B00039DC17 /* ogplasmaeffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogplasmaeffect.h; path = ../../engine/src/win32/ogplasmaeffect.h; sourceTree = SOURCE_ROOT; };
 		B2AEFED51241180B0039DC17 /* ogfog.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogfog.cpp; path = ../../engine/src/win32/ogfog.cpp; sourceTree = SOURCE_ROOT; };
 		B2AEFED61241180B0039DC17 /* ogfog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogfog.h; path = ../../engine/src/win32/ogfog.h; sourceTree = SOURCE_ROOT; };
 		B2AEFED71241180B0039DC17 /* ogrendertarget.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogrendertarget.cpp; path = ../../engine/src/win32/ogrendertarget.cpp; sourceTree = SOURCE_ROOT; };
@@ -499,7 +496,6 @@
 				13B84D4410A3534A00129C64 /* Culling.h */,
 				13B84D4510A3534A00129C64 /* Geometry.h */,
 				13B84D4610A3534A00129C64 /* GraphicsDevice.h */,
-				13B84D4710A3534A00129C64 /* Log_retired.h */,
 				13B84D4810A3534A00129C64 /* Macros.h */,
 				13B84D4910A3534A00129C64 /* Mathematics.h */,
 				13B84D4A10A3534A00129C64 /* MemoryManager.h */,
@@ -510,7 +506,6 @@
 				13B84D4F10A3534A00129C64 /* Timing.h */,
 				13B84D5010A3534A00129C64 /* TouchScreen.h */,
 				13B84D5110A3534A00129C64 /* Type.h */,
-				13B84D5210A3534A00129C64 /* UI.h */,
 				13A749DC10A5984E00277475 /* xmlparser.h */,
 			);
 			name = Include;
@@ -655,7 +650,6 @@
 			isa = PBXGroup;
 			children = (
 				791F49AE0E1755E800E927FE /* GraphicsDevice */,
-				791F49B50E1755E800E927FE /* UI */,
 			);
 			name = Core;
 			path = ../../sdk/Renderer/Core;
@@ -664,24 +658,13 @@
 		791F49AE0E1755E800E927FE /* GraphicsDevice */ = {
 			isa = PBXGroup;
 			children = (
+				F9FC03FF1014F5C1006ACEAA /* GLES11 */,
 				BDE2115D10217E1E00B215F9 /* Shader.h */,
 				BDE2115E10217E1E00B215F9 /* Shader.mm */,
-				F9FC03FF1014F5C1006ACEAA /* GLES11 */,
 				791F49B30E1755E800E927FE /* Texture.h */,
 				791F49B40E1755E800E927FE /* Texture.mm */,
 			);
 			path = GraphicsDevice;
-			sourceTree = "<group>";
-		};
-		791F49B50E1755E800E927FE /* UI */ = {
-			isa = PBXGroup;
-			children = (
-				791F49B60E1755E800E927FE /* DisplayText.cpp */,
-				791F49B70E1755E800E927FE /* DisplayText.h */,
-				791F49B80E1755E800E927FE /* DisplayTextAPI.cpp */,
-				791F49B90E1755E800E927FE /* DisplayTextdat.h */,
-			);
-			path = UI;
 			sourceTree = "<group>";
 		};
 		791F49BA0E1755E800E927FE /* Geometry */ = {
@@ -689,11 +672,8 @@
 			children = (
 				791F49BB0E1755E800E927FE /* BoneBatch.cpp */,
 				791F49BC0E1755E800E927FE /* BoneBatch.h */,
-				791F49BD0E1755E800E927FE /* Model3DS.cpp */,
-				791F49BE0E1755E800E927FE /* Model3DS.h */,
 				791F49BF0E1755E800E927FE /* ModelPOD.cpp */,
 				791F49C00E1755E800E927FE /* ModelPOD.h */,
-				791F49C10E1755E800E927FE /* ModelPODWriteH.cpp */,
 				791F49C20E1755E800E927FE /* TriStrip.cpp */,
 				791F49C30E1755E800E927FE /* TriStrip.h */,
 				791F49C40E1755E800E927FE /* Vertex.cpp */,
@@ -771,6 +751,33 @@
 				B2032CA712182ACC000C065B /* OpenGL2.h */,
 			);
 			name = OpenGL;
+			sourceTree = "<group>";
+		};
+		B287EED512C038F500104017 /* Emitters */ = {
+			isa = PBXGroup;
+			children = (
+				B287EED612C0393A00104017 /* ogemitter.cpp */,
+				B287EED712C0393A00104017 /* ogemitter.h */,
+				B287EED812C0393A00104017 /* ogemitteranimatedbb.cpp */,
+				B287EED912C0393A00104017 /* ogemitteranimatedbb.h */,
+				B287EEDA12C0393A00104017 /* ogemitterglow.cpp */,
+				B287EEDB12C0393A00104017 /* ogemitterglow.h */,
+				B287EEDC12C0393A00104017 /* ogemitterlightflash.cpp */,
+				B287EEDD12C0393A00104017 /* ogemitterlightflash.h */,
+				B287EEDE12C0393A00104017 /* ogemitterparticlechain.cpp */,
+				B287EEDF12C0393A00104017 /* ogemitterparticlechain.h */,
+				B287EEE012C0393A00104017 /* ogemitterpulseglow.cpp */,
+				B287EEE112C0393A00104017 /* ogemitterpulseglow.h */,
+				B287EEE212C0393A00104017 /* ogemitterringwave.cpp */,
+				B287EEE312C0393A00104017 /* ogemitterringwave.h */,
+				B287EEE412C0393A00104017 /* ogemitterrotatingsparks.cpp */,
+				B287EEE512C0393A00104017 /* ogemitterrotatingsparks.h */,
+				B287EEE612C0393A00104017 /* ogemitterscrollingray.cpp */,
+				B287EEE712C0393A00104017 /* ogemitterscrollingray.h */,
+				B287EEE812C0393A00104017 /* ogemittertrail.cpp */,
+				B287EEE912C0393A00104017 /* ogemittertrail.h */,
+			);
+			name = Emitters;
 			sourceTree = "<group>";
 		};
 		B294D2AA12639D9200015F63 /* TouchScreen */ = {
@@ -923,6 +930,7 @@
 		B29C64BB1222D2CE00FF91DA /* Graphics */ = {
 			isa = PBXGroup;
 			children = (
+				B287EED412C038A900104017 /* IOGEmitter.h */,
 				B294D24A1263902A00015F63 /* IOGVertexBuffers.h */,
 				B2DF04F6125A3671002BE972 /* IOGShader.h */,
 				B2DF04F4125A3659002BE972 /* IOGAnimation.h */,
@@ -1141,20 +1149,7 @@
 		B2AEFEC7124117570039DC17 /* Effects */ = {
 			isa = PBXGroup;
 			children = (
-				B28763F2129A026B004A7A69 /* ogeffectgauss.cpp */,
-				B28763F3129A026B004A7A69 /* ogeffectgauss.h */,
-				B296060D1286001700B46ACC /* ogeffecttrailsmoke.cpp */,
-				B296060E1286001700B46ACC /* ogeffecttrailsmoke.h */,
-				B299F2C4128478C2001B95B0 /* ogeffectcollision.cpp */,
-				B299F2C5128478C2001B95B0 /* ogeffectcollision.h */,
-				B293FA35127B2EFF000D2799 /* ogeffectbonuspick.cpp */,
-				B293FA36127B2EFF000D2799 /* ogeffectbonuspick.h */,
-				B2959D2912748212005F5346 /* ogeffectexplosion.cpp */,
-				B2959D2A12748212005F5346 /* ogeffectexplosion.h */,
-				B2959D2B12748212005F5346 /* ogeffectmissilesmoke.cpp */,
-				B2959D2C12748212005F5346 /* ogeffectmissilesmoke.h */,
-				B2AEFECF124117B00039DC17 /* ogplasmaeffect.cpp */,
-				B2AEFED0124117B00039DC17 /* ogplasmaeffect.h */,
+				B287EED512C038F500104017 /* Emitters */,
 				B2AEFEC9124117940039DC17 /* ogeffect.cpp */,
 				B2AEFECA124117940039DC17 /* ogeffect.h */,
 				B2AEFECB124117940039DC17 /* ogeffectsmanager.cpp */,
@@ -1255,7 +1250,14 @@
 			isa = PBXProject;
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "AirAssault" */;
 			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -1289,12 +1291,8 @@
 				791F49C90E1755E800E927FE /* Streaming.cpp in Sources */,
 				791F49CA0E1755E800E927FE /* main.m in Sources */,
 				791F49D00E1755E800E927FE /* Texture.mm in Sources */,
-				791F49D10E1755E800E927FE /* DisplayText.cpp in Sources */,
-				791F49D20E1755E800E927FE /* DisplayTextAPI.cpp in Sources */,
 				791F49D30E1755E800E927FE /* BoneBatch.cpp in Sources */,
-				791F49D40E1755E800E927FE /* Model3DS.cpp in Sources */,
 				791F49D50E1755E800E927FE /* ModelPOD.cpp in Sources */,
-				791F49D60E1755E800E927FE /* ModelPODWriteH.cpp in Sources */,
 				791F49D70E1755E800E927FE /* TriStrip.cpp in Sources */,
 				791F49D80E1755E800E927FE /* Vertex.cpp in Sources */,
 				791F49D90E1755E800E927FE /* VertexLookup.cpp in Sources */,
@@ -1345,7 +1343,6 @@
 				B2B11CD51226F212001E7ADE /* Accelerometer.m in Sources */,
 				B2AEFECD124117940039DC17 /* ogeffect.cpp in Sources */,
 				B2AEFECE124117940039DC17 /* ogeffectsmanager.cpp in Sources */,
-				B2AEFED1124117B00039DC17 /* ogplasmaeffect.cpp in Sources */,
 				B2AEFEDB1241180B0039DC17 /* ogfog.cpp in Sources */,
 				B2AEFEDC1241180B0039DC17 /* ogrendertarget.cpp in Sources */,
 				B2AEFEDD1241180B0039DC17 /* ogspritepool.cpp in Sources */,
@@ -1383,23 +1380,27 @@
 				B2959D26127481A4005F5346 /* ogbotfallingworker.cpp in Sources */,
 				B2959D27127481A4005F5346 /* ogbotflightworker.cpp in Sources */,
 				B2959D28127481A4005F5346 /* oggamesequence.cpp in Sources */,
-				B2959D2D12748212005F5346 /* ogeffectexplosion.cpp in Sources */,
-				B2959D2E12748212005F5346 /* ogeffectmissilesmoke.cpp in Sources */,
 				B2959D311274829D005F5346 /* StartMenuScreenController.cpp in Sources */,
 				B293FA34127B2ED9000D2799 /* ogactorbonus.cpp in Sources */,
-				B293FA37127B2EFF000D2799 /* ogeffectbonuspick.cpp in Sources */,
 				B293FA3A127B2F4B000D2799 /* ogshadowmodelshader.cpp in Sources */,
 				B293FA3D127B2F8B000D2799 /* ogbonusphysicalobject.cpp in Sources */,
-				B299F2C6128478C2001B95B0 /* ogeffectcollision.cpp in Sources */,
-				B296060F1286001700B46ACC /* ogeffecttrailsmoke.cpp in Sources */,
 				B28763E8129A0178004A7A69 /* ogguibonusbar.cpp in Sources */,
 				B28763E9129A0178004A7A69 /* ogguilifebar.cpp in Sources */,
 				B28763EA129A0178004A7A69 /* ogguiweaponpanel.cpp in Sources */,
 				B28763F1129A021D004A7A69 /* ogactorgaussray.cpp in Sources */,
-				B28763F4129A026B004A7A69 /* ogeffectgauss.cpp in Sources */,
 				B28763F9129A02A5004A7A69 /* ogsgeffectnode.cpp in Sources */,
 				B28763FA129A02A5004A7A69 /* ogsglandscapenode.cpp in Sources */,
 				B20A1973129A047900577773 /* ogmaterial.cpp in Sources */,
+				B287EEEA12C0393A00104017 /* ogemitter.cpp in Sources */,
+				B287EEEB12C0393A00104017 /* ogemitteranimatedbb.cpp in Sources */,
+				B287EEEC12C0393A00104017 /* ogemitterglow.cpp in Sources */,
+				B287EEED12C0393A00104017 /* ogemitterlightflash.cpp in Sources */,
+				B287EEEE12C0393A00104017 /* ogemitterparticlechain.cpp in Sources */,
+				B287EEEF12C0393A00104017 /* ogemitterpulseglow.cpp in Sources */,
+				B287EEF012C0393A00104017 /* ogemitterringwave.cpp in Sources */,
+				B287EEF112C0393A00104017 /* ogemitterrotatingsparks.cpp in Sources */,
+				B287EEF212C0393A00104017 /* ogemitterscrollingray.cpp in Sources */,
+				B287EEF312C0393A00104017 /* ogemittertrail.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1469,13 +1470,14 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer: Viacheslav Bogdanov (98HN8A7PMY)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_WARN_UNUSED_FUNCTION = NO;
 				HEADER_SEARCH_PATHS = (
 					"..\\..\\sdk",
 					"..\\..\\sdk\\Include",
 				);
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "03DAE8F6-FC4E-4D98-B0EA-DC42E6EECB90";
-				SDKROOT = iphonesimulator3.2;
+				SDKROOT = iphoneos4.2;
 			};
 			name = Debug;
 		};
@@ -1489,7 +1491,7 @@
 				HEADER_SEARCH_PATHS = ../../engine/include;
 				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
 				PROVISIONING_PROFILE = "DBA17EE0-5201-415C-981E-4B70596748C8";
-				SDKROOT = iphonesimulator3.2;
+				SDKROOT = iphoneos4.2;
 				USER_HEADER_SEARCH_PATHS = ../../sdk/OpenGL2/include;
 			};
 			name = Release;
