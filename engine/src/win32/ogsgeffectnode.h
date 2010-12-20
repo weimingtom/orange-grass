@@ -60,9 +60,9 @@ public:
 
 protected:
 
-    bool					m_bActive;
     IOGEffect*              m_pRenderable;
     IOGPhysicalObject*      m_pPhysics;
+    bool					m_bActive;
 };
 
 #endif

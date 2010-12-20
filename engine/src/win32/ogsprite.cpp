@@ -50,6 +50,9 @@ bool COGSprite::Load ()
 
 	case OG_RESSTATE_LOADED:
         return true;    
+
+    case OG_RESSTATE_DEFINED:
+        break;
 	}
 
 	m_pTexture = GetResourceMgr()->GetTexture(m_ResourceFile);

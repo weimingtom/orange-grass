@@ -75,8 +75,8 @@ private:
 private:
 
 	COGMesh*					m_pMesh;	
-	IOGTexture*					m_pTexture;
     IOGMaterial*				m_pMaterial;
+	IOGTexture*					m_pTexture;
 	OGBlendType					m_Blend;
     IOGRenderer*                m_pRenderer;
 	IOGSettingsReader*			m_pReader;

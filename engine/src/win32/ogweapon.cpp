@@ -82,6 +82,9 @@ void COGWeapon::Fire (IOGActor* _pTarget, bool _bFollow)
         m_pOwner->GetSgNode()->GetActivePoint(launches[1], "actpointweapon01");
         m_pOwner->GetSgNode()->GetActivePoint(launches[2], "actpointweapon02");
         break;
+    
+    case OG_WEAPONPOS_NONE:
+        return;
     }
 
     int CurLaunch = NumLaunch;
@@ -153,6 +156,9 @@ void COGWeapon::Fire (const Vec3& _vTarget)
         m_pOwner->GetSgNode()->GetActivePoint(launches[0], "actpointweapon03");
         m_pOwner->GetSgNode()->GetActivePoint(launches[1], "actpointweapon01");
         m_pOwner->GetSgNode()->GetActivePoint(launches[2], "actpointweapon02");
+        break;
+            
+    case OG_WEAPONPOS_NONE:
         break;
     }
 

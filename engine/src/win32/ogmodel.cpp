@@ -36,7 +36,10 @@ bool COGModel::Load ()
 
 	case OG_RESSTATE_LOADED:
         return true;    
-	}
+
+    case OG_RESSTATE_DEFINED:
+        break;	
+    }
 
 	Cfg modelcfg;
 	if (!LoadConfig(modelcfg))

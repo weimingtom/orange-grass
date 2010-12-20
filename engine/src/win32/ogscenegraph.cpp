@@ -155,7 +155,7 @@ void COGSceneGraph::Update (unsigned long _ElapsedTime)
     for (; iter != m_EffectNodesList.end(); ++iter)
     {
 		IOGSgNode* pNode = (*iter);
-        (*iter)->Update(_ElapsedTime);
+        pNode->Update(_ElapsedTime);
     }
 }
 

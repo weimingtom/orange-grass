@@ -67,8 +67,8 @@ protected:
 
 protected:
 
-	IOGSgNode*	m_pNodeDestruction;
     IOGModel*   m_pModelDestruction;
+	IOGSgNode*	m_pNodeDestruction;
 
 	IOGEffect*  m_pExplosionEffect;
     IOGSgNode*  m_pExplosionNode;

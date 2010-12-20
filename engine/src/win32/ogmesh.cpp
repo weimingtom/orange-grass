@@ -41,7 +41,10 @@ bool COGMesh::Load ()
 
 	case OG_RESSTATE_LOADED:
         return true;    
-	}
+	
+    case OG_RESSTATE_DEFINED:
+        break;
+    }
 
 	if (!m_pScene->ReadFromFile(m_ResourceFile.c_str()))
 	{

@@ -85,9 +85,9 @@ protected:
     IOGVertexBuffers*	m_pCurMesh;
 	OGBlendType			m_CurBlend;
 	IOGStatistics*		m_pStats;
+	IOGFog*				m_pFog;
 	IOGLightMgr*		m_pLightMgr;
 	IOGCamera*			m_pCamera;
-	IOGFog*				m_pFog;
 	COGTextRenderer*	m_pText;
 	MATRIX				m_mOrthoProj;
 	MATRIX				m_mProjection;

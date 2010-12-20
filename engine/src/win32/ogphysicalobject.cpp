@@ -12,9 +12,9 @@
 
 COGPhysicalObject::COGPhysicalObject () :	m_Type (OG_PHYSICS_NONE),
 											m_pParams(NULL),
-											m_bUpdated(false),
                                             m_pListener(NULL),
-                                            m_pActor(NULL)
+                                            m_pActor(NULL),
+                                            m_bUpdated(false)
 {
     m_fStrafe = 0.0f;
     m_vScaling = Vec3(1);

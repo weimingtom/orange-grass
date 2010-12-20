@@ -60,10 +60,10 @@ public:
 
 protected:
 
-    bool					m_bActive;
     IOGModel*               m_pRenderable;
     IOGPhysicalObject*      m_pPhysics;
     IOGAnimationController* m_pAnimator;
+    bool					m_bActive;
     unsigned int            m_AnimFrame;
 	float					m_fSpin;
 };

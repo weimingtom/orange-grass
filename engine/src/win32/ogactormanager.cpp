@@ -254,6 +254,9 @@ void COGActorManager::Update (unsigned long _ElapsedTime)
 				}
 			}
 			break;
+                
+        default:
+            break;
 		}
 		pActor->Update(_ElapsedTime);
     }

@@ -68,7 +68,10 @@ bool COGLevel::Load ()
 		return false;
 
 	case OG_RESSTATE_LOADED:
-        return true;    
+        return true;
+
+    case OG_RESSTATE_DEFINED:
+        break;
 	}
 
 	Cfg cfg;

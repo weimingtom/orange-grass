@@ -61,8 +61,8 @@ public:
 
 protected:
 
-    bool					m_bActive;
     IOGTerrain*             m_pRenderable;
+    bool					m_bActive;
     IOGObb                  m_OBB;
     MATRIX                  m_World;
 };

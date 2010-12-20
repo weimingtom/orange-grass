@@ -33,10 +33,10 @@ public:
 	
 private:
 
+	const SPODMesh*	m_pMesh;
 	unsigned int	m_VBO;
 	unsigned int	m_IBO;
 	unsigned int	m_NumVertices;
-	const SPODMesh*	m_pMesh;
 	IOGStatistics*	m_pStats;
 };
 

@@ -40,7 +40,7 @@ IOGSettingsSource* COGSettingsReader::OpenSource (const std::string& _File)
     pSource->pSource = new TiXmlDocument (_File.c_str());
 	if (!pSource->pSource->LoadFile (_File.c_str()))
 	{
-		OG_SAFE_DELETE((TiXmlDocument*)pSource->pSource);
+		OG_SAFE_DELETE(pSource->pSource);
         return NULL;
 	}
 

@@ -171,6 +171,9 @@ bool COGActorPlayer::RespondOnBonusCollision (IOGActor* _pBonus)
 
         case OG_BONUS_SHIELD:
             break;
+                
+        case OG_BONUS_NONE:
+            return false;
         }
         return true;
     }

@@ -117,6 +117,9 @@ IOGPhysicalObject* COGPhysics::CreateObject (
 			return pObj;
 		}
 		break;
+            
+    case OG_PHYSICS_NONE:
+        return NULL;
 	}
 
 	return NULL;
@@ -257,6 +260,9 @@ void COGPhysics::Update (unsigned long _ElapsedTime)
                 {
                 }
             }
+            break;
+                
+        case TEAM_NEUTRAL:
             break;
         }
     }

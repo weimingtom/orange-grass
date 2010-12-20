@@ -97,8 +97,8 @@ private:
 
 	COGMesh*	    m_pMesh;	
 	IOGTexture*	    m_pTexture;
-	OGBlendType		m_Blend;
     IOGMaterial*    m_pMaterial;
+	OGBlendType		m_Blend;
 
 	IOGRenderer*		m_pRenderer;
 	IOGSettingsReader*	m_pReader;

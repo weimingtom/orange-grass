@@ -130,12 +130,12 @@ protected:
 	IOGAabb			m_Aabb;
 	IOGObb			m_Obb;
 
-	bool			m_bUpdated;
-	bool			m_bActive;
-
 	IOGPhysicalParams*		m_pParams;
     IOGCollisionListener*   m_pListener;
     IOGActor*				m_pActor;
+
+	bool			m_bUpdated;
+	bool			m_bActive;
 };
 
 #endif
