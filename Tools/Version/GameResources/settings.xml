@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Settings>
 	<View
-		view_width = "480" view_height = "320"
+		view_width = "320" view_height = "480"
 		z_near = "4.0" z_far = "430.0"
 		FOV = "0.67"
 		view_distance = "300.0"
