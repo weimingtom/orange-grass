@@ -93,6 +93,7 @@ void CLoadScreenController::RenderScene ()
 void CLoadScreenController::Activate ()
 {
 	m_pHUD = m_pResourceMgr->GetSprite("load_scr");
+    m_bLoaded = false;
     m_bDisplayed = false;
 	m_State = CSTATE_ACTIVE;
 }
