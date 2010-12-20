@@ -17,7 +17,6 @@ subject to the following restrictions:
 
 
 #include "../Renderer/Geometry/BoneBatch.h"
-#include "../Renderer/Geometry/Model3DS.h"
 #include "../Renderer/Geometry/ModelPOD.h"
 #include "../Renderer/Geometry/Vertex.h"
 #include "../Renderer/Geometry/VertexLookup.h"

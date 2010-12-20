@@ -569,22 +569,6 @@ public:
 		const int		* const pnBoneIdx,
 		const VERTTYPE	* const pfBoneWeight);
 
-	/*!***************************************************************************
-	 @Function		SavePOD
-	 @Input			pszFilename		Filename to save to
-	 @Input			pszExpOpt		A string containing the options used by the exporter
-	 @Description	Save a binary POD file (.POD).
-	*****************************************************************************/
-	bool SavePOD(const char * const pszFilename, const char * const pszExpOpt = 0);
-
-	/*!***********************************************************************
-	 @Function		SaveH
-	 @Input			pszFilename		Filename to save to
-	 @Input			pszExpOpt		A string containing the options used by the exporter
-	 @Description	Save a header file (.H).
-	*************************************************************************/
-	bool SaveH(const char * const pszFilename, const char * const pszExpOpt = 0);
-
 private:
 	SPVRTPODImpl	*m_pImpl;	/*!< Internal implementation data */
 };

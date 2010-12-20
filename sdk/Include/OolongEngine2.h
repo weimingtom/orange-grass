@@ -31,6 +31,5 @@
 #include "Timing.h"
 #include "TouchScreen.h"
 #include "Type.h"
-#include "UI.h"
 
 #endif //__OOLONGENGINE2_H__
