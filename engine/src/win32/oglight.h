@@ -18,6 +18,9 @@ class COGLightMgr : public IOGLightMgr
 public:
 	COGLightMgr ();
 	virtual ~COGLightMgr ();
+    
+    // destroy all lights.
+    virtual void Clear ();
 
 	// add light.
 	virtual IOGLight* CreateLight ();

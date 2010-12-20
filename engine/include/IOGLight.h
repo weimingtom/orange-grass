@@ -34,7 +34,10 @@ class IOGLightMgr
 {
 public:
 	virtual ~IOGLightMgr () {}
-
+    
+    // destroy all lights.
+    virtual void Clear () = 0;
+    
 	// add light.
 	virtual IOGLight* CreateLight () = 0;
 

@@ -106,6 +106,8 @@ private:
 	std::string							m_ResPath;
 
 	IOGSettingsReader*					m_pReader;
+    
+    bool                                m_bLoaded;
 };
 
 #endif

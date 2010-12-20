@@ -22,6 +22,18 @@ COGLightMgr::~COGLightMgr ()
 }
 
 
+// destroy all lights.
+void COGLightMgr::Clear ()
+{
+    std::vector<IOGLight*>::iterator iter = m_Lights.begin();
+    for (; iter != m_Lights.end(); ++iter)
+    {
+		OG_SAFE_DELETE((*iter));        
+    }
+    m_Lights.clear();
+}
+
+
 // add light.
 IOGLight* COGLightMgr::CreateLight ()
 {

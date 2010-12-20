@@ -268,6 +268,7 @@ void COGLevel::Unload ()
 	GetActorManager()->Clear();
 	GetSceneGraph()->Clear();
 	GetPhysics()->Clear();
+    GetRenderer()->GetLightMgr()->Clear();
 
 	m_LoadState = OG_RESSTATE_DEFINED;
 }

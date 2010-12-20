@@ -22,6 +22,7 @@ COGResourceMgr::COGResourceMgr ()
 	m_ResPath = std::string(path) + std::string("GameResources");
 #endif
 	m_pReader = GetSettingsReader();
+    m_bLoaded = false;
 }
 
 
@@ -44,6 +45,7 @@ COGResourceMgr::~COGResourceMgr ()
 	{
 		OG_SAFE_DELETE (spr_iter->second);
 	}
+    m_bLoaded = false;
 }
 
 
@@ -71,6 +73,11 @@ std::string COGResourceMgr::GetFullPath (const std::string& _File) const
 // load resources.
 bool COGResourceMgr::Load ()
 {
+    if (m_bLoaded)
+    {
+        return true;
+    }
+    
 	Cfg cfg;
 	if (!LoadConfig(cfg))
 	{
@@ -111,6 +118,7 @@ bool COGResourceMgr::Load ()
 		m_SpriteList[(*spriter).alias] = pSprite;
 	}
 
+    m_bLoaded = true;
 	return true;
 }
 
