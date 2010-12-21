@@ -30,7 +30,7 @@ void COGGuiWeaponPanel::Load ()
 	m_Position = Vec2(420.0f, 260.0f);
 	m_Size = Vec2(60.0f, 60.0f);
 
-    m_pFrame = m_pResourceMgr->GetSprite("weapon_hud");
+    m_pFrame = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, "weapon_hud");
 }
 
 
@@ -45,7 +45,7 @@ void COGGuiWeaponPanel::Unload ()
 // Update data.
 void COGGuiWeaponPanel::UpdateData (const std::string& _SprWeapon)
 {
-    m_pWeapon = m_pResourceMgr->GetSprite(_SprWeapon);
+    m_pWeapon = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, _SprWeapon);
 }
 
 

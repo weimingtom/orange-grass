@@ -25,9 +25,6 @@ class COGResourceMgr : public IOGResourceMgr
 public:
 	COGResourceMgr ();
 	virtual ~COGResourceMgr ();
-	
-	// load from file.
-	virtual bool Init ();
 
     // get resource path
     virtual const std::string& GetResourcePath () const;
@@ -36,16 +33,19 @@ public:
     virtual std::string GetFullPath (const std::string& _File) const;
 
 	// load resources.
-	virtual bool Load ();
+	virtual bool Load (OGResourcePool _PoolId);
+
+	// unload resources.
+	virtual bool Unload (OGResourcePool _PoolId);
 
 	// get texture.
-	virtual IOGTexture* GetTexture (const std::string& _Alias);
+	virtual IOGTexture* GetTexture (OGResourcePool _PoolId, const std::string& _Alias);
 	
 	// get model.
-	virtual IOGModel* GetModel (const std::string& _Alias);
+	virtual IOGModel* GetModel (OGResourcePool _PoolId, const std::string& _Alias);
 
 	// get sprite.
-	virtual IOGSprite* GetSprite (const std::string& _Alias);
+	virtual IOGSprite* GetSprite (OGResourcePool _PoolId, const std::string& _Alias);
 
 	// release texture.
 	virtual void ReleaseTexture (IOGTexture* _pTexture);
@@ -95,19 +95,27 @@ private:
 		TSpriteCfg	sprite_cfg_list;
 	};
 
+	struct ResourcePool
+	{
+		ResourcePool() : m_bLoaded(false) {}
+		std::map<std::string, COGTexture*>	m_TextureList;
+		std::map<std::string, COGModel*>	m_ModelList;
+		std::map<std::string, COGSprite*>	m_SpriteList;
+		bool                                m_bLoaded;
+	};
+
 	// Load resource manager configuration
-	bool LoadConfig (COGResourceMgr::Cfg& _cfg);
+	bool LoadConfig (COGResourceMgr::Cfg& _cfg, const std::string& _ConfigFile);
+
+	// clear resource pool.
+	bool ClearPool (OGResourcePool _PoolId);
 	
 private:
 
-	std::map<std::string, COGTexture*>	m_TextureList;
-	std::map<std::string, COGModel*>	m_ModelList;
-	std::map<std::string, COGSprite*>	m_SpriteList;
-	std::string							m_ResPath;
-
-	IOGSettingsReader*					m_pReader;
-    
-    bool                                m_bLoaded;
+	std::string			m_ResPath;
+	ResourcePool		m_PoolUI;
+	ResourcePool		m_PoolGame;
+	IOGSettingsReader*	m_pReader;
 };
 
 #endif

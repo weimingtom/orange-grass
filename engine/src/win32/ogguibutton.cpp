@@ -28,8 +28,8 @@ COGGuiButton::~COGGuiButton()
 // Load graphics.
 void COGGuiButton::Load (const std::string& _SprN, const std::string& _SprPr, const Vec2& _Size)
 {
-    m_pNormal = m_pResourceMgr->GetSprite(_SprN);
-    m_pPressed = m_pResourceMgr->GetSprite(_SprPr);
+    m_pNormal = m_pResourceMgr->GetSprite(OG_RESPOOL_UI, _SprN);
+    m_pPressed = m_pResourceMgr->GetSprite(OG_RESPOOL_UI, _SprPr);
     m_pCurSpr = m_pNormal;
     m_Size = _Size;
 }

@@ -11,6 +11,7 @@
 
 #include "IOGCoreHelpers.h"
 #include <string>
+#include "IOGResourceMgr.h"
 
 
 // Resource types
@@ -47,7 +48,7 @@ public:
     virtual ~COGResource ();
 
     // Initialize
-    void Init (const std::string& _Alias, const std::string& _File);
+    void Init (const std::string& _Alias, const std::string& _File, OGResourcePool _Pool);
 
     // Load resource (actual loading goes here)
     virtual bool Load () = 0;
@@ -73,6 +74,7 @@ protected:
     std::string		m_ResourceAlias;
     OGResourceTypes m_ResourceType;
     OGResourceState m_LoadState;
+	OGResourcePool	m_ResourcePool;
 };
 
 #endif

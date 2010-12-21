@@ -49,14 +49,14 @@ bool COGModel::Load ()
 	}
 
 	m_pMesh = new COGMesh();
-	m_pMesh->Init(std::string(""), modelcfg.mesh_file);
+	m_pMesh->Init(std::string(""), modelcfg.mesh_file, m_ResourcePool);
 	if (!m_pMesh->Load())
 	{
 		OG_LOG_ERROR("Failed to load model's mesh %s", modelcfg.mesh_file.c_str());
 		return false;
 	}
 
-	m_pTexture = GetResourceMgr()->GetTexture(modelcfg.texture_alias);
+	m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, modelcfg.texture_alias);
     m_pMaterial = m_pRenderer->CreateMaterial();
     m_pMaterial->SetAmbient(modelcfg.material_ambient);
     m_pMaterial->SetDiffuse(modelcfg.material_diffuse);

@@ -19,11 +19,12 @@ COGResource::COGResource ()
 
 
 // Initialize
-void COGResource::Init (const std::string& _Alias, const std::string& _File)
+void COGResource::Init (const std::string& _Alias, const std::string& _File, OGResourcePool _Pool)
 {
     m_LoadState = OG_RESSTATE_DEFINED;
     m_ResourceAlias = _Alias;
     m_ResourceFile = _File;
+	m_ResourcePool = _Pool;
 }
 
 

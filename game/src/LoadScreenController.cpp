@@ -47,6 +47,7 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 	{
 		GetActorParamsMgr()->Init();
         GetLevelManager()->Init();
+		GetResourceMgr()->Load(OG_RESPOOL_GAME);
 
 		IOGLevelParams* pLevelParams = GetGameSequence()->GetLevel(0);
 
@@ -92,7 +93,7 @@ void CLoadScreenController::RenderScene ()
 // Activate
 void CLoadScreenController::Activate ()
 {
-	m_pHUD = m_pResourceMgr->GetSprite("load_scr");
+	m_pHUD = m_pResourceMgr->GetSprite(OG_RESPOOL_UI, "load_scr");
     m_bLoaded = false;
     m_bDisplayed = false;
 	m_State = CSTATE_ACTIVE;

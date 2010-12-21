@@ -84,7 +84,7 @@ bool COGLevel::Load ()
 	m_SceneFile = cfg.scene_file;
 
     m_pTerrain = new COGTerrain();
-	m_pTerrain->Init(std::string(""), cfg.terrain_file);
+	m_pTerrain->Init(std::string(""), cfg.terrain_file, m_ResourcePool);
 	if (!m_pTerrain->Load())
     {
         OG_LOG_ERROR("Failed to load terrain from %s", cfg.terrain_file.c_str());

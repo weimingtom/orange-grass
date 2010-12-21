@@ -53,10 +53,10 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
 
     m_Hitpoints = m_pParams->gameplay.max_hitpoints;
 
-	m_pModel = GetResourceMgr()->GetModel(m_pParams->model_alias);
+	m_pModel = GetResourceMgr()->GetModel(OG_RESPOOL_GAME, m_pParams->model_alias);
     if (!m_pParams->model_destruction.empty())
     {
-	    m_pModelDestruction = GetResourceMgr()->GetModel(m_pParams->model_destruction);
+	    m_pModelDestruction = GetResourceMgr()->GetModel(OG_RESPOOL_GAME, m_pParams->model_destruction);
     }
 	
     m_pPhysicalObject = m_pPhysics->CreateObject(&m_pParams->physics, m_pModel->GetAABB(), this);

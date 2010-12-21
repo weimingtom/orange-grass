@@ -38,7 +38,7 @@ bool COGActorBonus::Create (IOGActorParams* _pParams,
 {
 	m_pParams = _pParams;
 
-	m_pModel = GetResourceMgr()->GetModel(m_pParams->model_alias);
+	m_pModel = GetResourceMgr()->GetModel(OG_RESPOOL_GAME, m_pParams->model_alias);
 	
     m_pPhysicalObject = m_pPhysics->CreateObject(&m_pParams->physics, m_pModel->GetAABB(), this);
 	m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);

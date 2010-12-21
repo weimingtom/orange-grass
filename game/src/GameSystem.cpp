@@ -39,7 +39,6 @@ CGameSystem::CGameSystem () :   m_pStartMenuScreen(NULL),
 	m_ScrHeight = m_pGlobalVars->GetIVar("view_height");
     GetRenderer()->SetViewport(m_ScrWidth, m_ScrHeight, m_fZNear, m_fZFar, m_fFOV);
 	m_pResourceMgr = GetResourceMgr();
-    m_pResourceMgr->Init();
 
 	ChangeModel(1, 0, 0);
 }

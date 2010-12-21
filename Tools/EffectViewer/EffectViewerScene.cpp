@@ -64,12 +64,7 @@ bool CEffectViewerScene::Init ()
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);
 
-	if (m_pResourceMgr->Init() == false)
-	{
-		return false;
-	}
-
-	if (m_pResourceMgr->Load() == false)
+	if (m_pResourceMgr->Load(OG_RESPOOL_GAME) == false)
 	{
         return false;
 	}

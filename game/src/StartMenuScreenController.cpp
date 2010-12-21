@@ -40,7 +40,7 @@ CStartMenuScreenController::~CStartMenuScreenController()
 // Initialize controller
 bool CStartMenuScreenController::Init ()
 {
-	if (!m_pResourceMgr->Load())
+	if (!m_pResourceMgr->Load(OG_RESPOOL_UI))
 		return false;
 
 	GetInput()->RegisterReceiver(this);
@@ -82,8 +82,8 @@ void CStartMenuScreenController::RenderScene ()
 // Activate
 void CStartMenuScreenController::Activate ()
 {
-    m_pLogo = m_pResourceMgr->GetSprite("logo");
-    m_pBack = m_pResourceMgr->GetSprite("back");
+    m_pLogo = m_pResourceMgr->GetSprite(OG_RESPOOL_UI, "logo");
+    m_pBack = m_pResourceMgr->GetSprite(OG_RESPOOL_UI, "back");
     m_pNewBtn->Load("new_n", "new_pr", Vec2(222.0f, 42.0f));
     m_pNewBtn->SetPosition(Vec2(129, 125));
     m_pExitBtn->Load("exit_n", "exit_pr", Vec2(222.0f, 42.0f));

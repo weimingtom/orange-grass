@@ -22,37 +22,13 @@ COGResourceMgr::COGResourceMgr ()
 	m_ResPath = std::string(path) + std::string("GameResources");
 #endif
 	m_pReader = GetSettingsReader();
-    m_bLoaded = false;
 }
 
 
 COGResourceMgr::~COGResourceMgr ()
 {
-	std::map<std::string, COGTexture*>::iterator texture_iter = m_TextureList.begin();
-	for( ; texture_iter != m_TextureList.end(); ++texture_iter )
-	{
-		OG_SAFE_DELETE (texture_iter->second);
-	}
-	
-	std::map<std::string, COGModel*>::iterator model_iter = m_ModelList.begin();
-	for( ; model_iter != m_ModelList.end(); ++model_iter )
-	{
-		OG_SAFE_DELETE (model_iter->second);
-	}
-	
-	std::map<std::string, COGSprite*>::iterator spr_iter = m_SpriteList.begin();
-	for( ; spr_iter != m_SpriteList.end(); ++spr_iter )
-	{
-		OG_SAFE_DELETE (spr_iter->second);
-	}
-    m_bLoaded = false;
-}
-
-
-// load from file.
-bool COGResourceMgr::Init ()
-{
-	return true;
+	ClearPool(OG_RESPOOL_GAME);
+	ClearPool(OG_RESPOOL_UI);
 }
 
 
@@ -71,15 +47,34 @@ std::string COGResourceMgr::GetFullPath (const std::string& _File) const
 
 
 // load resources.
-bool COGResourceMgr::Load ()
+bool COGResourceMgr::Load (OGResourcePool _PoolId)
 {
-    if (m_bLoaded)
+	ResourcePool* pCurPool = NULL;
+	std::string strResourceConfig;
+
+	switch (_PoolId)
+	{
+	case OG_RESPOOL_UI:
+		strResourceConfig = std::string("resources_ui.xml");
+		pCurPool = &m_PoolUI;
+		break;
+
+	case OG_RESPOOL_GAME:
+		strResourceConfig = std::string("resources_game.xml");
+		pCurPool = &m_PoolGame;
+		break;
+
+	case OG_RESPOOL_NONE:
+		return false;
+	}
+
+    if (pCurPool->m_bLoaded)
     {
         return true;
     }
     
 	Cfg cfg;
-	if (!LoadConfig(cfg))
+	if (!LoadConfig(cfg, strResourceConfig))
 	{
 		return false;
 	}
@@ -88,7 +83,7 @@ bool COGResourceMgr::Load ()
 	for (texiter = cfg.texture_cfg_list.begin(); texiter != cfg.texture_cfg_list.end(); ++texiter)
 	{
 		COGTexture* pTexture = new COGTexture ();
-		pTexture->Init ((*texiter).alias, (*texiter).file);
+		pTexture->Init ((*texiter).alias, (*texiter).file, _PoolId);
 		std::list<Cfg::TextureResourceCfg::MappingCfg>::const_iterator miter;
 		for (miter = (*texiter).mappings.begin(); miter != (*texiter).mappings.end(); ++miter)
 		{
@@ -98,35 +93,78 @@ bool COGResourceMgr::Load ()
 			pTexture->AddMapping(&m);
 		}
 
-		m_TextureList[(*texiter).alias] = pTexture;
+		pCurPool->m_TextureList[(*texiter).alias] = pTexture;
 	}
 
 	Cfg::TModelCfg::const_iterator modeliter;
 	for (modeliter = cfg.model_cfg_list.begin(); modeliter != cfg.model_cfg_list.end(); ++modeliter)
 	{
 		COGModel* pModel = new COGModel ();
-		pModel->Init ((*modeliter).alias, (*modeliter).file);
-		m_ModelList[(*modeliter).alias] = pModel;
+		pModel->Init ((*modeliter).alias, (*modeliter).file, _PoolId);
+		pCurPool->m_ModelList[(*modeliter).alias] = pModel;
 	}
 
 	Cfg::TSpriteCfg::const_iterator spriter;
 	for (spriter = cfg.sprite_cfg_list.begin(); spriter != cfg.sprite_cfg_list.end(); ++spriter)
 	{
 		COGSprite* pSprite = new COGSprite ();
-		pSprite->Init ((*spriter).alias, (*spriter).texture);
+		pSprite->Init ((*spriter).alias, (*spriter).texture, _PoolId);
 		pSprite->SetMapping((*spriter).mapping);
-		m_SpriteList[(*spriter).alias] = pSprite;
+		pCurPool->m_SpriteList[(*spriter).alias] = pSprite;
 	}
 
-    m_bLoaded = true;
+    pCurPool->m_bLoaded = true;
+	return true;
+}
+
+
+// unload resources.
+bool COGResourceMgr::Unload (OGResourcePool _PoolId)
+{
+	ResourcePool* pCurPool = NULL;
+
+	switch (_PoolId)
+	{
+	case OG_RESPOOL_UI:
+		pCurPool = &m_PoolUI;
+		break;
+
+	case OG_RESPOOL_GAME:
+		pCurPool = &m_PoolGame;
+		break;
+
+	case OG_RESPOOL_NONE:
+		return false;
+	}
+
+	std::map<std::string, COGTexture*>::iterator texture_iter = pCurPool->m_TextureList.begin();
+	for( ; texture_iter != pCurPool->m_TextureList.end(); ++texture_iter )
+	{
+		ReleaseTexture(texture_iter->second);
+	}
+	
+	std::map<std::string, COGModel*>::iterator model_iter = pCurPool->m_ModelList.begin();
+	for( ; model_iter != pCurPool->m_ModelList.end(); ++model_iter )
+	{
+		ReleaseModel(model_iter->second);
+	}
+	
+	std::map<std::string, COGSprite*>::iterator spr_iter = pCurPool->m_SpriteList.begin();
+	for( ; spr_iter != pCurPool->m_SpriteList.end(); ++spr_iter )
+	{
+		ReleaseSprite(spr_iter->second);
+	}
+
+    pCurPool->m_bLoaded = false;
+	
 	return true;
 }
 
 
 // Load resource manager configuration
-bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
+bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg, const std::string& _ConfigFile)
 {
-	IOGSettingsSource* pSource = m_pReader->OpenSource(GetFullPath("resources.xml"));
+	IOGSettingsSource* pSource = m_pReader->OpenSource(GetFullPath(_ConfigFile));
 	if (!pSource)
 		return false;
 
@@ -201,9 +239,25 @@ bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg)
 
 
 // get texture
-IOGTexture* COGResourceMgr::GetTexture (const std::string& _Alias)
+IOGTexture* COGResourceMgr::GetTexture (OGResourcePool _PoolId, const std::string& _Alias)
 {
-	COGTexture* pTexture = m_TextureList[_Alias];
+	ResourcePool* pCurPool = NULL;
+
+	switch (_PoolId)
+	{
+	case OG_RESPOOL_UI:
+		pCurPool = &m_PoolUI;
+		break;
+
+	case OG_RESPOOL_GAME:
+		pCurPool = &m_PoolGame;
+		break;
+
+	case OG_RESPOOL_NONE:
+		return NULL;
+	}
+
+	COGTexture* pTexture = pCurPool->m_TextureList[_Alias];
     if (pTexture)
     {
 		switch (pTexture->GetLoadState())
@@ -225,9 +279,25 @@ IOGTexture* COGResourceMgr::GetTexture (const std::string& _Alias)
 
 
 // get model
-IOGModel* COGResourceMgr::GetModel (const std::string& _Alias)
+IOGModel* COGResourceMgr::GetModel (OGResourcePool _PoolId, const std::string& _Alias)
 {
-	COGModel* pModel = m_ModelList[_Alias];
+	ResourcePool* pCurPool = NULL;
+
+	switch (_PoolId)
+	{
+	case OG_RESPOOL_UI:
+		pCurPool = &m_PoolUI;
+		break;
+
+	case OG_RESPOOL_GAME:
+		pCurPool = &m_PoolGame;
+		break;
+
+	case OG_RESPOOL_NONE:
+		return NULL;
+	}
+
+	COGModel* pModel = pCurPool->m_ModelList[_Alias];
     if (pModel)
     {
 		switch (pModel->GetLoadState())
@@ -249,9 +319,25 @@ IOGModel* COGResourceMgr::GetModel (const std::string& _Alias)
 
 
 // get sprite.
-IOGSprite* COGResourceMgr::GetSprite (const std::string& _Alias)
+IOGSprite* COGResourceMgr::GetSprite (OGResourcePool _PoolId, const std::string& _Alias)
 {
-	COGSprite* pSprite = m_SpriteList[_Alias];
+	ResourcePool* pCurPool = NULL;
+
+	switch (_PoolId)
+	{
+	case OG_RESPOOL_UI:
+		pCurPool = &m_PoolUI;
+		break;
+
+	case OG_RESPOOL_GAME:
+		pCurPool = &m_PoolGame;
+		break;
+
+	case OG_RESPOOL_NONE:
+		return NULL;
+	}
+
+	COGSprite* pSprite = pCurPool->m_SpriteList[_Alias];
     if (pSprite)
     {
 		switch (pSprite->GetLoadState())
@@ -302,4 +388,50 @@ void COGResourceMgr::ReleaseSprite (IOGSprite* _pSprite)
 	{
 		pSprite->Unload();
 	}
+}
+
+
+// clear resource pool.
+bool COGResourceMgr::ClearPool (OGResourcePool _PoolId)
+{
+	ResourcePool* pCurPool = NULL;
+
+	switch (_PoolId)
+	{
+	case OG_RESPOOL_UI:
+		pCurPool = &m_PoolUI;
+		break;
+
+	case OG_RESPOOL_GAME:
+		pCurPool = &m_PoolGame;
+		break;
+
+	case OG_RESPOOL_NONE:
+		return false;
+	}
+
+	std::map<std::string, COGTexture*>::iterator texture_iter = pCurPool->m_TextureList.begin();
+	for( ; texture_iter != pCurPool->m_TextureList.end(); ++texture_iter )
+	{
+		OG_SAFE_DELETE (texture_iter->second);
+	}
+	pCurPool->m_TextureList.clear();
+	
+	std::map<std::string, COGModel*>::iterator model_iter = pCurPool->m_ModelList.begin();
+	for( ; model_iter != pCurPool->m_ModelList.end(); ++model_iter )
+	{
+		OG_SAFE_DELETE (model_iter->second);
+	}
+	pCurPool->m_ModelList.clear();
+	
+	std::map<std::string, COGSprite*>::iterator spr_iter = pCurPool->m_SpriteList.begin();
+	for( ; spr_iter != pCurPool->m_SpriteList.end(); ++spr_iter )
+	{
+		OG_SAFE_DELETE (spr_iter->second);
+	}
+	pCurPool->m_SpriteList.clear();
+
+    pCurPool->m_bLoaded = false;
+	
+	return true;
 }

@@ -49,11 +49,11 @@ bool COGTerrain::Load ()
 	}
 
 	m_pMesh = new COGMesh ();
-	m_pMesh->Init(std::string(""), cfg.mesh_file);
+	m_pMesh->Init(std::string(""), cfg.mesh_file, m_ResourcePool);
 	if (!m_pMesh->Load())
 		return false;
 
-	m_pTexture = GetResourceMgr()->GetTexture(cfg.texture_alias);
+	m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, cfg.texture_alias);
     m_pMaterial = m_pRenderer->CreateMaterial();
     m_pMaterial->SetAmbient(cfg.material_ambient);
     m_pMaterial->SetDiffuse(cfg.material_diffuse);

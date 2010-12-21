@@ -38,7 +38,7 @@ void COGEmitterParticleChain::Init(IOGGroupNode* _pNode)
 {
 	LoadParams(_pNode);
 
-	m_pTexture = GetResourceMgr()->GetTexture(m_Texture);
+	m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, m_Texture);
     m_Blend = OG_BLEND_ALPHAADD;
 	m_pMapping = m_pTexture->GetMapping(m_MappingId);
 

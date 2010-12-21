@@ -37,8 +37,8 @@ COGGuiBonusbar::~COGGuiBonusbar()
 // Load graphics.
 void COGGuiBonusbar::Load ()
 {
-    m_pFrame = m_pResourceMgr->GetSprite("spec_hud");
-    m_pCooldown = m_pResourceMgr->GetSprite("greenline_hud");
+    m_pFrame = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, "spec_hud");
+    m_pCooldown = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, "greenline_hud");
     m_Size = Vec2(90.0f, 60.0f);
     m_Position = Vec2(0, 40);
 }
@@ -61,7 +61,7 @@ void COGGuiBonusbar::SetData (unsigned int _Id,
     BonusEntry& bonus = m_Entries[_Id];
     bonus.m_MaxVal = _MaxVal;
     bonus.m_Val = _Val;
-    bonus.m_pBonus = m_pResourceMgr->GetSprite(_SprBonus);
+    bonus.m_pBonus = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, _SprBonus);
 }
 
 

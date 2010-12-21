@@ -30,8 +30,8 @@ COGGuiLifebar::~COGGuiLifebar()
 // Load graphics.
 void COGGuiLifebar::Load ()
 {
-    m_pFrame = m_pResourceMgr->GetSprite("life_hud");
-    m_pBar = m_pResourceMgr->GetSprite("greenbar_hud");
+    m_pFrame = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, "life_hud");
+    m_pBar = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, "greenbar_hud");
     m_Size = Vec2(256.0f, 32.0f);
     m_Position = Vec2(0, 0);
 }

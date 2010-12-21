@@ -18,9 +18,6 @@ class IOGSprite
 public:
 	virtual ~IOGSprite() {}
 
-	//// Initialize sprite.
-	//virtual void SetMapping (const Vec2& _vT0, const Vec2& _vT1) = 0;
-
 	// Initialize sprite.
 	virtual void SetMapping (unsigned int _Mapping) = 0;
 		

@@ -54,7 +54,7 @@ bool COGLevelManager::LoadConfig (COGLevelManager::Cfg& _cfg)
 		_cfg.level_cfg_list.push_back(lev_cfg);
 
 		COGLevel* pLevel = new COGLevel ();
-		pLevel->Init (lev_cfg.alias, lev_cfg.file);
+		pLevel->Init (lev_cfg.alias, lev_cfg.file, OG_RESPOOL_GAME);
 		m_LevelList[lev_cfg.alias] = pLevel;
 
 		pLevelNode = m_pReader->ReadNextNode(pLevelNode);

@@ -55,7 +55,7 @@ bool COGSprite::Load ()
         break;
 	}
 
-	m_pTexture = GetResourceMgr()->GetTexture(m_ResourceFile);
+	m_pTexture = GetResourceMgr()->GetTexture(m_ResourcePool, m_ResourceFile);
 	if (m_pTexture)
 	{
 		m_pMapping = m_pTexture->GetMapping(m_MappingId);

@@ -15,13 +15,18 @@
 #include <string>
 
 
+enum OGResourcePool
+{
+	OG_RESPOOL_NONE,
+	OG_RESPOOL_UI,
+	OG_RESPOOL_GAME
+};
+
+
 class IOGResourceMgr
 {
 public:
 	virtual ~IOGResourceMgr () {}
-		
-	// load from file.
-	virtual bool Init () = 0;
 
     // get resource path
     virtual const std::string& GetResourcePath () const = 0;
@@ -30,16 +35,19 @@ public:
     virtual std::string GetFullPath (const std::string& _File) const = 0;
 
 	// load resources.
-	virtual bool Load () = 0;
-		
+	virtual bool Load (OGResourcePool _PoolId) = 0;
+
+	// unload resources.
+	virtual bool Unload (OGResourcePool _PoolId) = 0;
+
 	// get texture.
-	virtual IOGTexture* GetTexture (const std::string& _Alias) = 0;
+	virtual IOGTexture* GetTexture (OGResourcePool _PoolId, const std::string& _Alias) = 0;
 
 	// get model.
-	virtual IOGModel* GetModel (const std::string& _Alias) = 0;
+	virtual IOGModel* GetModel (OGResourcePool _PoolId, const std::string& _Alias) = 0;
 
 	// get sprite.
-	virtual IOGSprite* GetSprite (const std::string& _Alias) = 0;
+	virtual IOGSprite* GetSprite (OGResourcePool _PoolId, const std::string& _Alias) = 0;
 	
 	// release texture.
 	virtual void ReleaseTexture (IOGTexture* _pTexture) = 0;

@@ -65,12 +65,7 @@ bool CViewerScene::Init ()
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);
 
-	if (m_pResourceMgr->Init() == false)
-	{
-		return false;
-	}
-
-	if (m_pResourceMgr->Load() == false)
+	if (m_pResourceMgr->Load(OG_RESPOOL_GAME) == false)
 	{
         return false;
 	}
@@ -215,7 +210,7 @@ void CViewerScene::SetupModel(const char* _pModelAlias)
         m_pActorMgr->AddActor(m_pCurActor);
         m_pCurActor->Activate(true);
 
-        IOGModel* pModel = m_pResourceMgr->GetModel(m_pCurActor->GetParams()->model_alias);
+        IOGModel* pModel = m_pResourceMgr->GetModel(OG_RESPOOL_GAME, m_pCurActor->GetParams()->model_alias);
         CommonToolEvent<MtlLoadEventData> cmd(EVENTID_MTLLOAD);
         cmd.SetEventCustomData(MtlLoadEventData(
             pModel->GetMaterial()->GetAmbient().x,
@@ -234,7 +229,7 @@ void CViewerScene::AdjustMaterial(MtlType _type, float _val)
 {
     if (m_pCurActor)
     {
-        IOGModel* pModel = m_pResourceMgr->GetModel(m_pCurActor->GetParams()->model_alias);
+        IOGModel* pModel = m_pResourceMgr->GetModel(OG_RESPOOL_GAME, m_pCurActor->GetParams()->model_alias);
         switch(_type)
         {
         case MTLTYPE_DIF:
@@ -329,7 +324,7 @@ void CViewerScene::SaveChanges()
 {
     if (m_pCurActor)
     {
-        IOGModel* pModel = m_pResourceMgr->GetModel(m_pCurActor->GetParams()->model_alias);
+        IOGModel* pModel = m_pResourceMgr->GetModel(OG_RESPOOL_GAME, m_pCurActor->GetParams()->model_alias);
         pModel->SaveParams();
     }
 }

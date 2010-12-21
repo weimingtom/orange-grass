@@ -1,37 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Textures>
-	<!--
-	<Texture alias="load_scr" file="Textures/UI/load.pvr" >
-		<Mappings>
-			<Mapping x="0" y="0" width="480" height="320"/>
-			<Mapping x="0" y="320" width="256" height="128"/>
-		</Mappings>
-	</Texture>
-	<Texture alias="gui" file="Textures/UI/gui.pvr" >
-		<Mappings>
-			<Mapping x="0" y="0" width="334" height="189"/>
-			<Mapping x="0" y="189" width="222" height="42"/>
-			<Mapping x="222" y="189" width="222" height="42"/>
-			<Mapping x="0" y="231" width="222" height="42"/>
-			<Mapping x="222" y="231" width="222" height="42"/>
-		</Mappings>
-	</Texture>
-	-->
-	<Texture alias="load_scr" file="Textures/UI/load_p.pvr" >
-		<Mappings>
-			<Mapping x="0" y="0" width="320" height="300"/>
-			<Mapping x="0" y="320" width="256" height="128"/>
-		</Mappings>
-	</Texture>
-	<Texture alias="gui" file="Textures/UI/gui_p.pvr" >
-		<Mappings>
-			<Mapping x="0" y="0" width="222" height="189"/>
-			<Mapping x="0" y="189" width="222" height="42"/>
-			<Mapping x="222" y="189" width="222" height="42"/>
-			<Mapping x="0" y="231" width="222" height="42"/>
-			<Mapping x="222" y="231" width="222" height="42"/>
-		</Mappings>
-	</Texture>
 	<Texture alias="hud" file="Textures/UI/hud_2.pvr" >
 		<Mappings>
 			<Mapping x="0" y="36" width="256" height="32"/>
@@ -103,13 +71,6 @@
 	<Model alias="rock_01" file="Models/Land_objects_02/rock/rock_01.xml"/>
 </Models>
 <Sprites>
-	<Sprite alias="load_scr" texture="load_scr" mapping="1"/>
-	<Sprite alias="logo" texture="load_scr" mapping="2"/>
-	<Sprite alias="back" texture="gui" mapping="1"/>
-	<Sprite alias="exit_n" texture="gui" mapping="2"/>
-	<Sprite alias="exit_pr" texture="gui" mapping="3"/>
-	<Sprite alias="new_n" texture="gui" mapping="4"/>
-	<Sprite alias="new_pr" texture="gui" mapping="5"/>
 	<Sprite alias="life_hud" texture="hud" mapping="1"/>
 	<Sprite alias="spec_hud" texture="hud" mapping="2"/>
 	<Sprite alias="weapon_hud" texture="hud" mapping="3"/>
