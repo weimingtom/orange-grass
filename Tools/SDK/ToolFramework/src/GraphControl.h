@@ -19,7 +19,7 @@ class GraphControl : public wxScrolledWindow
 public:
     GraphControl( wxWindow*, const wxPoint& _pt, const wxSize& _sz);
     virtual ~GraphControl();
-    void AddData(const TSamplingData& _Data) {m_Data = _Data;}
+    void AddData(const TSamplingData& _Data);
 	void SetScale(float _fScale) {m_fScale = _fScale;}
     void ClearGraph(void);
 
@@ -35,6 +35,7 @@ private:
     wxSize			m_size;
     wxPoint         m_GraphOffset;
     TSamplingData	m_Data;
+    unsigned long   m_MaxSample;
 
     DECLARE_EVENT_TABLE();
 };

@@ -224,22 +224,6 @@ void CEffectViewerFrame::OnLoadEffect ( CommonToolEvent<EffectLoadEventData>& ev
 	    wxTreeCtrl* pTree = new wxTreeCtrl(m_pSettingsPanel, wxID_ANY, wxDefaultPosition, wxSize(panelSize.x, panelSize.y - 100));
 	    pTree->AddRoot(_T("Emitters"));
 
-		//wxGrid* grid = new wxGrid(m_pSettingsPanel, wxID_ANY, wxPoint( 0, 100 ), panelSize);
-		//grid->CreateGrid(0, 2);
-		//grid->SetColLabelValue(0, "Parameter");
-		//grid->SetColLabelValue(1, "Value");
-
-		TSamplingData graph;
-		for (int i = 0; i < 99; ++i)
-		{
-			SamplingData crd;
-			crd.value = 27;
-			crd.msec = i;
-			graph.push_back(crd);
-		}
-		GraphControl* m_plot = new GraphControl(m_pSettingsPanel, wxPoint(0, panelSize.y - 100), wxSize(panelSize.x, 100));
-		m_plot->AddData(graph);
-
         TEmittersList& emitters = pEffect->GetEmitters();
         TEmittersList::iterator iter = emitters.begin();
         for (; iter != emitters.end(); ++iter)

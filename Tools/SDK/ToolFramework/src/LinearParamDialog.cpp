@@ -12,32 +12,19 @@ END_EVENT_TABLE()
 LinearParamDialog::LinearParamDialog(wxWindow *parent)
              : wxDialog(parent, wxID_ANY, wxString(_T("Linear parameter")), wxDefaultPosition, wxSize(740, 200))
 {
-    //wxBoxSizer *sizerTop = new wxBoxSizer(wxBOTH);
-
     wxSize panelSize = GetSize();
 
     m_btnApply = new wxButton(this, wxID_OK, _T("&Apply"), wxPoint((panelSize.x / 2) - 30, panelSize.y - 60), wxSize(60, 20));
-    //m_btnCancel = new wxButton(this, wxID_CANCEL, _T("&Cancel"));
 
     TSamplingData graph;
-    for (int i = 0; i < 33; ++i)
-    {
-        SamplingData crd;
-        crd.value = 27;
-        crd.msec = i;
-        graph.push_back(crd);
-    }
-    m_pGraph = new GraphControl(this, wxPoint(20, 20), wxSize(700, 50));
+    SamplingData crd;
+    crd.value = 10; crd.msec = 0; graph.push_back(crd);
+    crd.value = 17; crd.msec = 10; graph.push_back(crd);
+    crd.value = 27; crd.msec = 30; graph.push_back(crd);
+    crd.value = 7; crd.msec = 40; graph.push_back(crd);
+    crd.value = 2; crd.msec = 80; graph.push_back(crd);
+    m_pGraph = new GraphControl(this, wxPoint(20, 20), wxSize(700, 120));
     m_pGraph->AddData(graph);
-
-    //sizerTop->Add(m_pGraph, 0, wxALIGN_CENTER | wxTOP, 5);
-    //sizerTop->Add(m_btnApply, 0, wxALIGN_CENTER | wxALL, 5);
-    //sizerTop->Add(m_btnCancel, 0, wxALIGN_CENTER | wxALL, 5);
-
-    //SetSizer(sizerTop);
-
-    //sizerTop->SetSizeHints(this);
-    //sizerTop->Fit(this);
 
     m_btnApply->SetFocus();
     m_btnApply->SetDefault();
