@@ -25,6 +25,7 @@
 #include "IOGSettingsReader.h"
 #include "IOGAppSettings.h"
 #include "IOGGameSequence.h"
+#include "IOGLuaVM.h"
 #include "common.h"
 
 
@@ -44,5 +45,6 @@ IOGGlobalVarsTable* GetGlobalVars ();
 IOGSettingsReader* GetSettingsReader ();
 IOGAppSettings* GetAppSettings ();
 IOGGameSequence* GetGameSequence ();
+IOGLuaVM* GetLuaVM ();
 
 #endif

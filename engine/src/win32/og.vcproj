@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\include;..\..\sdk\PVR\include;..\..\sdk\OpenGL2\include;..\..\sdk\tinyxml\include"
+				AdditionalIncludeDirectories="..\..\include;..\..\sdk\PVR\include;..\..\sdk\OpenGL2\include;..\..\sdk\tinyxml\include;..\..\sdk\lua\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -830,6 +830,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\ogluavm.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\ogluavm.h"
+					>
+				</File>
+				<File
 					RelativePath=".\ogsettingsreader.cpp"
 					>
 				</File>
@@ -1093,6 +1101,10 @@
 				</File>
 				<File
 					RelativePath="..\..\include\IOGGlobalVarsTable.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGLuaVM.h"
 					>
 				</File>
 				<File
