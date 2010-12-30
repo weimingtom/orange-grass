@@ -193,20 +193,14 @@ void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 	vRight.normalize();
 	vLook.normalize();
 
-	float fCameraZ = _pCamera->GetPosition().z;
     TNodesList::iterator iter = m_EffectNodesList.begin();
     for (; iter != m_EffectNodesList.end(); ++iter)
     {
 		COGSgEffectNode* pNode = (COGSgEffectNode*)(*iter);
-		float fObjectZ = pNode->GetOBB().m_vCenter.z;
-
-		if (fObjectZ <= fCameraZ)
+		if (IsVisible(_pCamera, pNode))
 		{
-			if ((fCameraZ - fObjectZ) < m_fViewDistance)
-			{
-                pNode->SetBillboardVectors(vLook, vUp, vRight);
-				pNode->Render();
-			}
+			pNode->SetBillboardVectors(vLook, vUp, vRight);
+			pNode->Render();
 		}
     }
 }
@@ -215,19 +209,13 @@ void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 // Render transparent nodes.
 void COGSceneGraph::RenderTransparentNodes (IOGCamera* _pCamera)
 {
-	float fCameraZ = _pCamera->GetPosition().z;
     TNodesList::iterator iter = m_TransparentNodesList.begin();
     for (; iter != m_TransparentNodesList.end(); ++iter)
     {
 		COGSgNode* pNode = (COGSgNode*)(*iter);
-		float fObjectZ = pNode->GetOBB().m_vCenter.z;
-
-		if (fObjectZ <= fCameraZ)
+		if (IsVisible(_pCamera, pNode))
 		{
-			if ((fCameraZ - fObjectZ) < m_fViewDistance)
-			{
-                pNode->RenderTransparent();
-			}
+			pNode->RenderTransparent();
 		}
     }
 }
@@ -300,19 +288,13 @@ void COGSceneGraph::ClearNodesList(TNodesList& _List)
 // render nodes list
 void COGSceneGraph::RenderNodesList(IOGCamera* _pCamera, TNodesList& _List)
 {
-	float fCameraZ = _pCamera->GetPosition().z;
     TNodesList::iterator iter = _List.begin();
     for (; iter != _List.end(); ++iter)
     {
 		IOGSgNode* pNode = (*iter);
-		float fObjectZ = pNode->GetOBB().m_vCenter.z;
-
-		if (fObjectZ <= fCameraZ)
+		if (IsVisible(_pCamera, pNode))
 		{
-			if ((fCameraZ - fObjectZ) < m_fViewDistance)
-			{
-				pNode->Render();
-			}
+			pNode->Render();
 		}
     }
 }
@@ -326,4 +308,14 @@ void COGSceneGraph::RenderWholeNodesList(IOGCamera* _pCamera, TNodesList& _List)
     {
         (*iter)->Render();
 	}
+}
+
+
+// check object visibility
+bool COGSceneGraph::IsVisible(const IOGCamera* _pCamera, const IOGSgNode* _pNode) const
+{
+	float fCameraZ = _pCamera->GetPosition().z;
+	float fObjectZ = _pNode->GetOBB().m_vCenter.z;
+
+	return ((fObjectZ <= fCameraZ) && ((fCameraZ - fObjectZ) < m_fViewDistance));
 }

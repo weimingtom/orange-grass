@@ -90,6 +90,9 @@ private:
 	// render whole nodes list
 	void RenderWholeNodesList(IOGCamera* _pCamera, TNodesList& _List);
 
+	// check object visibility
+	bool IsVisible(const IOGCamera* _pCamera, const IOGSgNode* _pNode) const;
+
 private:
 	IOGGlobalVarsTable* m_pGlobalVars;
 	IOGSgNode*			m_pLandscapeNode;

@@ -232,9 +232,6 @@ unsigned int LoadPartialTextureFromPointer(const void * const pointer,
 // Release texture by calling ReleaseTexture.  Decompresses to RGBA8888 internally.
 //
 unsigned int LoadTextureFromPointer(const void* pointer, GLuint *const texName, const void *psTextureHeader=NULL);
-	
-//-------------------- load Texture from PNG or JPG -------------------
-unsigned int LoadTextureFromImageFile(const char * const filename, GLuint * const texName, const void *psTextureHeader=NULL);
 
 //-------------------- load Texture from PVR -----------------------
 

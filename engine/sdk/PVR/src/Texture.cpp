@@ -27,20 +27,9 @@ extern int __OPENGLES_VERSION;
 typedef unsigned long U32;
 typedef unsigned char U8;
 
-//DEFINE_HEAP(CTexture, "Textures");
 
 CTexture::CTexture(){};
 CTexture::~CTexture(){};
-
-//
-// filename			Filename of the .PNG or .JPG file to load the texture from
-// texName			the OpenGL ES texture name as returned by glBindTexture
-// psTextureHeader	Pointer to a PVR_Texture_Header struct. Modified to
-//					contain the header data of the returned texture Ignored if NULL.
-unsigned int CTexture::LoadTextureFromImageFile(const char * const filename, GLuint * const texName, const void *psTextureHeader) 
-{
-	return true;
-}
 
 //
 //-------------------- load Texture from PVR -----------------------
