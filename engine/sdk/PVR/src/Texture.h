@@ -15,10 +15,24 @@ subject to the following restrictions:
 #ifndef _TEXTURE_h_
 #define _TEXTURE_h_
 
-#include <stdio.h>
+#ifndef WIN32
+#include <TargetConditionals.h>
+#include <Availability.h>
+#include "MemoryManager.h"
+#include "OpenGLESExt.h"
+#import <OpenGLES/EAGL.h>
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
+#import <OpenGLES/ES2/gl.h>
+#import <OpenGLES/ES2/glext.h>
+#else
+#import <OpenGLES/ES1/gl.h>
+#import <OpenGLES/ES1/glext.h>
+#endif
+#else
 #include <windows.h>
-//#include <gl\gl.h>
+#endif
 
+#include <stdio.h>
 
 // Describes the header of a PVR header-texture
 typedef struct PVR_Header_Texture_TAG
