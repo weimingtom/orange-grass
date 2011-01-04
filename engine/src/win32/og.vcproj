@@ -1032,11 +1032,19 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\include\IOGFrustum.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\include\IOGMath.h"
 					>
 				</File>
 				<File
 					RelativePath="..\..\include\IOGObb.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\include\IOGPlane.h"
 					>
 				</File>
 			</Filter>

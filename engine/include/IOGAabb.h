@@ -62,6 +62,15 @@ public:
 	// Get AABB maximum
 	const Vec3& GetCenter () const { return m_vCenter; }
 
+	// Get size x
+	float GetSizeX () const { return m_vMax.x - m_vMin.x; }
+
+	// Get size y
+	float GetSizeY () const { return m_vMax.y - m_vMin.y; }
+
+	// Get size z
+	float GetSizeZ () const { return m_vMax.z - m_vMin.z; }
+
 	// Get bounding radius
 	float GetRadius () const { return m_fBoundingRadius; }
 
