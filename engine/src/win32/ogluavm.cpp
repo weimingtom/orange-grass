@@ -19,7 +19,7 @@ COGLuaVM::COGLuaVM() : m_pVM(NULL)
 	if (m_pVM == NULL)
 		m_pVM = lua_open ();
 
-	RegisterFunction ("RunScript", LUA_RunScript );
+	RegisterFunction ("RunScript", (void*)LUA_RunScript );
 }
 
 
@@ -61,7 +61,6 @@ long COGLuaVM::GetGlobalIVar ( const std::string& VarName )
 {
 	long retval;
 	lua_getglobal ( m_pVM, VarName.c_str() );
-	double doubleresult = lua_tonumber ( m_pVM, 1 );
 	retval = static_cast<long> (lua_tonumber ( m_pVM, 1 ));	
 	lua_remove ( m_pVM, 1 );
 	return retval;
