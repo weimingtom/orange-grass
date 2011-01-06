@@ -62,6 +62,7 @@
 		B2032C97121826A8000C065B /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2032C93121826A8000C065B /* GameSystem.cpp */; };
 		B2032C98121826A8000C065B /* LoadScreenController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2032C95121826A8000C065B /* LoadScreenController.cpp */; };
 		B20A1973129A047900577773 /* ogmaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B20A1971129A047900577773 /* ogmaterial.cpp */; };
+		B2542C3412D6B2D5000DE568 /* ogluavm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542C3212D6B2D5000DE568 /* ogluavm.cpp */; };
 		B25618C212188A4200941752 /* AirAssault.app in Resources */ = {isa = PBXBuildFile; fileRef = B25618C112188A4200941752 /* AirAssault.app */; };
 		B28763E8129A0178004A7A69 /* ogguibonusbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B28763E3129A0178004A7A69 /* ogguibonusbar.cpp */; };
 		B28763E9129A0178004A7A69 /* ogguilifebar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B28763E5129A0178004A7A69 /* ogguilifebar.cpp */; };
@@ -282,6 +283,9 @@
 		B2032CA712182ACC000C065B /* OpenGL2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpenGL2.h; path = ../../engine/sdk/OpenGL2/include/OpenGL2.h; sourceTree = SOURCE_ROOT; };
 		B20A1971129A047900577773 /* ogmaterial.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogmaterial.cpp; path = ../../engine/src/win32/ogmaterial.cpp; sourceTree = SOURCE_ROOT; };
 		B20A1972129A047900577773 /* ogmaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogmaterial.h; path = ../../engine/src/win32/ogmaterial.h; sourceTree = SOURCE_ROOT; };
+		B2542C3112D6B2D5000DE568 /* ogguilifebar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogguilifebar.h; path = ../../engine/src/win32/ogguilifebar.h; sourceTree = SOURCE_ROOT; };
+		B2542C3212D6B2D5000DE568 /* ogluavm.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogluavm.cpp; path = ../../engine/src/win32/ogluavm.cpp; sourceTree = SOURCE_ROOT; };
+		B2542C3312D6B2D5000DE568 /* ogluavm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogluavm.h; path = ../../engine/src/win32/ogluavm.h; sourceTree = SOURCE_ROOT; };
 		B25618C112188A4200941752 /* AirAssault.app */ = {isa = PBXFileReference; lastKnownFileType = wrapper.application; name = AirAssault.app; path = "build/Debug-iphoneos/AirAssault.app"; sourceTree = "<group>"; };
 		B28763E3129A0178004A7A69 /* ogguibonusbar.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogguibonusbar.cpp; path = ../../engine/src/win32/ogguibonusbar.cpp; sourceTree = SOURCE_ROOT; };
 		B28763E4129A0178004A7A69 /* ogguibonusbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogguibonusbar.h; path = ../../engine/src/win32/ogguibonusbar.h; sourceTree = SOURCE_ROOT; };
@@ -805,6 +809,7 @@
 				B28763E3129A0178004A7A69 /* ogguibonusbar.cpp */,
 				B28763E4129A0178004A7A69 /* ogguibonusbar.h */,
 				B28763E5129A0178004A7A69 /* ogguilifebar.cpp */,
+				B2542C3112D6B2D5000DE568 /* ogguilifebar.h */,
 				B28763E6129A0178004A7A69 /* ogguiweaponpanel.cpp */,
 				B28763E7129A0178004A7A69 /* ogguiweaponpanel.h */,
 				B2959D1712748129005F5346 /* ogguibutton.cpp */,
@@ -1020,6 +1025,8 @@
 		B29C64C41222D40100FF91DA /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				B2542C3212D6B2D5000DE568 /* ogluavm.cpp */,
+				B2542C3312D6B2D5000DE568 /* ogluavm.h */,
 				B2DF04F8125A36F2002BE972 /* ogappsettings.cpp */,
 				B2DF04F9125A36F2002BE972 /* ogappsettings.h */,
 				B2DF04FA125A36F2002BE972 /* ogglobalvarstable.cpp */,
@@ -1401,6 +1408,7 @@
 				B287EEF112C0393A00104017 /* ogemitterrotatingsparks.cpp in Sources */,
 				B287EEF212C0393A00104017 /* ogemitterscrollingray.cpp in Sources */,
 				B287EEF312C0393A00104017 /* ogemittertrail.cpp in Sources */,
+				B2542C3412D6B2D5000DE568 /* ogluavm.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
