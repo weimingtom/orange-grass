@@ -18,6 +18,9 @@ public:
 	COGCamera ();
 	virtual ~COGCamera ();
 	
+	// setup camera viewport.
+	virtual void SetupViewport (const MATRIX& _mProjection, float _fFOV);
+	
 	// setup camera.
 	virtual void Setup (const Vec3& _vPosition, const Vec3& _vTarget, const Vec3& _vUp);
 	
@@ -48,18 +51,25 @@ public:
 	// get camera view matrix.
 	virtual const MATRIX& GetViewMatrix () const;
 
+	// get viewing frustum.
+	virtual const IOGFrustum& GetFrustum () const { return m_Frustum; }
+
 	// get left and right edges.
 	virtual void GetEdges (Vec3& _vLeft, Vec3& _vRight, float _fFOV, float _fDist);
 
 private:
 	
 	MATRIX		m_View;
+	MATRIX		m_Projection;
+	MATRIX		m_ViewProj;
 	Vec3		m_Position;
 	Vec3		m_Direction;
 	Vec3		m_Target;
 	Vec3		m_Up;
 	Vec3		m_Right;
+	float		m_fFOV;
 	bool		m_bDirty;
+	IOGFrustum	m_Frustum;
 };
 
 #endif

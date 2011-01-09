@@ -10,12 +10,16 @@
 #define IOGCAMERA_H_
 
 #include "Mathematics.h"
+#include "IOGFrustum.h"
 
 
 class IOGCamera
 {
 public:
 	virtual ~IOGCamera () {}
+	
+	// setup camera viewport.
+	virtual void SetupViewport (const MATRIX& _mProjection, float _fFOV) = 0;
 	
 	// setup camera.
 	virtual void Setup (const Vec3& _vPosition, const Vec3& _vDirection, const Vec3& _vUp) = 0;
@@ -43,6 +47,9 @@ public:
 	
 	// get camera view matrix.
 	virtual const MATRIX& GetViewMatrix () const = 0;
+
+	// get viewing frustum.
+	virtual const IOGFrustum& GetFrustum () const = 0;
 
 	// get left and right edges.
 	virtual void GetEdges (Vec3& _vLeft, Vec3& _vRight, float _fFOV, float _fDist) = 0;

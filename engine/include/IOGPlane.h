@@ -75,9 +75,9 @@ public:
 	}
 
 	// calculate the distance between a point and a plane
-	inline VERTTYPE DistanceToPlane(const VECTOR3& point)
+	inline VERTTYPE DistanceToPlane(const VECTOR3& point) const
 	{
-		return MatrixVec3DotProduct((VECTOR3&)Plane, point) + Plane.w;
+		return MatrixVec3DotProduct((const VECTOR3&)Plane, point) + Plane.w;
 	}
 
 	// normalize plane

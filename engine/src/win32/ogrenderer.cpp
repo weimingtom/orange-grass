@@ -91,6 +91,8 @@ void COGRenderer::SetViewport (
     m_mTextProj.f[0] = 2.0f/(m_Height);
     m_mTextProj.f[5] = -2.0f/(m_Width);
 #endif
+
+	m_pCamera->SetupViewport(m_mProjection, m_fFOV);
 }
 
 

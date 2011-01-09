@@ -19,6 +19,14 @@ COGCamera::~COGCamera ()
 }
 
 
+// setup camera viewport.
+void COGCamera::SetupViewport (const MATRIX& _mProjection, float _fFOV)
+{
+	m_Projection = _mProjection;
+	m_fFOV = _fFOV;
+}
+
+
 // setup camera.
 void COGCamera::Setup (const Vec3& _vPosition, const Vec3& _vTarget, const Vec3& _vUp)
 {
@@ -64,6 +72,8 @@ void COGCamera::Update ()
 	if (m_bDirty)
 	{
 		MatrixLookAtRH(m_View, m_Position, m_Target, m_Up);
+		MatrixMultiply(m_ViewProj, m_View, m_Projection);
+		m_Frustum.Update(m_ViewProj, true);
 		m_bDirty = false;
 	}
 }

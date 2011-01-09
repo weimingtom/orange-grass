@@ -316,6 +316,7 @@ bool COGSceneGraph::IsVisible(const IOGCamera* _pCamera, const IOGSgNode* _pNode
 {
 	float fCameraZ = _pCamera->GetPosition().z;
 	float fObjectZ = _pNode->GetOBB().m_vCenter.z;
-
 	return ((fObjectZ <= fCameraZ) && ((fCameraZ - fObjectZ) < m_fViewDistance));
+
+	//return _pCamera->GetFrustum().CheckObb(_pNode->GetOBB());
 }
