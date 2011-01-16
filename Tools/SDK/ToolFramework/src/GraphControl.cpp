@@ -117,5 +117,5 @@ void GraphControl::AddData(const TSamplingData& _Data)
     if (m_Data.empty())
         return;
 
-    m_MaxSample = (*m_Data.end()).msec;
+    m_MaxSample = (*(m_Data.end()-1)).msec;
 }
