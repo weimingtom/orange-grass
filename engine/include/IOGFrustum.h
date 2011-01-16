@@ -36,66 +36,25 @@ public:
 	IOGPlane& GetRightPlane() { return Plane[1]; }	
 		
 	// update viewing frustum.
-	void Update(const MATRIX& comboMatrix, bool normalize)
+	void Update(const MATRIX& comboMatrix)
 	{
-		VECTOR4 TempPlane;
+		Plane[0].Set(comboMatrix.f[ 3] - comboMatrix.f[ 0], comboMatrix.f[ 7] - comboMatrix.f[ 4], comboMatrix.f[11] - comboMatrix.f[ 8], comboMatrix.f[15] - comboMatrix.f[12]);
+		Plane[1].Set(comboMatrix.f[ 3] + comboMatrix.f[ 0], comboMatrix.f[ 7] + comboMatrix.f[ 4], comboMatrix.f[11] + comboMatrix.f[ 8], comboMatrix.f[15] + comboMatrix.f[12]);
+		Plane[2].Set(comboMatrix.f[ 3] + comboMatrix.f[ 1], comboMatrix.f[ 7] + comboMatrix.f[ 5], comboMatrix.f[11] + comboMatrix.f[ 9], comboMatrix.f[15] + comboMatrix.f[13]);
+		Plane[3].Set(comboMatrix.f[ 3] - comboMatrix.f[ 1], comboMatrix.f[ 7] - comboMatrix.f[ 5], comboMatrix.f[11] - comboMatrix.f[ 9], comboMatrix.f[15] - comboMatrix.f[13]);
+		Plane[4].Set(comboMatrix.f[ 3] - comboMatrix.f[ 2], comboMatrix.f[ 7] - comboMatrix.f[ 6], comboMatrix.f[11] - comboMatrix.f[10], comboMatrix.f[15] - comboMatrix.f[14]);
+		Plane[5].Set(comboMatrix.f[ 3] + comboMatrix.f[ 2], comboMatrix.f[ 7] + comboMatrix.f[ 6], comboMatrix.f[11] + comboMatrix.f[10], comboMatrix.f[15] + comboMatrix.f[14]);
 
-		// Left clipping plane
-		TempPlane.x = comboMatrix.f[_41] + comboMatrix.f[_11]; 
-		TempPlane.y = comboMatrix.f[_42] + comboMatrix.f[_12]; 
-		TempPlane.z = comboMatrix.f[_43] + comboMatrix.f[_13]; 
-		TempPlane.w = comboMatrix.f[_44] + comboMatrix.f[_14]; 
-		Plane[0].Set(TempPlane);
-
-		// Right clipping plane 
-		TempPlane.x = comboMatrix.f[_41] - comboMatrix.f[_11]; 
-		TempPlane.y = comboMatrix.f[_42] - comboMatrix.f[_12]; 
-		TempPlane.z = comboMatrix.f[_43] - comboMatrix.f[_13]; 
-		TempPlane.w = comboMatrix.f[_44] - comboMatrix.f[_14]; 
-		Plane[1].Set(TempPlane);
-
-		// Top clipping plane 
-		TempPlane.x = comboMatrix.f[_41] - comboMatrix.f[_21]; 
-		TempPlane.y = comboMatrix.f[_42] - comboMatrix.f[_22]; 
-		TempPlane.z = comboMatrix.f[_43] - comboMatrix.f[_23]; 
-		TempPlane.w = comboMatrix.f[_44] - comboMatrix.f[_24]; 
-		Plane[2].Set(TempPlane);
-
-		// Bottom clipping plane 
-		TempPlane.x = comboMatrix.f[_41] + comboMatrix.f[_21]; 
-		TempPlane.y = comboMatrix.f[_42] + comboMatrix.f[_22]; 
-		TempPlane.z = comboMatrix.f[_43] + comboMatrix.f[_23]; 
-		TempPlane.w = comboMatrix.f[_44] + comboMatrix.f[_24]; 
-		Plane[3].Set(TempPlane);
-
-		// Near clipping plane 
-		TempPlane.x = comboMatrix.f[_41] + comboMatrix.f[_31]; 
-		TempPlane.y = comboMatrix.f[_42] + comboMatrix.f[_32]; 
-		TempPlane.z = comboMatrix.f[_43] + comboMatrix.f[_33]; 
-		TempPlane.w = comboMatrix.f[_44] + comboMatrix.f[_34]; 
-		Plane[4].Set(TempPlane);
-
-		// Far clipping plane 
-		TempPlane.x = comboMatrix.f[_41] - comboMatrix.f[_31]; 
-		TempPlane.y = comboMatrix.f[_42] - comboMatrix.f[_32]; 
-		TempPlane.z = comboMatrix.f[_43] - comboMatrix.f[_33]; 
-		TempPlane.w = comboMatrix.f[_44] - comboMatrix.f[_34]; 
-		Plane[5].Set(TempPlane);
-
-		// Normalize the plane equations, if requested 
-		if (normalize == true) 
-		{ 
-			Plane[0].NormalizePlane(); 
-			Plane[1].NormalizePlane(); 
-			Plane[2].NormalizePlane(); 
-			Plane[3].NormalizePlane(); 
-			Plane[4].NormalizePlane(); 
-			Plane[5].NormalizePlane(); 
-		} 
+		Plane[0].NormalizePlane(); 
+		Plane[1].NormalizePlane(); 
+		Plane[2].NormalizePlane(); 
+		Plane[3].NormalizePlane(); 
+		Plane[4].NormalizePlane(); 
+		Plane[5].NormalizePlane(); 
 	}
 
 	// Check if point inside frustum.
-	bool CheckPoint ( const VECTOR3& _vPoint )
+	bool CheckPoint ( const VECTOR3& _vPoint ) const
 	{
 		// Make sure point is in frustum
 		for ( int i = 0; i < 6; ++i ) 

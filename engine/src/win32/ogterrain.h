@@ -81,7 +81,6 @@ private:
     IOGRenderer*                m_pRenderer;
 	IOGSettingsReader*			m_pReader;
 	IOGGlobalVarsTable*			m_pGlobalVars;
-	float						m_fViewDistance;
 };
 
 

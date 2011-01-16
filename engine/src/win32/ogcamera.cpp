@@ -73,7 +73,7 @@ void COGCamera::Update ()
 	{
 		MatrixLookAtRH(m_View, m_Position, m_Target, m_Up);
 		MatrixMultiply(m_ViewProj, m_View, m_Projection);
-		m_Frustum.Update(m_ViewProj, true);
+		m_Frustum.Update(m_ViewProj);
 		m_bDirty = false;
 	}
 }

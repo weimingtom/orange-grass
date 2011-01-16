@@ -17,13 +17,14 @@ class IOGObb
 public:
 
 	// Constructor
-	IOGObb ()
+	IOGObb () : m_bTransformed(false)
 	{
 	}
 
 	// Construct using AABB
 	void Create (const IOGAabb& _Aabb)
 	{
+		m_bTransformed = false;
         m_Aabb = _Aabb;
 	}
 
@@ -45,6 +46,7 @@ public:
             m_vAxis[i] /= ScaleFactor;
         }
         m_TransformedAabb.SetMinMax(m_vMin, m_vMax);
+		m_bTransformed = true;
 	}
 
     // Check OBB-ray intersection
@@ -96,6 +98,7 @@ public:
 
 public:
 
+	bool	m_bTransformed;
 	Vec3	m_vMin;
 	Vec3	m_vMax;
 	Vec3	m_vCenter;

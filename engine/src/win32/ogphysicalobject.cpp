@@ -85,6 +85,9 @@ void COGPhysicalObject::SetWorldTransform (
     m_vTorque = Vec3(0,0,0);
     m_fStrafe = 0.0f;
 
+	WorldMatrixFromTransforms(m_mWorld, m_vPosition, m_vRotation, m_vScaling);
+	m_Obb.UpdateTransform(m_mWorld);
+
 	m_bUpdated = false;
 }
 

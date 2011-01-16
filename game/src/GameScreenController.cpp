@@ -138,13 +138,13 @@ void CGameScreenController::RenderScene ()
 	m_pRenderer->FinishRenderMode();
 
 	m_pRenderer->EnableLight(false);
+    m_pRenderer->EnableFog(false);
 
     m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);
     m_pSg->RenderEffects(m_pCamera);
     m_pRenderer->FinishRenderMode();
 
 	m_pRenderer->Reset();
-    m_pRenderer->EnableFog(false);
 
     m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
 	m_pWeaponHUD->Render();

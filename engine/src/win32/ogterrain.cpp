@@ -18,7 +18,6 @@ COGTerrain::COGTerrain () :	m_pMesh(NULL),
     m_pRenderer = GetRenderer();
 	m_pReader = GetSettingsReader();
 	m_pGlobalVars = GetGlobalVars();
-	m_fViewDistance = m_pGlobalVars->GetFVar("view_distance");
 }
 
 
@@ -176,7 +175,6 @@ void COGTerrain::Unload ()
 void COGTerrain::Render (const MATRIX& _mWorld)
 {
 	IOGCamera* pCamera = GetRenderer()->GetCamera();
-	float fCameraZ = pCamera->GetPosition().z;
 
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
@@ -185,16 +183,9 @@ void COGTerrain::Render (const MATRIX& _mWorld)
     unsigned int numParts = m_pMesh->GetNumRenderables();
     for (unsigned int i = 0; i < numParts; ++i)
     {
-		const IOGAabb& part_aabb = m_pMesh->GetAABB(i);
-		float fPartZStart = part_aabb.GetMax().z;
-		float fPartZFinish = part_aabb.GetMin().z;
-
-		if (fPartZFinish <= fCameraZ)
+		if (pCamera->GetFrustum().CheckAabb(m_pMesh->GetAABB(i)))
 		{
-			if ((fCameraZ - m_fViewDistance) <= fPartZStart)
-			{
-		        m_pMesh->RenderPart (_mWorld, i, 0);
-			}
+			m_pMesh->RenderPart (_mWorld, i, 0);
 		}
     }
 }
