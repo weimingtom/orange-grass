@@ -2,6 +2,14 @@ Tools: ver. 0.15.1, 29-Nov-2010
 
 ChangeList:
 
+0.16 (16-Jan-2010):
+- [EffectViewer] able to view effects;
+- [OG] frusrum visibility check;
+- [OG] added LUA VM support;
+- [OG] fixed all warnings when compiled under GCC for iOS;
+- [Game] added resources for portrait view;
+- [Game] fixed level restart scenario
+
 0.15.1 (29-Nov-2010):
 - [Viewer] materials support - now able to save changes;
 - [Viewer] faster object rotation;
