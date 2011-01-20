@@ -9,7 +9,7 @@
 #ifndef OGGUIBONUSBAR_H_
 #define OGGUIBONUSBAR_H_
 
-#include "IOGGuiLifebar.h"
+#include "IOGGuiBonusbar.h"
 #include <vector>
 
 
@@ -20,7 +20,7 @@ public:
 	virtual ~COGGuiBonusbar();
 
 	// Load graphics.
-    virtual void Load ();
+    virtual void Load (IOGGroupNode* _pNode);
 
 	// Unload graphics.
     virtual void Unload ();
@@ -49,12 +49,22 @@ protected:
 
 protected:
 
+	IOGSettingsReader*		m_pReader;
 	IOGResourceMgr*	        m_pResourceMgr;
     IOGSprite*              m_pFrame;
     IOGSprite*              m_pCooldown;
+    std::vector<BonusEntry> m_Entries;
+
+	// UI layout settings
+	std::string				m_PanelSprStr;
+	std::string				m_BarSprStr;
     Vec2                    m_Size;
     Vec2                    m_Position;
-    std::vector<BonusEntry> m_Entries;
+    Vec2					m_BonusIcoPos;
+	Vec2					m_BonusIcoSize;
+    Vec2					m_CoolDownBarPos;
+	Vec2					m_CoolDownBarSize;
+	float					m_fVertInterval;
 };
 
 

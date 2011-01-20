@@ -11,6 +11,7 @@
 
 #include "Mathematics.h"
 #include <string>
+#include "IOGSettingsReader.h"
 
 
 class IOGGuiBonusbar
@@ -19,7 +20,7 @@ public:
 	virtual ~IOGGuiBonusbar() {}
 
 	// Load graphics.
-    virtual void Load () = 0;
+    virtual void Load (IOGGroupNode* _pNode) = 0;
 
 	// Unload graphics.
     virtual void Unload () = 0;

@@ -18,6 +18,7 @@
 #include "IOGRenderer.h"
 #include "IOGGlobalVarsTable.h"
 #include "IOGSpritePool.h"
+#include "IOGSettingsReader.h"
 
 
 class CGameScreenController : public IScreenController, public IOGInputReceiver
@@ -64,11 +65,12 @@ private:
 private:
 		
 	IOGGlobalVarsTable* m_pGlobalVars;
-	IOGResourceMgr*	m_pResourceMgr;
-	IOGSceneGraph*	m_pSg;
-	IOGRenderer*	m_pRenderer;
-	IOGCamera*		m_pCamera;
-    IOGActor*       m_pPlayer;
+	IOGSettingsReader*	m_pReader;
+	IOGResourceMgr*		m_pResourceMgr;
+	IOGSceneGraph*		m_pSg;
+	IOGRenderer*		m_pRenderer;
+	IOGCamera*			m_pCamera;
+    IOGActor*			m_pPlayer;
 
     IOGGuiLifebar*      m_pLifeHUD;
     IOGGuiBonusbar*	    m_pSpecHUD;

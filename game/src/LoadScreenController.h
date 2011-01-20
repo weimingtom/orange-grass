@@ -15,6 +15,7 @@
 #include "IOGLevel.h"
 #include "IOGGlobalVarsTable.h"
 #include "IOGRenderer.h"
+#include "IOGSettingsReader.h"
 
 
 class CLoadScreenController : public IScreenController
@@ -49,16 +50,24 @@ private:
 	IOGGlobalVarsTable* m_pGlobalVars;
 	IOGResourceMgr*	    m_pResourceMgr;
 	IOGRenderer*	    m_pRenderer;
+	IOGSettingsReader*	m_pReader;
 
 	ControllerState	m_State;
     ScreenType      m_Type;
-	IOGSprite*		m_pHUD;
+	IOGSprite*		m_pLoadSpr;
 	IOGLevel*		m_pCurLevel;
 	bool			m_bLoaded;
 	bool			m_bDisplayed;
 
 	int				m_ScrWidth;
 	int				m_ScrHeight;
+
+	// UI layout settings
+	std::string		m_LoadSprStr;
+	Vec2			m_LoadSprPos;
+	Vec2			m_LoadSprSize;
+
+	Vec2			m_LoadLabelPos;
 };
 
 #endif

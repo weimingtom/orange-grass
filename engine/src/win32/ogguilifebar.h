@@ -19,7 +19,7 @@ public:
 	virtual ~COGGuiLifebar();
 
 	// Load graphics.
-    virtual void Load ();
+    virtual void Load (IOGGroupNode* _pNode);
 
 	// Unload graphics.
     virtual void Unload ();
@@ -32,13 +32,21 @@ public:
 
 protected:
 
-	IOGResourceMgr*	m_pResourceMgr;
-    IOGSprite*      m_pFrame;
-    IOGSprite*      m_pBar;
-    Vec2            m_Size;
-    Vec2            m_Position;
-    unsigned int    m_Val; 
-    unsigned int    m_MaxVal;
+	IOGSettingsReader*	m_pReader;
+	IOGResourceMgr*		m_pResourceMgr;
+    IOGSprite*			m_pFrame;
+    IOGSprite*			m_pBar;
+    unsigned int		m_Val; 
+    unsigned int		m_MaxVal;
+
+	// UI layout settings
+	std::string			m_PanelSprStr;
+	std::string			m_BarSprStr;
+	Vec2				m_Size;
+    Vec2				m_Position;
+	Vec2				m_BarPos;
+	Vec2				m_BarSize;
+	int					m_MaxBars;
 };
 
 

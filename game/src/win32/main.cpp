@@ -2,18 +2,14 @@
 #include "..\GameSystem.h"
 #include "common.h"
 #include "Timing.h"
+#include "OrangeGrass.h"
 
 #define TIMER_ID	1
 #define TIMER_RATE	30
-//#define SCR_WIDTH   320
-//#define SCR_HEIGHT  480
-#define SCR_WIDTH   480
-#define SCR_HEIGHT  320
+
 
 CGameSystem*    pGameSystem = NULL;
-CFPSCounter		pFPS;
-
-void CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime);
+int				ScrWidth, ScrHeight;
 
 
 /// Application initialization.
@@ -35,7 +31,7 @@ void Initialize ()
     wglMakeCurrent( shDC, shRC );
     glewInit();
 
-    glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
+    glViewport(0, 0, ScrWidth, ScrHeight);
     glDisable(GL_CULL_FACE);
 
     pGameSystem = new CGameSystem();
@@ -112,6 +108,32 @@ LRESULT CALLBACK WndProc ( HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam
 }
 
 
+/// timer callback function
+void CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime)
+{
+	if (idEvent == TIMER_ID)
+	{
+        if (pGameSystem->GetControllerState() != SYSSTATE_EXIT)
+        {
+            //pGameSystem->OnPointerMove(sMouseX, sMouseY);
+            //if (bTouch)
+            //{
+            //    pGameSystem->OnPointerDown(sTouchX, sTouchY);
+            //}
+            pGameSystem->Update(33);
+            pGameSystem->Draw();
+
+            glFlush();
+            SwapBuffers(shDC);
+        }
+        else
+        {
+            Shutdown();
+        }
+	}
+}
+
+
 /// Application window initialization.
 BOOL InitInstance ( HINSTANCE hInstance, int nCmdShow )
 {
@@ -123,6 +145,10 @@ BOOL InitInstance ( HINSTANCE hInstance, int nCmdShow )
 		SetForegroundWindow ((HWND)(((__int64)shWnd) | 0x01));    
 		return FALSE;
 	} 
+
+	GetAppSettings()->Init("settings.xml");
+	ScrWidth = GetGlobalVars()->GetIVar("view_width");
+	ScrHeight = GetGlobalVars()->GetIVar("view_height");
 
 	WNDCLASS	wc;
     wc.style			= CS_HREDRAW | CS_VREDRAW;
@@ -137,8 +163,8 @@ BOOL InitInstance ( HINSTANCE hInstance, int nCmdShow )
     wc.lpszClassName	= L"AirAssault.MainWindow";
 	RegisterClass ( &wc );
 	
-    int wndSizeX = SCR_WIDTH + (GetSystemMetrics(SM_CXBORDER) * 2);
-    int wndSizeY = SCR_HEIGHT + GetSystemMetrics(SM_CYSIZE) + GetSystemMetrics(SM_CYBORDER);
+    int wndSizeX = ScrWidth + (GetSystemMetrics(SM_CXBORDER) * 2);
+    int wndSizeY = ScrHeight + GetSystemMetrics(SM_CYSIZE) + GetSystemMetrics(SM_CYBORDER);
 
 	shWnd = CreateWindow (	L"AirAssault.MainWindow", L"AirAssault", WS_SYSMENU|WS_OVERLAPPED,
 							(GetSystemMetrics(SM_CXSCREEN)-wndSizeX)/2, 
@@ -185,34 +211,4 @@ int WINAPI WinMain( HINSTANCE hInstance,
     }
 
 	return (int)msg.wParam;
-}
-
-
-/// timer callback function
-void CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime)
-{
-	if (idEvent == TIMER_ID)
-	{
-        if (pGameSystem->GetControllerState() != SYSSTATE_EXIT)
-        {
-            //pGameSystem->OnPointerMove(sMouseX, sMouseY);
-            //if (bTouch)
-            //{
-            //    pGameSystem->OnPointerDown(sTouchX, sTouchY);
-            //}
-            pFPS.Update();
-            //unsigned long ElapsedTime = (unsigned long)(1000.0f/(float)pFPS.GetFPS());
-            //if (ElapsedTime > 30)
-            //    ElapsedTime = 30;
-            pGameSystem->Update(33);
-            pGameSystem->Draw();
-
-            glFlush();
-            SwapBuffers(shDC);
-        }
-        else
-        {
-            Shutdown();
-        }
-	}
 }

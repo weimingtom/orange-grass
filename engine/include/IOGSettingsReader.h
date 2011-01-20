@@ -12,6 +12,7 @@
 #include <string>
 #include "Mathematics.h"
 #include "IOGActorParams.h"
+#include "IOGRenderer.h"
 
 
 struct IOGSettingsSource

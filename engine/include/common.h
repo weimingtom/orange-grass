@@ -10,7 +10,7 @@
 #define COMMON_H_
 
 #define USE_VBO
-#define STATISTICS
+//#define STATISTICS
 #define GLES11
 //#define GLES20
 

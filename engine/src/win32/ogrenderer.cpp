@@ -24,7 +24,8 @@ COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
 								m_pFog(NULL),
 								m_pLightMgr(NULL),
 								m_pCamera(NULL),
-								m_pText(NULL)
+								m_pText(NULL),
+								m_bLandscapeMode(false)
 {
 	m_pStats = GetStatistics();
 }
@@ -76,6 +77,8 @@ void COGRenderer::SetViewport (
     m_mTextProj.f[10] = 1.0f; m_mTextProj.f[12] = -1.0f;
     m_mTextProj.f[13] = 1.0f; m_mTextProj.f[15] = 1.0f;
 
+	m_bLandscapeMode = (GetGlobalVars()->GetIVar("landscape") == 1);
+
 #ifdef WIN32
 	MatrixOrthoRH(m_mOrthoProj, (float)m_Width, (float)m_Height, -1, 1, false);
     MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(m_Width)/float(m_Height), m_fZNear, m_fZFar, false);
@@ -83,13 +86,22 @@ void COGRenderer::SetViewport (
     m_mTextProj.f[0] = 2.0f/(m_Width);
     m_mTextProj.f[5] = -2.0f/(m_Height);
 #else
-	MatrixOrthoRH(m_mOrthoProj, (float)m_Height, (float)m_Width, -1, 1, true);
-    MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(m_Height)/float(m_Width), m_fZNear, m_fZFar, true);
- 	m_pText->SetTextures(_Width, _Height, true);
-    //m_mTextProj.f[0] = 2.0f/(m_Width);
-    //m_mTextProj.f[5] = -2.0f/(m_Height);
-    m_mTextProj.f[0] = 2.0f/(m_Height);
-    m_mTextProj.f[5] = -2.0f/(m_Width);
+	if (m_bLandscapeMode)
+	{
+		MatrixOrthoRH(m_mOrthoProj, (float)m_Height, (float)m_Width, -1, 1, true);
+		MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(m_Height)/float(m_Width), m_fZNear, m_fZFar, true);
+ 		m_pText->SetTextures(_Width, _Height, true);
+		m_mTextProj.f[0] = 2.0f/(m_Height);
+		m_mTextProj.f[5] = -2.0f/(m_Width);
+	}
+	else
+	{
+		MatrixOrthoRH(m_mOrthoProj, (float)m_Width, (float)m_Height, -1, 1, false);
+		MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(m_Width)/float(m_Height), m_fZNear, m_fZFar, false);
+ 		m_pText->SetTextures(_Width, _Height, false);
+		m_mTextProj.f[0] = 2.0f/(m_Width);
+		m_mTextProj.f[5] = -2.0f/(m_Height);
+	}
 #endif
 
 	m_pCamera->SetupViewport(m_mProjection, m_fFOV);
@@ -223,7 +235,14 @@ Vec3 COGRenderer::UnprojectCoords (int _X, int _Y)
 #ifdef WIN32
 	UnProject((float)_X, (float)(m_Height - _Y), 0.0f, pMV, pP, m_Width, m_Height, &x0, &y0, &z0);
 #else
-	UnProject((float)_Y, (float)_X, 0.0f, pMV, pP, m_Height, m_Width, &x0, &y0, &z0);
+	if (m_bLandscapeMode)
+	{
+		UnProject((float)_Y, (float)_X, 0.0f, pMV, pP, m_Height, m_Width, &x0, &y0, &z0);
+	}
+	else
+	{
+		UnProject((float)_X, (float)(m_Height - _Y), 0.0f, pMV, pP, m_Width, m_Height, &x0, &y0, &z0);
+	}
 #endif    
     return Vec3(x0, y0, z0);
 }

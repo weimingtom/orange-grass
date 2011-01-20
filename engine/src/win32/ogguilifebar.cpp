@@ -12,6 +12,7 @@
 
 COGGuiLifebar::COGGuiLifebar ()
 {
+	m_pReader = GetSettingsReader();
 	m_pResourceMgr = GetResourceMgr();
     m_pFrame = NULL;
     m_pBar = NULL;
@@ -28,12 +29,21 @@ COGGuiLifebar::~COGGuiLifebar()
 
 
 // Load graphics.
-void COGGuiLifebar::Load ()
+void COGGuiLifebar::Load (IOGGroupNode* _pNode)
 {
-    m_pFrame = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, "life_hud");
-    m_pBar = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, "greenbar_hud");
-    m_Size = Vec2(256.0f, 32.0f);
-    m_Position = Vec2(0, 0);
+	if (!_pNode)
+		return;
+
+	m_PanelSprStr = m_pReader->ReadStringParam(_pNode, "panel_sprite");
+	m_BarSprStr = m_pReader->ReadStringParam(_pNode, "bar_sprite");
+	m_Position = m_pReader->ReadVec2Param(_pNode, "x", "y");
+	m_Size = m_pReader->ReadVec2Param(_pNode, "width", "height");
+	m_BarPos = m_pReader->ReadVec2Param(_pNode, "bar_x", "bar_y");
+	m_BarSize = m_pReader->ReadVec2Param(_pNode, "bar_width", "bar_height");
+	m_MaxBars = m_pReader->ReadIntParam(_pNode, "max_bars");
+
+	m_pFrame = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, m_PanelSprStr);
+    m_pBar = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, m_BarSprStr);
 }
 
 
@@ -56,19 +66,17 @@ void COGGuiLifebar::UpdateData (unsigned int _Val, unsigned int _MaxVal)
 // Render sprite.
 void COGGuiLifebar::Render ()
 {
-    float fMaxBars = 42.0f;
     float fLifePercent = (float)m_Val / (float)m_MaxVal;
-    unsigned int NumBars = (unsigned int)(fLifePercent * fMaxBars);
-    Vec2 vOffset = Vec2(17.0f, 10.0f);
+    unsigned int NumBars = (unsigned int)(fLifePercent * m_MaxBars);
 
     for (unsigned int i = 0; i < NumBars; ++i)
     {
-        Vec2 vSize = Vec2(4.0f, 19.0f);
+		float fBarHeight = m_BarSize.y;
         if (i == 41 || i == 40)
         {
-            vSize.y = 14.0f;
+            fBarHeight = 14.0f;
         }
-        m_pBar->Render(Vec2(vOffset.x + i * 5, vOffset.y), vSize);
+        m_pBar->Render(m_Position + Vec2(m_BarPos.x + i * (m_BarSize.x + 1), m_BarPos.y), Vec2(m_BarSize.x, fBarHeight));
     }
 
     m_pFrame->Render(m_Position, m_Size);

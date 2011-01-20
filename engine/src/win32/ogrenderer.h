@@ -98,6 +98,7 @@ protected:
 	float				m_fZNear;
 	float				m_fZFar;
 	float				m_fFOV;
+	bool				m_bLandscapeMode;
 	OGRenderMode		m_Mode;
 };
 

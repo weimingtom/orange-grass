@@ -39,6 +39,18 @@ const std::string& COGResourceMgr::GetResourcePath () const
 }
 
 
+// get UI resource path
+std::string COGResourceMgr::GetUIPath (const std::string& _File) const
+{
+	std::string UIMode = std::string("Landscape/");
+	if (GetGlobalVars()->GetIVar("landscape") == 0)
+	{
+		UIMode = std::string("Portrait/");
+	}
+	return m_ResPath + std::string("/UI/") + UIMode + _File;
+}
+
+
 // get full resource path
 std::string COGResourceMgr::GetFullPath (const std::string& _File) const
 {

@@ -25,6 +25,7 @@ public:
 
 private:
 
+	bool				m_bInitialized;
 	IOGSettingsReader*	m_pReader;
 	IOGGlobalVarsTable*	m_pGlobalVars;
 };

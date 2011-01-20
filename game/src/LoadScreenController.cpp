@@ -12,7 +12,7 @@
 
 CLoadScreenController::CLoadScreenController() :	m_State(CSTATE_NO),
                                                     m_Type(SCRTYPE_LOAD),
-													m_pHUD(NULL),
+													m_pLoadSpr(NULL),
                                                     m_pCurLevel(NULL),
 													m_bLoaded(false),
                                                     m_bDisplayed(false)
@@ -20,6 +20,7 @@ CLoadScreenController::CLoadScreenController() :	m_State(CSTATE_NO),
 	m_pGlobalVars = GetGlobalVars();
 	m_pResourceMgr = GetResourceMgr();
     m_pRenderer = GetRenderer();
+	m_pReader = GetSettingsReader();
 }
 
 
@@ -36,6 +37,30 @@ bool CLoadScreenController::Init ()
 	m_ScrWidth = m_pGlobalVars->GetIVar("view_width");
 	m_ScrHeight = m_pGlobalVars->GetIVar("view_height");
 	
+	IOGSettingsSource* pSource = m_pReader->OpenSource(GetResourceMgr()->GetUIPath("LoadScreenUI.xml"));
+	if (!pSource)
+		return false;
+
+	IOGGroupNode* pRoot = m_pReader->OpenGroupNode(pSource, NULL, "LoadScreen");
+	IOGGroupNode* pLoadSprNode = m_pReader->OpenGroupNode(pSource, pRoot, "LoadSpr");
+	if (pLoadSprNode != NULL)
+	{
+		m_LoadSprStr = m_pReader->ReadStringParam(pLoadSprNode, "sprite");
+		m_LoadSprPos = m_pReader->ReadVec2Param(pLoadSprNode, "x", "y");
+		m_LoadSprSize = m_pReader->ReadVec2Param(pLoadSprNode, "width", "height");
+		m_pReader->CloseGroupNode(pLoadSprNode);
+	}
+
+	IOGGroupNode* pLabelNode = m_pReader->OpenGroupNode(pSource, pRoot, "LoadLabel");
+	if (pLabelNode != NULL)
+	{
+		m_LoadLabelPos = m_pReader->ReadVec2Param(pLabelNode, "x", "y");
+		m_pReader->CloseGroupNode(pLabelNode);
+	}
+
+	m_pReader->CloseGroupNode(pRoot);
+	m_pReader->CloseSource(pSource);
+
 	return true;
 }
 
@@ -81,9 +106,19 @@ void CLoadScreenController::RenderScene ()
 {
 	m_pRenderer->ClearFrame(Vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
-	m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
-	m_pHUD->Render(Vec2(0, 0), Vec2((float)m_ScrWidth, (float)m_ScrHeight));
-	m_pRenderer->FinishRenderMode();
+	if (m_pLoadSpr)
+	{
+		m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
+		m_pLoadSpr->Render(m_LoadSprPos, m_LoadSprSize);
+		m_pRenderer->FinishRenderMode();
+	}
+	else
+	{
+		m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
+		m_pRenderer->DisplayString(m_LoadLabelPos, 1.0f, 0x7FFFFFFF, "Loading...");
+		m_pRenderer->FinishRenderMode();
+	}
+
 	m_pRenderer->Reset();
 
 	m_bDisplayed = true;
@@ -93,7 +128,10 @@ void CLoadScreenController::RenderScene ()
 // Activate
 void CLoadScreenController::Activate ()
 {
-	m_pHUD = m_pResourceMgr->GetSprite(OG_RESPOOL_UI, "load_scr");
+	if (!m_LoadSprStr.empty())
+	{
+		m_pLoadSpr = m_pResourceMgr->GetSprite(OG_RESPOOL_UI, m_LoadSprStr);
+	}
     m_bLoaded = false;
     m_bDisplayed = false;
 	m_State = CSTATE_ACTIVE;
@@ -103,7 +141,10 @@ void CLoadScreenController::Activate ()
 // deactivate
 void CLoadScreenController::Deactivate ()
 {
-	m_pResourceMgr->ReleaseSprite(m_pHUD);
+	if (m_pLoadSpr)
+	{
+		m_pResourceMgr->ReleaseSprite(m_pLoadSpr);
+	}
     m_bDisplayed = false;
 	m_State = CSTATE_INACTIVE;
 }

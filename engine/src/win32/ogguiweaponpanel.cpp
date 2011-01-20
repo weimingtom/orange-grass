@@ -12,6 +12,7 @@
 
 COGGuiWeaponPanel::COGGuiWeaponPanel ()
 {
+	m_pReader = GetSettingsReader();
 	m_pResourceMgr = GetResourceMgr();
     m_pFrame = NULL;
     m_pWeapon = NULL;
@@ -25,12 +26,18 @@ COGGuiWeaponPanel::~COGGuiWeaponPanel()
 
 
 // Load graphics.
-void COGGuiWeaponPanel::Load ()
+void COGGuiWeaponPanel::Load (IOGGroupNode* _pNode)
 {
-	m_Position = Vec2(420.0f, 260.0f);
-	m_Size = Vec2(60.0f, 60.0f);
+	if (!_pNode)
+		return;
 
-    m_pFrame = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, "weapon_hud");
+	m_HUDSprStr = m_pReader->ReadStringParam(_pNode, "sprite");
+	m_Position = m_pReader->ReadVec2Param(_pNode, "x", "y");
+	m_Size = m_pReader->ReadVec2Param(_pNode, "width", "height");
+	m_WeaponIconPos = m_pReader->ReadVec2Param(_pNode, "weapon_x", "weapon_y");
+	m_WeaponIconSize = m_pReader->ReadVec2Param(_pNode, "weapon_width", "weapon_height");
+
+    m_pFrame = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, m_HUDSprStr);
 }
 
 
@@ -52,12 +59,10 @@ void COGGuiWeaponPanel::UpdateData (const std::string& _SprWeapon)
 // Render sprite.
 void COGGuiWeaponPanel::Render ()
 {
-    Vec2 vOffset = Vec2(-2.0f, 12.0f);
-    Vec2 vSize = Vec2(64.0f, 36.0f);
     m_pFrame->Render(m_Position, m_Size);
     if (m_pWeapon)
     {
-        m_pWeapon->Render(m_Position + vOffset, vSize);
+        m_pWeapon->Render(m_Position + m_WeaponIconPos, m_WeaponIconSize);
     }
 }
 

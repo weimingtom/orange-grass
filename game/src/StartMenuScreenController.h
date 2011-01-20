@@ -16,6 +16,7 @@
 #include "IOGGlobalVarsTable.h"
 #include "IOGInputReceiver.h"
 #include "IOGRenderer.h"
+#include "IOGSettingsReader.h"
 
 
 class CStartMenuScreenController : public IScreenController, public IOGInputReceiver
@@ -56,6 +57,7 @@ private:
 	IOGGlobalVarsTable* m_pGlobalVars;
 	IOGResourceMgr*	    m_pResourceMgr;
 	IOGRenderer*	    m_pRenderer;
+	IOGSettingsReader*	m_pReader;
 
 	ControllerState	m_State;
     ScreenType      m_Type;
@@ -65,6 +67,27 @@ private:
     IOGSprite*		m_pBack;
     IOGGuiButton*   m_pNewBtn;
     IOGGuiButton*   m_pExitBtn;
+
+	// UI layout settings
+	std::string		m_LogoSprStr;
+	Vec2			m_LogoSprPos;
+	Vec2			m_LogoSprSize;
+
+	std::string		m_BackSprStr;
+	Vec2			m_BackSprPos;
+	Vec2			m_BackSprSize;
+
+	Vec2			m_DemoLabelPos;
+
+	std::string		m_NewBtnNSprStr;
+	std::string		m_NewBtnPrSprStr;
+	Vec2			m_NewBtnPos;
+	Vec2			m_NewBtnSize;
+
+	std::string		m_ExitBtnNSprStr;
+	std::string		m_ExitBtnPrSprStr;
+	Vec2			m_ExitBtnPos;
+	Vec2			m_ExitBtnSize;
 };
 
 #endif

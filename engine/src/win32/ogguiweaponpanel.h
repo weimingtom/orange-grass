@@ -19,7 +19,7 @@ public:
 	virtual ~COGGuiWeaponPanel();
 
 	// Load graphics.
-    virtual void Load ();
+    virtual void Load (IOGGroupNode* _pNode);
 
 	// Unload graphics.
     virtual void Unload ();
@@ -35,11 +35,17 @@ public:
 
 protected:
 
-	IOGResourceMgr*	m_pResourceMgr;
-    IOGSprite*      m_pFrame;
-    IOGSprite*      m_pWeapon;
-    Vec2            m_Size;
-    Vec2            m_Position;
+	IOGSettingsReader*	m_pReader;
+	IOGResourceMgr*		m_pResourceMgr;
+    IOGSprite*			m_pFrame;
+    IOGSprite*			m_pWeapon;
+
+	// UI layout settings
+	std::string			m_HUDSprStr;
+	Vec2				m_Size;
+    Vec2				m_Position;
+	Vec2				m_WeaponIconPos;
+	Vec2				m_WeaponIconSize;
 };
 
 

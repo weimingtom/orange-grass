@@ -12,6 +12,7 @@
 
 COGAppSettings::COGAppSettings()
 {
+	m_bInitialized = false;
 	m_pReader = GetSettingsReader();
 	m_pGlobalVars = GetGlobalVars();
 }
@@ -25,6 +26,9 @@ COGAppSettings::~COGAppSettings()
 // read settings file.
 bool COGAppSettings::Init (const std::string& _File)
 {
+	if (m_bInitialized)
+		return true;
+
 	IOGSettingsSource* pSource = m_pReader->OpenSource(GetResourceMgr()->GetFullPath(_File));
 	if (!pSource)
 		return false;
@@ -38,6 +42,9 @@ bool COGAppSettings::Init (const std::string& _File)
 
 		int ViewHeight = m_pReader->ReadIntParam(pViewNode, "view_height");
 		m_pGlobalVars->SetIVar("view_height", ViewHeight);
+
+		int Landscape = m_pReader->ReadIntParam(pViewNode, "landscape");
+		m_pGlobalVars->SetIVar("landscape", Landscape);
 
 		float fZNear = m_pReader->ReadFloatParam(pViewNode, "z_near");
 		m_pGlobalVars->SetFVar("z_near", fZNear);
@@ -92,6 +99,7 @@ bool COGAppSettings::Init (const std::string& _File)
 	}
 	m_pReader->CloseGroupNode(pRoot);
 	m_pReader->CloseSource(pSource);
+	m_bInitialized = true;
 
 	return true;
 }

@@ -59,21 +59,46 @@ bool CGameScreenController::Init ()
     m_pResourceMgr = GetResourceMgr();
 	m_pSg = GetSceneGraph();
 	m_pRenderer = GetRenderer();
+	m_pReader = GetSettingsReader();
 	m_pCamera = m_pRenderer->GetCamera();
     
 	IOGLevelParams* pLevelParams = GetGameSequence()->GetLevel(0);
 	m_pCurLevel = GetLevelManager()->LoadLevel(pLevelParams->alias);
     m_pPlayer = GetActorManager()->GetPlayersActor();
 
-    m_pLifeHUD = GetSpritePool()->CreateLifebar();
-    m_pLifeHUD->Load();
+	IOGSettingsSource* pSource = m_pReader->OpenSource(GetResourceMgr()->GetUIPath("GameScreenUI.xml"));
+	if (!pSource)
+		return false;
 
-    m_pSpecHUD = GetSpritePool()->CreateBonusbar();
-    m_pSpecHUD->Load();
+	IOGGroupNode* pRoot = m_pReader->OpenGroupNode(pSource, NULL, "GameScreen");
 
-	m_pWeaponHUD = GetSpritePool()->CreateWeaponPanel();
-    m_pWeaponHUD->Load();
-    m_pWeaponHUD->UpdateData(m_pPlayer->GetWeapon()->GetParams()->icon_texture);
+	IOGGroupNode* pLifeHUDNode = m_pReader->OpenGroupNode(pSource, pRoot, "LifeHUD");
+	if (pLifeHUDNode != NULL)
+	{
+	    m_pLifeHUD = GetSpritePool()->CreateLifebar();
+		m_pLifeHUD->Load(pLifeHUDNode);
+		m_pReader->CloseGroupNode(pLifeHUDNode);
+	}
+
+	IOGGroupNode* pSpecHUDNode = m_pReader->OpenGroupNode(pSource, pRoot, "SpecHUD");
+	if (pSpecHUDNode != NULL)
+	{
+	    m_pSpecHUD = GetSpritePool()->CreateBonusbar();
+		m_pSpecHUD->Load(pSpecHUDNode);
+		m_pReader->CloseGroupNode(pSpecHUDNode);
+	}
+
+	IOGGroupNode* pWeaponHUDNode = m_pReader->OpenGroupNode(pSource, pRoot, "WeaponHUD");
+	if (pWeaponHUDNode != NULL)
+	{
+		m_pWeaponHUD = GetSpritePool()->CreateWeaponPanel();
+		m_pWeaponHUD->Load(pWeaponHUDNode);
+		m_pWeaponHUD->UpdateData(m_pPlayer->GetWeapon()->GetParams()->icon_texture);
+		m_pReader->CloseGroupNode(pWeaponHUDNode);
+	}
+
+	m_pReader->CloseGroupNode(pRoot);
+	m_pReader->CloseSource(pSource);
 
 	UpdateCamera();
 	GetPhysics()->UpdateAll(1);

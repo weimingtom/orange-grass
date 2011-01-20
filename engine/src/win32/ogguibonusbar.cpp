@@ -12,6 +12,7 @@
 
 COGGuiBonusbar::COGGuiBonusbar ()
 {
+	m_pReader = GetSettingsReader();
 	m_pResourceMgr = GetResourceMgr();
     m_pFrame = NULL;
     m_pCooldown = NULL;
@@ -35,12 +36,23 @@ COGGuiBonusbar::~COGGuiBonusbar()
 
 
 // Load graphics.
-void COGGuiBonusbar::Load ()
+void COGGuiBonusbar::Load (IOGGroupNode* _pNode)
 {
-    m_pFrame = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, "spec_hud");
-    m_pCooldown = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, "greenline_hud");
-    m_Size = Vec2(90.0f, 60.0f);
-    m_Position = Vec2(0, 40);
+	if (!_pNode)
+		return;
+
+	m_PanelSprStr = m_pReader->ReadStringParam(_pNode, "panel_sprite");
+	m_BarSprStr = m_pReader->ReadStringParam(_pNode, "bar_sprite");
+	m_Position = m_pReader->ReadVec2Param(_pNode, "x", "y");
+	m_Size = m_pReader->ReadVec2Param(_pNode, "width", "height");
+	m_CoolDownBarPos = m_pReader->ReadVec2Param(_pNode, "bar_x", "bar_y");
+	m_CoolDownBarSize = m_pReader->ReadVec2Param(_pNode, "bar_width", "bar_height");
+	m_BonusIcoPos = m_pReader->ReadVec2Param(_pNode, "bonus_x", "bonus_y");
+	m_BonusIcoSize = m_pReader->ReadVec2Param(_pNode, "bonus_width", "bonus_height");
+	m_fVertInterval = m_pReader->ReadFloatParam(_pNode, "vert_interval");
+
+	m_pFrame = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, m_PanelSprStr);
+    m_pCooldown = m_pResourceMgr->GetSprite(OG_RESPOOL_GAME, m_BarSprStr);
 }
 
 
@@ -68,22 +80,19 @@ void COGGuiBonusbar::SetData (unsigned int _Id,
 // Render sprite.
 void COGGuiBonusbar::Render ()
 {
-    Vec2 vOffset = Vec2(17.0f, 12.0f);
-    Vec2 vCooldownOffset = Vec2(21.0f, 5.0f);
-
     unsigned int NumEntries = m_Entries.size();
     for (unsigned int i = 0; i < NumEntries; ++i)
     {
         BonusEntry& bonus = m_Entries[i];
         if (bonus.m_pBonus)
         {
-            Vec2 vPos = m_Position + Vec2(0, (m_Size.y + 5) * i);
-            m_pFrame->Render(m_Position + Vec2(0, (m_Size.y + 5) * i), m_Size);
-            bonus.m_pBonus->Render(vPos + vOffset, Vec2(64.0f, 36.0f));
+            Vec2 vPos = m_Position + Vec2(0, (m_Size.y + m_fVertInterval) * i);
+            m_pFrame->Render(m_Position + Vec2(0, (m_Size.y + m_fVertInterval) * i), m_Size);
+            bonus.m_pBonus->Render(vPos + m_BonusIcoPos, m_BonusIcoSize);
             if (bonus.m_MaxVal > 0)
             {
                 float fPercent = (float)bonus.m_Val / (float)bonus.m_MaxVal;
-                m_pCooldown->Render(vPos + vCooldownOffset, Vec2(56.0f * fPercent, 1.0f));
+                m_pCooldown->Render(vPos + m_CoolDownBarPos, Vec2(m_CoolDownBarSize.x * fPercent, m_CoolDownBarSize.y));
             }
         }
     }

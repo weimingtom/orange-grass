@@ -21,6 +21,7 @@ CStartMenuScreenController::CStartMenuScreenController() :	m_pResourceMgr(NULL),
     m_pRenderer = GetRenderer();
 	m_pGlobalVars = GetGlobalVars();
 	m_pResourceMgr = GetResourceMgr();
+	m_pReader = GetSettingsReader();
 
     m_pNewBtn = GetSpritePool()->CreateButton();
     m_pExitBtn = GetSpritePool()->CreateButton();
@@ -44,6 +45,59 @@ bool CStartMenuScreenController::Init ()
 		return false;
 
 	GetInput()->RegisterReceiver(this);
+
+	IOGSettingsSource* pSource = m_pReader->OpenSource(GetResourceMgr()->GetUIPath("StartMenuUI.xml"));
+	if (!pSource)
+		return false;
+
+	IOGGroupNode* pRoot = m_pReader->OpenGroupNode(pSource, NULL, "StartMenu");
+	IOGGroupNode* pLogoNode = m_pReader->OpenGroupNode(pSource, pRoot, "Logo");
+	if (pLogoNode != NULL)
+	{
+		m_LogoSprStr = m_pReader->ReadStringParam(pLogoNode, "sprite");
+		m_LogoSprPos = m_pReader->ReadVec2Param(pLogoNode, "x", "y");
+		m_LogoSprSize = m_pReader->ReadVec2Param(pLogoNode, "width", "height");
+		m_pReader->CloseGroupNode(pLogoNode);
+	}
+
+	IOGGroupNode* pBackNode = m_pReader->OpenGroupNode(pSource, pRoot, "Back");
+	if (pBackNode != NULL)
+	{
+		m_BackSprStr = m_pReader->ReadStringParam(pBackNode, "sprite");
+		m_BackSprPos = m_pReader->ReadVec2Param(pBackNode, "x", "y");
+		m_BackSprSize = m_pReader->ReadVec2Param(pBackNode, "width", "height");
+		m_pReader->CloseGroupNode(pBackNode);
+	}
+
+	IOGGroupNode* pLabelNode = m_pReader->OpenGroupNode(pSource, pRoot, "DemoLabel");
+	if (pLabelNode != NULL)
+	{
+		m_DemoLabelPos = m_pReader->ReadVec2Param(pLabelNode, "x", "y");
+		m_pReader->CloseGroupNode(pLabelNode);
+	}
+
+	IOGGroupNode* pNewBtnNode = m_pReader->OpenGroupNode(pSource, pRoot, "NewBtn");
+	if (pNewBtnNode != NULL)
+	{
+		m_NewBtnNSprStr = m_pReader->ReadStringParam(pNewBtnNode, "sprite_n");
+		m_NewBtnPrSprStr = m_pReader->ReadStringParam(pNewBtnNode, "sprite_pr");
+		m_NewBtnPos = m_pReader->ReadVec2Param(pNewBtnNode, "x", "y");
+		m_NewBtnSize = m_pReader->ReadVec2Param(pNewBtnNode, "width", "height");
+		m_pReader->CloseGroupNode(pNewBtnNode);
+	}
+
+	IOGGroupNode* pExitBtnNode = m_pReader->OpenGroupNode(pSource, pRoot, "ExitBtn");
+	if (pExitBtnNode != NULL)
+	{
+		m_ExitBtnNSprStr = m_pReader->ReadStringParam(pExitBtnNode, "sprite_n");
+		m_ExitBtnPrSprStr = m_pReader->ReadStringParam(pExitBtnNode, "sprite_pr");
+		m_ExitBtnPos = m_pReader->ReadVec2Param(pExitBtnNode, "x", "y");
+		m_ExitBtnSize = m_pReader->ReadVec2Param(pExitBtnNode, "width", "height");
+		m_pReader->CloseGroupNode(pExitBtnNode);
+	}
+
+	m_pReader->CloseGroupNode(pRoot);
+	m_pReader->CloseSource(pSource);
 	
 	return true;
 }
@@ -67,13 +121,13 @@ void CStartMenuScreenController::RenderScene ()
         return;
 
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
-	m_pBack->Render(Vec2(73, 65), Vec2(334.0f, 189.0f));
-	m_pLogo->Render(Vec2(112, 10), Vec2(256.0f, 128.0f));
+	m_pBack->Render(m_BackSprPos, m_BackSprSize);
+	m_pLogo->Render(m_LogoSprPos, m_LogoSprSize);
     m_pNewBtn->Render();
     m_pExitBtn->Render();
 	m_pRenderer->FinishRenderMode();
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
-    m_pRenderer->DisplayString(Vec2(80.0f,93.0f), 0.3f, 0x7FFFFFFF, "Demo version: %d.%d", 0, 16);
+    m_pRenderer->DisplayString(m_DemoLabelPos, 0.3f, 0x7FFFFFFF, "Demo version: %d.%d", 0, 16);
 	m_pRenderer->FinishRenderMode();
 	m_pRenderer->Reset();
 }
@@ -82,12 +136,12 @@ void CStartMenuScreenController::RenderScene ()
 // Activate
 void CStartMenuScreenController::Activate ()
 {
-    m_pLogo = m_pResourceMgr->GetSprite(OG_RESPOOL_UI, "logo");
-    m_pBack = m_pResourceMgr->GetSprite(OG_RESPOOL_UI, "back");
-    m_pNewBtn->Load("new_n", "new_pr", Vec2(222.0f, 42.0f));
-    m_pNewBtn->SetPosition(Vec2(129, 125));
-    m_pExitBtn->Load("exit_n", "exit_pr", Vec2(222.0f, 42.0f));
-    m_pExitBtn->SetPosition(Vec2(129, 175));
+    m_pLogo = m_pResourceMgr->GetSprite(OG_RESPOOL_UI, m_LogoSprStr);
+    m_pBack = m_pResourceMgr->GetSprite(OG_RESPOOL_UI, m_BackSprStr);
+    m_pNewBtn->Load(m_NewBtnNSprStr, m_NewBtnPrSprStr, m_NewBtnSize);
+    m_pNewBtn->SetPosition(m_NewBtnPos);
+    m_pExitBtn->Load(m_ExitBtnNSprStr, m_ExitBtnPrSprStr, m_ExitBtnSize);
+    m_pExitBtn->SetPosition(m_ExitBtnPos);
     m_State = CSTATE_ACTIVE;
 }
 

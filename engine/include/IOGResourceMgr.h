@@ -34,6 +34,9 @@ public:
     // get full resource path
     virtual std::string GetFullPath (const std::string& _File) const = 0;
 
+    // get UI resource path
+    virtual std::string GetUIPath (const std::string& _File) const = 0;
+
 	// load resources.
 	virtual bool Load (OGResourcePool _PoolId) = 0;
 
