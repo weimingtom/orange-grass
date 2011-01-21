@@ -31,6 +31,8 @@ CGameSystem::CGameSystem () :   m_pStartMenuScreen(NULL),
 	m_CurModel = -1;
 
 	GetAppSettings()->Init("settings.xml");
+	GetAppSettings()->InitScreenMode();
+
 	m_pGlobalVars = GetGlobalVars();
 	m_fFOV = m_pGlobalVars->GetFVar("FOV");
 	m_fZNear = m_pGlobalVars->GetFVar("z_near");

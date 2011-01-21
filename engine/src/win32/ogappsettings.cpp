@@ -68,11 +68,6 @@ bool COGAppSettings::Init (const std::string& _File)
 	m_pReader->CloseGroupNode(pRoot);
 	m_pReader->CloseSource(pSource);
 
-	if (!InitScreenMode())
-		return false;
-
-	m_bInitialized = true;
-
 	return true;
 }
 
@@ -131,5 +126,7 @@ bool COGAppSettings::InitScreenMode ()
 
 	m_pReader->CloseGroupNode(pRoot);
 	m_pReader->CloseSource(pSource);
+
+	m_bInitialized = true;
 	return true;
 }

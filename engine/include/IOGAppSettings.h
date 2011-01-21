@@ -19,6 +19,9 @@ public:
 
 	// read settings file.
 	virtual bool Init (const std::string& _File) = 0;
+
+	// read screen mode settings file.
+	virtual bool InitScreenMode () = 0;
 };
 
 

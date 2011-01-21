@@ -23,10 +23,8 @@ public:
 	// read settings file.
 	virtual bool Init (const std::string& _File);
 
-private:
-
 	// read screen mode settings file.
-	bool InitScreenMode ();
+	virtual bool InitScreenMode ();
 
 private:
 

@@ -10,6 +10,7 @@
 
 CGameSystem*    pGameSystem = NULL;
 int				ScrWidth, ScrHeight;
+std::vector<std::string> CmdParams;
 
 
 /// Application initialization.
@@ -147,6 +148,22 @@ BOOL InitInstance ( HINSTANCE hInstance, int nCmdShow )
 	} 
 
 	GetAppSettings()->Init("settings.xml");
+
+	if (CmdParams.size() == 2)
+	{
+		GetGlobalVars()->SetSVar("profile", CmdParams[0]);
+		if (CmdParams[1].compare("l") == 0)
+		{
+			GetGlobalVars()->SetIVar("landscape", 1);
+		}
+		else
+		{
+			GetGlobalVars()->SetIVar("landscape", 0);
+		}
+	}
+
+	GetAppSettings()->InitScreenMode();
+
 	ScrWidth = GetGlobalVars()->GetIVar("view_width");
 	ScrHeight = GetGlobalVars()->GetIVar("view_height");
 
@@ -191,6 +208,14 @@ int WINAPI WinMain( HINSTANCE hInstance,
 					LPSTR lpszCmdLine,
 					int nCmdShow )
 {
+	char* pch;
+	pch = strtok (lpszCmdLine, " -");
+	while (pch != NULL)
+	{
+		CmdParams.push_back(std::string(pch));
+		pch = strtok (NULL, " -");
+	}
+
 	if ( !InitInstance ( hInstance, nCmdShow ) ) 
 		return FALSE;
 
