@@ -239,19 +239,6 @@ void COGActorManager::Update (unsigned long _ElapsedTime)
 		case OG_ACTOR_LANDBOT:
 		case OG_ACTOR_BONUS:
 			{
-				//float fObjectZ = pActor->GetPhysicalObject()->GetPosition().z;
-				//if (fObjectZ <= fCameraZ)
-				//{
-				//	if ((fCameraZ - fObjectZ) < m_fViewDistance)
-				//	{
-				//		pActor->Activate(true);
-				//	}
-				//}
-				//else
-				//{
-				//	if (pActor->IsActive())
-				//		pActor->Activate(false);
-				//}
 				if (pCamera->GetFrustum().CheckObb(pActor->GetSgNode()->GetOBB()))
 				{
 					if (!pActor->IsActive())

@@ -67,16 +67,17 @@ bool COGResourceMgr::Load (OGResourcePool _PoolId)
 	switch (_PoolId)
 	{
 	case OG_RESPOOL_UI:
-		strResourceConfig = std::string("resources_ui.xml");
+		strResourceConfig = GetUIPath(std::string("resources_ui.xml"));
 		pCurPool = &m_PoolUI;
 		break;
 
 	case OG_RESPOOL_GAME:
-		strResourceConfig = std::string("resources_game.xml");
+		strResourceConfig = m_ResPath + std::string("/resources_game.xml");
 		pCurPool = &m_PoolGame;
 		break;
 
 	case OG_RESPOOL_NONE:
+	default:
 		return false;
 	}
 
@@ -176,7 +177,7 @@ bool COGResourceMgr::Unload (OGResourcePool _PoolId)
 // Load resource manager configuration
 bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg, const std::string& _ConfigFile)
 {
-	IOGSettingsSource* pSource = m_pReader->OpenSource(GetFullPath(_ConfigFile));
+	IOGSettingsSource* pSource = m_pReader->OpenSource(/*GetFullPath(*/_ConfigFile/*)*/);
 	if (!pSource)
 		return false;
 

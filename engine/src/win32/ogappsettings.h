@@ -25,6 +25,11 @@ public:
 
 private:
 
+	// read screen mode settings file.
+	bool InitScreenMode ();
+
+private:
+
 	bool				m_bInitialized;
 	IOGSettingsReader*	m_pReader;
 	IOGGlobalVarsTable*	m_pGlobalVars;

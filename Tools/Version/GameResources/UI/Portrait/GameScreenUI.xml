@@ -2,7 +2,7 @@
 <GameScreen>
 	<WeaponHUD 
 		sprite="weapon_hud" 
-		x="420" y="260" 
+		x="260" y="420" 
 		width="60" height="60" 
 		weapon_x="-2" weapon_y="12" 
 		weapon_width="64" weapon_height="36" 

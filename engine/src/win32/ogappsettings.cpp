@@ -37,14 +37,61 @@ bool COGAppSettings::Init (const std::string& _File)
 	IOGGroupNode* pViewNode = m_pReader->OpenGroupNode(pSource, pRoot, "View");
 	if (pViewNode != NULL)
 	{
+		int Landscape = m_pReader->ReadIntParam(pViewNode, "landscape");
+		m_pGlobalVars->SetIVar("landscape", Landscape);
+		m_pReader->CloseGroupNode(pViewNode);
+	}
+	IOGGroupNode* pGameNode = m_pReader->OpenGroupNode(pSource, pRoot, "Game");
+	if (pGameNode != NULL)
+	{
+		IOGGroupNode* pLevelsNode = m_pReader->OpenGroupNode(pSource, pGameNode, "Levels");
+		if (pLevelsNode)
+		{
+			IOGGroupNode* pLevelNode = m_pReader->OpenGroupNode(pSource, pLevelsNode, "Level");
+			while (pLevelNode)
+			{
+				IOGLevelParams level;
+				level.alias = m_pReader->ReadStringParam(pLevelNode, "alias");
+				level.player_actor = m_pReader->ReadStringParam(pLevelNode, "player");
+				level.weapon = m_pReader->ReadStringParam(pLevelNode, "weapon");
+				GetGameSequence()->AddLevel(level);
+				pLevelNode = m_pReader->ReadNextNode(pLevelNode);
+			}
+			m_pReader->CloseGroupNode(pLevelsNode);
+		}
+		m_pReader->CloseGroupNode(pGameNode);
+	}
+	m_pReader->CloseGroupNode(pRoot);
+	m_pReader->CloseSource(pSource);
+
+	if (!InitScreenMode())
+		return false;
+
+	m_bInitialized = true;
+
+	return true;
+}
+
+
+// read screen mode settings file.
+bool COGAppSettings::InitScreenMode ()
+{
+	if (m_bInitialized)
+		return true;
+
+	IOGSettingsSource* pSource = m_pReader->OpenSource(GetResourceMgr()->GetUIPath("view.xml"));
+	if (!pSource)
+		return false;
+
+	IOGGroupNode* pRoot = m_pReader->OpenGroupNode(pSource, NULL, "Settings");
+	IOGGroupNode* pViewNode = m_pReader->OpenGroupNode(pSource, pRoot, "View");
+	if (pViewNode != NULL)
+	{
 		int ViewWidth = m_pReader->ReadIntParam(pViewNode, "view_width");
 		m_pGlobalVars->SetIVar("view_width", ViewWidth);
 
 		int ViewHeight = m_pReader->ReadIntParam(pViewNode, "view_height");
 		m_pGlobalVars->SetIVar("view_height", ViewHeight);
-
-		int Landscape = m_pReader->ReadIntParam(pViewNode, "landscape");
-		m_pGlobalVars->SetIVar("landscape", Landscape);
 
 		float fZNear = m_pReader->ReadFloatParam(pViewNode, "z_near");
 		m_pGlobalVars->SetFVar("z_near", fZNear);
@@ -77,29 +124,8 @@ bool COGAppSettings::Init (const std::string& _File)
 
 		m_pReader->CloseGroupNode(pCameraNode);
 	}
-	IOGGroupNode* pGameNode = m_pReader->OpenGroupNode(pSource, pRoot, "Game");
-	if (pGameNode != NULL)
-	{
-		IOGGroupNode* pLevelsNode = m_pReader->OpenGroupNode(pSource, pGameNode, "Levels");
-		if (pLevelsNode)
-		{
-			IOGGroupNode* pLevelNode = m_pReader->OpenGroupNode(pSource, pLevelsNode, "Level");
-			while (pLevelNode)
-			{
-				IOGLevelParams level;
-				level.alias = m_pReader->ReadStringParam(pLevelNode, "alias");
-				level.player_actor = m_pReader->ReadStringParam(pLevelNode, "player");
-				level.weapon = m_pReader->ReadStringParam(pLevelNode, "weapon");
-				GetGameSequence()->AddLevel(level);
-				pLevelNode = m_pReader->ReadNextNode(pLevelNode);
-			}
-			m_pReader->CloseGroupNode(pLevelsNode);
-		}
-		m_pReader->CloseGroupNode(pGameNode);
-	}
+
 	m_pReader->CloseGroupNode(pRoot);
 	m_pReader->CloseSource(pSource);
-	m_bInitialized = true;
-
 	return true;
 }

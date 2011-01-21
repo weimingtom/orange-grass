@@ -58,10 +58,10 @@ protected:
     Vec3        m_vTarget;
     IOGActor*   m_pTarget;
     bool        m_bTargeted;
-    float       m_fFlightDistance;
 
     FlightStatus    m_FlightStatus;
     float           m_fPrevDistToTarget;
+	unsigned long	m_FlightTime;
 };
 
 

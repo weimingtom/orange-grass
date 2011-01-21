@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <StartMenu>
-	<Logo sprite="logo" x="112" y="10" width="256" height="128" />
-	<Back sprite="back" x="73" y="65" width="334" height="189" />
-	<NewBtn sprite_n="new_n" sprite_pr="new_pr" x="129" y="125" width="222" height="42" />
-	<ExitBtn sprite_n="exit_n" sprite_pr="exit_pr" x="129" y="175" width="222" height="42" />
-	<DemoLabel x="80" y="93" />
+	<Logo sprite="logo" x="32" y="90" width="256" height="128" />
+	<Back sprite="back" x="49" y="145" width="222" height="189" />
+	<NewBtn sprite_n="new_n" sprite_pr="new_pr" x="49" y="215" width="222" height="42" />
+	<ExitBtn sprite_n="exit_n" sprite_pr="exit_pr" x="49" y="255" width="222" height="42" />
+	<DemoLabel x="60" y="93" />
 </StartMenu>
