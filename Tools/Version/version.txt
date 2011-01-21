@@ -1,8 +1,14 @@
-Tools: ver. 0.15.1, 29-Nov-2010
+Tools: ver. 0.17, 21-Jan-2011
 
 ChangeList:
 
-0.16 (16-Jan-2010):
+0.17 (21-Jan-2011):
+- [OG] screen mode is controlled from the scripts;
+- [OG] fixed the flight and missile flight workers logic;
+- [OG] effects are not affected by fog;
+- [Game] all screen UI is driven by configs
+
+0.16 (16-Jan-2011):
 - [EffectViewer] able to view effects;
 - [OG] frusrum visibility check;
 - [OG] added LUA VM support;

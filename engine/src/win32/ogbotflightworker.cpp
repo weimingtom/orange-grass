@@ -35,17 +35,7 @@ void COGBotFlightWorker::Update (unsigned long _ElapsedTime)
 	if (!m_bActive)
 		return;
 
-	Vec3 vCurPos = m_pActor->GetPhysicalObject()->GetPosition();
-	float fDist = Dist2D(vCurPos, m_vStartPos);
-	if (fDist > 300.0f)
-	{
-		Activate(false);
-		m_bFinished = true;
-	}
-	else
-	{
-	    m_pActor->GetPhysicalObject()->Accelerate(1.0f);
-	}
+    m_pActor->GetPhysicalObject()->Accelerate(1.0f);
 }
 
 

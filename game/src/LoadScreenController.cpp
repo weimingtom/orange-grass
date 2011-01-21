@@ -115,7 +115,7 @@ void CLoadScreenController::RenderScene ()
 	else
 	{
 		m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
-		m_pRenderer->DisplayString(m_LoadLabelPos, 1.0f, 0x7FFFFFFF, "Loading...");
+		m_pRenderer->DisplayString(m_LoadLabelPos, 0.5f, 0xFFFFFFFF, "Loading...");
 		m_pRenderer->FinishRenderMode();
 	}
 

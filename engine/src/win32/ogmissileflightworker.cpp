@@ -11,8 +11,8 @@
 #include "IOGMath.h"
 #include <float.h>
 
-static const unsigned int MaxFlightTime		= 3000;
-static const unsigned int MaxLaunchingTime	= 1000;
+static const unsigned int MaxFlightTime		= 5000;
+static const unsigned int MaxLaunchingTime	= 200;
 
 
 COGMissileFlightWorker::COGMissileFlightWorker()
