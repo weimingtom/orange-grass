@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Bonus>
+	<Params 
+		actor = "bonus_02"
+		value = "5000"
+		cooldown = "5000"
+		type = "shield"
+		icon_texture = "bonus_shield"
+		/>
+</Bonus>

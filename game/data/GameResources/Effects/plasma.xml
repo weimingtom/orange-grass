@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Effect>
+	<Emitter
+		master = "1"
+		type = "particle_chain"
+		texture = "effects" 
+		mapping = "12"
+		num_particles = "12"
+		color_r = "1.0" color_g = "1.0" color_b = "1.0" color_a = "0.2"
+	/>
+</Effect>

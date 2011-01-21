@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Weapon>
+	<Params 
+		actor = "missile_01"
+		hitpoints = "200"
+		cooldown = "2000"
+		position = "left_right"
+		icon_texture = "weapon_missile01"
+		/>
+</Weapon>

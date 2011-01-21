@@ -1,0 +1,1536 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1D60589B0D05DD56006BFB54 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29B97316FDCFA39411CA2CEA /* main.m */; };
+		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
+		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
+		28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
+		B2365E8F12D93DCF00E38735 /* GameScreenController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2365E8612D93DCF00E38735 /* GameScreenController.cpp */; };
+		B2365E9012D93DCF00E38735 /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2365E8812D93DCF00E38735 /* GameSystem.cpp */; };
+		B2365E9112D93DCF00E38735 /* LoadScreenController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2365E8B12D93DCF00E38735 /* LoadScreenController.cpp */; };
+		B2365E9212D93DCF00E38735 /* StartMenuScreenController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2365E8D12D93DCF00E38735 /* StartMenuScreenController.cpp */; };
+		B236607B12D93EC800E38735 /* GameResources in Resources */ = {isa = PBXBuildFile; fileRef = B2365F9C12D93EC800E38735 /* GameResources */; };
+		B236684012D9540600E38735 /* allocators.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236680B12D9540600E38735 /* allocators.cpp */; };
+		B236684112D9540600E38735 /* bitset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236680C12D9540600E38735 /* bitset.cpp */; };
+		B236684212D9540600E38735 /* c_locale.c in Sources */ = {isa = PBXBuildFile; fileRef = B236680D12D9540600E38735 /* c_locale.c */; };
+		B236684712D9540600E38735 /* codecvt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236681612D9540600E38735 /* codecvt.cpp */; };
+		B236684812D9540600E38735 /* collate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236681712D9540600E38735 /* collate.cpp */; };
+		B236684912D9540600E38735 /* complex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236681812D9540600E38735 /* complex.cpp */; };
+		B236684A12D9540600E38735 /* complex_io.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236681912D9540600E38735 /* complex_io.cpp */; };
+		B236684B12D9540600E38735 /* complex_trig.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236681A12D9540600E38735 /* complex_trig.cpp */; };
+		B236684C12D9540600E38735 /* ctype.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236681B12D9540600E38735 /* ctype.cpp */; };
+		B236684D12D9540600E38735 /* cxa.c in Sources */ = {isa = PBXBuildFile; fileRef = B236681C12D9540600E38735 /* cxa.c */; };
+		B236685112D9540600E38735 /* dll_main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236682112D9540600E38735 /* dll_main.cpp */; };
+		B236685212D9540600E38735 /* facets_byname.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236682212D9540600E38735 /* facets_byname.cpp */; };
+		B236685312D9540600E38735 /* fstream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236682312D9540600E38735 /* fstream.cpp */; };
+		B236685412D9540600E38735 /* ios.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236682412D9540600E38735 /* ios.cpp */; };
+		B236685512D9540600E38735 /* iostream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236682512D9540600E38735 /* iostream.cpp */; };
+		B236685612D9540600E38735 /* istream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236682612D9540600E38735 /* istream.cpp */; };
+		B236685712D9540600E38735 /* locale.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236682712D9540600E38735 /* locale.cpp */; };
+		B236685812D9540600E38735 /* locale_catalog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236682812D9540600E38735 /* locale_catalog.cpp */; };
+		B236685912D9540600E38735 /* locale_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236682912D9540600E38735 /* locale_impl.cpp */; };
+		B236685A12D9540600E38735 /* messages.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236682D12D9540600E38735 /* messages.cpp */; };
+		B236685B12D9540600E38735 /* monetary.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236682E12D9540600E38735 /* monetary.cpp */; };
+		B236685C12D9540600E38735 /* num_get.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236682F12D9540600E38735 /* num_get.cpp */; };
+		B236685D12D9540600E38735 /* num_get_float.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236683012D9540600E38735 /* num_get_float.cpp */; };
+		B236685E12D9540600E38735 /* num_put.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236683112D9540600E38735 /* num_put.cpp */; };
+		B236685F12D9540600E38735 /* num_put_float.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236683212D9540600E38735 /* num_put_float.cpp */; };
+		B236686012D9540600E38735 /* numpunct.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236683312D9540600E38735 /* numpunct.cpp */; };
+		B236686112D9540600E38735 /* ostream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236683412D9540600E38735 /* ostream.cpp */; };
+		B236686412D9540600E38735 /* sstream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236683712D9540600E38735 /* sstream.cpp */; };
+		B236686512D9540600E38735 /* stdio_streambuf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236683812D9540600E38735 /* stdio_streambuf.cpp */; };
+		B236686712D9540600E38735 /* string.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236683C12D9540600E38735 /* string.cpp */; };
+		B236686812D9540600E38735 /* strstream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236683D12D9540600E38735 /* strstream.cpp */; };
+		B236686912D9540600E38735 /* time_facets.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236683E12D9540600E38735 /* time_facets.cpp */; };
+		B254295612D6A476000DE568 /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B254295212D6A476000DE568 /* tinystr.cpp */; };
+		B254295712D6A476000DE568 /* tinyxml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B254295312D6A476000DE568 /* tinyxml.cpp */; };
+		B254295812D6A476000DE568 /* tinyxmlerror.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B254295412D6A476000DE568 /* tinyxmlerror.cpp */; };
+		B254295912D6A476000DE568 /* tinyxmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B254295512D6A476000DE568 /* tinyxmlparser.cpp */; };
+		B254299112D6AA56000DE568 /* lapi.c in Sources */ = {isa = PBXBuildFile; fileRef = B254296012D6AA56000DE568 /* lapi.c */; };
+		B254299212D6AA56000DE568 /* lauxlib.c in Sources */ = {isa = PBXBuildFile; fileRef = B254296212D6AA56000DE568 /* lauxlib.c */; };
+		B254299312D6AA56000DE568 /* lbaselib.c in Sources */ = {isa = PBXBuildFile; fileRef = B254296312D6AA56000DE568 /* lbaselib.c */; };
+		B254299412D6AA56000DE568 /* lcode.c in Sources */ = {isa = PBXBuildFile; fileRef = B254296412D6AA56000DE568 /* lcode.c */; };
+		B254299512D6AA56000DE568 /* ldblib.c in Sources */ = {isa = PBXBuildFile; fileRef = B254296612D6AA56000DE568 /* ldblib.c */; };
+		B254299612D6AA56000DE568 /* ldebug.c in Sources */ = {isa = PBXBuildFile; fileRef = B254296712D6AA56000DE568 /* ldebug.c */; };
+		B254299712D6AA56000DE568 /* ldo.c in Sources */ = {isa = PBXBuildFile; fileRef = B254296912D6AA56000DE568 /* ldo.c */; };
+		B254299812D6AA56000DE568 /* ldump.c in Sources */ = {isa = PBXBuildFile; fileRef = B254296B12D6AA56000DE568 /* ldump.c */; };
+		B254299912D6AA56000DE568 /* lfunc.c in Sources */ = {isa = PBXBuildFile; fileRef = B254296C12D6AA56000DE568 /* lfunc.c */; };
+		B254299A12D6AA56000DE568 /* lgc.c in Sources */ = {isa = PBXBuildFile; fileRef = B254296E12D6AA56000DE568 /* lgc.c */; };
+		B254299B12D6AA56000DE568 /* linit.c in Sources */ = {isa = PBXBuildFile; fileRef = B254297012D6AA56000DE568 /* linit.c */; };
+		B254299C12D6AA56000DE568 /* liolib.c in Sources */ = {isa = PBXBuildFile; fileRef = B254297112D6AA56000DE568 /* liolib.c */; };
+		B254299D12D6AA56000DE568 /* llex.c in Sources */ = {isa = PBXBuildFile; fileRef = B254297212D6AA56000DE568 /* llex.c */; };
+		B254299E12D6AA56000DE568 /* lmathlib.c in Sources */ = {isa = PBXBuildFile; fileRef = B254297512D6AA56000DE568 /* lmathlib.c */; };
+		B254299F12D6AA56000DE568 /* lmem.c in Sources */ = {isa = PBXBuildFile; fileRef = B254297612D6AA56000DE568 /* lmem.c */; };
+		B25429A012D6AA56000DE568 /* loadlib.c in Sources */ = {isa = PBXBuildFile; fileRef = B254297812D6AA56000DE568 /* loadlib.c */; };
+		B25429A112D6AA56000DE568 /* lobject.c in Sources */ = {isa = PBXBuildFile; fileRef = B254297912D6AA56000DE568 /* lobject.c */; };
+		B25429A212D6AA56000DE568 /* lopcodes.c in Sources */ = {isa = PBXBuildFile; fileRef = B254297B12D6AA56000DE568 /* lopcodes.c */; };
+		B25429A312D6AA56000DE568 /* loslib.c in Sources */ = {isa = PBXBuildFile; fileRef = B254297D12D6AA56000DE568 /* loslib.c */; };
+		B25429A412D6AA56000DE568 /* lparser.c in Sources */ = {isa = PBXBuildFile; fileRef = B254297E12D6AA56000DE568 /* lparser.c */; };
+		B25429A512D6AA56000DE568 /* lstate.c in Sources */ = {isa = PBXBuildFile; fileRef = B254298012D6AA56000DE568 /* lstate.c */; };
+		B25429A612D6AA56000DE568 /* lstring.c in Sources */ = {isa = PBXBuildFile; fileRef = B254298212D6AA56000DE568 /* lstring.c */; };
+		B25429A712D6AA56000DE568 /* lstrlib.c in Sources */ = {isa = PBXBuildFile; fileRef = B254298412D6AA56000DE568 /* lstrlib.c */; };
+		B25429A812D6AA56000DE568 /* ltable.c in Sources */ = {isa = PBXBuildFile; fileRef = B254298512D6AA56000DE568 /* ltable.c */; };
+		B25429A912D6AA56000DE568 /* ltablib.c in Sources */ = {isa = PBXBuildFile; fileRef = B254298712D6AA56000DE568 /* ltablib.c */; };
+		B25429AA12D6AA56000DE568 /* ltm.c in Sources */ = {isa = PBXBuildFile; fileRef = B254298812D6AA56000DE568 /* ltm.c */; };
+		B25429AC12D6AA56000DE568 /* lundump.c in Sources */ = {isa = PBXBuildFile; fileRef = B254298B12D6AA56000DE568 /* lundump.c */; };
+		B25429AD12D6AA56000DE568 /* lvm.c in Sources */ = {isa = PBXBuildFile; fileRef = B254298D12D6AA56000DE568 /* lvm.c */; };
+		B25429AE12D6AA56000DE568 /* lzio.c in Sources */ = {isa = PBXBuildFile; fileRef = B254298F12D6AA56000DE568 /* lzio.c */; };
+		B2542AA512D6ACF8000DE568 /* ogactor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B25429F912D6ACF8000DE568 /* ogactor.cpp */; };
+		B2542AA612D6ACF8000DE568 /* ogactorairbot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B25429FB12D6ACF8000DE568 /* ogactorairbot.cpp */; };
+		B2542AA712D6ACF8000DE568 /* ogactorbonus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B25429FD12D6ACF8000DE568 /* ogactorbonus.cpp */; };
+		B2542AA812D6ACF8000DE568 /* ogactorbot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B25429FF12D6ACF8000DE568 /* ogactorbot.cpp */; };
+		B2542AA912D6ACF8000DE568 /* ogactorbullet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A0112D6ACF8000DE568 /* ogactorbullet.cpp */; };
+		B2542AAA12D6ACF8000DE568 /* ogactorgaussray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A0312D6ACF8000DE568 /* ogactorgaussray.cpp */; };
+		B2542AAB12D6ACF8000DE568 /* ogactorlandbot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A0512D6ACF8000DE568 /* ogactorlandbot.cpp */; };
+		B2542AAC12D6ACF8000DE568 /* ogactormanager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A0712D6ACF8000DE568 /* ogactormanager.cpp */; };
+		B2542AAD12D6ACF8000DE568 /* ogactormissile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A0912D6ACF8000DE568 /* ogactormissile.cpp */; };
+		B2542AAE12D6ACF8000DE568 /* ogactorparamsmgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A0B12D6ACF8000DE568 /* ogactorparamsmgr.cpp */; };
+		B2542AAF12D6ACF8000DE568 /* ogactorplasmamissile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A0D12D6ACF8000DE568 /* ogactorplasmamissile.cpp */; };
+		B2542AB012D6ACF8000DE568 /* ogactorplayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A0F12D6ACF8000DE568 /* ogactorplayer.cpp */; };
+		B2542AB112D6ACF8000DE568 /* ogactorstatic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A1112D6ACF8000DE568 /* ogactorstatic.cpp */; };
+		B2542AB212D6ACF8000DE568 /* ogairphysicalobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A1312D6ACF8000DE568 /* ogairphysicalobject.cpp */; };
+		B2542AB312D6ACF8000DE568 /* oganimationcontroller.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A1512D6ACF8000DE568 /* oganimationcontroller.cpp */; };
+		B2542AB412D6ACF8000DE568 /* ogappsettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A1712D6ACF8000DE568 /* ogappsettings.cpp */; };
+		B2542AB512D6ACF8000DE568 /* ogbonusphysicalobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A1912D6ACF8000DE568 /* ogbonusphysicalobject.cpp */; };
+		B2542AB612D6ACF8000DE568 /* ogbotfallingworker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A1B12D6ACF8000DE568 /* ogbotfallingworker.cpp */; };
+		B2542AB712D6ACF8000DE568 /* ogbotflightworker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A1D12D6ACF8000DE568 /* ogbotflightworker.cpp */; };
+		B2542AB812D6ACF8000DE568 /* ogcamera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A1F12D6ACF8000DE568 /* ogcamera.cpp */; };
+		B2542AB912D6ACF8000DE568 /* ogcoloreffectshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A2112D6ACF8000DE568 /* ogcoloreffectshader.cpp */; };
+		B2542ABA12D6ACF8000DE568 /* ogeffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A2312D6ACF8000DE568 /* ogeffect.cpp */; };
+		B2542ABB12D6ACF8000DE568 /* ogeffectsmanager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A2512D6ACF8000DE568 /* ogeffectsmanager.cpp */; };
+		B2542ABC12D6ACF8000DE568 /* ogemitter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A2712D6ACF8000DE568 /* ogemitter.cpp */; };
+		B2542ABD12D6ACF8000DE568 /* ogemitteranimatedbb.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A2912D6ACF8000DE568 /* ogemitteranimatedbb.cpp */; };
+		B2542ABE12D6ACF8000DE568 /* ogemitterglow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A2B12D6ACF8000DE568 /* ogemitterglow.cpp */; };
+		B2542ABF12D6ACF8000DE568 /* ogemitterlightflash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A2D12D6ACF8000DE568 /* ogemitterlightflash.cpp */; };
+		B2542AC012D6ACF8000DE568 /* ogemitterparticlechain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A2F12D6ACF8000DE568 /* ogemitterparticlechain.cpp */; };
+		B2542AC112D6ACF8000DE568 /* ogemitterpulseglow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A3112D6ACF8000DE568 /* ogemitterpulseglow.cpp */; };
+		B2542AC212D6ACF8000DE568 /* ogemitterringwave.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A3312D6ACF8000DE568 /* ogemitterringwave.cpp */; };
+		B2542AC312D6ACF8000DE568 /* ogemitterrotatingsparks.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A3512D6ACF8000DE568 /* ogemitterrotatingsparks.cpp */; };
+		B2542AC412D6ACF8000DE568 /* ogemitterscrollingray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A3712D6ACF8000DE568 /* ogemitterscrollingray.cpp */; };
+		B2542AC512D6ACF8000DE568 /* ogemittertrail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A3912D6ACF8000DE568 /* ogemittertrail.cpp */; };
+		B2542AC612D6ACF8000DE568 /* ogfog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A3B12D6ACF8000DE568 /* ogfog.cpp */; };
+		B2542AC712D6ACF8000DE568 /* oggamesequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A3D12D6ACF8000DE568 /* oggamesequence.cpp */; };
+		B2542AC812D6ACF8000DE568 /* ogglobalvarstable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A3F12D6ACF8000DE568 /* ogglobalvarstable.cpp */; };
+		B2542AC912D6ACF8000DE568 /* oggrutility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A4112D6ACF8000DE568 /* oggrutility.cpp */; };
+		B2542ACA12D6ACF8000DE568 /* ogguibonusbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A4312D6ACF8000DE568 /* ogguibonusbar.cpp */; };
+		B2542ACB12D6ACF8000DE568 /* ogguibutton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A4512D6ACF8000DE568 /* ogguibutton.cpp */; };
+		B2542ACC12D6ACF8000DE568 /* ogguilifebar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A4712D6ACF8000DE568 /* ogguilifebar.cpp */; };
+		B2542ACD12D6ACF8000DE568 /* ogguiweaponpanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A4912D6ACF8000DE568 /* ogguiweaponpanel.cpp */; };
+		B2542ACE12D6ACF8000DE568 /* oginputdispatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A4B12D6ACF8000DE568 /* oginputdispatcher.cpp */; };
+		B2542ACF12D6ACF8000DE568 /* oglandphysicalobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A4D12D6ACF8000DE568 /* oglandphysicalobject.cpp */; };
+		B2542AD012D6ACF8000DE568 /* oglevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A4F12D6ACF8000DE568 /* oglevel.cpp */; };
+		B2542AD112D6ACF8000DE568 /* oglevelmanager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A5112D6ACF8000DE568 /* oglevelmanager.cpp */; };
+		B2542AD212D6ACF8000DE568 /* oglight.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A5312D6ACF8000DE568 /* oglight.cpp */; };
+		B2542AD312D6ACF8000DE568 /* ogluavm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A5512D6ACF8000DE568 /* ogluavm.cpp */; };
+		B2542AD412D6ACF8000DE568 /* ogmaterial.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A5712D6ACF8000DE568 /* ogmaterial.cpp */; };
+		B2542AD512D6ACF8000DE568 /* ogmesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A5912D6ACF8000DE568 /* ogmesh.cpp */; };
+		B2542AD612D6ACF8000DE568 /* ogmissileflightworker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A5B12D6ACF8000DE568 /* ogmissileflightworker.cpp */; };
+		B2542AD712D6ACF8000DE568 /* ogmissilephysicalobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A5D12D6ACF8000DE568 /* ogmissilephysicalobject.cpp */; };
+		B2542AD812D6ACF8000DE568 /* ogmodel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A5F12D6ACF8000DE568 /* ogmodel.cpp */; };
+		B2542AD912D6ACF8000DE568 /* ogmodelshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A6112D6ACF8000DE568 /* ogmodelshader.cpp */; };
+		B2542ADA12D6ACF8000DE568 /* ogorientworker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A6312D6ACF8000DE568 /* ogorientworker.cpp */; };
+		B2542ADB12D6ACF8000DE568 /* ogphysicalobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A6512D6ACF8000DE568 /* ogphysicalobject.cpp */; };
+		B2542ADC12D6ACF8000DE568 /* ogphysics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A6712D6ACF8000DE568 /* ogphysics.cpp */; };
+		B2542ADD12D6ACF8000DE568 /* ogplayerphysicalobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A6912D6ACF8000DE568 /* ogplayerphysicalobject.cpp */; };
+		B2542ADE12D6ACF8000DE568 /* ogrenderer_gles11.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A6B12D6ACF8000DE568 /* ogrenderer_gles11.cpp */; };
+		B2542ADF12D6ACF8000DE568 /* ogrenderer_gles20.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A6D12D6ACF8000DE568 /* ogrenderer_gles20.cpp */; };
+		B2542AE012D6ACF8000DE568 /* ogrenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A6F12D6ACF8000DE568 /* ogrenderer.cpp */; };
+		B2542AE112D6ACF8000DE568 /* ogrendertarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A7112D6ACF8000DE568 /* ogrendertarget.cpp */; };
+		B2542AE212D6ACF8000DE568 /* ogresource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A7312D6ACF8000DE568 /* ogresource.cpp */; };
+		B2542AE312D6ACF8000DE568 /* ogresourcemgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A7512D6ACF8000DE568 /* ogresourcemgr.cpp */; };
+		B2542AE412D6ACF8000DE568 /* ogscenegraph.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A7712D6ACF8000DE568 /* ogscenegraph.cpp */; };
+		B2542AE512D6ACF8000DE568 /* ogsettingsreader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A7912D6ACF8000DE568 /* ogsettingsreader.cpp */; };
+		B2542AE612D6ACF8000DE568 /* ogsgeffectnode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A7B12D6ACF8000DE568 /* ogsgeffectnode.cpp */; };
+		B2542AE712D6ACF8000DE568 /* ogsglandscapenode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A7D12D6ACF8000DE568 /* ogsglandscapenode.cpp */; };
+		B2542AE812D6ACF8000DE568 /* ogsgnode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A7F12D6ACF8000DE568 /* ogsgnode.cpp */; };
+		B2542AE912D6ACF8000DE568 /* ogshadowmodelshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A8112D6ACF8000DE568 /* ogshadowmodelshader.cpp */; };
+		B2542AEA12D6ACF8000DE568 /* ogsprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A8312D6ACF8000DE568 /* ogsprite.cpp */; };
+		B2542AEB12D6ACF8000DE568 /* ogspritepool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A8512D6ACF8000DE568 /* ogspritepool.cpp */; };
+		B2542AEC12D6ACF8000DE568 /* ogspriteshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A8712D6ACF8000DE568 /* ogspriteshader.cpp */; };
+		B2542AED12D6ACF8000DE568 /* ogstabilizeworker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A8912D6ACF8000DE568 /* ogstabilizeworker.cpp */; };
+		B2542AEE12D6ACF8000DE568 /* ogstaticphysicalobject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A8B12D6ACF8000DE568 /* ogstaticphysicalobject.cpp */; };
+		B2542AEF12D6ACF8000DE568 /* ogstatistics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A8D12D6ACF8000DE568 /* ogstatistics.cpp */; };
+		B2542AF012D6ACF8000DE568 /* ogterrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A8F12D6ACF8000DE568 /* ogterrain.cpp */; };
+		B2542AF112D6ACF8000DE568 /* ogtextrenderer_gles11.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A9212D6ACF8000DE568 /* ogtextrenderer_gles11.cpp */; };
+		B2542AF212D6ACF8000DE568 /* ogtextrenderer_gles20.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A9412D6ACF8000DE568 /* ogtextrenderer_gles20.cpp */; };
+		B2542AF312D6ACF8000DE568 /* ogtextrenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A9612D6ACF8000DE568 /* ogtextrenderer.cpp */; };
+		B2542AF412D6ACF8000DE568 /* ogtextshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A9812D6ACF8000DE568 /* ogtextshader.cpp */; };
+		B2542AF512D6ACF8000DE568 /* ogtexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A9A12D6ACF8000DE568 /* ogtexture.cpp */; };
+		B2542AF612D6ACF8000DE568 /* ogvertexbuffers_gles11.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A9C12D6ACF8000DE568 /* ogvertexbuffers_gles11.cpp */; };
+		B2542AF712D6ACF8000DE568 /* ogvertexbuffers_gles20.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A9E12D6ACF8000DE568 /* ogvertexbuffers_gles20.cpp */; };
+		B2542AF812D6ACF8000DE568 /* ogweapon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542AA012D6ACF8000DE568 /* ogweapon.cpp */; };
+		B2542AF912D6ACF8000DE568 /* ogworker.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542AA212D6ACF8000DE568 /* ogworker.cpp */; };
+		B2542AFA12D6ACF8000DE568 /* OrangeGrass.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542AA412D6ACF8000DE568 /* OrangeGrass.cpp */; };
+		B2969BC112D3B2F7009BCE6D /* Delegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2969BC012D3B2F7009BCE6D /* Delegate.mm */; };
+		B2969BCB12D3B35D009BCE6D /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2969BC912D3B35D009BCE6D /* EAGLView.m */; };
+		B2969C2612D3B884009BCE6D /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B2969C2512D3B884009BCE6D /* icon.png */; };
+		B2CB286212D69C87003C8109 /* BoneBatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB283012D69C87003C8109 /* BoneBatch.cpp */; };
+		B2CB286312D69C87003C8109 /* Accelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CB283512D69C87003C8109 /* Accelerometer.m */; };
+		B2CB286412D69C87003C8109 /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2CB283712D69C87003C8109 /* ResourcePath.mm */; };
+		B2CB286512D69C87003C8109 /* TouchScreen.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2CB283912D69C87003C8109 /* TouchScreen.mm */; };
+		B2CB286612D69C87003C8109 /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB283B12D69C87003C8109 /* Matrix.cpp */; };
+		B2CB286712D69C87003C8109 /* ModelPOD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB283F12D69C87003C8109 /* ModelPOD.cpp */; };
+		B2CB286812D69C87003C8109 /* neon_matrix_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB284212D69C87003C8109 /* neon_matrix_impl.cpp */; };
+		B2CB286912D69C87003C8109 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB284612D69C87003C8109 /* Random.cpp */; };
+		B2CB286A12D69C87003C8109 /* ResourceFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB284812D69C87003C8109 /* ResourceFile.cpp */; };
+		B2CB286B12D69C87003C8109 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB284A12D69C87003C8109 /* Shader.cpp */; };
+		B2CB286C12D69C87003C8109 /* Streaming.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB284C12D69C87003C8109 /* Streaming.cpp */; };
+		B2CB286D12D69C87003C8109 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB284E12D69C87003C8109 /* Texture.cpp */; };
+		B2CB286E12D69C87003C8109 /* Transform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB285012D69C87003C8109 /* Transform.cpp */; };
+		B2CB286F12D69C87003C8109 /* TriStrip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB285212D69C87003C8109 /* TriStrip.cpp */; };
+		B2CB287012D69C87003C8109 /* Vector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB285512D69C87003C8109 /* Vector.cpp */; };
+		B2CB287112D69C87003C8109 /* Vertex.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB285712D69C87003C8109 /* Vertex.cpp */; };
+		B2CB287212D69C87003C8109 /* VertexLookup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB285912D69C87003C8109 /* VertexLookup.cpp */; };
+		B2CB287312D69C87003C8109 /* matrix_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB285D12D69C87003C8109 /* matrix_impl.cpp */; };
+		B2CB287412D69C87003C8109 /* utility_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB285F12D69C87003C8109 /* utility_impl.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1D30AB110D05D00D00671497 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		1D6058910D05DD3D006BFB54 /* orangegrass.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = orangegrass.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		28FD14FF0DC6FC520079059D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		28FD15070DC6FC5B0079059D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		32CA4F630368D1EE00C91783 /* orangegrass_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = orangegrass_Prefix.pch; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* orangegrass-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "orangegrass-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		B2365E8612D93DCF00E38735 /* GameScreenController.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = GameScreenController.cpp; path = ../GameScreenController.cpp; sourceTree = SOURCE_ROOT; };
+		B2365E8712D93DCF00E38735 /* GameScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameScreenController.h; path = ../GameScreenController.h; sourceTree = SOURCE_ROOT; };
+		B2365E8812D93DCF00E38735 /* GameSystem.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = GameSystem.cpp; path = ../GameSystem.cpp; sourceTree = SOURCE_ROOT; };
+		B2365E8912D93DCF00E38735 /* GameSystem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameSystem.h; path = ../GameSystem.h; sourceTree = SOURCE_ROOT; };
+		B2365E8A12D93DCF00E38735 /* IScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IScreenController.h; path = ../IScreenController.h; sourceTree = SOURCE_ROOT; };
+		B2365E8B12D93DCF00E38735 /* LoadScreenController.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = LoadScreenController.cpp; path = ../LoadScreenController.cpp; sourceTree = SOURCE_ROOT; };
+		B2365E8C12D93DCF00E38735 /* LoadScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoadScreenController.h; path = ../LoadScreenController.h; sourceTree = SOURCE_ROOT; };
+		B2365E8D12D93DCF00E38735 /* StartMenuScreenController.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = StartMenuScreenController.cpp; path = ../StartMenuScreenController.cpp; sourceTree = SOURCE_ROOT; };
+		B2365E8E12D93DCF00E38735 /* StartMenuScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StartMenuScreenController.h; path = ../StartMenuScreenController.h; sourceTree = SOURCE_ROOT; };
+		B2365F9C12D93EC800E38735 /* GameResources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GameResources; path = ../../GameResources; sourceTree = SOURCE_ROOT; };
+		B236680812D9540600E38735 /* _stdio_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _stdio_file.h; sourceTree = "<group>"; };
+		B236680912D9540600E38735 /* acquire_release.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = acquire_release.h; sourceTree = "<group>"; };
+		B236680A12D9540600E38735 /* aligned_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aligned_buffer.h; sourceTree = "<group>"; };
+		B236680B12D9540600E38735 /* allocators.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = allocators.cpp; sourceTree = "<group>"; };
+		B236680C12D9540600E38735 /* bitset.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = bitset.cpp; sourceTree = "<group>"; };
+		B236680D12D9540600E38735 /* c_locale.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = c_locale.c; sourceTree = "<group>"; };
+		B236680E12D9540600E38735 /* c_locale.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = c_locale.h; sourceTree = "<group>"; };
+		B236681612D9540600E38735 /* codecvt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = codecvt.cpp; sourceTree = "<group>"; };
+		B236681712D9540600E38735 /* collate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = collate.cpp; sourceTree = "<group>"; };
+		B236681812D9540600E38735 /* complex.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = complex.cpp; sourceTree = "<group>"; };
+		B236681912D9540600E38735 /* complex_io.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = complex_io.cpp; sourceTree = "<group>"; };
+		B236681A12D9540600E38735 /* complex_trig.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = complex_trig.cpp; sourceTree = "<group>"; };
+		B236681B12D9540600E38735 /* ctype.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ctype.cpp; sourceTree = "<group>"; };
+		B236681C12D9540600E38735 /* cxa.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = cxa.c; sourceTree = "<group>"; };
+		B236682112D9540600E38735 /* dll_main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = dll_main.cpp; sourceTree = "<group>"; };
+		B236682212D9540600E38735 /* facets_byname.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = facets_byname.cpp; sourceTree = "<group>"; };
+		B236682312D9540600E38735 /* fstream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = fstream.cpp; sourceTree = "<group>"; };
+		B236682412D9540600E38735 /* ios.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ios.cpp; sourceTree = "<group>"; };
+		B236682512D9540600E38735 /* iostream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = iostream.cpp; sourceTree = "<group>"; };
+		B236682612D9540600E38735 /* istream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = istream.cpp; sourceTree = "<group>"; };
+		B236682712D9540600E38735 /* locale.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = locale.cpp; sourceTree = "<group>"; };
+		B236682812D9540600E38735 /* locale_catalog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = locale_catalog.cpp; sourceTree = "<group>"; };
+		B236682912D9540600E38735 /* locale_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = locale_impl.cpp; sourceTree = "<group>"; };
+		B236682A12D9540600E38735 /* locale_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = locale_impl.h; sourceTree = "<group>"; };
+		B236682B12D9540600E38735 /* lock_free_slist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lock_free_slist.h; sourceTree = "<group>"; };
+		B236682C12D9540600E38735 /* message_facets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = message_facets.h; sourceTree = "<group>"; };
+		B236682D12D9540600E38735 /* messages.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = messages.cpp; sourceTree = "<group>"; };
+		B236682E12D9540600E38735 /* monetary.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = monetary.cpp; sourceTree = "<group>"; };
+		B236682F12D9540600E38735 /* num_get.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = num_get.cpp; sourceTree = "<group>"; };
+		B236683012D9540600E38735 /* num_get_float.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = num_get_float.cpp; sourceTree = "<group>"; };
+		B236683112D9540600E38735 /* num_put.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = num_put.cpp; sourceTree = "<group>"; };
+		B236683212D9540600E38735 /* num_put_float.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = num_put_float.cpp; sourceTree = "<group>"; };
+		B236683312D9540600E38735 /* numpunct.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = numpunct.cpp; sourceTree = "<group>"; };
+		B236683412D9540600E38735 /* ostream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ostream.cpp; sourceTree = "<group>"; };
+		B236683712D9540600E38735 /* sstream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = sstream.cpp; sourceTree = "<group>"; };
+		B236683812D9540600E38735 /* stdio_streambuf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stdio_streambuf.cpp; sourceTree = "<group>"; };
+		B236683912D9540600E38735 /* stdio_streambuf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stdio_streambuf.h; sourceTree = "<group>"; };
+		B236683B12D9540600E38735 /* stlport_prefix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stlport_prefix.h; sourceTree = "<group>"; };
+		B236683C12D9540600E38735 /* string.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = string.cpp; sourceTree = "<group>"; };
+		B236683D12D9540600E38735 /* strstream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = strstream.cpp; sourceTree = "<group>"; };
+		B236683E12D9540600E38735 /* time_facets.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = time_facets.cpp; sourceTree = "<group>"; };
+		B236683F12D9540600E38735 /* warning_disable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = warning_disable.h; sourceTree = "<group>"; };
+		B254293612D6A047000DE568 /* ResourcePath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ResourcePath.h; path = ../../../engine/sdk/PVR/src/ResourcePath.h; sourceTree = SOURCE_ROOT; };
+		B254295212D6A476000DE568 /* tinystr.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinystr.cpp; path = ../../../engine/sdk/tinyxml/src/tinystr.cpp; sourceTree = SOURCE_ROOT; };
+		B254295312D6A476000DE568 /* tinyxml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxml.cpp; path = ../../../engine/sdk/tinyxml/src/tinyxml.cpp; sourceTree = SOURCE_ROOT; };
+		B254295412D6A476000DE568 /* tinyxmlerror.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxmlerror.cpp; path = ../../../engine/sdk/tinyxml/src/tinyxmlerror.cpp; sourceTree = SOURCE_ROOT; };
+		B254295512D6A476000DE568 /* tinyxmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinyxmlparser.cpp; path = ../../../engine/sdk/tinyxml/src/tinyxmlparser.cpp; sourceTree = SOURCE_ROOT; };
+		B254295A12D6A4A4000DE568 /* tinystr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tinystr.h; path = ../../../engine/sdk/tinyxml/include/tinystr.h; sourceTree = SOURCE_ROOT; };
+		B254295B12D6A4A4000DE568 /* tinyxml.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tinyxml.h; path = ../../../engine/sdk/tinyxml/include/tinyxml.h; sourceTree = SOURCE_ROOT; };
+		B254296012D6AA56000DE568 /* lapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lapi.c; path = ../../../engine/sdk/lua/src/lapi.c; sourceTree = SOURCE_ROOT; };
+		B254296112D6AA56000DE568 /* lapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lapi.h; path = ../../../engine/sdk/lua/src/lapi.h; sourceTree = SOURCE_ROOT; };
+		B254296212D6AA56000DE568 /* lauxlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lauxlib.c; path = ../../../engine/sdk/lua/src/lauxlib.c; sourceTree = SOURCE_ROOT; };
+		B254296312D6AA56000DE568 /* lbaselib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lbaselib.c; path = ../../../engine/sdk/lua/src/lbaselib.c; sourceTree = SOURCE_ROOT; };
+		B254296412D6AA56000DE568 /* lcode.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lcode.c; path = ../../../engine/sdk/lua/src/lcode.c; sourceTree = SOURCE_ROOT; };
+		B254296512D6AA56000DE568 /* lcode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lcode.h; path = ../../../engine/sdk/lua/src/lcode.h; sourceTree = SOURCE_ROOT; };
+		B254296612D6AA56000DE568 /* ldblib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ldblib.c; path = ../../../engine/sdk/lua/src/ldblib.c; sourceTree = SOURCE_ROOT; };
+		B254296712D6AA56000DE568 /* ldebug.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ldebug.c; path = ../../../engine/sdk/lua/src/ldebug.c; sourceTree = SOURCE_ROOT; };
+		B254296812D6AA56000DE568 /* ldebug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ldebug.h; path = ../../../engine/sdk/lua/src/ldebug.h; sourceTree = SOURCE_ROOT; };
+		B254296912D6AA56000DE568 /* ldo.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ldo.c; path = ../../../engine/sdk/lua/src/ldo.c; sourceTree = SOURCE_ROOT; };
+		B254296A12D6AA56000DE568 /* ldo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ldo.h; path = ../../../engine/sdk/lua/src/ldo.h; sourceTree = SOURCE_ROOT; };
+		B254296B12D6AA56000DE568 /* ldump.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ldump.c; path = ../../../engine/sdk/lua/src/ldump.c; sourceTree = SOURCE_ROOT; };
+		B254296C12D6AA56000DE568 /* lfunc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lfunc.c; path = ../../../engine/sdk/lua/src/lfunc.c; sourceTree = SOURCE_ROOT; };
+		B254296D12D6AA56000DE568 /* lfunc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lfunc.h; path = ../../../engine/sdk/lua/src/lfunc.h; sourceTree = SOURCE_ROOT; };
+		B254296E12D6AA56000DE568 /* lgc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lgc.c; path = ../../../engine/sdk/lua/src/lgc.c; sourceTree = SOURCE_ROOT; };
+		B254296F12D6AA56000DE568 /* lgc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lgc.h; path = ../../../engine/sdk/lua/src/lgc.h; sourceTree = SOURCE_ROOT; };
+		B254297012D6AA56000DE568 /* linit.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = linit.c; path = ../../../engine/sdk/lua/src/linit.c; sourceTree = SOURCE_ROOT; };
+		B254297112D6AA56000DE568 /* liolib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = liolib.c; path = ../../../engine/sdk/lua/src/liolib.c; sourceTree = SOURCE_ROOT; };
+		B254297212D6AA56000DE568 /* llex.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = llex.c; path = ../../../engine/sdk/lua/src/llex.c; sourceTree = SOURCE_ROOT; };
+		B254297312D6AA56000DE568 /* llex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = llex.h; path = ../../../engine/sdk/lua/src/llex.h; sourceTree = SOURCE_ROOT; };
+		B254297412D6AA56000DE568 /* llimits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = llimits.h; path = ../../../engine/sdk/lua/src/llimits.h; sourceTree = SOURCE_ROOT; };
+		B254297512D6AA56000DE568 /* lmathlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lmathlib.c; path = ../../../engine/sdk/lua/src/lmathlib.c; sourceTree = SOURCE_ROOT; };
+		B254297612D6AA56000DE568 /* lmem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lmem.c; path = ../../../engine/sdk/lua/src/lmem.c; sourceTree = SOURCE_ROOT; };
+		B254297712D6AA56000DE568 /* lmem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lmem.h; path = ../../../engine/sdk/lua/src/lmem.h; sourceTree = SOURCE_ROOT; };
+		B254297812D6AA56000DE568 /* loadlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = loadlib.c; path = ../../../engine/sdk/lua/src/loadlib.c; sourceTree = SOURCE_ROOT; };
+		B254297912D6AA56000DE568 /* lobject.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lobject.c; path = ../../../engine/sdk/lua/src/lobject.c; sourceTree = SOURCE_ROOT; };
+		B254297A12D6AA56000DE568 /* lobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lobject.h; path = ../../../engine/sdk/lua/src/lobject.h; sourceTree = SOURCE_ROOT; };
+		B254297B12D6AA56000DE568 /* lopcodes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lopcodes.c; path = ../../../engine/sdk/lua/src/lopcodes.c; sourceTree = SOURCE_ROOT; };
+		B254297C12D6AA56000DE568 /* lopcodes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lopcodes.h; path = ../../../engine/sdk/lua/src/lopcodes.h; sourceTree = SOURCE_ROOT; };
+		B254297D12D6AA56000DE568 /* loslib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = loslib.c; path = ../../../engine/sdk/lua/src/loslib.c; sourceTree = SOURCE_ROOT; };
+		B254297E12D6AA56000DE568 /* lparser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lparser.c; path = ../../../engine/sdk/lua/src/lparser.c; sourceTree = SOURCE_ROOT; };
+		B254297F12D6AA56000DE568 /* lparser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lparser.h; path = ../../../engine/sdk/lua/src/lparser.h; sourceTree = SOURCE_ROOT; };
+		B254298012D6AA56000DE568 /* lstate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lstate.c; path = ../../../engine/sdk/lua/src/lstate.c; sourceTree = SOURCE_ROOT; };
+		B254298112D6AA56000DE568 /* lstate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lstate.h; path = ../../../engine/sdk/lua/src/lstate.h; sourceTree = SOURCE_ROOT; };
+		B254298212D6AA56000DE568 /* lstring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lstring.c; path = ../../../engine/sdk/lua/src/lstring.c; sourceTree = SOURCE_ROOT; };
+		B254298312D6AA56000DE568 /* lstring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lstring.h; path = ../../../engine/sdk/lua/src/lstring.h; sourceTree = SOURCE_ROOT; };
+		B254298412D6AA56000DE568 /* lstrlib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lstrlib.c; path = ../../../engine/sdk/lua/src/lstrlib.c; sourceTree = SOURCE_ROOT; };
+		B254298512D6AA56000DE568 /* ltable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ltable.c; path = ../../../engine/sdk/lua/src/ltable.c; sourceTree = SOURCE_ROOT; };
+		B254298612D6AA56000DE568 /* ltable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ltable.h; path = ../../../engine/sdk/lua/src/ltable.h; sourceTree = SOURCE_ROOT; };
+		B254298712D6AA56000DE568 /* ltablib.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ltablib.c; path = ../../../engine/sdk/lua/src/ltablib.c; sourceTree = SOURCE_ROOT; };
+		B254298812D6AA56000DE568 /* ltm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ltm.c; path = ../../../engine/sdk/lua/src/ltm.c; sourceTree = SOURCE_ROOT; };
+		B254298912D6AA56000DE568 /* ltm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ltm.h; path = ../../../engine/sdk/lua/src/ltm.h; sourceTree = SOURCE_ROOT; };
+		B254298B12D6AA56000DE568 /* lundump.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lundump.c; path = ../../../engine/sdk/lua/src/lundump.c; sourceTree = SOURCE_ROOT; };
+		B254298C12D6AA56000DE568 /* lundump.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lundump.h; path = ../../../engine/sdk/lua/src/lundump.h; sourceTree = SOURCE_ROOT; };
+		B254298D12D6AA56000DE568 /* lvm.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lvm.c; path = ../../../engine/sdk/lua/src/lvm.c; sourceTree = SOURCE_ROOT; };
+		B254298E12D6AA56000DE568 /* lvm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lvm.h; path = ../../../engine/sdk/lua/src/lvm.h; sourceTree = SOURCE_ROOT; };
+		B254298F12D6AA56000DE568 /* lzio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lzio.c; path = ../../../engine/sdk/lua/src/lzio.c; sourceTree = SOURCE_ROOT; };
+		B254299012D6AA56000DE568 /* lzio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lzio.h; path = ../../../engine/sdk/lua/src/lzio.h; sourceTree = SOURCE_ROOT; };
+		B25429AF12D6AA74000DE568 /* lauxlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lauxlib.h; path = ../../../engine/sdk/lua/include/lauxlib.h; sourceTree = SOURCE_ROOT; };
+		B25429B012D6AA74000DE568 /* lua.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lua.h; path = ../../../engine/sdk/lua/include/lua.h; sourceTree = SOURCE_ROOT; };
+		B25429B112D6AA74000DE568 /* lua.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = lua.hpp; path = ../../../engine/sdk/lua/include/lua.hpp; sourceTree = SOURCE_ROOT; };
+		B25429B212D6AA74000DE568 /* luaconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = luaconf.h; path = ../../../engine/sdk/lua/include/luaconf.h; sourceTree = SOURCE_ROOT; };
+		B25429B312D6AA74000DE568 /* lualib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lualib.h; path = ../../../engine/sdk/lua/include/lualib.h; sourceTree = SOURCE_ROOT; };
+		B25429C512D6ACB7000DE568 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = common.h; path = ../../../engine/include/common.h; sourceTree = SOURCE_ROOT; };
+		B25429C612D6ACB7000DE568 /* IOGAabb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGAabb.h; path = ../../../engine/include/IOGAabb.h; sourceTree = SOURCE_ROOT; };
+		B25429C712D6ACB7000DE568 /* IOGActor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGActor.h; path = ../../../engine/include/IOGActor.h; sourceTree = SOURCE_ROOT; };
+		B25429C812D6ACB7000DE568 /* IOGActorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGActorManager.h; path = ../../../engine/include/IOGActorManager.h; sourceTree = SOURCE_ROOT; };
+		B25429C912D6ACB7000DE568 /* IOGActorParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGActorParams.h; path = ../../../engine/include/IOGActorParams.h; sourceTree = SOURCE_ROOT; };
+		B25429CA12D6ACB7000DE568 /* IOGActorParamsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGActorParamsManager.h; path = ../../../engine/include/IOGActorParamsManager.h; sourceTree = SOURCE_ROOT; };
+		B25429CB12D6ACB7000DE568 /* IOGAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGAnimation.h; path = ../../../engine/include/IOGAnimation.h; sourceTree = SOURCE_ROOT; };
+		B25429CC12D6ACB7000DE568 /* IOGAnimationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGAnimationController.h; path = ../../../engine/include/IOGAnimationController.h; sourceTree = SOURCE_ROOT; };
+		B25429CD12D6ACB7000DE568 /* IOGAppSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGAppSettings.h; path = ../../../engine/include/IOGAppSettings.h; sourceTree = SOURCE_ROOT; };
+		B25429CE12D6ACB7000DE568 /* IOGCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGCamera.h; path = ../../../engine/include/IOGCamera.h; sourceTree = SOURCE_ROOT; };
+		B25429CF12D6ACB7000DE568 /* IOGCollisionListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGCollisionListener.h; path = ../../../engine/include/IOGCollisionListener.h; sourceTree = SOURCE_ROOT; };
+		B25429D012D6ACB7000DE568 /* IOGCoreHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGCoreHelpers.h; path = ../../../engine/include/IOGCoreHelpers.h; sourceTree = SOURCE_ROOT; };
+		B25429D112D6ACB7000DE568 /* IOGEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGEffect.h; path = ../../../engine/include/IOGEffect.h; sourceTree = SOURCE_ROOT; };
+		B25429D212D6ACB7000DE568 /* IOGEffectsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGEffectsManager.h; path = ../../../engine/include/IOGEffectsManager.h; sourceTree = SOURCE_ROOT; };
+		B25429D312D6ACB7000DE568 /* IOGEmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGEmitter.h; path = ../../../engine/include/IOGEmitter.h; sourceTree = SOURCE_ROOT; };
+		B25429D412D6ACB7000DE568 /* IOGFog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGFog.h; path = ../../../engine/include/IOGFog.h; sourceTree = SOURCE_ROOT; };
+		B25429D512D6ACB7000DE568 /* IOGFrustum.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGFrustum.h; path = ../../../engine/include/IOGFrustum.h; sourceTree = SOURCE_ROOT; };
+		B25429D612D6ACB7000DE568 /* IOGGameSequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGGameSequence.h; path = ../../../engine/include/IOGGameSequence.h; sourceTree = SOURCE_ROOT; };
+		B25429D712D6ACB7000DE568 /* IOGGlobalVarsTable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGGlobalVarsTable.h; path = ../../../engine/include/IOGGlobalVarsTable.h; sourceTree = SOURCE_ROOT; };
+		B25429D812D6ACB7000DE568 /* IOGGuiBonusbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGGuiBonusbar.h; path = ../../../engine/include/IOGGuiBonusbar.h; sourceTree = SOURCE_ROOT; };
+		B25429D912D6ACB7000DE568 /* IOGGuiButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGGuiButton.h; path = ../../../engine/include/IOGGuiButton.h; sourceTree = SOURCE_ROOT; };
+		B25429DA12D6ACB7000DE568 /* IOGGuiLifebar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGGuiLifebar.h; path = ../../../engine/include/IOGGuiLifebar.h; sourceTree = SOURCE_ROOT; };
+		B25429DB12D6ACB7000DE568 /* IOGGuiWeaponPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGGuiWeaponPanel.h; path = ../../../engine/include/IOGGuiWeaponPanel.h; sourceTree = SOURCE_ROOT; };
+		B25429DC12D6ACB7000DE568 /* IOGInputDispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGInputDispatcher.h; path = ../../../engine/include/IOGInputDispatcher.h; sourceTree = SOURCE_ROOT; };
+		B25429DD12D6ACB7000DE568 /* IOGInputReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGInputReceiver.h; path = ../../../engine/include/IOGInputReceiver.h; sourceTree = SOURCE_ROOT; };
+		B25429DE12D6ACB7000DE568 /* IOGLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGLevel.h; path = ../../../engine/include/IOGLevel.h; sourceTree = SOURCE_ROOT; };
+		B25429DF12D6ACB7000DE568 /* IOGLevelManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGLevelManager.h; path = ../../../engine/include/IOGLevelManager.h; sourceTree = SOURCE_ROOT; };
+		B25429E012D6ACB7000DE568 /* IOGLight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGLight.h; path = ../../../engine/include/IOGLight.h; sourceTree = SOURCE_ROOT; };
+		B25429E112D6ACB7000DE568 /* IOGLuaVM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGLuaVM.h; path = ../../../engine/include/IOGLuaVM.h; sourceTree = SOURCE_ROOT; };
+		B25429E212D6ACB7000DE568 /* IOGMaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGMaterial.h; path = ../../../engine/include/IOGMaterial.h; sourceTree = SOURCE_ROOT; };
+		B25429E312D6ACB7000DE568 /* IOGMath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGMath.h; path = ../../../engine/include/IOGMath.h; sourceTree = SOURCE_ROOT; };
+		B25429E412D6ACB7000DE568 /* IOGModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGModel.h; path = ../../../engine/include/IOGModel.h; sourceTree = SOURCE_ROOT; };
+		B25429E512D6ACB7000DE568 /* IOGObb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGObb.h; path = ../../../engine/include/IOGObb.h; sourceTree = SOURCE_ROOT; };
+		B25429E612D6ACB7000DE568 /* IOGPhysicalObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGPhysicalObject.h; path = ../../../engine/include/IOGPhysicalObject.h; sourceTree = SOURCE_ROOT; };
+		B25429E712D6ACB7000DE568 /* IOGPhysicalParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGPhysicalParams.h; path = ../../../engine/include/IOGPhysicalParams.h; sourceTree = SOURCE_ROOT; };
+		B25429E812D6ACB7000DE568 /* IOGPhysics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGPhysics.h; path = ../../../engine/include/IOGPhysics.h; sourceTree = SOURCE_ROOT; };
+		B25429E912D6ACB7000DE568 /* IOGPlane.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGPlane.h; path = ../../../engine/include/IOGPlane.h; sourceTree = SOURCE_ROOT; };
+		B25429EA12D6ACB7000DE568 /* IOGRenderable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGRenderable.h; path = ../../../engine/include/IOGRenderable.h; sourceTree = SOURCE_ROOT; };
+		B25429EB12D6ACB7000DE568 /* IOGRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGRenderer.h; path = ../../../engine/include/IOGRenderer.h; sourceTree = SOURCE_ROOT; };
+		B25429EC12D6ACB7000DE568 /* IOGResourceMgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGResourceMgr.h; path = ../../../engine/include/IOGResourceMgr.h; sourceTree = SOURCE_ROOT; };
+		B25429ED12D6ACB7000DE568 /* IOGSceneGraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGSceneGraph.h; path = ../../../engine/include/IOGSceneGraph.h; sourceTree = SOURCE_ROOT; };
+		B25429EE12D6ACB7000DE568 /* IOGSettingsReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGSettingsReader.h; path = ../../../engine/include/IOGSettingsReader.h; sourceTree = SOURCE_ROOT; };
+		B25429EF12D6ACB7000DE568 /* IOGSgNode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGSgNode.h; path = ../../../engine/include/IOGSgNode.h; sourceTree = SOURCE_ROOT; };
+		B25429F012D6ACB7000DE568 /* IOGShader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGShader.h; path = ../../../engine/include/IOGShader.h; sourceTree = SOURCE_ROOT; };
+		B25429F112D6ACB7000DE568 /* IOGSprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGSprite.h; path = ../../../engine/include/IOGSprite.h; sourceTree = SOURCE_ROOT; };
+		B25429F212D6ACB7000DE568 /* IOGSpritePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGSpritePool.h; path = ../../../engine/include/IOGSpritePool.h; sourceTree = SOURCE_ROOT; };
+		B25429F312D6ACB7000DE568 /* IOGStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGStatistics.h; path = ../../../engine/include/IOGStatistics.h; sourceTree = SOURCE_ROOT; };
+		B25429F412D6ACB7000DE568 /* IOGTerrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGTerrain.h; path = ../../../engine/include/IOGTerrain.h; sourceTree = SOURCE_ROOT; };
+		B25429F512D6ACB7000DE568 /* IOGTexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGTexture.h; path = ../../../engine/include/IOGTexture.h; sourceTree = SOURCE_ROOT; };
+		B25429F612D6ACB7000DE568 /* IOGVertexBuffers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGVertexBuffers.h; path = ../../../engine/include/IOGVertexBuffers.h; sourceTree = SOURCE_ROOT; };
+		B25429F712D6ACB7000DE568 /* IOGWeapon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGWeapon.h; path = ../../../engine/include/IOGWeapon.h; sourceTree = SOURCE_ROOT; };
+		B25429F812D6ACB7000DE568 /* OrangeGrass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OrangeGrass.h; path = ../../../engine/include/OrangeGrass.h; sourceTree = SOURCE_ROOT; };
+		B25429F912D6ACF8000DE568 /* ogactor.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactor.cpp; path = ../../../engine/src/ogactor.cpp; sourceTree = SOURCE_ROOT; };
+		B25429FA12D6ACF8000DE568 /* ogactor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactor.h; path = ../../../engine/src/ogactor.h; sourceTree = SOURCE_ROOT; };
+		B25429FB12D6ACF8000DE568 /* ogactorairbot.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactorairbot.cpp; path = ../../../engine/src/ogactorairbot.cpp; sourceTree = SOURCE_ROOT; };
+		B25429FC12D6ACF8000DE568 /* ogactorairbot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactorairbot.h; path = ../../../engine/src/ogactorairbot.h; sourceTree = SOURCE_ROOT; };
+		B25429FD12D6ACF8000DE568 /* ogactorbonus.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactorbonus.cpp; path = ../../../engine/src/ogactorbonus.cpp; sourceTree = SOURCE_ROOT; };
+		B25429FE12D6ACF8000DE568 /* ogactorbonus.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactorbonus.h; path = ../../../engine/src/ogactorbonus.h; sourceTree = SOURCE_ROOT; };
+		B25429FF12D6ACF8000DE568 /* ogactorbot.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactorbot.cpp; path = ../../../engine/src/ogactorbot.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A0012D6ACF8000DE568 /* ogactorbot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactorbot.h; path = ../../../engine/src/ogactorbot.h; sourceTree = SOURCE_ROOT; };
+		B2542A0112D6ACF8000DE568 /* ogactorbullet.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactorbullet.cpp; path = ../../../engine/src/ogactorbullet.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A0212D6ACF8000DE568 /* ogactorbullet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactorbullet.h; path = ../../../engine/src/ogactorbullet.h; sourceTree = SOURCE_ROOT; };
+		B2542A0312D6ACF8000DE568 /* ogactorgaussray.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactorgaussray.cpp; path = ../../../engine/src/ogactorgaussray.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A0412D6ACF8000DE568 /* ogactorgaussray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactorgaussray.h; path = ../../../engine/src/ogactorgaussray.h; sourceTree = SOURCE_ROOT; };
+		B2542A0512D6ACF8000DE568 /* ogactorlandbot.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactorlandbot.cpp; path = ../../../engine/src/ogactorlandbot.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A0612D6ACF8000DE568 /* ogactorlandbot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactorlandbot.h; path = ../../../engine/src/ogactorlandbot.h; sourceTree = SOURCE_ROOT; };
+		B2542A0712D6ACF8000DE568 /* ogactormanager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactormanager.cpp; path = ../../../engine/src/ogactormanager.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A0812D6ACF8000DE568 /* ogactormanager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactormanager.h; path = ../../../engine/src/ogactormanager.h; sourceTree = SOURCE_ROOT; };
+		B2542A0912D6ACF8000DE568 /* ogactormissile.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactormissile.cpp; path = ../../../engine/src/ogactormissile.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A0A12D6ACF8000DE568 /* ogactormissile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactormissile.h; path = ../../../engine/src/ogactormissile.h; sourceTree = SOURCE_ROOT; };
+		B2542A0B12D6ACF8000DE568 /* ogactorparamsmgr.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactorparamsmgr.cpp; path = ../../../engine/src/ogactorparamsmgr.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A0C12D6ACF8000DE568 /* ogactorparamsmgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactorparamsmgr.h; path = ../../../engine/src/ogactorparamsmgr.h; sourceTree = SOURCE_ROOT; };
+		B2542A0D12D6ACF8000DE568 /* ogactorplasmamissile.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactorplasmamissile.cpp; path = ../../../engine/src/ogactorplasmamissile.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A0E12D6ACF8000DE568 /* ogactorplasmamissile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactorplasmamissile.h; path = ../../../engine/src/ogactorplasmamissile.h; sourceTree = SOURCE_ROOT; };
+		B2542A0F12D6ACF8000DE568 /* ogactorplayer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactorplayer.cpp; path = ../../../engine/src/ogactorplayer.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A1012D6ACF8000DE568 /* ogactorplayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactorplayer.h; path = ../../../engine/src/ogactorplayer.h; sourceTree = SOURCE_ROOT; };
+		B2542A1112D6ACF8000DE568 /* ogactorstatic.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogactorstatic.cpp; path = ../../../engine/src/ogactorstatic.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A1212D6ACF8000DE568 /* ogactorstatic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogactorstatic.h; path = ../../../engine/src/ogactorstatic.h; sourceTree = SOURCE_ROOT; };
+		B2542A1312D6ACF8000DE568 /* ogairphysicalobject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogairphysicalobject.cpp; path = ../../../engine/src/ogairphysicalobject.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A1412D6ACF8000DE568 /* ogairphysicalobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogairphysicalobject.h; path = ../../../engine/src/ogairphysicalobject.h; sourceTree = SOURCE_ROOT; };
+		B2542A1512D6ACF8000DE568 /* oganimationcontroller.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = oganimationcontroller.cpp; path = ../../../engine/src/oganimationcontroller.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A1612D6ACF8000DE568 /* oganimationcontroller.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oganimationcontroller.h; path = ../../../engine/src/oganimationcontroller.h; sourceTree = SOURCE_ROOT; };
+		B2542A1712D6ACF8000DE568 /* ogappsettings.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogappsettings.cpp; path = ../../../engine/src/ogappsettings.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A1812D6ACF8000DE568 /* ogappsettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogappsettings.h; path = ../../../engine/src/ogappsettings.h; sourceTree = SOURCE_ROOT; };
+		B2542A1912D6ACF8000DE568 /* ogbonusphysicalobject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogbonusphysicalobject.cpp; path = ../../../engine/src/ogbonusphysicalobject.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A1A12D6ACF8000DE568 /* ogbonusphysicalobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogbonusphysicalobject.h; path = ../../../engine/src/ogbonusphysicalobject.h; sourceTree = SOURCE_ROOT; };
+		B2542A1B12D6ACF8000DE568 /* ogbotfallingworker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogbotfallingworker.cpp; path = ../../../engine/src/ogbotfallingworker.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A1C12D6ACF8000DE568 /* ogbotfallingworker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogbotfallingworker.h; path = ../../../engine/src/ogbotfallingworker.h; sourceTree = SOURCE_ROOT; };
+		B2542A1D12D6ACF8000DE568 /* ogbotflightworker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogbotflightworker.cpp; path = ../../../engine/src/ogbotflightworker.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A1E12D6ACF8000DE568 /* ogbotflightworker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogbotflightworker.h; path = ../../../engine/src/ogbotflightworker.h; sourceTree = SOURCE_ROOT; };
+		B2542A1F12D6ACF8000DE568 /* ogcamera.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogcamera.cpp; path = ../../../engine/src/ogcamera.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A2012D6ACF8000DE568 /* ogcamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogcamera.h; path = ../../../engine/src/ogcamera.h; sourceTree = SOURCE_ROOT; };
+		B2542A2112D6ACF8000DE568 /* ogcoloreffectshader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogcoloreffectshader.cpp; path = ../../../engine/src/ogcoloreffectshader.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A2212D6ACF8000DE568 /* ogcoloreffectshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogcoloreffectshader.h; path = ../../../engine/src/ogcoloreffectshader.h; sourceTree = SOURCE_ROOT; };
+		B2542A2312D6ACF8000DE568 /* ogeffect.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogeffect.cpp; path = ../../../engine/src/ogeffect.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A2412D6ACF8000DE568 /* ogeffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffect.h; path = ../../../engine/src/ogeffect.h; sourceTree = SOURCE_ROOT; };
+		B2542A2512D6ACF8000DE568 /* ogeffectsmanager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogeffectsmanager.cpp; path = ../../../engine/src/ogeffectsmanager.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A2612D6ACF8000DE568 /* ogeffectsmanager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogeffectsmanager.h; path = ../../../engine/src/ogeffectsmanager.h; sourceTree = SOURCE_ROOT; };
+		B2542A2712D6ACF8000DE568 /* ogemitter.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitter.cpp; path = ../../../engine/src/ogemitter.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A2812D6ACF8000DE568 /* ogemitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitter.h; path = ../../../engine/src/ogemitter.h; sourceTree = SOURCE_ROOT; };
+		B2542A2912D6ACF8000DE568 /* ogemitteranimatedbb.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitteranimatedbb.cpp; path = ../../../engine/src/ogemitteranimatedbb.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A2A12D6ACF8000DE568 /* ogemitteranimatedbb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitteranimatedbb.h; path = ../../../engine/src/ogemitteranimatedbb.h; sourceTree = SOURCE_ROOT; };
+		B2542A2B12D6ACF8000DE568 /* ogemitterglow.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitterglow.cpp; path = ../../../engine/src/ogemitterglow.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A2C12D6ACF8000DE568 /* ogemitterglow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitterglow.h; path = ../../../engine/src/ogemitterglow.h; sourceTree = SOURCE_ROOT; };
+		B2542A2D12D6ACF8000DE568 /* ogemitterlightflash.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitterlightflash.cpp; path = ../../../engine/src/ogemitterlightflash.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A2E12D6ACF8000DE568 /* ogemitterlightflash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitterlightflash.h; path = ../../../engine/src/ogemitterlightflash.h; sourceTree = SOURCE_ROOT; };
+		B2542A2F12D6ACF8000DE568 /* ogemitterparticlechain.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitterparticlechain.cpp; path = ../../../engine/src/ogemitterparticlechain.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A3012D6ACF8000DE568 /* ogemitterparticlechain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitterparticlechain.h; path = ../../../engine/src/ogemitterparticlechain.h; sourceTree = SOURCE_ROOT; };
+		B2542A3112D6ACF8000DE568 /* ogemitterpulseglow.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitterpulseglow.cpp; path = ../../../engine/src/ogemitterpulseglow.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A3212D6ACF8000DE568 /* ogemitterpulseglow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitterpulseglow.h; path = ../../../engine/src/ogemitterpulseglow.h; sourceTree = SOURCE_ROOT; };
+		B2542A3312D6ACF8000DE568 /* ogemitterringwave.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitterringwave.cpp; path = ../../../engine/src/ogemitterringwave.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A3412D6ACF8000DE568 /* ogemitterringwave.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitterringwave.h; path = ../../../engine/src/ogemitterringwave.h; sourceTree = SOURCE_ROOT; };
+		B2542A3512D6ACF8000DE568 /* ogemitterrotatingsparks.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitterrotatingsparks.cpp; path = ../../../engine/src/ogemitterrotatingsparks.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A3612D6ACF8000DE568 /* ogemitterrotatingsparks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitterrotatingsparks.h; path = ../../../engine/src/ogemitterrotatingsparks.h; sourceTree = SOURCE_ROOT; };
+		B2542A3712D6ACF8000DE568 /* ogemitterscrollingray.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemitterscrollingray.cpp; path = ../../../engine/src/ogemitterscrollingray.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A3812D6ACF8000DE568 /* ogemitterscrollingray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemitterscrollingray.h; path = ../../../engine/src/ogemitterscrollingray.h; sourceTree = SOURCE_ROOT; };
+		B2542A3912D6ACF8000DE568 /* ogemittertrail.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogemittertrail.cpp; path = ../../../engine/src/ogemittertrail.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A3A12D6ACF8000DE568 /* ogemittertrail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogemittertrail.h; path = ../../../engine/src/ogemittertrail.h; sourceTree = SOURCE_ROOT; };
+		B2542A3B12D6ACF8000DE568 /* ogfog.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogfog.cpp; path = ../../../engine/src/ogfog.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A3C12D6ACF8000DE568 /* ogfog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogfog.h; path = ../../../engine/src/ogfog.h; sourceTree = SOURCE_ROOT; };
+		B2542A3D12D6ACF8000DE568 /* oggamesequence.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = oggamesequence.cpp; path = ../../../engine/src/oggamesequence.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A3E12D6ACF8000DE568 /* oggamesequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oggamesequence.h; path = ../../../engine/src/oggamesequence.h; sourceTree = SOURCE_ROOT; };
+		B2542A3F12D6ACF8000DE568 /* ogglobalvarstable.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogglobalvarstable.cpp; path = ../../../engine/src/ogglobalvarstable.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A4012D6ACF8000DE568 /* ogglobalvarstable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogglobalvarstable.h; path = ../../../engine/src/ogglobalvarstable.h; sourceTree = SOURCE_ROOT; };
+		B2542A4112D6ACF8000DE568 /* oggrutility.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = oggrutility.cpp; path = ../../../engine/src/oggrutility.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A4212D6ACF8000DE568 /* oggrutility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oggrutility.h; path = ../../../engine/src/oggrutility.h; sourceTree = SOURCE_ROOT; };
+		B2542A4312D6ACF8000DE568 /* ogguibonusbar.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogguibonusbar.cpp; path = ../../../engine/src/ogguibonusbar.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A4412D6ACF8000DE568 /* ogguibonusbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogguibonusbar.h; path = ../../../engine/src/ogguibonusbar.h; sourceTree = SOURCE_ROOT; };
+		B2542A4512D6ACF8000DE568 /* ogguibutton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogguibutton.cpp; path = ../../../engine/src/ogguibutton.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A4612D6ACF8000DE568 /* ogguibutton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogguibutton.h; path = ../../../engine/src/ogguibutton.h; sourceTree = SOURCE_ROOT; };
+		B2542A4712D6ACF8000DE568 /* ogguilifebar.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogguilifebar.cpp; path = ../../../engine/src/ogguilifebar.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A4812D6ACF8000DE568 /* ogguilifebar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogguilifebar.h; path = ../../../engine/src/ogguilifebar.h; sourceTree = SOURCE_ROOT; };
+		B2542A4912D6ACF8000DE568 /* ogguiweaponpanel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogguiweaponpanel.cpp; path = ../../../engine/src/ogguiweaponpanel.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A4A12D6ACF8000DE568 /* ogguiweaponpanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogguiweaponpanel.h; path = ../../../engine/src/ogguiweaponpanel.h; sourceTree = SOURCE_ROOT; };
+		B2542A4B12D6ACF8000DE568 /* oginputdispatcher.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = oginputdispatcher.cpp; path = ../../../engine/src/oginputdispatcher.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A4C12D6ACF8000DE568 /* oginputdispatcher.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oginputdispatcher.h; path = ../../../engine/src/oginputdispatcher.h; sourceTree = SOURCE_ROOT; };
+		B2542A4D12D6ACF8000DE568 /* oglandphysicalobject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = oglandphysicalobject.cpp; path = ../../../engine/src/oglandphysicalobject.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A4E12D6ACF8000DE568 /* oglandphysicalobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oglandphysicalobject.h; path = ../../../engine/src/oglandphysicalobject.h; sourceTree = SOURCE_ROOT; };
+		B2542A4F12D6ACF8000DE568 /* oglevel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = oglevel.cpp; path = ../../../engine/src/oglevel.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A5012D6ACF8000DE568 /* oglevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oglevel.h; path = ../../../engine/src/oglevel.h; sourceTree = SOURCE_ROOT; };
+		B2542A5112D6ACF8000DE568 /* oglevelmanager.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = oglevelmanager.cpp; path = ../../../engine/src/oglevelmanager.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A5212D6ACF8000DE568 /* oglevelmanager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oglevelmanager.h; path = ../../../engine/src/oglevelmanager.h; sourceTree = SOURCE_ROOT; };
+		B2542A5312D6ACF8000DE568 /* oglight.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = oglight.cpp; path = ../../../engine/src/oglight.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A5412D6ACF8000DE568 /* oglight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oglight.h; path = ../../../engine/src/oglight.h; sourceTree = SOURCE_ROOT; };
+		B2542A5512D6ACF8000DE568 /* ogluavm.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogluavm.cpp; path = ../../../engine/src/ogluavm.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A5612D6ACF8000DE568 /* ogluavm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogluavm.h; path = ../../../engine/src/ogluavm.h; sourceTree = SOURCE_ROOT; };
+		B2542A5712D6ACF8000DE568 /* ogmaterial.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogmaterial.cpp; path = ../../../engine/src/ogmaterial.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A5812D6ACF8000DE568 /* ogmaterial.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogmaterial.h; path = ../../../engine/src/ogmaterial.h; sourceTree = SOURCE_ROOT; };
+		B2542A5912D6ACF8000DE568 /* ogmesh.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogmesh.cpp; path = ../../../engine/src/ogmesh.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A5A12D6ACF8000DE568 /* ogmesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogmesh.h; path = ../../../engine/src/ogmesh.h; sourceTree = SOURCE_ROOT; };
+		B2542A5B12D6ACF8000DE568 /* ogmissileflightworker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogmissileflightworker.cpp; path = ../../../engine/src/ogmissileflightworker.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A5C12D6ACF8000DE568 /* ogmissileflightworker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogmissileflightworker.h; path = ../../../engine/src/ogmissileflightworker.h; sourceTree = SOURCE_ROOT; };
+		B2542A5D12D6ACF8000DE568 /* ogmissilephysicalobject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogmissilephysicalobject.cpp; path = ../../../engine/src/ogmissilephysicalobject.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A5E12D6ACF8000DE568 /* ogmissilephysicalobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogmissilephysicalobject.h; path = ../../../engine/src/ogmissilephysicalobject.h; sourceTree = SOURCE_ROOT; };
+		B2542A5F12D6ACF8000DE568 /* ogmodel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogmodel.cpp; path = ../../../engine/src/ogmodel.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A6012D6ACF8000DE568 /* ogmodel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogmodel.h; path = ../../../engine/src/ogmodel.h; sourceTree = SOURCE_ROOT; };
+		B2542A6112D6ACF8000DE568 /* ogmodelshader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogmodelshader.cpp; path = ../../../engine/src/ogmodelshader.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A6212D6ACF8000DE568 /* ogmodelshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogmodelshader.h; path = ../../../engine/src/ogmodelshader.h; sourceTree = SOURCE_ROOT; };
+		B2542A6312D6ACF8000DE568 /* ogorientworker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogorientworker.cpp; path = ../../../engine/src/ogorientworker.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A6412D6ACF8000DE568 /* ogorientworker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogorientworker.h; path = ../../../engine/src/ogorientworker.h; sourceTree = SOURCE_ROOT; };
+		B2542A6512D6ACF8000DE568 /* ogphysicalobject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogphysicalobject.cpp; path = ../../../engine/src/ogphysicalobject.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A6612D6ACF8000DE568 /* ogphysicalobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogphysicalobject.h; path = ../../../engine/src/ogphysicalobject.h; sourceTree = SOURCE_ROOT; };
+		B2542A6712D6ACF8000DE568 /* ogphysics.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogphysics.cpp; path = ../../../engine/src/ogphysics.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A6812D6ACF8000DE568 /* ogphysics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogphysics.h; path = ../../../engine/src/ogphysics.h; sourceTree = SOURCE_ROOT; };
+		B2542A6912D6ACF8000DE568 /* ogplayerphysicalobject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogplayerphysicalobject.cpp; path = ../../../engine/src/ogplayerphysicalobject.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A6A12D6ACF8000DE568 /* ogplayerphysicalobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogplayerphysicalobject.h; path = ../../../engine/src/ogplayerphysicalobject.h; sourceTree = SOURCE_ROOT; };
+		B2542A6B12D6ACF8000DE568 /* ogrenderer_gles11.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogrenderer_gles11.cpp; path = ../../../engine/src/ogrenderer_gles11.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A6C12D6ACF8000DE568 /* ogrenderer_gles11.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogrenderer_gles11.h; path = ../../../engine/src/ogrenderer_gles11.h; sourceTree = SOURCE_ROOT; };
+		B2542A6D12D6ACF8000DE568 /* ogrenderer_gles20.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogrenderer_gles20.cpp; path = ../../../engine/src/ogrenderer_gles20.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A6E12D6ACF8000DE568 /* ogrenderer_gles20.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogrenderer_gles20.h; path = ../../../engine/src/ogrenderer_gles20.h; sourceTree = SOURCE_ROOT; };
+		B2542A6F12D6ACF8000DE568 /* ogrenderer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogrenderer.cpp; path = ../../../engine/src/ogrenderer.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A7012D6ACF8000DE568 /* ogrenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogrenderer.h; path = ../../../engine/src/ogrenderer.h; sourceTree = SOURCE_ROOT; };
+		B2542A7112D6ACF8000DE568 /* ogrendertarget.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogrendertarget.cpp; path = ../../../engine/src/ogrendertarget.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A7212D6ACF8000DE568 /* ogrendertarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogrendertarget.h; path = ../../../engine/src/ogrendertarget.h; sourceTree = SOURCE_ROOT; };
+		B2542A7312D6ACF8000DE568 /* ogresource.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogresource.cpp; path = ../../../engine/src/ogresource.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A7412D6ACF8000DE568 /* ogresource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogresource.h; path = ../../../engine/src/ogresource.h; sourceTree = SOURCE_ROOT; };
+		B2542A7512D6ACF8000DE568 /* ogresourcemgr.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogresourcemgr.cpp; path = ../../../engine/src/ogresourcemgr.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A7612D6ACF8000DE568 /* ogresourcemgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogresourcemgr.h; path = ../../../engine/src/ogresourcemgr.h; sourceTree = SOURCE_ROOT; };
+		B2542A7712D6ACF8000DE568 /* ogscenegraph.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogscenegraph.cpp; path = ../../../engine/src/ogscenegraph.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A7812D6ACF8000DE568 /* ogscenegraph.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogscenegraph.h; path = ../../../engine/src/ogscenegraph.h; sourceTree = SOURCE_ROOT; };
+		B2542A7912D6ACF8000DE568 /* ogsettingsreader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogsettingsreader.cpp; path = ../../../engine/src/ogsettingsreader.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A7A12D6ACF8000DE568 /* ogsettingsreader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogsettingsreader.h; path = ../../../engine/src/ogsettingsreader.h; sourceTree = SOURCE_ROOT; };
+		B2542A7B12D6ACF8000DE568 /* ogsgeffectnode.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogsgeffectnode.cpp; path = ../../../engine/src/ogsgeffectnode.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A7C12D6ACF8000DE568 /* ogsgeffectnode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogsgeffectnode.h; path = ../../../engine/src/ogsgeffectnode.h; sourceTree = SOURCE_ROOT; };
+		B2542A7D12D6ACF8000DE568 /* ogsglandscapenode.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogsglandscapenode.cpp; path = ../../../engine/src/ogsglandscapenode.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A7E12D6ACF8000DE568 /* ogsglandscapenode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogsglandscapenode.h; path = ../../../engine/src/ogsglandscapenode.h; sourceTree = SOURCE_ROOT; };
+		B2542A7F12D6ACF8000DE568 /* ogsgnode.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogsgnode.cpp; path = ../../../engine/src/ogsgnode.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A8012D6ACF8000DE568 /* ogsgnode.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogsgnode.h; path = ../../../engine/src/ogsgnode.h; sourceTree = SOURCE_ROOT; };
+		B2542A8112D6ACF8000DE568 /* ogshadowmodelshader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogshadowmodelshader.cpp; path = ../../../engine/src/ogshadowmodelshader.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A8212D6ACF8000DE568 /* ogshadowmodelshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogshadowmodelshader.h; path = ../../../engine/src/ogshadowmodelshader.h; sourceTree = SOURCE_ROOT; };
+		B2542A8312D6ACF8000DE568 /* ogsprite.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogsprite.cpp; path = ../../../engine/src/ogsprite.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A8412D6ACF8000DE568 /* ogsprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogsprite.h; path = ../../../engine/src/ogsprite.h; sourceTree = SOURCE_ROOT; };
+		B2542A8512D6ACF8000DE568 /* ogspritepool.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogspritepool.cpp; path = ../../../engine/src/ogspritepool.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A8612D6ACF8000DE568 /* ogspritepool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogspritepool.h; path = ../../../engine/src/ogspritepool.h; sourceTree = SOURCE_ROOT; };
+		B2542A8712D6ACF8000DE568 /* ogspriteshader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogspriteshader.cpp; path = ../../../engine/src/ogspriteshader.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A8812D6ACF8000DE568 /* ogspriteshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogspriteshader.h; path = ../../../engine/src/ogspriteshader.h; sourceTree = SOURCE_ROOT; };
+		B2542A8912D6ACF8000DE568 /* ogstabilizeworker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogstabilizeworker.cpp; path = ../../../engine/src/ogstabilizeworker.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A8A12D6ACF8000DE568 /* ogstabilizeworker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogstabilizeworker.h; path = ../../../engine/src/ogstabilizeworker.h; sourceTree = SOURCE_ROOT; };
+		B2542A8B12D6ACF8000DE568 /* ogstaticphysicalobject.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogstaticphysicalobject.cpp; path = ../../../engine/src/ogstaticphysicalobject.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A8C12D6ACF8000DE568 /* ogstaticphysicalobject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogstaticphysicalobject.h; path = ../../../engine/src/ogstaticphysicalobject.h; sourceTree = SOURCE_ROOT; };
+		B2542A8D12D6ACF8000DE568 /* ogstatistics.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogstatistics.cpp; path = ../../../engine/src/ogstatistics.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A8E12D6ACF8000DE568 /* ogstatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogstatistics.h; path = ../../../engine/src/ogstatistics.h; sourceTree = SOURCE_ROOT; };
+		B2542A8F12D6ACF8000DE568 /* ogterrain.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogterrain.cpp; path = ../../../engine/src/ogterrain.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A9012D6ACF8000DE568 /* ogterrain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogterrain.h; path = ../../../engine/src/ogterrain.h; sourceTree = SOURCE_ROOT; };
+		B2542A9112D6ACF8000DE568 /* ogtextrenderer_data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogtextrenderer_data.h; path = ../../../engine/src/ogtextrenderer_data.h; sourceTree = SOURCE_ROOT; };
+		B2542A9212D6ACF8000DE568 /* ogtextrenderer_gles11.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogtextrenderer_gles11.cpp; path = ../../../engine/src/ogtextrenderer_gles11.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A9312D6ACF8000DE568 /* ogtextrenderer_gles11.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogtextrenderer_gles11.h; path = ../../../engine/src/ogtextrenderer_gles11.h; sourceTree = SOURCE_ROOT; };
+		B2542A9412D6ACF8000DE568 /* ogtextrenderer_gles20.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogtextrenderer_gles20.cpp; path = ../../../engine/src/ogtextrenderer_gles20.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A9512D6ACF8000DE568 /* ogtextrenderer_gles20.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogtextrenderer_gles20.h; path = ../../../engine/src/ogtextrenderer_gles20.h; sourceTree = SOURCE_ROOT; };
+		B2542A9612D6ACF8000DE568 /* ogtextrenderer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogtextrenderer.cpp; path = ../../../engine/src/ogtextrenderer.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A9712D6ACF8000DE568 /* ogtextrenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogtextrenderer.h; path = ../../../engine/src/ogtextrenderer.h; sourceTree = SOURCE_ROOT; };
+		B2542A9812D6ACF8000DE568 /* ogtextshader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogtextshader.cpp; path = ../../../engine/src/ogtextshader.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A9912D6ACF8000DE568 /* ogtextshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogtextshader.h; path = ../../../engine/src/ogtextshader.h; sourceTree = SOURCE_ROOT; };
+		B2542A9A12D6ACF8000DE568 /* ogtexture.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogtexture.cpp; path = ../../../engine/src/ogtexture.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A9B12D6ACF8000DE568 /* ogtexture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogtexture.h; path = ../../../engine/src/ogtexture.h; sourceTree = SOURCE_ROOT; };
+		B2542A9C12D6ACF8000DE568 /* ogvertexbuffers_gles11.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogvertexbuffers_gles11.cpp; path = ../../../engine/src/ogvertexbuffers_gles11.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A9D12D6ACF8000DE568 /* ogvertexbuffers_gles11.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogvertexbuffers_gles11.h; path = ../../../engine/src/ogvertexbuffers_gles11.h; sourceTree = SOURCE_ROOT; };
+		B2542A9E12D6ACF8000DE568 /* ogvertexbuffers_gles20.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogvertexbuffers_gles20.cpp; path = ../../../engine/src/ogvertexbuffers_gles20.cpp; sourceTree = SOURCE_ROOT; };
+		B2542A9F12D6ACF8000DE568 /* ogvertexbuffers_gles20.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogvertexbuffers_gles20.h; path = ../../../engine/src/ogvertexbuffers_gles20.h; sourceTree = SOURCE_ROOT; };
+		B2542AA012D6ACF8000DE568 /* ogweapon.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogweapon.cpp; path = ../../../engine/src/ogweapon.cpp; sourceTree = SOURCE_ROOT; };
+		B2542AA112D6ACF8000DE568 /* ogweapon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogweapon.h; path = ../../../engine/src/ogweapon.h; sourceTree = SOURCE_ROOT; };
+		B2542AA212D6ACF8000DE568 /* ogworker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogworker.cpp; path = ../../../engine/src/ogworker.cpp; sourceTree = SOURCE_ROOT; };
+		B2542AA312D6ACF8000DE568 /* ogworker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogworker.h; path = ../../../engine/src/ogworker.h; sourceTree = SOURCE_ROOT; };
+		B2542AA412D6ACF8000DE568 /* OrangeGrass.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = OrangeGrass.cpp; path = ../../../engine/src/OrangeGrass.cpp; sourceTree = SOURCE_ROOT; };
+		B2542B0C12D6AE57000DE568 /* OpenGL2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OpenGL2.h; path = ../../../engine/sdk/OpenGL2/include/OpenGL2.h; sourceTree = SOURCE_ROOT; };
+		B2542B1912D6AF4B000DE568 /* Geometry.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Geometry.h; path = ../../../engine/sdk/PVR/include/Geometry.h; sourceTree = SOURCE_ROOT; };
+		B2542B1A12D6AF4B000DE568 /* GraphicsDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GraphicsDevice.h; path = ../../../engine/sdk/PVR/include/GraphicsDevice.h; sourceTree = SOURCE_ROOT; };
+		B2542B1B12D6AF4B000DE568 /* Mathematics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mathematics.h; path = ../../../engine/sdk/PVR/include/Mathematics.h; sourceTree = SOURCE_ROOT; };
+		B2969BBF12D3B2F7009BCE6D /* Delegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Delegate.h; sourceTree = "<group>"; };
+		B2969BC012D3B2F7009BCE6D /* Delegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Delegate.mm; sourceTree = "<group>"; };
+		B2969BC812D3B35D009BCE6D /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EAGLView.h; path = GLES11/EAGLView.h; sourceTree = "<group>"; };
+		B2969BC912D3B35D009BCE6D /* EAGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EAGLView.m; path = GLES11/EAGLView.m; sourceTree = "<group>"; };
+		B2969BE012D3B4D1009BCE6D /* GraphicsDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsDevice.h; sourceTree = "<group>"; };
+		B2969BE112D3B4D1009BCE6D /* OpenGLESExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLESExt.h; sourceTree = "<group>"; };
+		B2969C2512D3B884009BCE6D /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = resources/icon.png; sourceTree = "<group>"; };
+		B2CB283012D69C87003C8109 /* BoneBatch.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = BoneBatch.cpp; path = ../../../engine/sdk/PVR/src/BoneBatch.cpp; sourceTree = SOURCE_ROOT; };
+		B2CB283112D69C87003C8109 /* BoneBatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BoneBatch.h; path = ../../../engine/sdk/PVR/src/BoneBatch.h; sourceTree = SOURCE_ROOT; };
+		B2CB283212D69C87003C8109 /* Endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Endian.h; path = ../../../engine/sdk/PVR/src/Endian.h; sourceTree = SOURCE_ROOT; };
+		B2CB283412D69C87003C8109 /* Accelerometer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Accelerometer.h; sourceTree = "<group>"; };
+		B2CB283512D69C87003C8109 /* Accelerometer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Accelerometer.m; sourceTree = "<group>"; };
+		B2CB283712D69C87003C8109 /* ResourcePath.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ResourcePath.mm; sourceTree = "<group>"; };
+		B2CB283812D69C87003C8109 /* TouchScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TouchScreen.h; sourceTree = "<group>"; };
+		B2CB283912D69C87003C8109 /* TouchScreen.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = TouchScreen.mm; sourceTree = "<group>"; };
+		B2CB283A12D69C87003C8109 /* Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Macros.h; path = ../../../engine/sdk/PVR/src/Macros.h; sourceTree = SOURCE_ROOT; };
+		B2CB283B12D69C87003C8109 /* Matrix.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Matrix.cpp; path = ../../../engine/sdk/PVR/src/Matrix.cpp; sourceTree = SOURCE_ROOT; };
+		B2CB283C12D69C87003C8109 /* Matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Matrix.h; path = ../../../engine/sdk/PVR/src/Matrix.h; sourceTree = SOURCE_ROOT; };
+		B2CB283D12D69C87003C8109 /* MemoryFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MemoryFile.h; path = ../../../engine/sdk/PVR/src/MemoryFile.h; sourceTree = SOURCE_ROOT; };
+		B2CB283E12D69C87003C8109 /* MemoryTemplates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MemoryTemplates.h; path = ../../../engine/sdk/PVR/src/MemoryTemplates.h; sourceTree = SOURCE_ROOT; };
+		B2CB283F12D69C87003C8109 /* ModelPOD.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ModelPOD.cpp; path = ../../../engine/sdk/PVR/src/ModelPOD.cpp; sourceTree = SOURCE_ROOT; };
+		B2CB284012D69C87003C8109 /* ModelPOD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ModelPOD.h; path = ../../../engine/sdk/PVR/src/ModelPOD.h; sourceTree = SOURCE_ROOT; };
+		B2CB284212D69C87003C8109 /* neon_matrix_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = neon_matrix_impl.cpp; sourceTree = "<group>"; };
+		B2CB284312D69C87003C8109 /* neon_matrix_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = neon_matrix_impl.h; sourceTree = "<group>"; };
+		B2CB284412D69C87003C8109 /* nommgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nommgr.h; path = ../../../engine/sdk/PVR/src/nommgr.h; sourceTree = SOURCE_ROOT; };
+		B2CB284512D69C87003C8109 /* Quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Quaternion.h; path = ../../../engine/sdk/PVR/src/Quaternion.h; sourceTree = SOURCE_ROOT; };
+		B2CB284612D69C87003C8109 /* Random.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Random.cpp; path = ../../../engine/sdk/PVR/src/Random.cpp; sourceTree = SOURCE_ROOT; };
+		B2CB284712D69C87003C8109 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Random.h; path = ../../../engine/sdk/PVR/src/Random.h; sourceTree = SOURCE_ROOT; };
+		B2CB284812D69C87003C8109 /* ResourceFile.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ResourceFile.cpp; path = ../../../engine/sdk/PVR/src/ResourceFile.cpp; sourceTree = SOURCE_ROOT; };
+		B2CB284912D69C87003C8109 /* ResourceFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ResourceFile.h; path = ../../../engine/sdk/PVR/src/ResourceFile.h; sourceTree = SOURCE_ROOT; };
+		B2CB284A12D69C87003C8109 /* Shader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Shader.cpp; path = ../../../engine/sdk/PVR/src/Shader.cpp; sourceTree = SOURCE_ROOT; };
+		B2CB284B12D69C87003C8109 /* Shader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Shader.h; path = ../../../engine/sdk/PVR/src/Shader.h; sourceTree = SOURCE_ROOT; };
+		B2CB284C12D69C87003C8109 /* Streaming.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Streaming.cpp; path = ../../../engine/sdk/PVR/src/Streaming.cpp; sourceTree = SOURCE_ROOT; };
+		B2CB284D12D69C87003C8109 /* Streaming.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Streaming.h; path = ../../../engine/sdk/PVR/src/Streaming.h; sourceTree = SOURCE_ROOT; };
+		B2CB284E12D69C87003C8109 /* Texture.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Texture.cpp; path = ../../../engine/sdk/PVR/src/Texture.cpp; sourceTree = SOURCE_ROOT; };
+		B2CB284F12D69C87003C8109 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Texture.h; path = ../../../engine/sdk/PVR/src/Texture.h; sourceTree = SOURCE_ROOT; };
+		B2CB285012D69C87003C8109 /* Transform.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Transform.cpp; path = ../../../engine/sdk/PVR/src/Transform.cpp; sourceTree = SOURCE_ROOT; };
+		B2CB285112D69C87003C8109 /* Transform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Transform.h; path = ../../../engine/sdk/PVR/src/Transform.h; sourceTree = SOURCE_ROOT; };
+		B2CB285212D69C87003C8109 /* TriStrip.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = TriStrip.cpp; path = ../../../engine/sdk/PVR/src/TriStrip.cpp; sourceTree = SOURCE_ROOT; };
+		B2CB285312D69C87003C8109 /* TriStrip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TriStrip.h; path = ../../../engine/sdk/PVR/src/TriStrip.h; sourceTree = SOURCE_ROOT; };
+		B2CB285412D69C87003C8109 /* Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Types.h; path = ../../../engine/sdk/PVR/src/Types.h; sourceTree = SOURCE_ROOT; };
+		B2CB285512D69C87003C8109 /* Vector.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Vector.cpp; path = ../../../engine/sdk/PVR/src/Vector.cpp; sourceTree = SOURCE_ROOT; };
+		B2CB285612D69C87003C8109 /* Vector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vector.h; path = ../../../engine/sdk/PVR/src/Vector.h; sourceTree = SOURCE_ROOT; };
+		B2CB285712D69C87003C8109 /* Vertex.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Vertex.cpp; path = ../../../engine/sdk/PVR/src/Vertex.cpp; sourceTree = SOURCE_ROOT; };
+		B2CB285812D69C87003C8109 /* Vertex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Vertex.h; path = ../../../engine/sdk/PVR/src/Vertex.h; sourceTree = SOURCE_ROOT; };
+		B2CB285912D69C87003C8109 /* VertexLookup.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = VertexLookup.cpp; path = ../../../engine/sdk/PVR/src/VertexLookup.cpp; sourceTree = SOURCE_ROOT; };
+		B2CB285A12D69C87003C8109 /* VertexLookup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VertexLookup.h; path = ../../../engine/sdk/PVR/src/VertexLookup.h; sourceTree = SOURCE_ROOT; };
+		B2CB285C12D69C87003C8109 /* common_macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common_macros.h; sourceTree = "<group>"; };
+		B2CB285D12D69C87003C8109 /* matrix_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = matrix_impl.cpp; sourceTree = "<group>"; };
+		B2CB285E12D69C87003C8109 /* matrix_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = matrix_impl.h; sourceTree = "<group>"; };
+		B2CB285F12D69C87003C8109 /* utility_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = utility_impl.cpp; sourceTree = "<group>"; };
+		B2CB286012D69C87003C8109 /* utility_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utility_impl.h; sourceTree = "<group>"; };
+		B2CB286112D69C87003C8109 /* vfp_clobbers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vfp_clobbers.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1D60588F0D05DD3D006BFB54 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
+				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
+				28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */,
+				28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1D6058910D05DD3D006BFB54 /* orangegrass.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
+			isa = PBXGroup;
+			children = (
+				B2CB282E12D69C33003C8109 /* og */,
+				29B97315FDCFA39411CA2CEA /* Game */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = CustomTemplate;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				B2969BC712D3B349009BCE6D /* GLES11 */,
+				B2365E8612D93DCF00E38735 /* GameScreenController.cpp */,
+				B2365E8712D93DCF00E38735 /* GameScreenController.h */,
+				B2365E8812D93DCF00E38735 /* GameSystem.cpp */,
+				B2365E8912D93DCF00E38735 /* GameSystem.h */,
+				B2365E8A12D93DCF00E38735 /* IScreenController.h */,
+				B2365E8B12D93DCF00E38735 /* LoadScreenController.cpp */,
+				B2365E8C12D93DCF00E38735 /* LoadScreenController.h */,
+				B2365E8D12D93DCF00E38735 /* StartMenuScreenController.cpp */,
+				B2365E8E12D93DCF00E38735 /* StartMenuScreenController.h */,
+				B2969BE012D3B4D1009BCE6D /* GraphicsDevice.h */,
+				B2969BE112D3B4D1009BCE6D /* OpenGLESExt.h */,
+				B2969BBF12D3B2F7009BCE6D /* Delegate.h */,
+				B2969BC012D3B2F7009BCE6D /* Delegate.mm */,
+				32CA4F630368D1EE00C91783 /* orangegrass_Prefix.pch */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+			);
+			name = Game;
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B2365F9C12D93EC800E38735 /* GameResources */,
+				B2969C2512D3B884009BCE6D /* icon.png */,
+				8D1107310486CEB800E47090 /* orangegrass-Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				28FD15070DC6FC5B0079059D /* QuartzCore.framework */,
+				28FD14FF0DC6FC520079059D /* OpenGLES.framework */,
+				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
+				1D30AB110D05D00D00671497 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B236657712D9467F00E38735 /* STLport */ = {
+			isa = PBXGroup;
+			children = (
+				B236680712D9540600E38735 /* src */,
+			);
+			name = STLport;
+			sourceTree = "<group>";
+		};
+		B236680712D9540600E38735 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				B236680812D9540600E38735 /* _stdio_file.h */,
+				B236680912D9540600E38735 /* acquire_release.h */,
+				B236680A12D9540600E38735 /* aligned_buffer.h */,
+				B236680B12D9540600E38735 /* allocators.cpp */,
+				B236680C12D9540600E38735 /* bitset.cpp */,
+				B236680D12D9540600E38735 /* c_locale.c */,
+				B236680E12D9540600E38735 /* c_locale.h */,
+				B236681612D9540600E38735 /* codecvt.cpp */,
+				B236681712D9540600E38735 /* collate.cpp */,
+				B236681812D9540600E38735 /* complex.cpp */,
+				B236681912D9540600E38735 /* complex_io.cpp */,
+				B236681A12D9540600E38735 /* complex_trig.cpp */,
+				B236681B12D9540600E38735 /* ctype.cpp */,
+				B236681C12D9540600E38735 /* cxa.c */,
+				B236682112D9540600E38735 /* dll_main.cpp */,
+				B236682212D9540600E38735 /* facets_byname.cpp */,
+				B236682312D9540600E38735 /* fstream.cpp */,
+				B236682412D9540600E38735 /* ios.cpp */,
+				B236682512D9540600E38735 /* iostream.cpp */,
+				B236682612D9540600E38735 /* istream.cpp */,
+				B236682712D9540600E38735 /* locale.cpp */,
+				B236682812D9540600E38735 /* locale_catalog.cpp */,
+				B236682912D9540600E38735 /* locale_impl.cpp */,
+				B236682A12D9540600E38735 /* locale_impl.h */,
+				B236682B12D9540600E38735 /* lock_free_slist.h */,
+				B236682C12D9540600E38735 /* message_facets.h */,
+				B236682D12D9540600E38735 /* messages.cpp */,
+				B236682E12D9540600E38735 /* monetary.cpp */,
+				B236682F12D9540600E38735 /* num_get.cpp */,
+				B236683012D9540600E38735 /* num_get_float.cpp */,
+				B236683112D9540600E38735 /* num_put.cpp */,
+				B236683212D9540600E38735 /* num_put_float.cpp */,
+				B236683312D9540600E38735 /* numpunct.cpp */,
+				B236683412D9540600E38735 /* ostream.cpp */,
+				B236683712D9540600E38735 /* sstream.cpp */,
+				B236683812D9540600E38735 /* stdio_streambuf.cpp */,
+				B236683912D9540600E38735 /* stdio_streambuf.h */,
+				B236683B12D9540600E38735 /* stlport_prefix.h */,
+				B236683C12D9540600E38735 /* string.cpp */,
+				B236683D12D9540600E38735 /* strstream.cpp */,
+				B236683E12D9540600E38735 /* time_facets.cpp */,
+				B236683F12D9540600E38735 /* warning_disable.h */,
+			);
+			name = src;
+			path = "../../../engine/sdk/STLport-5.2.1/src";
+			sourceTree = SOURCE_ROOT;
+		};
+		B236688F12D967B000E38735 /* Actors */ = {
+			isa = PBXGroup;
+			children = (
+				B25429F912D6ACF8000DE568 /* ogactor.cpp */,
+				B25429FA12D6ACF8000DE568 /* ogactor.h */,
+				B25429FB12D6ACF8000DE568 /* ogactorairbot.cpp */,
+				B25429FC12D6ACF8000DE568 /* ogactorairbot.h */,
+				B25429FD12D6ACF8000DE568 /* ogactorbonus.cpp */,
+				B25429FE12D6ACF8000DE568 /* ogactorbonus.h */,
+				B25429FF12D6ACF8000DE568 /* ogactorbot.cpp */,
+				B2542A0012D6ACF8000DE568 /* ogactorbot.h */,
+				B2542A0112D6ACF8000DE568 /* ogactorbullet.cpp */,
+				B2542A0212D6ACF8000DE568 /* ogactorbullet.h */,
+				B2542A0312D6ACF8000DE568 /* ogactorgaussray.cpp */,
+				B2542A0412D6ACF8000DE568 /* ogactorgaussray.h */,
+				B2542A0512D6ACF8000DE568 /* ogactorlandbot.cpp */,
+				B2542A0612D6ACF8000DE568 /* ogactorlandbot.h */,
+				B2542A0712D6ACF8000DE568 /* ogactormanager.cpp */,
+				B2542A0812D6ACF8000DE568 /* ogactormanager.h */,
+				B2542A0912D6ACF8000DE568 /* ogactormissile.cpp */,
+				B2542A0A12D6ACF8000DE568 /* ogactormissile.h */,
+				B2542A0B12D6ACF8000DE568 /* ogactorparamsmgr.cpp */,
+				B2542A0C12D6ACF8000DE568 /* ogactorparamsmgr.h */,
+				B2542A0D12D6ACF8000DE568 /* ogactorplasmamissile.cpp */,
+				B2542A0E12D6ACF8000DE568 /* ogactorplasmamissile.h */,
+				B2542A0F12D6ACF8000DE568 /* ogactorplayer.cpp */,
+				B2542A1012D6ACF8000DE568 /* ogactorplayer.h */,
+				B2542A1112D6ACF8000DE568 /* ogactorstatic.cpp */,
+				B2542A1212D6ACF8000DE568 /* ogactorstatic.h */,
+			);
+			name = Actors;
+			sourceTree = "<group>";
+		};
+		B236689012D967C600E38735 /* GameLogic */ = {
+			isa = PBXGroup;
+			children = (
+				B236688F12D967B000E38735 /* Actors */,
+				B236689112D967FB00E38735 /* Workers */,
+			);
+			name = GameLogic;
+			sourceTree = "<group>";
+		};
+		B236689112D967FB00E38735 /* Workers */ = {
+			isa = PBXGroup;
+			children = (
+				B2542A1B12D6ACF8000DE568 /* ogbotfallingworker.cpp */,
+				B2542A1C12D6ACF8000DE568 /* ogbotfallingworker.h */,
+				B2542A1D12D6ACF8000DE568 /* ogbotflightworker.cpp */,
+				B2542A1E12D6ACF8000DE568 /* ogbotflightworker.h */,
+				B2542A5B12D6ACF8000DE568 /* ogmissileflightworker.cpp */,
+				B2542A5C12D6ACF8000DE568 /* ogmissileflightworker.h */,
+				B2542A6312D6ACF8000DE568 /* ogorientworker.cpp */,
+				B2542A6412D6ACF8000DE568 /* ogorientworker.h */,
+				B2542A8912D6ACF8000DE568 /* ogstabilizeworker.cpp */,
+				B2542A8A12D6ACF8000DE568 /* ogstabilizeworker.h */,
+				B2542AA212D6ACF8000DE568 /* ogworker.cpp */,
+				B2542AA312D6ACF8000DE568 /* ogworker.h */,
+			);
+			name = Workers;
+			sourceTree = "<group>";
+		};
+		B254294812D6A3DD000DE568 /* tinyxml */ = {
+			isa = PBXGroup;
+			children = (
+				B254295A12D6A4A4000DE568 /* tinystr.h */,
+				B254295B12D6A4A4000DE568 /* tinyxml.h */,
+				B254295212D6A476000DE568 /* tinystr.cpp */,
+				B254295312D6A476000DE568 /* tinyxml.cpp */,
+				B254295412D6A476000DE568 /* tinyxmlerror.cpp */,
+				B254295512D6A476000DE568 /* tinyxmlparser.cpp */,
+			);
+			name = tinyxml;
+			sourceTree = "<group>";
+		};
+		B254295F12D6A4FA000DE568 /* lua */ = {
+			isa = PBXGroup;
+			children = (
+				B25429AF12D6AA74000DE568 /* lauxlib.h */,
+				B25429B012D6AA74000DE568 /* lua.h */,
+				B25429B112D6AA74000DE568 /* lua.hpp */,
+				B25429B212D6AA74000DE568 /* luaconf.h */,
+				B25429B312D6AA74000DE568 /* lualib.h */,
+				B254296012D6AA56000DE568 /* lapi.c */,
+				B254296112D6AA56000DE568 /* lapi.h */,
+				B254296212D6AA56000DE568 /* lauxlib.c */,
+				B254296312D6AA56000DE568 /* lbaselib.c */,
+				B254296412D6AA56000DE568 /* lcode.c */,
+				B254296512D6AA56000DE568 /* lcode.h */,
+				B254296612D6AA56000DE568 /* ldblib.c */,
+				B254296712D6AA56000DE568 /* ldebug.c */,
+				B254296812D6AA56000DE568 /* ldebug.h */,
+				B254296912D6AA56000DE568 /* ldo.c */,
+				B254296A12D6AA56000DE568 /* ldo.h */,
+				B254296B12D6AA56000DE568 /* ldump.c */,
+				B254296C12D6AA56000DE568 /* lfunc.c */,
+				B254296D12D6AA56000DE568 /* lfunc.h */,
+				B254296E12D6AA56000DE568 /* lgc.c */,
+				B254296F12D6AA56000DE568 /* lgc.h */,
+				B254297012D6AA56000DE568 /* linit.c */,
+				B254297112D6AA56000DE568 /* liolib.c */,
+				B254297212D6AA56000DE568 /* llex.c */,
+				B254297312D6AA56000DE568 /* llex.h */,
+				B254297412D6AA56000DE568 /* llimits.h */,
+				B254297512D6AA56000DE568 /* lmathlib.c */,
+				B254297612D6AA56000DE568 /* lmem.c */,
+				B254297712D6AA56000DE568 /* lmem.h */,
+				B254297812D6AA56000DE568 /* loadlib.c */,
+				B254297912D6AA56000DE568 /* lobject.c */,
+				B254297A12D6AA56000DE568 /* lobject.h */,
+				B254297B12D6AA56000DE568 /* lopcodes.c */,
+				B254297C12D6AA56000DE568 /* lopcodes.h */,
+				B254297D12D6AA56000DE568 /* loslib.c */,
+				B254297E12D6AA56000DE568 /* lparser.c */,
+				B254297F12D6AA56000DE568 /* lparser.h */,
+				B254298012D6AA56000DE568 /* lstate.c */,
+				B254298112D6AA56000DE568 /* lstate.h */,
+				B254298212D6AA56000DE568 /* lstring.c */,
+				B254298312D6AA56000DE568 /* lstring.h */,
+				B254298412D6AA56000DE568 /* lstrlib.c */,
+				B254298512D6AA56000DE568 /* ltable.c */,
+				B254298612D6AA56000DE568 /* ltable.h */,
+				B254298712D6AA56000DE568 /* ltablib.c */,
+				B254298812D6AA56000DE568 /* ltm.c */,
+				B254298912D6AA56000DE568 /* ltm.h */,
+				B254298B12D6AA56000DE568 /* lundump.c */,
+				B254298C12D6AA56000DE568 /* lundump.h */,
+				B254298D12D6AA56000DE568 /* lvm.c */,
+				B254298E12D6AA56000DE568 /* lvm.h */,
+				B254298F12D6AA56000DE568 /* lzio.c */,
+				B254299012D6AA56000DE568 /* lzio.h */,
+			);
+			name = lua;
+			sourceTree = "<group>";
+		};
+		B25429B712D6AAE2000DE568 /* SDK */ = {
+			isa = PBXGroup;
+			children = (
+				B236657712D9467F00E38735 /* STLport */,
+				B2542B0B12D6AE30000DE568 /* OpenGL2 */,
+				B254295F12D6A4FA000DE568 /* lua */,
+				B254294812D6A3DD000DE568 /* tinyxml */,
+				B2CB282F12D69C45003C8109 /* PVR */,
+			);
+			name = SDK;
+			sourceTree = "<group>";
+		};
+		B25429C312D6AC74000DE568 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				B25429C512D6ACB7000DE568 /* common.h */,
+				B25429C612D6ACB7000DE568 /* IOGAabb.h */,
+				B25429C712D6ACB7000DE568 /* IOGActor.h */,
+				B25429C812D6ACB7000DE568 /* IOGActorManager.h */,
+				B25429C912D6ACB7000DE568 /* IOGActorParams.h */,
+				B25429CA12D6ACB7000DE568 /* IOGActorParamsManager.h */,
+				B25429CB12D6ACB7000DE568 /* IOGAnimation.h */,
+				B25429CC12D6ACB7000DE568 /* IOGAnimationController.h */,
+				B25429CD12D6ACB7000DE568 /* IOGAppSettings.h */,
+				B25429CE12D6ACB7000DE568 /* IOGCamera.h */,
+				B25429CF12D6ACB7000DE568 /* IOGCollisionListener.h */,
+				B25429D012D6ACB7000DE568 /* IOGCoreHelpers.h */,
+				B25429D112D6ACB7000DE568 /* IOGEffect.h */,
+				B25429D212D6ACB7000DE568 /* IOGEffectsManager.h */,
+				B25429D312D6ACB7000DE568 /* IOGEmitter.h */,
+				B25429D412D6ACB7000DE568 /* IOGFog.h */,
+				B25429D512D6ACB7000DE568 /* IOGFrustum.h */,
+				B25429D612D6ACB7000DE568 /* IOGGameSequence.h */,
+				B25429D712D6ACB7000DE568 /* IOGGlobalVarsTable.h */,
+				B25429D812D6ACB7000DE568 /* IOGGuiBonusbar.h */,
+				B25429D912D6ACB7000DE568 /* IOGGuiButton.h */,
+				B25429DA12D6ACB7000DE568 /* IOGGuiLifebar.h */,
+				B25429DB12D6ACB7000DE568 /* IOGGuiWeaponPanel.h */,
+				B25429DC12D6ACB7000DE568 /* IOGInputDispatcher.h */,
+				B25429DD12D6ACB7000DE568 /* IOGInputReceiver.h */,
+				B25429DE12D6ACB7000DE568 /* IOGLevel.h */,
+				B25429DF12D6ACB7000DE568 /* IOGLevelManager.h */,
+				B25429E012D6ACB7000DE568 /* IOGLight.h */,
+				B25429E112D6ACB7000DE568 /* IOGLuaVM.h */,
+				B25429E212D6ACB7000DE568 /* IOGMaterial.h */,
+				B25429E312D6ACB7000DE568 /* IOGMath.h */,
+				B25429E412D6ACB7000DE568 /* IOGModel.h */,
+				B25429E512D6ACB7000DE568 /* IOGObb.h */,
+				B25429E612D6ACB7000DE568 /* IOGPhysicalObject.h */,
+				B25429E712D6ACB7000DE568 /* IOGPhysicalParams.h */,
+				B25429E812D6ACB7000DE568 /* IOGPhysics.h */,
+				B25429E912D6ACB7000DE568 /* IOGPlane.h */,
+				B25429EA12D6ACB7000DE568 /* IOGRenderable.h */,
+				B25429EB12D6ACB7000DE568 /* IOGRenderer.h */,
+				B25429EC12D6ACB7000DE568 /* IOGResourceMgr.h */,
+				B25429ED12D6ACB7000DE568 /* IOGSceneGraph.h */,
+				B25429EE12D6ACB7000DE568 /* IOGSettingsReader.h */,
+				B25429EF12D6ACB7000DE568 /* IOGSgNode.h */,
+				B25429F012D6ACB7000DE568 /* IOGShader.h */,
+				B25429F112D6ACB7000DE568 /* IOGSprite.h */,
+				B25429F212D6ACB7000DE568 /* IOGSpritePool.h */,
+				B25429F312D6ACB7000DE568 /* IOGStatistics.h */,
+				B25429F412D6ACB7000DE568 /* IOGTerrain.h */,
+				B25429F512D6ACB7000DE568 /* IOGTexture.h */,
+				B25429F612D6ACB7000DE568 /* IOGVertexBuffers.h */,
+				B25429F712D6ACB7000DE568 /* IOGWeapon.h */,
+				B25429F812D6ACB7000DE568 /* OrangeGrass.h */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
+		B25429C412D6AC7F000DE568 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				B236689012D967C600E38735 /* GameLogic */,
+				B2542A1312D6ACF8000DE568 /* ogairphysicalobject.cpp */,
+				B2542A1412D6ACF8000DE568 /* ogairphysicalobject.h */,
+				B2542A1512D6ACF8000DE568 /* oganimationcontroller.cpp */,
+				B2542A1612D6ACF8000DE568 /* oganimationcontroller.h */,
+				B2542A1712D6ACF8000DE568 /* ogappsettings.cpp */,
+				B2542A1812D6ACF8000DE568 /* ogappsettings.h */,
+				B2542A1912D6ACF8000DE568 /* ogbonusphysicalobject.cpp */,
+				B2542A1A12D6ACF8000DE568 /* ogbonusphysicalobject.h */,
+				B2542A1F12D6ACF8000DE568 /* ogcamera.cpp */,
+				B2542A2012D6ACF8000DE568 /* ogcamera.h */,
+				B2542A2112D6ACF8000DE568 /* ogcoloreffectshader.cpp */,
+				B2542A2212D6ACF8000DE568 /* ogcoloreffectshader.h */,
+				B2542A2312D6ACF8000DE568 /* ogeffect.cpp */,
+				B2542A2412D6ACF8000DE568 /* ogeffect.h */,
+				B2542A2512D6ACF8000DE568 /* ogeffectsmanager.cpp */,
+				B2542A2612D6ACF8000DE568 /* ogeffectsmanager.h */,
+				B2542A2712D6ACF8000DE568 /* ogemitter.cpp */,
+				B2542A2812D6ACF8000DE568 /* ogemitter.h */,
+				B2542A2912D6ACF8000DE568 /* ogemitteranimatedbb.cpp */,
+				B2542A2A12D6ACF8000DE568 /* ogemitteranimatedbb.h */,
+				B2542A2B12D6ACF8000DE568 /* ogemitterglow.cpp */,
+				B2542A2C12D6ACF8000DE568 /* ogemitterglow.h */,
+				B2542A2D12D6ACF8000DE568 /* ogemitterlightflash.cpp */,
+				B2542A2E12D6ACF8000DE568 /* ogemitterlightflash.h */,
+				B2542A2F12D6ACF8000DE568 /* ogemitterparticlechain.cpp */,
+				B2542A3012D6ACF8000DE568 /* ogemitterparticlechain.h */,
+				B2542A3112D6ACF8000DE568 /* ogemitterpulseglow.cpp */,
+				B2542A3212D6ACF8000DE568 /* ogemitterpulseglow.h */,
+				B2542A3312D6ACF8000DE568 /* ogemitterringwave.cpp */,
+				B2542A3412D6ACF8000DE568 /* ogemitterringwave.h */,
+				B2542A3512D6ACF8000DE568 /* ogemitterrotatingsparks.cpp */,
+				B2542A3612D6ACF8000DE568 /* ogemitterrotatingsparks.h */,
+				B2542A3712D6ACF8000DE568 /* ogemitterscrollingray.cpp */,
+				B2542A3812D6ACF8000DE568 /* ogemitterscrollingray.h */,
+				B2542A3912D6ACF8000DE568 /* ogemittertrail.cpp */,
+				B2542A3A12D6ACF8000DE568 /* ogemittertrail.h */,
+				B2542A3B12D6ACF8000DE568 /* ogfog.cpp */,
+				B2542A3C12D6ACF8000DE568 /* ogfog.h */,
+				B2542A3D12D6ACF8000DE568 /* oggamesequence.cpp */,
+				B2542A3E12D6ACF8000DE568 /* oggamesequence.h */,
+				B2542A3F12D6ACF8000DE568 /* ogglobalvarstable.cpp */,
+				B2542A4012D6ACF8000DE568 /* ogglobalvarstable.h */,
+				B2542A4112D6ACF8000DE568 /* oggrutility.cpp */,
+				B2542A4212D6ACF8000DE568 /* oggrutility.h */,
+				B2542A4312D6ACF8000DE568 /* ogguibonusbar.cpp */,
+				B2542A4412D6ACF8000DE568 /* ogguibonusbar.h */,
+				B2542A4512D6ACF8000DE568 /* ogguibutton.cpp */,
+				B2542A4612D6ACF8000DE568 /* ogguibutton.h */,
+				B2542A4712D6ACF8000DE568 /* ogguilifebar.cpp */,
+				B2542A4812D6ACF8000DE568 /* ogguilifebar.h */,
+				B2542A4912D6ACF8000DE568 /* ogguiweaponpanel.cpp */,
+				B2542A4A12D6ACF8000DE568 /* ogguiweaponpanel.h */,
+				B2542A4B12D6ACF8000DE568 /* oginputdispatcher.cpp */,
+				B2542A4C12D6ACF8000DE568 /* oginputdispatcher.h */,
+				B2542A4D12D6ACF8000DE568 /* oglandphysicalobject.cpp */,
+				B2542A4E12D6ACF8000DE568 /* oglandphysicalobject.h */,
+				B2542A4F12D6ACF8000DE568 /* oglevel.cpp */,
+				B2542A5012D6ACF8000DE568 /* oglevel.h */,
+				B2542A5112D6ACF8000DE568 /* oglevelmanager.cpp */,
+				B2542A5212D6ACF8000DE568 /* oglevelmanager.h */,
+				B2542A5312D6ACF8000DE568 /* oglight.cpp */,
+				B2542A5412D6ACF8000DE568 /* oglight.h */,
+				B2542A5512D6ACF8000DE568 /* ogluavm.cpp */,
+				B2542A5612D6ACF8000DE568 /* ogluavm.h */,
+				B2542A5712D6ACF8000DE568 /* ogmaterial.cpp */,
+				B2542A5812D6ACF8000DE568 /* ogmaterial.h */,
+				B2542A5912D6ACF8000DE568 /* ogmesh.cpp */,
+				B2542A5A12D6ACF8000DE568 /* ogmesh.h */,
+				B2542A5D12D6ACF8000DE568 /* ogmissilephysicalobject.cpp */,
+				B2542A5E12D6ACF8000DE568 /* ogmissilephysicalobject.h */,
+				B2542A5F12D6ACF8000DE568 /* ogmodel.cpp */,
+				B2542A6012D6ACF8000DE568 /* ogmodel.h */,
+				B2542A6112D6ACF8000DE568 /* ogmodelshader.cpp */,
+				B2542A6212D6ACF8000DE568 /* ogmodelshader.h */,
+				B2542A6512D6ACF8000DE568 /* ogphysicalobject.cpp */,
+				B2542A6612D6ACF8000DE568 /* ogphysicalobject.h */,
+				B2542A6712D6ACF8000DE568 /* ogphysics.cpp */,
+				B2542A6812D6ACF8000DE568 /* ogphysics.h */,
+				B2542A6912D6ACF8000DE568 /* ogplayerphysicalobject.cpp */,
+				B2542A6A12D6ACF8000DE568 /* ogplayerphysicalobject.h */,
+				B2542A6B12D6ACF8000DE568 /* ogrenderer_gles11.cpp */,
+				B2542A6C12D6ACF8000DE568 /* ogrenderer_gles11.h */,
+				B2542A6D12D6ACF8000DE568 /* ogrenderer_gles20.cpp */,
+				B2542A6E12D6ACF8000DE568 /* ogrenderer_gles20.h */,
+				B2542A6F12D6ACF8000DE568 /* ogrenderer.cpp */,
+				B2542A7012D6ACF8000DE568 /* ogrenderer.h */,
+				B2542A7112D6ACF8000DE568 /* ogrendertarget.cpp */,
+				B2542A7212D6ACF8000DE568 /* ogrendertarget.h */,
+				B2542A7312D6ACF8000DE568 /* ogresource.cpp */,
+				B2542A7412D6ACF8000DE568 /* ogresource.h */,
+				B2542A7512D6ACF8000DE568 /* ogresourcemgr.cpp */,
+				B2542A7612D6ACF8000DE568 /* ogresourcemgr.h */,
+				B2542A7712D6ACF8000DE568 /* ogscenegraph.cpp */,
+				B2542A7812D6ACF8000DE568 /* ogscenegraph.h */,
+				B2542A7912D6ACF8000DE568 /* ogsettingsreader.cpp */,
+				B2542A7A12D6ACF8000DE568 /* ogsettingsreader.h */,
+				B2542A7B12D6ACF8000DE568 /* ogsgeffectnode.cpp */,
+				B2542A7C12D6ACF8000DE568 /* ogsgeffectnode.h */,
+				B2542A7D12D6ACF8000DE568 /* ogsglandscapenode.cpp */,
+				B2542A7E12D6ACF8000DE568 /* ogsglandscapenode.h */,
+				B2542A7F12D6ACF8000DE568 /* ogsgnode.cpp */,
+				B2542A8012D6ACF8000DE568 /* ogsgnode.h */,
+				B2542A8112D6ACF8000DE568 /* ogshadowmodelshader.cpp */,
+				B2542A8212D6ACF8000DE568 /* ogshadowmodelshader.h */,
+				B2542A8312D6ACF8000DE568 /* ogsprite.cpp */,
+				B2542A8412D6ACF8000DE568 /* ogsprite.h */,
+				B2542A8512D6ACF8000DE568 /* ogspritepool.cpp */,
+				B2542A8612D6ACF8000DE568 /* ogspritepool.h */,
+				B2542A8712D6ACF8000DE568 /* ogspriteshader.cpp */,
+				B2542A8812D6ACF8000DE568 /* ogspriteshader.h */,
+				B2542A8B12D6ACF8000DE568 /* ogstaticphysicalobject.cpp */,
+				B2542A8C12D6ACF8000DE568 /* ogstaticphysicalobject.h */,
+				B2542A8D12D6ACF8000DE568 /* ogstatistics.cpp */,
+				B2542A8E12D6ACF8000DE568 /* ogstatistics.h */,
+				B2542A8F12D6ACF8000DE568 /* ogterrain.cpp */,
+				B2542A9012D6ACF8000DE568 /* ogterrain.h */,
+				B2542A9112D6ACF8000DE568 /* ogtextrenderer_data.h */,
+				B2542A9212D6ACF8000DE568 /* ogtextrenderer_gles11.cpp */,
+				B2542A9312D6ACF8000DE568 /* ogtextrenderer_gles11.h */,
+				B2542A9412D6ACF8000DE568 /* ogtextrenderer_gles20.cpp */,
+				B2542A9512D6ACF8000DE568 /* ogtextrenderer_gles20.h */,
+				B2542A9612D6ACF8000DE568 /* ogtextrenderer.cpp */,
+				B2542A9712D6ACF8000DE568 /* ogtextrenderer.h */,
+				B2542A9812D6ACF8000DE568 /* ogtextshader.cpp */,
+				B2542A9912D6ACF8000DE568 /* ogtextshader.h */,
+				B2542A9A12D6ACF8000DE568 /* ogtexture.cpp */,
+				B2542A9B12D6ACF8000DE568 /* ogtexture.h */,
+				B2542A9C12D6ACF8000DE568 /* ogvertexbuffers_gles11.cpp */,
+				B2542A9D12D6ACF8000DE568 /* ogvertexbuffers_gles11.h */,
+				B2542A9E12D6ACF8000DE568 /* ogvertexbuffers_gles20.cpp */,
+				B2542A9F12D6ACF8000DE568 /* ogvertexbuffers_gles20.h */,
+				B2542AA012D6ACF8000DE568 /* ogweapon.cpp */,
+				B2542AA112D6ACF8000DE568 /* ogweapon.h */,
+				B2542AA412D6ACF8000DE568 /* OrangeGrass.cpp */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		B2542B0B12D6AE30000DE568 /* OpenGL2 */ = {
+			isa = PBXGroup;
+			children = (
+				B2542B0C12D6AE57000DE568 /* OpenGL2.h */,
+			);
+			name = OpenGL2;
+			sourceTree = "<group>";
+		};
+		B2542B1812D6AF20000DE568 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				B2542B1912D6AF4B000DE568 /* Geometry.h */,
+				B2542B1A12D6AF4B000DE568 /* GraphicsDevice.h */,
+				B2542B1B12D6AF4B000DE568 /* Mathematics.h */,
+			);
+			name = include;
+			sourceTree = "<group>";
+		};
+		B2969BC712D3B349009BCE6D /* GLES11 */ = {
+			isa = PBXGroup;
+			children = (
+				B2969BC812D3B35D009BCE6D /* EAGLView.h */,
+				B2969BC912D3B35D009BCE6D /* EAGLView.m */,
+			);
+			name = GLES11;
+			sourceTree = "<group>";
+		};
+		B2CB282E12D69C33003C8109 /* og */ = {
+			isa = PBXGroup;
+			children = (
+				B25429C312D6AC74000DE568 /* include */,
+				B25429C412D6AC7F000DE568 /* src */,
+				B25429B712D6AAE2000DE568 /* SDK */,
+			);
+			name = og;
+			sourceTree = "<group>";
+		};
+		B2CB282F12D69C45003C8109 /* PVR */ = {
+			isa = PBXGroup;
+			children = (
+				B2542B1812D6AF20000DE568 /* include */,
+				B2CB283312D69C87003C8109 /* iOS */,
+				B2CB284112D69C87003C8109 /* neonmath */,
+				B2CB285B12D69C87003C8109 /* vfpmath */,
+				B2CB283012D69C87003C8109 /* BoneBatch.cpp */,
+				B2CB283112D69C87003C8109 /* BoneBatch.h */,
+				B2CB283212D69C87003C8109 /* Endian.h */,
+				B2CB283A12D69C87003C8109 /* Macros.h */,
+				B2CB283B12D69C87003C8109 /* Matrix.cpp */,
+				B2CB283C12D69C87003C8109 /* Matrix.h */,
+				B2CB283D12D69C87003C8109 /* MemoryFile.h */,
+				B2CB283E12D69C87003C8109 /* MemoryTemplates.h */,
+				B2CB283F12D69C87003C8109 /* ModelPOD.cpp */,
+				B2CB284012D69C87003C8109 /* ModelPOD.h */,
+				B2CB284412D69C87003C8109 /* nommgr.h */,
+				B2CB284512D69C87003C8109 /* Quaternion.h */,
+				B2CB284612D69C87003C8109 /* Random.cpp */,
+				B2CB284712D69C87003C8109 /* Random.h */,
+				B2CB284812D69C87003C8109 /* ResourceFile.cpp */,
+				B2CB284912D69C87003C8109 /* ResourceFile.h */,
+				B254293612D6A047000DE568 /* ResourcePath.h */,
+				B2CB284A12D69C87003C8109 /* Shader.cpp */,
+				B2CB284B12D69C87003C8109 /* Shader.h */,
+				B2CB284C12D69C87003C8109 /* Streaming.cpp */,
+				B2CB284D12D69C87003C8109 /* Streaming.h */,
+				B2CB284E12D69C87003C8109 /* Texture.cpp */,
+				B2CB284F12D69C87003C8109 /* Texture.h */,
+				B2CB285012D69C87003C8109 /* Transform.cpp */,
+				B2CB285112D69C87003C8109 /* Transform.h */,
+				B2CB285212D69C87003C8109 /* TriStrip.cpp */,
+				B2CB285312D69C87003C8109 /* TriStrip.h */,
+				B2CB285412D69C87003C8109 /* Types.h */,
+				B2CB285512D69C87003C8109 /* Vector.cpp */,
+				B2CB285612D69C87003C8109 /* Vector.h */,
+				B2CB285712D69C87003C8109 /* Vertex.cpp */,
+				B2CB285812D69C87003C8109 /* Vertex.h */,
+				B2CB285912D69C87003C8109 /* VertexLookup.cpp */,
+				B2CB285A12D69C87003C8109 /* VertexLookup.h */,
+			);
+			name = PVR;
+			sourceTree = "<group>";
+		};
+		B2CB283312D69C87003C8109 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				B2CB283412D69C87003C8109 /* Accelerometer.h */,
+				B2CB283512D69C87003C8109 /* Accelerometer.m */,
+				B2CB283712D69C87003C8109 /* ResourcePath.mm */,
+				B2CB283812D69C87003C8109 /* TouchScreen.h */,
+				B2CB283912D69C87003C8109 /* TouchScreen.mm */,
+			);
+			name = iOS;
+			path = ../../../engine/sdk/PVR/src/iOS;
+			sourceTree = SOURCE_ROOT;
+		};
+		B2CB284112D69C87003C8109 /* neonmath */ = {
+			isa = PBXGroup;
+			children = (
+				B2CB284212D69C87003C8109 /* neon_matrix_impl.cpp */,
+				B2CB284312D69C87003C8109 /* neon_matrix_impl.h */,
+			);
+			name = neonmath;
+			path = ../../../engine/sdk/PVR/src/neonmath;
+			sourceTree = SOURCE_ROOT;
+		};
+		B2CB285B12D69C87003C8109 /* vfpmath */ = {
+			isa = PBXGroup;
+			children = (
+				B2CB285C12D69C87003C8109 /* common_macros.h */,
+				B2CB285D12D69C87003C8109 /* matrix_impl.cpp */,
+				B2CB285E12D69C87003C8109 /* matrix_impl.h */,
+				B2CB285F12D69C87003C8109 /* utility_impl.cpp */,
+				B2CB286012D69C87003C8109 /* utility_impl.h */,
+				B2CB286112D69C87003C8109 /* vfp_clobbers.h */,
+			);
+			name = vfpmath;
+			path = ../../../engine/sdk/PVR/src/vfpmath;
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1D6058900D05DD3D006BFB54 /* orangegrass */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "orangegrass" */;
+			buildPhases = (
+				1D60588D0D05DD3D006BFB54 /* Resources */,
+				1D60588E0D05DD3D006BFB54 /* Sources */,
+				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = orangegrass;
+			productName = orangegrass;
+			productReference = 1D6058910D05DD3D006BFB54 /* orangegrass.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "orangegrass" */;
+			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
+			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
+			mainGroup = 29B97314FDCFA39411CA2CEA /* CustomTemplate */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1D6058900D05DD3D006BFB54 /* orangegrass */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1D60588D0D05DD3D006BFB54 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B2969C2612D3B884009BCE6D /* icon.png in Resources */,
+				B236607B12D93EC800E38735 /* GameResources in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1D60588E0D05DD3D006BFB54 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
+				B2969BC112D3B2F7009BCE6D /* Delegate.mm in Sources */,
+				B2969BCB12D3B35D009BCE6D /* EAGLView.m in Sources */,
+				B2CB286212D69C87003C8109 /* BoneBatch.cpp in Sources */,
+				B2CB286312D69C87003C8109 /* Accelerometer.m in Sources */,
+				B2CB286412D69C87003C8109 /* ResourcePath.mm in Sources */,
+				B2CB286512D69C87003C8109 /* TouchScreen.mm in Sources */,
+				B2CB286612D69C87003C8109 /* Matrix.cpp in Sources */,
+				B2CB286712D69C87003C8109 /* ModelPOD.cpp in Sources */,
+				B2CB286812D69C87003C8109 /* neon_matrix_impl.cpp in Sources */,
+				B2CB286912D69C87003C8109 /* Random.cpp in Sources */,
+				B2CB286A12D69C87003C8109 /* ResourceFile.cpp in Sources */,
+				B2CB286B12D69C87003C8109 /* Shader.cpp in Sources */,
+				B2CB286C12D69C87003C8109 /* Streaming.cpp in Sources */,
+				B2CB286D12D69C87003C8109 /* Texture.cpp in Sources */,
+				B2CB286E12D69C87003C8109 /* Transform.cpp in Sources */,
+				B2CB286F12D69C87003C8109 /* TriStrip.cpp in Sources */,
+				B2CB287012D69C87003C8109 /* Vector.cpp in Sources */,
+				B2CB287112D69C87003C8109 /* Vertex.cpp in Sources */,
+				B2CB287212D69C87003C8109 /* VertexLookup.cpp in Sources */,
+				B2CB287312D69C87003C8109 /* matrix_impl.cpp in Sources */,
+				B2CB287412D69C87003C8109 /* utility_impl.cpp in Sources */,
+				B254295612D6A476000DE568 /* tinystr.cpp in Sources */,
+				B254295712D6A476000DE568 /* tinyxml.cpp in Sources */,
+				B254295812D6A476000DE568 /* tinyxmlerror.cpp in Sources */,
+				B254295912D6A476000DE568 /* tinyxmlparser.cpp in Sources */,
+				B254299112D6AA56000DE568 /* lapi.c in Sources */,
+				B254299212D6AA56000DE568 /* lauxlib.c in Sources */,
+				B254299312D6AA56000DE568 /* lbaselib.c in Sources */,
+				B254299412D6AA56000DE568 /* lcode.c in Sources */,
+				B254299512D6AA56000DE568 /* ldblib.c in Sources */,
+				B254299612D6AA56000DE568 /* ldebug.c in Sources */,
+				B254299712D6AA56000DE568 /* ldo.c in Sources */,
+				B254299812D6AA56000DE568 /* ldump.c in Sources */,
+				B254299912D6AA56000DE568 /* lfunc.c in Sources */,
+				B254299A12D6AA56000DE568 /* lgc.c in Sources */,
+				B254299B12D6AA56000DE568 /* linit.c in Sources */,
+				B254299C12D6AA56000DE568 /* liolib.c in Sources */,
+				B254299D12D6AA56000DE568 /* llex.c in Sources */,
+				B254299E12D6AA56000DE568 /* lmathlib.c in Sources */,
+				B254299F12D6AA56000DE568 /* lmem.c in Sources */,
+				B25429A012D6AA56000DE568 /* loadlib.c in Sources */,
+				B25429A112D6AA56000DE568 /* lobject.c in Sources */,
+				B25429A212D6AA56000DE568 /* lopcodes.c in Sources */,
+				B25429A312D6AA56000DE568 /* loslib.c in Sources */,
+				B25429A412D6AA56000DE568 /* lparser.c in Sources */,
+				B25429A512D6AA56000DE568 /* lstate.c in Sources */,
+				B25429A612D6AA56000DE568 /* lstring.c in Sources */,
+				B25429A712D6AA56000DE568 /* lstrlib.c in Sources */,
+				B25429A812D6AA56000DE568 /* ltable.c in Sources */,
+				B25429A912D6AA56000DE568 /* ltablib.c in Sources */,
+				B25429AA12D6AA56000DE568 /* ltm.c in Sources */,
+				B25429AC12D6AA56000DE568 /* lundump.c in Sources */,
+				B25429AD12D6AA56000DE568 /* lvm.c in Sources */,
+				B25429AE12D6AA56000DE568 /* lzio.c in Sources */,
+				B2542AA512D6ACF8000DE568 /* ogactor.cpp in Sources */,
+				B2542AA612D6ACF8000DE568 /* ogactorairbot.cpp in Sources */,
+				B2542AA712D6ACF8000DE568 /* ogactorbonus.cpp in Sources */,
+				B2542AA812D6ACF8000DE568 /* ogactorbot.cpp in Sources */,
+				B2542AA912D6ACF8000DE568 /* ogactorbullet.cpp in Sources */,
+				B2542AAA12D6ACF8000DE568 /* ogactorgaussray.cpp in Sources */,
+				B2542AAB12D6ACF8000DE568 /* ogactorlandbot.cpp in Sources */,
+				B2542AAC12D6ACF8000DE568 /* ogactormanager.cpp in Sources */,
+				B2542AAD12D6ACF8000DE568 /* ogactormissile.cpp in Sources */,
+				B2542AAE12D6ACF8000DE568 /* ogactorparamsmgr.cpp in Sources */,
+				B2542AAF12D6ACF8000DE568 /* ogactorplasmamissile.cpp in Sources */,
+				B2542AB012D6ACF8000DE568 /* ogactorplayer.cpp in Sources */,
+				B2542AB112D6ACF8000DE568 /* ogactorstatic.cpp in Sources */,
+				B2542AB212D6ACF8000DE568 /* ogairphysicalobject.cpp in Sources */,
+				B2542AB312D6ACF8000DE568 /* oganimationcontroller.cpp in Sources */,
+				B2542AB412D6ACF8000DE568 /* ogappsettings.cpp in Sources */,
+				B2542AB512D6ACF8000DE568 /* ogbonusphysicalobject.cpp in Sources */,
+				B2542AB612D6ACF8000DE568 /* ogbotfallingworker.cpp in Sources */,
+				B2542AB712D6ACF8000DE568 /* ogbotflightworker.cpp in Sources */,
+				B2542AB812D6ACF8000DE568 /* ogcamera.cpp in Sources */,
+				B2542AB912D6ACF8000DE568 /* ogcoloreffectshader.cpp in Sources */,
+				B2542ABA12D6ACF8000DE568 /* ogeffect.cpp in Sources */,
+				B2542ABB12D6ACF8000DE568 /* ogeffectsmanager.cpp in Sources */,
+				B2542ABC12D6ACF8000DE568 /* ogemitter.cpp in Sources */,
+				B2542ABD12D6ACF8000DE568 /* ogemitteranimatedbb.cpp in Sources */,
+				B2542ABE12D6ACF8000DE568 /* ogemitterglow.cpp in Sources */,
+				B2542ABF12D6ACF8000DE568 /* ogemitterlightflash.cpp in Sources */,
+				B2542AC012D6ACF8000DE568 /* ogemitterparticlechain.cpp in Sources */,
+				B2542AC112D6ACF8000DE568 /* ogemitterpulseglow.cpp in Sources */,
+				B2542AC212D6ACF8000DE568 /* ogemitterringwave.cpp in Sources */,
+				B2542AC312D6ACF8000DE568 /* ogemitterrotatingsparks.cpp in Sources */,
+				B2542AC412D6ACF8000DE568 /* ogemitterscrollingray.cpp in Sources */,
+				B2542AC512D6ACF8000DE568 /* ogemittertrail.cpp in Sources */,
+				B2542AC612D6ACF8000DE568 /* ogfog.cpp in Sources */,
+				B2542AC712D6ACF8000DE568 /* oggamesequence.cpp in Sources */,
+				B2542AC812D6ACF8000DE568 /* ogglobalvarstable.cpp in Sources */,
+				B2542AC912D6ACF8000DE568 /* oggrutility.cpp in Sources */,
+				B2542ACA12D6ACF8000DE568 /* ogguibonusbar.cpp in Sources */,
+				B2542ACB12D6ACF8000DE568 /* ogguibutton.cpp in Sources */,
+				B2542ACC12D6ACF8000DE568 /* ogguilifebar.cpp in Sources */,
+				B2542ACD12D6ACF8000DE568 /* ogguiweaponpanel.cpp in Sources */,
+				B2542ACE12D6ACF8000DE568 /* oginputdispatcher.cpp in Sources */,
+				B2542ACF12D6ACF8000DE568 /* oglandphysicalobject.cpp in Sources */,
+				B2542AD012D6ACF8000DE568 /* oglevel.cpp in Sources */,
+				B2542AD112D6ACF8000DE568 /* oglevelmanager.cpp in Sources */,
+				B2542AD212D6ACF8000DE568 /* oglight.cpp in Sources */,
+				B2542AD312D6ACF8000DE568 /* ogluavm.cpp in Sources */,
+				B2542AD412D6ACF8000DE568 /* ogmaterial.cpp in Sources */,
+				B2542AD512D6ACF8000DE568 /* ogmesh.cpp in Sources */,
+				B2542AD612D6ACF8000DE568 /* ogmissileflightworker.cpp in Sources */,
+				B2542AD712D6ACF8000DE568 /* ogmissilephysicalobject.cpp in Sources */,
+				B2542AD812D6ACF8000DE568 /* ogmodel.cpp in Sources */,
+				B2542AD912D6ACF8000DE568 /* ogmodelshader.cpp in Sources */,
+				B2542ADA12D6ACF8000DE568 /* ogorientworker.cpp in Sources */,
+				B2542ADB12D6ACF8000DE568 /* ogphysicalobject.cpp in Sources */,
+				B2542ADC12D6ACF8000DE568 /* ogphysics.cpp in Sources */,
+				B2542ADD12D6ACF8000DE568 /* ogplayerphysicalobject.cpp in Sources */,
+				B2542ADE12D6ACF8000DE568 /* ogrenderer_gles11.cpp in Sources */,
+				B2542ADF12D6ACF8000DE568 /* ogrenderer_gles20.cpp in Sources */,
+				B2542AE012D6ACF8000DE568 /* ogrenderer.cpp in Sources */,
+				B2542AE112D6ACF8000DE568 /* ogrendertarget.cpp in Sources */,
+				B2542AE212D6ACF8000DE568 /* ogresource.cpp in Sources */,
+				B2542AE312D6ACF8000DE568 /* ogresourcemgr.cpp in Sources */,
+				B2542AE412D6ACF8000DE568 /* ogscenegraph.cpp in Sources */,
+				B2542AE512D6ACF8000DE568 /* ogsettingsreader.cpp in Sources */,
+				B2542AE612D6ACF8000DE568 /* ogsgeffectnode.cpp in Sources */,
+				B2542AE712D6ACF8000DE568 /* ogsglandscapenode.cpp in Sources */,
+				B2542AE812D6ACF8000DE568 /* ogsgnode.cpp in Sources */,
+				B2542AE912D6ACF8000DE568 /* ogshadowmodelshader.cpp in Sources */,
+				B2542AEA12D6ACF8000DE568 /* ogsprite.cpp in Sources */,
+				B2542AEB12D6ACF8000DE568 /* ogspritepool.cpp in Sources */,
+				B2542AEC12D6ACF8000DE568 /* ogspriteshader.cpp in Sources */,
+				B2542AED12D6ACF8000DE568 /* ogstabilizeworker.cpp in Sources */,
+				B2542AEE12D6ACF8000DE568 /* ogstaticphysicalobject.cpp in Sources */,
+				B2542AEF12D6ACF8000DE568 /* ogstatistics.cpp in Sources */,
+				B2542AF012D6ACF8000DE568 /* ogterrain.cpp in Sources */,
+				B2542AF112D6ACF8000DE568 /* ogtextrenderer_gles11.cpp in Sources */,
+				B2542AF212D6ACF8000DE568 /* ogtextrenderer_gles20.cpp in Sources */,
+				B2542AF312D6ACF8000DE568 /* ogtextrenderer.cpp in Sources */,
+				B2542AF412D6ACF8000DE568 /* ogtextshader.cpp in Sources */,
+				B2542AF512D6ACF8000DE568 /* ogtexture.cpp in Sources */,
+				B2542AF612D6ACF8000DE568 /* ogvertexbuffers_gles11.cpp in Sources */,
+				B2542AF712D6ACF8000DE568 /* ogvertexbuffers_gles20.cpp in Sources */,
+				B2542AF812D6ACF8000DE568 /* ogweapon.cpp in Sources */,
+				B2542AF912D6ACF8000DE568 /* ogworker.cpp in Sources */,
+				B2542AFA12D6ACF8000DE568 /* OrangeGrass.cpp in Sources */,
+				B2365E8F12D93DCF00E38735 /* GameScreenController.cpp in Sources */,
+				B2365E9012D93DCF00E38735 /* GameSystem.cpp in Sources */,
+				B2365E9112D93DCF00E38735 /* LoadScreenController.cpp in Sources */,
+				B2365E9212D93DCF00E38735 /* StartMenuScreenController.cpp in Sources */,
+				B236684012D9540600E38735 /* allocators.cpp in Sources */,
+				B236684112D9540600E38735 /* bitset.cpp in Sources */,
+				B236684212D9540600E38735 /* c_locale.c in Sources */,
+				B236684712D9540600E38735 /* codecvt.cpp in Sources */,
+				B236684812D9540600E38735 /* collate.cpp in Sources */,
+				B236684912D9540600E38735 /* complex.cpp in Sources */,
+				B236684A12D9540600E38735 /* complex_io.cpp in Sources */,
+				B236684B12D9540600E38735 /* complex_trig.cpp in Sources */,
+				B236684C12D9540600E38735 /* ctype.cpp in Sources */,
+				B236684D12D9540600E38735 /* cxa.c in Sources */,
+				B236685112D9540600E38735 /* dll_main.cpp in Sources */,
+				B236685212D9540600E38735 /* facets_byname.cpp in Sources */,
+				B236685312D9540600E38735 /* fstream.cpp in Sources */,
+				B236685412D9540600E38735 /* ios.cpp in Sources */,
+				B236685512D9540600E38735 /* iostream.cpp in Sources */,
+				B236685612D9540600E38735 /* istream.cpp in Sources */,
+				B236685712D9540600E38735 /* locale.cpp in Sources */,
+				B236685812D9540600E38735 /* locale_catalog.cpp in Sources */,
+				B236685912D9540600E38735 /* locale_impl.cpp in Sources */,
+				B236685A12D9540600E38735 /* messages.cpp in Sources */,
+				B236685B12D9540600E38735 /* monetary.cpp in Sources */,
+				B236685C12D9540600E38735 /* num_get.cpp in Sources */,
+				B236685D12D9540600E38735 /* num_get_float.cpp in Sources */,
+				B236685E12D9540600E38735 /* num_put.cpp in Sources */,
+				B236685F12D9540600E38735 /* num_put_float.cpp in Sources */,
+				B236686012D9540600E38735 /* numpunct.cpp in Sources */,
+				B236686112D9540600E38735 /* ostream.cpp in Sources */,
+				B236686412D9540600E38735 /* sstream.cpp in Sources */,
+				B236686512D9540600E38735 /* stdio_streambuf.cpp in Sources */,
+				B236686712D9540600E38735 /* string.cpp in Sources */,
+				B236686812D9540600E38735 /* strstream.cpp in Sources */,
+				B236686912D9540600E38735 /* time_facets.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1D6058940D05DD3E006BFB54 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = orangegrass_Prefix.pch;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				INFOPLIST_FILE = "orangegrass-Info.plist";
+				PRODUCT_NAME = orangegrass;
+			};
+			name = Debug;
+		};
+		1D6058950D05DD3E006BFB54 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = orangegrass_Prefix.pch;
+				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				INFOPLIST_FILE = "orangegrass-Info.plist";
+				PRODUCT_NAME = orangegrass;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../../../engine/sdk/STLport-5.2.1/stlport",
+					../../../engine/sdk/OpenGL2,
+					../../../engine/sdk/lua/include,
+					../../../engine/sdk/tinyxml/include,
+					../../../engine/sdk/PVR/include,
+					../../../engine/include,
+				);
+				PREBINDING = NO;
+				SDKROOT = iphoneos;
+				SYMROOT = ../../../bin/iOS;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = c99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PREBINDING = NO;
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "orangegrass" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1D6058940D05DD3E006BFB54 /* Debug */,
+				1D6058950D05DD3E006BFB54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "orangegrass" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

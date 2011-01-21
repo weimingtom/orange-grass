@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Textures>
+	<Texture alias="hud" file="Textures/UI/hud_2.pvr" >
+		<Mappings>
+			<Mapping x="0" y="36" width="256" height="32"/>
+			<Mapping x="0" y="102" width="90" height="60"/>
+			<Mapping x="0" y="196" width="60" height="60"/>
+			<!-- green life bar -->
+			<Mapping x="192" y="10" width="4" height="19"/>
+			<!-- green bonus cooldown bar -->
+			<Mapping x="21" y="190" width="54" height="1"/>
+		</Mappings>
+	</Texture>
+	<Texture alias="effects" file="Textures/FX/effects.pvr">
+		<Mappings>
+			<Mapping x="0" y="0" width="128" height="128"/>
+			<Mapping x="128" y="0" width="128" height="128"/>
+			<Mapping x="256" y="0" width="128" height="128"/>
+			<Mapping x="384" y="0" width="128" height="128"/>
+			<Mapping x="0" y="128" width="128" height="128"/>
+			<Mapping x="128" y="128" width="128" height="128"/>
+			<Mapping x="256" y="128" width="128" height="128"/>
+			<Mapping x="384" y="128" width="128" height="128"/>
+
+			<Mapping x="0" y="256" width="128" height="128"/>
+			<Mapping x="0" y="384" width="128" height="128"/>
+			<Mapping x="480" y="480" width="32" height="32"/>
+			<Mapping x="128" y="384" width="128" height="128"/>
+			
+			<Mapping x="352" y="384" width="64" height="128"/>
+			<Mapping x="416" y="384" width="64" height="128"/>
+		</Mappings>
+	</Texture>
+	<Texture alias="units" file="Models/units/units.pvr" />
+	<Texture alias="objects" file="Models/objects/objects.pvr" />
+	<Texture alias="bonus_01" file="Models/Bonuses/bonus_01.pvr" />
+	<Texture alias="bonus_02" file="Models/Bonuses/bonus_02.pvr" />
+	<Texture alias="land_02" file="Models/Land_objects_02/land_02.pvr" />
+	<Texture alias="land_02_objs" file="Models/Land_objects_02/land_02_objs.pvr" />
+	<Texture alias="icons" file="Textures/Weapons/icons.pvr" >
+		<Mappings>
+			<!--Weapon icons-->
+			<Mapping x="0" y="92" width="64" height="36"/>
+			<Mapping x="64" y="92" width="64" height="36"/>
+			<!--Bonus icons-->
+			<Mapping x="0" y="0" width="64" height="36"/>
+			<Mapping x="64" y="0" width="64" height="36"/>
+		</Mappings>
+	</Texture>
+</Textures>
+<Models>
+	<Model alias="helicopter_small" file="Models/units/helicopter_small/helicopter_small.xml"/>
+	<Model alias="helicopter_medium" file="Models/units/helicopter_medium/helicopter_medium.xml"/>
+	<Model alias="plane_small" file="Models/units/plane_small/plane_small.xml"/>
+	<Model alias="oil_tank" file="Models/objects/oil_tank/oil_tank.xml"/>
+	<Model alias="bonus_01" file="Models/Bonuses/bonus_01.xml"/>
+	<Model alias="bonus_02" file="Models/Bonuses/bonus_02.xml"/>
+	<Model alias="bush_01" file="Models/Land_objects_02/bush/bush_01.xml"/>
+	<Model alias="palm_01" file="Models/Land_objects_02/palm/palm_01.xml" />
+	<Model alias="palm_02" file="Models/Land_objects_02/palm/palm_02.xml" />
+	<Model alias="cactus_01" file="Models/Land_objects_02/cactus/cactus_01.xml"/>
+	<Model alias="cactus_02" file="Models/Land_objects_02/cactus/cactus_02.xml"/>
+	<Model alias="cactus_03" file="Models/Land_objects_02/cactus/cactus_03.xml"/>
+	<Model alias="stone_01" file="Models/Land_objects_02/stone/stone_01.xml"/>
+	<Model alias="stone_02" file="Models/Land_objects_02/stone/stone_02.xml"/>
+	<Model alias="stone_03" file="Models/Land_objects_02/stone/stone_03.xml"/>
+	<Model alias="stone_04" file="Models/Land_objects_02/stone/stone_04.xml"/>
+	<Model alias="stone_05" file="Models/Land_objects_02/stone/stone_05.xml"/>
+	<Model alias="stone_06" file="Models/Land_objects_02/stone/stone_06.xml"/>
+	<Model alias="stone_07" file="Models/Land_objects_02/stone/stone_07.xml"/>
+	<Model alias="rock_01" file="Models/Land_objects_02/rock/rock_01.xml"/>
+</Models>
+<Sprites>
+	<Sprite alias="life_hud" texture="hud" mapping="1"/>
+	<Sprite alias="spec_hud" texture="hud" mapping="2"/>
+	<Sprite alias="weapon_hud" texture="hud" mapping="3"/>
+	<Sprite alias="greenbar_hud" texture="hud" mapping="4"/>
+	<Sprite alias="greenline_hud" texture="hud" mapping="4"/>
+	<Sprite alias="weapon_missile01" texture="icons" mapping="1"/>
+	<Sprite alias="weapon_plasma01" texture="icons" mapping="2"/>
+	<Sprite alias="bonus_lifepack" texture="icons" mapping="3"/>
+	<Sprite alias="bonus_shield" texture="icons" mapping="4"/>
+</Sprites>

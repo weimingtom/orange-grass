@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Params>
+	<Actor 
+		type = "static"
+		model = "stone_05"
+		model_propeller = ""
+		model_destruction = ""
+		icon = "Models/Land_objects_02/stone/stone_05_ed.bmp"
+		/>
+</Params>

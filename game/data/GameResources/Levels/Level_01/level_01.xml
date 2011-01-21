@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Level 
+	terrain_file="Levels/Level_01/level_01_terrain.xml"
+	scene_file="Levels/Level_01/level_01.scn"
+	/>
