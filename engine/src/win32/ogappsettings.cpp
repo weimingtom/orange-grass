@@ -39,6 +39,10 @@ bool COGAppSettings::Init (const std::string& _File)
 	{
 		int Landscape = m_pReader->ReadIntParam(pViewNode, "landscape");
 		m_pGlobalVars->SetIVar("landscape", Landscape);
+
+		std::string Profile = m_pReader->ReadStringParam(pViewNode, "profile");
+		m_pGlobalVars->SetSVar("profile", Profile);
+
 		m_pReader->CloseGroupNode(pViewNode);
 	}
 	IOGGroupNode* pGameNode = m_pReader->OpenGroupNode(pSource, pRoot, "Game");

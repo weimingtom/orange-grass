@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<GameScreen>
+	<WeaponHUD 
+		sprite="weapon_hud" 
+		x="964" y="708" 
+		width="60" height="60" 
+		weapon_x="-2" weapon_y="12" 
+		weapon_width="64" weapon_height="36" 
+		/>
+	<SpecHUD 
+		panel_sprite="spec_hud" 
+		bar_sprite="greenline_hud" 
+		x="0" y="40" 
+		width="90" height="60" 
+		bar_x="21" bar_y="5" 
+		bar_width="56" bar_height="1" 
+		bonus_x="17" bonus_y="12" 
+		bonus_width="64" bonus_height="36" 
+		vert_interval="5"
+		/>
+	<LifeHUD 
+		panel_sprite="life_hud" 
+		bar_sprite="greenbar_hud" 
+		x="0" y="0" 
+		width="256" height="32" 
+		bar_x="17" bar_y="10" 
+		bar_width="4" bar_height="19" 
+		max_bars="42"
+		/>
+</GameScreen>

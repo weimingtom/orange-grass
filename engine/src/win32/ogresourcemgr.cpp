@@ -47,7 +47,15 @@ std::string COGResourceMgr::GetUIPath (const std::string& _File) const
 	{
 		UIMode = std::string("Portrait/");
 	}
-	return m_ResPath + std::string("/UI/") + UIMode + _File;
+
+	std::string UIProfile = std::string("iPhone/");
+	const std::string& prof = GetGlobalVars()->GetSVar("profile");
+	if (prof.compare("ipad") == 0)
+	{
+		UIProfile = std::string("iPad/");
+	}
+
+	return m_ResPath + std::string("/UI/") + UIProfile + UIMode + _File;
 }
 
 
