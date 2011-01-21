@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<Bonuses>
-	<Bonus alias="life_pack" file="Bonuses/life_pack.xml" />
-	<Bonus alias="shield" file="Bonuses/shield.xml" />
-</Bonuses>

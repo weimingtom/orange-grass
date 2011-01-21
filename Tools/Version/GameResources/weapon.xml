@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<Weapons>
-	<Weapon alias="plasma_01" file="Weapons/plasma_01.xml" />
-	<Weapon alias="missile_01" file="Weapons/missile_01.xml" />
-	<Weapon alias="gauss_01" file="Weapons/gauss_01.xml" />
-	<Weapon alias="bot_missile_01" file="Weapons/bot_missile_01.xml" />
-</Weapons>
