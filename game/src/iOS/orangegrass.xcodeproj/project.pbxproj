@@ -544,7 +544,6 @@
 		B2969BC012D3B2F7009BCE6D /* Delegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Delegate.mm; sourceTree = "<group>"; };
 		B2969BC812D3B35D009BCE6D /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EAGLView.h; path = GLES11/EAGLView.h; sourceTree = "<group>"; };
 		B2969BC912D3B35D009BCE6D /* EAGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EAGLView.m; path = GLES11/EAGLView.m; sourceTree = "<group>"; };
-		B2969BE012D3B4D1009BCE6D /* GraphicsDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsDevice.h; sourceTree = "<group>"; };
 		B2969BE112D3B4D1009BCE6D /* OpenGLESExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLESExt.h; sourceTree = "<group>"; };
 		B2969C2512D3B884009BCE6D /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = resources/icon.png; sourceTree = "<group>"; };
 		B2BD473012EBA15B005A7210 /* GameResources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GameResources; path = ../../data/GameResources; sourceTree = SOURCE_ROOT; };
@@ -622,7 +621,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
-				B2CB282E12D69C33003C8109 /* og */,
+				B25429B712D6AAE2000DE568 /* SDK */,
+				B2CB282E12D69C33003C8109 /* Engine */,
 				29B97315FDCFA39411CA2CEA /* Game */,
 				29B97317FDCFA39411CA2CEA /* Resources */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
@@ -634,7 +634,7 @@
 		29B97315FDCFA39411CA2CEA /* Game */ = {
 			isa = PBXGroup;
 			children = (
-				B2969BC712D3B349009BCE6D /* GLES11 */,
+				B2BD48F012EBC925005A7210 /* iOS */,
 				B2365E8612D93DCF00E38735 /* GameScreenController.cpp */,
 				B2365E8712D93DCF00E38735 /* GameScreenController.h */,
 				B2365E8812D93DCF00E38735 /* GameSystem.cpp */,
@@ -644,12 +644,6 @@
 				B2365E8C12D93DCF00E38735 /* LoadScreenController.h */,
 				B2365E8D12D93DCF00E38735 /* StartMenuScreenController.cpp */,
 				B2365E8E12D93DCF00E38735 /* StartMenuScreenController.h */,
-				B2969BE012D3B4D1009BCE6D /* GraphicsDevice.h */,
-				B2969BE112D3B4D1009BCE6D /* OpenGLESExt.h */,
-				B2969BBF12D3B2F7009BCE6D /* Delegate.h */,
-				B2969BC012D3B2F7009BCE6D /* Delegate.mm */,
-				32CA4F630368D1EE00C91783 /* orangegrass_Prefix.pch */,
-				29B97316FDCFA39411CA2CEA /* main.m */,
 			);
 			name = Game;
 			sourceTree = "<group>";
@@ -771,6 +765,10 @@
 			children = (
 				B236688F12D967B000E38735 /* Actors */,
 				B236689112D967FB00E38735 /* Workers */,
+				B2542A3D12D6ACF8000DE568 /* oggamesequence.cpp */,
+				B2542A3E12D6ACF8000DE568 /* oggamesequence.h */,
+				B2542AA012D6ACF8000DE568 /* ogweapon.cpp */,
+				B2542AA112D6ACF8000DE568 /* ogweapon.h */,
 			);
 			name = GameLogic;
 			sourceTree = "<group>";
@@ -882,57 +880,18 @@
 		B25429C312D6AC74000DE568 /* include */ = {
 			isa = PBXGroup;
 			children = (
+				B2BD48ED12EBC7E0005A7210 /* Core */,
+				B2BD48E612EBC71F005A7210 /* Effects */,
+				B2BD48E912EBC773005A7210 /* Input */,
+				B2BD48EA12EBC782005A7210 /* Level */,
+				B2BD48E312EBC691005A7210 /* Math */,
+				B2BD48E712EBC733005A7210 /* GameLogic */,
+				B2BD48E512EBC6E8005A7210 /* Graphics */,
+				B2BD48E412EBC6C1005A7210 /* GUI */,
+				B2BD48E812EBC75E005A7210 /* Physics */,
+				B2BD48EB12EBC790005A7210 /* Resources */,
+				B2BD48EC12EBC7AD005A7210 /* SceneGraph */,
 				B25429C512D6ACB7000DE568 /* common.h */,
-				B25429C612D6ACB7000DE568 /* IOGAabb.h */,
-				B25429C712D6ACB7000DE568 /* IOGActor.h */,
-				B25429C812D6ACB7000DE568 /* IOGActorManager.h */,
-				B25429C912D6ACB7000DE568 /* IOGActorParams.h */,
-				B25429CA12D6ACB7000DE568 /* IOGActorParamsManager.h */,
-				B25429CB12D6ACB7000DE568 /* IOGAnimation.h */,
-				B25429CC12D6ACB7000DE568 /* IOGAnimationController.h */,
-				B25429CD12D6ACB7000DE568 /* IOGAppSettings.h */,
-				B25429CE12D6ACB7000DE568 /* IOGCamera.h */,
-				B25429CF12D6ACB7000DE568 /* IOGCollisionListener.h */,
-				B25429D012D6ACB7000DE568 /* IOGCoreHelpers.h */,
-				B25429D112D6ACB7000DE568 /* IOGEffect.h */,
-				B25429D212D6ACB7000DE568 /* IOGEffectsManager.h */,
-				B25429D312D6ACB7000DE568 /* IOGEmitter.h */,
-				B25429D412D6ACB7000DE568 /* IOGFog.h */,
-				B25429D512D6ACB7000DE568 /* IOGFrustum.h */,
-				B25429D612D6ACB7000DE568 /* IOGGameSequence.h */,
-				B25429D712D6ACB7000DE568 /* IOGGlobalVarsTable.h */,
-				B25429D812D6ACB7000DE568 /* IOGGuiBonusbar.h */,
-				B25429D912D6ACB7000DE568 /* IOGGuiButton.h */,
-				B25429DA12D6ACB7000DE568 /* IOGGuiLifebar.h */,
-				B25429DB12D6ACB7000DE568 /* IOGGuiWeaponPanel.h */,
-				B25429DC12D6ACB7000DE568 /* IOGInputDispatcher.h */,
-				B25429DD12D6ACB7000DE568 /* IOGInputReceiver.h */,
-				B25429DE12D6ACB7000DE568 /* IOGLevel.h */,
-				B25429DF12D6ACB7000DE568 /* IOGLevelManager.h */,
-				B25429E012D6ACB7000DE568 /* IOGLight.h */,
-				B25429E112D6ACB7000DE568 /* IOGLuaVM.h */,
-				B25429E212D6ACB7000DE568 /* IOGMaterial.h */,
-				B25429E312D6ACB7000DE568 /* IOGMath.h */,
-				B25429E412D6ACB7000DE568 /* IOGModel.h */,
-				B25429E512D6ACB7000DE568 /* IOGObb.h */,
-				B25429E612D6ACB7000DE568 /* IOGPhysicalObject.h */,
-				B25429E712D6ACB7000DE568 /* IOGPhysicalParams.h */,
-				B25429E812D6ACB7000DE568 /* IOGPhysics.h */,
-				B25429E912D6ACB7000DE568 /* IOGPlane.h */,
-				B25429EA12D6ACB7000DE568 /* IOGRenderable.h */,
-				B25429EB12D6ACB7000DE568 /* IOGRenderer.h */,
-				B25429EC12D6ACB7000DE568 /* IOGResourceMgr.h */,
-				B25429ED12D6ACB7000DE568 /* IOGSceneGraph.h */,
-				B25429EE12D6ACB7000DE568 /* IOGSettingsReader.h */,
-				B25429EF12D6ACB7000DE568 /* IOGSgNode.h */,
-				B25429F012D6ACB7000DE568 /* IOGShader.h */,
-				B25429F112D6ACB7000DE568 /* IOGSprite.h */,
-				B25429F212D6ACB7000DE568 /* IOGSpritePool.h */,
-				B25429F312D6ACB7000DE568 /* IOGStatistics.h */,
-				B25429F412D6ACB7000DE568 /* IOGTerrain.h */,
-				B25429F512D6ACB7000DE568 /* IOGTexture.h */,
-				B25429F612D6ACB7000DE568 /* IOGVertexBuffers.h */,
-				B25429F712D6ACB7000DE568 /* IOGWeapon.h */,
 				B25429F812D6ACB7000DE568 /* OrangeGrass.h */,
 			);
 			name = include;
@@ -941,140 +900,16 @@
 		B25429C412D6AC7F000DE568 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				B2BD48E212EBC664005A7210 /* Core */,
+				B2BD48D612EBC1FE005A7210 /* Effects */,
+				B2BD48DE12EBC3DC005A7210 /* Input */,
+				B2BD48E012EBC5F1005A7210 /* Level */,
 				B236689012D967C600E38735 /* GameLogic */,
-				B2542A1312D6ACF8000DE568 /* ogairphysicalobject.cpp */,
-				B2542A1412D6ACF8000DE568 /* ogairphysicalobject.h */,
-				B2542A1512D6ACF8000DE568 /* oganimationcontroller.cpp */,
-				B2542A1612D6ACF8000DE568 /* oganimationcontroller.h */,
-				B2542A1712D6ACF8000DE568 /* ogappsettings.cpp */,
-				B2542A1812D6ACF8000DE568 /* ogappsettings.h */,
-				B2542A1912D6ACF8000DE568 /* ogbonusphysicalobject.cpp */,
-				B2542A1A12D6ACF8000DE568 /* ogbonusphysicalobject.h */,
-				B2542A1F12D6ACF8000DE568 /* ogcamera.cpp */,
-				B2542A2012D6ACF8000DE568 /* ogcamera.h */,
-				B2542A2112D6ACF8000DE568 /* ogcoloreffectshader.cpp */,
-				B2542A2212D6ACF8000DE568 /* ogcoloreffectshader.h */,
-				B2542A2312D6ACF8000DE568 /* ogeffect.cpp */,
-				B2542A2412D6ACF8000DE568 /* ogeffect.h */,
-				B2542A2512D6ACF8000DE568 /* ogeffectsmanager.cpp */,
-				B2542A2612D6ACF8000DE568 /* ogeffectsmanager.h */,
-				B2542A2712D6ACF8000DE568 /* ogemitter.cpp */,
-				B2542A2812D6ACF8000DE568 /* ogemitter.h */,
-				B2542A2912D6ACF8000DE568 /* ogemitteranimatedbb.cpp */,
-				B2542A2A12D6ACF8000DE568 /* ogemitteranimatedbb.h */,
-				B2542A2B12D6ACF8000DE568 /* ogemitterglow.cpp */,
-				B2542A2C12D6ACF8000DE568 /* ogemitterglow.h */,
-				B2542A2D12D6ACF8000DE568 /* ogemitterlightflash.cpp */,
-				B2542A2E12D6ACF8000DE568 /* ogemitterlightflash.h */,
-				B2542A2F12D6ACF8000DE568 /* ogemitterparticlechain.cpp */,
-				B2542A3012D6ACF8000DE568 /* ogemitterparticlechain.h */,
-				B2542A3112D6ACF8000DE568 /* ogemitterpulseglow.cpp */,
-				B2542A3212D6ACF8000DE568 /* ogemitterpulseglow.h */,
-				B2542A3312D6ACF8000DE568 /* ogemitterringwave.cpp */,
-				B2542A3412D6ACF8000DE568 /* ogemitterringwave.h */,
-				B2542A3512D6ACF8000DE568 /* ogemitterrotatingsparks.cpp */,
-				B2542A3612D6ACF8000DE568 /* ogemitterrotatingsparks.h */,
-				B2542A3712D6ACF8000DE568 /* ogemitterscrollingray.cpp */,
-				B2542A3812D6ACF8000DE568 /* ogemitterscrollingray.h */,
-				B2542A3912D6ACF8000DE568 /* ogemittertrail.cpp */,
-				B2542A3A12D6ACF8000DE568 /* ogemittertrail.h */,
-				B2542A3B12D6ACF8000DE568 /* ogfog.cpp */,
-				B2542A3C12D6ACF8000DE568 /* ogfog.h */,
-				B2542A3D12D6ACF8000DE568 /* oggamesequence.cpp */,
-				B2542A3E12D6ACF8000DE568 /* oggamesequence.h */,
-				B2542A3F12D6ACF8000DE568 /* ogglobalvarstable.cpp */,
-				B2542A4012D6ACF8000DE568 /* ogglobalvarstable.h */,
-				B2542A4112D6ACF8000DE568 /* oggrutility.cpp */,
-				B2542A4212D6ACF8000DE568 /* oggrutility.h */,
-				B2542A4312D6ACF8000DE568 /* ogguibonusbar.cpp */,
-				B2542A4412D6ACF8000DE568 /* ogguibonusbar.h */,
-				B2542A4512D6ACF8000DE568 /* ogguibutton.cpp */,
-				B2542A4612D6ACF8000DE568 /* ogguibutton.h */,
-				B2542A4712D6ACF8000DE568 /* ogguilifebar.cpp */,
-				B2542A4812D6ACF8000DE568 /* ogguilifebar.h */,
-				B2542A4912D6ACF8000DE568 /* ogguiweaponpanel.cpp */,
-				B2542A4A12D6ACF8000DE568 /* ogguiweaponpanel.h */,
-				B2542A4B12D6ACF8000DE568 /* oginputdispatcher.cpp */,
-				B2542A4C12D6ACF8000DE568 /* oginputdispatcher.h */,
-				B2542A4D12D6ACF8000DE568 /* oglandphysicalobject.cpp */,
-				B2542A4E12D6ACF8000DE568 /* oglandphysicalobject.h */,
-				B2542A4F12D6ACF8000DE568 /* oglevel.cpp */,
-				B2542A5012D6ACF8000DE568 /* oglevel.h */,
-				B2542A5112D6ACF8000DE568 /* oglevelmanager.cpp */,
-				B2542A5212D6ACF8000DE568 /* oglevelmanager.h */,
-				B2542A5312D6ACF8000DE568 /* oglight.cpp */,
-				B2542A5412D6ACF8000DE568 /* oglight.h */,
-				B2542A5512D6ACF8000DE568 /* ogluavm.cpp */,
-				B2542A5612D6ACF8000DE568 /* ogluavm.h */,
-				B2542A5712D6ACF8000DE568 /* ogmaterial.cpp */,
-				B2542A5812D6ACF8000DE568 /* ogmaterial.h */,
-				B2542A5912D6ACF8000DE568 /* ogmesh.cpp */,
-				B2542A5A12D6ACF8000DE568 /* ogmesh.h */,
-				B2542A5D12D6ACF8000DE568 /* ogmissilephysicalobject.cpp */,
-				B2542A5E12D6ACF8000DE568 /* ogmissilephysicalobject.h */,
-				B2542A5F12D6ACF8000DE568 /* ogmodel.cpp */,
-				B2542A6012D6ACF8000DE568 /* ogmodel.h */,
-				B2542A6112D6ACF8000DE568 /* ogmodelshader.cpp */,
-				B2542A6212D6ACF8000DE568 /* ogmodelshader.h */,
-				B2542A6512D6ACF8000DE568 /* ogphysicalobject.cpp */,
-				B2542A6612D6ACF8000DE568 /* ogphysicalobject.h */,
-				B2542A6712D6ACF8000DE568 /* ogphysics.cpp */,
-				B2542A6812D6ACF8000DE568 /* ogphysics.h */,
-				B2542A6912D6ACF8000DE568 /* ogplayerphysicalobject.cpp */,
-				B2542A6A12D6ACF8000DE568 /* ogplayerphysicalobject.h */,
-				B2542A6B12D6ACF8000DE568 /* ogrenderer_gles11.cpp */,
-				B2542A6C12D6ACF8000DE568 /* ogrenderer_gles11.h */,
-				B2542A6D12D6ACF8000DE568 /* ogrenderer_gles20.cpp */,
-				B2542A6E12D6ACF8000DE568 /* ogrenderer_gles20.h */,
-				B2542A6F12D6ACF8000DE568 /* ogrenderer.cpp */,
-				B2542A7012D6ACF8000DE568 /* ogrenderer.h */,
-				B2542A7112D6ACF8000DE568 /* ogrendertarget.cpp */,
-				B2542A7212D6ACF8000DE568 /* ogrendertarget.h */,
-				B2542A7312D6ACF8000DE568 /* ogresource.cpp */,
-				B2542A7412D6ACF8000DE568 /* ogresource.h */,
-				B2542A7512D6ACF8000DE568 /* ogresourcemgr.cpp */,
-				B2542A7612D6ACF8000DE568 /* ogresourcemgr.h */,
-				B2542A7712D6ACF8000DE568 /* ogscenegraph.cpp */,
-				B2542A7812D6ACF8000DE568 /* ogscenegraph.h */,
-				B2542A7912D6ACF8000DE568 /* ogsettingsreader.cpp */,
-				B2542A7A12D6ACF8000DE568 /* ogsettingsreader.h */,
-				B2542A7B12D6ACF8000DE568 /* ogsgeffectnode.cpp */,
-				B2542A7C12D6ACF8000DE568 /* ogsgeffectnode.h */,
-				B2542A7D12D6ACF8000DE568 /* ogsglandscapenode.cpp */,
-				B2542A7E12D6ACF8000DE568 /* ogsglandscapenode.h */,
-				B2542A7F12D6ACF8000DE568 /* ogsgnode.cpp */,
-				B2542A8012D6ACF8000DE568 /* ogsgnode.h */,
-				B2542A8112D6ACF8000DE568 /* ogshadowmodelshader.cpp */,
-				B2542A8212D6ACF8000DE568 /* ogshadowmodelshader.h */,
-				B2542A8312D6ACF8000DE568 /* ogsprite.cpp */,
-				B2542A8412D6ACF8000DE568 /* ogsprite.h */,
-				B2542A8512D6ACF8000DE568 /* ogspritepool.cpp */,
-				B2542A8612D6ACF8000DE568 /* ogspritepool.h */,
-				B2542A8712D6ACF8000DE568 /* ogspriteshader.cpp */,
-				B2542A8812D6ACF8000DE568 /* ogspriteshader.h */,
-				B2542A8B12D6ACF8000DE568 /* ogstaticphysicalobject.cpp */,
-				B2542A8C12D6ACF8000DE568 /* ogstaticphysicalobject.h */,
-				B2542A8D12D6ACF8000DE568 /* ogstatistics.cpp */,
-				B2542A8E12D6ACF8000DE568 /* ogstatistics.h */,
-				B2542A8F12D6ACF8000DE568 /* ogterrain.cpp */,
-				B2542A9012D6ACF8000DE568 /* ogterrain.h */,
-				B2542A9112D6ACF8000DE568 /* ogtextrenderer_data.h */,
-				B2542A9212D6ACF8000DE568 /* ogtextrenderer_gles11.cpp */,
-				B2542A9312D6ACF8000DE568 /* ogtextrenderer_gles11.h */,
-				B2542A9412D6ACF8000DE568 /* ogtextrenderer_gles20.cpp */,
-				B2542A9512D6ACF8000DE568 /* ogtextrenderer_gles20.h */,
-				B2542A9612D6ACF8000DE568 /* ogtextrenderer.cpp */,
-				B2542A9712D6ACF8000DE568 /* ogtextrenderer.h */,
-				B2542A9812D6ACF8000DE568 /* ogtextshader.cpp */,
-				B2542A9912D6ACF8000DE568 /* ogtextshader.h */,
-				B2542A9A12D6ACF8000DE568 /* ogtexture.cpp */,
-				B2542A9B12D6ACF8000DE568 /* ogtexture.h */,
-				B2542A9C12D6ACF8000DE568 /* ogvertexbuffers_gles11.cpp */,
-				B2542A9D12D6ACF8000DE568 /* ogvertexbuffers_gles11.h */,
-				B2542A9E12D6ACF8000DE568 /* ogvertexbuffers_gles20.cpp */,
-				B2542A9F12D6ACF8000DE568 /* ogvertexbuffers_gles20.h */,
-				B2542AA012D6ACF8000DE568 /* ogweapon.cpp */,
-				B2542AA112D6ACF8000DE568 /* ogweapon.h */,
+				B2BD48DA12EBC2BE005A7210 /* Graphics */,
+				B2BD48D812EBC267005A7210 /* GUI */,
+				B2BD48D512EBC194005A7210 /* Physics */,
+				B2BD48E112EBC62D005A7210 /* Resources */,
+				B2BD48DF12EBC5B7005A7210 /* SceneGraph */,
 				B2542AA412D6ACF8000DE568 /* OrangeGrass.cpp */,
 			);
 			name = src;
@@ -1117,37 +952,434 @@
 			path = ../../../engine/sdk/PVR/src/neonmath;
 			sourceTree = SOURCE_ROOT;
 		};
-		B2CB282E12D69C33003C8109 /* og */ = {
+		B2BD48D512EBC194005A7210 /* Physics */ = {
+			isa = PBXGroup;
+			children = (
+				B2542A4D12D6ACF8000DE568 /* oglandphysicalobject.cpp */,
+				B2542A4E12D6ACF8000DE568 /* oglandphysicalobject.h */,
+				B2542A5D12D6ACF8000DE568 /* ogmissilephysicalobject.cpp */,
+				B2542A5E12D6ACF8000DE568 /* ogmissilephysicalobject.h */,
+				B2542A6512D6ACF8000DE568 /* ogphysicalobject.cpp */,
+				B2542A6612D6ACF8000DE568 /* ogphysicalobject.h */,
+				B2542A6712D6ACF8000DE568 /* ogphysics.cpp */,
+				B2542A6812D6ACF8000DE568 /* ogphysics.h */,
+				B2542A6912D6ACF8000DE568 /* ogplayerphysicalobject.cpp */,
+				B2542A6A12D6ACF8000DE568 /* ogplayerphysicalobject.h */,
+				B2542A8B12D6ACF8000DE568 /* ogstaticphysicalobject.cpp */,
+				B2542A8C12D6ACF8000DE568 /* ogstaticphysicalobject.h */,
+				B2542A1312D6ACF8000DE568 /* ogairphysicalobject.cpp */,
+				B2542A1412D6ACF8000DE568 /* ogairphysicalobject.h */,
+				B2542A1912D6ACF8000DE568 /* ogbonusphysicalobject.cpp */,
+				B2542A1A12D6ACF8000DE568 /* ogbonusphysicalobject.h */,
+			);
+			name = Physics;
+			sourceTree = "<group>";
+		};
+		B2BD48D612EBC1FE005A7210 /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				B2BD48D712EBC209005A7210 /* Emitters */,
+				B2542A2312D6ACF8000DE568 /* ogeffect.cpp */,
+				B2542A2412D6ACF8000DE568 /* ogeffect.h */,
+				B2542A2512D6ACF8000DE568 /* ogeffectsmanager.cpp */,
+				B2542A2612D6ACF8000DE568 /* ogeffectsmanager.h */,
+			);
+			name = Effects;
+			sourceTree = "<group>";
+		};
+		B2BD48D712EBC209005A7210 /* Emitters */ = {
+			isa = PBXGroup;
+			children = (
+				B2542A2712D6ACF8000DE568 /* ogemitter.cpp */,
+				B2542A2812D6ACF8000DE568 /* ogemitter.h */,
+				B2542A2912D6ACF8000DE568 /* ogemitteranimatedbb.cpp */,
+				B2542A2A12D6ACF8000DE568 /* ogemitteranimatedbb.h */,
+				B2542A2B12D6ACF8000DE568 /* ogemitterglow.cpp */,
+				B2542A2C12D6ACF8000DE568 /* ogemitterglow.h */,
+				B2542A2D12D6ACF8000DE568 /* ogemitterlightflash.cpp */,
+				B2542A2E12D6ACF8000DE568 /* ogemitterlightflash.h */,
+				B2542A2F12D6ACF8000DE568 /* ogemitterparticlechain.cpp */,
+				B2542A3012D6ACF8000DE568 /* ogemitterparticlechain.h */,
+				B2542A3112D6ACF8000DE568 /* ogemitterpulseglow.cpp */,
+				B2542A3212D6ACF8000DE568 /* ogemitterpulseglow.h */,
+				B2542A3312D6ACF8000DE568 /* ogemitterringwave.cpp */,
+				B2542A3412D6ACF8000DE568 /* ogemitterringwave.h */,
+				B2542A3512D6ACF8000DE568 /* ogemitterrotatingsparks.cpp */,
+				B2542A3612D6ACF8000DE568 /* ogemitterrotatingsparks.h */,
+				B2542A3712D6ACF8000DE568 /* ogemitterscrollingray.cpp */,
+				B2542A3812D6ACF8000DE568 /* ogemitterscrollingray.h */,
+				B2542A3912D6ACF8000DE568 /* ogemittertrail.cpp */,
+				B2542A3A12D6ACF8000DE568 /* ogemittertrail.h */,
+			);
+			name = Emitters;
+			sourceTree = "<group>";
+		};
+		B2BD48D812EBC267005A7210 /* GUI */ = {
+			isa = PBXGroup;
+			children = (
+				B2542A4312D6ACF8000DE568 /* ogguibonusbar.cpp */,
+				B2542A4412D6ACF8000DE568 /* ogguibonusbar.h */,
+				B2542A4512D6ACF8000DE568 /* ogguibutton.cpp */,
+				B2542A4612D6ACF8000DE568 /* ogguibutton.h */,
+				B2542A4712D6ACF8000DE568 /* ogguilifebar.cpp */,
+				B2542A4812D6ACF8000DE568 /* ogguilifebar.h */,
+				B2542A4912D6ACF8000DE568 /* ogguiweaponpanel.cpp */,
+				B2542A4A12D6ACF8000DE568 /* ogguiweaponpanel.h */,
+			);
+			name = GUI;
+			sourceTree = "<group>";
+		};
+		B2BD48D912EBC287005A7210 /* Renderer */ = {
+			isa = PBXGroup;
+			children = (
+				B2BD48DB12EBC2CE005A7210 /* GLES11 */,
+				B2BD48DC12EBC326005A7210 /* GLES20 */,
+				B2542A6F12D6ACF8000DE568 /* ogrenderer.cpp */,
+				B2542A7012D6ACF8000DE568 /* ogrenderer.h */,
+				B2542A7112D6ACF8000DE568 /* ogrendertarget.cpp */,
+				B2542A7212D6ACF8000DE568 /* ogrendertarget.h */,
+				B2542A9612D6ACF8000DE568 /* ogtextrenderer.cpp */,
+				B2542A9712D6ACF8000DE568 /* ogtextrenderer.h */,
+				B2542A9112D6ACF8000DE568 /* ogtextrenderer_data.h */,
+			);
+			name = Renderer;
+			sourceTree = "<group>";
+		};
+		B2BD48DA12EBC2BE005A7210 /* Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				B2BD48D912EBC287005A7210 /* Renderer */,
+				B2542A1512D6ACF8000DE568 /* oganimationcontroller.cpp */,
+				B2542A1612D6ACF8000DE568 /* oganimationcontroller.h */,
+				B2542A3B12D6ACF8000DE568 /* ogfog.cpp */,
+				B2542A3C12D6ACF8000DE568 /* ogfog.h */,
+				B2542A4112D6ACF8000DE568 /* oggrutility.cpp */,
+				B2542A4212D6ACF8000DE568 /* oggrutility.h */,
+				B2542A5312D6ACF8000DE568 /* oglight.cpp */,
+				B2542A5412D6ACF8000DE568 /* oglight.h */,
+				B2542A5712D6ACF8000DE568 /* ogmaterial.cpp */,
+				B2542A5812D6ACF8000DE568 /* ogmaterial.h */,
+				B2542A5912D6ACF8000DE568 /* ogmesh.cpp */,
+				B2542A5A12D6ACF8000DE568 /* ogmesh.h */,
+				B2542A5F12D6ACF8000DE568 /* ogmodel.cpp */,
+				B2542A6012D6ACF8000DE568 /* ogmodel.h */,
+				B2542A8312D6ACF8000DE568 /* ogsprite.cpp */,
+				B2542A8412D6ACF8000DE568 /* ogsprite.h */,
+				B2542A8512D6ACF8000DE568 /* ogspritepool.cpp */,
+				B2542A8612D6ACF8000DE568 /* ogspritepool.h */,
+				B2542A8F12D6ACF8000DE568 /* ogterrain.cpp */,
+				B2542A9012D6ACF8000DE568 /* ogterrain.h */,
+				B2542A9A12D6ACF8000DE568 /* ogtexture.cpp */,
+				B2542A9B12D6ACF8000DE568 /* ogtexture.h */,
+			);
+			name = Graphics;
+			sourceTree = "<group>";
+		};
+		B2BD48DB12EBC2CE005A7210 /* GLES11 */ = {
+			isa = PBXGroup;
+			children = (
+				B2542A6B12D6ACF8000DE568 /* ogrenderer_gles11.cpp */,
+				B2542A6C12D6ACF8000DE568 /* ogrenderer_gles11.h */,
+				B2542A9212D6ACF8000DE568 /* ogtextrenderer_gles11.cpp */,
+				B2542A9312D6ACF8000DE568 /* ogtextrenderer_gles11.h */,
+				B2542A9C12D6ACF8000DE568 /* ogvertexbuffers_gles11.cpp */,
+				B2542A9D12D6ACF8000DE568 /* ogvertexbuffers_gles11.h */,
+			);
+			name = GLES11;
+			sourceTree = "<group>";
+		};
+		B2BD48DC12EBC326005A7210 /* GLES20 */ = {
+			isa = PBXGroup;
+			children = (
+				B2BD48DD12EBC366005A7210 /* Shaders */,
+				B2542A6D12D6ACF8000DE568 /* ogrenderer_gles20.cpp */,
+				B2542A6E12D6ACF8000DE568 /* ogrenderer_gles20.h */,
+				B2542A9412D6ACF8000DE568 /* ogtextrenderer_gles20.cpp */,
+				B2542A9512D6ACF8000DE568 /* ogtextrenderer_gles20.h */,
+				B2542A9E12D6ACF8000DE568 /* ogvertexbuffers_gles20.cpp */,
+				B2542A9F12D6ACF8000DE568 /* ogvertexbuffers_gles20.h */,
+			);
+			name = GLES20;
+			sourceTree = "<group>";
+		};
+		B2BD48DD12EBC366005A7210 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				B2542A2112D6ACF8000DE568 /* ogcoloreffectshader.cpp */,
+				B2542A2212D6ACF8000DE568 /* ogcoloreffectshader.h */,
+				B2542A6112D6ACF8000DE568 /* ogmodelshader.cpp */,
+				B2542A6212D6ACF8000DE568 /* ogmodelshader.h */,
+				B2542A8112D6ACF8000DE568 /* ogshadowmodelshader.cpp */,
+				B2542A8212D6ACF8000DE568 /* ogshadowmodelshader.h */,
+				B2542A8712D6ACF8000DE568 /* ogspriteshader.cpp */,
+				B2542A8812D6ACF8000DE568 /* ogspriteshader.h */,
+				B2542A9812D6ACF8000DE568 /* ogtextshader.cpp */,
+				B2542A9912D6ACF8000DE568 /* ogtextshader.h */,
+			);
+			name = Shaders;
+			sourceTree = "<group>";
+		};
+		B2BD48DE12EBC3DC005A7210 /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				B2542A4B12D6ACF8000DE568 /* oginputdispatcher.cpp */,
+				B2542A4C12D6ACF8000DE568 /* oginputdispatcher.h */,
+			);
+			name = Input;
+			sourceTree = "<group>";
+		};
+		B2BD48DF12EBC5B7005A7210 /* SceneGraph */ = {
+			isa = PBXGroup;
+			children = (
+				B2542A1F12D6ACF8000DE568 /* ogcamera.cpp */,
+				B2542A2012D6ACF8000DE568 /* ogcamera.h */,
+				B2542A7712D6ACF8000DE568 /* ogscenegraph.cpp */,
+				B2542A7812D6ACF8000DE568 /* ogscenegraph.h */,
+				B2542A7B12D6ACF8000DE568 /* ogsgeffectnode.cpp */,
+				B2542A7C12D6ACF8000DE568 /* ogsgeffectnode.h */,
+				B2542A7D12D6ACF8000DE568 /* ogsglandscapenode.cpp */,
+				B2542A7E12D6ACF8000DE568 /* ogsglandscapenode.h */,
+				B2542A7F12D6ACF8000DE568 /* ogsgnode.cpp */,
+				B2542A8012D6ACF8000DE568 /* ogsgnode.h */,
+			);
+			name = SceneGraph;
+			sourceTree = "<group>";
+		};
+		B2BD48E012EBC5F1005A7210 /* Level */ = {
+			isa = PBXGroup;
+			children = (
+				B2542A4F12D6ACF8000DE568 /* oglevel.cpp */,
+				B2542A5012D6ACF8000DE568 /* oglevel.h */,
+				B2542A5112D6ACF8000DE568 /* oglevelmanager.cpp */,
+				B2542A5212D6ACF8000DE568 /* oglevelmanager.h */,
+			);
+			name = Level;
+			sourceTree = "<group>";
+		};
+		B2BD48E112EBC62D005A7210 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B2542A7312D6ACF8000DE568 /* ogresource.cpp */,
+				B2542A7412D6ACF8000DE568 /* ogresource.h */,
+				B2542A7512D6ACF8000DE568 /* ogresourcemgr.cpp */,
+				B2542A7612D6ACF8000DE568 /* ogresourcemgr.h */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		B2BD48E212EBC664005A7210 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				B2542A1712D6ACF8000DE568 /* ogappsettings.cpp */,
+				B2542A1812D6ACF8000DE568 /* ogappsettings.h */,
+				B2542A3F12D6ACF8000DE568 /* ogglobalvarstable.cpp */,
+				B2542A4012D6ACF8000DE568 /* ogglobalvarstable.h */,
+				B2542A5512D6ACF8000DE568 /* ogluavm.cpp */,
+				B2542A5612D6ACF8000DE568 /* ogluavm.h */,
+				B2542A7912D6ACF8000DE568 /* ogsettingsreader.cpp */,
+				B2542A7A12D6ACF8000DE568 /* ogsettingsreader.h */,
+				B2542A8D12D6ACF8000DE568 /* ogstatistics.cpp */,
+				B2542A8E12D6ACF8000DE568 /* ogstatistics.h */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		B2BD48E312EBC691005A7210 /* Math */ = {
+			isa = PBXGroup;
+			children = (
+				B25429C612D6ACB7000DE568 /* IOGAabb.h */,
+				B25429D512D6ACB7000DE568 /* IOGFrustum.h */,
+				B25429E312D6ACB7000DE568 /* IOGMath.h */,
+				B25429E512D6ACB7000DE568 /* IOGObb.h */,
+				B25429E912D6ACB7000DE568 /* IOGPlane.h */,
+			);
+			name = Math;
+			sourceTree = "<group>";
+		};
+		B2BD48E412EBC6C1005A7210 /* GUI */ = {
+			isa = PBXGroup;
+			children = (
+				B25429D812D6ACB7000DE568 /* IOGGuiBonusbar.h */,
+				B25429D912D6ACB7000DE568 /* IOGGuiButton.h */,
+				B25429DA12D6ACB7000DE568 /* IOGGuiLifebar.h */,
+				B25429DB12D6ACB7000DE568 /* IOGGuiWeaponPanel.h */,
+			);
+			name = GUI;
+			sourceTree = "<group>";
+		};
+		B2BD48E512EBC6E8005A7210 /* Graphics */ = {
+			isa = PBXGroup;
+			children = (
+				B25429CB12D6ACB7000DE568 /* IOGAnimation.h */,
+				B25429CC12D6ACB7000DE568 /* IOGAnimationController.h */,
+				B25429D412D6ACB7000DE568 /* IOGFog.h */,
+				B25429E012D6ACB7000DE568 /* IOGLight.h */,
+				B25429E212D6ACB7000DE568 /* IOGMaterial.h */,
+				B25429E412D6ACB7000DE568 /* IOGModel.h */,
+				B25429EA12D6ACB7000DE568 /* IOGRenderable.h */,
+				B25429EB12D6ACB7000DE568 /* IOGRenderer.h */,
+				B25429F012D6ACB7000DE568 /* IOGShader.h */,
+				B25429F112D6ACB7000DE568 /* IOGSprite.h */,
+				B25429F212D6ACB7000DE568 /* IOGSpritePool.h */,
+				B25429F412D6ACB7000DE568 /* IOGTerrain.h */,
+				B25429F512D6ACB7000DE568 /* IOGTexture.h */,
+				B25429F612D6ACB7000DE568 /* IOGVertexBuffers.h */,
+			);
+			name = Graphics;
+			sourceTree = "<group>";
+		};
+		B2BD48E612EBC71F005A7210 /* Effects */ = {
+			isa = PBXGroup;
+			children = (
+				B25429D112D6ACB7000DE568 /* IOGEffect.h */,
+				B25429D212D6ACB7000DE568 /* IOGEffectsManager.h */,
+				B25429D312D6ACB7000DE568 /* IOGEmitter.h */,
+			);
+			name = Effects;
+			sourceTree = "<group>";
+		};
+		B2BD48E712EBC733005A7210 /* GameLogic */ = {
+			isa = PBXGroup;
+			children = (
+				B25429C712D6ACB7000DE568 /* IOGActor.h */,
+				B25429C812D6ACB7000DE568 /* IOGActorManager.h */,
+				B25429C912D6ACB7000DE568 /* IOGActorParams.h */,
+				B25429CA12D6ACB7000DE568 /* IOGActorParamsManager.h */,
+				B25429D612D6ACB7000DE568 /* IOGGameSequence.h */,
+				B25429F712D6ACB7000DE568 /* IOGWeapon.h */,
+			);
+			name = GameLogic;
+			sourceTree = "<group>";
+		};
+		B2BD48E812EBC75E005A7210 /* Physics */ = {
+			isa = PBXGroup;
+			children = (
+				B25429CF12D6ACB7000DE568 /* IOGCollisionListener.h */,
+				B25429E612D6ACB7000DE568 /* IOGPhysicalObject.h */,
+				B25429E712D6ACB7000DE568 /* IOGPhysicalParams.h */,
+				B25429E812D6ACB7000DE568 /* IOGPhysics.h */,
+			);
+			name = Physics;
+			sourceTree = "<group>";
+		};
+		B2BD48E912EBC773005A7210 /* Input */ = {
+			isa = PBXGroup;
+			children = (
+				B25429DC12D6ACB7000DE568 /* IOGInputDispatcher.h */,
+				B25429DD12D6ACB7000DE568 /* IOGInputReceiver.h */,
+			);
+			name = Input;
+			sourceTree = "<group>";
+		};
+		B2BD48EA12EBC782005A7210 /* Level */ = {
+			isa = PBXGroup;
+			children = (
+				B25429DE12D6ACB7000DE568 /* IOGLevel.h */,
+				B25429DF12D6ACB7000DE568 /* IOGLevelManager.h */,
+			);
+			name = Level;
+			sourceTree = "<group>";
+		};
+		B2BD48EB12EBC790005A7210 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B25429EC12D6ACB7000DE568 /* IOGResourceMgr.h */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		B2BD48EC12EBC7AD005A7210 /* SceneGraph */ = {
+			isa = PBXGroup;
+			children = (
+				B25429CE12D6ACB7000DE568 /* IOGCamera.h */,
+				B25429ED12D6ACB7000DE568 /* IOGSceneGraph.h */,
+				B25429EF12D6ACB7000DE568 /* IOGSgNode.h */,
+			);
+			name = SceneGraph;
+			sourceTree = "<group>";
+		};
+		B2BD48ED12EBC7E0005A7210 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				B25429CD12D6ACB7000DE568 /* IOGAppSettings.h */,
+				B25429D012D6ACB7000DE568 /* IOGCoreHelpers.h */,
+				B25429D712D6ACB7000DE568 /* IOGGlobalVarsTable.h */,
+				B25429E112D6ACB7000DE568 /* IOGLuaVM.h */,
+				B25429EE12D6ACB7000DE568 /* IOGSettingsReader.h */,
+				B25429F312D6ACB7000DE568 /* IOGStatistics.h */,
+			);
+			name = Core;
+			sourceTree = "<group>";
+		};
+		B2BD48EE12EBC85E005A7210 /* Math */ = {
+			isa = PBXGroup;
+			children = (
+				B2CB285B12D69C87003C8109 /* vfpmath */,
+				B2BD488312EBA9FC005A7210 /* neonmath */,
+				B2CB283212D69C87003C8109 /* Endian.h */,
+				B2CB283B12D69C87003C8109 /* Matrix.cpp */,
+				B2CB283C12D69C87003C8109 /* Matrix.h */,
+				B2CB284512D69C87003C8109 /* Quaternion.h */,
+				B2CB284612D69C87003C8109 /* Random.cpp */,
+				B2CB284712D69C87003C8109 /* Random.h */,
+				B2CB285012D69C87003C8109 /* Transform.cpp */,
+				B2CB285112D69C87003C8109 /* Transform.h */,
+				B2CB285512D69C87003C8109 /* Vector.cpp */,
+				B2CB285612D69C87003C8109 /* Vector.h */,
+			);
+			name = Math;
+			sourceTree = "<group>";
+		};
+		B2BD48EF12EBC88E005A7210 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B2CB283012D69C87003C8109 /* BoneBatch.cpp */,
+				B2CB283112D69C87003C8109 /* BoneBatch.h */,
+				B2CB283F12D69C87003C8109 /* ModelPOD.cpp */,
+				B2CB284012D69C87003C8109 /* ModelPOD.h */,
+				B2CB285212D69C87003C8109 /* TriStrip.cpp */,
+				B2CB285312D69C87003C8109 /* TriStrip.h */,
+				B2CB285712D69C87003C8109 /* Vertex.cpp */,
+				B2CB285812D69C87003C8109 /* Vertex.h */,
+				B2CB285912D69C87003C8109 /* VertexLookup.cpp */,
+				B2CB285A12D69C87003C8109 /* VertexLookup.h */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		B2BD48F012EBC925005A7210 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				B2969BC712D3B349009BCE6D /* GLES11 */,
+				B2969BBF12D3B2F7009BCE6D /* Delegate.h */,
+				B2969BC012D3B2F7009BCE6D /* Delegate.mm */,
+				29B97316FDCFA39411CA2CEA /* main.m */,
+				B2969BE112D3B4D1009BCE6D /* OpenGLESExt.h */,
+				32CA4F630368D1EE00C91783 /* orangegrass_Prefix.pch */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		B2CB282E12D69C33003C8109 /* Engine */ = {
 			isa = PBXGroup;
 			children = (
 				B25429C312D6AC74000DE568 /* include */,
 				B25429C412D6AC7F000DE568 /* src */,
-				B25429B712D6AAE2000DE568 /* SDK */,
 			);
-			name = og;
+			name = Engine;
 			sourceTree = "<group>";
 		};
 		B2CB282F12D69C45003C8109 /* PVR */ = {
 			isa = PBXGroup;
 			children = (
-				B2BD488312EBA9FC005A7210 /* neonmath */,
+				B2BD48EF12EBC88E005A7210 /* Models */,
+				B2BD48EE12EBC85E005A7210 /* Math */,
 				B2542B1812D6AF20000DE568 /* include */,
 				B2CB283312D69C87003C8109 /* iOS */,
-				B2CB285B12D69C87003C8109 /* vfpmath */,
-				B2CB283012D69C87003C8109 /* BoneBatch.cpp */,
-				B2CB283112D69C87003C8109 /* BoneBatch.h */,
-				B2CB283212D69C87003C8109 /* Endian.h */,
 				B2CB283A12D69C87003C8109 /* Macros.h */,
-				B2CB283B12D69C87003C8109 /* Matrix.cpp */,
-				B2CB283C12D69C87003C8109 /* Matrix.h */,
 				B2CB283D12D69C87003C8109 /* MemoryFile.h */,
 				B2CB283E12D69C87003C8109 /* MemoryTemplates.h */,
-				B2CB283F12D69C87003C8109 /* ModelPOD.cpp */,
-				B2CB284012D69C87003C8109 /* ModelPOD.h */,
 				B2CB284412D69C87003C8109 /* nommgr.h */,
-				B2CB284512D69C87003C8109 /* Quaternion.h */,
-				B2CB284612D69C87003C8109 /* Random.cpp */,
-				B2CB284712D69C87003C8109 /* Random.h */,
 				B2CB284812D69C87003C8109 /* ResourceFile.cpp */,
 				B2CB284912D69C87003C8109 /* ResourceFile.h */,
 				B254293612D6A047000DE568 /* ResourcePath.h */,
@@ -1157,17 +1389,7 @@
 				B2CB284D12D69C87003C8109 /* Streaming.h */,
 				B2CB284E12D69C87003C8109 /* Texture.cpp */,
 				B2CB284F12D69C87003C8109 /* Texture.h */,
-				B2CB285012D69C87003C8109 /* Transform.cpp */,
-				B2CB285112D69C87003C8109 /* Transform.h */,
-				B2CB285212D69C87003C8109 /* TriStrip.cpp */,
-				B2CB285312D69C87003C8109 /* TriStrip.h */,
 				B2CB285412D69C87003C8109 /* Types.h */,
-				B2CB285512D69C87003C8109 /* Vector.cpp */,
-				B2CB285612D69C87003C8109 /* Vector.h */,
-				B2CB285712D69C87003C8109 /* Vertex.cpp */,
-				B2CB285812D69C87003C8109 /* Vertex.h */,
-				B2CB285912D69C87003C8109 /* VertexLookup.cpp */,
-				B2CB285A12D69C87003C8109 /* VertexLookup.h */,
 			);
 			name = PVR;
 			sourceTree = "<group>";
