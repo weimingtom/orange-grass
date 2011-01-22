@@ -1725,9 +1725,18 @@
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"../../../engine/sdk/STLport-5.2.1/stlport",
+					../../../engine/sdk/OpenGL2,
+					../../../engine/sdk/lua/include,
+					../../../engine/sdk/tinyxml/include,
+					../../../engine/sdk/PVR/include,
+					../../../engine/include,
+				);
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				PREBINDING = NO;
 				SDKROOT = iphoneos;
+				SYMROOT = ../../../bin/iOS;
 			};
 			name = Release;
 		};
