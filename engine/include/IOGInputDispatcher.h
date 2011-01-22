@@ -31,6 +31,9 @@ public:
 
 	// Pointing device move handler.
 	virtual void OnPointerMove ( int _X, int _Y ) = 0;
+    
+	// Accelerometer handler.
+	virtual void OnAccelerometer ( float _X, float _Y, float _Z ) = 0;
 };
 
 

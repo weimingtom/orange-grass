@@ -15,7 +15,7 @@ subject to the following restrictions:
 #ifndef _TEXTURE_h_
 #define _TEXTURE_h_
 
-#include <OpenGL2.h>
+#include "OpenGL2.h"
 #include <MemoryManager.h>
 #ifndef WIN32
 #include "OpenGLESExt.h"

@@ -16,7 +16,6 @@
 		B2365E9012D93DCF00E38735 /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2365E8812D93DCF00E38735 /* GameSystem.cpp */; };
 		B2365E9112D93DCF00E38735 /* LoadScreenController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2365E8B12D93DCF00E38735 /* LoadScreenController.cpp */; };
 		B2365E9212D93DCF00E38735 /* StartMenuScreenController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2365E8D12D93DCF00E38735 /* StartMenuScreenController.cpp */; };
-		B236607B12D93EC800E38735 /* GameResources in Resources */ = {isa = PBXBuildFile; fileRef = B2365F9C12D93EC800E38735 /* GameResources */; };
 		B236684012D9540600E38735 /* allocators.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236680B12D9540600E38735 /* allocators.cpp */; };
 		B236684112D9540600E38735 /* bitset.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B236680C12D9540600E38735 /* bitset.cpp */; };
 		B236684212D9540600E38735 /* c_locale.c in Sources */ = {isa = PBXBuildFile; fileRef = B236680D12D9540600E38735 /* c_locale.c */; };
@@ -171,13 +170,14 @@
 		B2969BC112D3B2F7009BCE6D /* Delegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2969BC012D3B2F7009BCE6D /* Delegate.mm */; };
 		B2969BCB12D3B35D009BCE6D /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2969BC912D3B35D009BCE6D /* EAGLView.m */; };
 		B2969C2612D3B884009BCE6D /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B2969C2512D3B884009BCE6D /* icon.png */; };
+		B2BD483112EBA15B005A7210 /* GameResources in Resources */ = {isa = PBXBuildFile; fileRef = B2BD473012EBA15B005A7210 /* GameResources */; };
+		B2BD488612EBA9FC005A7210 /* neon_matrix_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2BD488412EBA9FC005A7210 /* neon_matrix_impl.cpp */; settings = {COMPILER_FLAGS = "-marm"; }; };
 		B2CB286212D69C87003C8109 /* BoneBatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB283012D69C87003C8109 /* BoneBatch.cpp */; };
 		B2CB286312D69C87003C8109 /* Accelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CB283512D69C87003C8109 /* Accelerometer.m */; };
 		B2CB286412D69C87003C8109 /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2CB283712D69C87003C8109 /* ResourcePath.mm */; };
 		B2CB286512D69C87003C8109 /* TouchScreen.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2CB283912D69C87003C8109 /* TouchScreen.mm */; };
 		B2CB286612D69C87003C8109 /* Matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB283B12D69C87003C8109 /* Matrix.cpp */; };
 		B2CB286712D69C87003C8109 /* ModelPOD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB283F12D69C87003C8109 /* ModelPOD.cpp */; };
-		B2CB286812D69C87003C8109 /* neon_matrix_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB284212D69C87003C8109 /* neon_matrix_impl.cpp */; };
 		B2CB286912D69C87003C8109 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB284612D69C87003C8109 /* Random.cpp */; };
 		B2CB286A12D69C87003C8109 /* ResourceFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB284812D69C87003C8109 /* ResourceFile.cpp */; };
 		B2CB286B12D69C87003C8109 /* Shader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB284A12D69C87003C8109 /* Shader.cpp */; };
@@ -210,7 +210,6 @@
 		B2365E8C12D93DCF00E38735 /* LoadScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoadScreenController.h; path = ../LoadScreenController.h; sourceTree = SOURCE_ROOT; };
 		B2365E8D12D93DCF00E38735 /* StartMenuScreenController.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = StartMenuScreenController.cpp; path = ../StartMenuScreenController.cpp; sourceTree = SOURCE_ROOT; };
 		B2365E8E12D93DCF00E38735 /* StartMenuScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = StartMenuScreenController.h; path = ../StartMenuScreenController.h; sourceTree = SOURCE_ROOT; };
-		B2365F9C12D93EC800E38735 /* GameResources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GameResources; path = ../../GameResources; sourceTree = SOURCE_ROOT; };
 		B236680812D9540600E38735 /* _stdio_file.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _stdio_file.h; sourceTree = "<group>"; };
 		B236680912D9540600E38735 /* acquire_release.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = acquire_release.h; sourceTree = "<group>"; };
 		B236680A12D9540600E38735 /* aligned_buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aligned_buffer.h; sourceTree = "<group>"; };
@@ -548,6 +547,9 @@
 		B2969BE012D3B4D1009BCE6D /* GraphicsDevice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GraphicsDevice.h; sourceTree = "<group>"; };
 		B2969BE112D3B4D1009BCE6D /* OpenGLESExt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLESExt.h; sourceTree = "<group>"; };
 		B2969C2512D3B884009BCE6D /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = resources/icon.png; sourceTree = "<group>"; };
+		B2BD473012EBA15B005A7210 /* GameResources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GameResources; path = ../../data/GameResources; sourceTree = SOURCE_ROOT; };
+		B2BD488412EBA9FC005A7210 /* neon_matrix_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = neon_matrix_impl.cpp; sourceTree = "<group>"; };
+		B2BD488512EBA9FC005A7210 /* neon_matrix_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = neon_matrix_impl.h; sourceTree = "<group>"; };
 		B2CB283012D69C87003C8109 /* BoneBatch.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = BoneBatch.cpp; path = ../../../engine/sdk/PVR/src/BoneBatch.cpp; sourceTree = SOURCE_ROOT; };
 		B2CB283112D69C87003C8109 /* BoneBatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BoneBatch.h; path = ../../../engine/sdk/PVR/src/BoneBatch.h; sourceTree = SOURCE_ROOT; };
 		B2CB283212D69C87003C8109 /* Endian.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Endian.h; path = ../../../engine/sdk/PVR/src/Endian.h; sourceTree = SOURCE_ROOT; };
@@ -563,8 +565,6 @@
 		B2CB283E12D69C87003C8109 /* MemoryTemplates.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MemoryTemplates.h; path = ../../../engine/sdk/PVR/src/MemoryTemplates.h; sourceTree = SOURCE_ROOT; };
 		B2CB283F12D69C87003C8109 /* ModelPOD.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ModelPOD.cpp; path = ../../../engine/sdk/PVR/src/ModelPOD.cpp; sourceTree = SOURCE_ROOT; };
 		B2CB284012D69C87003C8109 /* ModelPOD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ModelPOD.h; path = ../../../engine/sdk/PVR/src/ModelPOD.h; sourceTree = SOURCE_ROOT; };
-		B2CB284212D69C87003C8109 /* neon_matrix_impl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = neon_matrix_impl.cpp; sourceTree = "<group>"; };
-		B2CB284312D69C87003C8109 /* neon_matrix_impl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = neon_matrix_impl.h; sourceTree = "<group>"; };
 		B2CB284412D69C87003C8109 /* nommgr.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = nommgr.h; path = ../../../engine/sdk/PVR/src/nommgr.h; sourceTree = SOURCE_ROOT; };
 		B2CB284512D69C87003C8109 /* Quaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Quaternion.h; path = ../../../engine/sdk/PVR/src/Quaternion.h; sourceTree = SOURCE_ROOT; };
 		B2CB284612D69C87003C8109 /* Random.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Random.cpp; path = ../../../engine/sdk/PVR/src/Random.cpp; sourceTree = SOURCE_ROOT; };
@@ -657,7 +657,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B2365F9C12D93EC800E38735 /* GameResources */,
+				B2BD473012EBA15B005A7210 /* GameResources */,
 				B2969C2512D3B884009BCE6D /* icon.png */,
 				8D1107310486CEB800E47090 /* orangegrass-Info.plist */,
 			);
@@ -1107,6 +1107,16 @@
 			name = GLES11;
 			sourceTree = "<group>";
 		};
+		B2BD488312EBA9FC005A7210 /* neonmath */ = {
+			isa = PBXGroup;
+			children = (
+				B2BD488412EBA9FC005A7210 /* neon_matrix_impl.cpp */,
+				B2BD488512EBA9FC005A7210 /* neon_matrix_impl.h */,
+			);
+			name = neonmath;
+			path = ../../../engine/sdk/PVR/src/neonmath;
+			sourceTree = SOURCE_ROOT;
+		};
 		B2CB282E12D69C33003C8109 /* og */ = {
 			isa = PBXGroup;
 			children = (
@@ -1120,9 +1130,9 @@
 		B2CB282F12D69C45003C8109 /* PVR */ = {
 			isa = PBXGroup;
 			children = (
+				B2BD488312EBA9FC005A7210 /* neonmath */,
 				B2542B1812D6AF20000DE568 /* include */,
 				B2CB283312D69C87003C8109 /* iOS */,
-				B2CB284112D69C87003C8109 /* neonmath */,
 				B2CB285B12D69C87003C8109 /* vfpmath */,
 				B2CB283012D69C87003C8109 /* BoneBatch.cpp */,
 				B2CB283112D69C87003C8109 /* BoneBatch.h */,
@@ -1173,16 +1183,6 @@
 			);
 			name = iOS;
 			path = ../../../engine/sdk/PVR/src/iOS;
-			sourceTree = SOURCE_ROOT;
-		};
-		B2CB284112D69C87003C8109 /* neonmath */ = {
-			isa = PBXGroup;
-			children = (
-				B2CB284212D69C87003C8109 /* neon_matrix_impl.cpp */,
-				B2CB284312D69C87003C8109 /* neon_matrix_impl.h */,
-			);
-			name = neonmath;
-			path = ../../../engine/sdk/PVR/src/neonmath;
 			sourceTree = SOURCE_ROOT;
 		};
 		B2CB285B12D69C87003C8109 /* vfpmath */ = {
@@ -1249,7 +1249,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2969C2612D3B884009BCE6D /* icon.png in Resources */,
-				B236607B12D93EC800E38735 /* GameResources in Resources */,
+				B2BD483112EBA15B005A7210 /* GameResources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1269,7 +1269,6 @@
 				B2CB286512D69C87003C8109 /* TouchScreen.mm in Sources */,
 				B2CB286612D69C87003C8109 /* Matrix.cpp in Sources */,
 				B2CB286712D69C87003C8109 /* ModelPOD.cpp in Sources */,
-				B2CB286812D69C87003C8109 /* neon_matrix_impl.cpp in Sources */,
 				B2CB286912D69C87003C8109 /* Random.cpp in Sources */,
 				B2CB286A12D69C87003C8109 /* ResourceFile.cpp in Sources */,
 				B2CB286B12D69C87003C8109 /* Shader.cpp in Sources */,
@@ -1437,6 +1436,7 @@
 				B236686712D9540600E38735 /* string.cpp in Sources */,
 				B236686812D9540600E38735 /* strstream.cpp in Sources */,
 				B236686912D9540600E38735 /* time_facets.cpp in Sources */,
+				B2BD488612EBA9FC005A7210 /* neon_matrix_impl.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

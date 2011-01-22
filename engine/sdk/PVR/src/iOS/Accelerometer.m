@@ -27,7 +27,6 @@ subject to the following restrictions:
 }
 
 
-
 - (void) accelerometer:(UIAccelerometer*)accelerometer didAccelerate:(UIAcceleration*)Acceleration
 {
 	// use a basic low-pass filter to only keep the gravity in the accelerometer values
@@ -35,6 +34,7 @@ subject to the following restrictions:
 	_accelerometer[1] = Acceleration.y * FILTERINGFACTOR + _accelerometer[1] * (1.0 - FILTERINGFACTOR);
 	_accelerometer[2] = Acceleration.z * FILTERINGFACTOR + _accelerometer[2] * (1.0 - FILTERINGFACTOR);
 }
+
 
 - (void) GetAccelerometerMatrix:(GLfloat *) matrix
 {
@@ -65,6 +65,7 @@ subject to the following restrictions:
 	matrix[9] = matrix[4] * matrix[2] - matrix[6] * matrix[0];
 	matrix[10] = matrix[0] * matrix[5] - matrix[1] * matrix[4];
 }
+
 
 - (void) GetAccelerometerVector:(double *) AccelValue;
 {

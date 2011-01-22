@@ -203,6 +203,16 @@ void CGameSystem::OnPointerMove ( int _X, int _Y )
 }
 
 
+///	@brief Accelerometer handler.
+/// @param _X x coordinate.
+/// @param _Y y coordinate.
+/// @param _Z z coordinate
+void CGameSystem::OnAccelerometer ( float _X, float _Y, float _Z )
+{
+    GetInput()->OnAccelerometer(_X, _Y, _Z);
+}
+
+
 ///	@brief Resetting game state.
 void CGameSystem::ResetGameState ()
 {

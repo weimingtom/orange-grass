@@ -33,7 +33,10 @@ public:
 
 	// Pointing device move handler.
 	virtual void OnPointerMove ( int _X, int _Y );
-
+    
+	// Accelerometer handler.
+	virtual void OnAccelerometer ( float _X, float _Y, float _Z );
+    
 private:
 
 	std::vector<IOGInputReceiver*>	m_Receivers;

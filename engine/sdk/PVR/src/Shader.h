@@ -15,7 +15,7 @@ subject to the following restrictions:
 #ifndef _SHADER_H_
 #define _SHADER_H_
 
-#include <OpenGL2.h>
+#include "OpenGL2.h"
 #include <stdio.h>
 #include <string>
 

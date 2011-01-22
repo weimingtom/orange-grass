@@ -73,7 +73,13 @@ public:
     /// @param _X x coordinate.
     /// @param _Y y coordinate.
 	virtual void OnPointerMove ( int _X, int _Y );
-
+    
+	///	@brief Accelerometer handler.
+    /// @param _X x coordinate.
+    /// @param _Y y coordinate.
+    /// @param _Z z coordinate
+	virtual void OnAccelerometer ( float _X, float _Y, float _Z );
+    
 	///	@brief Resetting game state.
 	virtual void ResetGameState ();
 

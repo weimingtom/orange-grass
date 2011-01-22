@@ -9,6 +9,8 @@
 #include "StartMenuScreenController.h"
 #include "OrangeGrass.h"
 
+Vec3 gAccel;
+
 
 CStartMenuScreenController::CStartMenuScreenController() :	m_pResourceMgr(NULL),
 															m_State(CSTATE_NO),
@@ -127,7 +129,8 @@ void CStartMenuScreenController::RenderScene ()
     m_pExitBtn->Render();
 	m_pRenderer->FinishRenderMode();
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
-    m_pRenderer->DisplayString(m_DemoLabelPos, 0.3f, 0x7FFFFFFF, "Demo version: %d.%d", 0, 17);
+    //m_pRenderer->DisplayString(m_DemoLabelPos, 0.3f, 0x7FFFFFFF, "Demo version: %d.%d", 0, 17);
+    m_pRenderer->DisplayString(Vec2(10, 80), 0.3f, 0x7FFFFFFF, "Acceleroteter: x=%f y=%f z=%f", gAccel.x, gAccel.y, gAccel.z);
 	m_pRenderer->FinishRenderMode();
 	m_pRenderer->Reset();
 }
@@ -160,6 +163,7 @@ void CStartMenuScreenController::Deactivate ()
 // Control vector change event handler.
 bool CStartMenuScreenController::OnVectorChanged (const Vec3& _vVec)
 {
+    gAccel = _vVec;
     return false;
 }
 
