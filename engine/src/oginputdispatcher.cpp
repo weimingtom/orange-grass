@@ -85,20 +85,20 @@ void COGInputDispatcher::OnPointerUp ( int _X, int _Y )
 // Pointing device move handler.
 void COGInputDispatcher::OnPointerMove ( int _X, int _Y )
 {
-    /*if (m_bInMove)
+    if (m_bInMove)
     {
         Vec3 vVec((float)_X - m_fPrevX, 0, (float)_Y - m_fPrevY);
         if (vVec.length() > 0.01f)
-        {*/
+        {
             std::vector<IOGInputReceiver*>::iterator iter = m_Receivers.begin();
             for (; iter != m_Receivers.end(); ++iter)
             {
-                if ((*iter)->OnVectorChanged(/*vVec*/Vec3((float)_X, (float)_Y, 0)))
+                if ((*iter)->OnVectorChanged(vVec))
                 {
                     break;
                 }
             }
-/*        }
+        }
 
         m_fPrevX = (float)_X;
         m_fPrevY = (float)_Y;
@@ -108,7 +108,7 @@ void COGInputDispatcher::OnPointerMove ( int _X, int _Y )
         m_fPrevX = (float)_X;
         m_fPrevY = (float)_Y;
         m_bInMove = true;
-    }*/
+    }
 }
 
 
