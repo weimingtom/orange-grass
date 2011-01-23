@@ -251,9 +251,13 @@ void COGActorBot::SetDeadStatus ()
 // Respond on collision with missile.
 bool COGActorBot::RespondOnMissileCollision (IOGActor* _pMissile)
 {
-    unsigned int damage = _pMissile->GetDamagePoints();
-    ReceiveDamage(damage);
-    return true;
+	if (m_Status == OG_ACTORSTATUS_ALIVE)
+	{
+		unsigned int damage = _pMissile->GetDamagePoints();
+		ReceiveDamage(damage);
+		return true;
+	}
+	return false;
 }
 
 

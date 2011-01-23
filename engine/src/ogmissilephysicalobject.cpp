@@ -52,9 +52,9 @@ bool COGMissilePhysicalObject::CheckCollision (IOGPhysicalObject* _pObject)
         IOGCollision collision;
         collision.pActorMissile = m_pActor;
 		collision.pActorBot = _pObject->GetActor();
-        if (m_pListener->OnCollision(collision))
+        if (_pObject->RespondOnCollision(collision))
         {
-			return _pObject->RespondOnCollision(collision);
+			return m_pListener->OnCollision(collision);
         }
     }
     return false;
