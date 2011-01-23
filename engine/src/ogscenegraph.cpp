@@ -314,12 +314,6 @@ void COGSceneGraph::RenderWholeNodesList(IOGCamera* _pCamera, TNodesList& _List)
 // check object visibility
 bool COGSceneGraph::IsVisible(const IOGCamera* _pCamera, const IOGSgNode* _pNode) const
 {
-	//return true;
-
-	//float fCameraZ = _pCamera->GetPosition().z;
-	//float fObjectZ = _pNode->GetOBB().m_vCenter.z;
-	//return ((fObjectZ <= fCameraZ) && ((fCameraZ - fObjectZ) < m_fViewDistance));
-
 	if (!_pNode->GetOBB().m_bTransformed)
 		return true;
 

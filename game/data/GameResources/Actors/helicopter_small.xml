@@ -16,7 +16,7 @@
 		type = "air_bot"
 		model = "helicopter_small"
 		model_propeller = ""
-		model_destruction = ""
+		model_destruction = "helicopter_small_destruction"
 		icon = "Models/units/helicopter_small/helicopter_small_ed.bmp"
 		/>
 	<Logic

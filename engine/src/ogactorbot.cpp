@@ -99,7 +99,7 @@ void COGActorBot::OnAddedToManager ()
 
     if (m_pNodeDestruction)
     {
-    	m_pSg->AddTransparentNode(m_pNodeDestruction);
+    	m_pSg->AddNode(m_pNodeDestruction);
         m_pNodeDestruction->Activate(false);
     }
 

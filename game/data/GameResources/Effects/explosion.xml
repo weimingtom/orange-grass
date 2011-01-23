@@ -9,9 +9,9 @@
 		init_angle_min = "-3.14"
 		init_angle_max = "3.14"
 		frame_inc = "0.5" 
-		scale_inc = "0.6" 
-		rotate_inc = "0.1" 
-		init_scale = "8.0" 
+		scale_inc = "0.8" 
+		rotate_inc = "0.01" 
+		init_scale = "16.0" 
 		color_r = "1.0" color_g = "1.0" color_b = "1.0" color_a = "1.0"
 	/>
 	<Emitter
@@ -19,7 +19,7 @@
 		type = "ring_wave"
 		texture = "effects" 
 		mapping = "10"
-		init_scale = "8.0" 
+		init_scale = "16.0" 
 		scale_inc = "1.5" 
 		alpha_dec = "0.08" 
 		color_r = "1.0" color_g = "1.0" color_b = "1.0" color_a = "1.0"
