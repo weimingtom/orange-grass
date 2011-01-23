@@ -45,7 +45,7 @@ void COGEmitterScrollingRay::Init(IOGGroupNode* _pNode)
 	LoadParams(_pNode);
 
 	m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, m_Texture);
-    m_Blend = OG_BLEND_ALPHAADD;
+    m_Blend = OG_BLEND_ALPHAONE;
 
 	m_bPositionUpdated = false;
     m_bPosReady = false;
