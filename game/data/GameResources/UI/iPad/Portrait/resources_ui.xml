@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Textures>
-	<Texture alias="load_scr" file="Textures/UI/load_p.pvr" >
+	<Texture alias="load_scr" file="UI/iPad/Portrait/Textures/load.pvr" >
 		<Mappings>
 			<Mapping x="0" y="0" width="320" height="300"/>
 			<Mapping x="0" y="320" width="256" height="128"/>
 		</Mappings>
 	</Texture>
-	<Texture alias="gui" file="Textures/UI/gui_p.pvr" >
+	<Texture alias="gui" file="UI/iPad/Portrait/Textures/gui.pvr" >
 		<Mappings>
 			<Mapping x="0" y="0" width="222" height="189"/>
 			<Mapping x="0" y="189" width="222" height="42"/>

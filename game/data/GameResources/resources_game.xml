@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Textures>
-	<Texture alias="hud" file="Textures/UI/hud_2.pvr" >
+	<Texture alias="hud" file="Textures/HUD/hud.pvr" >
 		<Mappings>
 			<Mapping x="0" y="36" width="256" height="32"/>
 			<Mapping x="0" y="102" width="90" height="60"/>
@@ -13,6 +13,7 @@
 	</Texture>
 	<Texture alias="effects" file="Textures/FX/effects.pvr">
 		<Mappings>
+            <!-- [1-7] explosion frames -->
 			<Mapping x="0" y="0" width="128" height="128"/>
 			<Mapping x="128" y="0" width="128" height="128"/>
 			<Mapping x="256" y="0" width="128" height="128"/>
@@ -20,13 +21,23 @@
 			<Mapping x="0" y="128" width="128" height="128"/>
 			<Mapping x="128" y="128" width="128" height="128"/>
 			<Mapping x="256" y="128" width="128" height="128"/>
+
+            <!-- [8] glow 1 -->
 			<Mapping x="384" y="128" width="128" height="128"/>
 
+            <!-- [9] glow 2 -->
 			<Mapping x="0" y="256" width="128" height="128"/>
+
+            <!-- [10] ring wave -->
 			<Mapping x="0" y="384" width="128" height="128"/>
+
+            <!-- [11] spark -->
 			<Mapping x="480" y="480" width="32" height="32"/>
+
+            <!-- [12] glow 3 -->
 			<Mapping x="128" y="384" width="128" height="128"/>
 			
+            <!-- [13-14] gauss frames -->
 			<Mapping x="352" y="384" width="64" height="128"/>
 			<Mapping x="416" y="384" width="64" height="128"/>
 		</Mappings>
@@ -38,7 +49,7 @@
 	<Texture alias="bonus_02" file="Models/Bonuses/bonus_02.pvr" />
 	<Texture alias="land_02" file="Models/Land_objects_02/land_02.pvr" />
 	<Texture alias="land_02_objs" file="Models/Land_objects_02/land_02_objs.pvr" />
-	<Texture alias="icons" file="Textures/Weapons/icons.pvr" >
+	<Texture alias="icons" file="Textures/HUD/icons.pvr" >
 		<Mappings>
 			<!--Weapon icons-->
 			<Mapping x="0" y="92" width="64" height="36"/>
