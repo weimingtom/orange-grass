@@ -79,7 +79,10 @@ void COGActorAirBot::UpdateAlive (unsigned long _ElapsedTime)
                 IOGActor* pPlayer = GetActorManager()->GetPlayersActor();
                 if (pPlayer)
                 {
-                    m_pWeapon->Fire(pPlayer, true);
+                    if (m_pPhysicalObject->GetPosition().z < (pPlayer->GetPhysicalObject()->GetPosition().z - 50.0f))
+                    {
+                        m_pWeapon->Fire(pPlayer, true);
+                    }
                 }
             }
         }

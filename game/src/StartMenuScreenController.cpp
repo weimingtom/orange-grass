@@ -9,8 +9,6 @@
 #include "StartMenuScreenController.h"
 #include "OrangeGrass.h"
 
-Vec3 gAccel;
-
 
 CStartMenuScreenController::CStartMenuScreenController() :	m_pResourceMgr(NULL),
 															m_State(CSTATE_NO),
@@ -26,7 +24,9 @@ CStartMenuScreenController::CStartMenuScreenController() :	m_pResourceMgr(NULL),
 	m_pReader = GetSettingsReader();
 
     m_pNewBtn = GetSpritePool()->CreateButton();
+#ifdef WIN32
     m_pExitBtn = GetSpritePool()->CreateButton();
+#endif
 }
 
 
@@ -36,7 +36,9 @@ CStartMenuScreenController::~CStartMenuScreenController()
 	m_State = CSTATE_NO;
 	m_bLoaded = false;
     GetSpritePool()->DestroyButton(m_pNewBtn);
+#ifdef WIN32
     GetSpritePool()->DestroyButton(m_pExitBtn);
+#endif
 }
 
 
@@ -87,7 +89,7 @@ bool CStartMenuScreenController::Init ()
 		m_NewBtnSize = m_pReader->ReadVec2Param(pNewBtnNode, "width", "height");
 		m_pReader->CloseGroupNode(pNewBtnNode);
 	}
-
+#ifdef WIN32
 	IOGGroupNode* pExitBtnNode = m_pReader->OpenGroupNode(pSource, pRoot, "ExitBtn");
 	if (pExitBtnNode != NULL)
 	{
@@ -97,7 +99,7 @@ bool CStartMenuScreenController::Init ()
 		m_ExitBtnSize = m_pReader->ReadVec2Param(pExitBtnNode, "width", "height");
 		m_pReader->CloseGroupNode(pExitBtnNode);
 	}
-
+#endif
 	m_pReader->CloseGroupNode(pRoot);
 	m_pReader->CloseSource(pSource);
 	
@@ -126,11 +128,12 @@ void CStartMenuScreenController::RenderScene ()
 	m_pBack->Render(m_BackSprPos, m_BackSprSize);
 	m_pLogo->Render(m_LogoSprPos, m_LogoSprSize);
     m_pNewBtn->Render();
+#ifdef WIN32
     m_pExitBtn->Render();
+#endif
 	m_pRenderer->FinishRenderMode();
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
-    //m_pRenderer->DisplayString(m_DemoLabelPos, 0.3f, 0x7FFFFFFF, "Demo version: %d.%d", 0, 17);
-    m_pRenderer->DisplayString(Vec2(10, 80), 0.3f, 0x7FFFFFFF, "Acceleroteter: x=%f y=%f z=%f", gAccel.x, gAccel.y, gAccel.z);
+    m_pRenderer->DisplayString(m_DemoLabelPos, 0.3f, 0x7FFFFFFF, "Demo version: %d.%d", 0, 17);
 	m_pRenderer->FinishRenderMode();
 	m_pRenderer->Reset();
 }
@@ -143,8 +146,10 @@ void CStartMenuScreenController::Activate ()
     m_pBack = m_pResourceMgr->GetSprite(OG_RESPOOL_UI, m_BackSprStr);
     m_pNewBtn->Load(m_NewBtnNSprStr, m_NewBtnPrSprStr, m_NewBtnSize);
     m_pNewBtn->SetPosition(m_NewBtnPos);
+#ifdef WIN32
     m_pExitBtn->Load(m_ExitBtnNSprStr, m_ExitBtnPrSprStr, m_ExitBtnSize);
     m_pExitBtn->SetPosition(m_ExitBtnPos);
+#endif
     m_State = CSTATE_ACTIVE;
 }
 
@@ -155,7 +160,9 @@ void CStartMenuScreenController::Deactivate ()
     m_pResourceMgr->ReleaseSprite(m_pLogo);
     m_pResourceMgr->ReleaseSprite(m_pBack);
     m_pNewBtn->Unload();
+#ifdef WIN32
     m_pExitBtn->Unload();
+#endif
 	m_State = CSTATE_INACTIVE;
 }
 
@@ -163,7 +170,6 @@ void CStartMenuScreenController::Deactivate ()
 // Control vector change event handler.
 bool CStartMenuScreenController::OnVectorChanged (const Vec3& _vVec)
 {
-    gAccel = _vVec;
     return false;
 }
 
@@ -173,21 +179,22 @@ bool CStartMenuScreenController::OnTouch (const Vec2& _vPos, IOGTouchParam _para
 {
 	if (m_State == CSTATE_ACTIVE)
 	{
-        bool bNewBtn = m_pNewBtn->OnTouch(_vPos, _param);
-        bool bExitBtn = m_pExitBtn->OnTouch(_vPos, _param);
-        
+        bool bNewBtn = m_pNewBtn->OnTouch(_vPos, _param);       
         if (_param == OG_TOUCH_UP && bNewBtn)
         {
     		Deactivate();
             return true;
         }
         
+#ifdef WIN32        
+        bool bExitBtn = m_pExitBtn->OnTouch(_vPos, _param);
         if (_param == OG_TOUCH_UP && bExitBtn)
         {
     		Deactivate();
             m_State = CSTATE_FAILED;
             return true;
         }
+#endif
 	}
     return false;
 }

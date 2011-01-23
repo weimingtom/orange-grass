@@ -83,11 +83,12 @@ private:
 	std::string		m_NewBtnPrSprStr;
 	Vec2			m_NewBtnPos;
 	Vec2			m_NewBtnSize;
-
+#ifdef WIN32
 	std::string		m_ExitBtnNSprStr;
 	std::string		m_ExitBtnPrSprStr;
 	Vec2			m_ExitBtnPos;
 	Vec2			m_ExitBtnSize;
+#endif
 };
 
 #endif
