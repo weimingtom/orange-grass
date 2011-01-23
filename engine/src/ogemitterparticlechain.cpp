@@ -19,7 +19,7 @@ COGEmitterParticleChain::COGEmitterParticleChain()
 	m_Texture = std::string("effects");
 	m_MappingId = 12;
 	m_NumParticles = 12;
-	m_color = Vec4(1.0f, 1.0f, 1.0f, 0.2f);
+	m_color = Vec4(0.6f, 0.7f, 1.0f, 0.2f);
 
 	AddStringParam("texture", &m_Texture);
 	AddIntParam("mapping", &m_MappingId);
@@ -39,7 +39,7 @@ void COGEmitterParticleChain::Init(IOGGroupNode* _pNode)
 	LoadParams(_pNode);
 
 	m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, m_Texture);
-    m_Blend = OG_BLEND_ALPHAADD;
+    m_Blend = OG_BLEND_ALPHAONE;
 	m_pMapping = m_pTexture->GetMapping(m_MappingId);
 
 	m_BBList.reserve(m_NumParticles);
@@ -47,7 +47,7 @@ void COGEmitterParticleChain::Init(IOGGroupNode* _pNode)
 	for (unsigned int i = 0; i < m_NumParticles; ++i)
 	{
 		ParticleFormat particle;
-		particle.scale = ((float)m_NumParticles - i) / 4.5f;
+		particle.scale = ((float)m_NumParticles - i) / 6.5f;
         particle.pVertices[0].t = Vec2(m_pMapping->t1.x, m_pMapping->t0.y);
         particle.pVertices[1].t = Vec2(m_pMapping->t0.x, m_pMapping->t0.y);
         particle.pVertices[2].t = Vec2(m_pMapping->t1.x, m_pMapping->t1.y);

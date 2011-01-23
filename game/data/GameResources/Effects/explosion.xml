@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <Effect>
 	<Emitter
-		master = "1"
+		master = "0"
 		type = "animated_bb"
 		texture = "effects" 
 		mapping_start = "1"
@@ -15,13 +15,13 @@
 		color_r = "1.0" color_g = "1.0" color_b = "1.0" color_a = "1.0"
 	/>
 	<Emitter
-		master = "0"
+		master = "1"
 		type = "ring_wave"
 		texture = "effects" 
 		mapping = "10"
 		init_scale = "16.0" 
 		scale_inc = "1.5" 
-		alpha_dec = "0.08" 
+		alpha_dec = "0.05" 
 		color_r = "1.0" color_g = "1.0" color_b = "1.0" color_a = "1.0"
 	/>
 	<Emitter

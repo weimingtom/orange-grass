@@ -93,7 +93,8 @@ void COGActorPlasmaMissile::Activate (bool _bActive)
 		m_FlightWorker.Reset();
 		m_FlightWorker.Activate(true);
 		m_pHeadEffect->Start();
-		m_pHeadEffect->SetDirection(Vec3(0,0,1));
+		Vec3 vDir = m_pPhysicalObject->GetDirection();
+		m_pHeadEffect->SetDirection(-vDir);
         m_pPhysicalObject->Update(1);
 	}
 	else

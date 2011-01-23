@@ -10,6 +10,9 @@
 #include "ogweapon.h"
 
 
+static const int MaxMissiles = 32;
+
+
 COGWeapon::COGWeapon()
 {
 	m_pOwner = NULL;
@@ -32,9 +35,11 @@ bool COGWeapon::Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams)
 	m_pWeaponParams = _pWeaponParams;
 
 	m_WeaponCoolDownMax = m_pWeaponParams->cooldown;
+	m_WeaponCoolDown = m_WeaponCoolDownMax;
+
     Vec3 vStart = _pOwner->GetPhysicalObject()->GetPosition();
-	m_MissileList.reserve(10);
-    for (int i = 0; i < 10; ++i)
+	m_MissileList.reserve(MaxMissiles);
+    for (int i = 0; i < MaxMissiles; ++i)
     {
         COGActorBullet* pMissile = (COGActorBullet*)GetActorManager()->CreateActor(
 			m_pWeaponParams->actor, Vec3(0,0,0), Vec3(0,0,0), Vec3(1,1,1));

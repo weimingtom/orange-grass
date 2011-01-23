@@ -46,7 +46,7 @@ void COGEmitterRotatingSparks::Init(IOGGroupNode* _pNode)
 
 	m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, m_Texture);
 	m_pMapping = m_pTexture->GetMapping(m_MappingId);
-    m_Blend = OG_BLEND_ALPHABLEND;
+    m_Blend = OG_BLEND_ALPHAONE;
 
 	m_BBList.reserve(m_NumParticles);
 

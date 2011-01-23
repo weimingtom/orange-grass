@@ -44,7 +44,7 @@ void COGEmitterRingWave::Init(IOGGroupNode* _pNode)
 
 	m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, m_Texture);
 	m_pMapping = m_pTexture->GetMapping(m_MappingId);
-    m_Blend = OG_BLEND_ALPHABLEND;
+    m_Blend = OG_BLEND_ALPHAONE;
 
     m_Wave.pVertices[0].t = Vec2(m_pMapping->t1.x, m_pMapping->t0.y);
     m_Wave.pVertices[1].t = Vec2(m_pMapping->t0.x, m_pMapping->t0.y);
@@ -69,6 +69,11 @@ void COGEmitterRingWave::Update (unsigned long _ElapsedTime)
         m_Wave.pVertices[2].c.w -= m_fAlphaDec;
         m_Wave.pVertices[3].c.w -= m_fAlphaDec;
     }
+	else
+	{
+		Stop();
+		return;
+	}
 }
 
 

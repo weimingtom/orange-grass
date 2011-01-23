@@ -163,6 +163,12 @@ void COGRenderer::SetBlend (OGBlendType _Blend)
 			glBlendFunc (GL_ONE, GL_ONE);
 			glDisable(GL_ALPHA_TEST);
 			break;
+
+		case OG_BLEND_ALPHAONE:
+			glEnable (GL_BLEND); 
+			glBlendFunc (GL_SRC_ALPHA,GL_ONE);
+			glDisable(GL_ALPHA_TEST);
+			break;
 		}
 	}
 }

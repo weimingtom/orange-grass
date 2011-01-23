@@ -87,6 +87,7 @@ void COGPhysicalObject::SetWorldTransform (
 
 	WorldMatrixFromTransforms(m_mWorld, m_vPosition, m_vRotation, m_vScaling);
 	m_Obb.UpdateTransform(m_mWorld);
+	UpdateDirections();
 
 	m_bUpdated = false;
 }

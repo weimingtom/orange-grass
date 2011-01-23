@@ -2,8 +2,8 @@
 <Weapon>
 	<Params 
 		actor = "plasma_01"
-		hitpoints = "200"
-		cooldown = "200"
+		hitpoints = "50"
+		cooldown = "50"
 		position = "left_right"
 		icon_texture = "weapon_plasma01"
 		/>
