@@ -58,6 +58,9 @@ public:
 	// Get part AABB
 	virtual const IOGAabb& GetAABB (unsigned int _Part) const;
 
+	// Get part's transformed OBB after applying animation
+	virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const MATRIX& _mWorld) const;
+
     // Get ray intersection
     virtual bool GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos);
 

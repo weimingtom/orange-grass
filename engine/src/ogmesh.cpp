@@ -288,6 +288,24 @@ const IOGAabb& COGMesh::GetAABB (unsigned int _Part) const
 }
 
 
+// Get part's transformed OBB after applying animation
+bool COGMesh::GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const MATRIX& _mWorld) const
+{
+	_obb.Create(GetAABB(_Part));
+
+    const SubMesh& submesh = m_SubMeshes[_Part];
+	m_pScene->SetFrame((float)_Frame);
+	const SPODNode& node = m_pScene->pNode[submesh.part];
+	MATRIX mNodeWorld;
+	m_pScene->GetWorldMatrix(mNodeWorld, node);
+    MATRIX mModel;
+    MatrixMultiply(mModel, mNodeWorld, _mWorld);
+
+	_obb.UpdateTransform(mModel);
+	return true;
+}
+
+
 // Get ray intersection
 bool COGMesh::GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos)
 {

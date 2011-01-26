@@ -14,7 +14,6 @@
 #include "IOGMaterial.h"
 #include "Mathematics.h"
 #include "IOGAabb.h"
-#include "IOGRenderable.h"
 #include <vector>
 
 
