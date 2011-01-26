@@ -65,6 +65,7 @@
 	<Model alias="helicopter_small_destruction" file="Models/units/helicopter_small/helicopter_small_destruction.xml"/>
 	<Model alias="helicopter_medium" file="Models/units/helicopter_medium/helicopter_medium.xml"/>
 	<Model alias="helicopter_medium_destruction" file="Models/units/helicopter_medium/helicopter_medium_destruction.xml"/>
+	<Model alias="helicopter_big" file="Models/units/helicopter_big/helicopter_big.xml"/>
 	<Model alias="plane_small" file="Models/units/plane_small/plane_small.xml"/>
 	<Model alias="plane_small_destruction" file="Models/units/plane_small/plane_small_destruction.xml"/>
 	<Model alias="oil_tank" file="Models/objects/oil_tank/oil_tank.xml"/>

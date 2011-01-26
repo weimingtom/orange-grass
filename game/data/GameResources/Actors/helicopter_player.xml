@@ -14,10 +14,10 @@
 		/>
 	<Actor 
 		type = "player"
-		model = "helicopter_small"
+		model = "helicopter_big"
 		model_propeller = ""
 		model_destruction = ""
-		icon = "Models/units/helicopter_small/helicopter_small_ed.bmp"
+		icon = "Models/units/helicopter_big/helicopter_big_ed.bmp"
 		/>
 	<Logic
 		team = "1"

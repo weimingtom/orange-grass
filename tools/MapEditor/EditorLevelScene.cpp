@@ -231,7 +231,7 @@ bool CEditorLevelScene::LoadLevel (const std::string& _LevelName)
 	if (!pPlayerActor)
 	{
 		pPlayerActor = m_pActorMgr->CreateActor(
-			std::string("helicopter"),
+			std::string("helicopter_player"),
 			vCraftPos, 
             Vec3(0,0,0), 
             Vec3(1,1,1));
