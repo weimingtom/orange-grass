@@ -1,6 +1,11 @@
-Tools: ver. 0.17, 21-Jan-2011
+Tools: ver. 0.18, 27-Jan-2011
 
 ChangeList:
+
+0.18 (27-Jan-2011):
+- [OG] added new helicopter model and destruction animations;
+- [OG] new blending mode (src - ALPHA, dest - ONE);
+- [OG] fixed the plasma weapon missiles orientation;
 
 0.17 (21-Jan-2011):
 - [OG] screen mode is controlled from the scripts;
