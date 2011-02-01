@@ -32,6 +32,9 @@ public:
 	// Get OBB
 	virtual const IOGObb& GetOBB () const = 0;
 
+	// Get transformed OBBs list
+	virtual const std::vector<IOGObb>& GetTransformedOBBs () const = 0;
+
 	// get physics.
 	virtual IOGPhysicalObject* GetPhysics () = 0;
 

@@ -33,12 +33,15 @@ COGActorBot::~COGActorBot()
 		    m_pSg->RemoveNode(m_pExplosionNode);
         OG_SAFE_DELETE(m_pExplosionNode);
 	}
-	if (m_pTrailNode)
+	TTrailList::iterator iter = m_TrailList.begin();
+	for (; iter != m_TrailList.end(); ++iter)
 	{
-        if (m_bAdded)
-		    m_pSg->RemoveNode(m_pTrailNode);
-        OG_SAFE_DELETE(m_pTrailNode);
+		if (m_bAdded)
+			m_pSg->RemoveNode((*iter).m_pTrailNode);
+		OG_SAFE_DELETE((*iter).m_pTrailNode);
 	}
+	m_TrailList.clear();
+
 	OG_SAFE_DELETE(m_pWeapon);
 }
 
@@ -66,13 +69,20 @@ bool COGActorBot::Create (IOGActorParams* _pParams,
     if (m_pModelDestruction)
     {
 	    m_pNodeDestruction = m_pSg->CreateNode(m_pModelDestruction, m_pPhysicalObject);
-    }
+
+		unsigned int NumParts = m_pNodeDestruction->GetTransformedOBBs().size();
+		m_TrailList.reserve(NumParts);
+		for (unsigned int i = 0; i < NumParts; ++i)
+		{
+			PartsTrail trail;
+			trail.m_pTrailEffect = GetEffectsManager()->CreateEffect("trail_smoke");
+			trail.m_pTrailNode = m_pSg->CreateEffectNode(trail.m_pTrailEffect, m_pPhysicalObject);
+			m_TrailList.push_back(trail);
+		}
+	}
 
 	m_pExplosionEffect = GetEffectsManager()->CreateEffect("explosion");
 	m_pExplosionNode = m_pSg->CreateEffectNode(m_pExplosionEffect, m_pPhysicalObject);
-
-	m_pTrailEffect = GetEffectsManager()->CreateEffect("trail_smoke");
-	m_pTrailNode = m_pSg->CreateEffectNode(m_pTrailEffect, m_pPhysicalObject);
 
     SetTeam(m_pParams->gameplay.team);
 
@@ -109,10 +119,11 @@ void COGActorBot::OnAddedToManager ()
         m_pExplosionNode->Activate(false);
 	}
 
-	if (m_pTrailNode)
+	TTrailList::iterator iter = m_TrailList.begin();
+	for (; iter != m_TrailList.end(); ++iter)
 	{
-		m_pSg->AddEffectNode(m_pTrailNode);
-        m_pTrailNode->Activate(false);
+		m_pSg->AddEffectNode((*iter).m_pTrailNode);
+        (*iter).m_pTrailNode->Activate(false);
 	}
 }
 
@@ -165,8 +176,12 @@ void COGActorBot::Activate (bool _bActive)
 
 	if (!m_bActive)
 	{
-	    if (m_pTrailNode)
-			m_pTrailNode->Activate(false);
+		TTrailList::iterator iter = m_TrailList.begin();
+		for (; iter != m_TrailList.end(); ++iter)
+		{
+			(*iter).m_pTrailNode->Activate(false);
+		}
+
 		if (m_pExplosionNode)
 			m_pExplosionNode->Activate(false);
 	}
@@ -185,14 +200,15 @@ void COGActorBot::UpdateFalling (unsigned long _ElapsedTime)
 {
 	COGActor::UpdateFalling(_ElapsedTime);
 
-	if (m_pNodeDestruction && m_pTrailEffect)
+	if (m_pNodeDestruction)
 	{
 		m_pNodeDestruction->Update(_ElapsedTime);
-		Vec3 vTrail;
-		if (m_pNodeDestruction->GetActivePoint(vTrail, "actpointpart02"))
+		
+		const std::vector<IOGObb>& obbslist = m_pNodeDestruction->GetTransformedOBBs();
+		unsigned int NumParts = m_TrailList.size();
+		for (unsigned int i = 0; i < NumParts; ++i)
 		{
-			MatrixVecMultiply(vTrail, vTrail, m_pPhysicalObject->GetWorldTransform());
-			m_pTrailEffect->UpdatePosition(vTrail);
+			m_TrailList[i].m_pTrailEffect->UpdatePosition(obbslist[i].m_vCenter);
 		}
 	}
 }
@@ -230,12 +246,13 @@ void COGActorBot::SetFallingStatus ()
         m_pNodeDestruction->StartAnimation("idle");
         m_pNode->Activate(false);
     }
-    if (m_pTrailNode)
-    {
-        m_pTrailNode->Activate(true);
-        m_pTrailEffect->Start();
-        m_pTrailEffect->SetDirection(m_pPhysicalObject->GetDirection());
-    }
+	TTrailList::iterator iter = m_TrailList.begin();
+	for (; iter != m_TrailList.end(); ++iter)
+	{
+		(*iter).m_pTrailNode->Activate(true);
+		(*iter).m_pTrailEffect->Start();
+		(*iter).m_pTrailEffect->SetDirection(m_pPhysicalObject->GetDirection());
+	}
 
     m_Status = OG_ACTORSTATUS_FALLING;
 }

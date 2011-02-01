@@ -72,10 +72,16 @@ protected:
 
 	IOGEffect*  m_pExplosionEffect;
     IOGSgNode*  m_pExplosionNode;
-    IOGEffect*  m_pTrailEffect;
-    IOGSgNode*  m_pTrailNode;
 
 	COGWeapon*	m_pWeapon;
+
+	struct PartsTrail
+	{
+	    IOGEffect*  m_pTrailEffect;
+		IOGSgNode*  m_pTrailNode;
+	};
+	typedef std::vector<PartsTrail>	TTrailList;
+	TTrailList	m_TrailList;
 };
 
 

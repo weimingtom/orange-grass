@@ -31,11 +31,20 @@ COGSgNode::COGSgNode (IOGModel* _pRenderable, IOGPhysicalObject* _pPhysics) :
     m_pAnimator = new COGAnimationController();
     m_AnimFrame = 0;
 	m_fSpin = 0.0f;
+	
+	unsigned int NumOBBs = _pRenderable->GetNumRenderables();
+	m_TransformedOBBs.reserve(_pRenderable->GetNumRenderables());
+	for (unsigned int i = 0; i < NumOBBs; ++i)
+	{
+		IOGObb obb;
+		m_TransformedOBBs.push_back(obb);
+	}
 }
 
 
 COGSgNode::~COGSgNode () 
 {
+	m_TransformedOBBs.clear();
     m_pRenderable = NULL;
     m_pPhysics = NULL;
     OG_SAFE_DELETE(m_pAnimator);
@@ -68,6 +77,13 @@ void COGSgNode::Update (unsigned long _ElapsedTime)
     {
         m_pAnimator->UpdateAnimation(_ElapsedTime);
         m_AnimFrame = (unsigned int)m_pAnimator->GetCurrentAnimationProgress();
+	
+		const MATRIX& mWorld = m_pPhysics->GetWorldTransform();
+		unsigned int NumOBBs = m_TransformedOBBs.size();
+		for (unsigned int i = 0; i < NumOBBs; ++i)
+		{
+			m_pRenderable->GetTransformedOBB(m_TransformedOBBs[i], i, m_AnimFrame, mWorld);
+		}
     }
 }
 

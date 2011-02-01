@@ -258,6 +258,13 @@ unsigned int COGModel::GetNumRenderables () const
 }
 
 
+// Get part's transformed OBB after applying animation
+bool COGModel::GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const MATRIX& _mWorld) const
+{
+	return m_pMesh->GetTransformedOBB(_obb, _Part, _Frame, _mWorld);
+}
+
+
 // Get combined AABB
 const IOGAabb& COGModel::GetAABB () const
 {

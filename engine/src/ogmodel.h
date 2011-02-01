@@ -50,6 +50,9 @@ public:
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const;
 
+	// Get part's transformed OBB after applying animation
+	virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const MATRIX& _mWorld) const;
+
 	// Get model alias
 	virtual const std::string& GetAlias () const;
 

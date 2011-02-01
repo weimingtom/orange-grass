@@ -28,6 +28,9 @@ public:
 	// Get OBB
 	virtual const IOGObb& GetOBB () const;
 
+	// Get transformed OBBs list
+	virtual const std::vector<IOGObb>& GetTransformedOBBs () const {return m_TransformedOBBs;}
+
 	// render.
 	virtual void Render ();
 
@@ -63,6 +66,7 @@ protected:
     IOGEffect*              m_pRenderable;
     IOGPhysicalObject*      m_pPhysics;
     bool					m_bActive;
+	std::vector<IOGObb>		m_TransformedOBBs;
 };
 
 #endif

@@ -14,6 +14,7 @@
 #include "IOGMaterial.h"
 #include "Mathematics.h"
 #include "IOGAabb.h"
+#include "IOGObb.h"
 #include <vector>
 
 
@@ -46,8 +47,14 @@ public:
 	// Check if has submeshes of the following type
 	virtual bool HasSubmeshesOfType(SubMeshType _Type) const = 0;
 
+    // Get num renderable parts.
+	virtual unsigned int GetNumRenderables () const = 0;
+
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const = 0;
+
+	// Get part's transformed OBB after applying animation
+	virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const MATRIX& _mWorld) const = 0;
 
 	// Get animation
     virtual IOGAnimation* GetAnimation (const std::string& _Alias) = 0;

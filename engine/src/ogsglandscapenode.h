@@ -29,6 +29,9 @@ public:
 	// Get OBB
 	virtual const IOGObb& GetOBB () const;
 
+	// Get transformed OBBs list
+	virtual const std::vector<IOGObb>& GetTransformedOBBs () const {return m_TransformedOBBs;}
+
 	// render.
 	virtual void Render ();
 
@@ -65,6 +68,7 @@ protected:
     bool					m_bActive;
     IOGObb                  m_OBB;
     MATRIX                  m_World;
+	std::vector<IOGObb>		m_TransformedOBBs;
 };
 
 #endif

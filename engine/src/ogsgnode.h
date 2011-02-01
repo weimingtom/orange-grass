@@ -28,6 +28,9 @@ public:
 	// Get OBB
 	virtual const IOGObb& GetOBB () const;
 
+	// Get transformed OBBs list
+	virtual const std::vector<IOGObb>& GetTransformedOBBs () const {return m_TransformedOBBs;}
+
 	// render.
 	virtual void Render ();
 
@@ -66,6 +69,7 @@ protected:
     bool					m_bActive;
     unsigned int            m_AnimFrame;
 	float					m_fSpin;
+	std::vector<IOGObb>		m_TransformedOBBs;
 };
 
 #endif

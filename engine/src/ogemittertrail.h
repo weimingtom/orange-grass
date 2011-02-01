@@ -61,11 +61,13 @@ protected:
 	float			m_fAlphaFade;
 	float			m_fInitialScale;
 	float			m_fScaleInc;
-	unsigned int	m_numVertsAtOnce;
+	float			m_fEmitDistance;
     float			m_fRotateInc;
 	Vec4			m_color;
     std::string     m_Texture;
     unsigned int    m_MappingId;
+
+	float			m_fDistanceAccum;
 
 public:
 

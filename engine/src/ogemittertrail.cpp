@@ -16,9 +16,11 @@ OGEmitterType COGEmitterTrail::s_Type = OG_EMITTER_TRAIL;
 
 COGEmitterTrail::COGEmitterTrail()
 {
+	m_fDistanceAccum = 0.0f;
+
     m_Texture = std::string("effects");
     m_MappingId = 5;
-	m_numVertsAtOnce = 3;
+	m_fEmitDistance = 0.3f;
 	m_fAlphaFade = 0.01f;
 	m_fInitialScale = 2.0f;
 	m_fScaleInc = 0.1f;
@@ -27,7 +29,7 @@ COGEmitterTrail::COGEmitterTrail()
 
 	AddStringParam("texture", &m_Texture);
 	AddIntParam("mapping", &m_MappingId);
-	AddIntParam("particles_at_once", &m_numVertsAtOnce);
+	AddFloatParam("emit_distance", &m_fEmitDistance);
 	AddFloatParam("alpha_fade", &m_fAlphaFade);
 	AddFloatParam("scale_inc", &m_fScaleInc);
 	AddFloatParam("rotate_inc", &m_fRotateInc);
@@ -78,11 +80,11 @@ void COGEmitterTrail::Update (unsigned long _ElapsedTime)
         else
         {
             iter = m_BBList.erase(iter);
-            if (m_BBList.empty())
-            {
-                m_Status = OG_EFFECTSTATUS_INACTIVE;
-                return;
-            }
+			if (m_BBList.empty() && m_Status == OG_EFFECTSTATUS_STOPPED)
+			{
+				m_Status = OG_EFFECTSTATUS_INACTIVE;
+				return;
+			}
         }
     }
 
@@ -91,11 +93,20 @@ void COGEmitterTrail::Update (unsigned long _ElapsedTime)
 		Vec3 vDir = m_vPrevPosition - m_vCurPosition;
 		float fDist = vDir.length();
 		vDir.normalize();
+		unsigned int numVertsAtOnce = (unsigned int)((fDist + m_fDistanceAccum) / m_fEmitDistance);
+		if (numVertsAtOnce == 0)
+		{
+			m_fDistanceAccum += fDist;
+		}
+		else
+		{
+			m_fDistanceAccum = 0.0f;
+		}
 
-		for (unsigned int n = 0; n < m_numVertsAtOnce; ++n)
+		for (unsigned int n = 0; n < numVertsAtOnce; ++n)
 		{
 			ParticleFormat particle;
-			particle.offset = vDir * (fDist * (float)n);
+			particle.offset = vDir * (m_fEmitDistance * (float)n);
 			particle.scale = m_fInitialScale;
 			particle.angle = rand() * 0.01f;
 			particle.bDirty = true;
@@ -168,6 +179,7 @@ void COGEmitterTrail::Start ()
 {
 	m_Status = OG_EFFECTSTATUS_STARTED;
     m_BBList.clear();
+	m_fDistanceAccum = 0.0f;
 }
 
 
@@ -177,5 +189,6 @@ void COGEmitterTrail::Stop ()
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
+	m_fDistanceAccum = 0.0f;
 	m_Status = OG_EFFECTSTATUS_STOPPED;
 }
