@@ -44,8 +44,8 @@ bool CEditorLevelScene::Init ()
     if (m_bInited)
         return true;
 
-	std::string settings_str = std::string("settings.xml");
-	GetAppSettings()->Init(settings_str);
+	GetAppSettings()->Init("settings.xml");
+	GetAppSettings()->InitScreenMode();
 
 	glewInit();
 
@@ -151,7 +151,10 @@ void CEditorLevelScene::RenderScene ()
         }
 
 		m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
-        m_pSg->RenderAll(m_pCamera);
+        //m_pSg->RenderAll(m_pCamera);
+		m_pSg->RenderLandscape(m_pCamera);
+		m_pSg->RenderScene(m_pCamera);
+	    m_pSg->RenderTransparentNodes(m_pCamera);
 
         if (m_EditorMode == EDITMODE_OBJECTS)
         {

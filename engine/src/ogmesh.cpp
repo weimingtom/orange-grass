@@ -58,10 +58,11 @@ bool COGMesh::Load ()
 	m_TransparentParts.reserve(m_pScene->nNumMeshNode);
     for(unsigned int i = 0; i < m_pScene->nNumMeshNode; ++i)
     {
+		SPODNode* pNode = &m_pScene->pNode[i];
+		SPODMesh& Mesh = m_pScene->pMesh[pNode->nIdx];
+
         if (IsActivePoint(i))
         {
-            SPODNode* pNode = &m_pScene->pNode[i];
-            SPODMesh& Mesh = m_pScene->pMesh[pNode->nIdx];
             Vec3* pPtr = (Vec3*)Mesh.pInterleaved;
             ActPoint pt;
             pt.pos = *pPtr;
@@ -73,7 +74,7 @@ bool COGMesh::Load ()
         SubMesh submesh;
         submesh.type = GetSubMeshType(i);
         submesh.part = i;
-        submesh.buffer = m_pRenderer->CreateVertexBuffer(&m_pScene->pMesh[i]);
+        submesh.buffer = m_pRenderer->CreateVertexBuffer(&Mesh);
         m_SubMeshes.push_back(submesh);
 		switch (submesh.type)
 		{
