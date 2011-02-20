@@ -398,6 +398,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\ogscenemesh.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ogscenemesh.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\ogsprite.cpp"
 					>
 				</File>

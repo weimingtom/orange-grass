@@ -16,7 +16,7 @@
 #include "ogresource.h"
 #include "IOGRenderer.h"
 #include "IOGSettingsReader.h"
-#include "ogmesh.h"
+#include "ogscenemesh.h"
 
 
 class COGTerrain : public IOGTerrain, public COGResource
@@ -36,9 +36,6 @@ public:
 
 	// Render all.
 	virtual void RenderAll (const MATRIX& _mWorld);
-
-    // Get num renderable parts.
-	virtual unsigned int GetNumRenderables () const;
 
 	// Get type of the renderable.
 	virtual RenderableType GetRenderableType () const { return OG_RENDERABLE_TERRAIN; }
@@ -74,7 +71,7 @@ private:
 	
 private:
 
-	COGMesh*					m_pMesh;	
+	COGSceneMesh*				m_pMesh;	
     IOGMaterial*				m_pMaterial;
 	IOGTexture*					m_pTexture;
 	OGBlendType					m_Blend;

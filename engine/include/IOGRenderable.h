@@ -23,6 +23,14 @@ enum RenderableType
 };
 
 
+enum SceneMeshType
+{
+	OG_SCENEMESH_TERRA				= 0,
+	OG_SCENEMESH_SOLID_OBJ			= 1,
+	OG_SCENEMESH_TRANSPARENT_OBJ	= 2
+};
+
+
 enum SubMeshType
 {
 	OG_SUBMESH_BODY			= 0,

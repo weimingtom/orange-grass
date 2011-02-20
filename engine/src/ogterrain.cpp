@@ -47,7 +47,7 @@ bool COGTerrain::Load ()
 		return false;
 	}
 
-	m_pMesh = new COGMesh ();
+	m_pMesh = new COGSceneMesh ();
 	m_pMesh->Init(std::string(""), cfg.mesh_file, m_ResourcePool);
 	if (!m_pMesh->Load())
 		return false;
@@ -174,42 +174,22 @@ void COGTerrain::Unload ()
 // Render terrain.
 void COGTerrain::Render (const MATRIX& _mWorld)
 {
-	IOGCamera* pCamera = GetRenderer()->GetCamera();
+	const IOGFrustum& frustum = GetRenderer()->GetCamera()->GetFrustum();
 
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
-	m_pRenderer->SetBlend(m_Blend);
-
-    unsigned int numParts = m_pMesh->GetNumRenderables();
-    for (unsigned int i = 0; i < numParts; ++i)
-    {
-		if (pCamera->GetFrustum().CheckAabb(m_pMesh->GetAABB(i)))
-		{
-			m_pMesh->RenderPart (_mWorld, i, 0);
-		}
-    }
+	m_pRenderer->SetBlend(OG_BLEND_SOLID);
+	m_pMesh->RenderTerraParts(_mWorld, frustum);
+	m_pMesh->RenderSolidParts(_mWorld, frustum);
+	m_pRenderer->SetBlend(OG_BLEND_ALPHATEST);
+	m_pMesh->RenderTransparentParts(_mWorld, frustum);
 }
 
 
 // Render all.
 void COGTerrain::RenderAll (const MATRIX& _mWorld)
 {
-    m_pRenderer->SetMaterial(m_pMaterial);
-    m_pRenderer->SetTexture(m_pTexture);
-	m_pRenderer->SetBlend(m_Blend);
-
-	unsigned int numParts = m_pMesh->GetNumRenderables();
-    for (unsigned int i = 0; i < numParts; ++i)
-    {
-		m_pMesh->RenderPart (_mWorld, i, 0);
-    }
-}
-
-
-// Get num renderable parts.
-unsigned int COGTerrain::GetNumRenderables () const
-{
-    return m_pMesh->GetNumRenderables();
+	Render(_mWorld);
 }
 
 
