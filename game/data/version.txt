@@ -1,6 +1,11 @@
-Tools: ver. 0.18, 27-Jan-2011
+Tools: ver. 0.19, 17-Feb-2011
 
 ChangeList:
+
+0.19 (17-Feb-2011):
+- [OG] added trails to the animated destruction parts;
+- [OG] tuned the smoke trail effect particle emission;
+- [Game] added the iPhone and iPad batch launchers;
 
 0.18 (27-Jan-2011):
 - [OG] added new helicopter model and destruction animations;
