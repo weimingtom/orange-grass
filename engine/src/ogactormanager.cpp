@@ -225,7 +225,6 @@ void COGActorManager::DestroyActor (IOGActor* _pActor)
 void COGActorManager::Update (unsigned long _ElapsedTime)
 {
 	IOGCamera* pCamera = GetRenderer()->GetCamera();
-	float fCameraZ = pCamera->GetPosition().z;
 
 	m_pPlayersActor->Update(_ElapsedTime);
 
