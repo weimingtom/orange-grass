@@ -12,6 +12,7 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
+		B2157D1F13477AC300F147A6 /* ogscenemesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2157D1D13477AC300F147A6 /* ogscenemesh.cpp */; };
 		B2365E8F12D93DCF00E38735 /* GameScreenController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2365E8612D93DCF00E38735 /* GameScreenController.cpp */; };
 		B2365E9012D93DCF00E38735 /* GameSystem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2365E8812D93DCF00E38735 /* GameSystem.cpp */; };
 		B2365E9112D93DCF00E38735 /* LoadScreenController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2365E8B12D93DCF00E38735 /* LoadScreenController.cpp */; };
@@ -201,6 +202,8 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* orangegrass_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = orangegrass_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* orangegrass-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "orangegrass-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		B2157D1D13477AC300F147A6 /* ogscenemesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ogscenemesh.cpp; path = ../../../engine/src/ogscenemesh.cpp; sourceTree = "<group>"; };
+		B2157D1E13477AC300F147A6 /* ogscenemesh.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogscenemesh.h; path = ../../../engine/src/ogscenemesh.h; sourceTree = "<group>"; };
 		B2365E8612D93DCF00E38735 /* GameScreenController.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = GameScreenController.cpp; path = ../GameScreenController.cpp; sourceTree = SOURCE_ROOT; };
 		B2365E8712D93DCF00E38735 /* GameScreenController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GameScreenController.h; path = ../GameScreenController.h; sourceTree = SOURCE_ROOT; };
 		B2365E8812D93DCF00E38735 /* GameSystem.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = GameSystem.cpp; path = ../GameSystem.cpp; sourceTree = SOURCE_ROOT; };
@@ -1049,6 +1052,8 @@
 			isa = PBXGroup;
 			children = (
 				B2BD48D912EBC287005A7210 /* Renderer */,
+				B2157D1D13477AC300F147A6 /* ogscenemesh.cpp */,
+				B2157D1E13477AC300F147A6 /* ogscenemesh.h */,
 				B2542A1512D6ACF8000DE568 /* oganimationcontroller.cpp */,
 				B2542A1612D6ACF8000DE568 /* oganimationcontroller.h */,
 				B2542A3B12D6ACF8000DE568 /* ogfog.cpp */,
@@ -1659,6 +1664,7 @@
 				B236686812D9540600E38735 /* strstream.cpp in Sources */,
 				B236686912D9540600E38735 /* time_facets.cpp in Sources */,
 				B2BD488612EBA9FC005A7210 /* neon_matrix_impl.cpp in Sources */,
+				B2157D1F13477AC300F147A6 /* ogscenemesh.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1669,14 +1675,21 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Viacheslav Bogdanov (98HN8A7PMY)";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = orangegrass_Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = "orangegrass-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0.2;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = orangegrass;
+				PROVISIONING_PROFILE = "68292F8F-BDF8-4F9D-B1D7-306C47915457";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1684,12 +1697,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Viacheslav Bogdanov (98HN8A7PMY)";
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = orangegrass_Prefix.pch;
 				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				GCC_VERSION = 4.2;
 				INFOPLIST_FILE = "orangegrass-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0.2;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = orangegrass;
+				PROVISIONING_PROFILE = "68292F8F-BDF8-4F9D-B1D7-306C47915457";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
