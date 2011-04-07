@@ -25,6 +25,7 @@
 #include "ogappsettings.h"
 #include "oggamesequence.h"
 #include "ogluavm.h"
+#include <hash_map>
 
 
 static IOGResourceMgr* g_pResourceMgr = NULL;
@@ -43,6 +44,97 @@ static IOGSettingsReader* g_pSettingsReader = NULL;
 static IOGAppSettings* g_pAppSettings = NULL;
 static IOGGameSequence* g_pGameSequence = NULL;
 static IOGLuaVM* g_pLuaVM = NULL;
+
+static std::hash_map<std::string, OGActorType> g_ActorTypeLookup;
+static std::hash_map<std::string, OGPhysicsType> g_PhysicsTypeLookup;
+static std::hash_map<std::string, OGWeaponPos> g_WeaponPosLookup;
+static std::hash_map<std::string, OGBonusType> g_BonusTypeLookup;
+
+
+void StartOrangeGrass()
+{
+	g_ActorTypeLookup["static"] = OG_ACTOR_STATIC;
+	g_ActorTypeLookup["land_bot"] = OG_ACTOR_LANDBOT;
+	g_ActorTypeLookup["air_bot"] = OG_ACTOR_AIRBOT;
+	g_ActorTypeLookup["player"] = OG_ACTOR_PLAYER;
+	g_ActorTypeLookup["plasma_missile"] = OG_ACTOR_PLASMAMISSILE;
+	g_ActorTypeLookup["missile"] = OG_ACTOR_MISSILE;
+	g_ActorTypeLookup["bonus"] = OG_ACTOR_BONUS;
+	g_ActorTypeLookup["gaussray"] = OG_ACTOR_GAUSSRAY;
+
+	g_PhysicsTypeLookup["static"] = OG_PHYSICS_STATIC;
+	g_PhysicsTypeLookup["land_bot"] = OG_PHYSICS_LANDBOT;
+	g_PhysicsTypeLookup["air_bot"] = OG_PHYSICS_AIRBOT;
+	g_PhysicsTypeLookup["player"] = OG_PHYSICS_PLAYER;
+	g_PhysicsTypeLookup["missile"] = OG_PHYSICS_MISSILE;
+	g_PhysicsTypeLookup["bonus"] = OG_PHYSICS_BONUS;
+
+	g_WeaponPosLookup["center"] = OG_WEAPONPOS_CENTER;
+	g_WeaponPosLookup["left"] = OG_WEAPONPOS_LEFT;
+	g_WeaponPosLookup["right"] = OG_WEAPONPOS_RIGHT;
+	g_WeaponPosLookup["left_right"] = OG_WEAPONPOS_LEFTRIGHT;
+	g_WeaponPosLookup["center_left_right"] = OG_WEAPONPOS_CENTERLEFTRIGHT;
+
+	g_BonusTypeLookup["life_pack"] = OG_BONUS_LIFEPACK;
+	g_BonusTypeLookup["shield"] = OG_BONUS_SHIELD;
+}
+
+
+void FinishOrangeGrass()
+{
+	g_ActorTypeLookup.clear();
+	g_PhysicsTypeLookup.clear();
+	g_WeaponPosLookup.clear();
+	g_BonusTypeLookup.clear();
+}
+
+
+// Parse the actor type string and convert it to internal type
+OGActorType ParseActorType (const std::string& _ActorTypeStr)
+{
+    std::hash_map<std::string, OGActorType>::const_iterator iter = g_ActorTypeLookup.find(_ActorTypeStr);
+    if (iter != g_ActorTypeLookup.end())
+    {
+        return iter->second;
+    }
+    return OG_ACTOR_NONE;
+}
+
+
+// Parse the physics type string and convert it to internal type
+OGPhysicsType ParsePhysicsType (const std::string& _PhysicsTypeStr)
+{
+    std::hash_map<std::string, OGPhysicsType>::const_iterator iter = g_PhysicsTypeLookup.find(_PhysicsTypeStr);
+    if (iter != g_PhysicsTypeLookup.end())
+    {
+        return iter->second;
+    }
+    return OG_PHYSICS_NONE;
+}
+
+
+// Parse the weapon position type string and convert it to internal type
+OGWeaponPos ParseWeaponPositionType (const std::string& _WeaponPosTypeStr)
+{
+    std::hash_map<std::string, OGWeaponPos>::const_iterator iter = g_WeaponPosLookup.find(_WeaponPosTypeStr);
+    if (iter != g_WeaponPosLookup.end())
+    {
+        return iter->second;
+    }
+    return OG_WEAPONPOS_NONE;
+}
+
+
+// Parse the bonus type string and convert it to internal type
+OGBonusType ParseBonusType (const std::string& _BonusTypeStr)
+{
+    std::hash_map<std::string, OGBonusType>::const_iterator iter = g_BonusTypeLookup.find(_BonusTypeStr);
+    if (iter != g_BonusTypeLookup.end())
+    {
+        return iter->second;
+    }
+    return OG_BONUS_NONE;
+}
 
 
 IOGResourceMgr* GetResourceMgr ()

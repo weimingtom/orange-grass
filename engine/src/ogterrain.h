@@ -64,6 +64,7 @@ private:
         Vec4 material_specular;
 		std::string mesh_file;
 		std::string texture_alias;
+		std::string objects_texture_alias;
 	};
 
 	// Load terrain configuration
@@ -74,6 +75,7 @@ private:
 	COGSceneMesh*				m_pMesh;	
     IOGMaterial*				m_pMaterial;
 	IOGTexture*					m_pTexture;
+	IOGTexture*					m_pObjsTexture;
 	OGBlendType					m_Blend;
     IOGRenderer*                m_pRenderer;
 	IOGSettingsReader*			m_pReader;

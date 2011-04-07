@@ -28,6 +28,7 @@ COGLevelManager::~COGLevelManager ()
 bool COGLevelManager::Init ()
 {
 	Cfg cfg;
+	cfg.level_cfg_list.reserve(16);
 	if (!LoadConfig(cfg))
 	{
 		return false;
@@ -113,7 +114,7 @@ bool COGLevelManager::SaveLevel (IOGLevel* _pLevel)
 // get level list (for editor).
 void COGLevelManager::GetLevelList (std::vector<std::string>& _LevelList) const
 {
-	std::map<std::string, COGLevel*>::const_iterator iter = m_LevelList.begin();
+	std::hash_map<std::string, COGLevel*>::const_iterator iter = m_LevelList.begin();
 	for (; iter != m_LevelList.end(); ++iter)
 	{
 		_LevelList.push_back(iter->first);

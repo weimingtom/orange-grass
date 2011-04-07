@@ -10,7 +10,7 @@
 #define OGPHYSICS_H_
 
 #include "IOGPhysics.h"
-#include <list>
+#include <vector>
 
 
 class COGPhysics : public IOGPhysics
@@ -48,14 +48,16 @@ public:
 
 private:
 
-    IOGPhysicalObject*              m_pPlayer;
-	std::list<IOGPhysicalObject*>	m_StaticObjList;
-	std::list<IOGPhysicalObject*>	m_BotObjList;
-	std::list<IOGPhysicalObject*>	m_MissileObjList;
-	std::list<IOGPhysicalObject*>	m_BonusObjList;
+	typedef std::vector<IOGPhysicalObject*>	TObjList;
 
-	Vec3    m_vLeftBorder[3];
-    Vec3    m_vRightBorder[3];
+    IOGPhysicalObject*	m_pPlayer;
+	TObjList			m_StaticObjList;
+	TObjList			m_BotObjList;
+	TObjList			m_MissileObjList;
+	TObjList			m_BonusObjList;
+
+	Vec3				m_vLeftBorder[3];
+    Vec3				m_vRightBorder[3];
 };
 
 #endif

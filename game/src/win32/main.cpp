@@ -207,6 +207,8 @@ int WINAPI WinMain( HINSTANCE hInstance,
 					LPSTR lpszCmdLine,
 					int nCmdShow )
 {
+	StartOrangeGrass();
+
 	char* pch;
 	pch = strtok (lpszCmdLine, " -");
 	while (pch != NULL)
@@ -233,6 +235,8 @@ int WINAPI WinMain( HINSTANCE hInstance,
             WaitMessage();
         }
     }
+
+	FinishOrangeGrass();
 
 	return (int)msg.wParam;
 }

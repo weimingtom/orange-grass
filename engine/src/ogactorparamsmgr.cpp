@@ -9,53 +9,33 @@
 #include "OrangeGrass.h"
 #include "ogactorparamsmgr.h"
 
+static std::hash_map<std::string, OGActorType>		m_ActorTypeLookup;
+static std::hash_map<std::string, OGPhysicsType>	m_PhysicsTypeLookup;
+static std::hash_map<std::string, OGWeaponPos>		m_WeaponPosLookup;
+static std::hash_map<std::string, OGBonusType>		m_BonusTypeLookup;
+
 
 COGActorParamsMgr::COGActorParamsMgr ()
 {
 	m_pReader = GetSettingsReader();
-
-	m_ActorTypeLookup["static"] = OG_ACTOR_STATIC;
-	m_ActorTypeLookup["land_bot"] = OG_ACTOR_LANDBOT;
-	m_ActorTypeLookup["air_bot"] = OG_ACTOR_AIRBOT;
-	m_ActorTypeLookup["player"] = OG_ACTOR_PLAYER;
-	m_ActorTypeLookup["plasma_missile"] = OG_ACTOR_PLASMAMISSILE;
-	m_ActorTypeLookup["missile"] = OG_ACTOR_MISSILE;
-	m_ActorTypeLookup["bonus"] = OG_ACTOR_BONUS;
-	m_ActorTypeLookup["gaussray"] = OG_ACTOR_GAUSSRAY;
-
-	m_PhysicsTypeLookup["static"] = OG_PHYSICS_STATIC;
-	m_PhysicsTypeLookup["land_bot"] = OG_PHYSICS_LANDBOT;
-	m_PhysicsTypeLookup["air_bot"] = OG_PHYSICS_AIRBOT;
-	m_PhysicsTypeLookup["player"] = OG_PHYSICS_PLAYER;
-	m_PhysicsTypeLookup["missile"] = OG_PHYSICS_MISSILE;
-	m_PhysicsTypeLookup["bonus"] = OG_PHYSICS_BONUS;
-
-	m_WeaponPosLookup["center"] = OG_WEAPONPOS_CENTER;
-	m_WeaponPosLookup["left"] = OG_WEAPONPOS_LEFT;
-	m_WeaponPosLookup["right"] = OG_WEAPONPOS_RIGHT;
-	m_WeaponPosLookup["left_right"] = OG_WEAPONPOS_LEFTRIGHT;
-	m_WeaponPosLookup["center_left_right"] = OG_WEAPONPOS_CENTERLEFTRIGHT;
-
-	m_BonusTypeLookup["life_pack"] = OG_BONUS_LIFEPACK;
-	m_BonusTypeLookup["shield"] = OG_BONUS_SHIELD;
 }
 
 
 COGActorParamsMgr::~COGActorParamsMgr ()
 {
-	std::map<std::string, IOGActorParams*>::iterator iter = m_ParamsList.begin();
+	std::hash_map<std::string, IOGActorParams*>::iterator iter = m_ParamsList.begin();
 	for( ; iter != m_ParamsList.end(); ++iter )
 	{
 		OG_SAFE_DELETE (iter->second);
 	}	
 
-	std::map<std::string, IOGWeaponParams*>::iterator witer = m_WeaponParamsList.begin();
+	std::hash_map<std::string, IOGWeaponParams*>::iterator witer = m_WeaponParamsList.begin();
 	for( ; witer != m_WeaponParamsList.end(); ++witer )
 	{
 		OG_SAFE_DELETE (witer->second);
 	}	
 
-	std::map<std::string, IOGBonusParams*>::iterator biter = m_BonusParamsList.begin();
+	std::hash_map<std::string, IOGBonusParams*>::iterator biter = m_BonusParamsList.begin();
 	for( ; biter != m_BonusParamsList.end(); ++biter )
 	{
 		OG_SAFE_DELETE (biter->second);
@@ -308,57 +288,9 @@ bool COGActorParamsMgr::LoadBonusParamsConfig (const std::string& _Alias, const 
 void COGActorParamsMgr::GetParamsList (std::list<IOGActorParams*>& _List)
 {
 	_List.clear();
-	std::map<std::string, IOGActorParams*>::iterator iter = m_ParamsList.begin();
+	std::hash_map<std::string, IOGActorParams*>::iterator iter = m_ParamsList.begin();
 	for( ; iter != m_ParamsList.end(); ++iter )
 	{
 		_List.push_back(iter->second);
 	}	
-}
-
-
-// Parse the actor type string and convert it to internal type
-OGActorType COGActorParamsMgr::ParseActorType (const std::string& _ActorTypeStr) const
-{
-    std::map<std::string, OGActorType>::const_iterator iter = m_ActorTypeLookup.find(_ActorTypeStr);
-    if (iter != m_ActorTypeLookup.end())
-    {
-        return iter->second;
-    }
-    return OG_ACTOR_NONE;
-}
-
-
-// Parse the physics type string and convert it to internal type
-OGPhysicsType COGActorParamsMgr::ParsePhysicsType (const std::string& _PhysicsTypeStr) const
-{
-    std::map<std::string, OGPhysicsType>::const_iterator iter = m_PhysicsTypeLookup.find(_PhysicsTypeStr);
-    if (iter != m_PhysicsTypeLookup.end())
-    {
-        return iter->second;
-    }
-    return OG_PHYSICS_NONE;
-}
-
-
-// Parse the weapon position type string and convert it to internal type
-OGWeaponPos COGActorParamsMgr::ParseWeaponPositionType (const std::string& _WeaponPosTypeStr) const
-{
-    std::map<std::string, OGWeaponPos>::const_iterator iter = m_WeaponPosLookup.find(_WeaponPosTypeStr);
-    if (iter != m_WeaponPosLookup.end())
-    {
-        return iter->second;
-    }
-    return OG_WEAPONPOS_NONE;
-}
-
-
-// Parse the bonus type string and convert it to internal type
-OGBonusType COGActorParamsMgr::ParseBonusType (const std::string& _BonusTypeStr) const
-{
-    std::map<std::string, OGBonusType>::const_iterator iter = m_BonusTypeLookup.find(_BonusTypeStr);
-    if (iter != m_BonusTypeLookup.end())
-    {
-        return iter->second;
-    }
-    return OG_BONUS_NONE;
 }

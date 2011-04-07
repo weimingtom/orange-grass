@@ -189,6 +189,7 @@ void COGEmitterTrail::Stop ()
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
+    m_BBList.clear();
 	m_fDistanceAccum = 0.0f;
 	m_Status = OG_EFFECTSTATUS_STOPPED;
 }

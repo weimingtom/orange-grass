@@ -351,10 +351,10 @@ bool COGLevel::Save ()
     fwrite(&m_vFogColor.w, sizeof(float), 1, pOut);
 
     // actors list
-    const std::list<IOGActor*>& actors = GetActorManager()->GetActorsList();
+	const IOGActorManager::TActorsList& actors = GetActorManager()->GetActorsList();
     unsigned int numActors = actors.size();
     fwrite(&numActors, sizeof(unsigned int), 1, pOut);
-	std::list<IOGActor*>::const_iterator iter = actors.begin();
+	IOGActorManager::TActorsList::const_iterator iter = actors.begin();
     for (; iter != actors.end(); ++iter)
     {
         // actor's model alias

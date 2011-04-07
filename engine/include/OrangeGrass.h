@@ -28,6 +28,8 @@
 #include "IOGLuaVM.h"
 #include "common.h"
 
+void StartOrangeGrass();
+void FinishOrangeGrass();
 
 IOGResourceMgr* GetResourceMgr ();
 IOGLevelManager* GetLevelManager ();
@@ -46,5 +48,19 @@ IOGSettingsReader* GetSettingsReader ();
 IOGAppSettings* GetAppSettings ();
 IOGGameSequence* GetGameSequence ();
 IOGLuaVM* GetLuaVM ();
+
+
+// Parse the actor type string and convert it to internal type
+OGActorType ParseActorType (const std::string& _ActorTypeStr);
+
+// Parse the physics type string and convert it to internal type
+OGPhysicsType ParsePhysicsType (const std::string& _PhysicsTypeStr);
+
+// Parse the weapon position type string and convert it to internal type
+OGWeaponPos ParseWeaponPositionType (const std::string& _WeaponPosTypeStr);
+
+// Parse the bonus type string and convert it to internal type
+OGBonusType ParseBonusType (const std::string& _BonusTypeStr);
+
 
 #endif

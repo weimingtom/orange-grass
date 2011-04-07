@@ -10,6 +10,7 @@
 #define OGACTORMANAGER_H_
 
 #include "IOGActorManager.h"
+#include <vector>
 
 
 class COGActorManager : public IOGActorManager
@@ -52,13 +53,12 @@ public:
     virtual IOGActor* GetPlayersActor ();
 
 private:
-	typedef std::list<IOGActor*>    TActorsList;
+	typedef std::vector<IOGActor*> TActorsList;
 
 	IOGGlobalVarsTable* m_pGlobalVars;
     TActorsList			m_ActorsList;
     TActorsList			m_MissileActorsList;
 	IOGActor*			m_pPlayersActor;
-	float				m_fViewDistance;
 };
 
 #endif

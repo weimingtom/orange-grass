@@ -1,6 +1,12 @@
-Tools: ver. 0.19, 17-Feb-2011
+Orange grass: ver. 0.21, 07-Apr-2011
 
 ChangeList:
+
+0.21 (07-Apr-2011):
+- [OG] some refactoring: map -> hash_map; list -> vector in some places;
+- [OG] added support for a scene mesh textures (Object->texture in terrain config);
+- [OG] fixed the missile smoke 'resurrection' issue (shall also boost the performance as well);
+- [OG] iOS project was switched to XCode 4 and iOS SDK 4.3.
 
 0.19 (17-Feb-2011):
 - [OG] added trails to the animated destruction parts;

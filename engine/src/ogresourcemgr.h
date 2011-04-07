@@ -15,7 +15,7 @@
 #include "ogmodel.h"
 #include "ogsprite.h"
 #include <string>
-#include <map>
+#include <hash_map>
 #include <list>
 #include "IOGSettingsReader.h"
 
@@ -101,10 +101,10 @@ private:
 	struct ResourcePool
 	{
 		ResourcePool() : m_bLoaded(false) {}
-		std::map<std::string, COGTexture*>	m_TextureList;
-		std::map<std::string, COGModel*>	m_ModelList;
-		std::map<std::string, COGSprite*>	m_SpriteList;
-		bool                                m_bLoaded;
+		std::hash_map<std::string, COGTexture*>	m_TextureList;
+		std::hash_map<std::string, COGModel*>	m_ModelList;
+		std::hash_map<std::string, COGSprite*>	m_SpriteList;
+		bool									m_bLoaded;
 	};
 
 	// Load resource manager configuration

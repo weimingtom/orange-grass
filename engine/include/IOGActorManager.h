@@ -10,14 +10,14 @@
 #define IOGACTORMANAGER_H_
 
 #include "IOGActor.h"
-#include <list>
+#include <vector>
 #include <string>
 
 
 class IOGActorManager
 {
 public:
-	typedef std::list<IOGActor*>    TActorsList;
+	typedef std::vector<IOGActor*>    TActorsList;
 
 public:
 	// destructor

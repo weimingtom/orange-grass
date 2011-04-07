@@ -23,7 +23,9 @@
 COGActorManager::COGActorManager ()	: m_pPlayersActor(NULL)
 {
 	m_pGlobalVars = GetGlobalVars();
-	m_fViewDistance = m_pGlobalVars->GetFVar("view_distance");
+
+	m_ActorsList.reserve(512);
+	m_MissileActorsList.reserve(64);
 }
 
 

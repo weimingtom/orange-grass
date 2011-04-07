@@ -19,6 +19,8 @@ COGWeapon::COGWeapon()
 	m_pWeaponParams = NULL;
     m_WeaponCoolDownMax = 200;
     m_WeaponCoolDown = m_WeaponCoolDownMax;
+
+	m_MissileList.reserve(MaxMissiles);
 }
 
 
@@ -38,7 +40,6 @@ bool COGWeapon::Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams)
 	m_WeaponCoolDown = m_WeaponCoolDownMax;
 
     Vec3 vStart = _pOwner->GetPhysicalObject()->GetPosition();
-	m_MissileList.reserve(MaxMissiles);
     for (int i = 0; i < MaxMissiles; ++i)
     {
         COGActorBullet* pMissile = (COGActorBullet*)GetActorManager()->CreateActor(

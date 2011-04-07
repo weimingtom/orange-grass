@@ -10,7 +10,7 @@
 #define OGACTORPARAMSMGR_H_
 
 #include "IOGActorParamsManager.h"
-#include <map>
+#include <hash_map>
 #include "IOGSettingsReader.h"
 
 
@@ -55,29 +55,13 @@ private:
 	// Load bonus params configuration
 	bool LoadBonusParamsConfig (const std::string& _Alias, const std::string& _Path);
 
-    // Parse the actor type string and convert it to internal type
-    OGActorType ParseActorType (const std::string& _ActorTypeStr) const;
-
-    // Parse the physics type string and convert it to internal type
-    OGPhysicsType ParsePhysicsType (const std::string& _PhysicsTypeStr) const;
-
-    // Parse the weapon position type string and convert it to internal type
-    OGWeaponPos ParseWeaponPositionType (const std::string& _WeaponPosTypeStr) const;
-
-    // Parse the bonus type string and convert it to internal type
-    OGBonusType ParseBonusType (const std::string& _BonusTypeStr) const;
-
 private:
 
-    std::map<std::string, IOGActorParams*>	m_ParamsList;
-    std::map<std::string, IOGWeaponParams*>	m_WeaponParamsList;
-    std::map<std::string, IOGBonusParams*>	m_BonusParamsList;
 	IOGSettingsReader*	m_pReader;
 
-	std::map<std::string, OGActorType>		m_ActorTypeLookup;
-	std::map<std::string, OGPhysicsType>	m_PhysicsTypeLookup;
-	std::map<std::string, OGWeaponPos>		m_WeaponPosLookup;
-	std::map<std::string, OGBonusType>		m_BonusTypeLookup;
+    std::hash_map<std::string, IOGActorParams*>		m_ParamsList;
+    std::hash_map<std::string, IOGWeaponParams*>	m_WeaponParamsList;
+    std::hash_map<std::string, IOGBonusParams*>		m_BonusParamsList;
 };
 
 #endif

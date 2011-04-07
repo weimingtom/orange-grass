@@ -93,6 +93,8 @@ static float AccelSensivity = 2.0f;
     accel = [Accel alloc];
     [accel SetupAccelerometer: kFPS];
 	
+	StartOrangeGrass();
+	
 	shell = new CGameSystem();
 	if(!shell)
 		printf("InitApplication error\n");
@@ -110,6 +112,8 @@ static float AccelSensivity = 2.0f;
 {
     if (shell) 
     {
+		FinishOrangeGrass();
+		
         delete shell;
         shell = NULL;
     }

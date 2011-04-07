@@ -158,19 +158,19 @@ bool COGResourceMgr::Unload (OGResourcePool _PoolId)
 		return false;
 	}
 
-	std::map<std::string, COGTexture*>::iterator texture_iter = pCurPool->m_TextureList.begin();
+	std::hash_map<std::string, COGTexture*>::iterator texture_iter = pCurPool->m_TextureList.begin();
 	for( ; texture_iter != pCurPool->m_TextureList.end(); ++texture_iter )
 	{
 		ReleaseTexture(texture_iter->second);
 	}
 	
-	std::map<std::string, COGModel*>::iterator model_iter = pCurPool->m_ModelList.begin();
+	std::hash_map<std::string, COGModel*>::iterator model_iter = pCurPool->m_ModelList.begin();
 	for( ; model_iter != pCurPool->m_ModelList.end(); ++model_iter )
 	{
 		ReleaseModel(model_iter->second);
 	}
 	
-	std::map<std::string, COGSprite*>::iterator spr_iter = pCurPool->m_SpriteList.begin();
+	std::hash_map<std::string, COGSprite*>::iterator spr_iter = pCurPool->m_SpriteList.begin();
 	for( ; spr_iter != pCurPool->m_SpriteList.end(); ++spr_iter )
 	{
 		ReleaseSprite(spr_iter->second);
@@ -431,21 +431,21 @@ bool COGResourceMgr::ClearPool (OGResourcePool _PoolId)
 		return false;
 	}
 
-	std::map<std::string, COGTexture*>::iterator texture_iter = pCurPool->m_TextureList.begin();
+	std::hash_map<std::string, COGTexture*>::iterator texture_iter = pCurPool->m_TextureList.begin();
 	for( ; texture_iter != pCurPool->m_TextureList.end(); ++texture_iter )
 	{
 		OG_SAFE_DELETE (texture_iter->second);
 	}
 	pCurPool->m_TextureList.clear();
 	
-	std::map<std::string, COGModel*>::iterator model_iter = pCurPool->m_ModelList.begin();
+	std::hash_map<std::string, COGModel*>::iterator model_iter = pCurPool->m_ModelList.begin();
 	for( ; model_iter != pCurPool->m_ModelList.end(); ++model_iter )
 	{
 		OG_SAFE_DELETE (model_iter->second);
 	}
 	pCurPool->m_ModelList.clear();
 	
-	std::map<std::string, COGSprite*>::iterator spr_iter = pCurPool->m_SpriteList.begin();
+	std::hash_map<std::string, COGSprite*>::iterator spr_iter = pCurPool->m_SpriteList.begin();
 	for( ; spr_iter != pCurPool->m_SpriteList.end(); ++spr_iter )
 	{
 		OG_SAFE_DELETE (spr_iter->second);

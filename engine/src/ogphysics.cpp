@@ -20,6 +20,11 @@
 COGPhysics::COGPhysics ()
 {
     m_pPlayer = NULL;
+
+	m_StaticObjList.reserve(256);
+	m_BotObjList.reserve(64);
+	m_MissileObjList.reserve(64);
+	m_BonusObjList.reserve(64);
 }
 
 
@@ -34,28 +39,28 @@ void COGPhysics::Clear ()
 {
 	OG_SAFE_DELETE(m_pPlayer);
 
-    std::list<IOGPhysicalObject*>::iterator iter;
+	TObjList::iterator iter;
 
-    for (iter = m_StaticObjList.begin(); iter != m_StaticObjList.end(); ++iter)
-    {
+	for (iter = m_StaticObjList.begin(); iter != m_StaticObjList.end(); ++iter)
+	{
 		OG_SAFE_DELETE((*iter));
 	}
 	m_StaticObjList.clear();
 
-    for (iter = m_BotObjList.begin(); iter != m_BotObjList.end(); ++iter)
-    {
+	for (iter = m_BotObjList.begin(); iter != m_BotObjList.end(); ++iter)
+	{
 		OG_SAFE_DELETE((*iter));
 	}
 	m_BotObjList.clear();
 
-    for (iter = m_MissileObjList.begin(); iter != m_MissileObjList.end(); ++iter)
-    {
+	for (iter = m_MissileObjList.begin(); iter != m_MissileObjList.end(); ++iter)
+	{
 		OG_SAFE_DELETE((*iter));
 	}
 	m_MissileObjList.clear();
 
-    for (iter = m_BonusObjList.begin(); iter != m_BonusObjList.end(); ++iter)
-    {
+	for (iter = m_BonusObjList.begin(); iter != m_BonusObjList.end(); ++iter)
+	{
 		OG_SAFE_DELETE((*iter));
 	}
 	m_BonusObjList.clear();
@@ -161,7 +166,7 @@ void COGPhysics::AddObject (IOGPhysicalObject* _pObject)
 // Remove object
 void COGPhysics::RemoveObject (IOGPhysicalObject* _pObject)
 {
-	std::list<IOGPhysicalObject*>::iterator iter;
+	TObjList::iterator iter;
 
 	switch (_pObject->GetPhysicsType())
 	{
@@ -222,7 +227,7 @@ void COGPhysics::Update (unsigned long _ElapsedTime)
         m_pPlayer->Update(_ElapsedTime);
     }
 
-    std::list<IOGPhysicalObject*>::iterator iter = m_BotObjList.begin();
+    TObjList::iterator iter = m_BotObjList.begin();
     for (; iter != m_BotObjList.end(); ++iter)
     {
 		(*iter)->Update(_ElapsedTime);
@@ -245,7 +250,7 @@ void COGPhysics::Update (unsigned long _ElapsedTime)
         {
         case TEAM_PLAYER:
             {
-                std::list<IOGPhysicalObject*>::iterator coll_iter = m_BotObjList.begin();
+                TObjList::iterator coll_iter = m_BotObjList.begin();
                 for (; coll_iter != m_BotObjList.end(); ++coll_iter)
                 {
                     if (pMissile->CheckCollision((*coll_iter)))
@@ -277,8 +282,8 @@ void COGPhysics::UpdateAll (unsigned long _ElapsedTime)
         m_pPlayer->Update(_ElapsedTime);
     }
 
-    std::list<IOGPhysicalObject*>::iterator iter;
-    for (iter = m_BotObjList.begin(); iter != m_BotObjList.end(); ++iter)
+    TObjList::iterator iter;
+	for (iter = m_BotObjList.begin(); iter != m_BotObjList.end(); ++iter)
     {
 		(*iter)->Update(_ElapsedTime);
     }
