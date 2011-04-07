@@ -49,6 +49,7 @@ static std::hash_map<std::string, OGActorType> g_ActorTypeLookup;
 static std::hash_map<std::string, OGPhysicsType> g_PhysicsTypeLookup;
 static std::hash_map<std::string, OGWeaponPos> g_WeaponPosLookup;
 static std::hash_map<std::string, OGBonusType> g_BonusTypeLookup;
+static std::hash_map<std::string, OGBlendType> g_BlendTypeLookup;
 
 
 void StartOrangeGrass()
@@ -77,6 +78,11 @@ void StartOrangeGrass()
 
 	g_BonusTypeLookup["life_pack"] = OG_BONUS_LIFEPACK;
 	g_BonusTypeLookup["shield"] = OG_BONUS_SHIELD;
+
+	g_BlendTypeLookup["solid"] = OG_BLEND_SOLID;
+	g_BlendTypeLookup["test"] = OG_BLEND_ALPHATEST;
+	g_BlendTypeLookup["blend"] = OG_BLEND_ALPHABLEND;
+	g_BlendTypeLookup["add"] = OG_BLEND_ALPHAADD;
 }
 
 
@@ -86,6 +92,7 @@ void FinishOrangeGrass()
 	g_PhysicsTypeLookup.clear();
 	g_WeaponPosLookup.clear();
 	g_BonusTypeLookup.clear();
+	g_BlendTypeLookup.clear();
 }
 
 
@@ -134,6 +141,18 @@ OGBonusType ParseBonusType (const std::string& _BonusTypeStr)
         return iter->second;
     }
     return OG_BONUS_NONE;
+}
+
+
+// Parse the blend type string and convert it to internal type
+OGBlendType ParseBlendType (const std::string& _BlendTypeStr)
+{
+    std::hash_map<std::string, OGBlendType>::const_iterator iter = g_BlendTypeLookup.find(_BlendTypeStr);
+    if (iter != g_BlendTypeLookup.end())
+    {
+        return iter->second;
+    }
+    return OG_BLEND_NO;
 }
 
 

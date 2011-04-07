@@ -12,19 +12,6 @@
 
 COGSettingsReader::COGSettingsReader()
 {
-	m_ActorTypeLookup["static"] = OG_ACTOR_STATIC;
-	m_ActorTypeLookup["land_bot"] = OG_ACTOR_LANDBOT;
-	m_ActorTypeLookup["air_bot"] = OG_ACTOR_AIRBOT;
-	m_ActorTypeLookup["player"] = OG_ACTOR_PLAYER;
-	m_ActorTypeLookup["plasma_missile"] = OG_ACTOR_PLASMAMISSILE;
-	m_ActorTypeLookup["missile"] = OG_ACTOR_MISSILE;
-	m_ActorTypeLookup["bonus"] = OG_ACTOR_BONUS;
-	m_ActorTypeLookup["gaussray"] = OG_ACTOR_GAUSSRAY;
-
-	m_BlendTypeLookup["solid"] = OG_BLEND_SOLID;
-	m_BlendTypeLookup["test"] = OG_BLEND_ALPHATEST;
-	m_BlendTypeLookup["blend"] = OG_BLEND_ALPHABLEND;
-	m_BlendTypeLookup["add"] = OG_BLEND_ALPHAADD;
 }
 
 
@@ -41,7 +28,8 @@ IOGSettingsSource* COGSettingsReader::OpenSource (const std::string& _File)
 	if (!pSource->pSource->LoadFile (_File.c_str()))
 	{
 		OG_SAFE_DELETE(pSource->pSource);
-        return NULL;
+		OG_SAFE_DELETE(pSource);
+		return NULL;
 	}
 
     pSource->pDoc = new TiXmlHandle (pSource->pSource);
@@ -168,9 +156,9 @@ float COGSettingsReader::ReadFloatParam (IOGGroupNode* _pGroup, const std::strin
 
 // read Vec2 parameter.
 Vec2 COGSettingsReader::ReadVec2Param (
-							IOGGroupNode* _pGroup, 
-							const std::string& _AliasX, 
-							const std::string& _AliasY)
+									   IOGGroupNode* _pGroup, 
+									   const std::string& _AliasX, 
+									   const std::string& _AliasY)
 {
 	Vec2 vOut;
 	vOut.x = ReadFloatParam(_pGroup, _AliasX);
@@ -181,10 +169,10 @@ Vec2 COGSettingsReader::ReadVec2Param (
 
 // read Vec3 parameter.
 Vec3 COGSettingsReader::ReadVec3Param (
-							IOGGroupNode* _pGroup, 
-							const std::string& _AliasX, 
-							const std::string& _AliasY,
-							const std::string& _AliasZ)
+									   IOGGroupNode* _pGroup, 
+									   const std::string& _AliasX, 
+									   const std::string& _AliasY,
+									   const std::string& _AliasZ)
 {
 	Vec3 vOut;
 	vOut.x = ReadFloatParam(_pGroup, _AliasX);
@@ -196,11 +184,11 @@ Vec3 COGSettingsReader::ReadVec3Param (
 
 // read Vec4 parameter.
 Vec4 COGSettingsReader::ReadVec4Param (
-							IOGGroupNode* _pGroup, 
-							const std::string& _AliasX, 
-							const std::string& _AliasY,
-							const std::string& _AliasZ,
-							const std::string& _AliasW)
+									   IOGGroupNode* _pGroup, 
+									   const std::string& _AliasX, 
+									   const std::string& _AliasY,
+									   const std::string& _AliasZ,
+									   const std::string& _AliasW)
 {
 	Vec4 vOut;
 	vOut.x = ReadFloatParam(_pGroup, _AliasX);
@@ -254,10 +242,10 @@ void COGSettingsReader::WriteFloatParam (IOGGroupNode* _pGroup, const std::strin
 
 // write Vec2 parameter.
 void COGSettingsReader::WriteVec2Param (
-							IOGGroupNode* _pGroup, 
-							const std::string& _AliasX, 
-							const std::string& _AliasY,
-							const Vec2& _Value)
+										IOGGroupNode* _pGroup, 
+										const std::string& _AliasX, 
+										const std::string& _AliasY,
+										const Vec2& _Value)
 {
 	WriteFloatParam(_pGroup, _AliasX, _Value.x);
 	WriteFloatParam(_pGroup, _AliasY, _Value.y);
@@ -266,11 +254,11 @@ void COGSettingsReader::WriteVec2Param (
 
 // write Vec3 parameter.
 void COGSettingsReader::WriteVec3Param (
-							IOGGroupNode* _pGroup, 
-							const std::string& _AliasX, 
-							const std::string& _AliasY,
-							const std::string& _AliasZ,
-							const Vec3& _Value)
+										IOGGroupNode* _pGroup, 
+										const std::string& _AliasX, 
+										const std::string& _AliasY,
+										const std::string& _AliasZ,
+										const Vec3& _Value)
 {
 	WriteFloatParam(_pGroup, _AliasX, _Value.x);
 	WriteFloatParam(_pGroup, _AliasY, _Value.y);
@@ -280,79 +268,15 @@ void COGSettingsReader::WriteVec3Param (
 
 // write Vec4 parameter.
 void COGSettingsReader::WriteVec4Param (
-							IOGGroupNode* _pGroup, 
-							const std::string& _AliasX, 
-							const std::string& _AliasY,
-							const std::string& _AliasZ,
-							const std::string& _AliasW,
-							const Vec4& _Value)
+										IOGGroupNode* _pGroup, 
+										const std::string& _AliasX, 
+										const std::string& _AliasY,
+										const std::string& _AliasZ,
+										const std::string& _AliasW,
+										const Vec4& _Value)
 {
 	WriteFloatParam(_pGroup, _AliasX, _Value.x);
 	WriteFloatParam(_pGroup, _AliasY, _Value.y);
 	WriteFloatParam(_pGroup, _AliasZ, _Value.z);
 	WriteFloatParam(_pGroup, _AliasW, _Value.w);
-}
-
-
-// read actor type parameter.
-OGActorType COGSettingsReader::ReadActorTypeParam (IOGGroupNode* _pGroup, const std::string& _Alias)
-{
-	std::string ActorTypeStr = ReadStringParam(_pGroup, _Alias);
-
-    std::map<std::string, OGActorType>::const_iterator iter = m_ActorTypeLookup.find(ActorTypeStr);
-    if (iter != m_ActorTypeLookup.end())
-    {
-        return iter->second;
-    }
-    return OG_ACTOR_NONE;
-}
-
-
-// write actor type parameter.
-void COGSettingsReader::WriteActorTypeParam (IOGGroupNode* _pGroup, const std::string& _Alias, OGActorType _Value)
-{
-	std::string ActorTypeStr;
-    std::map<std::string, OGActorType>::const_iterator iter = m_ActorTypeLookup.begin();
-	for (; iter != m_ActorTypeLookup.end(); ++iter)
-	{
-		if (iter->second == _Value)
-		{
-			ActorTypeStr = iter->first;
-			break;
-		}
-	}
-	
-	WriteStringParam(_pGroup, _Alias, ActorTypeStr);
-}
-
-
-// read blend type parameter.
-OGBlendType COGSettingsReader::ReadBlendTypeParam (IOGGroupNode* _pGroup, const std::string& _Alias)
-{
-	std::string BlendTypeStr = ReadStringParam(_pGroup, _Alias);
-
-    std::map<std::string, OGBlendType>::const_iterator iter = m_BlendTypeLookup.find(BlendTypeStr);
-    if (iter != m_BlendTypeLookup.end())
-    {
-        return iter->second;
-    }
-    return OG_BLEND_NO;
-}
-
-
-// write blend type parameter.
-void COGSettingsReader::WriteBlendTypeParam (IOGGroupNode* _pGroup, const std::string& _Alias, OGBlendType _Value)
-{
-	std::string BlendTypeStr;
-    std::map<std::string, OGBlendType>::const_iterator iter = m_BlendTypeLookup.begin();
-	for (; iter != m_BlendTypeLookup.end(); ++iter)
-	{
-		if (iter->second == _Value)
-		{
-			BlendTypeStr = iter->first;
-			break;
-		}
-	}
-	
-	WriteStringParam(_pGroup, _Alias, BlendTypeStr);
 }

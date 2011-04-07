@@ -62,5 +62,7 @@ OGWeaponPos ParseWeaponPositionType (const std::string& _WeaponPosTypeStr);
 // Parse the bonus type string and convert it to internal type
 OGBonusType ParseBonusType (const std::string& _BonusTypeStr);
 
+// Parse the blend type string and convert it to internal type
+OGBlendType ParseBlendType (const std::string& _BlendTypeStr);
 
 #endif

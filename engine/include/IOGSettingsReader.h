@@ -113,18 +113,6 @@ public:
 		const std::string& _AliasW,
 		const Vec4& _Value) = 0;
 
-	// read actor type parameter.
-	virtual OGActorType ReadActorTypeParam (IOGGroupNode* _pGroup, const std::string& _Alias) = 0;
-
-	// write actor type parameter.
-	virtual void WriteActorTypeParam (IOGGroupNode* _pGroup, const std::string& _Alias, OGActorType _Value) = 0;
-
-	// read blend type parameter.
-	virtual OGBlendType ReadBlendTypeParam (IOGGroupNode* _pGroup, const std::string& _Alias) = 0;
-
-	// write blend type parameter.
-	virtual void WriteBlendTypeParam (IOGGroupNode* _pGroup, const std::string& _Alias, OGBlendType _Value) = 0;
-
 	// close source.
 	virtual void CloseSource (IOGSettingsSource* _pSource) = 0;
 };

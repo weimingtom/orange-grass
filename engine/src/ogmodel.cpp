@@ -102,7 +102,7 @@ bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
 	if (pMaterialNode != NULL)
 	{
 		_cfg.texture_alias = m_pReader->ReadStringParam(pMaterialNode, "texture");
-		_cfg.blend_type = m_pReader->ReadBlendTypeParam(pMaterialNode, "blend");
+		_cfg.blend_type = ParseBlendType(m_pReader->ReadStringParam(pMaterialNode, "blend"));
     	IOGGroupNode* pAmbientNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Ambient");
         if (pAmbientNode)
         {

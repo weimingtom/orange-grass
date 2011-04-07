@@ -11,7 +11,6 @@
 
 #include "IOGSettingsReader.h"
 #include "tinyxml.h"
-#include <map>
 
 
 struct COGSettingsSource : public IOGSettingsSource
@@ -112,25 +111,8 @@ public:
 		const std::string& _AliasW,
 		const Vec4& _Value);
 
-	// read actor type parameter.
-	virtual OGActorType ReadActorTypeParam (IOGGroupNode* _pGroup, const std::string& _Alias);
-
-	// write actor type parameter.
-	virtual void WriteActorTypeParam (IOGGroupNode* _pGroup, const std::string& _Alias, OGActorType _Value);
-
-	// read blend type parameter.
-	virtual OGBlendType ReadBlendTypeParam (IOGGroupNode* _pGroup, const std::string& _Alias);
-
-	// write blend type parameter.
-	virtual void WriteBlendTypeParam (IOGGroupNode* _pGroup, const std::string& _Alias, OGBlendType _Value);
-
 	// close source.
 	virtual void CloseSource (IOGSettingsSource* _pSource);
-
-protected:
-
-	std::map<std::string, OGActorType>		m_ActorTypeLookup;
-	std::map<std::string, OGBlendType>		m_BlendTypeLookup;
 };
 
 
