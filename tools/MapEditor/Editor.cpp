@@ -20,7 +20,5 @@ bool CEditorApp::OnInit()
 	pFrame->Centre();
 	pFrame->Show();
 
-	FinishOrangeGrass();
-
 	return true;
 }

@@ -18,7 +18,5 @@ bool CEffectViewerApp::OnInit()
 	pFrame->Centre();
 	pFrame->Show();
 
-	FinishOrangeGrass();
-
 	return true;
 }

@@ -9,11 +9,6 @@
 #include "OrangeGrass.h"
 #include "ogactorparamsmgr.h"
 
-static std::hash_map<std::string, OGActorType>		m_ActorTypeLookup;
-static std::hash_map<std::string, OGPhysicsType>	m_PhysicsTypeLookup;
-static std::hash_map<std::string, OGWeaponPos>		m_WeaponPosLookup;
-static std::hash_map<std::string, OGBonusType>		m_BonusTypeLookup;
-
 
 COGActorParamsMgr::COGActorParamsMgr ()
 {
