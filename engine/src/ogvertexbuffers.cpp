@@ -21,6 +21,10 @@ COGVertexBuffers::COGVertexBuffers () : m_pMesh(NULL),
 
 COGVertexBuffers::~COGVertexBuffers ()
 {
+	if (m_VBO != 0)
+		glDeleteBuffers(1, &m_VBO);
+	if (m_IBO != 0)
+		glDeleteBuffers(1, &m_IBO);
 }
 
 

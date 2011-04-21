@@ -64,6 +64,7 @@ bool COGRenderer::Init ()
 	m_pLightMgr = new COGLightMgr ();
 	m_pCamera = new COGCamera ();
 	m_pFog = new COGFog ();
+	m_pText = new COGTextRenderer();
 
     IOGResourceMgr* pResMgr = GetResourceMgr();
     if (!m_ModelShader.Load(pResMgr->GetFullPath("Shaders/Model.vsh"), pResMgr->GetFullPath("Shaders/Model.fsh")))
@@ -74,8 +75,6 @@ bool COGRenderer::Init ()
         return false;
     if (!m_TextShader.Load(pResMgr->GetFullPath("Shaders/Text.vsh"), pResMgr->GetFullPath("Shaders/Text.fsh")))
         return false;
-
-	m_pText = new COGTextRenderer();
 
 	return true;
 }
@@ -272,6 +271,7 @@ void COGRenderer::StartRenderMode(OGRenderMode _Mode)
 	case OG_RENDERMODE_SPRITES:
 	    m_pCurShader = &m_SpriteShader;
 		SetBlend(OG_BLEND_ALPHABLEND);
+        glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
         m_SpriteShader.SetProjectionMatrix(m_mOrthoProj);
 		EnableLight(false);

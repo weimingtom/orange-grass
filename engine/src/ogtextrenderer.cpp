@@ -499,13 +499,13 @@ int COGTextRenderer::Flush()
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, VERTTYPEENUM, GL_FALSE, sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].sx);	
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].sx);	
 
         glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 4, VERTTYPEENUM, GL_FALSE, sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].r);	
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].r);	
 
         glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, VERTTYPEENUM, GL_FALSE, sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].tu);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(SDisplayTextAPIVertex), &m_pVtxCache[nVtxBase].tu);
 
         glDrawElements(GL_TRIANGLES, nTris * 3, GL_UNSIGNED_SHORT, m_pwFacesFont);
 		
