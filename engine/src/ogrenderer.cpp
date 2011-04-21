@@ -14,6 +14,7 @@
 #include "ogfog.h"
 #include "ogmaterial.h"
 #include "ogsprite.h"
+#include "ogvertexbuffers.h"
 #include "oggrutility.h"
 
 
@@ -27,12 +28,20 @@ COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
 								m_pText(NULL),
 								m_bLandscapeMode(false)
 {
+    m_bLightEnabled = false;
+    m_bFogEnabled = false;
+
 	m_pStats = GetStatistics();
 }
 
 
 COGRenderer::~COGRenderer ()
 {
+	m_ModelShader.Unload();
+	m_SpriteShader.Unload();
+	m_ColorEffectShader.Unload();
+	m_TextShader.Unload();
+
     OG_SAFE_DELETE(m_pText);
     OG_SAFE_DELETE(m_pFog);
     OG_SAFE_DELETE(m_pLightMgr);
@@ -51,9 +60,22 @@ bool COGRenderer::Init ()
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
 	Reset();
+
 	m_pLightMgr = new COGLightMgr ();
 	m_pCamera = new COGCamera ();
 	m_pFog = new COGFog ();
+
+    IOGResourceMgr* pResMgr = GetResourceMgr();
+    if (!m_ModelShader.Load(pResMgr->GetFullPath("Shaders/Model.vsh"), pResMgr->GetFullPath("Shaders/Model.fsh")))
+        return false;
+    if (!m_SpriteShader.Load(pResMgr->GetFullPath("Shaders/Sprite.vsh"), pResMgr->GetFullPath("Shaders/Sprite.fsh")))
+        return false;
+    if (!m_ColorEffectShader.Load(pResMgr->GetFullPath("Shaders/ColorEffect.vsh"), pResMgr->GetFullPath("Shaders/ColorEffect.fsh")))
+        return false;
+    if (!m_TextShader.Load(pResMgr->GetFullPath("Shaders/Text.vsh"), pResMgr->GetFullPath("Shaders/Text.fsh")))
+        return false;
+
+	m_pText = new COGTextRenderer();
 
 	return true;
 }
@@ -105,6 +127,42 @@ void COGRenderer::SetViewport (
 #endif
 
 	m_pCamera->SetupViewport(m_mProjection, m_fFOV);
+}
+
+
+// Create vertex buffer for mesh.
+IOGVertexBuffers* COGRenderer::CreateVertexBuffer (const void* _pMeshData)
+{
+	COGVertexBuffers* pVB = new COGVertexBuffers((const SPODMesh*)_pMeshData);
+	return pVB;
+}
+
+
+// set model matrix.
+void COGRenderer::SetModelMatrix (const MATRIX& _mModel)
+{
+    m_mWorld = _mModel;
+}
+
+
+// set view matrix.
+void COGRenderer::SetViewMatrix (const MATRIX& _mView)
+{
+    m_mView = _mView;
+}
+
+
+// Enable scene light.
+void COGRenderer::EnableLight (bool _bEnable)
+{
+	m_bLightEnabled = _bEnable;
+}
+
+
+// Enable scene fog.
+void COGRenderer::EnableFog (bool _bEnable)
+{
+	m_bFogEnabled = _bEnable;
 }
 
 
@@ -174,9 +232,116 @@ void COGRenderer::SetBlend (OGBlendType _Blend)
 }
 
 
+// start rendering mode.
+void COGRenderer::StartRenderMode(OGRenderMode _Mode)
+{
+	m_Mode = _Mode;
+	switch(m_Mode)
+	{
+	case OG_RENDERMODE_GEOMETRY:
+	    m_pCurShader = &m_ModelShader;
+        glDisable(GL_CULL_FACE);
+	    glEnable(GL_DEPTH_TEST);
+		SetViewMatrix(m_pCamera->GetViewMatrix());
+        m_ModelShader.SetProjectionMatrix(m_mProjection);
+        m_ModelShader.SetViewMatrix(m_mView);
+		EnableLight(true);
+		m_ModelShader.SetLightDir(m_pLightMgr->GetLight(0)->vPosition);
+        m_ModelShader.SetFogParams(m_pFog->GetStart(), m_pFog->GetEnd(), m_pFog->GetColor());
+        m_ModelShader.Setup();
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
+		break;
+		
+	case OG_RENDERMODE_EFFECTS:
+	    m_pCurShader = &m_ColorEffectShader;
+		glDisable(GL_CULL_FACE);
+        glDisable(GL_DEPTH_TEST);
+		SetViewMatrix(m_pCamera->GetViewMatrix());
+        m_ColorEffectShader.SetProjectionMatrix(m_mProjection);
+        m_ColorEffectShader.SetViewMatrix(m_mView);
+		EnableLight(false);
+        m_ColorEffectShader.SetFogParams(m_pFog->GetStart(), m_pFog->GetEnd(), m_pFog->GetColor());
+        m_ColorEffectShader.Setup();
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
+		break;
+	
+	case OG_RENDERMODE_SPRITES:
+	    m_pCurShader = &m_SpriteShader;
+		SetBlend(OG_BLEND_ALPHABLEND);
+		glDisable(GL_DEPTH_TEST);
+        m_SpriteShader.SetProjectionMatrix(m_mOrthoProj);
+		EnableLight(false);
+		glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
+        m_SpriteShader.Setup();
+		break;
+
+	case OG_RENDERMODE_SHADOWMAP:
+		break;
+
+    case OG_RENDERMODE_TEXT:
+	    m_pCurShader = &m_TextShader;
+        m_TextShader.SetProjectionMatrix(m_mTextProj);
+		SetBlend(OG_BLEND_ALPHATEST);
+        m_TextShader.Setup();
+        break;
+	}
+}
+
+
+// finish rendering mode.
+void COGRenderer::FinishRenderMode()
+{
+	switch(m_Mode)
+	{
+	case OG_RENDERMODE_GEOMETRY:
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
+		break;
+	
+	case OG_RENDERMODE_EFFECTS:
+        glEnable(GL_DEPTH_TEST);
+		glDisable(GL_BLEND); 
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
+		break;
+	
+	case OG_RENDERMODE_SPRITES:
+		glDisable(GL_BLEND); 
+		glEnable(GL_DEPTH_TEST);
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
+		break;
+
+	case OG_RENDERMODE_TEXT:
+		m_pText->Flush();
+		glDisable(GL_BLEND); 
+		glEnable(GL_DEPTH_TEST);
+	    glEnable(GL_CULL_FACE);
+		break;
+
+    case OG_RENDERMODE_SHADOWMAP:
+        break;
+	}
+}
+
+
 // add rendering command.
 void COGRenderer::RenderMesh (void* _pMesh)
 {
+    m_pCurShader->SetModelMatrix(m_mWorld);
+    m_pCurShader->Apply();
+
 	if ((IOGVertexBuffers*)_pMesh != m_pCurMesh)
     {
         m_pCurMesh = (IOGVertexBuffers*)_pMesh;
@@ -267,4 +432,45 @@ void COGRenderer::DisplayString (const Vec2& _vPos,
 	va_end(args);
 
     m_pText->DisplayText(_vPos.x,_vPos.y,_fScale, Colour, Text);
+}
+
+
+// Draw effects buffer.
+void COGRenderer::DrawEffectBuffer (void* _pBuffer, int _StartId, int _NumVertices)
+{
+    m_pCurShader->SetModelMatrix(m_mWorld);
+    m_pCurShader->Apply();
+
+    // vertex pointer
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 36, _pBuffer);
+	// texture coord pointer
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 36, (void*)((char *)_pBuffer + 12));
+	// color pointer
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 36, (void*)((char *)_pBuffer + 20));
+    glDrawArrays(GL_TRIANGLE_STRIP, _StartId, _NumVertices);
+
+#ifdef STATISTICS
+	m_pStats->AddVertexCount(_NumVertices, 1);
+	m_pStats->AddDrawCall();
+	m_pStats->AddVBOSwitch();
+#endif
+}
+
+
+// Draw sprite buffer.
+void COGRenderer::DrawSpriteBuffer (void* _pBuffer, int _StartId, int _NumVertices)
+{
+    // vertex pointer
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 32, _pBuffer);
+	// texture coord pointer
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 32, (void*)((char *)_pBuffer + 8));
+	// color pointer
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 32, (void*)((char *)_pBuffer + 16));
+	glDrawArrays(GL_TRIANGLE_STRIP, _StartId, _NumVertices);
+
+#ifdef STATISTICS
+	m_pStats->AddVertexCount(_NumVertices, 1);
+	m_pStats->AddDrawCall();
+	m_pStats->AddVBOSwitch();
+#endif
 }

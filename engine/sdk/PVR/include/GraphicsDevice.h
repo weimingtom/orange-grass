@@ -15,11 +15,7 @@ subject to the following restrictions:
 #ifndef GRAPHICSDEVICE_H_
 #define GRAPHICSDEVICE_H_
 
-#if _OPENGLES20 // Preprocessor Definition.
 #include "../src/Shader.h"
 #include "../src/Texture.h"
-#else // Only GLES 1.1 Support On Device.
-#include "../src/Texture.h"
-#endif
 
 #endif

@@ -38,7 +38,6 @@ IOGActorManager* GetActorManager ();
 IOGPhysics* GetPhysics ();
 IOGInputDispatcher* GetInput ();
 IOGRenderer* GetRenderer ();
-IOGRenderer* GetRendererGL11 ();
 IOGStatistics* GetStatistics ();
 IOGSpritePool* GetSpritePool ();
 IOGEffectsManager* GetEffectsManager ();

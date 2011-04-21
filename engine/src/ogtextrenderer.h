@@ -38,9 +38,9 @@ public:
     void ReleaseTextures();
 
     // Flushes all the print text commands
-    virtual int Flush() = 0;
+    int Flush();
 
-protected:
+private:
 
     // A structure for our vertex type
     struct SDisplayTextAPIVertex
@@ -50,7 +50,7 @@ protected:
 	    VERTTYPE tu, tv;
     };
 
-protected:
+private:
 
     unsigned int UpdateLine(
         float XPos, 
@@ -70,9 +70,9 @@ protected:
     bool APIUpLoad4444(unsigned char *pSource, unsigned int nSize, unsigned int nMode);
 
     // Stores, writes and restores Render States
-    virtual void APIRenderStates(int nAction) = 0;
+    void APIRenderStates(int nAction);
 
-protected:
+private:
 
     bool                    m_bScreenRotate;
     GLuint					m_uTexture;

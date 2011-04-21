@@ -14,8 +14,7 @@
 #include "ogactormanager.h"
 #include "ogphysics.h"
 #include "oginputdispatcher.h"
-#include "ogrenderer_gles11.h"
-#include "ogrenderer_gles20.h"
+#include "ogrenderer.h"
 #include "ogspritepool.h"
 #include "ogstatistics.h"
 #include "ogeffectsmanager.h"
@@ -220,22 +219,7 @@ IOGRenderer* GetRenderer ()
 {
 	if (g_pRenderer == NULL)
 	{
-#ifdef GLES11
-		g_pRenderer = new COGRenderer_GLES11 ();
-#else
-		g_pRenderer = new COGRenderer_GLES20 ();
-#endif
-		g_pRenderer->Init();
-	}
-	return g_pRenderer;
-}
-
-
-IOGRenderer* GetRendererGL11 ()
-{
-	if (g_pRenderer == NULL)
-	{
-		g_pRenderer = new COGRenderer_GLES11 ();
+		g_pRenderer = new COGRenderer ();
 		g_pRenderer->Init();
 	}
 	return g_pRenderer;

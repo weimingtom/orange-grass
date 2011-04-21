@@ -10,7 +10,7 @@
 #define OGSHADOWMODELSHADER_H_
 
 #include "IOGShader.h"
-#ifdef GLES20
+
 
 class COGShadowModelShader : public IOGShader
 {
@@ -52,5 +52,5 @@ protected:
     unsigned int m_uiId;
 	unsigned int m_uiMVPMatrixLoc;
 };
-#endif
+
 #endif

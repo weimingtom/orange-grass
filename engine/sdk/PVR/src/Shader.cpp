@@ -33,9 +33,9 @@ unsigned int ShaderLoadSourceFromMemory(	const char* pszShaderCode,
 											const GLenum Type, 
 											GLuint* const pObject)
 {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED < 30000
-	return SUCCESS;
-#endif
+//#if __IPHONE_OS_VERSION_MAX_ALLOWED < 30000
+//	return SUCCESS;
+//#endif
 	// Create the shader object.
     *pObject = glCreateShader(Type);
 	
@@ -121,9 +121,9 @@ unsigned int ShaderLoadFromFile(	const char* const pszBinFile,
 									const GLenum Format, 
 									GLuint* const pObject)
 {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED < 30000
-	return SUCCESS;
-#endif
+//#if __IPHONE_OS_VERSION_MAX_ALLOWED < 30000
+//	return SUCCESS;
+//#endif
 
     if(Format)
     {
@@ -168,9 +168,9 @@ unsigned int CreateProgram(	GLuint* const pProgramObject,
 							const char** const pszAttribs,
 							const int i32NumAttribs)
 {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED < 30000
-	return SUCCESS;
-#endif
+//#if __IPHONE_OS_VERSION_MAX_ALLOWED < 30000
+//	return SUCCESS;
+//#endif
 
 	// Create the shader program.
 	*pProgramObject = glCreateProgram();

@@ -116,9 +116,6 @@ public:
 
     // Draw sprite buffer.
     virtual void DrawSpriteBuffer (void* _pBuffer, int _StartId, int _NumVertices) = 0;
-
-    // Draw shadow texture.
-    virtual void DrawShadowTexture () = 0;
 };
 
 #endif

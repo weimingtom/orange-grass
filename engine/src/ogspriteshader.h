@@ -8,7 +8,7 @@
  */
 #ifndef OGSPRITESHADER_H_
 #define OGSPRITESHADER_H_
-#ifdef GLES20
+
 #include "IOGShader.h"
 
 
@@ -49,5 +49,5 @@ protected:
 	unsigned int m_uiMVPMatrixLoc;
     unsigned int m_uiTextureLoc;
 };
-#endif
+
 #endif

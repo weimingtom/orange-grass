@@ -1,26 +1,25 @@
 /*
- *  ogvertexbuffers_gles11.h
+ *  ogvertexbuffers.h
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 07.11.09.
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
-#ifndef OGVERTEXBUFFERS_GLES11_H_
-#define OGVERTEXBUFFERS_GLES11_H_
-
+#ifndef OGVERTEXBUFFERS_H_
+#define OGVERTEXBUFFERS_H_
 #include "Geometry.h"
 #include "IOGStatistics.h"
 #include "IOGVertexBuffers.h"
 
 
-class COGVertexBuffers_GLES11 : public IOGVertexBuffers
+class COGVertexBuffers : public IOGVertexBuffers
 {
-	COGVertexBuffers_GLES11();
+	COGVertexBuffers();
 
 public:
-	COGVertexBuffers_GLES11 (const SPODMesh* _pMesh);
-	virtual ~COGVertexBuffers_GLES11 ();
+	COGVertexBuffers (const SPODMesh* _pMesh);
+	virtual ~COGVertexBuffers ();
 
 	// apply buffers.
 	virtual void Apply () const;
@@ -33,10 +32,10 @@ public:
 	
 private:
 
-	const SPODMesh*	m_pMesh;
 	unsigned int	m_VBO;
 	unsigned int	m_IBO;
 	unsigned int	m_NumVertices;
+	const SPODMesh*	m_pMesh;
 	IOGStatistics*	m_pStats;
 };
 

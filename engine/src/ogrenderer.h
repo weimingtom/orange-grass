@@ -14,6 +14,14 @@
 #include "ogmesh.h"
 #include "ogrendertarget.h"
 #include "ogtextrenderer.h"
+
+#include "ogmodelshader.h"
+#include "ogspriteshader.h"
+#include "ogcoloreffectshader.h"
+#include "ogtextshader.h"
+#include "ogshadowmodelshader.h"
+#include "ogrendertarget.h"
+
 #include <string>
 #include <map>
 
@@ -35,6 +43,9 @@ public:
 		float _fZFar,
 		float _fFOV);
 
+	// Create vertex buffer for mesh.
+	virtual IOGVertexBuffers* CreateVertexBuffer (const void* _pMeshData);
+
 	// add rendering command.
 	virtual void SetTexture (IOGTexture* _pTexture);
 
@@ -43,6 +54,24 @@ public:
 
 	// add rendering command.
 	virtual void SetBlend (OGBlendType _Blend);
+
+	// set model matrix.
+	virtual void SetModelMatrix (const MATRIX& _mModel);
+
+	// set view matrix.
+	virtual void SetViewMatrix (const MATRIX& _mView);
+
+	// Enable scene light.
+	virtual void EnableLight (bool _bEnable);
+
+	// Enable scene fog.
+	virtual void EnableFog (bool _bEnable);
+
+	// start rendering mode.
+	virtual void StartRenderMode(OGRenderMode _Mode);
+
+	// finish rendering mode.
+	virtual void FinishRenderMode();
 
 	// add rendering command.
 	virtual void RenderMesh (void* _pMesh);
@@ -75,8 +104,11 @@ public:
 		unsigned int Colour, 
 		const char * const pszFormat, ...);
 
-    // Draw shadow texture.
-    virtual void DrawShadowTexture () {}
+    // Draw effects buffer.
+    virtual void DrawEffectBuffer (void* _pBuffer, int _StartId, int _NumVertices);
+
+    // Draw sprite buffer.
+    virtual void DrawSpriteBuffer (void* _pBuffer, int _StartId, int _NumVertices);
 
 protected:
 
@@ -100,6 +132,16 @@ protected:
 	float				m_fFOV;
 	bool				m_bLandscapeMode;
 	OGRenderMode		m_Mode;
+
+	MATRIX				m_mWorld;
+    bool				m_bLightEnabled;
+    bool				m_bFogEnabled;
+
+    COGModelShader          m_ModelShader;
+    COGSpriteShader         m_SpriteShader;
+    COGColorEffectShader    m_ColorEffectShader;
+    COGTextShader           m_TextShader;
+    IOGShader*              m_pCurShader;
 };
 
 #endif

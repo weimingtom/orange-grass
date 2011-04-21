@@ -10,7 +10,7 @@
 #define OGTEXTSHADER_H_
 
 #include "IOGShader.h"
-#ifdef GLES20
+
 
 class COGTextShader : public IOGShader
 {
@@ -49,5 +49,5 @@ protected:
 	unsigned int m_uiMVPMatrixLoc;
     unsigned int m_uiTextureLoc;
 };
-#endif
+
 #endif

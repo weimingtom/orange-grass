@@ -10,7 +10,7 @@
 #include "OrangeGrass.h"
 #include "ogshadowmodelshader.h"
 #include "GraphicsDevice.h"
-#ifdef GLES20
+
 
 COGShadowModelShader::COGShadowModelShader ()
 {
@@ -84,5 +84,3 @@ void COGShadowModelShader::SetProjectionMatrix (const MATRIX& _mProj)
 {
     m_mProjection = _mProj;
 }
-
-#endif

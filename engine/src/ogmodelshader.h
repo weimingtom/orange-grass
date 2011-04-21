@@ -10,7 +10,7 @@
 #define OGMODELSHADER_H_
 
 #include "IOGShader.h"
-#ifdef GLES20
+
 
 class COGModelShader : public IOGShader
 {
@@ -72,5 +72,5 @@ protected:
 	unsigned int m_uiFogRcpDiffLoc;
 	unsigned int m_uiFogColorLoc;
 };
-#endif
+
 #endif
