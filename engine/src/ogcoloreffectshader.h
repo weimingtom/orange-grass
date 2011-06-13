@@ -43,7 +43,7 @@ public:
     void SetLightDir (const Vec3& _vLightDir);
 
     // set fog params
-    void SetFogParams (float _fFogStart, float _fFogEnd, const Vec4& _vFogColor);
+	void SetFogParams (float _fFogStart, float _fFogEnd, const Vec4& _vFogColor) {}
 
 protected:
 
@@ -53,20 +53,12 @@ protected:
     MATRIX  m_mView;
     MATRIX  m_mProjection;
 
-    // fog params
-    Vec4	m_vFogColor;
-	float	m_fFogStart;
-	float	m_fFogEnd;
-
 	unsigned int m_uiVertShader;
 	unsigned int m_uiFragShader;
     unsigned int m_uiId;
 	unsigned int m_uiMVPMatrixLoc;
 	unsigned int m_uiMVMatrixLoc;
     unsigned int m_uiTextureLoc;
-    unsigned int m_uiFogEndLoc;
-	unsigned int m_uiFogRcpDiffLoc;
-	unsigned int m_uiFogColorLoc;
 };
 
 #endif

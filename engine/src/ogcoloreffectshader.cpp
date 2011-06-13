@@ -35,12 +35,7 @@ bool COGColorEffectShader::Load (const std::string& _VertShader, const std::stri
         return false;
 
     m_uiMVPMatrixLoc = glGetUniformLocation(m_uiId, "MVPMatrix");
-    m_uiMVMatrixLoc = glGetUniformLocation(m_uiId, "MVMatrix");
 	m_uiTextureLoc = glGetUniformLocation(m_uiId, "sTexture");
-
-    m_uiFogEndLoc = glGetUniformLocation(m_uiId, "FogEnd");
-	m_uiFogRcpDiffLoc = glGetUniformLocation(m_uiId, "FogRcpEndStartDiff");
-	m_uiFogColorLoc = glGetUniformLocation(m_uiId, "FogColor");
 
     return true;
 }
@@ -59,8 +54,6 @@ void COGColorEffectShader::Unload ()
 void COGColorEffectShader::Apply ()
 {
     MatrixMultiply(m_mMV, m_mModel, m_mView);
-    glUniformMatrix4fv(m_uiMVMatrixLoc, 1, GL_FALSE, m_mMV.f);
-
     MatrixMultiply(m_mMVP, m_mMV, m_mProjection);
     glUniformMatrix4fv(m_uiMVPMatrixLoc, 1, GL_FALSE, m_mMVP.f);
 }
@@ -71,12 +64,6 @@ void COGColorEffectShader::Setup ()
 {
 	glUseProgram(m_uiId);
     glUniform1i(m_uiTextureLoc, 0);
-
-	const float fFogRcpEndStartDiff = 1.0f / (m_fFogEnd - m_fFogStart);
-
-    glUniform1f(m_uiFogEndLoc, m_fFogEnd);
-	glUniform1f(m_uiFogRcpDiffLoc, fFogRcpEndStartDiff);
-    glUniform3fv(m_uiFogColorLoc, 1, m_vFogColor.ptr());
 }
 
 
@@ -98,13 +85,4 @@ void COGColorEffectShader::SetViewMatrix (const MATRIX& _mView)
 void COGColorEffectShader::SetProjectionMatrix (const MATRIX& _mProj)
 {
     m_mProjection = _mProj;
-}
-
-
-// set fog params
-void COGColorEffectShader::SetFogParams (float _fFogStart, float _fFogEnd, const Vec4& _vFogColor)
-{
-    m_vFogColor = _vFogColor;
-	m_fFogStart = _fFogStart;
-	m_fFogEnd = _fFogEnd;
 }
