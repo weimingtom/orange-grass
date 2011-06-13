@@ -104,7 +104,7 @@ void COGRenderer_GLES20::StartRenderMode(OGRenderMode _Mode)
         m_ModelShader.SetProjectionMatrix(m_mProjection);
         m_ModelShader.SetViewMatrix(m_mView);
 		EnableLight(true);
-        m_ModelShader.SetLightDir(m_pLight->GetMainLightDirection());
+		m_ModelShader.SetLightDir(m_pLightMgr->GetLight(0)->vPosition);
         m_ModelShader.SetFogParams(m_pFog->GetStart(), m_pFog->GetEnd(), m_pFog->GetColor());
         m_ModelShader.Setup();
 		glEnableVertexAttribArray(0);
@@ -129,17 +129,19 @@ void COGRenderer_GLES20::StartRenderMode(OGRenderMode _Mode)
 	
 	case OG_RENDERMODE_SPRITES:
 	    m_pCurShader = &m_SpriteShader;
-	    glEnable (GL_BLEND); 
-	    glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-	    glDisable(GL_ALPHA_TEST);
+		//glEnable (GL_BLEND); 
+		//glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+		//glDisable(GL_ALPHA_TEST);
+		//glDisable(GL_DEPTH_TEST);
+		//glDisable(GL_CULL_FACE);
+		SetBlend(OG_BLEND_ALPHABLEND);
 		glDisable(GL_DEPTH_TEST);
-	    glDisable(GL_CULL_FACE);
         m_SpriteShader.SetProjectionMatrix(m_mOrthoProj);
 		EnableLight(false);
+        m_SpriteShader.Setup();
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
-        m_SpriteShader.Setup();
 		break;
 
 	case OG_RENDERMODE_SHADOWMAP:
@@ -195,7 +197,7 @@ void COGRenderer_GLES20::FinishRenderMode()
 	case OG_RENDERMODE_SPRITES:
 		glDisable(GL_BLEND); 
 		glEnable(GL_DEPTH_TEST);
-	    glEnable(GL_CULL_FACE);
+	    //glEnable(GL_CULL_FACE);
 		glDisableVertexAttribArray(0);
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);

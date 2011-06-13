@@ -1,4 +1,4 @@
-attribute vec4 inVertex;
+attribute vec2 inVertex;
 attribute vec2 inTexCoord;
 attribute vec4 inColor;
 

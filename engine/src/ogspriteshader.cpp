@@ -30,8 +30,8 @@ bool COGSpriteShader::Load (const std::string& _VertShader, const std::string& _
     if(ShaderLoadFromFile("blank", _VertShader.c_str(), GL_VERTEX_SHADER, 0, &m_uiVertShader) == 0)
         return false;
 
-    const char* pszAttribs[] = { "inVertex", "inTexCoord" };
-    if (CreateProgram(&m_uiId, m_uiVertShader, m_uiFragShader, pszAttribs, 2) == 0)
+    const char* pszAttribs[] = { "inVertex", "inTexCoord", "inColor"};
+    if (CreateProgram(&m_uiId, m_uiVertShader, m_uiFragShader, pszAttribs, 3) == 0)
         return false;
 
     m_uiMVPMatrixLoc = glGetUniformLocation(m_uiId, "MVPMatrix");
