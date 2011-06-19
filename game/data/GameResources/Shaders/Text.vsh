@@ -1,11 +1,11 @@
-attribute vec4	inVertex;
-attribute vec4	inColor;
-attribute vec2	inTexCoord;
+attribute /*highp*/ vec4	inVertex;
+attribute /*highp*/ vec4	inColor;
+attribute /*highp*/ vec2	inTexCoord;
 
-uniform mat4	MVPMatrix;
+uniform /*highp*/ mat4	MVPMatrix;
 
-varying vec2	v_textureCoord;
-varying vec4	v_color;
+varying /*highp*/ vec2	v_textureCoord;
+varying /*highp*/ vec4	v_color;
 
 void main(void)
 {

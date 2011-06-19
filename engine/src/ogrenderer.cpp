@@ -67,13 +67,13 @@ bool COGRenderer::Init ()
 	m_pText = new COGTextRenderer();
 
     IOGResourceMgr* pResMgr = GetResourceMgr();
-    if (!m_ModelShader.Load(pResMgr->GetFullPath("Shaders/Model.vsh"), pResMgr->GetFullPath("Shaders/Model.fsh")))
+    if (!m_ModelShader.Load(pResMgr->GetFullPath("Shaders/gles/Model.vsh"), pResMgr->GetFullPath("Shaders/gles/Model.fsh")))
         return false;
-    if (!m_SpriteShader.Load(pResMgr->GetFullPath("Shaders/Sprite.vsh"), pResMgr->GetFullPath("Shaders/Sprite.fsh")))
+    if (!m_SpriteShader.Load(pResMgr->GetFullPath("Shaders/gles/Sprite.vsh"), pResMgr->GetFullPath("Shaders/gles/Sprite.fsh")))
         return false;
-    if (!m_ColorEffectShader.Load(pResMgr->GetFullPath("Shaders/ColorEffect.vsh"), pResMgr->GetFullPath("Shaders/ColorEffect.fsh")))
+    if (!m_ColorEffectShader.Load(pResMgr->GetFullPath("Shaders/gles/ColorEffect.vsh"), pResMgr->GetFullPath("Shaders/gles/ColorEffect.fsh")))
         return false;
-    if (!m_TextShader.Load(pResMgr->GetFullPath("Shaders/Text.vsh"), pResMgr->GetFullPath("Shaders/Text.fsh")))
+    if (!m_TextShader.Load(pResMgr->GetFullPath("Shaders/gles/Text.vsh"), pResMgr->GetFullPath("Shaders/gles/Text.fsh")))
         return false;
 
 	return true;
@@ -201,30 +201,32 @@ void COGRenderer::SetBlend (OGBlendType _Blend)
 
 		case OG_BLEND_SOLID:
 			glDisable (GL_BLEND); 
-			glDisable (GL_ALPHA_TEST); 
+			//glDisable (GL_ALPHA_TEST); 
 			break;
 
 		case OG_BLEND_ALPHATEST:
-			glAlphaFunc(GL_GREATER, 0.2f);
-			glEnable(GL_ALPHA_TEST);
+			//glAlphaFunc(GL_GREATER, 0.2f);
+			//glEnable(GL_ALPHA_TEST);
+            glEnable (GL_BLEND); 
+            glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 			break;
 
 		case OG_BLEND_ALPHABLEND:
 			glEnable (GL_BLEND); 
 			glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-			glDisable(GL_ALPHA_TEST);
+			//glDisable(GL_ALPHA_TEST);
 			break;
 
 		case OG_BLEND_ALPHAADD:
 			glEnable (GL_BLEND); 
 			glBlendFunc (GL_ONE, GL_ONE);
-			glDisable(GL_ALPHA_TEST);
+			//glDisable(GL_ALPHA_TEST);
 			break;
 
 		case OG_BLEND_ALPHAONE:
 			glEnable (GL_BLEND); 
 			glBlendFunc (GL_SRC_ALPHA,GL_ONE);
-			glDisable(GL_ALPHA_TEST);
+			//glDisable(GL_ALPHA_TEST);
 			break;
 		}
 	}

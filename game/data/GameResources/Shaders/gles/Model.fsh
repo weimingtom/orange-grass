@@ -1,12 +1,15 @@
 uniform sampler2D sTexture;
 
-varying lowp    vec3  DiffuseLight;
-varying mediump vec2  TexCoord;
+uniform highp vec3 FogColor;
+
+varying lowp vec3 DiffuseLight;
+varying mediump vec2 TexCoord;
+varying lowp vec3 FogIntensity;
 
 void main()
 {
-	lowp vec3 texColor  = texture2D(sTexture, TexCoord).rgb;
-	lowp vec3 color = (texColor * DiffuseLight);
-	gl_FragColor = vec4(color, 1.0);
+	lowp vec4 texColor = (texture2D(sTexture, TexCoord)) * vec4(DiffuseLight, 1.0) + vec4(0.2,0.2,0.2,0.0);
+	lowp vec3 color = mix(FogColor, texColor.rgb, FogIntensity);
+	gl_FragColor = vec4(color, texColor.a);
 }
 

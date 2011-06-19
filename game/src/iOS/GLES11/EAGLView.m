@@ -66,7 +66,7 @@ Copyright (C) 2008 Apple Inc. All Rights Reserved.
 
 #import "EAGLView.h"
 
-int __OPENGLES_VERSION = 1;
+int __OPENGLES_VERSION = 2;
 
 @implementation EAGLView
 
@@ -92,26 +92,26 @@ int __OPENGLES_VERSION = 1;
 	newSize.width = roundf(newSize.width);
 	newSize.height = roundf(newSize.height);
 	
-	glGetIntegerv(GL_RENDERBUFFER_BINDING_OES, (GLint *) &oldRenderbuffer);
-	glGetIntegerv(GL_FRAMEBUFFER_BINDING_OES, (GLint *) &oldFramebuffer);
+	glGetIntegerv(GL_RENDERBUFFER_BINDING, (GLint *) &oldRenderbuffer);
+	glGetIntegerv(GL_FRAMEBUFFER_BINDING, (GLint *) &oldFramebuffer);
 	
-	glGenRenderbuffersOES(1, &_renderbuffer);
-	glBindRenderbufferOES(GL_RENDERBUFFER_OES, _renderbuffer);
+	glGenRenderbuffers(1, &_renderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, _renderbuffer);
 	
-	if(![_context renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:(id<EAGLDrawable>)eaglLayer]) {
-		glDeleteRenderbuffersOES(1, &_renderbuffer);
-		glBindRenderbufferOES(GL_RENDERBUFFER_BINDING_OES, oldRenderbuffer);
+	if(![_context renderbufferStorage:GL_RENDERBUFFER fromDrawable:(id<EAGLDrawable>)eaglLayer]) {
+		glDeleteRenderbuffers(1, &_renderbuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER_BINDING, oldRenderbuffer);
 		return NO;
 	}
 	
-	glGenFramebuffersOES(1, &_framebuffer);
-	glBindFramebufferOES(GL_FRAMEBUFFER_OES, _framebuffer);
-	glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, _renderbuffer);
+	glGenFramebuffers(1, &_framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, _framebuffer);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _renderbuffer);
 	if (_depthFormat) {
-		glGenRenderbuffersOES(1, &_depthBuffer);
-		glBindRenderbufferOES(GL_RENDERBUFFER_OES, _depthBuffer);
-		glRenderbufferStorageOES(GL_RENDERBUFFER_OES, _depthFormat, newSize.width, newSize.height);
-		glFramebufferRenderbufferOES(GL_FRAMEBUFFER_OES, GL_DEPTH_ATTACHMENT_OES, GL_RENDERBUFFER_OES, _depthBuffer);
+		glGenRenderbuffers(1, &_depthBuffer);
+		glBindRenderbuffer(GL_RENDERBUFFER, _depthBuffer);
+		glRenderbufferStorage(GL_RENDERBUFFER, _depthFormat, newSize.width, newSize.height);
+		glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, _depthBuffer);
 	}
 
 	_size = newSize;
@@ -121,9 +121,9 @@ int __OPENGLES_VERSION = 1;
 		_hasBeenCurrent = YES;
 	}
 	else {
-		glBindFramebufferOES(GL_FRAMEBUFFER_OES, oldFramebuffer);
+		glBindFramebuffer(GL_FRAMEBUFFER, oldFramebuffer);
 	}
-	glBindRenderbufferOES(GL_RENDERBUFFER_OES, oldRenderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, oldRenderbuffer);
 	
 	// Error handling here
 	
@@ -140,14 +140,14 @@ int __OPENGLES_VERSION = 1;
 		[EAGLContext setCurrentContext:_context];
 	
 	if(_depthFormat) {
-		glDeleteRenderbuffersOES(1, &_depthBuffer);
+		glDeleteRenderbuffers(1, &_depthBuffer);
 		_depthBuffer = 0;
 	}
 	
-	glDeleteRenderbuffersOES(1, &_renderbuffer);
+	glDeleteRenderbuffers(1, &_renderbuffer);
 	_renderbuffer = 0;
 
-	glDeleteFramebuffersOES(1, &_framebuffer);
+	glDeleteFramebuffers(1, &_framebuffer);
 	_framebuffer = 0;
 	
 	if (oldContext != _context)
@@ -156,7 +156,7 @@ int __OPENGLES_VERSION = 1;
 
 - (id) initWithFrame:(CGRect)frame
 {
-	return [self initWithFrame:frame pixelFormat:GL_RGB565_OES depthFormat:0 preserveBackbuffer:NO];
+	return [self initWithFrame:frame pixelFormat:GL_RGB565 depthFormat:0 preserveBackbuffer:NO];
 }
 
 - (id) initWithFrame:(CGRect)frame pixelFormat:(GLuint)format 
@@ -170,12 +170,12 @@ int __OPENGLES_VERSION = 1;
 		CAEAGLLayer*			eaglLayer = (CAEAGLLayer*)[self layer];
 		
 		eaglLayer.drawableProperties = [NSDictionary dictionaryWithObjectsAndKeys:
-										[NSNumber numberWithBool:retained], kEAGLDrawablePropertyRetainedBacking, (format == GL_RGB565_OES) ? kEAGLColorFormatRGB565 : kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
+										[NSNumber numberWithBool:retained], kEAGLDrawablePropertyRetainedBacking, (format == GL_RGB565) ? kEAGLColorFormatRGB565 : kEAGLColorFormatRGBA8, kEAGLDrawablePropertyColorFormat, nil];
 		
 		_format = format;
 		_depthFormat = depth;
 		
-		_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
+		_context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
 		if(_context == nil) {
 			[self release];
 			return nil;
@@ -243,10 +243,10 @@ int __OPENGLES_VERSION = 1;
 	if(oldContext != _context)
 		[EAGLContext setCurrentContext:_context];
 	
-	glGetIntegerv(GL_RENDERBUFFER_BINDING_OES, (GLint *) &oldRenderbuffer);
-	glBindRenderbufferOES(GL_RENDERBUFFER_OES, _renderbuffer);
+	glGetIntegerv(GL_RENDERBUFFER_BINDING, (GLint *) &oldRenderbuffer);
+	glBindRenderbuffer(GL_RENDERBUFFER, _renderbuffer);
 	
-	if(![_context presentRenderbuffer:GL_RENDERBUFFER_OES])
+	if(![_context presentRenderbuffer:GL_RENDERBUFFER])
 		printf("Failed to swap renderbuffer in %s\n", __FUNCTION__);
 
 	if(oldContext != _context)

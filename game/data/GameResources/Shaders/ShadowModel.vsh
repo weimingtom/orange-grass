@@ -1,8 +1,8 @@
-attribute vec4 inVertex;
-attribute vec3 inNormal;
-attribute vec2 inTexCoord;
+attribute /*highp*/ vec4 inVertex;
+attribute /*highp*/ vec3 inNormal;
+attribute /*highp*/ vec2 inTexCoord;
 
-uniform mat4 MVPMatrix;
+uniform /*highp*/ mat4 MVPMatrix;
 
 void main()
 {

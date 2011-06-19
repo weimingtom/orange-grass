@@ -17,9 +17,9 @@ subject to the following restrictions:
 
 #include "OpenGL2.h"
 #include <MemoryManager.h>
-#ifndef WIN32
-#include "OpenGLESExt.h"
-#endif
+//#ifndef WIN32
+//#include "OpenGLESExt.h"
+//#endif
 #include <stdio.h>
 
 

@@ -1,15 +1,15 @@
-attribute vec4 inVertex;
-attribute vec3 inNormal;
-attribute vec2 inTexCoord;
+attribute /*highp*/ vec4 inVertex;
+attribute /*highp*/ vec3 inNormal;
+attribute /*highp*/ vec2 inTexCoord;
 
-uniform mat4 MVPMatrix;
-uniform mat4 MVMatrix;
-uniform vec3 LightDirection;
+uniform /*highp*/ mat4 MVPMatrix;
+uniform /*highp*/ mat4 MVMatrix;
+uniform /*highp*/ vec3 LightDirection;
 uniform /*highp*/ float  FogEnd;
 uniform /*highp*/ float  FogRcpEndStartDiff;
 
-varying vec3 DiffuseLight;
-varying vec2 TexCoord;
+varying /*lowp*/ vec3 DiffuseLight;
+varying /*mediump*/ vec2 TexCoord;
 varying /*lowp*/ vec3 FogIntensity;
 
 void main()

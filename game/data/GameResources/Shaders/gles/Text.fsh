@@ -1,5 +1,5 @@
-varying /*highp*/ vec2	v_textureCoord;
-varying /*highp*/ vec4	v_color;
+varying highp vec2	v_textureCoord;
+varying highp vec4	v_color;
 uniform sampler2D sTexture;
 
 void main(void)
