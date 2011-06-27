@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<Params>
+	<Actor 
+		type = "static"
+		model = "prop08"
+		model_propeller = ""
+		model_destruction = ""
+		icon = "Models/objects/pipes/pipe_01_ed.bmp"
+		/>
+</Params>

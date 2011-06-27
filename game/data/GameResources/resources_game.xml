@@ -87,6 +87,17 @@
 	<Model alias="stone_06" file="Models/Land_objects_02/stone/stone_06.xml"/>
 	<Model alias="stone_07" file="Models/Land_objects_02/stone/stone_07.xml"/>
 	<Model alias="rock_01" file="Models/Land_objects_02/rock/rock_01.xml"/>
+	<Model alias="prop01" file="Models/objects/props/prop01.xml"/>
+	<Model alias="prop02" file="Models/objects/props/prop02.xml"/>
+	<Model alias="prop03" file="Models/objects/props/prop03.xml"/>
+	<Model alias="prop04" file="Models/objects/props/prop04.xml"/>
+	<Model alias="prop05" file="Models/objects/props/prop05.xml"/>
+	<Model alias="prop06" file="Models/objects/props/prop06.xml"/>
+	<Model alias="prop07" file="Models/objects/props/prop07.xml"/>
+	<Model alias="prop08" file="Models/objects/props/prop08.xml"/>
+	<Model alias="prop09" file="Models/objects/props/prop09.xml"/>
+	<Model alias="prop10" file="Models/objects/props/prop10.xml"/>
+	<Model alias="prop11" file="Models/objects/props/prop11.xml"/>
 </Models>
 <Sprites>
 	<Sprite alias="life_hud" texture="hud" mapping="1"/>

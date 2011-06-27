@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<Mesh file="Models/objects/props/prop03.POD" />
+<Material texture="objects" blend="solid">
+    <Ambient r="0.7" g="0.7" b="0.7" a="1" />
+    <Diffuse r="0.67" g="0.67" b="0.67" a="1" />
+    <Specular r="0" g="0" b="0" a="1" />
+</Material>
