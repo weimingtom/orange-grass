@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<Mesh file="Models/objects/pipes/pipe_01.POD" />
+<Mesh file="Models/objects/props/prop12.POD" />
 <Material texture="objects" blend="solid">
     <Ambient r="0.18" g="0.18" b="0.18" a="1" />
     <Diffuse r="1" g="1" b="1" a="1" />

@@ -17,9 +17,6 @@
 	<Actor alias="cactus_01" file="Actors/cactus_01.xml" />
 	<Actor alias="cactus_02" file="Actors/cactus_02.xml" />
 	<Actor alias="cactus_03" file="Actors/cactus_03.xml" />
-	<Actor alias="oil_tank" file="Actors/oil_tank.xml" />
-	<Actor alias="pipe_01" file="Actors/pipe_01.xml" />
-	<Actor alias="pipe_02" file="Actors/pipe_02.xml" />
 	<Actor alias="prop01" file="Actors/prop01.xml" />
 	<Actor alias="prop02" file="Actors/prop02.xml" />
 	<Actor alias="prop03" file="Actors/prop03.xml" />
@@ -31,6 +28,7 @@
 	<Actor alias="prop09" file="Actors/prop09.xml" />
 	<Actor alias="prop10" file="Actors/prop10.xml" />
 	<Actor alias="prop11" file="Actors/prop11.xml" />
+	<Actor alias="prop12" file="Actors/prop12.xml" />
 	<Actor alias="helicopter_player" file="Actors/helicopter_player.xml" />
 	<Actor alias="bot_helicopter_small" file="Actors/helicopter_small.xml" />
 	<Actor alias="bot_helicopter_medium" file="Actors/helicopter_medium.xml" />

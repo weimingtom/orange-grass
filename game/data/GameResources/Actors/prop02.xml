@@ -5,6 +5,6 @@
 		model = "prop02"
 		model_propeller = ""
 		model_destruction = ""
-		icon = "Models/objects/pipes/pipe_01_ed.bmp"
+		icon = "Models/objects/props/prop02_ed.bmp"
 		/>
 </Params>

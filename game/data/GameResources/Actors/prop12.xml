@@ -2,9 +2,9 @@
 <Params>
 	<Actor 
 		type = "static"
-		model = "pipe_02"
+		model = "prop12"
 		model_propeller = ""
 		model_destruction = ""
-		icon = "Models/objects/pipes/pipe_02_ed.bmp"
+		icon = "Models/objects/props/prop12_ed.bmp"
 		/>
 </Params>

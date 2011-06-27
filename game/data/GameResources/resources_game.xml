@@ -44,7 +44,6 @@
 	</Texture>
 	<Texture alias="units" file="Models/units/units.pvr" />
 	<Texture alias="objects" file="Models/objects/objects.pvr" />
-	<Texture alias="pipes" file="Models/objects/pipes/pipes.pvr" />
 	<Texture alias="bonus_01" file="Models/Bonuses/bonus_01.pvr" />
 	<Texture alias="bonus_02" file="Models/Bonuses/bonus_02.pvr" />
 	<Texture alias="land_02" file="Models/Land_objects_02/land_02.pvr" />
@@ -68,9 +67,6 @@
 	<Model alias="helicopter_big" file="Models/units/helicopter_big/helicopter_big.xml"/>
 	<Model alias="plane_small" file="Models/units/plane_small/plane_small.xml"/>
 	<Model alias="plane_small_destruction" file="Models/units/plane_small/plane_small_destruction.xml"/>
-	<Model alias="oil_tank" file="Models/objects/oil_tank/oil_tank.xml"/>
-	<Model alias="pipe_01" file="Models/objects/pipes/pipe_01.xml"/>
-	<Model alias="pipe_02" file="Models/objects/pipes/pipe_02.xml"/>
 	<Model alias="bonus_01" file="Models/Bonuses/bonus_01.xml"/>
 	<Model alias="bonus_02" file="Models/Bonuses/bonus_02.xml"/>
 	<Model alias="bush_01" file="Models/Land_objects_02/bush/bush_01.xml"/>
@@ -98,6 +94,7 @@
 	<Model alias="prop09" file="Models/objects/props/prop09.xml"/>
 	<Model alias="prop10" file="Models/objects/props/prop10.xml"/>
 	<Model alias="prop11" file="Models/objects/props/prop11.xml"/>
+	<Model alias="prop12" file="Models/objects/props/prop12.xml"/>
 </Models>
 <Sprites>
 	<Sprite alias="life_hud" texture="hud" mapping="1"/>
