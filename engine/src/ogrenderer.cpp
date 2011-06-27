@@ -65,15 +65,20 @@ bool COGRenderer::Init ()
 	m_pCamera = new COGCamera ();
 	m_pFog = new COGFog ();
 	m_pText = new COGTextRenderer();
+#ifdef WIN32
+	std::string ShaderPath = std::string("Shaders/gl/");
+#else
+	std::string ShaderPath = std::string("Shaders/gles/");
+#endif
 
     IOGResourceMgr* pResMgr = GetResourceMgr();
-    if (!m_ModelShader.Load(pResMgr->GetFullPath("Shaders/gles/Model.vsh"), pResMgr->GetFullPath("Shaders/gles/Model.fsh")))
+	if (!m_ModelShader.Load(pResMgr->GetFullPath(ShaderPath + std::string("Model.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("Model.fsh"))))
         return false;
-    if (!m_SpriteShader.Load(pResMgr->GetFullPath("Shaders/gles/Sprite.vsh"), pResMgr->GetFullPath("Shaders/gles/Sprite.fsh")))
+    if (!m_SpriteShader.Load(pResMgr->GetFullPath(ShaderPath + std::string("Sprite.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("Sprite.fsh"))))
         return false;
-    if (!m_ColorEffectShader.Load(pResMgr->GetFullPath("Shaders/gles/ColorEffect.vsh"), pResMgr->GetFullPath("Shaders/gles/ColorEffect.fsh")))
+    if (!m_ColorEffectShader.Load(pResMgr->GetFullPath(ShaderPath + std::string("ColorEffect.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("ColorEffect.fsh"))))
         return false;
-    if (!m_TextShader.Load(pResMgr->GetFullPath("Shaders/gles/Text.vsh"), pResMgr->GetFullPath("Shaders/gles/Text.fsh")))
+    if (!m_TextShader.Load(pResMgr->GetFullPath(ShaderPath + std::string("Text.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("Text.fsh"))))
         return false;
 
 	return true;
