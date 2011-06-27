@@ -166,7 +166,7 @@
 		B2969BCB12D3B35D009BCE6D /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = B2969BC912D3B35D009BCE6D /* EAGLView.m */; };
 		B2969C2612D3B884009BCE6D /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B2969C2512D3B884009BCE6D /* icon.png */; };
 		B2BD483112EBA15B005A7210 /* GameResources in Resources */ = {isa = PBXBuildFile; fileRef = B2BD473012EBA15B005A7210 /* GameResources */; };
-		B2BD488612EBA9FC005A7210 /* neon_matrix_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2BD488412EBA9FC005A7210 /* neon_matrix_impl.cpp */; };
+		B2BD488612EBA9FC005A7210 /* neon_matrix_impl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2BD488412EBA9FC005A7210 /* neon_matrix_impl.cpp */; settings = {COMPILER_FLAGS = "-marm"; }; };
 		B2CB286212D69C87003C8109 /* BoneBatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2CB283012D69C87003C8109 /* BoneBatch.cpp */; };
 		B2CB286312D69C87003C8109 /* Accelerometer.m in Sources */ = {isa = PBXBuildFile; fileRef = B2CB283512D69C87003C8109 /* Accelerometer.m */; };
 		B2CB286412D69C87003C8109 /* ResourcePath.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2CB283712D69C87003C8109 /* ResourcePath.mm */; };

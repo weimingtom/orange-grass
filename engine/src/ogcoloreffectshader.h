@@ -44,6 +44,9 @@ public:
 
     // set fog params
 	void SetFogParams (float _fFogStart, float _fFogEnd, const Vec4& _vFogColor) {}
+    
+    // set alpha test
+    virtual void EnableAlphaTest (bool _bEnabled) {}
 
 protected:
 

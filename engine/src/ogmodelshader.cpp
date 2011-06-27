@@ -12,7 +12,7 @@
 #include "GraphicsDevice.h"
 
 
-COGModelShader::COGModelShader ()
+COGModelShader::COGModelShader () : m_bAlphaTest(false)
 {
 }
 
@@ -42,6 +42,8 @@ bool COGModelShader::Load (const std::string& _VertShader, const std::string& _F
     m_uiFogEndLoc = glGetUniformLocation(m_uiId, "FogEnd");
 	m_uiFogRcpDiffLoc = glGetUniformLocation(m_uiId, "FogRcpEndStartDiff");
 	m_uiFogColorLoc = glGetUniformLocation(m_uiId, "FogColor");
+    
+    m_uiAlphaReference = glGetUniformLocation(m_uiId, "AlphaReference");
 
     return true;
 }
@@ -123,3 +125,18 @@ void COGModelShader::SetFogParams (float _fFogStart, float _fFogEnd, const Vec4&
 	m_fFogStart = _fFogStart;
 	m_fFogEnd = _fFogEnd;
 }
+
+
+// set alpha test
+void COGModelShader::EnableAlphaTest (bool _bEnabled)
+{
+    m_bAlphaTest = _bEnabled;
+    if (m_bAlphaTest)
+    {
+        m_fAlphaRef = 0.2f;
+    }
+    else
+        m_fAlphaRef = 0;
+    glUniform1f(m_uiAlphaReference, m_fAlphaRef);
+}
+

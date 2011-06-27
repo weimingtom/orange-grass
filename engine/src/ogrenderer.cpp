@@ -200,13 +200,15 @@ void COGRenderer::SetBlend (OGBlendType _Blend)
 			break;
 
 		case OG_BLEND_SOLID:
-			glDisable (GL_BLEND); 
+			glDisable (GL_BLEND);
+            m_pCurShader->EnableAlphaTest(false);
 			//glDisable (GL_ALPHA_TEST); 
 			break;
 
 		case OG_BLEND_ALPHATEST:
 			//glAlphaFunc(GL_GREATER, 0.2f);
 			//glEnable(GL_ALPHA_TEST);
+            m_pCurShader->EnableAlphaTest(true);
             glEnable (GL_BLEND); 
             glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 			break;
@@ -214,18 +216,21 @@ void COGRenderer::SetBlend (OGBlendType _Blend)
 		case OG_BLEND_ALPHABLEND:
 			glEnable (GL_BLEND); 
 			glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-			//glDisable(GL_ALPHA_TEST);
+            m_pCurShader->EnableAlphaTest(false);
+            //glDisable(GL_ALPHA_TEST);
 			break;
 
 		case OG_BLEND_ALPHAADD:
 			glEnable (GL_BLEND); 
 			glBlendFunc (GL_ONE, GL_ONE);
+            m_pCurShader->EnableAlphaTest(false);
 			//glDisable(GL_ALPHA_TEST);
 			break;
 
 		case OG_BLEND_ALPHAONE:
 			glEnable (GL_BLEND); 
 			glBlendFunc (GL_SRC_ALPHA,GL_ONE);
+            m_pCurShader->EnableAlphaTest(false);
 			//glDisable(GL_ALPHA_TEST);
 			break;
 		}

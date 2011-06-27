@@ -5,7 +5,7 @@
 		type = "trail"
 		texture = "effects" 
 		mapping = "5"
-		emit_distance = "0.9"
+		emit_distance = "1.9"
 		alpha_fade = "0.01" 
 		scale_inc = "0.1" 
 		rotate_inc = "0.1" 

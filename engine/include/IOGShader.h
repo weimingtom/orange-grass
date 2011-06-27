@@ -38,6 +38,9 @@ public:
 
     // set projection matrix
     virtual void SetProjectionMatrix (const MATRIX& _mProj) = 0;
+    
+    // set alpha test
+    virtual void EnableAlphaTest (bool _bEnabled) = 0;    
 };
 
 

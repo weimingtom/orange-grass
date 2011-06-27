@@ -44,6 +44,9 @@ public:
 
     // set fog params
     void SetFogParams (float _fFogStart, float _fFogEnd, const Vec4& _vFogColor);
+    
+    // set alpha test
+    virtual void EnableAlphaTest (bool _bEnabled);
 
 protected:
 
@@ -60,6 +63,10 @@ protected:
     Vec4	m_vFogColor;
 	float	m_fFogStart;
 	float	m_fFogEnd;
+    
+    // alpha test
+    float   m_fAlphaRef;
+    bool    m_bAlphaTest;
 
 	unsigned int m_uiVertShader;
 	unsigned int m_uiFragShader;
@@ -71,6 +78,7 @@ protected:
     unsigned int m_uiFogEndLoc;
 	unsigned int m_uiFogRcpDiffLoc;
 	unsigned int m_uiFogColorLoc;
+    unsigned int m_uiAlphaReference;
 };
 
 #endif
