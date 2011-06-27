@@ -206,6 +206,7 @@ bool COGPhysicalObject::Stabilize ()
     if (fabsf(fAngle) < m_pParams->fTorque)
     {
 		fTorqueAngle = (fAngle > 0) ? -fAngle : fAngle;
+		m_vRotation.y = 0.0f;
 		bDone = true;
     }
 

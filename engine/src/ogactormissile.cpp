@@ -108,6 +108,7 @@ void COGActorMissile::Activate (bool _bActive)
 		m_FlightWorker.Activate(true);
 		m_pHeadEffect->Start();
 		m_pHeadEffect->SetDirection(Vec3(0,0,1));
+		m_pHeadEffect->Update(1);
         m_pPhysicalObject->Update(1);
 	}
 	else

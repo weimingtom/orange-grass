@@ -64,29 +64,40 @@ void COGEmitterTrail::Update (unsigned long _ElapsedTime)
 		return;
 
     std::vector<ParticleFormat>::iterator iter = m_BBList.begin();
-    while (iter != m_BBList.end())
-    {
-        ParticleFormat& particle = (*iter);
-        if (particle.pVertices[0].c.w >= m_fAlphaFade)
-        {
-            particle.scale += m_fScaleInc;
-            particle.angle += m_fRotateInc;
-    		particle.pVertices[0].c.w -= m_fAlphaFade;
-    		particle.pVertices[1].c.w -= m_fAlphaFade;
-    		particle.pVertices[2].c.w -= m_fAlphaFade;
-    		particle.pVertices[3].c.w -= m_fAlphaFade;
-            ++iter;
-        }
-        else
-        {
-            iter = m_BBList.erase(iter);
-			if (m_BBList.empty() && m_Status == OG_EFFECTSTATUS_STOPPED)
+    if (iter != m_BBList.end())
+	{
+		while (iter != m_BBList.end())
+		{
+			ParticleFormat& particle = (*iter);
+			if (particle.pVertices[0].c.w >= m_fAlphaFade)
 			{
-				m_Status = OG_EFFECTSTATUS_INACTIVE;
-				return;
+				particle.scale += m_fScaleInc;
+				particle.angle += m_fRotateInc;
+				particle.pVertices[0].c.w -= m_fAlphaFade;
+				particle.pVertices[1].c.w -= m_fAlphaFade;
+				particle.pVertices[2].c.w -= m_fAlphaFade;
+				particle.pVertices[3].c.w -= m_fAlphaFade;
+				++iter;
 			}
-        }
-    }
+			else
+			{
+				iter = m_BBList.erase(iter);
+				if (m_BBList.empty() && m_Status == OG_EFFECTSTATUS_STOPPED)
+				{
+					m_Status = OG_EFFECTSTATUS_INACTIVE;
+					return;
+				}
+			}
+		}
+	}
+	else
+	{
+		if (m_Status == OG_EFFECTSTATUS_STOPPED)
+		{
+			m_Status = OG_EFFECTSTATUS_INACTIVE;
+			return;
+		}
+	}
 
 	if (m_Status == OG_EFFECTSTATUS_STARTED && m_bPositionUpdated && m_vCurPosition != m_vPrevPosition)
 	{
@@ -180,6 +191,7 @@ void COGEmitterTrail::Start ()
 	m_Status = OG_EFFECTSTATUS_STARTED;
     m_BBList.clear();
 	m_fDistanceAccum = 0.0f;
+	m_bPositionUpdated = false;
 }
 
 
@@ -192,4 +204,5 @@ void COGEmitterTrail::Stop ()
     m_BBList.clear();
 	m_fDistanceAccum = 0.0f;
 	m_Status = OG_EFFECTSTATUS_STOPPED;
+	m_bPositionUpdated = false;
 }
