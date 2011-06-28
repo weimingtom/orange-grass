@@ -133,7 +133,7 @@ void COGModelShader::EnableAlphaTest (bool _bEnabled)
     m_bAlphaTest = _bEnabled;
     if (m_bAlphaTest)
     {
-        m_fAlphaRef = 0.2f;
+        m_fAlphaRef = 0.5f;
     }
     else
         m_fAlphaRef = 0;
