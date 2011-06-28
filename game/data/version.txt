@@ -1,6 +1,14 @@
-Orange grass: ver. 0.21, 07-Apr-2011
+Orange grass: ver. 0.22, 28-Jul-2011
 
 ChangeList:
+
+0.21 (28-Jul-2011):
+- [OG] removed the fixed-function pipeline, project is moved to GLES20;
+- [OG] temporary removed the destruction trail (performance issue);
+- [OG] fixed the problem with the smoke correct stopping;
+- [OG] fixed the player's helicopter stabilization issue;
+- [Game] added some of the new graphics;
+- [Game] updated the level 2.
 
 0.21 (07-Apr-2011):
 - [OG] some refactoring: map -> hash_map; list -> vector in some places;
