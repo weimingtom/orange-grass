@@ -32,11 +32,6 @@ public:
 	
 private:
 
-	// normalize normals
-	void NormalizeNormals (SPODMesh* _pMesh);
-
-private:
-
 	unsigned int	m_VBO;
 	unsigned int	m_IBO;
 	unsigned int	m_NumVertices;
