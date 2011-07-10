@@ -41,7 +41,7 @@ bool CEffectViewerScene::Init ()
 
 	glewInit();
 
-	m_pRenderer = GetRendererGL11();
+	m_pRenderer = GetRenderer();
 	m_pRenderer->SetViewport(m_ResX, m_ResY, 4.0f, 4500.0f, 0.67f);
 
 	m_pResourceMgr = GetResourceMgr();
