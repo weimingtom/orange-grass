@@ -47,6 +47,7 @@
 	<Texture alias="bonus_01" file="Models/Bonuses/bonus_01.pvr" />
 	<Texture alias="bonus_02" file="Models/Bonuses/bonus_02.pvr" />
 	<Texture alias="land_02" file="Models/Land_objects_02/land_02.pvr" />
+	<Texture alias="land_03" file="Models/Land_objects_03/land_03.pvr" />
 	<Texture alias="land_02_objs" file="Models/Land_objects_02/land_02_objs.pvr" />
 	<Texture alias="icons" file="Textures/HUD/icons.pvr" >
 		<Mappings>
