@@ -42,8 +42,13 @@ bool COGModelShader::Load (const std::string& _VertShader, const std::string& _F
     m_uiFogEndLoc = glGetUniformLocation(m_uiId, "FogEnd");
 	m_uiFogRcpDiffLoc = glGetUniformLocation(m_uiId, "FogRcpEndStartDiff");
 	m_uiFogColorLoc = glGetUniformLocation(m_uiId, "FogColor");
+	m_uiFogEnabled = glGetUniformLocation(m_uiId, "FogEnabled");
     
     m_uiAlphaReference = glGetUniformLocation(m_uiId, "AlphaReference");
+
+	m_uiMaterialAmbient = glGetUniformLocation(m_uiId, "MaterialAmbient");
+	m_uiMaterialDiffuse = glGetUniformLocation(m_uiId, "MaterialDiffuse");
+	m_uiMaterialSpecular = glGetUniformLocation(m_uiId, "MaterialSpecular");
 
     return true;
 }
@@ -70,7 +75,7 @@ void COGModelShader::Apply ()
     MATRIX mInvModel;
     MatrixInverse(mInvModel, m_mModel);
     Vec3 vTransformedLightDir;
-    MatrixVec3Multiply(vTransformedLightDir, m_vLightDir, mInvModel);
+    MatrixVec3Multiply(vTransformedLightDir, m_pLightMgr->GetLight(0)->vPosition, mInvModel);
     vTransformedLightDir.normalize();
     glUniform3fv(m_uiLightDirLoc, 1, vTransformedLightDir.ptr());
 }
@@ -82,11 +87,16 @@ void COGModelShader::Setup ()
 	glUseProgram(m_uiId);
     glUniform1i(m_uiTextureLoc, 0);
 
-	const float fFogRcpEndStartDiff = 1.0f / (m_fFogEnd - m_fFogStart);
+    float fFogStart = m_pFog->GetStart();
+	float fFogEnd = m_pFog->GetEnd();
+    Vec4 vFogColor = m_pFog->GetColor();
 
-    glUniform1f(m_uiFogEndLoc, m_fFogEnd);
+	const float fFogRcpEndStartDiff = 1.0f / (fFogEnd - fFogStart);
+
+    glUniform1f(m_uiFogEndLoc, fFogEnd);
 	glUniform1f(m_uiFogRcpDiffLoc, fFogRcpEndStartDiff);
-    glUniform3fv(m_uiFogColorLoc, 1, m_vFogColor.ptr());
+    glUniform3fv(m_uiFogColorLoc, 1, Vec3(vFogColor.x, vFogColor.y, vFogColor.z).ptr());
+    glUniform1f(m_uiFogEnabled, m_pFog->IsEnabled() ? 1.0f : 0.0f);
 }
 
 
@@ -111,19 +121,24 @@ void COGModelShader::SetProjectionMatrix (const MATRIX& _mProj)
 }
 
 
-// set light direction
-void COGModelShader::SetLightDir (const Vec3& _vLightDir)
+// set light and fog
+void COGModelShader::SetLighting (IOGFog* _pFog, IOGLightMgr* _pLightMgr)
 {
-    m_vLightDir = _vLightDir;
+    m_pFog = _pFog;
+    m_pLightMgr = _pLightMgr;
 }
 
 
-// set fog params
-void COGModelShader::SetFogParams (float _fFogStart, float _fFogEnd, const Vec4& _vFogColor)
+// set material
+void COGModelShader::SetMaterial (IOGMaterial* _pMaterial)
 {
-    m_vFogColor = _vFogColor;
-	m_fFogStart = _fFogStart;
-	m_fFogEnd = _fFogEnd;
+    const Vec4& vAmbient = _pMaterial->GetAmbient();
+    const Vec4& vDiffuse = _pMaterial->GetDiffuse();
+    const Vec4& vSpecular = _pMaterial->GetSpecular();
+
+    glUniform3fv(m_uiMaterialAmbient, 1, Vec3(vAmbient.x, vAmbient.y, vAmbient.z).ptr());
+    glUniform3fv(m_uiMaterialDiffuse, 1, Vec3(vDiffuse.x, vDiffuse.y, vDiffuse.z).ptr());
+    glUniform3fv(m_uiMaterialSpecular, 1, Vec3(vSpecular.x, vSpecular.y, vSpecular.z).ptr());
 }
 
 
@@ -139,4 +154,3 @@ void COGModelShader::EnableAlphaTest (bool _bEnabled)
         m_fAlphaRef = 0;
     glUniform1f(m_uiAlphaReference, m_fAlphaRef);
 }
-

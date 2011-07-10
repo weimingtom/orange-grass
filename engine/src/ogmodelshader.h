@@ -10,6 +10,8 @@
 #define OGMODELSHADER_H_
 
 #include "IOGShader.h"
+#include "IOGLight.h"
+#include "IOGFog.h"
 
 
 class COGModelShader : public IOGShader
@@ -39,11 +41,11 @@ public:
     // set projection matrix
     virtual void SetProjectionMatrix (const MATRIX& _mProj);
 
-    // set light direction
-    void SetLightDir (const Vec3& _vLightDir);
+    // set light and fog
+    void SetLighting (IOGFog* _pFog, IOGLightMgr* _pLightMgr);
 
-    // set fog params
-    void SetFogParams (float _fFogStart, float _fFogEnd, const Vec4& _vFogColor);
+    // set material
+    void SetMaterial (IOGMaterial* _pMaterial);
     
     // set alpha test
     virtual void EnableAlphaTest (bool _bEnabled);
@@ -55,14 +57,6 @@ protected:
     MATRIX  m_mModel;
     MATRIX  m_mView;
     MATRIX  m_mProjection;
-
-    // light params
-    Vec3    m_vLightDir;
-
-    // fog params
-    Vec4	m_vFogColor;
-	float	m_fFogStart;
-	float	m_fFogEnd;
     
     // alpha test
     float   m_fAlphaRef;
@@ -78,7 +72,15 @@ protected:
     unsigned int m_uiFogEndLoc;
 	unsigned int m_uiFogRcpDiffLoc;
 	unsigned int m_uiFogColorLoc;
+	unsigned int m_uiFogEnabled;
     unsigned int m_uiAlphaReference;
+
+	unsigned int m_uiMaterialAmbient;
+	unsigned int m_uiMaterialDiffuse;
+	unsigned int m_uiMaterialSpecular;
+
+    IOGFog* m_pFog;
+    IOGLightMgr* m_pLightMgr;
 };
 
 #endif

@@ -192,15 +192,7 @@ void COGTerrain::Render (const MATRIX& _mWorld)
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
 	m_pRenderer->SetBlend(OG_BLEND_SOLID);
-	m_pMesh->RenderTerraParts(_mWorld, frustum);
-
-	if (m_pObjsTexture)
-	{
-		m_pRenderer->SetTexture(m_pObjsTexture);
-	}
-	m_pMesh->RenderSolidParts(_mWorld, frustum);
-	m_pRenderer->SetBlend(OG_BLEND_ALPHATEST);
-	m_pMesh->RenderTransparentParts(_mWorld, frustum);
+	m_pMesh->RenderParts(frustum);
 }
 
 

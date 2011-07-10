@@ -43,7 +43,7 @@ public:
     void SetLightDir (const Vec3& _vLightDir);
 
     // set fog params
-	void SetFogParams (float _fFogStart, float _fFogEnd, const Vec4& _vFogColor) {}
+	void SetFogParams (bool _bEnable, float _fFogStart, float _fFogEnd, const Vec4& _vFogColor) {}
     
     // set alpha test
     virtual void EnableAlphaTest (bool _bEnabled) {}

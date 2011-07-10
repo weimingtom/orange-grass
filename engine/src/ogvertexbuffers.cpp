@@ -29,11 +29,14 @@ COGVertexBuffers::~COGVertexBuffers ()
 
 
 // initialize VBO and IBO.
-COGVertexBuffers::COGVertexBuffers (const SPODMesh* _pMesh) :	m_pMesh(_pMesh),
-																m_VBO(0),
-																m_IBO(0),
-																m_NumVertices(0)
+COGVertexBuffers::COGVertexBuffers (SPODMesh* _pMesh) :	m_pMesh(_pMesh),
+														m_VBO(0),
+														m_IBO(0),
+														m_NumVertices(0)
 {
+	m_NumVertices = m_pMesh->nNumFaces * 3;
+	NormalizeNormals(m_pMesh);
+
 	if (m_pMesh->pInterleaved)
 	{
 		glGenBuffers(1, &m_VBO);
@@ -57,7 +60,6 @@ COGVertexBuffers::COGVertexBuffers (const SPODMesh* _pMesh) :	m_pMesh(_pMesh),
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	m_NumVertices = m_pMesh->nNumFaces * 3;
 	m_pStats = GetStatistics();
 }
 
@@ -123,4 +125,26 @@ void COGVertexBuffers::Render () const
 #endif
         }
     }
+}
+
+
+// normalize normals
+void COGVertexBuffers::NormalizeNormals (SPODMesh* _pMesh)
+{
+	if (_pMesh->pInterleaved)
+	{
+		//unsigned char* pNormals = _pMesh->pInterleaved + sizeof(float)*3;//(unsigned int)_pMesh->sNormals.pData;
+		Vec3* pNormals = (Vec3*)_pMesh->pInterleaved;
+		Vec3 v;
+		for (unsigned int i = 0; i < _pMesh->nNumVertex; ++i)
+		{
+			v = pNormals[1];
+            if (v.length() > 1.0001f)
+			    v.normalize();
+			pNormals[1] = v;
+			unsigned char* pN = (unsigned char*)pNormals;
+			pN += _pMesh->sNormals.nStride;
+			pNormals = (Vec3*)pN;
+		}
+	}
 }

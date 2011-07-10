@@ -69,6 +69,15 @@ public:
 	// set view matrix.
 	virtual void SetViewMatrix (const MATRIX& _mView) = 0;
 
+	// get model matrix.
+	virtual void GetModelMatrix (MATRIX& _mModel) = 0;
+
+	// get view matrix.
+	virtual void GetViewMatrix (MATRIX& _mView) = 0;
+
+	// get projection matrix.
+	virtual void GetProjectionMatrix (MATRIX& _mProjection) = 0;
+
 	// add rendering command.
 	virtual void RenderMesh (void* _pMesh) = 0;
 
@@ -79,7 +88,7 @@ public:
 	virtual IOGLightMgr* GetLightMgr () = 0;
 
 	// Create vertex buffer for mesh.
-	virtual IOGVertexBuffers* CreateVertexBuffer (const void* _pMeshData) = 0;
+	virtual IOGVertexBuffers* CreateVertexBuffer (void* _pMeshData) = 0;
 
 	// Enable scene light.
 	virtual void EnableLight (bool _bEnable) = 0;

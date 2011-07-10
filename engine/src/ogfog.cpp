@@ -9,7 +9,7 @@
 #include "ogfog.h"
 
 
-COGFog::COGFog ()
+COGFog::COGFog () : m_bEnabled(false)
 {
 }
 
@@ -23,7 +23,6 @@ COGFog::~COGFog ()
 void COGFog::SetColor (const Vec4& _vColor)
 {
 	m_Color = _vColor;
-	//m_Color = Vec4(0.08f, 0.08f, 0.05f, 1.0f);
 }
 
 
@@ -31,7 +30,6 @@ void COGFog::SetColor (const Vec4& _vColor)
 void COGFog::SetStart (float _fStart)
 {
 	m_fStart = _fStart;
-	//m_fStart = 200.0f;
 }
 
 
@@ -39,7 +37,6 @@ void COGFog::SetStart (float _fStart)
 void COGFog::SetEnd (float _fEnd)
 {
 	m_fEnd = _fEnd;
-	//m_fEnd = 250.0f;
 }
 
 
@@ -47,4 +44,11 @@ void COGFog::SetEnd (float _fEnd)
 void COGFog::SetDensity (float _fDensity)
 {
 	m_fDensity = _fDensity;
+}
+
+
+// set fog enabled status.
+void COGFog::SetEnabled (bool _bEnable)
+{
+    m_bEnabled = _bEnable;
 }

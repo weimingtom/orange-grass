@@ -32,6 +32,9 @@ public:
 	// set fog density.
 	virtual void SetDensity (float _fDensity) = 0;
 
+	// set fog enabled status.
+	virtual void SetEnabled (bool _bEnable) = 0;
+
 	// get fog start.
 	virtual float GetStart () const = 0;
 
@@ -40,6 +43,9 @@ public:
 
 	// get fog density.
 	virtual float GetDensity () const = 0;
+
+	// get fog enabled status.
+	virtual bool IsEnabled () const = 0;
 };
 
 #endif

@@ -342,6 +342,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\ogbasemesh.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ogbasemesh.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\ogfog.cpp"
 					>
 				</File>

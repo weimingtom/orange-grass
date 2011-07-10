@@ -33,6 +33,9 @@ public:
 	// set fog density.
 	virtual void SetDensity (float _fDensity);
 
+	// set fog enabled status.
+	virtual void SetEnabled (bool _bEnable);
+
 	// get fog start.
 	virtual float GetStart () const {return m_fStart;}
 
@@ -42,12 +45,16 @@ public:
 	// get fog density.
 	virtual float GetDensity () const {return m_fDensity;}
 
+	// get fog enabled status.
+    virtual bool IsEnabled () const {return m_bEnabled;}
+
 private:
 
 	Vec4	m_Color;
 	float	m_fStart;
 	float	m_fEnd;
 	float	m_fDensity;
+    bool    m_bEnabled;
 };
 
 #endif

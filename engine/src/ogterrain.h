@@ -49,6 +49,9 @@ public:
 	// Get combined AABB
 	virtual const IOGAabb& GetAABB () const;
 
+	// Get all submesh AABBs
+    virtual void GetAllAABBs (std::vector<IOGAabb*>& _aabbs) {m_pMesh->GetAllAABBs(_aabbs);}
+
 	// Get material
 	virtual IOGMaterial* GetMaterial () { return m_pMaterial; }
 

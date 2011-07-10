@@ -18,7 +18,7 @@ class COGVertexBuffers : public IOGVertexBuffers
 	COGVertexBuffers();
 
 public:
-	COGVertexBuffers (const SPODMesh* _pMesh);
+	COGVertexBuffers (SPODMesh* _pMesh);
 	virtual ~COGVertexBuffers ();
 
 	// apply buffers.
@@ -32,10 +32,15 @@ public:
 	
 private:
 
+	// normalize normals
+	void NormalizeNormals (SPODMesh* _pMesh);
+
+private:
+
 	unsigned int	m_VBO;
 	unsigned int	m_IBO;
 	unsigned int	m_NumVertices;
-	const SPODMesh*	m_pMesh;
+	SPODMesh*		m_pMesh;
 	IOGStatistics*	m_pStats;
 };
 

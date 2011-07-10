@@ -44,7 +44,7 @@ public:
 		float _fFOV);
 
 	// Create vertex buffer for mesh.
-	virtual IOGVertexBuffers* CreateVertexBuffer (const void* _pMeshData);
+	virtual IOGVertexBuffers* CreateVertexBuffer (void* _pMeshData);
 
 	// add rendering command.
 	virtual void SetTexture (IOGTexture* _pTexture);
@@ -60,6 +60,15 @@ public:
 
 	// set view matrix.
 	virtual void SetViewMatrix (const MATRIX& _mView);
+
+	// get model matrix.
+	virtual void GetModelMatrix (MATRIX& _mModel);
+
+	// get view matrix.
+	virtual void GetViewMatrix (MATRIX& _mView);
+
+	// get projection matrix.
+	virtual void GetProjectionMatrix (MATRIX& _mProjection);
 
 	// Enable scene light.
 	virtual void EnableLight (bool _bEnable);

@@ -135,9 +135,9 @@ void COGRenderer::SetViewport (
 
 
 // Create vertex buffer for mesh.
-IOGVertexBuffers* COGRenderer::CreateVertexBuffer (const void* _pMeshData)
+IOGVertexBuffers* COGRenderer::CreateVertexBuffer (void* _pMeshData)
 {
-	COGVertexBuffers* pVB = new COGVertexBuffers((const SPODMesh*)_pMeshData);
+	COGVertexBuffers* pVB = new COGVertexBuffers((SPODMesh*)_pMeshData);
 	return pVB;
 }
 
@@ -156,6 +156,27 @@ void COGRenderer::SetViewMatrix (const MATRIX& _mView)
 }
 
 
+// get model matrix.
+void COGRenderer::GetModelMatrix (MATRIX& _mModel)
+{
+	_mModel = m_mWorld;
+}
+
+
+// get view matrix.
+void COGRenderer::GetViewMatrix (MATRIX& _mView)
+{
+	_mView = m_mView;
+}
+
+
+// get projection matrix.
+void COGRenderer::GetProjectionMatrix (MATRIX& _mProjection)
+{
+	_mProjection = m_mProjection;
+}
+
+
 // Enable scene light.
 void COGRenderer::EnableLight (bool _bEnable)
 {
@@ -166,7 +187,7 @@ void COGRenderer::EnableLight (bool _bEnable)
 // Enable scene fog.
 void COGRenderer::EnableFog (bool _bEnable)
 {
-	m_bFogEnabled = _bEnable;
+    m_pFog->SetEnabled(_bEnable);
 }
 
 
@@ -188,6 +209,10 @@ void COGRenderer::SetMaterial (IOGMaterial* _pMaterial)
     if (_pMaterial != m_pCurMaterial)
     {
         m_pCurMaterial = _pMaterial;
+        if(m_Mode == OG_RENDERMODE_GEOMETRY)
+        {
+            m_ModelShader.SetMaterial(m_pCurMaterial);
+        }
     }
 }
 
@@ -250,8 +275,7 @@ void COGRenderer::StartRenderMode(OGRenderMode _Mode)
         m_ModelShader.SetProjectionMatrix(m_mProjection);
         m_ModelShader.SetViewMatrix(m_mView);
 		EnableLight(true);
-		m_ModelShader.SetLightDir(m_pLightMgr->GetLight(0)->vPosition);
-        m_ModelShader.SetFogParams(m_pFog->GetStart(), m_pFog->GetEnd(), m_pFog->GetColor());
+        m_ModelShader.SetLighting(m_pFog, m_pLightMgr);
         m_ModelShader.Setup();
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
@@ -266,7 +290,6 @@ void COGRenderer::StartRenderMode(OGRenderMode _Mode)
         m_ColorEffectShader.SetProjectionMatrix(m_mProjection);
         m_ColorEffectShader.SetViewMatrix(m_mView);
 		EnableLight(false);
-        m_ColorEffectShader.SetFogParams(m_pFog->GetStart(), m_pFog->GetEnd(), m_pFog->GetColor());
         m_ColorEffectShader.Setup();
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
