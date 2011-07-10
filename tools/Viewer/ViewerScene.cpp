@@ -38,7 +38,7 @@ bool CViewerScene::Init ()
 
 	glewInit();
 
-	m_pRenderer = GetRendererGL11();
+	m_pRenderer = GetRenderer();
 	m_pRenderer->SetViewport(m_ResX, m_ResY, 4.0f, 4500.0f, 0.67f);
 
 	m_pResourceMgr = GetResourceMgr();
@@ -169,7 +169,13 @@ void CViewerScene::RenderScene ()
 // Render scene helpers.
 void CViewerScene::RenderHelpers()
 {
-	glMatrixMode(GL_MODELVIEW);
+	glUseProgram(0);
+    m_pRenderer->GetProjectionMatrix(m_mProjection);
+	m_pRenderer->GetViewMatrix(m_mView);
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(m_mProjection.f);
+
+    glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(m_mView.f);
     glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);
