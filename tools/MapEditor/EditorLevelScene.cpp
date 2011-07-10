@@ -49,7 +49,7 @@ bool CEditorLevelScene::Init ()
 
 	glewInit();
 
-	m_pRenderer = GetRendererGL11();
+	m_pRenderer = GetRenderer();
 	m_pRenderer->SetViewport(m_ResX, m_ResY, 4.0f, 4500.0f, 0.67f);
 	m_pResourceMgr = GetResourceMgr();
 	m_pSg = GetSceneGraph();
@@ -183,6 +183,13 @@ void CEditorLevelScene::RenderScene ()
 // Render scene helpers.
 void CEditorLevelScene::RenderHelpers()
 {
+	glUseProgram(0);
+
+	m_pRenderer->GetProjectionMatrix(m_mProjection);
+	m_pRenderer->GetViewMatrix(m_mView);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(m_mProjection.f);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(m_mView.f);
     glDisable(GL_LIGHTING);
@@ -203,6 +210,13 @@ void CEditorLevelScene::RenderHelpers()
 
     if (m_pCurLevel)
     {
+        std::vector<IOGAabb*> aabbs;
+        m_pCurLevel->GetTerrain()->GetAllAABBs(aabbs);
+        for (unsigned int i = 0; i < aabbs.size(); ++i)
+        {
+            DrawAABB(*aabbs[i]);
+        }
+
 		DrawLevelRanges(m_pCurLevel->GetStartPosition(),
 			m_pCurLevel->GetFinishPosition(),
             m_pCurLevel->GetActiveWidth(),
