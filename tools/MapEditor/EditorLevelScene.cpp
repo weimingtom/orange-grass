@@ -151,11 +151,24 @@ void CEditorLevelScene::RenderScene ()
         }
 
 		m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
-        //m_pSg->RenderAll(m_pCamera);
 		m_pSg->RenderLandscape(m_pCamera);
+        m_pRenderer->FinishRenderMode();
+
+		m_pRenderer->StartRenderMode(OG_RENDERMODE_SHADOWMAP);
+	    m_pRenderer->ClearFrame(Vec4(0.0f, 0.0f, 0.0f, 0.0f));
+		m_pRenderer->EnableColor(false);
+		m_pSg->RenderLandscape(m_pCamera);
+		m_pRenderer->EnableColor(true);
+        m_pSg->RenderScene(m_pCamera);
+        m_pRenderer->FinishRenderMode();
+
+        m_pRenderer->StartRenderMode(OG_RENDERMODE_SHADOWEDSCENE);
+		m_pSg->RenderLandscape(m_pCamera);
+        m_pRenderer->FinishRenderMode();
+
+        m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
 		m_pSg->RenderScene(m_pCamera);
 	    m_pSg->RenderTransparentNodes(m_pCamera);
-
         if (m_EditorMode == EDITMODE_OBJECTS)
         {
             if (m_pCurActor)
@@ -163,7 +176,6 @@ void CEditorLevelScene::RenderScene ()
                 m_pCurActor->GetSgNode()->Render();
             }
         }
-
         m_pRenderer->FinishRenderMode();
 
         if (m_CamMode == CAMMODE_GAME)
@@ -172,6 +184,23 @@ void CEditorLevelScene::RenderScene ()
         }
 		m_pRenderer->EnableLight(false);
     }
+
+	m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
+	unsigned long Verts; 
+	unsigned long Faces;
+	unsigned long TextureSwitches;
+	unsigned long VBOSwitches;
+	unsigned long DrawCalls;
+	GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, 
+		VBOSwitches, DrawCalls);
+	m_pRenderer->DisplayString(Vec2(85.0f, 2.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
+	m_pRenderer->DisplayString(Vec2(85.0f, 6.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
+	m_pRenderer->DisplayString(Vec2(85.0f,10.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
+	m_pRenderer->DisplayString(Vec2(85.0f,14.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
+	m_pRenderer->DisplayString(Vec2(85.0f,18.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
+	GetStatistics()->Reset();
+	m_pRenderer->FinishRenderMode();
+
     m_pRenderer->Reset();
 
     RenderHelpers();

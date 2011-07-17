@@ -173,7 +173,13 @@ void CEffectViewerScene::RenderScene ()
 // Render scene helpers.
 void CEffectViewerScene::RenderHelpers()
 {
-	glMatrixMode(GL_MODELVIEW);
+	glUseProgram(0);
+    m_pRenderer->GetProjectionMatrix(m_mProjection);
+	m_pRenderer->GetViewMatrix(m_mView);
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(m_mProjection.f);
+
+    glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(m_mView.f);
     glDisable(GL_LIGHTING);
 	glDisable(GL_TEXTURE_2D);

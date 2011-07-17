@@ -4,26 +4,20 @@ attribute highp vec2 inTexCoord;
 
 uniform highp mat4 MVPMatrix;
 uniform highp mat4 MVMatrix;
-uniform highp vec3 LightDirection;
+uniform highp mat4 ShadowMVPMatrix;
 
 uniform highp float FogEnd;
 uniform highp float FogRcpEndStartDiff;
 uniform highp float FogEnabled;
 
-uniform highp vec3 MaterialAmbient;
-uniform highp vec3 MaterialDiffuse;
-uniform highp vec3 MaterialSpecular;
-
-varying lowp vec3 DiffuseLight;
 varying mediump vec2 TexCoord;
 varying lowp vec3 FogIntensity;
 
 void main()
 {
-    gl_Position = MVPMatrix * inVertex;
-    DiffuseLight = MaterialDiffuse * vec3(max(dot(inNormal, LightDirection), 0.0)) + MaterialAmbient;
-    TexCoord = inTexCoord;
-    
+    gl_Position = MVPMatrix * (inVertex + vec4(0.0, 1.0, 0.0, 0.0));
+    TexCoord = ShadowMVPMatrix * inVertex;
+
     // calculating fog
     if (FogEnabled > 0.0)
     {

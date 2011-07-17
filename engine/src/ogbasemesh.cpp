@@ -193,3 +193,63 @@ SubMeshType COGBaseMesh::GetSubMeshType (unsigned int _Id)
     }
     return OG_SUBMESH_BODY;
 }
+
+
+// convert mesh to an internal format
+void COGBaseMesh::ConvertMesh ()
+{
+	MATRIX mModel;
+    Vec3 v, vMinCorner, vMaxCorner;
+
+    m_Faces.reserve(4096);
+    unsigned int Part = 0;
+    for (unsigned int i=0; i < m_pScene->nNumMeshNode; ++i)
+	{
+        if (GetSubMeshType(i) == OG_SUBMESH_ACTPOINT)
+            continue;
+
+        m_pScene->SetFrame(0);
+        SPODNode* pNode = &m_pScene->pNode[i];
+		m_pScene->GetWorldMatrix(mModel, *pNode);
+
+        SPODMesh& Mesh = m_pScene->pMesh[pNode->nIdx];
+
+        Vec3* pPtr = (Vec3*)Mesh.pInterleaved;
+		
+		vMinCorner.x = vMaxCorner.x = pPtr->x; 
+		vMinCorner.y = vMaxCorner.y = pPtr->y; 
+		vMinCorner.z = vMaxCorner.z = pPtr->z;
+		MatrixVecMultiply(vMinCorner, vMinCorner, mModel);
+		MatrixVecMultiply(vMaxCorner, vMaxCorner, mModel);
+
+		if(Mesh.sFaces.pData)
+        {
+			unsigned int numIndices = PVRTModelPODCountIndices(Mesh);
+            for (unsigned int n = 0; n < numIndices; n+=3)
+            {
+                OGFace face;
+                for (int k = 0; k < 3; ++k)
+                {
+                    unsigned short ind = *(((unsigned short*)Mesh.sFaces.pData) + n + k);
+                    face.vertices[k] = *((Vec3*)((unsigned char*)(pPtr)+Mesh.sVertex.nStride * ind));
+
+                    Vec3& v_out = face.vertices[k];
+                    MatrixVecMultiply(v_out, face.vertices[k], mModel);
+
+			        if (v_out.x < vMinCorner.x) vMinCorner.x = v_out.x;
+			        if (v_out.y < vMinCorner.y) vMinCorner.y = v_out.y;
+			        if (v_out.z < vMinCorner.z) vMinCorner.z = v_out.z;
+			        if (v_out.x > vMaxCorner.x) vMaxCorner.x = v_out.x;
+			        if (v_out.y > vMaxCorner.y) vMaxCorner.y = v_out.y;
+			        if (v_out.z > vMaxCorner.z) vMaxCorner.z = v_out.z;
+                }
+                m_Faces.push_back(face);
+            }
+        }
+
+        IOGAabb* pAabb = new IOGAabb(vMinCorner, vMaxCorner);
+        m_SubMeshes[Part].aabb = pAabb;
+		m_AABB.EmbraceAABB(*pAabb);
+        ++Part;
+	}
+}

@@ -23,6 +23,7 @@ enum OGRenderMode
 	OG_RENDERMODE_EFFECTS,
 	OG_RENDERMODE_SPRITES,
 	OG_RENDERMODE_SHADOWMAP,
+	OG_RENDERMODE_SHADOWEDSCENE,
 	OG_RENDERMODE_TEXT
 };
 
@@ -105,6 +106,9 @@ public:
 	// Enable scene fog.
 	virtual void EnableFog (bool _bEnable) = 0;
 
+	// Enable color channel.
+	virtual void EnableColor (bool _bEnable) = 0;
+
 	// start rendering mode.
 	virtual void StartRenderMode(OGRenderMode _Mode) = 0;
 
@@ -125,6 +129,9 @@ public:
 
     // Draw sprite buffer.
     virtual void DrawSpriteBuffer (void* _pBuffer, int _StartId, int _NumVertices) = 0;
+
+    // Draw render target.
+    virtual void DrawRT () = 0;
 };
 
 #endif

@@ -9,7 +9,7 @@ varying /*highp*/ vec2 TexCoord;
 
 void main()
 {
-	gl_Position = MVPMatrix * inVertex;
-	VertexColor = inColor;
-	TexCoord = inTexCoord;
+    gl_Position = MVPMatrix * inVertex;
+    VertexColor = inColor;
+    TexCoord = inTexCoord;
 }

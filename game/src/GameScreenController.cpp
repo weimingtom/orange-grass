@@ -158,11 +158,26 @@ void CGameScreenController::RenderScene ()
 
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
 	m_pSg->RenderLandscape(m_pCamera);
+	m_pRenderer->FinishRenderMode();
+
+    m_pRenderer->StartRenderMode(OG_RENDERMODE_SHADOWMAP);
+    m_pRenderer->ClearFrame(Vec4(0.0f, 0.0f, 0.0f, 0.0f));
+	m_pRenderer->EnableColor(false);
+    m_pSg->RenderLandscape(m_pCamera);
+	m_pRenderer->EnableColor(true);
+    m_pSg->RenderScene(m_pCamera);
+    m_pRenderer->FinishRenderMode();
+
+    m_pRenderer->StartRenderMode(OG_RENDERMODE_SHADOWEDSCENE);
+    m_pSg->RenderLandscape(m_pCamera);
+    m_pRenderer->FinishRenderMode();
+
+    m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
 	m_pSg->RenderScene(m_pCamera);
     m_pSg->RenderTransparentNodes(m_pCamera);
 	m_pRenderer->FinishRenderMode();
 
-	m_pRenderer->EnableLight(false);
+    m_pRenderer->EnableLight(false);
     m_pRenderer->EnableFog(false);
 
     m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);

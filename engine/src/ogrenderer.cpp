@@ -18,6 +18,14 @@
 #include "oggrutility.h"
 
 
+COGSprite::SprVert g_RTVertices[4];
+MATRIX g_LightProj;
+MATRIX g_LightView;
+MATRIX g_LightVP;
+MATRIX g_SMTexAdj;
+MATRIX g_ShadowMVP;
+
+
 COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
                                 m_pCurMaterial(NULL),
                                 m_pCurMesh(NULL),
@@ -26,6 +34,7 @@ COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
 								m_pLightMgr(NULL),
 								m_pCamera(NULL),
 								m_pText(NULL),
+                                m_pRT(NULL),
 								m_bLandscapeMode(false)
 {
     m_bLightEnabled = false;
@@ -41,7 +50,10 @@ COGRenderer::~COGRenderer ()
 	m_SpriteShader.Unload();
 	m_ColorEffectShader.Unload();
 	m_TextShader.Unload();
+	m_ShadowModelShader.Unload();
+	m_ShadowedSceneShader.Unload();
 
+    OG_SAFE_DELETE(m_pRT);
     OG_SAFE_DELETE(m_pText);
     OG_SAFE_DELETE(m_pFog);
     OG_SAFE_DELETE(m_pLightMgr);
@@ -79,6 +91,10 @@ bool COGRenderer::Init ()
     if (!m_ColorEffectShader.Load(pResMgr->GetFullPath(ShaderPath + std::string("ColorEffect.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("ColorEffect.fsh"))))
         return false;
     if (!m_TextShader.Load(pResMgr->GetFullPath(ShaderPath + std::string("Text.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("Text.fsh"))))
+        return false;
+    if (!m_ShadowModelShader.Load(pResMgr->GetFullPath(ShaderPath + std::string("ShadowModel.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("ShadowModel.fsh"))))
+        return false;
+    if (!m_ShadowedSceneShader.Load(pResMgr->GetFullPath(ShaderPath + std::string("ShadowedScene.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("ShadowedScene.fsh"))))
         return false;
 
 	return true;
@@ -130,7 +146,13 @@ void COGRenderer::SetViewport (
 	}
 #endif
 
-	m_pCamera->SetupViewport(m_mProjection, m_fFOV);
+    m_pCamera->SetupViewport(m_mProjection, m_fFOV);
+
+    m_pRT = new COGRenderTarget();
+    MatrixScaling(g_SMTexAdj, 0.5f, 0.5f, 1.0f);
+    g_SMTexAdj.f[12] = 0.5f + 0.5f / m_pRT->GetSize();
+    g_SMTexAdj.f[13] = 0.5f + 0.5f / m_pRT->GetSize();
+    MatrixOrthoRH(g_LightProj, 400.0f, 400.0f, 0.01f, 1000.0f, false);
 }
 
 
@@ -191,9 +213,24 @@ void COGRenderer::EnableFog (bool _bEnable)
 }
 
 
+// Enable color channel.
+void COGRenderer::EnableColor (bool _bEnable)
+{
+    GLboolean enabled = _bEnable ? GL_TRUE : GL_FALSE;
+    glColorMask(enabled, enabled, enabled, enabled);
+}
+
+
 // add rendering command.
 void COGRenderer::SetTexture (IOGTexture* _pTexture)
 {
+    switch (m_Mode)
+    {
+    //case OG_RENDERMODE_SHADOWMAP:
+    case OG_RENDERMODE_SHADOWEDSCENE:
+        return;
+    }
+
     if (_pTexture != m_pCurTexture)
     {
 		m_pStats->AddTextureSwitch();
@@ -206,6 +243,13 @@ void COGRenderer::SetTexture (IOGTexture* _pTexture)
 // add rendering command.
 void COGRenderer::SetMaterial (IOGMaterial* _pMaterial)
 {
+    switch (m_Mode)
+    {
+    case OG_RENDERMODE_SHADOWMAP:
+    case OG_RENDERMODE_SHADOWEDSCENE:
+        return;
+    }
+
     if (_pMaterial != m_pCurMaterial)
     {
         m_pCurMaterial = _pMaterial;
@@ -220,6 +264,13 @@ void COGRenderer::SetMaterial (IOGMaterial* _pMaterial)
 // add rendering command.
 void COGRenderer::SetBlend (OGBlendType _Blend)
 {
+    switch (m_Mode)
+    {
+    case OG_RENDERMODE_SHADOWMAP:
+    case OG_RENDERMODE_SHADOWEDSCENE:
+        return;
+    }
+
 	if (m_CurBlend != _Blend)
 	{
 		m_CurBlend = _Blend;
@@ -310,12 +361,55 @@ void COGRenderer::StartRenderMode(OGRenderMode _Mode)
 		break;
 
 	case OG_RENDERMODE_SHADOWMAP:
+        {
+            Reset();
+
+            m_pCurShader = &m_ShadowModelShader;
+			glDisable (GL_BLEND);
+            glDisable(GL_CULL_FACE);
+            glEnable(GL_DEPTH_TEST);
+            m_pRT->Begin();
+
+            float fLightHeight = m_pCamera->GetPosition().y;
+            Vec3 vLookAt  = m_pCamera->GetPosition() + (m_pCamera->GetDirection() * 600.0f);
+            vLookAt.y = 0;
+            Vec3 vEyePt = vLookAt - Vec3(0, -1, 0) * fLightHeight;
+            MatrixLookAtRH(g_LightView, vEyePt, vLookAt, Vec3(0, 0, -1));
+            MatrixMultiply(g_LightVP, g_LightView, g_LightProj);
+
+            m_ShadowModelShader.SetProjectionMatrix(g_LightProj);
+            m_ShadowModelShader.SetViewMatrix(g_LightView);
+            m_ShadowModelShader.Setup();
+
+            glEnableVertexAttribArray(0);
+            glEnableVertexAttribArray(1);
+            glEnableVertexAttribArray(2);
+        }
 		break;
+
+    case OG_RENDERMODE_SHADOWEDSCENE:
+	    m_pCurShader = &m_ShadowedSceneShader;
+        glDisable(GL_CULL_FACE);
+	    glEnable(GL_DEPTH_TEST);
+    	glEnable (GL_BLEND); 
+		glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+        MatrixMultiply(g_ShadowMVP, g_LightVP, g_SMTexAdj);
+    	glBindTexture(GL_TEXTURE_2D, m_pRT->GetTextureId());
+
+        m_ShadowedSceneShader.SetProjectionMatrix(m_mProjection);
+        m_ShadowedSceneShader.SetViewMatrix(m_mView);
+        m_ShadowedSceneShader.SetShadowMatrix(g_ShadowMVP);
+        m_ShadowedSceneShader.SetFog(m_pFog);
+        m_ShadowedSceneShader.Setup();
+
+        glEnableVertexAttribArray(0);
+		glEnableVertexAttribArray(1);
+		glEnableVertexAttribArray(2);
+        break;
 
     case OG_RENDERMODE_TEXT:
 	    m_pCurShader = &m_TextShader;
         m_TextShader.SetProjectionMatrix(m_mTextProj);
-		//SetBlend(OG_BLEND_ALPHATEST);
 		SetBlend(OG_BLEND_ALPHABLEND);
         m_TextShader.Setup();
         break;
@@ -360,6 +454,23 @@ void COGRenderer::FinishRenderMode()
 		break;
 
     case OG_RENDERMODE_SHADOWMAP:
+        m_pRT->End();
+        glViewport(0, 0, m_Width, m_Height);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glDisableVertexAttribArray(0);
+		glDisableVertexAttribArray(1);
+		glDisableVertexAttribArray(2);
+        Reset();
+        break;
+
+    case OG_RENDERMODE_SHADOWEDSCENE:
+        glDisable(GL_BLEND);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(2);
         break;
 	}
 }
@@ -502,4 +613,36 @@ void COGRenderer::DrawSpriteBuffer (void* _pBuffer, int _StartId, int _NumVertic
 	m_pStats->AddDrawCall();
 	m_pStats->AddVBOSwitch();
 #endif
+}
+
+
+// Draw render target.
+void COGRenderer::DrawRT ()
+{
+	float HalfScrWidth = (float)m_Width / 2;
+	float HalfScrHeight = (float)m_Height / 2;
+	Vec4 Color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    Vec2 vSize = Vec2((float)m_pRT->m_Size, (float)m_pRT->m_Size);
+    Vec2 vPos = Vec2(m_Width - vSize.x, 0);
+
+    float fLeft = -HalfScrWidth+vPos.x;
+	float fRight = -HalfScrWidth+vSize.x+vPos.x;
+	float fTop = HalfScrHeight-vSize.y-vPos.y;
+	float fBottom = HalfScrHeight-vPos.y;
+
+	g_RTVertices[0].p = Vec2(fRight, fTop);	
+	g_RTVertices[0].t = Vec2(1.0f, 0.0f); 
+	g_RTVertices[0].c = Color;
+	g_RTVertices[1].p = Vec2(fLeft, fTop);	
+	g_RTVertices[1].t = Vec2(0.0f, 0.0f); 
+	g_RTVertices[1].c = Color;
+	g_RTVertices[2].p = Vec2(fRight, fBottom);	
+	g_RTVertices[2].t = Vec2(1.0f, 1.0f); 
+	g_RTVertices[2].c = Color;
+	g_RTVertices[3].p = Vec2(fLeft, fBottom);	
+	g_RTVertices[3].t = Vec2(0.0f, 1.0f); 
+	g_RTVertices[3].c = Color;
+
+	glBindTexture(GL_TEXTURE_2D, m_pRT->GetTextureId());
+    DrawSpriteBuffer(g_RTVertices, 0, 4);
 }

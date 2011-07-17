@@ -5,6 +5,6 @@ varying highp vec4 VertexColor;
 
 void main()
 {
-	gl_FragColor = texture2D(sTexture, TexCoord) * VertexColor;
+    gl_FragColor = texture2D(sTexture, TexCoord) * VertexColor;
 }
 

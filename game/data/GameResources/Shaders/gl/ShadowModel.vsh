@@ -6,5 +6,5 @@ uniform /*highp*/ mat4 MVPMatrix;
 
 void main()
 {
-	gl_Position = MVPMatrix * inVertex;
+    gl_Position = MVPMatrix * inVertex;
 }

@@ -48,6 +48,9 @@ protected:
 	// calculate geometry
 	void CalculateGeometry ();
 
+	// convert mesh to an internal format
+	void ConvertMesh ();
+
     // load sub-meshes
     virtual void LoadSubMeshes () = 0;
 
@@ -65,6 +68,18 @@ protected:
         SubMeshType         type;
         IOGAabb*            aabb;
         IOGVertexBuffers*   buffer;
+    };
+
+    struct InternalMesh
+    {
+        struct MeshVertex
+        {
+            Vec3 Pos;
+            Vec3 Norm;
+            Vec2 Tex;
+        };
+        MeshVertex* pVertices;
+        unsigned int* pFaces;
     };
 
 protected:

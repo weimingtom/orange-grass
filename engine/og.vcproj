@@ -592,6 +592,14 @@
 							>
 						</File>
 						<File
+							RelativePath=".\src\ogshadowedsceneshader.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\src\ogshadowedsceneshader.h"
+							>
+						</File>
+						<File
 							RelativePath=".\src\ogshadowmodelshader.cpp"
 							>
 						</File>

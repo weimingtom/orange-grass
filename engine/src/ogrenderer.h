@@ -14,13 +14,14 @@
 #include "ogmesh.h"
 #include "ogrendertarget.h"
 #include "ogtextrenderer.h"
+#include "ogrendertarget.h"
 
 #include "ogmodelshader.h"
 #include "ogspriteshader.h"
 #include "ogcoloreffectshader.h"
 #include "ogtextshader.h"
 #include "ogshadowmodelshader.h"
-#include "ogrendertarget.h"
+#include "ogshadowedsceneshader.h"
 
 #include <string>
 #include <map>
@@ -76,6 +77,9 @@ public:
 	// Enable scene fog.
 	virtual void EnableFog (bool _bEnable);
 
+	// Enable color channel.
+	virtual void EnableColor (bool _bEnable);
+
 	// start rendering mode.
 	virtual void StartRenderMode(OGRenderMode _Mode);
 
@@ -119,6 +123,9 @@ public:
     // Draw sprite buffer.
     virtual void DrawSpriteBuffer (void* _pBuffer, int _StartId, int _NumVertices);
 
+    // Draw render target.
+    virtual void DrawRT ();
+
 protected:
 
     IOGTexture*         m_pCurTexture;
@@ -130,6 +137,7 @@ protected:
 	IOGLightMgr*		m_pLightMgr;
 	IOGCamera*			m_pCamera;
 	COGTextRenderer*	m_pText;
+    COGRenderTarget*    m_pRT;
 	MATRIX				m_mOrthoProj;
 	MATRIX				m_mProjection;
     MATRIX              m_mTextProj;
@@ -150,6 +158,8 @@ protected:
     COGSpriteShader         m_SpriteShader;
     COGColorEffectShader    m_ColorEffectShader;
     COGTextShader           m_TextShader;
+    COGShadowModelShader    m_ShadowModelShader;
+    COGShadowedSceneShader  m_ShadowedSceneShader;
     IOGShader*              m_pCurShader;
 };
 
