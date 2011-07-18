@@ -262,7 +262,7 @@ bool CEditorLevelScene::LoadLevel (const std::string& _LevelName)
 {
 	if (m_pCurLevel)
 	{
-		m_pLevelMgr->UnloadLevel(m_pCurLevel);
+		m_pLevelMgr->UnloadLevel();
 	}
 	
 	m_pCurLevel = m_pLevelMgr->LoadLevel(_LevelName);
@@ -297,7 +297,7 @@ bool CEditorLevelScene::LoadLevel (const std::string& _LevelName)
 // Save level
 bool CEditorLevelScene::SaveLevel ()
 {
-    return m_pLevelMgr->SaveLevel(m_pCurLevel);
+    return m_pLevelMgr->SaveLevel();
 }
 
 
