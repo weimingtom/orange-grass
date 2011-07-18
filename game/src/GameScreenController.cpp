@@ -19,7 +19,8 @@ CGameScreenController::CGameScreenController() :	m_pGlobalVars(NULL),
 													m_State(CSTATE_NO),
                                                     m_Type(SCRTYPE_GAME),
 													m_pCurLevel(NULL),
-													m_ElapsedTime(0)
+													m_ElapsedTime(0),
+                                                    m_bFinishLine(false)
 {
 	GetInput()->RegisterReceiver(this);
 }
@@ -55,6 +56,7 @@ bool CGameScreenController::Init ()
 	m_vCameraOffset = m_pGlobalVars->GetVec3Var("cam_offset");
 
 	m_ElapsedTime = 0;
+    m_bFinishLine = false;
 
     m_pResourceMgr = GetResourceMgr();
 	m_pSg = GetSceneGraph();
@@ -65,6 +67,7 @@ bool CGameScreenController::Init ()
 	IOGLevelParams* pLevelParams = GetGameSequence()->GetLevel(0);
 	m_pCurLevel = GetLevelManager()->LoadLevel(pLevelParams->alias);
     m_pPlayer = GetActorManager()->GetPlayersActor();
+    m_pPlayer->SetGameEventHandler(this);
 
 	IOGSettingsSource* pSource = m_pReader->OpenSource(GetResourceMgr()->GetUIPath("GameScreenUI.xml"));
 	if (!pSource)
@@ -135,11 +138,6 @@ void CGameScreenController::Update (unsigned long _ElapsedTime)
             m_pSpecHUD->SetData(i, bonus.icon_texture, bonus.value, bonus.cooldown);
         }
     }
-
-	if (CheckFinishCondition())
-	{
-		Deactivate();
-	}
 }
 
 
@@ -186,11 +184,14 @@ void CGameScreenController::RenderScene ()
 
 	m_pRenderer->Reset();
 
-    m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
-	m_pWeaponHUD->Render();
-    m_pLifeHUD->Render();
-	m_pSpecHUD->Render();
-	m_pRenderer->FinishRenderMode();
+    if (!m_bFinishLine)
+    {
+        m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
+        m_pWeaponHUD->Render();
+        m_pLifeHUD->Render();
+        m_pSpecHUD->Render();
+        m_pRenderer->FinishRenderMode();
+    }
 
 	m_pRenderer->Reset();
 
@@ -229,6 +230,7 @@ void CGameScreenController::Activate ()
 {
 	m_State = CSTATE_ACTIVE;
     GetInput()->RegisterReceiver(this);
+    m_bFinishLine = false;
 }
 
 
@@ -237,7 +239,8 @@ void CGameScreenController::Deactivate ()
 {
 	m_State = CSTATE_INACTIVE;
 	if (m_pCurLevel)
-		GetLevelManager()->UnloadLevel(m_pCurLevel);
+		GetLevelManager()->UnloadLevel();
+    m_pPlayer = NULL;
     //GetInput()->UnregisterReceiver(this);
 }
 
@@ -275,23 +278,24 @@ bool CGameScreenController::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
 }
 
 
-// Check if finish condition is satisfied.
-bool CGameScreenController::CheckFinishCondition ()
+// Level finish point handler
+void CGameScreenController::OnReachedFinishPoint ()
 {
-	const Vec3& vFinishPoint = m_pCurLevel->GetFinishPosition();
-	const Vec3& vCurPoint = m_pCamera->GetPosition();
-	if (Dist2DSq(vCurPoint, vFinishPoint) <= 10000.0f)
-	{
-		return true;
-	}
-	return false;
+    m_bFinishLine = true;
+}
+
+
+// Level finish handler
+void CGameScreenController::OnLevelFinish ()
+{
+    Deactivate();
 }
 
 
 // Update camera.
 void CGameScreenController::UpdateCamera ()
 {
-    if (m_pCamera && m_pCurLevel)
+    if (m_pCamera && m_pCurLevel && !m_bFinishLine)
     {
         Vec3 vTarget = m_pPlayer->GetPhysicalObject()->GetPosition() + m_vCameraOffset;
         Vec3 vUp = m_vCameraDir.cross(Vec3(1, 0, 0));
@@ -307,4 +311,12 @@ void CGameScreenController::UpdateCamera ()
         m_pCamera->Setup (vPos, vTarget, vUp);
 		m_pCamera->Update();
 	}
+    else if (m_bFinishLine)
+    {
+        //Vec3 vTarget = m_pPlayer->GetPhysicalObject()->GetPosition() + m_vCameraOffset;
+        //Vec3 vUp = m_vCameraDir.cross(Vec3(1, 0, 0));
+
+        //m_pCamera->Setup (m_pCamera->GetPosition(), vTarget, vUp);
+		m_pCamera->Update();
+    }
 }

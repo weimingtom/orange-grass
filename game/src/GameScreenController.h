@@ -21,7 +21,9 @@
 #include "IOGSettingsReader.h"
 
 
-class CGameScreenController : public IScreenController, public IOGInputReceiver
+class CGameScreenController :   public IScreenController, 
+                                public IOGInputReceiver,
+                                public IOGGameEventsHandler
 {
 public:
 	CGameScreenController();
@@ -54,10 +56,13 @@ public:
 	// Touch event handler.
 	virtual bool OnTouch (const Vec2& _vPos, IOGTouchParam _param);
 
-private:
+	// Level finish point handler
+	virtual void OnReachedFinishPoint ();
 
-    // Check if finish condition is satisfied.
-	bool CheckFinishCondition ();
+	// Level finish handler
+	virtual void OnLevelFinish ();
+
+private:
 
     // Update camera.
 	void UpdateCamera ();
@@ -93,6 +98,7 @@ private:
 	Vec3			m_vCameraOffset;
 
 	unsigned long	m_ElapsedTime;
+    bool            m_bFinishLine;
 };
 
 #endif
