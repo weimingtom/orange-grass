@@ -14,6 +14,7 @@
 #include "ogweapon.h"
 #include "ogorientworker.h"
 #include "ogstabilizeworker.h"
+#include "ogfinishlevelworker.h"
 
 
 class COGActorPlayer : public COGActorBot, public IOGInputReceiver
@@ -44,6 +45,9 @@ public:
 	// Get special params
     virtual void GetSpecialParams (std::vector<IOGBonusParams>& _ParamsList);
 
+	// Update actor.
+	virtual void Update (unsigned long _ElapsedTime);
+
 protected:
 
 	// Update alive actor.
@@ -55,14 +59,21 @@ protected:
 	// Respond on collision with missile.
 	virtual bool RespondOnBonusCollision (IOGActor* _pBonus);
 
+    // Check if finish condition is satisfied.
+    bool CheckFinishCondition ();
+
 protected:
 
     COGOrientWorker     m_OrientWorker;
     COGStabilizeWorker  m_StraightenWorker;
+    COGFinishLevelWorker  m_FinishWorker;
     unsigned long       m_CoolDown;
     unsigned long       m_CoolDownMax;
     Vec3                m_vTarget;
     std::vector<IOGBonusParams> m_SpecParamsList;
+
+    Vec3 m_vFinishPoint;
+    bool m_bFinishLineFlight;
 };
 
 

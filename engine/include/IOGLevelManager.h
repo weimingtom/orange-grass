@@ -26,11 +26,14 @@ public:
 	// load level.
 	virtual IOGLevel* LoadLevel (const std::string& _Alias) = 0;
 
+	// get currently loaded level.
+	virtual IOGLevel* GetCurrentLevel () = 0;
+
 	// unload level.
-	virtual void UnloadLevel (IOGLevel* _pLevel) = 0;
+	virtual void UnloadLevel () = 0;
 
 	// save level.
-	virtual bool SaveLevel (IOGLevel* _pLevel) = 0;
+	virtual bool SaveLevel () = 0;
 
 	// get level list (for editor).
 	virtual void GetLevelList (std::vector<std::string>& _LevelList) const = 0;

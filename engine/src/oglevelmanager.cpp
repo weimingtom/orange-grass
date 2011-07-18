@@ -12,7 +12,7 @@
 
 
 // constructor.
-COGLevelManager::COGLevelManager ()
+COGLevelManager::COGLevelManager () : m_pCurLevel(NULL)
 {
 	m_pReader = GetSettingsReader();
 }
@@ -75,11 +75,13 @@ IOGLevel* COGLevelManager::LoadLevel (const std::string& _Alias)
 		switch (pLevel->GetLoadState())
 		{
 			case OG_RESSTATE_LOADED:
+                m_pCurLevel = pLevel;
 				return pLevel;
 
 			case OG_RESSTATE_DEFINED:
 				if (pLevel->Load() == false)
 					return NULL;
+                m_pCurLevel = pLevel;
 				return pLevel;
 
 			default:
@@ -91,23 +93,22 @@ IOGLevel* COGLevelManager::LoadLevel (const std::string& _Alias)
 
 
 // unload level.
-void COGLevelManager::UnloadLevel (IOGLevel* _pLevel)
+void COGLevelManager::UnloadLevel ()
 {
-    COGLevel* pLevel = (COGLevel*)_pLevel;
-	if (pLevel)
+	if (m_pCurLevel)
 	{
-		pLevel->Unload();
+		m_pCurLevel->Unload();
 	}
 }
 
 
 // save level.
-bool COGLevelManager::SaveLevel (IOGLevel* _pLevel)
+bool COGLevelManager::SaveLevel ()
 {
-    if (_pLevel == NULL)
+    if (m_pCurLevel == NULL)
         return false;
 
-    return _pLevel->Save();
+    return m_pCurLevel->Save();
 }
 
 

@@ -26,6 +26,9 @@ public:
 		const Vec3& _vRot,
         const Vec3& _vScale) = 0;
 
+	// Set game event handler.
+    virtual void SetGameEventHandler (IOGGameEventsHandler* _pHandler) {m_pGameEventsHandler = _pHandler;}
+
 	// Update actor.
 	virtual void Update (unsigned long _ElapsedTime);
 
@@ -111,6 +114,7 @@ protected:
     OGTeam              m_Team;
     unsigned int        m_DamagePoints;
     unsigned int        m_Hitpoints;
+    IOGGameEventsHandler* m_pGameEventsHandler;
 
 	IOGSceneGraph*		m_pSg;
 	IOGPhysics*			m_pPhysics;

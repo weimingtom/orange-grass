@@ -11,7 +11,7 @@
 #include "IOGMath.h"
 
 
-COGActorPlayer::COGActorPlayer()
+COGActorPlayer::COGActorPlayer() : m_bFinishLineFlight(false)
 {
 }
 
@@ -39,6 +39,9 @@ bool COGActorPlayer::Create (IOGActorParams* _pParams,
     m_CoolDown = m_CoolDownMax;
     m_StraightenWorker.Create(this);
     m_StraightenWorker.Activate(false);
+    m_FinishWorker.Create(this);
+    m_FinishWorker.Activate(false);
+    m_bFinishLineFlight = false;
 
     return true;
 }
@@ -49,12 +52,17 @@ void COGActorPlayer::OnAddedToManager ()
 {
 	COGActorBot::OnAddedToManager();
 	GetInput()->RegisterReceiver(this);
+    m_vFinishPoint = GetLevelManager()->GetCurrentLevel()->GetFinishPosition();
+    m_FinishWorker.SetTarget(m_vFinishPoint);
 }
 
 
 // Control vector change event handler.
 bool COGActorPlayer::OnVectorChanged (const Vec3& _vVec)
 {
+    if (m_bFinishLineFlight)
+        return false;
+
 #ifdef WIN32
 	Vec3 v = _vVec;
 	if (v.length() > 1.0f)
@@ -75,6 +83,9 @@ bool COGActorPlayer::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
     if (_param != OG_TOUCH_DOWN)
         return false;
 
+    if (m_bFinishLineFlight)
+        return false;
+
     Vec3 vP = GetRenderer()->UnprojectCoords((int)_vPos.x, (int)_vPos.y);
     Vec3 vCam = GetRenderer()->GetCamera()->GetPosition();
 
@@ -92,6 +103,37 @@ bool COGActorPlayer::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
     m_CoolDown = 0;
     m_StraightenWorker.Activate(false);
     return true;
+}
+
+
+// Update actor.
+void COGActorPlayer::Update (unsigned long _ElapsedTime)
+{
+    if (!m_bFinishLineFlight)
+    {
+        COGActorBot::Update(_ElapsedTime);
+
+        if (CheckFinishCondition())
+        {
+            if (m_pGameEventsHandler)
+                m_pGameEventsHandler->OnReachedFinishPoint();
+            m_bFinishLineFlight = true;
+            m_FinishWorker.Activate(true);
+        }
+    }
+    else
+    {
+        m_pNode->Update(_ElapsedTime);
+        if (m_FinishWorker.IsActive())
+            m_FinishWorker.Update(_ElapsedTime);
+
+        if (m_FinishWorker.IsFinished())
+        {
+            m_FinishWorker.Activate(false);
+            if (m_pGameEventsHandler)
+                m_pGameEventsHandler->OnLevelFinish();
+        }
+    }
 }
 
 
@@ -209,4 +251,16 @@ void COGActorPlayer::UpdateSpecParams (unsigned long _ElapsedTime)
             iter = m_SpecParamsList.erase(iter);
         }
     }
+}
+
+
+// Check if finish condition is satisfied.
+bool COGActorPlayer::CheckFinishCondition ()
+{
+	const Vec3& vCurPoint = m_pPhysicalObject->GetPosition();
+	if (Dist2DSq(vCurPoint, m_vFinishPoint) <= 30000.0f)
+	{
+		return true;
+	}
+	return false;
 }

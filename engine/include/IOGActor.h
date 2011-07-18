@@ -13,6 +13,7 @@
 #include "IOGActorParams.h"
 #include "IOGPhysicalObject.h"
 #include "IOGWeapon.h"
+#include "IOGGameEventsHandler.h"
 
 
 enum OGActorStatus
@@ -27,6 +28,9 @@ class IOGActor
 {
 public:
 	virtual ~IOGActor() {}
+
+	// Set game event handler.
+	virtual void SetGameEventHandler (IOGGameEventsHandler* _pHandler) = 0;
 
 	// Update actor.
 	virtual void Update (unsigned long _ElapsedTime) = 0;

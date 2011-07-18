@@ -28,11 +28,14 @@ public:
 	// load level.
 	virtual IOGLevel* LoadLevel (const std::string& _Alias);
 
+	// get currently loaded level.
+    virtual IOGLevel* GetCurrentLevel () { return m_pCurLevel; }
+
 	// unload level.
-	virtual void UnloadLevel (IOGLevel* _pLevel);
+	virtual void UnloadLevel ();
 	
 	// save level.
-	virtual bool SaveLevel (IOGLevel* _pLevel);
+	virtual bool SaveLevel ();
 
 	// get level list (for editor).
 	virtual void GetLevelList (std::vector<std::string>& _LevelList) const;
@@ -60,6 +63,7 @@ private:
 
 	IOGSettingsReader*	m_pReader;
     std::hash_map<std::string, COGLevel*>	m_LevelList;
+    COGLevel* m_pCurLevel;
 };
 
 

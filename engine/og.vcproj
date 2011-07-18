@@ -297,6 +297,14 @@
 						>
 					</File>
 					<File
+						RelativePath=".\src\ogfinishlevelworker.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\ogfinishlevelworker.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\ogmissileflightworker.cpp"
 						>
 					</File>
@@ -989,6 +997,10 @@
 				</File>
 				<File
 					RelativePath=".\include\IOGActorParamsManager.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\IOGGameEventsHandler.h"
 					>
 				</File>
 				<File

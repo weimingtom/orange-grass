@@ -20,7 +20,8 @@ COGActor::COGActor() :	m_bActive(true),
 						m_Status(OG_ACTORSTATUS_ALIVE),
                         m_Team(TEAM_NEUTRAL),
                         m_DamagePoints(0),
-                        m_Hitpoints(UINT_MAX)
+                        m_Hitpoints(UINT_MAX),
+                        m_pGameEventsHandler(NULL)
 {
 	m_pSg = GetSceneGraph();
 	m_pPhysics = GetPhysics();
