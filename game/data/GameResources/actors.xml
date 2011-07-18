@@ -14,6 +14,7 @@
 	<Actor alias="palm_02" file="Actors/palm_02.xml" />
 	<Actor alias="bush_01" file="Actors/bush_01.xml" />
 	<Actor alias="rock_01" file="Actors/rock_01.xml" />
+	<Actor alias="square" file="Actors/square.xml" />
 	<Actor alias="cactus_01" file="Actors/cactus_01.xml" />
 	<Actor alias="cactus_02" file="Actors/cactus_02.xml" />
 	<Actor alias="cactus_03" file="Actors/cactus_03.xml" />

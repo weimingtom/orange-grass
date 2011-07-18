@@ -84,6 +84,7 @@
 	<Model alias="stone_06" file="Models/Land_objects_02/stone/stone_06.xml"/>
 	<Model alias="stone_07" file="Models/Land_objects_02/stone/stone_07.xml"/>
 	<Model alias="rock_01" file="Models/Land_objects_02/rock/rock_01.xml"/>
+	<Model alias="square" file="Models/Land_objects_02/roads/square.xml"/>
 	<Model alias="prop01" file="Models/objects/props/prop01.xml"/>
 	<Model alias="prop02" file="Models/objects/props/prop02.xml"/>
 	<Model alias="prop03" file="Models/objects/props/prop03.xml"/>
