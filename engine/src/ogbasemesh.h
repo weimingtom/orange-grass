@@ -9,14 +9,14 @@
 #ifndef OGBASEMESH_H_
 #define OGBASEMESH_H_
 
-#include "Geometry.h"
-#include "Mathematics.h"
+#include "IOGMath.h"
 #include <vector>
 #include <map>
 #include "ogresource.h"
 #include "IOGVertexBuffers.h"
 #include "IOGRenderer.h"
 #include "IOGRenderable.h"
+#include "pvr/POD.h"
 
 
 class COGBaseMesh : public COGResource
@@ -38,7 +38,7 @@ public:
     void GetAllAABBs (std::vector<IOGAabb*>& _aabbs);
 
     // Get ray intersection
-    bool GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos);
+    bool GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos);
 
     // Get mesh geometry
     const std::vector<OGFace>& GetGeometry () const { return m_Faces; }
@@ -74,9 +74,9 @@ protected:
     {
         struct MeshVertex
         {
-            Vec3 Pos;
-            Vec3 Norm;
-            Vec2 Tex;
+            OGVec3 Pos;
+            OGVec3 Norm;
+            OGVec2 Tex;
         };
         MeshVertex* pVertices;
         unsigned int* pFaces;

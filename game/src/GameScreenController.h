@@ -51,10 +51,10 @@ public:
 	virtual void Deactivate ();
 
     // Control vector change event handler.
-	virtual bool OnVectorChanged (const Vec3& _vVec);
+	virtual bool OnVectorChanged (const OGVec3& _vVec);
 
 	// Touch event handler.
-	virtual bool OnTouch (const Vec2& _vPos, IOGTouchParam _param);
+	virtual bool OnTouch (const OGVec2& _vPos, IOGTouchParam _param);
 
 	// Level finish point handler
 	virtual void OnReachedFinishPoint ();
@@ -84,8 +84,8 @@ private:
 	ControllerState	m_State;
     ScreenType      m_Type;
     IOGLevel*	    m_pCurLevel;
-	MATRIX			m_mProjection; 
-	MATRIX			m_mView;
+	OGMatrix			m_mProjection; 
+	OGMatrix			m_mView;
 
 	float			m_fFOV;
 	float			m_fZNear;
@@ -94,8 +94,8 @@ private:
 	int				m_ScrHeight;
 	float			m_fCameraTargetDistance;
 	float			m_fCameraMargins;
-	Vec3			m_vCameraDir;
-	Vec3			m_vCameraOffset;
+	OGVec3			m_vCameraDir;
+	OGVec3			m_vCameraOffset;
 
 	unsigned long	m_ElapsedTime;
     bool            m_bFinishLine;

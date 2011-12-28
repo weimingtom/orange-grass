@@ -5,13 +5,13 @@
  *  Copyright 2009-2012 Viacheslav Bogdanov. All rights reserved.
  *
  ****************************************************************************/
+#include "IOGCoreHelpers.h"
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include "IOGMatrix.h"
 
-#include "Matrix.h"
-#include "Macros.h"
 
 #ifdef __APPLE__
 #include <TargetConditionals.h>
@@ -21,7 +21,7 @@
 #endif
 
 
-static const MATRIX	c_mIdentity = {
+static const OGMatrix	c_mIdentity = {
 	{
 	1, 0, 0, 0,
 	0, 1, 0, 0,
@@ -36,7 +36,7 @@ static const MATRIX	c_mIdentity = {
  @Output        mOut resulting matrix
  @Description   Reset matrix to identity
  ****************************************************************************/
-void MatrixIdentity(MATRIX &mOut)
+void MatrixIdentity(OGMatrix &mOut)
 {
 	mOut.f[ 0]=1.0f;	mOut.f[ 4]=0.0f;	mOut.f[ 8]=0.0f;	mOut.f[12]=0.0f;
 	mOut.f[ 1]=0.0f;	mOut.f[ 5]=1.0f;	mOut.f[ 9]=0.0f;	mOut.f[13]=0.0f;
@@ -51,7 +51,7 @@ void MatrixIdentity(MATRIX &mOut)
  @Input         mIn matrix
  @Description   Returns the zero-point
  ****************************************************************************/
-void MatrixGetOrg(VECTOR3& vOut, const MATRIX& mIn)
+void MatrixGetOrg(OGVec3& vOut, const OGMatrix& mIn)
 {
     vOut.x = mIn.f[12];
     vOut.y = mIn.f[13];
@@ -68,10 +68,10 @@ void MatrixGetOrg(VECTOR3& vOut, const MATRIX& mIn)
  @Description   Returns the basis vectors
  ****************************************************************************/
 void MatrixGetBasis(
-    VECTOR3& vOutX, 
-    VECTOR3& vOutY, 
-    VECTOR3& vOutZ, 
-    const MATRIX& mIn)
+    OGVec3& vOutX, 
+    OGVec3& vOutY, 
+    OGVec3& vOutZ, 
+    const OGMatrix& mIn)
 {
     vOutX.x = mIn.f[_11];
     vOutX.y = mIn.f[_21];
@@ -94,12 +94,12 @@ void MatrixGetBasis(
  @Input         Matrix B
  @Description   Multiply mA by mB and assign the result to matrix (mA * mB). 
  ****************************************************************************/
-void MatrixMultiply(MATRIX& mOut, const MATRIX& mA, const MATRIX& mB)
+void MatrixMultiply(OGMatrix& mOut, const OGMatrix& mA, const OGMatrix& mB)
 {
 #if (TARGET_IPHONE_SIMULATOR == 0) && (TARGET_OS_IPHONE == 1)
     NEON_Matrix4Mul( mA.f, mB.f, mOut.f );
 #else	
-	MATRIX mRet;
+	OGMatrix mRet;
 
 	// Perform calculation on a dummy matrix (mRet)
 	mRet.f[ 0] = mA.f[ 0]*mB.f[ 0] + mA.f[ 1]*mB.f[ 4] + mA.f[ 2]*mB.f[ 8] + mA.f[ 3]*mB.f[12];
@@ -135,12 +135,12 @@ void MatrixMultiply(MATRIX& mOut, const MATRIX& mA, const MATRIX& mB)
  @Input         Input matrix
  @Description   Multiply vector vIn by matrix. 
  ****************************************************************************/
-void MatrixVec4Multiply(VECTOR4& vOut, const VECTOR4& vIn, const MATRIX& mIn)
+void MatrixVec4Multiply(OGVec4& vOut, const OGVec4& vIn, const OGMatrix& mIn)
 {
 #if (TARGET_IPHONE_SIMULATOR == 0) && (TARGET_OS_IPHONE == 1)
 	NEON_Matrix4Vector4Mul( mIn.f, &vIn.x, &vOut.x );
 #else
-	VECTOR4 result;
+	OGVec4 result;
 	
 	/* Perform calculation on a dummy VECTOR (result) */
 	result.x = mIn.f[_11] * vIn.x + mIn.f[_21] * vIn.y + mIn.f[_31] * vIn.z + mIn.f[_41] * vIn.w;
@@ -160,7 +160,7 @@ void MatrixVec4Multiply(VECTOR4& vOut, const VECTOR4& vIn, const MATRIX& mIn)
  @Input         Input matrix
  @Description   Transform point represented using the matrix. 
  ****************************************************************************/
-void MatrixVecMultiply(VECTOR3& vOut, const VECTOR3& vIn, const MATRIX& mIn)
+void MatrixVecMultiply(OGVec3& vOut, const OGVec3& vIn, const OGMatrix& mIn)
 {
 	vOut.x = mIn.f[_11] * vIn.x + mIn.f[_21] * vIn.y + mIn.f[_31] * vIn.z + mIn.f[_41];
 	vOut.y = mIn.f[_12] * vIn.x + mIn.f[_22] * vIn.y + mIn.f[_32] * vIn.z + mIn.f[_42];
@@ -175,9 +175,9 @@ void MatrixVecMultiply(VECTOR3& vOut, const VECTOR3& vIn, const MATRIX& mIn)
  @Input         Input matrix
  @Description   Transform vector vIn using the matrix. 
  ****************************************************************************/
-void MatrixVec3Multiply(VECTOR3& vOut, const VECTOR3& vIn, const MATRIX& mIn)
+void MatrixVec3Multiply(OGVec3& vOut, const OGVec3& vIn, const OGMatrix& mIn)
 {
-    VECTOR3 result;
+    OGVec3 result;
 
     /* Perform calculation on a dummy VECTOR (result) */
     result.x = mIn.f[_11] * vIn.x + mIn.f[_21] * vIn.y + mIn.f[_31] * vIn.z;
@@ -196,7 +196,7 @@ void MatrixVec3Multiply(VECTOR3& vOut, const VECTOR3& vIn, const MATRIX& mIn)
  @Input         Input vector Z
  @Description   Build a translation matrix mOut using fX, fY and fZ. 
  ****************************************************************************/
-void MatrixTranslation(MATRIX& mOut, float fX, float fY, float fZ)
+void MatrixTranslation(OGMatrix& mOut, float fX, float fY, float fZ)
 {
 	mOut.f[ 0]=1.0f;	mOut.f[ 4]=0.0f;	mOut.f[ 8]=0.0f;	mOut.f[12]=fX;
 	mOut.f[ 1]=0.0f;	mOut.f[ 5]=1.0f;	mOut.f[ 9]=0.0f;	mOut.f[13]=fY;
@@ -213,7 +213,7 @@ void MatrixTranslation(MATRIX& mOut, float fX, float fY, float fZ)
  @Input         Input vector Z
  @Description   Build a scale matrix mOut using fX, fY and fZ.
  ****************************************************************************/
-void MatrixScaling(MATRIX& mOut, float fX, float fY, float fZ)
+void MatrixScaling(OGMatrix& mOut, float fX, float fY, float fZ)
 {
 	mOut.f[ 0]=fX;		mOut.f[ 4]=0.0f;	mOut.f[ 8]=0.0f;	mOut.f[12]=0.0f;
 	mOut.f[ 1]=0.0f;	mOut.f[ 5]=fY;		mOut.f[ 9]=0.0f;	mOut.f[13]=0.0f;
@@ -231,9 +231,9 @@ void MatrixScaling(MATRIX& mOut, float fX, float fY, float fZ)
  @Input         Input vector Z
  @Description   Create an around-axis rotation matrix mOut.
  ****************************************************************************/
-void MatrixRotationAxis(MATRIX& mOut, float fAngle, float fX, float fY, float fZ)
+void MatrixRotationAxis(OGMatrix& mOut, float fAngle, float fX, float fY, float fZ)
 {
-	Vec3 axis(fX, fY, fZ);
+	OGVec3 axis(fX, fY, fZ);
 	axis.normalize();
 	float s = (float)sin(fAngle);
 	float c = (float)cos(fAngle);
@@ -271,7 +271,7 @@ void MatrixRotationAxis(MATRIX& mOut, float fAngle, float fX, float fY, float fZ
  @Input         Input angle
  @Description   Create an X rotation matrix mOut.
  ****************************************************************************/
-void MatrixRotationX(MATRIX& mOut, float fAngle)
+void MatrixRotationX(OGMatrix& mOut, float fAngle)
 {
 	/* Precompute cos and sin */
 	float fCosine = cosf(fAngle);
@@ -291,7 +291,7 @@ void MatrixRotationX(MATRIX& mOut, float fAngle)
  @Input         Input angle
  @Description   Create an Y rotation matrix mOut.
  ****************************************************************************/
-void MatrixRotationY(MATRIX& mOut, float fAngle)
+void MatrixRotationY(OGMatrix& mOut, float fAngle)
 {
 	/* Precompute cos and sin */
 	float fCosine = cosf(fAngle);
@@ -311,7 +311,7 @@ void MatrixRotationY(MATRIX& mOut, float fAngle)
  @Input         Input angle
  @Description   Create an Z rotation matrix mOut.
  ****************************************************************************/
-void MatrixRotationZ(MATRIX& mOut, float fAngle)
+void MatrixRotationZ(OGMatrix& mOut, float fAngle)
 {
 	/* Precompute cos and sin */
 	float fCosine = cosf(fAngle);
@@ -331,9 +331,9 @@ void MatrixRotationZ(MATRIX& mOut, float fAngle)
  @Input         Input matrix
  @Description   Compute the transpose matrix of mIn.
  ****************************************************************************/
-void MatrixTranspose(MATRIX& mOut, const MATRIX &mIn)
+void MatrixTranspose(OGMatrix& mOut, const OGMatrix &mIn)
 {
-	MATRIX	mTmp;
+	OGMatrix	mTmp;
 
 	mTmp.f[ 0]=mIn.f[ 0];	mTmp.f[ 4]=mIn.f[ 1];	mTmp.f[ 8]=mIn.f[ 2];	mTmp.f[12]=mIn.f[ 3];
 	mTmp.f[ 1]=mIn.f[ 4];	mTmp.f[ 5]=mIn.f[ 5];	mTmp.f[ 9]=mIn.f[ 6];	mTmp.f[13]=mIn.f[ 7];
@@ -354,9 +354,9 @@ void MatrixTranspose(MATRIX& mOut, const MATRIX &mIn)
                  C 1
                 Where A is a 3x3 matrix and C is a 1x3 matrix.
  ****************************************************************************/
-void MatrixInverse(MATRIX& mOut, const MATRIX& mIn)
+void MatrixInverse(OGMatrix& mOut, const OGMatrix& mIn)
 {
-	MATRIX	mDummyMatrix;
+	OGMatrix	mDummyMatrix;
 	double		det_1;
 	double		pos, neg, temp;
 
@@ -379,10 +379,10 @@ void MatrixInverse(MATRIX& mOut, const MATRIX& mIn)
     det_1 = pos + neg;
 
     /* Is the submatrix A singular? */
-    if ((det_1 == 0.0) || (_ABS(det_1 / (pos - neg)) < 1.0e-15))
+    if ((det_1 == 0.0) || (OG_ABS(det_1 / (pos - neg)) < 1.0e-15))
 	{
         /* Matrix M has no inverse */
-        printf("Matrix has no inverse : singular matrix\n");
+        OG_LOG_WARNING("MatrixInverse: Matrix has no inverse (singular matrix)");
         return;
     }
     else
@@ -501,9 +501,9 @@ void MatrixLinearEqSolve(
                 Use this fn to calculate the inverse of matrices that
                 MatrixInverse() cannot.
  ****************************************************************************/
-void MatrixInverseEx(MATRIX& mOut, const MATRIX& mIn)
+void MatrixInverseEx(OGMatrix& mOut, const OGMatrix& mIn)
 {
-	MATRIX		mTmp;
+	OGMatrix		mTmp;
 	float 			*ppfRows[4];
 	float 			pfRes[4];
 	float 			pfIn[20];
@@ -542,13 +542,13 @@ void MatrixInverseEx(MATRIX& mOut, const MATRIX& mIn)
  @Description   Create a left-handed look-at view matrix.
  ****************************************************************************/
 void MatrixLookAtLH(
-	MATRIX& mOut,
-	const VECTOR3& vEye,
-	const VECTOR3& vAt,
-	const VECTOR3& vUp)
+	OGMatrix& mOut,
+	const OGVec3& vEye,
+	const OGVec3& vAt,
+	const OGVec3& vUp)
 {
-	VECTOR3 f, vUpActual, s, u;
-	MATRIX	t;
+	OGVec3 f, vUpActual, s, u;
+	OGMatrix	t;
 
 	f.x = vEye.x - vAt.x;
 	f.y = vEye.y - vAt.y;
@@ -593,13 +593,13 @@ void MatrixLookAtLH(
  @Description   Create a right-handed look-at view matrix.
  ****************************************************************************/
 void MatrixLookAtRH(
-	MATRIX& mOut,
-	const VECTOR3& vEye,
-	const VECTOR3& vAt,
-	const VECTOR3& vUp)
+	OGMatrix& mOut,
+	const OGVec3& vEye,
+	const OGVec3& vAt,
+	const OGVec3& vUp)
 {
-	VECTOR3 f, vUpActual, s, u;
-	MATRIX	t;
+	OGVec3 f, vUpActual, s, u;
+	OGMatrix	t;
 
 	f.x = vAt.x - vEye.x;
 	f.y = vAt.y - vEye.y;
@@ -646,7 +646,7 @@ void MatrixLookAtRH(
  @Description   Create a left-handed perspective projection matrix.
  ****************************************************************************/
 void MatrixPerspectiveFovLH(
-	MATRIX& mOut,
+	OGMatrix& mOut,
 	float fFOVy,
 	float fAspect,
 	float fNear,
@@ -686,7 +686,7 @@ void MatrixPerspectiveFovLH(
 
 	if (bRotate)
 	{
-		MATRIX mRotation, mTemp = mOut;
+		OGMatrix mRotation, mTemp = mOut;
 		MatrixRotationZ(mRotation, 90.0f*PI/180.0f);
 		MatrixMultiply(mOut, mTemp, mRotation);
 	}
@@ -704,7 +704,7 @@ void MatrixPerspectiveFovLH(
  @Description   Create a right-handed perspective projection matrix.
  ****************************************************************************/
 void MatrixPerspectiveFovRH(
-	MATRIX& mOut,
+	OGMatrix& mOut,
 	float fFOVy,
 	float fAspect,
 	float fNear,
@@ -744,7 +744,7 @@ void MatrixPerspectiveFovRH(
 
 	if (bRotate)
 	{
-		MATRIX mRotation, mTemp = mOut;
+		OGMatrix mRotation, mTemp = mOut;
 		MatrixRotationZ(mRotation, -90.0*PI/180.0f);
 		MatrixMultiply(mOut, mTemp, mRotation);
 	}
@@ -762,7 +762,7 @@ void MatrixPerspectiveFovRH(
  @Description   Create a left-handed orthographic projection matrix.
  ****************************************************************************/
 void MatrixOrthoLH(
-	MATRIX& mOut,
+	OGMatrix& mOut,
 	float w,
 	float h,
 	float zn,
@@ -791,7 +791,7 @@ void MatrixOrthoLH(
 
 	if (bRotate)
 	{
-		MATRIX mRotation, mTemp = mOut;
+		OGMatrix mRotation, mTemp = mOut;
 		MatrixRotationZ(mRotation, -90.0f*PI/180.0f);
 		MatrixMultiply(mOut, mRotation, mTemp);
 	}
@@ -809,7 +809,7 @@ void MatrixOrthoLH(
  @Description   Create a right-handed orthographic projection matrix.
  ****************************************************************************/
 void MatrixOrthoRH(
-	MATRIX& mOut,
+	OGMatrix& mOut,
 	float w,
 	float h,
 	float zn,
@@ -838,7 +838,7 @@ void MatrixOrthoRH(
 
 	if (bRotate)
 	{
-		MATRIX mRotation, mTemp = mOut;
+		OGMatrix mRotation, mTemp = mOut;
 		MatrixRotationZ(mRotation, -90.0f*PI/180.0f);
 		MatrixMultiply(mOut, mRotation, mTemp);
 	}

@@ -9,15 +9,14 @@
 #ifndef IOGTEXTURE_H_
 #define IOGTEXTURE_H_
 
-#include <Mathematics.h>
-
+#include "IOGVector.h"
 
 struct IOGMapping
 {
-	Vec2 t0;
-	Vec2 t1;
-	Vec2 upper_left;
-	Vec2 size;
+	OGVec2 t0;
+	OGVec2 t1;
+	OGVec2 upper_left;
+	OGVec2 size;
 };
 
 class IOGTexture

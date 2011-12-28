@@ -9,7 +9,7 @@
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogmodelshader.h"
-#include "GraphicsDevice.h"
+#include "ogshader.h"
 
 
 COGModelShader::COGModelShader () : m_bAlphaTest(false)
@@ -72,9 +72,9 @@ void COGModelShader::Apply ()
     MatrixMultiply(m_mMVP, m_mMV, m_mProjection);
     glUniformMatrix4fv(m_uiMVPMatrixLoc, 1, GL_FALSE, m_mMVP.f);
 
-    MATRIX mInvModel;
+    OGMatrix mInvModel;
     MatrixInverse(mInvModel, m_mModel);
-    Vec3 vTransformedLightDir;
+    OGVec3 vTransformedLightDir;
     MatrixVec3Multiply(vTransformedLightDir, m_pLightMgr->GetLight(0)->vPosition, mInvModel);
     vTransformedLightDir.normalize();
     glUniform3fv(m_uiLightDirLoc, 1, vTransformedLightDir.ptr());
@@ -89,33 +89,33 @@ void COGModelShader::Setup ()
 
     float fFogStart = m_pFog->GetStart();
 	float fFogEnd = m_pFog->GetEnd();
-    Vec4 vFogColor = m_pFog->GetColor();
+    OGVec4 vFogColor = m_pFog->GetColor();
 
 	const float fFogRcpEndStartDiff = 1.0f / (fFogEnd - fFogStart);
 
     glUniform1f(m_uiFogEndLoc, fFogEnd);
 	glUniform1f(m_uiFogRcpDiffLoc, fFogRcpEndStartDiff);
-    glUniform3fv(m_uiFogColorLoc, 1, Vec3(vFogColor.x, vFogColor.y, vFogColor.z).ptr());
+    glUniform3fv(m_uiFogColorLoc, 1, OGVec3(vFogColor.x, vFogColor.y, vFogColor.z).ptr());
     glUniform1f(m_uiFogEnabled, m_pFog->IsEnabled() ? 1.0f : 0.0f);
 }
 
 
 // set model matrix
-void COGModelShader::SetModelMatrix (const MATRIX& _mModel)
+void COGModelShader::SetModelMatrix (const OGMatrix& _mModel)
 {
     m_mModel = _mModel;
 }
 
 
 // set view matrix
-void COGModelShader::SetViewMatrix (const MATRIX& _mView)
+void COGModelShader::SetViewMatrix (const OGMatrix& _mView)
 {
     m_mView = _mView;
 }
 
 
 // set projection matrix
-void COGModelShader::SetProjectionMatrix (const MATRIX& _mProj)
+void COGModelShader::SetProjectionMatrix (const OGMatrix& _mProj)
 {
     m_mProjection = _mProj;
 }
@@ -132,13 +132,13 @@ void COGModelShader::SetLighting (IOGFog* _pFog, IOGLightMgr* _pLightMgr)
 // set material
 void COGModelShader::SetMaterial (IOGMaterial* _pMaterial)
 {
-    const Vec4& vAmbient = _pMaterial->GetAmbient();
-    const Vec4& vDiffuse = _pMaterial->GetDiffuse();
-    const Vec4& vSpecular = _pMaterial->GetSpecular();
+    const OGVec4& vAmbient = _pMaterial->GetAmbient();
+    const OGVec4& vDiffuse = _pMaterial->GetDiffuse();
+    const OGVec4& vSpecular = _pMaterial->GetSpecular();
 
-    glUniform3fv(m_uiMaterialAmbient, 1, Vec3(vAmbient.x, vAmbient.y, vAmbient.z).ptr());
-    glUniform3fv(m_uiMaterialDiffuse, 1, Vec3(vDiffuse.x, vDiffuse.y, vDiffuse.z).ptr());
-    glUniform3fv(m_uiMaterialSpecular, 1, Vec3(vSpecular.x, vSpecular.y, vSpecular.z).ptr());
+    glUniform3fv(m_uiMaterialAmbient, 1, OGVec3(vAmbient.x, vAmbient.y, vAmbient.z).ptr());
+    glUniform3fv(m_uiMaterialDiffuse, 1, OGVec3(vDiffuse.x, vDiffuse.y, vDiffuse.z).ptr());
+    glUniform3fv(m_uiMaterialSpecular, 1, OGVec3(vSpecular.x, vSpecular.y, vSpecular.z).ptr());
 }
 
 

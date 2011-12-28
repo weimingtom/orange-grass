@@ -9,7 +9,7 @@
 #ifndef IOGGUIWEAPONPANEL_H_
 #define IOGGUIWEAPONPANEL_H_
 
-#include "Mathematics.h"
+#include "IOGMath.h"
 #include <string>
 #include "IOGSettingsReader.h"
 
@@ -32,7 +32,7 @@ public:
 	virtual void Render () = 0;
 
 	// Hit test.
-	virtual bool IsHit (const Vec2& _vPos) = 0;
+	virtual bool IsHit (const OGVec2& _vPos) = 0;
 };
 
 

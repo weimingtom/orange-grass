@@ -26,7 +26,7 @@ public:
 	virtual void Update (unsigned long _ElapsedTime);
 
 	// Render.
-	virtual void Render (const MATRIX& _mWorld, const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight);
+	virtual void Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight);
 
 	// Start.
 	virtual void Start ();
@@ -57,7 +57,7 @@ protected:
 	float			m_fInitialScale;
 	float			m_fAlphaDec;
 	float			m_fScaleInc;
-	Vec4			m_color;
+	OGVec4			m_color;
 
 public:
 

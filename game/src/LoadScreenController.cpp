@@ -86,13 +86,13 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 			return;
 		}
 
-		Vec3 vCraftPos = m_pCurLevel->GetStartPosition();
+		OGVec3 vCraftPos = m_pCurLevel->GetStartPosition();
 		vCraftPos.y = 80.0f;
 		IOGActor* pPlayerActor = GetActorManager()->CreateActor(
 			std::string(pLevelParams->player_actor),
 			vCraftPos, 
-			Vec3(0,0,0), 
-			Vec3(1,1,1));
+			OGVec3(0,0,0), 
+			OGVec3(1,1,1));
 		pPlayerActor->SetWeapon(GetActorParamsMgr()->GetWeaponParams(pLevelParams->weapon));
 		GetActorManager()->AddActor(pPlayerActor);
 
@@ -105,7 +105,7 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 // Render controller scene
 void CLoadScreenController::RenderScene ()
 {
-	m_pRenderer->ClearFrame(Vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	m_pRenderer->ClearFrame(OGVec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 	if (m_pLoadSpr)
 	{

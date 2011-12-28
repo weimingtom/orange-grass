@@ -109,10 +109,10 @@ bool COGAppSettings::InitScreenMode ()
 	IOGGroupNode* pCameraNode = m_pReader->OpenGroupNode(pSource, pRoot, "Camera");
 	if (pCameraNode != NULL)
 	{
-		Vec3 vCamOffset = m_pReader->ReadVec3Param(pCameraNode, "cam_offset_x", "cam_offset_y", "cam_offset_z");
+		OGVec3 vCamOffset = m_pReader->ReadVec3Param(pCameraNode, "cam_offset_x", "cam_offset_y", "cam_offset_z");
 		m_pGlobalVars->SetVec3Var("cam_offset", vCamOffset);
 
-		Vec3 vCamDir = m_pReader->ReadVec3Param(pCameraNode, "cam_dir_x", "cam_dir_y", "cam_dir_z");
+		OGVec3 vCamDir = m_pReader->ReadVec3Param(pCameraNode, "cam_dir_x", "cam_dir_y", "cam_dir_z");
 		m_pGlobalVars->SetVec3Var("cam_dir", vCamDir);
 
 		float fCamMargins = m_pReader->ReadFloatParam(pCameraNode, "cam_margins");

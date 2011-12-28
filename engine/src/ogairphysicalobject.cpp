@@ -36,7 +36,7 @@ void COGAirPhysicalObject::Create (const IOGAabb& _Aabb,
 // fall.
 void COGAirPhysicalObject::Fall ()
 {
-	m_vAcceleration += Vec3(0, -1, 0) * m_pParams->fAcceleration;
+	m_vAcceleration += OGVec3(0, -1, 0) * m_pParams->fAcceleration;
     float fSpeed = m_vAcceleration.length();
 	if (fSpeed > m_pParams->fMaxSpeed)
     {

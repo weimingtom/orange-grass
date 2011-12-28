@@ -58,12 +58,12 @@ protected:
 	// UI layout settings
 	std::string				m_PanelSprStr;
 	std::string				m_BarSprStr;
-    Vec2                    m_Size;
-    Vec2                    m_Position;
-    Vec2					m_BonusIcoPos;
-	Vec2					m_BonusIcoSize;
-    Vec2					m_CoolDownBarPos;
-	Vec2					m_CoolDownBarSize;
+    OGVec2                    m_Size;
+    OGVec2                    m_Position;
+    OGVec2					m_BonusIcoPos;
+	OGVec2					m_BonusIcoSize;
+    OGVec2					m_CoolDownBarPos;
+	OGVec2					m_CoolDownBarSize;
 	float					m_fVertInterval;
 };
 

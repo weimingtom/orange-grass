@@ -149,7 +149,7 @@ void CGameScreenController::RenderScene ()
 		return;
     }
 
-	m_pRenderer->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
+	m_pRenderer->ClearFrame(OGVec4(0.3f, 0.3f, 0.4f, 1.0f));
 
     m_pRenderer->EnableFog(true);
 	m_pRenderer->EnableLight(true);
@@ -159,7 +159,7 @@ void CGameScreenController::RenderScene ()
 	m_pRenderer->FinishRenderMode();
 
     m_pRenderer->StartRenderMode(OG_RENDERMODE_SHADOWMAP);
-    m_pRenderer->ClearFrame(Vec4(0.0f, 0.0f, 0.0f, 0.0f));
+    m_pRenderer->ClearFrame(OGVec4(0.0f, 0.0f, 0.0f, 0.0f));
 	m_pRenderer->EnableColor(false);
     m_pSg->RenderLandscape(m_pCamera);
 	m_pRenderer->EnableColor(true);
@@ -202,7 +202,7 @@ void CGameScreenController::RenderScene ()
 		fps = 1000/m_ElapsedTime;
 	}
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
-	m_pRenderer->DisplayString(Vec2(70.0f,4.0f), 0.4f, 0xFFFFFFFF, "FPS %d", fps);
+	m_pRenderer->DisplayString(OGVec2(70.0f,4.0f), 0.4f, 0xFFFFFFFF, "FPS %d", fps);
 #ifdef STATISTICS
 	unsigned long Verts; 
 	unsigned long Faces;
@@ -211,11 +211,11 @@ void CGameScreenController::RenderScene ()
 	unsigned long DrawCalls;
 	GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, 
 		VBOSwitches, DrawCalls);
-	m_pRenderer->DisplayString(Vec2(70.0f, 8.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
-	m_pRenderer->DisplayString(Vec2(70.0f,12.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
-	m_pRenderer->DisplayString(Vec2(70.0f,16.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
-	m_pRenderer->DisplayString(Vec2(70.0f,20.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
-	m_pRenderer->DisplayString(Vec2(70.0f,24.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
+	m_pRenderer->DisplayString(OGVec2(70.0f, 8.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
+	m_pRenderer->DisplayString(OGVec2(70.0f,12.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
+	m_pRenderer->DisplayString(OGVec2(70.0f,16.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
+	m_pRenderer->DisplayString(OGVec2(70.0f,20.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
+	m_pRenderer->DisplayString(OGVec2(70.0f,24.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
 */
     GetStatistics()->Reset();
 /*    
@@ -246,7 +246,7 @@ void CGameScreenController::Deactivate ()
 
 
 // Control vector change event handler.
-bool CGameScreenController::OnVectorChanged (const Vec3& _vVec)
+bool CGameScreenController::OnVectorChanged (const OGVec3& _vVec)
 {
     if (m_State != CSTATE_ACTIVE)
     {
@@ -258,7 +258,7 @@ bool CGameScreenController::OnVectorChanged (const Vec3& _vVec)
 
 
 // Touch event handler.
-bool CGameScreenController::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
+bool CGameScreenController::OnTouch (const OGVec2& _vPos, IOGTouchParam _param)
 {
     if (m_State != CSTATE_ACTIVE)
     {
@@ -297,11 +297,11 @@ void CGameScreenController::UpdateCamera ()
 {
     if (m_pCamera && m_pCurLevel && !m_bFinishLine)
     {
-        Vec3 vTarget = m_pPlayer->GetPhysicalObject()->GetPosition() + m_vCameraOffset;
-        Vec3 vUp = m_vCameraDir.cross(Vec3(1, 0, 0));
-        Vec3 vPos = vTarget + (m_vCameraDir * m_fCameraTargetDistance);
+        OGVec3 vTarget = m_pPlayer->GetPhysicalObject()->GetPosition() + m_vCameraOffset;
+        OGVec3 vUp = m_vCameraDir.cross(OGVec3(1, 0, 0));
+        OGVec3 vPos = vTarget + (m_vCameraDir * m_fCameraTargetDistance);
 
-        Vec3 vLeftBorder, vRightBorder;
+        OGVec3 vLeftBorder, vRightBorder;
         GetPhysics()->GetBordersAtPoint(vPos, vLeftBorder, vRightBorder);
         float fLeft = vLeftBorder.x + m_fCameraMargins;
         float fRight = vRightBorder.x - m_fCameraMargins;
@@ -313,8 +313,8 @@ void CGameScreenController::UpdateCamera ()
 	}
     else if (m_bFinishLine)
     {
-        //Vec3 vTarget = m_pPlayer->GetPhysicalObject()->GetPosition() + m_vCameraOffset;
-        //Vec3 vUp = m_vCameraDir.cross(Vec3(1, 0, 0));
+        //OGVec3 vTarget = m_pPlayer->GetPhysicalObject()->GetPosition() + m_vCameraOffset;
+        //OGVec3 vUp = m_vCameraDir.cross(OGVec3(1, 0, 0));
 
         //m_pCamera->Setup (m_pCamera->GetPosition(), vTarget, vUp);
 		m_pCamera->Update();

@@ -9,7 +9,7 @@
 #ifndef IOGLIGHT_H_
 #define IOGLIGHT_H_
 
-#include "Mathematics.h"
+#include "IOGMath.h"
 
 
 enum OGLightType
@@ -21,11 +21,11 @@ enum OGLightType
 
 struct IOGLight
 {
-    Vec4 vDiffuseColor;
-    Vec4 vAmbientColor;
-    Vec4 vSpecularColor;
+    OGVec4 vDiffuseColor;
+    OGVec4 vAmbientColor;
+    OGVec4 vSpecularColor;
     float fIntensity;
-    Vec3 vPosition;
+    OGVec3 vPosition;
 	OGLightType type;
 };
 

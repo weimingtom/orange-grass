@@ -30,9 +30,9 @@ enum OGEffectType
 
 struct BBVert
 {
-	Vec3 p;
-	Vec2 t;
-	Vec4 c;
+	OGVec3 p;
+	OGVec2 t;
+	OGVec4 c;
 };
 
 
@@ -45,22 +45,22 @@ public:
 	virtual void Init(OGEffectType _Type, const std::string& _File) = 0;
 
 	// Set billboard basis vectors.
-	virtual void SetBillboardVectors (const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight) = 0;
+	virtual void SetBillboardVectors (const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight) = 0;
 
 	// Set direction.
-	virtual void SetDirection (const Vec3& _vDir) = 0;
+	virtual void SetDirection (const OGVec3& _vDir) = 0;
 
 	// Set start and finish positions.
-	virtual void SetStartFinishPositions (const Vec3& _vStartPos, const Vec3& _vFinishPos) = 0;
+	virtual void SetStartFinishPositions (const OGVec3& _vStartPos, const OGVec3& _vFinishPos) = 0;
 
 	// Update.
 	virtual void Update (unsigned long _ElapsedTime) = 0;
 
 	// Update position.
-	virtual void UpdatePosition (const Vec3& _vPosition) = 0;
+	virtual void UpdatePosition (const OGVec3& _vPosition) = 0;
 
 	// Render.
-	virtual void Render (const MATRIX& _mWorld) = 0;
+	virtual void Render (const OGMatrix& _mWorld) = 0;
 
 	// Start.
 	virtual void Start () = 0;

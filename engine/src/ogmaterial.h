@@ -19,28 +19,28 @@ public:
 	virtual ~COGMaterial ();
 
 	// get material ambient.
-	virtual const Vec4& GetAmbient () const;
+	virtual const OGVec4& GetAmbient () const;
 
 	// get material diffuse.
-	virtual const Vec4& GetDiffuse () const;
+	virtual const OGVec4& GetDiffuse () const;
 
 	// get material specular.
-	virtual const Vec4& GetSpecular () const;
+	virtual const OGVec4& GetSpecular () const;
 
 	// set material ambient.
-	virtual void SetAmbient (const Vec4& _Value);
+	virtual void SetAmbient (const OGVec4& _Value);
 
 	// set material diffuse.
-	virtual void SetDiffuse (const Vec4& _Value);
+	virtual void SetDiffuse (const OGVec4& _Value);
 
 	// set material specular.
-	virtual void SetSpecular (const Vec4& _Value);
+	virtual void SetSpecular (const OGVec4& _Value);
 
 private:
 
-    Vec4	m_Ambient;
-    Vec4	m_Diffuse;
-    Vec4	m_Specular;
+    OGVec4	m_Ambient;
+    OGVec4	m_Diffuse;
+    OGVec4	m_Specular;
 };
 
 #endif

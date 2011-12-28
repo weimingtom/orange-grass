@@ -91,8 +91,8 @@ public:
 
 	// Check actor's OBB intersection with ray.
 	virtual bool CheckIntersection (
-        const Vec3& _vRayStart,
-        const Vec3& _vRayDir ) const = 0;
+        const OGVec3& _vRayStart,
+        const OGVec3& _vRayDir ) const = 0;
 };
 
 

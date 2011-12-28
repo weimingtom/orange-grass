@@ -19,14 +19,14 @@ public:
 	virtual ~COGOrientWorker();
 
 	// Set target.
-    virtual void SetTarget(const Vec3& _vTarget) {m_vTarget = _vTarget;}
+    virtual void SetTarget(const OGVec3& _vTarget) {m_vTarget = _vTarget;}
 
 	// Update worker.
 	virtual void Update (unsigned long _ElapsedTime);
 
 protected:
 
-    Vec3		m_vTarget;
+    OGVec3		m_vTarget;
 };
 
 

@@ -9,7 +9,7 @@
 #ifndef IOGEMITTER_H_
 #define IOGEMITTER_H_
 
-#include "Mathematics.h"
+#include "IOGMath.h"
 #include "IOGRenderer.h"
 #include "IOGRenderable.h"
 #include "IOGSettingsReader.h"
@@ -43,7 +43,7 @@ enum OGEmitterType
 typedef std::map<std::string, std::string*>		TStringParamList;
 typedef std::map<std::string, unsigned int*>	TIntParamList;
 typedef std::map<std::string, float*>			TFloatParamList;
-typedef std::map<std::string, Vec4*>			TColorParamList;
+typedef std::map<std::string, OGVec4*>			TColorParamList;
 
 
 class IOGEmitter
@@ -58,16 +58,16 @@ public:
 	virtual void Update (unsigned long _ElapsedTime) = 0;
 
 	// Update position.
-	virtual void UpdatePosition (const Vec3& _vPosition) = 0;
+	virtual void UpdatePosition (const OGVec3& _vPosition) = 0;
 
 	// Set start and finish positions.
-    virtual void SetStartFinishPositions (const Vec3& _vStartPos, const Vec3& _vFinishPos) = 0;
+    virtual void SetStartFinishPositions (const OGVec3& _vStartPos, const OGVec3& _vFinishPos) = 0;
 
 	// Set direction.
-    virtual void SetDirection (const Vec3& _vDir) = 0;
+    virtual void SetDirection (const OGVec3& _vDir) = 0;
 
 	// Render.
-	virtual void Render (const MATRIX& _mWorld, const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight) = 0;
+	virtual void Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight) = 0;
 
 	// Start.
 	virtual void Start () = 0;
@@ -103,7 +103,7 @@ public:
 	virtual void SetFloatParam (const std::string& _Alias, float* _pValue) = 0;
 
 	// set color parameter.
-	virtual void SetColorParam (const std::string& _Alias, Vec4* _pValue) = 0;
+	virtual void SetColorParam (const std::string& _Alias, OGVec4* _pValue) = 0;
 
 	// get string parameter.
 	virtual std::string* GetStringParam (const std::string& _Alias) = 0;
@@ -115,7 +115,7 @@ public:
 	virtual float* GetFloatParam (const std::string& _Alias) = 0;
 
 	// get color parameter.
-	virtual Vec4* GetColorParam (const std::string& _Alias) = 0;
+	virtual OGVec4* GetColorParam (const std::string& _Alias) = 0;
 
 	// Get effect type.
 	virtual OGEmitterType GetType() const = 0;

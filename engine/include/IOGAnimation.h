@@ -9,7 +9,6 @@
 #ifndef IOGANIMATION_H_
 #define IOGANIMATION_H_
 
-#include "Mathematics.h"
 #include <string>
 
 

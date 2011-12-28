@@ -19,13 +19,13 @@ public:
 	virtual ~COGActorBullet();
 
 	// Set owner.
-	virtual void SetOwner (IOGActor* _pOwner, const Vec3& _vLaunchOffset);
+	virtual void SetOwner (IOGActor* _pOwner, const OGVec3& _vLaunchOffset);
 
 	// Set target.
 	virtual void SetTarget (IOGActor* _pTarget);
 
 	// Set target.
-	virtual void SetTarget (const Vec3& _vTarget);
+	virtual void SetTarget (const OGVec3& _vTarget);
 
 	// Set damage points.
 	virtual void SetDamagePoints (unsigned int _DamagePoints);
@@ -37,8 +37,8 @@ protected:
 
 	IOGActor*   m_pOwner;
 	IOGActor*   m_pTarget;
-	Vec3		m_vTarget;
-    Vec3        m_vLaunchOffset;
+	OGVec3		m_vTarget;
+    OGVec3        m_vLaunchOffset;
 };
 
 

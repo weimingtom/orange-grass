@@ -31,19 +31,19 @@ public:
 	virtual IOGTerrain* GetTerrain ();
 
 	// get level start position.
-	virtual const Vec3& GetStartPosition () const;
+	virtual const OGVec3& GetStartPosition () const;
 
 	// get level start finish.
-	virtual const Vec3& GetFinishPosition () const;
+	virtual const OGVec3& GetFinishPosition () const;
 
 	// get level active width.
 	virtual float GetActiveWidth () const {return m_fActiveWidth;}
 
 	// set level start position.
-	virtual void SetStartPosition (const Vec3& _Pos);
+	virtual void SetStartPosition (const OGVec3& _Pos);
 
 	// set level start finish.
-	virtual void SetFinishPosition (const Vec3& _Pos);
+	virtual void SetFinishPosition (const OGVec3& _Pos);
 
 	// set level active width.
 	virtual void SetActiveWidth (float _fWidth) {m_fActiveWidth = _fWidth;}
@@ -65,16 +65,16 @@ private:
 private:
 
     COGTerrain*	m_pTerrain;
-    Vec3		m_vStartPos;
-    Vec3		m_vFinishPos;
+    OGVec3		m_vStartPos;
+    OGVec3		m_vFinishPos;
     float		m_fActiveWidth;
 
-    Vec3		m_vLightDir;
-    Vec3		m_vLightAmbColor;
-    Vec3		m_vLightDifColor;
-    Vec3		m_vLightSpcColor;
+    OGVec3		m_vLightDir;
+    OGVec3		m_vLightAmbColor;
+    OGVec3		m_vLightDifColor;
+    OGVec3		m_vLightSpcColor;
 
-    Vec4		m_vFogColor;
+    OGVec4		m_vFogColor;
     float		m_fFogStart;
     float		m_fFogEnd;
     float		m_fFogDensity;

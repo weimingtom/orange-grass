@@ -25,7 +25,7 @@ COGActorBullet::~COGActorBullet()
 
 
 // Set owner.
-void COGActorBullet::SetOwner (IOGActor* _pOwner, const Vec3& _vLaunchOffset)
+void COGActorBullet::SetOwner (IOGActor* _pOwner, const OGVec3& _vLaunchOffset)
 {
     m_pOwner = _pOwner;
 
@@ -44,7 +44,7 @@ void COGActorBullet::SetTarget (IOGActor* _pTarget)
 
 
 // Set target.
-void COGActorBullet::SetTarget (const Vec3& _vTarget)
+void COGActorBullet::SetTarget (const OGVec3& _vTarget)
 {
 	m_vTarget = _vTarget;
 }

@@ -9,7 +9,7 @@
 #ifndef IOGFOG_H_
 #define IOGFOG_H_
 
-#include "Mathematics.h"
+#include "IOGMath.h"
 
 
 class IOGFog
@@ -18,10 +18,10 @@ public:
 	virtual ~IOGFog () {}
 
 	// set light color.
-	virtual void SetColor (const Vec4& _vColor) = 0;
+	virtual void SetColor (const OGVec4& _vColor) = 0;
 	
 	// get light color.
-	virtual const Vec4& GetColor () const = 0;
+	virtual const OGVec4& GetColor () const = 0;
 
 	// set fog start.
 	virtual void SetStart (float _fStart) = 0;

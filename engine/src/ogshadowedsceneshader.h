@@ -31,16 +31,16 @@ public:
 	virtual void Setup ();
 
     // set model matrix
-    virtual void SetModelMatrix (const MATRIX& _mModel);
+    virtual void SetModelMatrix (const OGMatrix& _mModel);
 
     // set view matrix
-    virtual void SetViewMatrix (const MATRIX& _mView);
+    virtual void SetViewMatrix (const OGMatrix& _mView);
 
     // set projection matrix
-    virtual void SetProjectionMatrix (const MATRIX& _mProj);
+    virtual void SetProjectionMatrix (const OGMatrix& _mProj);
 
     // set shadow matrix
-    virtual void SetShadowMatrix (const MATRIX& _mShadowMVP);
+    virtual void SetShadowMatrix (const OGMatrix& _mShadowMVP);
 
     // set fog parameters
     virtual void SetFog (IOGFog* _pFog);
@@ -50,12 +50,12 @@ public:
 
 protected:
 
-    MATRIX  m_mMV;
-    MATRIX  m_mMVP;
-    MATRIX  m_mModel;
-    MATRIX  m_mView;
-    MATRIX  m_mProjection;
-    MATRIX  m_mShadowMVP;
+    OGMatrix  m_mMV;
+    OGMatrix  m_mMVP;
+    OGMatrix  m_mModel;
+    OGMatrix  m_mView;
+    OGMatrix  m_mProjection;
+    OGMatrix  m_mShadowMVP;
 
 	unsigned int m_uiVertShader;
 	unsigned int m_uiFragShader;

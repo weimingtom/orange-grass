@@ -21,18 +21,18 @@ void DrawAABB (const IOGAabb& _aabb);
 void DrawOBB (const IOGObb& _obb);
 
 // Draw line
-void DrawLine (const Vec3& _vStart, const Vec3& _vEnd);
+void DrawLine (const OGVec3& _vStart, const OGVec3& _vEnd);
 
 // Draw coordiantes grid
 void DrawCoordGrid (int _Bounds, int _Step, int _MajorStep);
 
 // Draw point patch grid
-void DrawPatchGrid (int _NumPatchVerts, const Vec3* _pGridData);
+void DrawPatchGrid (int _NumPatchVerts, const OGVec3* _pGridData);
 
 // Draw geometry grid
 void DrawGeometryGrid (const std::vector<OGFace>& _GridData);
 
 // Draw level ranges
-void DrawLevelRanges (const Vec3& _StartPoint, const Vec3& _FinishPoint, float _fWidth, float _fHeight);
+void DrawLevelRanges (const OGVec3& _StartPoint, const OGVec3& _FinishPoint, float _fWidth, float _fHeight);
 
 #endif

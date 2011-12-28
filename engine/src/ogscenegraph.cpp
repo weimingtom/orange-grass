@@ -185,9 +185,9 @@ void COGSceneGraph::RenderLandscape (IOGCamera* _pCamera)
 // Render effects.
 void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 {
-	const MATRIX& mView = _pCamera->GetViewMatrix();
+	const OGMatrix& mView = _pCamera->GetViewMatrix();
 
-    Vec3 vUp, vRight, vLook;
+    OGVec3 vUp, vRight, vLook;
 	MatrixGetBasis(vRight, vUp, vLook, mView);
 	vUp.normalize();
 	vRight.normalize();
@@ -224,9 +224,9 @@ void COGSceneGraph::RenderTransparentNodes (IOGCamera* _pCamera)
 // Render all effects.
 void COGSceneGraph::RenderAllEffects (IOGCamera* _pCamera)
 {
-	const MATRIX& mView = _pCamera->GetViewMatrix();
+	const OGMatrix& mView = _pCamera->GetViewMatrix();
 
-    Vec3 vUp, vRight, vLook;
+    OGVec3 vUp, vRight, vLook;
 	MatrixGetBasis(vRight, vUp, vLook, mView);
 	vUp.normalize();
 	vRight.normalize();

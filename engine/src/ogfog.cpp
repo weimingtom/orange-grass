@@ -20,7 +20,7 @@ COGFog::~COGFog ()
 
 
 // set light color.
-void COGFog::SetColor (const Vec4& _vColor)
+void COGFog::SetColor (const OGVec4& _vColor)
 {
 	m_Color = _vColor;
 }

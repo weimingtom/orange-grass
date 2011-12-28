@@ -67,8 +67,8 @@ private:
 		{
 			struct MappingCfg
 			{
-				Vec2 pos;
-				Vec2 size;
+				OGVec2 pos;
+				OGVec2 size;
 			};
 
 			std::string alias;

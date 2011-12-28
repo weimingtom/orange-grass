@@ -23,9 +23,9 @@ COGActorMissile::~COGActorMissile()
 
 // Create actor.
 bool COGActorMissile::Create (IOGActorParams* _pParams,
-                              const Vec3& _vPos,
-                              const Vec3& _vRot,
-                              const Vec3& _vScale)
+                              const OGVec3& _vPos,
+                              const OGVec3& _vRot,
+                              const OGVec3& _vScale)
 {
 	m_pParams = _pParams;
 
@@ -107,7 +107,7 @@ void COGActorMissile::Activate (bool _bActive)
 		m_FlightWorker.Reset();
 		m_FlightWorker.Activate(true);
 		m_pHeadEffect->Start();
-		m_pHeadEffect->SetDirection(Vec3(0,0,1));
+		m_pHeadEffect->SetDirection(OGVec3(0,0,1));
 		m_pHeadEffect->Update(1);
         m_pPhysicalObject->Update(1);
 	}
@@ -123,14 +123,14 @@ void COGActorMissile::Fire ()
 {
 	COGActorBullet::Fire();
 
-    Vec3 vRot = m_pOwner->GetPhysicalObject()->GetRotation();
-	m_pPhysicalObject->SetWorldTransform(m_vLaunchOffset, vRot, Vec3(1,1,1));
+    OGVec3 vRot = m_pOwner->GetPhysicalObject()->GetRotation();
+	m_pPhysicalObject->SetWorldTransform(m_vLaunchOffset, vRot, OGVec3(1,1,1));
     Activate(true);
 }
 
 
 // Set target.
-void COGActorMissile::SetTarget (const Vec3& _vTarget)
+void COGActorMissile::SetTarget (const OGVec3& _vTarget)
 {
     COGActorBullet::SetTarget(_vTarget);
     m_FlightWorker.SetTarget(_vTarget);
@@ -157,7 +157,7 @@ bool COGActorMissile::OnCollision (const IOGCollision& _Collision)
 	m_pHeadEffect->Stop();
 
     m_pCollisionEffectNode->Activate(true);
-	m_pCollisionEffect->SetDirection(Vec3(0,0,1));
+	m_pCollisionEffect->SetDirection(OGVec3(0,0,1));
     m_pCollisionEffect->Start();
 
     return true;

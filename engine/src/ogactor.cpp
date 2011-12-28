@@ -156,8 +156,8 @@ void COGActor::Activate (bool _bActive)
 
 
 // Check actor's OBB intersection with ray.
-bool COGActor::CheckIntersection (const Vec3& _vRayStart,
-                                  const Vec3& _vRayDir ) const
+bool COGActor::CheckIntersection (const OGVec3& _vRayStart,
+                                  const OGVec3& _vRayDir ) const
 {
     return m_pPhysicalObject->GetOBB().CheckIntersection (_vRayStart, _vRayDir);
 }

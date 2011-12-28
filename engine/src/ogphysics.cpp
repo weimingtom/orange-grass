@@ -306,21 +306,21 @@ void COGPhysics::UpdateAll (unsigned long _ElapsedTime)
 
 
 // Set level borders
-void COGPhysics::SetLevelBorders (const Vec3& _vStart, const Vec3& _vFinish, float _fWidth)
+void COGPhysics::SetLevelBorders (const OGVec3& _vStart, const OGVec3& _vFinish, float _fWidth)
 {
     float fHalfW = _fWidth / 2.0f;
-    m_vLeftBorder[0] = Vec3(_vStart.x - fHalfW, 0, _vStart.z);
-    m_vLeftBorder[1] = Vec3(_vFinish.x - fHalfW, 0, _vFinish.z);
+    m_vLeftBorder[0] = OGVec3(_vStart.x - fHalfW, 0, _vStart.z);
+    m_vLeftBorder[1] = OGVec3(_vFinish.x - fHalfW, 0, _vFinish.z);
     m_vLeftBorder[2] = (m_vLeftBorder[1] - m_vLeftBorder[0]).normalized();
 
-    m_vRightBorder[0] = Vec3(_vStart.x + fHalfW, 0, _vStart.z);
-    m_vRightBorder[1] = Vec3(_vFinish.x + fHalfW, 0, _vFinish.z);
+    m_vRightBorder[0] = OGVec3(_vStart.x + fHalfW, 0, _vStart.z);
+    m_vRightBorder[1] = OGVec3(_vFinish.x + fHalfW, 0, _vFinish.z);
     m_vRightBorder[2] = (m_vRightBorder[1] - m_vRightBorder[0]).normalized();
 }
 
 
 // Get borders at point
-void COGPhysics::GetBordersAtPoint (const Vec3& _vPos, Vec3& _vLeft, Vec3& _vRight)
+void COGPhysics::GetBordersAtPoint (const OGVec3& _vPos, OGVec3& _vLeft, OGVec3& _vRight)
 {
     _vLeft = m_vLeftBorder[0] + m_vLeftBorder[2] * _vPos.z;
     _vRight = m_vRightBorder[0] + m_vRightBorder[2] * _vPos.z;

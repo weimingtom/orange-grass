@@ -19,7 +19,7 @@ COGEmitterScrollingRay::COGEmitterScrollingRay()
 	m_Texture = std::string("effects");
 	m_MappingStartId = 13;
 	m_MappingFinishId = 14;
-	m_color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_color = OGVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_fSegment = 50.0f;
 	m_fScale = 8.0f;
 	m_fSpeed = 1.0f;
@@ -121,12 +121,12 @@ void COGEmitterScrollingRay::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGEmitterScrollingRay::Render (const MATRIX& _mWorld, const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight)
+void COGEmitterScrollingRay::Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE || !m_bPosReady)
 		return;
 
-    MATRIX mId; 
+    OGMatrix mId; 
     MatrixIdentity(mId);
     m_pRenderer->SetModelMatrix(mId);
 	m_pRenderer->SetBlend(m_Blend);
@@ -160,7 +160,7 @@ void COGEmitterScrollingRay::Stop ()
 
 
 // Set start and finish positions.
-void COGEmitterScrollingRay::SetStartFinishPositions (const Vec3& _vStartPos, const Vec3& _vFinishPos)
+void COGEmitterScrollingRay::SetStartFinishPositions (const OGVec3& _vStartPos, const OGVec3& _vFinishPos)
 {
     if (m_bPosReady)
         return;
@@ -230,11 +230,11 @@ bool COGEmitterScrollingRay::ScrollSegment (ParticleFormat& _Segment, float _fSc
 // Update segment.
 void COGEmitterScrollingRay::UpdateSegment (ParticleFormat& _Segment)
 {
-    Vec3 vStart = m_vStartPos + m_Direction * _Segment.pos;
-    Vec3 vFinish = m_vStartPos + m_Direction * (_Segment.pos + m_fSegment * _Segment.scale);
+    OGVec3 vStart = m_vStartPos + m_Direction * _Segment.pos;
+    OGVec3 vFinish = m_vStartPos + m_Direction * (_Segment.pos + m_fSegment * _Segment.scale);
 
-    Vec3 vSUp = Vec3(0,0,-1) * m_fScale;
-    Vec3 vSRight = Vec3(1,0,0) * m_fScale;
+    OGVec3 vSUp = OGVec3(0,0,-1) * m_fScale;
+    OGVec3 vSRight = OGVec3(1,0,0) * m_fScale;
 
     _Segment.pVertices[0].p = vFinish + vSRight;
     _Segment.pVertices[1].p = vFinish - vSRight;
@@ -244,8 +244,8 @@ void COGEmitterScrollingRay::UpdateSegment (ParticleFormat& _Segment)
     IOGMapping* pMapping = m_Frames[_Segment.frame];
     float t0y = pMapping->t0.y + (pMapping->t1.y - pMapping->t0.y) * _Segment.start;
     float t1y = pMapping->t0.y + (pMapping->t1.y - pMapping->t0.y) * _Segment.end;
-    _Segment.pVertices[0].t = Vec2(pMapping->t1.x, t1y);
-    _Segment.pVertices[1].t = Vec2(pMapping->t0.x, t1y);
-    _Segment.pVertices[2].t = Vec2(pMapping->t1.x, t0y);
-    _Segment.pVertices[3].t = Vec2(pMapping->t0.x, t0y);
+    _Segment.pVertices[0].t = OGVec2(pMapping->t1.x, t1y);
+    _Segment.pVertices[1].t = OGVec2(pMapping->t0.x, t1y);
+    _Segment.pVertices[2].t = OGVec2(pMapping->t1.x, t0y);
+    _Segment.pVertices[3].t = OGVec2(pMapping->t0.x, t0y);
 }

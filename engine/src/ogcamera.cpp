@@ -20,7 +20,7 @@ COGCamera::~COGCamera ()
 
 
 // setup camera viewport.
-void COGCamera::SetupViewport (const MATRIX& _mProjection, float _fFOV)
+void COGCamera::SetupViewport (const OGMatrix& _mProjection, float _fFOV)
 {
 	m_Projection = _mProjection;
 	m_fFOV = _fFOV;
@@ -28,7 +28,7 @@ void COGCamera::SetupViewport (const MATRIX& _mProjection, float _fFOV)
 
 
 // setup camera.
-void COGCamera::Setup (const Vec3& _vPosition, const Vec3& _vTarget, const Vec3& _vUp)
+void COGCamera::Setup (const OGVec3& _vPosition, const OGVec3& _vTarget, const OGVec3& _vUp)
 {
 	m_Position = _vPosition;
 	m_Target = _vTarget;
@@ -42,7 +42,7 @@ void COGCamera::Setup (const Vec3& _vPosition, const Vec3& _vTarget, const Vec3&
 
 
 // move camera in defined direction
-void COGCamera::Strafe(float _fSpeed, const Vec3& _vDir)
+void COGCamera::Strafe(float _fSpeed, const OGVec3& _vDir)
 {	
 	m_Position.x += _vDir.x * _fSpeed;
 	m_Position.z += _vDir.z * _fSpeed;
@@ -80,16 +80,16 @@ void COGCamera::Update ()
 
 
 // get camera view matrix.
-const MATRIX& COGCamera::GetViewMatrix () const
+const OGMatrix& COGCamera::GetViewMatrix () const
 {
 	return m_View;
 }
 
 
 // get left and right edges.
-void COGCamera::GetEdges (Vec3& _vLeft, Vec3& _vRight, float _fFOV, float _fDist)
+void COGCamera::GetEdges (OGVec3& _vLeft, OGVec3& _vRight, float _fFOV, float _fDist)
 {
     float width = tanf(_fFOV / 2) * _fDist;
-    _vLeft = m_Target + Vec3(-1.0f, 0, 0) * width;
-    _vRight = m_Target + Vec3(1.0f, 0, 0) * width;
+    _vLeft = m_Target + OGVec3(-1.0f, 0, 0) * width;
+    _vRight = m_Target + OGVec3(1.0f, 0, 0) * width;
 }

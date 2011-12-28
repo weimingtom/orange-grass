@@ -57,19 +57,19 @@ public:
 	virtual void SetBlend (OGBlendType _Blend);
 
 	// set model matrix.
-	virtual void SetModelMatrix (const MATRIX& _mModel);
+	virtual void SetModelMatrix (const OGMatrix& _mModel);
 
 	// set view matrix.
-	virtual void SetViewMatrix (const MATRIX& _mView);
+	virtual void SetViewMatrix (const OGMatrix& _mView);
 
 	// get model matrix.
-	virtual void GetModelMatrix (MATRIX& _mModel);
+	virtual void GetModelMatrix (OGMatrix& _mModel);
 
 	// get view matrix.
-	virtual void GetViewMatrix (MATRIX& _mView);
+	virtual void GetViewMatrix (OGMatrix& _mView);
 
 	// get projection matrix.
-	virtual void GetProjectionMatrix (MATRIX& _mProjection);
+	virtual void GetProjectionMatrix (OGMatrix& _mProjection);
 
 	// Enable scene light.
 	virtual void EnableLight (bool _bEnable);
@@ -90,7 +90,7 @@ public:
 	virtual void RenderMesh (void* _pMesh);
 
 	// clear frame buffer with the given color
-	virtual void ClearFrame (const Vec4& _vClearColor);
+	virtual void ClearFrame (const OGVec4& _vClearColor);
 
 	// Create material.
 	virtual IOGMaterial* CreateMaterial ();
@@ -108,11 +108,11 @@ public:
 	virtual void Reset ();
 
     // Unproject screen coords.
-    virtual Vec3 UnprojectCoords (int _X, int _Y);
+    virtual OGVec3 UnprojectCoords (int _X, int _Y);
 
     // Display string.
     virtual void DisplayString (
-		const Vec2& _vPos, 
+		const OGVec2& _vPos, 
 		float _fScale, 
 		unsigned int Colour, 
 		const char * const pszFormat, ...);
@@ -138,10 +138,10 @@ protected:
 	IOGCamera*			m_pCamera;
 	COGTextRenderer*	m_pText;
     COGRenderTarget*    m_pRT;
-	MATRIX				m_mOrthoProj;
-	MATRIX				m_mProjection;
-    MATRIX              m_mTextProj;
-	MATRIX				m_mView;
+	OGMatrix				m_mOrthoProj;
+	OGMatrix				m_mProjection;
+    OGMatrix              m_mTextProj;
+	OGMatrix				m_mView;
 	unsigned int		m_Width; 
 	unsigned int		m_Height;
 	float				m_fZNear;
@@ -150,7 +150,7 @@ protected:
 	bool				m_bLandscapeMode;
 	OGRenderMode		m_Mode;
 
-	MATRIX				m_mWorld;
+	OGMatrix				m_mWorld;
     bool				m_bLightEnabled;
     bool				m_bFogEnabled;
 

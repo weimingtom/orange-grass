@@ -29,9 +29,9 @@ public:
 	// Create actor
 	virtual IOGActor* CreateActor (
 		const std::string& _Alias,
-		const Vec3& _vPos,
-		const Vec3& _vRot,
-        const Vec3& _vScale) = 0;
+		const OGVec3& _vPos,
+		const OGVec3& _vRot,
+        const OGVec3& _vScale) = 0;
 
 	// Add actor to the list.
 	virtual void AddActor (IOGActor* _pActor) = 0;
@@ -53,8 +53,8 @@ public:
 
 	// Get nearest intersected actor.
 	virtual IOGActor* GetNearestIntersectedActor (
-        const Vec3& _RayStart, 
-        const Vec3& _RayDir ) = 0;
+        const OGVec3& _RayStart, 
+        const OGVec3& _RayDir ) = 0;
 };
 
 #endif

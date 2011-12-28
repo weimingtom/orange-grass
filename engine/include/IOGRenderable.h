@@ -42,14 +42,14 @@ enum SubMeshType
 struct IOGActivePoint
 {
     std::string     alias;
-    Vec3		    pos;
+    OGVec3		    pos;
 };
 
 
 struct OGFace
 {
-    Vec3 vertices[3];
-    Vec3 normal;
+    OGVec3 vertices[3];
+    OGVec3 normal;
 };
 
 

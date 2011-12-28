@@ -64,10 +64,10 @@ bool COGMissilePhysicalObject::CheckCollision (IOGPhysicalObject* _pObject)
 // Update directions.
 void COGMissilePhysicalObject::UpdateDirections ()
 {
-	MatrixVec3Multiply(m_vLook, Vec3(0,0,-1), m_mWorld);
+	MatrixVec3Multiply(m_vLook, OGVec3(0,0,-1), m_mWorld);
 	m_vLook.normalize();
-	MatrixVec3Multiply(m_vRight, Vec3(1,0,0), m_mWorld);
+	MatrixVec3Multiply(m_vRight, OGVec3(1,0,0), m_mWorld);
 	m_vRight.normalize();
-	MatrixVec3Multiply(m_vUp, Vec3(0,1,0), m_mWorld);
+	MatrixVec3Multiply(m_vUp, OGVec3(0,1,0), m_mWorld);
 	m_vUp.normalize();
 }

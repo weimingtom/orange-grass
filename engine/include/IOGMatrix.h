@@ -8,7 +8,7 @@
 #ifndef MATRIX_H_
 #define MATRIX_H_
 
-#include "Vector.h"
+#include "IOGVector.h"
 
 #define MAT00 0
 #define MAT01 1
@@ -54,7 +54,7 @@
 **    _13, _23, _33, _43; 
 **    _14, _24, _34, _44; 
 ****************************************************************************/
-class MATRIX
+class OGMatrix
 {
 public:
     /*!***************************************************************************
@@ -77,7 +77,7 @@ public:
  @Output        mOut resulting matrix
  @Description   Reset matrix to identity
  ****************************************************************************/
-void MatrixIdentity(MATRIX &mOut);
+void MatrixIdentity(OGMatrix &mOut);
 
 
 /*!***************************************************************************
@@ -86,7 +86,7 @@ void MatrixIdentity(MATRIX &mOut);
  @Input         mIn matrix
  @Description   Returns the zero-point
  ****************************************************************************/
-void MatrixGetOrg(VECTOR3& vOut, const MATRIX& mIn);
+void MatrixGetOrg(OGVec3& vOut, const OGMatrix& mIn);
 
 
 /*!***************************************************************************
@@ -98,10 +98,10 @@ void MatrixGetOrg(VECTOR3& vOut, const MATRIX& mIn);
  @Description   Returns the basis vectors
  ****************************************************************************/
 void MatrixGetBasis(
-    VECTOR3& vOutX, 
-    VECTOR3& vOutY, 
-    VECTOR3& vOutZ, 
-    const MATRIX& mIn);
+    OGVec3& vOutX, 
+    OGVec3& vOutY, 
+    OGVec3& vOutZ, 
+    const OGMatrix& mIn);
 
 
 /*!***************************************************************************
@@ -111,7 +111,7 @@ void MatrixGetBasis(
  @Input         Matrix B
  @Description   Multiply mA by mB and assign the result to matrix (mA * mB). 
  ****************************************************************************/
-void MatrixMultiply(MATRIX& mOut, const MATRIX& mA, const MATRIX& mB);
+void MatrixMultiply(OGMatrix& mOut, const OGMatrix& mA, const OGMatrix& mB);
 
 
 /*!***************************************************************************
@@ -121,7 +121,7 @@ void MatrixMultiply(MATRIX& mOut, const MATRIX& mA, const MATRIX& mB);
  @Input         Input matrix
  @Description   Multiply vector vIn by matrix. 
  ****************************************************************************/
-void MatrixVec4Multiply(VECTOR4& vOut, const VECTOR4& vIn, const MATRIX& mIn);
+void MatrixVec4Multiply(OGVec4& vOut, const OGVec4& vIn, const OGMatrix& mIn);
 
 
 /*!***************************************************************************
@@ -131,7 +131,7 @@ void MatrixVec4Multiply(VECTOR4& vOut, const VECTOR4& vIn, const MATRIX& mIn);
  @Input         Input matrix
  @Description   Transform point represented using the matrix. 
  ****************************************************************************/
-void MatrixVecMultiply(VECTOR3& vOut, const VECTOR3& vIn, const MATRIX& mIn);
+void MatrixVecMultiply(OGVec3& vOut, const OGVec3& vIn, const OGMatrix& mIn);
 
 
 /*!***************************************************************************
@@ -141,7 +141,7 @@ void MatrixVecMultiply(VECTOR3& vOut, const VECTOR3& vIn, const MATRIX& mIn);
  @Input         Input matrix
  @Description   Transform vector vIn using the matrix. 
  ****************************************************************************/
-void MatrixVec3Multiply(VECTOR3& vOut, const VECTOR3& vIn, const MATRIX& mIn);
+void MatrixVec3Multiply(OGVec3& vOut, const OGVec3& vIn, const OGMatrix& mIn);
 
 
 /*!***************************************************************************
@@ -152,7 +152,7 @@ void MatrixVec3Multiply(VECTOR3& vOut, const VECTOR3& vIn, const MATRIX& mIn);
  @Input         Input vector Z
  @Description   Build a translation matrix mOut using fX, fY and fZ. 
  ****************************************************************************/
-void MatrixTranslation(MATRIX& mOut, float fX, float fY, float fZ);
+void MatrixTranslation(OGMatrix& mOut, float fX, float fY, float fZ);
 	
 
 /*!***************************************************************************
@@ -163,7 +163,7 @@ void MatrixTranslation(MATRIX& mOut, float fX, float fY, float fZ);
  @Input         Input vector Z
  @Description   Build a scale matrix mOut using fX, fY and fZ.
  ****************************************************************************/
-void MatrixScaling(MATRIX& mOut, float fX, float fY, float fZ);
+void MatrixScaling(OGMatrix& mOut, float fX, float fY, float fZ);
 
 
 /*!***************************************************************************
@@ -175,7 +175,7 @@ void MatrixScaling(MATRIX& mOut, float fX, float fY, float fZ);
  @Input         Input vector Z
  @Description   Create an around-axis rotation matrix mOut.
  ****************************************************************************/
-void MatrixRotationAxis(MATRIX& mOut, float fAngle, float fX, float fY, float fZ);
+void MatrixRotationAxis(OGMatrix& mOut, float fAngle, float fX, float fY, float fZ);
 
 
 /*!***************************************************************************
@@ -184,7 +184,7 @@ void MatrixRotationAxis(MATRIX& mOut, float fAngle, float fX, float fY, float fZ
  @Input         Input angle
  @Description   Create an X rotation matrix mOut.
  ****************************************************************************/
-void MatrixRotationX(MATRIX& mOut, float fAngle);
+void MatrixRotationX(OGMatrix& mOut, float fAngle);
 
 
 /*!***************************************************************************
@@ -193,7 +193,7 @@ void MatrixRotationX(MATRIX& mOut, float fAngle);
  @Input         Input angle
  @Description   Create an Y rotation matrix mOut.
  ****************************************************************************/
-void MatrixRotationY(MATRIX& mOut, float fAngle);
+void MatrixRotationY(OGMatrix& mOut, float fAngle);
 
 
 /*!***************************************************************************
@@ -202,7 +202,7 @@ void MatrixRotationY(MATRIX& mOut, float fAngle);
  @Input         Input angle
  @Description   Create an Z rotation matrix mOut.
  ****************************************************************************/
-void MatrixRotationZ(MATRIX& mOut, float fAngle);
+void MatrixRotationZ(OGMatrix& mOut, float fAngle);
 
 
 /*!***************************************************************************
@@ -211,7 +211,7 @@ void MatrixRotationZ(MATRIX& mOut, float fAngle);
  @Input         Input matrix
  @Description   Compute the transpose matrix of mIn.
  ****************************************************************************/
-void MatrixTranspose(MATRIX& mOut, const MATRIX &mIn);
+void MatrixTranspose(OGMatrix& mOut, const OGMatrix &mIn);
 
 
 /*!***************************************************************************
@@ -224,7 +224,7 @@ void MatrixTranspose(MATRIX& mOut, const MATRIX &mIn);
                  C 1
                 Where A is a 3x3 matrix and C is a 1x3 matrix.
  ****************************************************************************/
-void MatrixInverse(MATRIX& mOut, const MATRIX& mIn);
+void MatrixInverse(OGMatrix& mOut, const OGMatrix& mIn);
 
 
 /*!***************************************************************************
@@ -236,7 +236,7 @@ void MatrixInverse(MATRIX& mOut, const MATRIX& mIn);
                 Use this fn to calculate the inverse of matrices that
                 MatrixInverse() cannot.
  ****************************************************************************/
-void MatrixInverseEx(MATRIX& mOut, const MATRIX& mIn);
+void MatrixInverseEx(OGMatrix& mOut, const OGMatrix& mIn);
 
 
 /*!***************************************************************************
@@ -248,10 +248,10 @@ void MatrixInverseEx(MATRIX& mOut, const MATRIX& mIn);
  @Description   Create a left-handed look-at view matrix.
  ****************************************************************************/
 void MatrixLookAtLH(
-	MATRIX& mOut,
-	const VECTOR3& vEye,
-	const VECTOR3& vAt,
-	const VECTOR3& vUp);
+	OGMatrix& mOut,
+	const OGVec3& vEye,
+	const OGVec3& vAt,
+	const OGVec3& vUp);
 
 
 /*!***************************************************************************
@@ -263,10 +263,10 @@ void MatrixLookAtLH(
  @Description   Create a right-handed look-at view matrix.
  ****************************************************************************/
 void MatrixLookAtRH(
-	MATRIX& mOut,
-	const VECTOR3& vEye,
-	const VECTOR3& vAt,
-	const VECTOR3& vUp);
+	OGMatrix& mOut,
+	const OGVec3& vEye,
+	const OGVec3& vAt,
+	const OGVec3& vUp);
 
 
 /*!***************************************************************************
@@ -280,7 +280,7 @@ void MatrixLookAtRH(
  @Description   Create a left-handed perspective projection matrix.
  ****************************************************************************/
 void MatrixPerspectiveFovLH(
-	MATRIX& mOut,
+	OGMatrix& mOut,
 	float fFOVy,
 	float fAspect,
 	float fNear,
@@ -299,7 +299,7 @@ void MatrixPerspectiveFovLH(
  @Description   Create a right-handed perspective projection matrix.
  ****************************************************************************/
 void MatrixPerspectiveFovRH(
-	MATRIX& mOut,
+	OGMatrix& mOut,
 	float fFOVy,
 	float fAspect,
 	float fNear,
@@ -318,7 +318,7 @@ void MatrixPerspectiveFovRH(
  @Description   Create a left-handed orthographic projection matrix.
  ****************************************************************************/
 void MatrixOrthoLH(
-	MATRIX& mOut,
+	OGMatrix& mOut,
 	float w,
 	float h,
 	float zn,
@@ -337,7 +337,7 @@ void MatrixOrthoLH(
  @Description   Create a right-handed orthographic projection matrix.
  ****************************************************************************/
 void MatrixOrthoRH(
-	MATRIX& mOut,
+	OGMatrix& mOut,
 	float w,
 	float h,
 	float zn,

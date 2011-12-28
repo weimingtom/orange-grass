@@ -19,16 +19,16 @@ public:
 	virtual ~COGMesh();
 
 	// Render mesh.
-	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame);
+	virtual void Render (const OGMatrix& _mWorld, unsigned int _Frame);
 
 	// Render solid parts of the mesh.
-	virtual void RenderSolidParts (const MATRIX& _mWorld, unsigned int _Frame);
+	virtual void RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame);
 
 	// Render transparent parts of the mesh.
-	virtual void RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame, float _fSpin);
+	virtual void RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fSpin);
 
 	// Render part of the mesh.
-	virtual void RenderPart (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame);
+	virtual void RenderPart (const OGMatrix& _mWorld, unsigned int _Part, unsigned int _Frame);
 
 	// Check if has submeshes of the following type
 	virtual bool HasSubmeshesOfType(SubMeshType _Type) const;
@@ -43,10 +43,10 @@ public:
 	virtual const IOGAabb& GetPartAABB (unsigned int _Part) const;
 
 	// Get part's transformed OBB after applying animation
-	virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const MATRIX& _mWorld) const;
+	virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld) const;
 
     // Get active point
-    virtual bool GetActivePoint (Vec3& _Point, const std::string& _Alias, unsigned int _Frame);
+    virtual bool GetActivePoint (OGVec3& _Point, const std::string& _Alias, unsigned int _Frame);
 
 protected:
 
@@ -60,7 +60,7 @@ protected:
 
     struct ActPoint
     {
-        Vec3 pos;
+        OGVec3 pos;
         unsigned int part;
     };
 

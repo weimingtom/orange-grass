@@ -29,7 +29,7 @@ END_EVENT_TABLE()
 
 
 bool		m_bIntersectionFound = false;
-Vec3		m_vIntersection;
+OGVec3		m_vIntersection;
 CEditorLevelScene*  g_pScene = NULL;
 
 
@@ -192,7 +192,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
     case WXK_UP:
         if (event.ControlDown())
         {
-			g_pScene->UpdatePickedActorPosition(Vec3(0.0f,0.0f,-1.0f));
+			g_pScene->UpdatePickedActorPosition(OGVec3(0.0f,0.0f,-1.0f));
         }
         else
 			g_pScene->CameraMove(0.0f, -1.0f);
@@ -202,7 +202,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
 	case WXK_DOWN:
         if (event.ControlDown())
         {
-			g_pScene->UpdatePickedActorPosition(Vec3(0.0f,0.0f,1.0f));
+			g_pScene->UpdatePickedActorPosition(OGVec3(0.0f,0.0f,1.0f));
         }
         else
     		g_pScene->CameraMove(0.0f, 1.0f);
@@ -218,7 +218,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
 			}
 			else
 			{
-				g_pScene->UpdatePickedActorPosition(Vec3(-1.0f,0.0f,0.0f));
+				g_pScene->UpdatePickedActorPosition(OGVec3(-1.0f,0.0f,0.0f));
 			}
         }
         else
@@ -235,7 +235,7 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
 			}
 			else
 			{
-				g_pScene->UpdatePickedActorPosition(Vec3(1.0f,0.0f,0.0f));
+				g_pScene->UpdatePickedActorPosition(OGVec3(1.0f,0.0f,0.0f));
 			}
         }
         else
@@ -246,14 +246,14 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
     case WXK_PAGEUP:
 		if (event.ControlDown())
 		{
-			g_pScene->UpdatePickedActorPosition(Vec3(0.0f,1.0f,0.0f));
+			g_pScene->UpdatePickedActorPosition(OGVec3(0.0f,1.0f,0.0f));
 		}
         break;
 
     case WXK_PAGEDOWN:
 		if (event.ControlDown())
 		{
-			g_pScene->UpdatePickedActorPosition(Vec3(0.0f,-1.0f,0.0f));
+			g_pScene->UpdatePickedActorPosition(OGVec3(0.0f,-1.0f,0.0f));
 		}
         break;
 
@@ -268,27 +268,27 @@ void CEditorCanvas::OnKeyDown( wxKeyEvent& event )
         break;
 
     case 'D':
-		g_pScene->UpdateSelectedActorRotation(Vec3(0.0f,1.0f,0.0f), event.ControlDown());
+		g_pScene->UpdateSelectedActorRotation(OGVec3(0.0f,1.0f,0.0f), event.ControlDown());
         break;
 
     case 'A':
-		g_pScene->UpdateSelectedActorRotation(Vec3(0.0f,-1.0f,0.0f), event.ControlDown());
+		g_pScene->UpdateSelectedActorRotation(OGVec3(0.0f,-1.0f,0.0f), event.ControlDown());
         break;
 
     case 'W':
-		g_pScene->UpdateSelectedActorRotation(Vec3(1.0f,0.0f,0.0f), event.ControlDown());
+		g_pScene->UpdateSelectedActorRotation(OGVec3(1.0f,0.0f,0.0f), event.ControlDown());
         break;
 
     case 'S':
-		g_pScene->UpdateSelectedActorRotation(Vec3(-1.0f,0.0f,0.0f), event.ControlDown());
+		g_pScene->UpdateSelectedActorRotation(OGVec3(-1.0f,0.0f,0.0f), event.ControlDown());
         break;
 
     case 'E':
-		g_pScene->UpdateSelectedActorRotation(Vec3(0.0f,0.0f,1.0f), event.ControlDown());
+		g_pScene->UpdateSelectedActorRotation(OGVec3(0.0f,0.0f,1.0f), event.ControlDown());
         break;
 
     case 'Q':
-		g_pScene->UpdateSelectedActorRotation(Vec3(0.0f,0.0f,-1.0f), event.ControlDown());
+		g_pScene->UpdateSelectedActorRotation(OGVec3(0.0f,0.0f,-1.0f), event.ControlDown());
         break;
 
     case 'Z':

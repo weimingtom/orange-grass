@@ -9,7 +9,7 @@
 #ifndef IOGFRUSTUM_H_
 #define IOGFRUSTUM_H_
 
-#include "Mathematics.h"
+#include "IOGMath.h"
 #include "IOGPlane.h"
 #include "IOGObb.h"
 
@@ -36,7 +36,7 @@ public:
 	IOGPlane& GetRightPlane() { return Plane[1]; }	
 		
 	// update viewing frustum.
-	void Update(const MATRIX& comboMatrix)
+	void Update(const OGMatrix& comboMatrix)
 	{
 		Plane[0].Set(comboMatrix.f[ 3] - comboMatrix.f[ 0], comboMatrix.f[ 7] - comboMatrix.f[ 4], comboMatrix.f[11] - comboMatrix.f[ 8], comboMatrix.f[15] - comboMatrix.f[12]);
 		Plane[1].Set(comboMatrix.f[ 3] + comboMatrix.f[ 0], comboMatrix.f[ 7] + comboMatrix.f[ 4], comboMatrix.f[11] + comboMatrix.f[ 8], comboMatrix.f[15] + comboMatrix.f[12]);
@@ -54,7 +54,7 @@ public:
 	}
 
 	// Check if point inside frustum.
-	bool CheckPoint ( const VECTOR3& _vPoint ) const
+	bool CheckPoint ( const OGVec3& _vPoint ) const
 	{
 		// Make sure point is in frustum
 		for ( int i = 0; i < 6; ++i ) 
@@ -76,21 +76,21 @@ public:
 		// Make sure at least one point is completely in frustum
 		for ( int i = 0; i < 6; ++i ) 
 		{
-			if ( Plane[i].DistanceToPlane(Vec3( _Aabb.GetMin ().x, _Aabb.GetMin ().y, _Aabb.GetMin ().z ) ) >= 0.0f )
+			if ( Plane[i].DistanceToPlane(OGVec3( _Aabb.GetMin ().x, _Aabb.GetMin ().y, _Aabb.GetMin ().z ) ) >= 0.0f )
 				continue;
-			if ( Plane[i].DistanceToPlane(Vec3( _Aabb.GetMin ().x, _Aabb.GetMin ().y + ySize, _Aabb.GetMin().z ) ) >= 0.0f )
+			if ( Plane[i].DistanceToPlane(OGVec3( _Aabb.GetMin ().x, _Aabb.GetMin ().y + ySize, _Aabb.GetMin().z ) ) >= 0.0f )
 				continue;
-			if ( Plane[i].DistanceToPlane(Vec3( _Aabb.GetMin ().x, _Aabb.GetMin ().y, _Aabb.GetMin().z + zSize) ) >= 0.0f )
+			if ( Plane[i].DistanceToPlane(OGVec3( _Aabb.GetMin ().x, _Aabb.GetMin ().y, _Aabb.GetMin().z + zSize) ) >= 0.0f )
 				continue;
-			if ( Plane[i].DistanceToPlane(Vec3( _Aabb.GetMin ().x, _Aabb.GetMin ().y + ySize, _Aabb.GetMin().z + zSize ) ) >= 0.0f )
+			if ( Plane[i].DistanceToPlane(OGVec3( _Aabb.GetMin ().x, _Aabb.GetMin ().y + ySize, _Aabb.GetMin().z + zSize ) ) >= 0.0f )
 				continue;
-			if ( Plane[i].DistanceToPlane(Vec3( _Aabb.GetMin ().x + xSize, _Aabb.GetMin ().y, _Aabb.GetMin().z ) ) >= 0.0f )
+			if ( Plane[i].DistanceToPlane(OGVec3( _Aabb.GetMin ().x + xSize, _Aabb.GetMin ().y, _Aabb.GetMin().z ) ) >= 0.0f )
 				continue;
-			if ( Plane[i].DistanceToPlane(Vec3( _Aabb.GetMin ().x + xSize, _Aabb.GetMin ().y+ySize, _Aabb.GetMin().z ) ) >= 0.0f )
+			if ( Plane[i].DistanceToPlane(OGVec3( _Aabb.GetMin ().x + xSize, _Aabb.GetMin ().y+ySize, _Aabb.GetMin().z ) ) >= 0.0f )
 				continue;
-			if ( Plane[i].DistanceToPlane(Vec3( _Aabb.GetMin ().x + xSize, _Aabb.GetMin ().y, _Aabb.GetMin().z + zSize ) ) >= 0.0f )
+			if ( Plane[i].DistanceToPlane(OGVec3( _Aabb.GetMin ().x + xSize, _Aabb.GetMin ().y, _Aabb.GetMin().z + zSize ) ) >= 0.0f )
 				continue;
-			if ( Plane[i].DistanceToPlane(Vec3( _Aabb.GetMax ().x, _Aabb.GetMax ().y, _Aabb.GetMax ().z ) ) >= 0.0f )
+			if ( Plane[i].DistanceToPlane(OGVec3( _Aabb.GetMax ().x, _Aabb.GetMax ().y, _Aabb.GetMax ().z ) ) >= 0.0f )
 				continue;
 
 			return false;
@@ -102,17 +102,17 @@ public:
 	// Check if OBB inside frustum.
 	bool CheckObb ( const IOGObb& _Obb ) const
 	{
-		Vec3 vMin = _Obb.m_vMin;
-		Vec3 vMax = _Obb.m_vMax;
+		OGVec3 vMin = _Obb.m_vMin;
+		OGVec3 vMax = _Obb.m_vMax;
 
-		Vec3 vA = _Obb.VectorConvertToWorld ( Vec3 ( vMin.x, vMin.y, vMin.z) );
-		Vec3 vB = _Obb.VectorConvertToWorld ( Vec3 ( vMin.x, vMin.y, vMax.z) );
-		Vec3 vC = _Obb.VectorConvertToWorld ( Vec3 ( vMax.x, vMin.y, vMax.z) );
-		Vec3 vD = _Obb.VectorConvertToWorld ( Vec3 ( vMax.x, vMin.y, vMin.z) );
-		Vec3 vE = _Obb.VectorConvertToWorld ( Vec3 ( vMin.x, vMax.y, vMin.z) );
-		Vec3 vF = _Obb.VectorConvertToWorld ( Vec3 ( vMin.x, vMax.y, vMax.z) );
-		Vec3 vG = _Obb.VectorConvertToWorld ( Vec3 ( vMax.x, vMax.y, vMax.z) );
-		Vec3 vH = _Obb.VectorConvertToWorld ( Vec3 ( vMax.x, vMax.y, vMin.z) );
+		OGVec3 vA = _Obb.VectorConvertToWorld ( OGVec3 ( vMin.x, vMin.y, vMin.z) );
+		OGVec3 vB = _Obb.VectorConvertToWorld ( OGVec3 ( vMin.x, vMin.y, vMax.z) );
+		OGVec3 vC = _Obb.VectorConvertToWorld ( OGVec3 ( vMax.x, vMin.y, vMax.z) );
+		OGVec3 vD = _Obb.VectorConvertToWorld ( OGVec3 ( vMax.x, vMin.y, vMin.z) );
+		OGVec3 vE = _Obb.VectorConvertToWorld ( OGVec3 ( vMin.x, vMax.y, vMin.z) );
+		OGVec3 vF = _Obb.VectorConvertToWorld ( OGVec3 ( vMin.x, vMax.y, vMax.z) );
+		OGVec3 vG = _Obb.VectorConvertToWorld ( OGVec3 ( vMax.x, vMax.y, vMax.z) );
+		OGVec3 vH = _Obb.VectorConvertToWorld ( OGVec3 ( vMax.x, vMax.y, vMin.z) );
 	
 		// Make sure at least one point is completely in frustum
 		for ( int i = 0; i < 6; ++i ) 

@@ -59,9 +59,9 @@ void COGActorManager::Clear ()
 // Create actor
 IOGActor* COGActorManager::CreateActor (
 	const std::string& _Alias,
-	const Vec3& _vPos,
-	const Vec3& _vRot,
-    const Vec3& _vScale)
+	const OGVec3& _vPos,
+	const OGVec3& _vRot,
+    const OGVec3& _vScale)
 {
 	IOGActorParams* pParams = GetActorParamsMgr()->GetParams(_Alias);
 	if (!pParams)
@@ -292,8 +292,8 @@ void COGActorManager::UpdateEditor (unsigned long _ElapsedTime)
 
 // Get nearest intersected actor.
 IOGActor* COGActorManager::GetNearestIntersectedActor (
-    const Vec3& _RayStart, 
-    const Vec3& _RayDir )
+    const OGVec3& _RayStart, 
+    const OGVec3& _RayDir )
 {
     TActorsList IntersectedList;
     TActorsList::iterator iter = m_ActorsList.begin();

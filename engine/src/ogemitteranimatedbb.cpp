@@ -21,7 +21,7 @@ COGEmitterAnimatedBB::COGEmitterAnimatedBB()
 	m_MappingFinishId = 7;
 	m_fInitialAngleMin = -3.14f;
 	m_fInitialAngleMax = 3.14f;
-	m_color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_color = OGVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_fFrameInc = 0.5f;
 	m_fInitialScale = 8.0f;
 	m_fScaleInc = 0.6f;
@@ -59,7 +59,7 @@ void COGEmitterAnimatedBB::Init(IOGGroupNode* _pNode)
         m_Frames.push_back(m_pTexture->GetMapping(i));
     }
 
-	m_BB.offset = Vec3(0,0,0);
+	m_BB.offset = OGVec3(0,0,0);
 	m_BB.pVertices[0].c = m_color;
 	m_BB.pVertices[1].c = m_color;
 	m_BB.pVertices[2].c = m_color;
@@ -90,21 +90,21 @@ void COGEmitterAnimatedBB::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGEmitterAnimatedBB::Render (const MATRIX& _mWorld, const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight)
+void COGEmitterAnimatedBB::Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-    MATRIX mId; 
+    OGMatrix mId; 
     MatrixIdentity(mId);
     m_pRenderer->SetModelMatrix(mId);
 	m_pRenderer->SetBlend(m_Blend);
 	m_pRenderer->SetTexture(m_pTexture);
 
-	Vec3 vSUp = _vUp * m_BB.scale;
-	Vec3 vSRight = _vRight * m_BB.scale;
+	OGVec3 vSUp = _vUp * m_BB.scale;
+	OGVec3 vSRight = _vRight * m_BB.scale;
 
-    MATRIX mR;
+    OGMatrix mR;
 	MatrixRotationAxis(mR, m_BB.angle, _vLook.x, _vLook.y, _vLook.z);
 
 	MatrixVecMultiply(m_BB.pVertices[0].p, vSRight + vSUp, mR);
@@ -112,17 +112,17 @@ void COGEmitterAnimatedBB::Render (const MATRIX& _mWorld, const Vec3& _vLook, co
 	MatrixVecMultiply(m_BB.pVertices[2].p, vSRight - vSUp, mR);
 	MatrixVecMultiply(m_BB.pVertices[3].p, -vSRight - vSUp, mR);
 
-    Vec3 vOffset = Vec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
+    OGVec3 vOffset = OGVec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
 	m_BB.pVertices[0].p += m_BB.offset + vOffset;
 	m_BB.pVertices[1].p += m_BB.offset + vOffset;
 	m_BB.pVertices[2].p += m_BB.offset + vOffset;
 	m_BB.pVertices[3].p += m_BB.offset + vOffset;
 
 	IOGMapping* pMapping = m_Frames[(unsigned int)m_BB.frame];
-	m_BB.pVertices[0].t = Vec2(pMapping->t1.x, pMapping->t0.y);
-	m_BB.pVertices[1].t = Vec2(pMapping->t0.x, pMapping->t0.y);
-	m_BB.pVertices[2].t = Vec2(pMapping->t1.x, pMapping->t1.y);
-	m_BB.pVertices[3].t = Vec2(pMapping->t0.x, pMapping->t1.y);
+	m_BB.pVertices[0].t = OGVec2(pMapping->t1.x, pMapping->t0.y);
+	m_BB.pVertices[1].t = OGVec2(pMapping->t0.x, pMapping->t0.y);
+	m_BB.pVertices[2].t = OGVec2(pMapping->t1.x, pMapping->t1.y);
+	m_BB.pVertices[3].t = OGVec2(pMapping->t0.x, pMapping->t1.y);
 
 	m_pRenderer->DrawEffectBuffer(&m_BB.pVertices[0], 0, 4);
 }

@@ -7,16 +7,17 @@
  *
  */
 #include "OpenGL2.h"
+#include "pvr/PVRTC.h"
 #include "ogtexture.h"
 
 
 COGTexture::COGTexture () : m_TextureId (0)
 {
 	IOGMapping* pNewMapping = new IOGMapping;
-	pNewMapping->upper_left = Vec2(0.0f, 0.0f);
-	pNewMapping->size = Vec2(0.0f, 0.0f);
-	pNewMapping->t0 = Vec2(0.0f, 0.0f);
-	pNewMapping->t1 = Vec2(1.0f, 1.0f);
+	pNewMapping->upper_left = OGVec2(0.0f, 0.0f);
+	pNewMapping->size = OGVec2(0.0f, 0.0f);
+	pNewMapping->t0 = OGVec2(0.0f, 0.0f);
+	pNewMapping->t1 = OGVec2(1.0f, 1.0f);
 	m_MappingsList.push_back(pNewMapping);
 
 	m_Width = 0;
@@ -65,16 +66,16 @@ bool COGTexture::Load ()
 
 	m_Width = header.dwWidth;
 	m_Height = header.dwHeight;
-	m_MappingsList[0]->size = Vec2((float)m_Width, (float)m_Height);
+	m_MappingsList[0]->size = OGVec2((float)m_Width, (float)m_Height);
 
 	std::vector<IOGMapping*>::iterator iter = m_MappingsList.begin();
 	for (; iter != m_MappingsList.end(); ++iter)
 	{
         IOGMapping* pMap = (*iter);
-		pMap->t0 = Vec2(
+		pMap->t0 = OGVec2(
 			pMap->upper_left.x / m_Width, 
 			(m_Height - pMap->upper_left.y - pMap->size.y) / m_Height);
-		pMap->t1 = Vec2(
+		pMap->t1 = OGVec2(
 			(pMap->upper_left.x + pMap->size.x) / m_Width, 
 			(m_Height - pMap->upper_left.y) / m_Height);
 	}

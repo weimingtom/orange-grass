@@ -1,27 +1,27 @@
-#ifndef RESOURCEFILE_H_
-#define RESOURCEFILE_H_
+#ifndef OGRESOURCEFILE_H_
+#define OGRESOURCEFILE_H_
 
 #include <stdlib.h>
 
 
 /*!***************************************************************************
- @Class CResourceFile
- @Brief Simple resource file wrapper
+ @Class COGResourceFile
+ @Brief Resource file wrapper
 *****************************************************************************/
-class CResourceFile
+class COGResourceFile
 {
 public:
 	/*!***************************************************************************
-	@Function			CResourceFile
+	@Function			COGResourceFile
 	@Description		Constructor
 	*****************************************************************************/
-	CResourceFile();
+	COGResourceFile();
 
 	/*!***************************************************************************
-	@Function			~CResourceFile
+	@Function			~COGResourceFile
 	@Description		Destructor
 	*****************************************************************************/
-	virtual ~CResourceFile();
+	virtual ~COGResourceFile();
 
     /*!***************************************************************************
 	@Function			Open
@@ -121,6 +121,15 @@ protected:
 	size_t m_BytesReadCount;
 	const char* m_pData;
 };
+
+
+/*!***************************************************************************
+ @Function			GetResourcePathASCII
+ @Output            _pOutPath output path string
+ @Input				_PathLength max. path length
+ @Description		Returns the full path to resources
+ ****************************************************************************/
+void GetResourcePathASCII(char* _pOutPath, int _PathLength);
 
 
 #endif

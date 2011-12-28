@@ -27,13 +27,13 @@ public:
 	virtual void Update (unsigned long _ElapsedTime);
 
 	// Set start and finish positions.
-	virtual void SetStartFinishPositions (const Vec3& _vStartPos, const Vec3& _vFinishPos);
+	virtual void SetStartFinishPositions (const OGVec3& _vStartPos, const OGVec3& _vFinishPos);
 
 	// Set direction.
-    virtual void SetDirection (const Vec3& _vDir) {}
+    virtual void SetDirection (const OGVec3& _vDir) {}
 
 	// Render.
-	virtual void Render (const MATRIX& _mWorld, const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight);
+	virtual void Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight);
 
 	// Start.
 	virtual void Start ();
@@ -73,8 +73,8 @@ protected:
     std::vector<IOGMapping*>    m_Frames;
     std::list<ParticleFormat>	m_BBList;
 
-    Vec3                        m_vStartPos;
-    Vec3                        m_vFinishPos;
+    OGVec3                        m_vStartPos;
+    OGVec3                        m_vFinishPos;
     bool                        m_bPosReady;
     float                       m_fRayLength;
 
@@ -84,7 +84,7 @@ protected:
     float           m_fSegment;
     float           m_fScale;
     float           m_fSpeed;
-	Vec4			m_color;
+	OGVec4			m_color;
 
 public:
 

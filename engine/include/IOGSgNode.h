@@ -9,7 +9,7 @@
 #ifndef IOGSGNODE_H_
 #define IOGSGNODE_H_
 
-#include "Mathematics.h"
+#include "IOGMath.h"
 #include "IOGPhysicalObject.h"
 #include "IOGRenderable.h"
 
@@ -27,7 +27,7 @@ public:
 	virtual void Render () = 0;
 
 	// get world transform.
-	virtual const MATRIX& GetWorldTransform () const = 0;
+	virtual const OGMatrix& GetWorldTransform () const = 0;
 
 	// Get OBB
 	virtual const IOGObb& GetOBB () const = 0;
@@ -45,7 +45,7 @@ public:
     virtual void StartAnimation (const std::string& _Alias) = 0;
 
 	// Get active point
-    virtual bool GetActivePoint (Vec3& _point, const std::string& _Alias) = 0;
+    virtual bool GetActivePoint (OGVec3& _point, const std::string& _Alias) = 0;
 
 	// Get active state
 	virtual bool IsActive () const = 0;

@@ -67,7 +67,7 @@ void COGBaseMesh::Unload ()
 
 	OG_SAFE_DELETE(m_pScene);
     m_Faces.clear();
-    m_AABB.SetMinMax(Vec3(0,0,0), Vec3(0,0,0));
+    m_AABB.SetMinMax(OGVec3(0,0,0), OGVec3(0,0,0));
 
     std::vector<SubMesh>::iterator iter = m_SubMeshes.begin();
     for (; iter != m_SubMeshes.end(); ++iter)
@@ -87,8 +87,8 @@ void COGBaseMesh::Unload ()
 // calculate geometry
 void COGBaseMesh::CalculateGeometry ()
 {
-	MATRIX mModel;
-    Vec3 v, vMinCorner, vMaxCorner;
+	OGMatrix mModel;
+    OGVec3 v, vMinCorner, vMaxCorner;
 
     m_Faces.reserve(4096);
     unsigned int Part = 0;
@@ -103,7 +103,7 @@ void COGBaseMesh::CalculateGeometry ()
 
         SPODMesh& Mesh = m_pScene->pMesh[pNode->nIdx];
 
-        Vec3* pPtr = (Vec3*)Mesh.pInterleaved;
+        OGVec3* pPtr = (OGVec3*)Mesh.pInterleaved;
 		
 		vMinCorner.x = vMaxCorner.x = pPtr->x; 
 		vMinCorner.y = vMaxCorner.y = pPtr->y; 
@@ -120,9 +120,9 @@ void COGBaseMesh::CalculateGeometry ()
                 for (int k = 0; k < 3; ++k)
                 {
                     unsigned short ind = *(((unsigned short*)Mesh.sFaces.pData) + n + k);
-                    face.vertices[k] = *((Vec3*)((unsigned char*)(pPtr)+Mesh.sVertex.nStride * ind));
+                    face.vertices[k] = *((OGVec3*)((unsigned char*)(pPtr)+Mesh.sVertex.nStride * ind));
 
-                    Vec3& v_out = face.vertices[k];
+                    OGVec3& v_out = face.vertices[k];
                     MatrixVecMultiply(v_out, face.vertices[k], mModel);
 
 			        if (v_out.x < vMinCorner.x) vMinCorner.x = v_out.x;
@@ -157,16 +157,16 @@ void COGBaseMesh::GetAllAABBs (std::vector<IOGAabb*>& _aabbs)
 
 
 // Get ray intersection
-bool COGBaseMesh::GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos)
+bool COGBaseMesh::GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos)
 {
 	float t, u, v;
 	bool bIntersected = false;
     unsigned int numFaces = m_Faces.size();
 	for (unsigned int i = 0; i < numFaces; ++i)
 	{
-        Vec3 p0 = m_Faces[i].vertices[0];
-        Vec3 p1 = m_Faces[i].vertices[1];
-        Vec3 p2 = m_Faces[i].vertices[2];
+        OGVec3 p0 = m_Faces[i].vertices[0];
+        OGVec3 p1 = m_Faces[i].vertices[1];
+        OGVec3 p2 = m_Faces[i].vertices[2];
 		bIntersected = CheckTriangleIntersection (_vRayPos, _vRayDir, p0, p1, p2, &t, &u, &v );
 		if (bIntersected)
 		{
@@ -198,8 +198,8 @@ SubMeshType COGBaseMesh::GetSubMeshType (unsigned int _Id)
 // convert mesh to an internal format
 void COGBaseMesh::ConvertMesh ()
 {
-	MATRIX mModel;
-    Vec3 v, vMinCorner, vMaxCorner;
+	OGMatrix mModel;
+    OGVec3 v, vMinCorner, vMaxCorner;
 
     m_Faces.reserve(4096);
     unsigned int Part = 0;
@@ -214,7 +214,7 @@ void COGBaseMesh::ConvertMesh ()
 
         SPODMesh& Mesh = m_pScene->pMesh[pNode->nIdx];
 
-        Vec3* pPtr = (Vec3*)Mesh.pInterleaved;
+        OGVec3* pPtr = (OGVec3*)Mesh.pInterleaved;
 		
 		vMinCorner.x = vMaxCorner.x = pPtr->x; 
 		vMinCorner.y = vMaxCorner.y = pPtr->y; 
@@ -231,9 +231,9 @@ void COGBaseMesh::ConvertMesh ()
                 for (int k = 0; k < 3; ++k)
                 {
                     unsigned short ind = *(((unsigned short*)Mesh.sFaces.pData) + n + k);
-                    face.vertices[k] = *((Vec3*)((unsigned char*)(pPtr)+Mesh.sVertex.nStride * ind));
+                    face.vertices[k] = *((OGVec3*)((unsigned char*)(pPtr)+Mesh.sVertex.nStride * ind));
 
-                    Vec3& v_out = face.vertices[k];
+                    OGVec3& v_out = face.vertices[k];
                     MatrixVecMultiply(v_out, face.vertices[k], mModel);
 
 			        if (v_out.x < vMinCorner.x) vMinCorner.x = v_out.x;

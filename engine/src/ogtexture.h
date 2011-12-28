@@ -10,8 +10,6 @@
 #define OGTEXTURE_H_
 
 #include "IOGTexture.h"
-#include "GraphicsDevice.h"
-#include "Geometry.h"
 #include "ogresource.h"
 #include <vector>
 

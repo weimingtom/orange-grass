@@ -21,7 +21,7 @@ COGSprite::COGSprite() :	m_pTexture(NULL),
 	m_pRenderer = GetRenderer();
 	m_HalfScrWidth = GetGlobalVars()->GetIVar("view_width") / 2;
 	m_HalfScrHeight = GetGlobalVars()->GetIVar("view_height") / 2;
-	m_Color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_Color = OGVec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 
@@ -90,24 +90,24 @@ void COGSprite::Unload ()
 
 
 // Render sprite.
-void COGSprite::Render (const Vec2& _vPos, const Vec2& _vSize)
+void COGSprite::Render (const OGVec2& _vPos, const OGVec2& _vSize)
 {
 	float fLeft = -m_HalfScrWidth+_vPos.x;
 	float fRight = -m_HalfScrWidth+_vSize.x+_vPos.x;
 	float fTop = m_HalfScrHeight-_vSize.y-_vPos.y;
 	float fBottom = m_HalfScrHeight-_vPos.y;
 
-	m_Vertices[0].p	= Vec2(fRight, fTop);	
-	m_Vertices[0].t = Vec2(m_pMapping->t1.x, m_pMapping->t0.y); 
+	m_Vertices[0].p	= OGVec2(fRight, fTop);	
+	m_Vertices[0].t = OGVec2(m_pMapping->t1.x, m_pMapping->t0.y); 
 	m_Vertices[0].c = m_Color;
-	m_Vertices[1].p	= Vec2(fLeft, fTop);	
-	m_Vertices[1].t = Vec2(m_pMapping->t0.x, m_pMapping->t0.y); 
+	m_Vertices[1].p	= OGVec2(fLeft, fTop);	
+	m_Vertices[1].t = OGVec2(m_pMapping->t0.x, m_pMapping->t0.y); 
 	m_Vertices[1].c = m_Color;
-	m_Vertices[2].p	= Vec2(fRight, fBottom);	
-	m_Vertices[2].t = Vec2(m_pMapping->t1.x, m_pMapping->t1.y); 
+	m_Vertices[2].p	= OGVec2(fRight, fBottom);	
+	m_Vertices[2].t = OGVec2(m_pMapping->t1.x, m_pMapping->t1.y); 
 	m_Vertices[2].c = m_Color;
-	m_Vertices[3].p	= Vec2(fLeft, fBottom);	
-	m_Vertices[3].t = Vec2(m_pMapping->t0.x, m_pMapping->t1.y); 
+	m_Vertices[3].p	= OGVec2(fLeft, fBottom);	
+	m_Vertices[3].t = OGVec2(m_pMapping->t0.x, m_pMapping->t1.y); 
 	m_Vertices[3].c = m_Color;
 
 	m_pRenderer->SetTexture(m_pTexture);

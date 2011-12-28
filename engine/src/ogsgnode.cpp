@@ -52,7 +52,7 @@ COGSgNode::~COGSgNode ()
 
 
 // get world transform.
-const MATRIX& COGSgNode::GetWorldTransform () const
+const OGMatrix& COGSgNode::GetWorldTransform () const
 {
     return m_pPhysics->GetWorldTransform();
 }
@@ -78,7 +78,7 @@ void COGSgNode::Update (unsigned long _ElapsedTime)
         m_pAnimator->UpdateAnimation(_ElapsedTime);
         m_AnimFrame = (unsigned int)m_pAnimator->GetCurrentAnimationProgress();
 	
-		const MATRIX& mWorld = m_pPhysics->GetWorldTransform();
+		const OGMatrix& mWorld = m_pPhysics->GetWorldTransform();
 		unsigned int NumOBBs = m_TransformedOBBs.size();
 		for (unsigned int i = 0; i < NumOBBs; ++i)
 		{
@@ -94,7 +94,7 @@ void COGSgNode::Render ()
 	if (!m_bActive)
 		return;
 
-    const MATRIX& mWorld = m_pPhysics->GetWorldTransform();
+    const OGMatrix& mWorld = m_pPhysics->GetWorldTransform();
     m_pRenderable->Render(mWorld, m_AnimFrame);
 }
 
@@ -105,7 +105,7 @@ void COGSgNode::RenderTransparent ()
 	if (!m_bActive)
 		return;
 
-    const MATRIX& mWorld = m_pPhysics->GetWorldTransform();
+    const OGMatrix& mWorld = m_pPhysics->GetWorldTransform();
     m_pRenderable->RenderTransparentParts(mWorld, m_AnimFrame, m_fSpin);
 }
 
@@ -118,7 +118,7 @@ IOGPhysicalObject* COGSgNode::GetPhysics ()
 
 
 // Get active point
-bool COGSgNode::GetActivePoint (Vec3& _point, const std::string& _Alias)
+bool COGSgNode::GetActivePoint (OGVec3& _point, const std::string& _Alias)
 {
     IOGActivePoint pt;
     if (!m_pRenderable->GetActivePoint(pt, _Alias, m_AnimFrame))

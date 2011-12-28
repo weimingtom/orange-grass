@@ -22,13 +22,13 @@ public:
 	virtual bool SaveParams () = 0;
 
 	// Render terrain.
-	virtual void Render (const MATRIX& _mWorld) = 0;
+	virtual void Render (const OGMatrix& _mWorld) = 0;
 
 	// Render all.
-	virtual void RenderAll (const MATRIX& _mWorld) = 0;
+	virtual void RenderAll (const OGMatrix& _mWorld) = 0;
 
     // Get ray intersection
-    virtual bool GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos) = 0;
+    virtual bool GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos) = 0;
 
     // Get mesh geometry
     virtual const std::vector<OGFace>& GetGeometry () const = 0;

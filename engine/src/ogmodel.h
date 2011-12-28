@@ -30,13 +30,13 @@ public:
 	virtual void Unload ();
 
 	// Render mesh.
-	virtual void Render (const MATRIX& _mWorld, unsigned int _Frame);
+	virtual void Render (const OGMatrix& _mWorld, unsigned int _Frame);
 
 	// Render solid parts of the mesh.
-	virtual void RenderSolidParts (const MATRIX& _mWorld, unsigned int _Frame);
+	virtual void RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame);
 
 	// Render transparent parts of the mesh.
-	virtual void RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame, float _fSpin);
+	virtual void RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fSpin);
 
 	// Check if has submeshes of the following type
 	virtual bool HasSubmeshesOfType(SubMeshType _Type) const;
@@ -51,7 +51,7 @@ public:
 	virtual const IOGAabb& GetAABB () const;
 
 	// Get part's transformed OBB after applying animation
-	virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const MATRIX& _mWorld) const;
+	virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld) const;
 
 	// Get model alias
 	virtual const std::string& GetAlias () const;
@@ -87,9 +87,9 @@ private:
 		std::string mesh_file;
 		std::string texture_alias;
 		OGBlendType blend_type;
-        Vec4 material_ambient;
-        Vec4 material_diffuse;
-        Vec4 material_specular;
+        OGVec4 material_ambient;
+        OGVec4 material_diffuse;
+        OGVec4 material_specular;
 		std::list<Anim> anim_list;
 	};
 

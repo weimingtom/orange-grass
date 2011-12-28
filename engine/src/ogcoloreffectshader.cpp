@@ -9,7 +9,7 @@
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogcoloreffectshader.h"
-#include "GraphicsDevice.h"
+#include "ogshader.h"
 
 
 COGColorEffectShader::COGColorEffectShader ()
@@ -68,21 +68,21 @@ void COGColorEffectShader::Setup ()
 
 
 // set model matrix
-void COGColorEffectShader::SetModelMatrix (const MATRIX& _mModel)
+void COGColorEffectShader::SetModelMatrix (const OGMatrix& _mModel)
 {
     m_mModel = _mModel;
 }
 
 
 // set view matrix
-void COGColorEffectShader::SetViewMatrix (const MATRIX& _mView)
+void COGColorEffectShader::SetViewMatrix (const OGMatrix& _mView)
 {
     m_mView = _mView;
 }
 
 
 // set projection matrix
-void COGColorEffectShader::SetProjectionMatrix (const MATRIX& _mProj)
+void COGColorEffectShader::SetProjectionMatrix (const OGMatrix& _mProj)
 {
     m_mProjection = _mProj;
 }

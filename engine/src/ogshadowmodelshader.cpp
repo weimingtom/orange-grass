@@ -9,7 +9,7 @@
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogshadowmodelshader.h"
-#include "GraphicsDevice.h"
+#include "ogshader.h"
 
 
 COGShadowModelShader::COGShadowModelShader ()
@@ -66,21 +66,21 @@ void COGShadowModelShader::Setup ()
 
 
 // set model matrix
-void COGShadowModelShader::SetModelMatrix (const MATRIX& _mModel)
+void COGShadowModelShader::SetModelMatrix (const OGMatrix& _mModel)
 {
     m_mModel = _mModel;
 }
 
 
 // set view matrix
-void COGShadowModelShader::SetViewMatrix (const MATRIX& _mView)
+void COGShadowModelShader::SetViewMatrix (const OGMatrix& _mView)
 {
     m_mView = _mView;
 }
 
 
 // set projection matrix
-void COGShadowModelShader::SetProjectionMatrix (const MATRIX& _mProj)
+void COGShadowModelShader::SetProjectionMatrix (const OGMatrix& _mProj)
 {
     m_mProjection = _mProj;
 }

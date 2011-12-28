@@ -76,7 +76,7 @@ void COGGuiLifebar::Render ()
         {
             fBarHeight = 14.0f;
         }
-        m_pBar->Render(m_Position + Vec2(m_BarPos.x + i * (m_BarSize.x + 1), m_BarPos.y), Vec2(m_BarSize.x, fBarHeight));
+        m_pBar->Render(m_Position + OGVec2(m_BarPos.x + i * (m_BarSize.x + 1), m_BarPos.y), OGVec2(m_BarSize.x, fBarHeight));
     }
 
     m_pFrame->Render(m_Position, m_Size);

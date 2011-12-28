@@ -11,8 +11,12 @@
 
 #include <math.h>
 #include <stdlib.h>
-#include "Mathematics.h"
 #include "IOGCoreHelpers.h"
+
+#include "IOGVector.h"
+#include "IOGMatrix.h"
+#include "IOGQuaternion.h"
+
 
 // floating point macros
 #define FP_BITS(fp)			(*(unsigned long*)&(fp))
@@ -35,7 +39,7 @@ inline float Dist ( int _x1, int _y1, int _x2, int _y2 )
 
 
 // Get distance between two points (2D)
-inline float Dist2D ( const Vec3& _p1, const Vec3& _p2 )
+inline float Dist2D ( const OGVec3& _p1, const OGVec3& _p2 )
 {
 	float xdiff = _p1.x - _p2.x;
 	float zdiff = _p1.z - _p2.z;
@@ -44,7 +48,7 @@ inline float Dist2D ( const Vec3& _p1, const Vec3& _p2 )
 
 
 // Get square distance between two points (2D)
-inline float Dist2DSq ( const Vec3& _p1, const Vec3& _p2 )
+inline float Dist2DSq ( const OGVec3& _p1, const OGVec3& _p2 )
 {
 	float xdiff = _p1.x - _p2.x;
 	float zdiff = _p1.z - _p2.z;
@@ -53,7 +57,7 @@ inline float Dist2DSq ( const Vec3& _p1, const Vec3& _p2 )
 
 
 // Get distance between two points
-inline float Dist3D ( const Vec3& _p1, const Vec3& _p2 )
+inline float Dist3D ( const OGVec3& _p1, const OGVec3& _p2 )
 {
 	float xdiff = _p1.x - _p2.x;
 	float ydiff = _p1.y - _p2.y;
@@ -63,7 +67,7 @@ inline float Dist3D ( const Vec3& _p1, const Vec3& _p2 )
 
 
 // Get square distance between two points
-inline float Dist3DSq ( const Vec3& _p1, const Vec3& _p2 )
+inline float Dist3DSq ( const OGVec3& _p1, const OGVec3& _p2 )
 {
 	float xdiff = _p1.x - _p2.x;
 	float ydiff = _p1.y - _p2.y;
@@ -73,12 +77,12 @@ inline float Dist3DSq ( const Vec3& _p1, const Vec3& _p2 )
 
 
 // Check ray intersection with the triangle
-inline bool CheckTriangleIntersection (	const Vec3& _orig, const Vec3& _dir, 
-										const Vec3& _p0, const Vec3& _p1, const Vec3& _p2,
+inline bool CheckTriangleIntersection (	const OGVec3& _orig, const OGVec3& _dir, 
+										const OGVec3& _p0, const OGVec3& _p1, const OGVec3& _p2,
 										float* _fT, float* _fU, float* _fV)
 {
 	static const float CTI_Epsilon = 0.0001f;
-	Vec3 edge1, edge2, tvec, pvec, qvec;
+	OGVec3 edge1, edge2, tvec, pvec, qvec;
 	float det, inv_det;
 
 	edge1 = _p1 - _p0;
@@ -109,21 +113,21 @@ inline bool CheckTriangleIntersection (	const Vec3& _orig, const Vec3& _dir,
 
 
 // Converting barycentric coords. to world coords.
-inline Vec3 Barycentric2World (float _fU, float _fV,
-							   const Vec3& _p0, const Vec3& _p1, const Vec3& _p2)
+inline OGVec3 Barycentric2World (float _fU, float _fV,
+							   const OGVec3& _p0, const OGVec3& _p1, const OGVec3& _p2)
 {
 	float w = 1.0f - ( _fU + _fV);
 	float x = w * _p0.x + _fU * _p1.x + _fV * _p2.x;
 	float y = w * _p0.y + _fU * _p1.y + _fV * _p2.y;
 	float z = w * _p0.z + _fU * _p1.z + _fV * _p2.z;
-	return Vec3(x, y, z);
+	return OGVec3(x, y, z);
 }
 
 
 // Converting barycentric coords. to world coords.
-inline Vec3 Vec3Lerp (float _fFactor, const Vec3& _p0, const Vec3& _p1)
+inline OGVec3 Vec3Lerp (float _fFactor, const OGVec3& _p0, const OGVec3& _p1)
 {
-	Vec3 out;
+	OGVec3 out;
 	out.x = _p0.x + _fFactor * (_p1.x - _p0.x);
 	out.y = _p0.y + _fFactor * (_p1.y - _p0.y);
 	out.z = _p0.z + _fFactor * (_p1.z - _p0.z);
@@ -132,9 +136,9 @@ inline Vec3 Vec3Lerp (float _fFactor, const Vec3& _p0, const Vec3& _p1)
 
 
 // Make a world transformation matrix from the position, rotation and scling matrices
-inline void WorldMatrixFromTransforms (MATRIX& _mWorld, const Vec3& _vPos, const Vec3& _vRot, const Vec3& _vScale)
+inline void WorldMatrixFromTransforms (OGMatrix& _mWorld, const OGVec3& _vPos, const OGVec3& _vRot, const OGVec3& _vScale)
 {
-    MATRIX mX, mY, mZ, mS, mT;
+    OGMatrix mX, mY, mZ, mS, mT;
     MatrixTranslation(mT, _vPos.x, _vPos.y, _vPos.z);
     MatrixRotationX(mX, _vRot.x);
     MatrixRotationY(mY, _vRot.y);
@@ -152,8 +156,8 @@ inline void WorldMatrixFromTransforms (MATRIX& _mWorld, const Vec3& _vPos, const
 //			0 if front-side intersection
 //			1 if rear-side intersection
 inline int ClipAxialLine ( 
-                          Vec3& _Vec0, 
-                          Vec3& _Vec1, 
+                          OGVec3& _Vec0, 
+                          OGVec3& _Vec1, 
                           int	_Sign,
                           int	_Axis,
                           float	_BoxCoordValue
@@ -185,13 +189,13 @@ inline int ClipAxialLine (
 
 
 // Find intersection with plane
-inline Vec3 FindIntersectionWithPlane ( 
+inline OGVec3 FindIntersectionWithPlane ( 
     float _fHeight,
-    const Vec3& _vRayOrig,
-    const Vec3& _vRayDir
+    const OGVec3& _vRayOrig,
+    const OGVec3& _vRayDir
     )
 {
-    Vec3 vIntersectionPoint;
+    OGVec3 vIntersectionPoint;
     float fFactorLine = (float)( ( _fHeight - _vRayOrig.y ) / _vRayDir.y );
     vIntersectionPoint.x = _vRayDir.x * fFactorLine + _vRayOrig.x;
     vIntersectionPoint.y = _vRayDir.y * fFactorLine + _vRayOrig.y;
@@ -201,21 +205,21 @@ inline Vec3 FindIntersectionWithPlane (
 
 
 // CW or CCW
-inline bool IsCCW (const Vec2& _vV1, const Vec2& _vV2)
+inline bool IsCCW (const OGVec2& _vV1, const OGVec2& _vV2)
 {
     return (_vV1.x * _vV2.y - _vV1.y * _vV2.x > 0.0f);
 }
 
 
 // Get angle between two vectors
-inline float GetAngle (const Vec3& _vV1, const Vec3& _vV2)
+inline float GetAngle (const OGVec3& _vV1, const OGVec3& _vV2)
 {
     float fDot = _vV2.dot(_vV1) / (_vV1.length() * _vV2.length());
     OG_CLAMP(fDot, -1.0f, 1.0f);
     float fAngle = acosf( fDot );
     if ( fAngle < 0 )
         return -PI;
-    bool bSign = IsCCW (Vec2(_vV2.x, _vV2.z), Vec2(_vV1.x, _vV1.z));
+    bool bSign = IsCCW (OGVec2(_vV2.x, _vV2.z), OGVec2(_vV1.x, _vV1.z));
     return bSign ? fAngle : -fAngle;
 }
 

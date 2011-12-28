@@ -35,7 +35,7 @@ void COGMesh::LoadSubMeshes ()
         SubMeshType sbmtype = GetSubMeshType(i);
         if (sbmtype == OG_SUBMESH_ACTPOINT)
         {
-            Vec3* pPtr = (Vec3*)Mesh.pInterleaved;
+            OGVec3* pPtr = (OGVec3*)Mesh.pInterleaved;
             ActPoint pt;
             pt.pos = *pPtr;
             pt.part = i;
@@ -69,7 +69,7 @@ void COGMesh::UnloadSubMeshes ()
 
 
 // Render mesh.
-void COGMesh::Render (const MATRIX& _mWorld, unsigned int _Frame)
+void COGMesh::Render (const OGMatrix& _mWorld, unsigned int _Frame)
 {
     if (_Frame > m_pScene->nNumFrame)
         return;
@@ -79,7 +79,7 @@ void COGMesh::Render (const MATRIX& _mWorld, unsigned int _Frame)
 
 
 // Render solid parts of the mesh.
-void COGMesh::RenderSolidParts (const MATRIX& _mWorld, unsigned int _Frame)
+void COGMesh::RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame)
 {
 	std::vector<unsigned int>::const_iterator iter = m_SolidParts.begin();
 	for (; iter != m_SolidParts.end(); ++iter)
@@ -90,9 +90,9 @@ void COGMesh::RenderSolidParts (const MATRIX& _mWorld, unsigned int _Frame)
 
 
 // Render transparent parts of the mesh.
-void COGMesh::RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame, float _fSpin)
+void COGMesh::RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fSpin)
 {
-	MATRIX mNodeWorld, mModel, mSpin;
+	OGMatrix mNodeWorld, mModel, mSpin;
 	std::vector<unsigned int>::const_iterator iter = m_TransparentParts.begin();
 	for (; iter != m_TransparentParts.end(); ++iter)
 	{
@@ -116,18 +116,18 @@ void COGMesh::RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame
 
 
 // Render part of the mesh.
-void COGMesh::RenderPart (const MATRIX& _mWorld, unsigned int _Part, unsigned int _Frame)
+void COGMesh::RenderPart (const OGMatrix& _mWorld, unsigned int _Part, unsigned int _Frame)
 {
     SubMesh& submesh = m_SubMeshes[_Part];
     m_pScene->SetFrame((float)_Frame);
     const SPODNode& node = m_pScene->pNode[submesh.part];
 
     // Gets the node model matrix
-    MATRIX mNodeWorld;
+    OGMatrix mNodeWorld;
     m_pScene->GetWorldMatrix(mNodeWorld, node);
 
     // Multiply on the global world transform
-    MATRIX mModel;
+    OGMatrix mModel;
     MatrixMultiply(mModel, mNodeWorld, _mWorld);
 
     m_pRenderer->SetModelMatrix(mModel);
@@ -168,16 +168,16 @@ const IOGAabb& COGMesh::GetPartAABB (unsigned int _Part) const
 
 
 // Get part's transformed OBB after applying animation
-bool COGMesh::GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const MATRIX& _mWorld) const
+bool COGMesh::GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld) const
 {
 	_obb.Create(GetPartAABB(_Part));
 
     const SubMesh& submesh = m_SubMeshes[_Part];
 	m_pScene->SetFrame((float)_Frame);
 	const SPODNode& node = m_pScene->pNode[submesh.part];
-	MATRIX mNodeWorld;
+	OGMatrix mNodeWorld;
 	m_pScene->GetWorldMatrix(mNodeWorld, node);
-    MATRIX mModel;
+    OGMatrix mModel;
     MatrixMultiply(mModel, mNodeWorld, _mWorld);
 
 	_obb.UpdateTransform(mModel);
@@ -186,7 +186,7 @@ bool COGMesh::GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int 
 
 
 // Get active point
-bool COGMesh::GetActivePoint (Vec3& _Point, const std::string& _Alias, unsigned int _Frame)
+bool COGMesh::GetActivePoint (OGVec3& _Point, const std::string& _Alias, unsigned int _Frame)
 {
     std::map<std::string, ActPoint>::iterator iter = m_ActivePoints.find(_Alias);
     if (iter != m_ActivePoints.end())
@@ -195,7 +195,7 @@ bool COGMesh::GetActivePoint (Vec3& _Point, const std::string& _Alias, unsigned 
         const SPODNode& node = m_pScene->pNode[iter->second.part];
 
         // Gets the node model matrix
-        MATRIX mNodeWorld;
+        OGMatrix mNodeWorld;
         m_pScene->GetWorldMatrix(mNodeWorld, node);
         
         MatrixVecMultiply(_Point, iter->second.pos, mNodeWorld);

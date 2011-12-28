@@ -22,9 +22,9 @@ COGActorAirBot::~COGActorAirBot()
 
 // Create actor.
 bool COGActorAirBot::Create (IOGActorParams* _pParams,
-                             const Vec3& _vPos,
-                             const Vec3& _vRot,
-                             const Vec3& _vScale)
+                             const OGVec3& _vPos,
+                             const OGVec3& _vRot,
+                             const OGVec3& _vScale)
 {
     if (!COGActorBot::Create(_pParams, _vPos, _vRot, _vScale))
         return false;
@@ -168,7 +168,7 @@ void COGActorAirBot::ThrowBonus ()
     {
         IOGActor* m_pBonus = GetActorManager()->CreateActor(
             pBonusParams->actor, m_pPhysicalObject->GetPosition(), 
-            Vec3(0,0,0), Vec3(1,1,1));
+            OGVec3(0,0,0), OGVec3(1,1,1));
         GetActorManager()->AddActor(m_pBonus);
         m_pBonus->SetBonusParams(pBonusParams);
         m_pBonus->Activate(true);

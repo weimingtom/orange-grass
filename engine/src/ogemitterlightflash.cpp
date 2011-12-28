@@ -18,7 +18,7 @@ COGEmitterLightFlash::COGEmitterLightFlash()
 {
 	m_fFadeFactor = 0.64f;
 	m_fInitialIntensity = 100.0f;
-	m_color = Vec4(1, 1, 0, 1);
+	m_color = OGVec4(1, 1, 0, 1);
 
 	AddFloatParam("init_intensity", &m_fInitialIntensity);
 	AddFloatParam("fade_factor", &m_fFadeFactor);
@@ -62,16 +62,16 @@ void COGEmitterLightFlash::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGEmitterLightFlash::Render (const MATRIX& _mWorld, const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight)
+void COGEmitterLightFlash::Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-    MATRIX mId; 
+    OGMatrix mId; 
     MatrixIdentity(mId);
     m_pRenderer->SetModelMatrix(mId);
 
-    Vec3 vOffset = Vec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
+    OGVec3 vOffset = OGVec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
     if (m_pLight)
     {
         m_pLight->vPosition = vOffset;

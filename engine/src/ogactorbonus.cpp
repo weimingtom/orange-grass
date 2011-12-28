@@ -32,9 +32,9 @@ COGActorBonus::~COGActorBonus()
 
 // Create actor.
 bool COGActorBonus::Create (IOGActorParams* _pParams,
-                            const Vec3& _vPos,
-                            const Vec3& _vRot,
-                            const Vec3& _vScale)
+                            const OGVec3& _vPos,
+                            const OGVec3& _vRot,
+                            const OGVec3& _vScale)
 {
 	m_pParams = _pParams;
 

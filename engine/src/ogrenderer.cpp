@@ -19,11 +19,11 @@
 
 
 COGSprite::SprVert g_RTVertices[4];
-MATRIX g_LightProj;
-MATRIX g_LightView;
-MATRIX g_LightVP;
-MATRIX g_SMTexAdj;
-MATRIX g_ShadowMVP;
+OGMatrix g_LightProj;
+OGMatrix g_LightView;
+OGMatrix g_LightVP;
+OGMatrix g_SMTexAdj;
+OGMatrix g_ShadowMVP;
 
 
 COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
@@ -165,35 +165,35 @@ IOGVertexBuffers* COGRenderer::CreateVertexBuffer (void* _pMeshData)
 
 
 // set model matrix.
-void COGRenderer::SetModelMatrix (const MATRIX& _mModel)
+void COGRenderer::SetModelMatrix (const OGMatrix& _mModel)
 {
     m_mWorld = _mModel;
 }
 
 
 // set view matrix.
-void COGRenderer::SetViewMatrix (const MATRIX& _mView)
+void COGRenderer::SetViewMatrix (const OGMatrix& _mView)
 {
     m_mView = _mView;
 }
 
 
 // get model matrix.
-void COGRenderer::GetModelMatrix (MATRIX& _mModel)
+void COGRenderer::GetModelMatrix (OGMatrix& _mModel)
 {
 	_mModel = m_mWorld;
 }
 
 
 // get view matrix.
-void COGRenderer::GetViewMatrix (MATRIX& _mView)
+void COGRenderer::GetViewMatrix (OGMatrix& _mView)
 {
 	_mView = m_mView;
 }
 
 
 // get projection matrix.
-void COGRenderer::GetProjectionMatrix (MATRIX& _mProjection)
+void COGRenderer::GetProjectionMatrix (OGMatrix& _mProjection)
 {
 	_mProjection = m_mProjection;
 }
@@ -371,10 +371,10 @@ void COGRenderer::StartRenderMode(OGRenderMode _Mode)
             m_pRT->Begin();
 
             float fLightHeight = m_pCamera->GetPosition().y;
-            Vec3 vLookAt  = m_pCamera->GetPosition() + (m_pCamera->GetDirection() * 600.0f);
+            OGVec3 vLookAt  = m_pCamera->GetPosition() + (m_pCamera->GetDirection() * 600.0f);
             vLookAt.y = 0;
-            Vec3 vEyePt = vLookAt - Vec3(0, -1, 0) * fLightHeight;
-            MatrixLookAtRH(g_LightView, vEyePt, vLookAt, Vec3(0, 0, -1));
+            OGVec3 vEyePt = vLookAt - OGVec3(0, -1, 0) * fLightHeight;
+            MatrixLookAtRH(g_LightView, vEyePt, vLookAt, OGVec3(0, 0, -1));
             MatrixMultiply(g_LightVP, g_LightView, g_LightProj);
 
             m_ShadowModelShader.SetProjectionMatrix(g_LightProj);
@@ -492,7 +492,7 @@ void COGRenderer::RenderMesh (void* _pMesh)
 
 
 // clear frame buffer with the given color
-void COGRenderer::ClearFrame (const Vec4& _vClearColor)
+void COGRenderer::ClearFrame (const OGVec4& _vClearColor)
 {
 	glClearColor(_vClearColor.x, _vClearColor.y, _vClearColor.z, _vClearColor.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -538,7 +538,7 @@ void COGRenderer::Reset ()
 
 
 // Unproject screen coords.
-Vec3 COGRenderer::UnprojectCoords (int _X, int _Y)
+OGVec3 COGRenderer::UnprojectCoords (int _X, int _Y)
 {
     float* pMV = m_mView.f;
     float* pP = m_mProjection.f;
@@ -555,12 +555,12 @@ Vec3 COGRenderer::UnprojectCoords (int _X, int _Y)
 		UnProject((float)_X, (float)(m_Height - _Y), 0.0f, pMV, pP, m_Width, m_Height, &x0, &y0, &z0);
 	}
 #endif    
-    return Vec3(x0, y0, z0);
+    return OGVec3(x0, y0, z0);
 }
 
 
 // Display string.
-void COGRenderer::DisplayString (const Vec2& _vPos, 
+void COGRenderer::DisplayString (const OGVec2& _vPos, 
 								 float _fScale, 
 								 unsigned int Colour, 
 								 const char * const pszFormat, ...)
@@ -621,26 +621,26 @@ void COGRenderer::DrawRT ()
 {
 	float HalfScrWidth = (float)m_Width / 2;
 	float HalfScrHeight = (float)m_Height / 2;
-	Vec4 Color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
-    Vec2 vSize = Vec2((float)m_pRT->m_Size, (float)m_pRT->m_Size);
-    Vec2 vPos = Vec2(m_Width - vSize.x, 0);
+	OGVec4 Color = OGVec4(1.0f, 1.0f, 1.0f, 1.0f);
+    OGVec2 vSize = OGVec2((float)m_pRT->m_Size, (float)m_pRT->m_Size);
+    OGVec2 vPos = OGVec2(m_Width - vSize.x, 0);
 
     float fLeft = -HalfScrWidth+vPos.x;
 	float fRight = -HalfScrWidth+vSize.x+vPos.x;
 	float fTop = HalfScrHeight-vSize.y-vPos.y;
 	float fBottom = HalfScrHeight-vPos.y;
 
-	g_RTVertices[0].p = Vec2(fRight, fTop);	
-	g_RTVertices[0].t = Vec2(1.0f, 0.0f); 
+	g_RTVertices[0].p = OGVec2(fRight, fTop);	
+	g_RTVertices[0].t = OGVec2(1.0f, 0.0f); 
 	g_RTVertices[0].c = Color;
-	g_RTVertices[1].p = Vec2(fLeft, fTop);	
-	g_RTVertices[1].t = Vec2(0.0f, 0.0f); 
+	g_RTVertices[1].p = OGVec2(fLeft, fTop);	
+	g_RTVertices[1].t = OGVec2(0.0f, 0.0f); 
 	g_RTVertices[1].c = Color;
-	g_RTVertices[2].p = Vec2(fRight, fBottom);	
-	g_RTVertices[2].t = Vec2(1.0f, 1.0f); 
+	g_RTVertices[2].p = OGVec2(fRight, fBottom);	
+	g_RTVertices[2].t = OGVec2(1.0f, 1.0f); 
 	g_RTVertices[2].c = Color;
-	g_RTVertices[3].p = Vec2(fLeft, fBottom);	
-	g_RTVertices[3].t = Vec2(0.0f, 1.0f); 
+	g_RTVertices[3].p = OGVec2(fLeft, fBottom);	
+	g_RTVertices[3].t = OGVec2(0.0f, 1.0f); 
 	g_RTVertices[3].c = Color;
 
 	glBindTexture(GL_TEXTURE_2D, m_pRT->GetTextureId());

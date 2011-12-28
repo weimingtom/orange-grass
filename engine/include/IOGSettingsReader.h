@@ -10,7 +10,7 @@
 #define IOGSETTINGSREADER_H_
 
 #include <string>
-#include "Mathematics.h"
+#include "IOGMath.h"
 #include "IOGActorParams.h"
 #include "IOGRenderer.h"
 
@@ -68,50 +68,50 @@ public:
 	// write float parameter.
 	virtual void WriteFloatParam (IOGGroupNode* _pGroup, const std::string& _Alias, float _Value) = 0;
 
-	// read Vec2 parameter.
-	virtual Vec2 ReadVec2Param (
+	// read OGVec2 parameter.
+	virtual OGVec2 ReadVec2Param (
 		IOGGroupNode* _pGroup, 
 		const std::string& _AliasX, 
 		const std::string& _AliasY) = 0;
 
-	// write Vec2 parameter.
+	// write OGVec2 parameter.
 	virtual void WriteVec2Param (
 		IOGGroupNode* _pGroup, 
 		const std::string& _AliasX, 
 		const std::string& _AliasY,
-		const Vec2& _Value) = 0;
+		const OGVec2& _Value) = 0;
 
-	// read Vec3 parameter.
-	virtual Vec3 ReadVec3Param (
+	// read OGVec3 parameter.
+	virtual OGVec3 ReadVec3Param (
 		IOGGroupNode* _pGroup, 
 		const std::string& _AliasX, 
 		const std::string& _AliasY,
 		const std::string& _AliasZ) = 0;
 
-	// write Vec3 parameter.
+	// write OGVec3 parameter.
 	virtual void WriteVec3Param (
 		IOGGroupNode* _pGroup, 
 		const std::string& _AliasX, 
 		const std::string& _AliasY,
 		const std::string& _AliasZ,
-		const Vec3& _Value) = 0;
+		const OGVec3& _Value) = 0;
 
-	// read Vec4 parameter.
-	virtual Vec4 ReadVec4Param (
+	// read OGVec4 parameter.
+	virtual OGVec4 ReadVec4Param (
 		IOGGroupNode* _pGroup, 
 		const std::string& _AliasX, 
 		const std::string& _AliasY,
 		const std::string& _AliasZ,
 		const std::string& _AliasW) = 0;
 
-	// write Vec4 parameter.
+	// write OGVec4 parameter.
 	virtual void WriteVec4Param (
 		IOGGroupNode* _pGroup, 
 		const std::string& _AliasX, 
 		const std::string& _AliasY,
 		const std::string& _AliasZ,
 		const std::string& _AliasW,
-		const Vec4& _Value) = 0;
+		const OGVec4& _Value) = 0;
 
 	// close source.
 	virtual void CloseSource (IOGSettingsSource* _pSource) = 0;

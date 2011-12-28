@@ -9,7 +9,7 @@
 #ifndef OGSGNODE_H_
 #define OGSGNODE_H_
 
-#include "Mathematics.h"
+#include "IOGMath.h"
 #include "IOGSgNode.h"
 #include "IOGAnimationController.h"
 
@@ -23,7 +23,7 @@ public:
 	virtual ~COGSgNode ();
 
 	// get world transform.
-	virtual const MATRIX& GetWorldTransform () const;
+	virtual const OGMatrix& GetWorldTransform () const;
 
 	// Get OBB
 	virtual const IOGObb& GetOBB () const;
@@ -53,7 +53,7 @@ public:
     virtual void StartAnimation (const std::string& _Alias);
 
 	// Get active point
-    virtual bool GetActivePoint (Vec3& _point, const std::string& _Alias);
+    virtual bool GetActivePoint (OGVec3& _point, const std::string& _Alias);
 
 	// Get active state
 	virtual bool IsActive () const { return m_bActive; }

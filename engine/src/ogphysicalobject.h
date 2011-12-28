@@ -38,34 +38,34 @@ public:
 	virtual void Activate (bool _bActive);
 
 	// get world transform.
-	virtual const MATRIX& GetWorldTransform () const;
+	virtual const OGMatrix& GetWorldTransform () const;
 
 	// set world transform.
 	virtual void SetWorldTransform (
-		const Vec3& _vPos, 
-		const Vec3& _vRot, 
-		const Vec3& _vScale);
+		const OGVec3& _vPos, 
+		const OGVec3& _vRot, 
+		const OGVec3& _vScale);
 
 	// get position.
-	virtual const Vec3& GetPosition () const;
+	virtual const OGVec3& GetPosition () const;
 
 	// get rotation.
-	virtual const Vec3& GetRotation () const;
+	virtual const OGVec3& GetRotation () const;
 
 	// get scaling.
-	virtual const Vec3& GetScaling () const;
+	virtual const OGVec3& GetScaling () const;
 
 	// get direction.
-	virtual const Vec3& GetDirection () const;
+	virtual const OGVec3& GetDirection () const;
 
 	// set position.
-	virtual void SetPosition (const Vec3& _vPos);
+	virtual void SetPosition (const OGVec3& _vPos);
 
 	// set rotation.
-	virtual void SetRotation (const Vec3& _vRot);
+	virtual void SetRotation (const OGVec3& _vRot);
 
 	// set scaling.
-	virtual void SetScaling (const Vec3& _vScale);
+	virtual void SetScaling (const OGVec3& _vScale);
 
 	// strafe.
 	virtual void Strafe (float _fDir);
@@ -74,13 +74,13 @@ public:
 	virtual void Accelerate (float _fDir);
 
 	// move.
-	virtual void Move (const Vec3& _vDir);
+	virtual void Move (const OGVec3& _vDir);
 
 	// fall.
 	virtual void Fall () {}
 
 	// orient on point.
-	virtual bool Orient (const Vec3& _vPoint);
+	virtual bool Orient (const OGVec3& _vPoint);
 
 	// strabilize object.
 	virtual bool Stabilize ();
@@ -111,20 +111,20 @@ protected:
 protected:
 
 	OGPhysicsType	m_Type;
-    MATRIX          m_mWorld;
+    OGMatrix          m_mWorld;
 
-	Vec3            m_vPosition;
-    Vec3            m_vRotation;
-    Vec3            m_vScaling;
-    Vec3            m_vPrevPosition;
+	OGVec3            m_vPosition;
+    OGVec3            m_vRotation;
+    OGVec3            m_vScaling;
+    OGVec3            m_vPrevPosition;
 
-	Vec3            m_vUp;
-    Vec3            m_vLook;
-    Vec3            m_vRight;
+	OGVec3            m_vUp;
+    OGVec3            m_vLook;
+    OGVec3            m_vRight;
 
-	Vec3            m_vMove;
-	Vec3            m_vAcceleration;
-    Vec3            m_vTorque;
+	OGVec3            m_vMove;
+	OGVec3            m_vAcceleration;
+    OGVec3            m_vTorque;
     float			m_fStrafe;
 
 	IOGAabb			m_Aabb;

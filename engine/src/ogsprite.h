@@ -30,14 +30,14 @@ public:
 	virtual void Unload ();
 	
 	// Render sprite.
-	virtual void Render (const Vec2& _vPos, const Vec2& _vSize);
+	virtual void Render (const OGVec2& _vPos, const OGVec2& _vSize);
 		
 public:
 	struct SprVert
 	{
-		Vec2 p;
-		Vec2 t;
-    	Vec4 c;
+		OGVec2 p;
+		OGVec2 t;
+    	OGVec4 c;
 	};
 	SprVert		m_Vertices[4];
 	
@@ -46,7 +46,7 @@ public:
 	IOGTexture*		m_pTexture;
 	IOGMapping*		m_pMapping;
 	unsigned int	m_MappingId;
-	Vec4			m_Color;
+	OGVec4			m_Color;
 };
 
 

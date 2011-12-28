@@ -9,7 +9,7 @@
 #ifndef IOGPLANE_H_
 #define IOGPLANE_H_
 
-#include "Mathematics.h"
+#include "IOGMath.h"
 
 
 class IOGPlane
@@ -40,7 +40,7 @@ public:
 	}
 
 	// Initializing plane.
-	void Set(const VECTOR4& v)
+	void Set(const OGVec4& v)
 	{
 		Plane.x = v.x;
 		Plane.y = v.y;
@@ -49,9 +49,9 @@ public:
 	}
 
 	// gets the point on the plane nearest to the origin
-	VECTOR3 GetPos() const
+	OGVec3 GetPos() const
 	{
-		VECTOR3 v;
+		OGVec3 v;
 		v.x = Plane.x * Plane.w;
 		v.y = Plane.y * Plane.w;
 		v.z = Plane.z * Plane.w;
@@ -59,9 +59,9 @@ public:
 	}
 
 	// gets plane normal
-	VECTOR3 GetNormal() const
+	OGVec3 GetNormal() const
 	{			
-		VECTOR3 v;
+		OGVec3 v;
 		v.x = Plane.x;
 		v.y = Plane.y;
 		v.z = Plane.z;
@@ -69,15 +69,15 @@ public:
 	}
 
 	// get plane vector.
-	VECTOR4& GetPlane()
+	OGVec4& GetPlane()
 	{			
 		return Plane;
 	}
 
 	// calculate the distance between a point and a plane
-	inline float DistanceToPlane(const VECTOR3& point) const
+	inline float DistanceToPlane(const OGVec3& point) const
 	{
-		return Vec3DotProduct((const VECTOR3&)Plane, point) + Plane.w;
+		return Vec3DotProduct((const OGVec3&)Plane, point) + Plane.w;
 	}
 
 	// normalize plane
@@ -88,7 +88,7 @@ public:
 
 private:
 
-	VECTOR4 Plane;
+	OGVec4 Plane;
 };
 
 #endif

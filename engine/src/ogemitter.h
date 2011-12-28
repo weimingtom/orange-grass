@@ -28,16 +28,16 @@ public:
 	virtual void Update (unsigned long _ElapsedTime) = 0;
 
 	// Update position.
-	virtual void UpdatePosition (const Vec3& _vPosition);
+	virtual void UpdatePosition (const OGVec3& _vPosition);
 
 	// Set start and finish positions.
-    virtual void SetStartFinishPositions (const Vec3& _vStartPos, const Vec3& _vFinishPos) {}
+    virtual void SetStartFinishPositions (const OGVec3& _vStartPos, const OGVec3& _vFinishPos) {}
 
 	// Set direction.
-    virtual void SetDirection (const Vec3& _vDir);
+    virtual void SetDirection (const OGVec3& _vDir);
 
 	// Render.
-	virtual void Render (const MATRIX& _mWorld, const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight) = 0;
+	virtual void Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight) = 0;
 
 	// Start.
 	virtual void Start () = 0;
@@ -79,7 +79,7 @@ public:
 	virtual void SetFloatParam (const std::string& _Alias, float* _pValue);
 
 	// set color parameter.
-	virtual void SetColorParam (const std::string& _Alias, Vec4* _pValue);
+	virtual void SetColorParam (const std::string& _Alias, OGVec4* _pValue);
 
 	// get string parameter.
 	virtual std::string* GetStringParam (const std::string& _Alias);
@@ -91,7 +91,7 @@ public:
 	virtual float* GetFloatParam (const std::string& _Alias);
 
 	// get color parameter.
-	virtual Vec4* GetColorParam (const std::string& _Alias);
+	virtual OGVec4* GetColorParam (const std::string& _Alias);
 
 protected:
 
@@ -105,7 +105,7 @@ protected:
 	void AddFloatParam (const std::string& _Alias, float* _pValue);
 
 	// add color param.
-	void AddColorParam (const std::string& _Alias, Vec4* _pValue);
+	void AddColorParam (const std::string& _Alias, OGVec4* _pValue);
 
 	// Load parameters of the emitter.
 	void LoadParams (IOGGroupNode* _pNode);
@@ -115,9 +115,9 @@ protected:
 
 protected:
 
-	Vec3						m_vPrevPosition;
-	Vec3						m_vCurPosition;
-	Vec3			            m_Direction;
+	OGVec3						m_vPrevPosition;
+	OGVec3						m_vCurPosition;
+	OGVec3			            m_Direction;
 	bool						m_bPositionUpdated;
 	IOGMapping*					m_pMapping;
 	OGEffectStatus				m_Status;

@@ -154,27 +154,27 @@ float COGSettingsReader::ReadFloatParam (IOGGroupNode* _pGroup, const std::strin
 }
 
 
-// read Vec2 parameter.
-Vec2 COGSettingsReader::ReadVec2Param (
+// read OGVec2 parameter.
+OGVec2 COGSettingsReader::ReadVec2Param (
 									   IOGGroupNode* _pGroup, 
 									   const std::string& _AliasX, 
 									   const std::string& _AliasY)
 {
-	Vec2 vOut;
+	OGVec2 vOut;
 	vOut.x = ReadFloatParam(_pGroup, _AliasX);
 	vOut.y = ReadFloatParam(_pGroup, _AliasY);
 	return vOut;
 }
 
 
-// read Vec3 parameter.
-Vec3 COGSettingsReader::ReadVec3Param (
+// read OGVec3 parameter.
+OGVec3 COGSettingsReader::ReadVec3Param (
 									   IOGGroupNode* _pGroup, 
 									   const std::string& _AliasX, 
 									   const std::string& _AliasY,
 									   const std::string& _AliasZ)
 {
-	Vec3 vOut;
+	OGVec3 vOut;
 	vOut.x = ReadFloatParam(_pGroup, _AliasX);
 	vOut.y = ReadFloatParam(_pGroup, _AliasY);
 	vOut.z = ReadFloatParam(_pGroup, _AliasZ);
@@ -182,15 +182,15 @@ Vec3 COGSettingsReader::ReadVec3Param (
 }
 
 
-// read Vec4 parameter.
-Vec4 COGSettingsReader::ReadVec4Param (
+// read OGVec4 parameter.
+OGVec4 COGSettingsReader::ReadVec4Param (
 									   IOGGroupNode* _pGroup, 
 									   const std::string& _AliasX, 
 									   const std::string& _AliasY,
 									   const std::string& _AliasZ,
 									   const std::string& _AliasW)
 {
-	Vec4 vOut;
+	OGVec4 vOut;
 	vOut.x = ReadFloatParam(_pGroup, _AliasX);
 	vOut.y = ReadFloatParam(_pGroup, _AliasY);
 	vOut.z = ReadFloatParam(_pGroup, _AliasZ);
@@ -240,25 +240,25 @@ void COGSettingsReader::WriteFloatParam (IOGGroupNode* _pGroup, const std::strin
 }
 
 
-// write Vec2 parameter.
+// write OGVec2 parameter.
 void COGSettingsReader::WriteVec2Param (
 										IOGGroupNode* _pGroup, 
 										const std::string& _AliasX, 
 										const std::string& _AliasY,
-										const Vec2& _Value)
+										const OGVec2& _Value)
 {
 	WriteFloatParam(_pGroup, _AliasX, _Value.x);
 	WriteFloatParam(_pGroup, _AliasY, _Value.y);
 }
 
 
-// write Vec3 parameter.
+// write OGVec3 parameter.
 void COGSettingsReader::WriteVec3Param (
 										IOGGroupNode* _pGroup, 
 										const std::string& _AliasX, 
 										const std::string& _AliasY,
 										const std::string& _AliasZ,
-										const Vec3& _Value)
+										const OGVec3& _Value)
 {
 	WriteFloatParam(_pGroup, _AliasX, _Value.x);
 	WriteFloatParam(_pGroup, _AliasY, _Value.y);
@@ -266,14 +266,14 @@ void COGSettingsReader::WriteVec3Param (
 }
 
 
-// write Vec4 parameter.
+// write OGVec4 parameter.
 void COGSettingsReader::WriteVec4Param (
 										IOGGroupNode* _pGroup, 
 										const std::string& _AliasX, 
 										const std::string& _AliasY,
 										const std::string& _AliasZ,
 										const std::string& _AliasW,
-										const Vec4& _Value)
+										const OGVec4& _Value)
 {
 	WriteFloatParam(_pGroup, _AliasX, _Value.x);
 	WriteFloatParam(_pGroup, _AliasY, _Value.y);

@@ -14,16 +14,16 @@ COGLevel::COGLevel () : m_pTerrain(NULL)
 {
 	m_pReader = GetSettingsReader();
 
-	m_vStartPos = Vec3(150,0,-100);
-	m_vFinishPos = Vec3(150,0,-1000);
+	m_vStartPos = OGVec3(150,0,-100);
+	m_vFinishPos = OGVec3(150,0,-1000);
     m_fActiveWidth = 200.0f;
 
-	m_vLightDir = Vec3(0,1,0);
-	m_vLightAmbColor = Vec3(1,1,1);
-	m_vLightDifColor = Vec3(1,1,1);
-	m_vLightSpcColor = Vec3(1,1,1);
+	m_vLightDir = OGVec3(0,1,0);
+	m_vLightAmbColor = OGVec3(1,1,1);
+	m_vLightDifColor = OGVec3(1,1,1);
+	m_vLightSpcColor = OGVec3(1,1,1);
 	
-	m_vFogColor = Vec4(0.8f, 0.9f, 0.5f, 1.0f);
+	m_vFogColor = OGVec4(0.8f, 0.9f, 0.5f, 1.0f);
 	m_fFogStart = 150.0f;
 	m_fFogEnd = 300.0f;
 	m_fFogDensity = 0.15f;
@@ -102,9 +102,9 @@ bool COGLevel::Load ()
 		pMainLight->type = OG_LIGHT_DIRECTIONAL;
 		pMainLight->vPosition = m_vLightDir;
 		pMainLight->fIntensity = 100.0f;
-		pMainLight->vAmbientColor = Vec4(m_vLightAmbColor.x, m_vLightAmbColor.y, m_vLightAmbColor.z, 1.0f);
-		pMainLight->vDiffuseColor = Vec4(m_vLightDifColor.x, m_vLightDifColor.y, m_vLightDifColor.z, 1.0f);
-		pMainLight->vSpecularColor = Vec4(m_vLightSpcColor.x, m_vLightSpcColor.y, m_vLightSpcColor.z, 1.0f);
+		pMainLight->vAmbientColor = OGVec4(m_vLightAmbColor.x, m_vLightAmbColor.y, m_vLightAmbColor.z, 1.0f);
+		pMainLight->vDiffuseColor = OGVec4(m_vLightDifColor.x, m_vLightDifColor.y, m_vLightDifColor.z, 1.0f);
+		pMainLight->vSpecularColor = OGVec4(m_vLightSpcColor.x, m_vLightSpcColor.y, m_vLightSpcColor.z, 1.0f);
 
 		GetRenderer()->GetFog()->SetColor(m_vFogColor);
 		GetRenderer()->GetFog()->SetStart(m_fFogStart);
@@ -199,9 +199,9 @@ bool COGLevel::Load ()
 	pMainLight->type = OG_LIGHT_DIRECTIONAL;
 	pMainLight->vPosition = m_vLightDir;
 	pMainLight->fIntensity = 100.0f;
-	pMainLight->vAmbientColor = Vec4(m_vLightAmbColor.x, m_vLightAmbColor.y, m_vLightAmbColor.z, 1.0f);
-	pMainLight->vDiffuseColor = Vec4(m_vLightDifColor.x, m_vLightDifColor.y, m_vLightDifColor.z, 1.0f);
-	pMainLight->vSpecularColor = Vec4(m_vLightSpcColor.x, m_vLightSpcColor.y, m_vLightSpcColor.z, 1.0f);
+	pMainLight->vAmbientColor = OGVec4(m_vLightAmbColor.x, m_vLightAmbColor.y, m_vLightAmbColor.z, 1.0f);
+	pMainLight->vDiffuseColor = OGVec4(m_vLightDifColor.x, m_vLightDifColor.y, m_vLightDifColor.z, 1.0f);
+	pMainLight->vSpecularColor = OGVec4(m_vLightSpcColor.x, m_vLightSpcColor.y, m_vLightSpcColor.z, 1.0f);
 
 	GetRenderer()->GetFog()->SetColor(m_vFogColor);
 	GetRenderer()->GetFog()->SetStart(m_fFogStart);
@@ -224,19 +224,19 @@ bool COGLevel::Load ()
         fread(&type, sizeof(OGActorType), 1, pIn);
 
         // position
-        Vec3 vPos;
+        OGVec3 vPos;
         fread(&vPos.x, sizeof(float), 1, pIn);
         fread(&vPos.y, sizeof(float), 1, pIn);
         fread(&vPos.z, sizeof(float), 1, pIn);
 
         // rotation
-        Vec3 vRot;
+        OGVec3 vRot;
         fread(&vRot.x, sizeof(float), 1, pIn);
         fread(&vRot.y, sizeof(float), 1, pIn);
         fread(&vRot.z, sizeof(float), 1, pIn);
 
         // scaling
-        Vec3 vScale;
+        OGVec3 vScale;
         fread(&vScale.x, sizeof(float), 1, pIn);
         fread(&vScale.y, sizeof(float), 1, pIn);
         fread(&vScale.z, sizeof(float), 1, pIn);
@@ -285,9 +285,9 @@ bool COGLevel::Save ()
 	
 	IOGLight* pMainLight = GetRenderer()->GetLightMgr()->GetLight(0);
 	m_vLightDir = pMainLight->vPosition;
-	m_vLightAmbColor = Vec3(pMainLight->vAmbientColor.x, pMainLight->vAmbientColor.y, pMainLight->vAmbientColor.z);
-	m_vLightDifColor = Vec3(pMainLight->vDiffuseColor.x, pMainLight->vDiffuseColor.y, pMainLight->vDiffuseColor.z);
-	m_vLightSpcColor = Vec3(pMainLight->vSpecularColor.x, pMainLight->vSpecularColor.y, pMainLight->vSpecularColor.z);
+	m_vLightAmbColor = OGVec3(pMainLight->vAmbientColor.x, pMainLight->vAmbientColor.y, pMainLight->vAmbientColor.z);
+	m_vLightDifColor = OGVec3(pMainLight->vDiffuseColor.x, pMainLight->vDiffuseColor.y, pMainLight->vDiffuseColor.z);
+	m_vLightSpcColor = OGVec3(pMainLight->vSpecularColor.x, pMainLight->vSpecularColor.y, pMainLight->vSpecularColor.z);
 
     m_fFogStart = GetRenderer()->GetFog()->GetStart();
     m_fFogEnd = GetRenderer()->GetFog()->GetEnd();
@@ -306,7 +306,7 @@ bool COGLevel::Save ()
     unsigned int ver = GetLevelManager()->GetVersion();
     fwrite(&ver, sizeof(unsigned int), 1, pOut);
     
-    Vec3 vVec;
+    OGVec3 vVec;
 
     // Level start position
     fwrite(&m_vStartPos.x, sizeof(float), 1, pOut);
@@ -399,28 +399,28 @@ IOGTerrain* COGLevel::GetTerrain ()
 
 
 // get level start position.
-const Vec3& COGLevel::GetStartPosition () const
+const OGVec3& COGLevel::GetStartPosition () const
 {
 	return m_vStartPos;
 }
 
 
 // get level start finish.
-const Vec3& COGLevel::GetFinishPosition () const
+const OGVec3& COGLevel::GetFinishPosition () const
 {
 	return m_vFinishPos;
 }
 
 
 // set level start position.
-void COGLevel::SetStartPosition (const Vec3& _Pos)
+void COGLevel::SetStartPosition (const OGVec3& _Pos)
 {
     m_vStartPos = _Pos;
 }
 
 
 // set level start finish.
-void COGLevel::SetFinishPosition (const Vec3& _Pos)
+void COGLevel::SetFinishPosition (const OGVec3& _Pos)
 {
     m_vFinishPos = _Pos;
 }

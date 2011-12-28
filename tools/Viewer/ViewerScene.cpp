@@ -46,21 +46,21 @@ bool CViewerScene::Init ()
 	m_pCamera = m_pRenderer->GetCamera();
 	m_pActorMgr = GetActorManager();
 
-    Vec3 vTarget (0, 0, 0);
-	Vec3 vDir (0, -1.0f, 0.4f);
+    OGVec3 vTarget (0, 0, 0);
+	OGVec3 vDir (0, -1.0f, 0.4f);
 	vDir = vDir.normalize();
-	Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
+	OGVec3 vUp = vDir.cross (OGVec3(1, 0, 0));
 	m_pCamera->Setup (vTarget - (vDir*m_fCameraDistance), vTarget, vUp);
 
-	Vec3 vLightDir = Vec3(0,1,0);
-	Vec4 vLightColor = Vec4(1,1,1,1);
+	OGVec3 vLightDir = OGVec3(0,1,0);
+	OGVec4 vLightColor = OGVec4(1,1,1,1);
 	IOGLight* pMainLight = m_pRenderer->GetLightMgr()->CreateLight();
 	pMainLight->type = OG_LIGHT_DIRECTIONAL;
 	pMainLight->vPosition = vLightDir;
 	pMainLight->fIntensity = 100.0f;
-	pMainLight->vAmbientColor = Vec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
-	pMainLight->vDiffuseColor = Vec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
-	pMainLight->vSpecularColor = Vec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
+	pMainLight->vAmbientColor = OGVec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
+	pMainLight->vDiffuseColor = OGVec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
+	pMainLight->vSpecularColor = OGVec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
 
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);
@@ -131,7 +131,7 @@ void CViewerScene::Update (unsigned long _ElapsedTime)
 // Render controller scene
 void CViewerScene::RenderScene ()
 {
-	m_pRenderer->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
+	m_pRenderer->ClearFrame(OGVec4(0.3f, 0.3f, 0.4f, 1.0f));
 
 	RenderHelpers();
 
@@ -152,11 +152,11 @@ void CViewerScene::RenderScene ()
 	unsigned long DrawCalls;
 	GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, 
 		VBOSwitches, DrawCalls);
-	m_pRenderer->DisplayString(Vec2(85.0f, 2.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
-	m_pRenderer->DisplayString(Vec2(85.0f, 6.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
-	m_pRenderer->DisplayString(Vec2(85.0f,10.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
-	m_pRenderer->DisplayString(Vec2(85.0f,14.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
-	m_pRenderer->DisplayString(Vec2(85.0f,18.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
+	m_pRenderer->DisplayString(OGVec2(85.0f, 2.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
+	m_pRenderer->DisplayString(OGVec2(85.0f, 6.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
+	m_pRenderer->DisplayString(OGVec2(85.0f,10.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
+	m_pRenderer->DisplayString(OGVec2(85.0f,14.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
+	m_pRenderer->DisplayString(OGVec2(85.0f,18.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
 	GetStatistics()->Reset();
 	m_pRenderer->FinishRenderMode();
 
@@ -210,9 +210,9 @@ void CViewerScene::SetupModel(const char* _pModelAlias)
 	{
 		m_pCurActor = m_pActorMgr->CreateActor(
             _pModelAlias,
-            Vec3(0,0,0), 
-            Vec3(0,0,0), 
-            Vec3(1,1,1));
+            OGVec3(0,0,0), 
+            OGVec3(0,0,0), 
+            OGVec3(1,1,1));
         m_pActorMgr->AddActor(m_pCurActor);
         m_pCurActor->Activate(true);
 
@@ -239,13 +239,13 @@ void CViewerScene::AdjustMaterial(MtlType _type, float _val)
         switch(_type)
         {
         case MTLTYPE_DIF:
-            pModel->GetMaterial()->SetDiffuse(Vec4(_val, _val, _val, 1.0f));
+            pModel->GetMaterial()->SetDiffuse(OGVec4(_val, _val, _val, 1.0f));
             break;
         case MTLTYPE_AMB:
-            pModel->GetMaterial()->SetAmbient(Vec4(_val, _val, _val, 1.0f));
+            pModel->GetMaterial()->SetAmbient(OGVec4(_val, _val, _val, 1.0f));
             break;
         case MTLTYPE_SPC:
-            pModel->GetMaterial()->SetSpecular(Vec4(_val, _val, _val, 1.0f));
+            pModel->GetMaterial()->SetSpecular(OGVec4(_val, _val, _val, 1.0f));
             break;
         }
     }
@@ -269,15 +269,15 @@ void CViewerScene::CameraRotate (float _fAngleH, float _fAngleV)
 // Camera rotate horizontally
 void CViewerScene::CameraRotateHor (float _fAngle)
 {
-	Vec3 vTarget (0, 0, 0);
+	OGVec3 vTarget (0, 0, 0);
 
-	MATRIX mR;
+	OGMatrix mR;
 	MatrixRotationY(mR, _fAngle);
-	Vec3 vDir, vRight;
+	OGVec3 vDir, vRight;
 	MatrixVec3Multiply(vDir, m_pCamera->GetDirection(), mR);
 	MatrixVec3Multiply(vRight, m_pCamera->GetRight(), mR);
 	vDir.normalize();
-	Vec3 vUp = vDir.cross (vRight);
+	OGVec3 vUp = vDir.cross (vRight);
 	m_pCamera->Setup (vTarget - (vDir*m_fCameraDistance), vTarget, vUp);
 }
 
@@ -285,15 +285,15 @@ void CViewerScene::CameraRotateHor (float _fAngle)
 // Camera rotate vertically
 void CViewerScene::CameraRotateVer (float _fAngle)
 {
-	Vec3 vTarget (0, 0, 0);
+	OGVec3 vTarget (0, 0, 0);
 	
-	MATRIX mR;
+	OGMatrix mR;
 	MatrixRotationAxis(mR, _fAngle, m_pCamera->GetRight().x, m_pCamera->GetRight().y, m_pCamera->GetRight().z);
-	Vec3 vDir, vRight;
+	OGVec3 vDir, vRight;
 	MatrixVec3Multiply(vDir, m_pCamera->GetDirection(), mR);
 	MatrixVec3Multiply(vRight, m_pCamera->GetRight(), mR);
 	vDir.normalize();
-	Vec3 vUp = vDir.cross (vRight);
+	OGVec3 vUp = vDir.cross (vRight);
 	m_pCamera->Setup (vTarget - (vDir*m_fCameraDistance), vTarget, vUp);
 }
 

@@ -9,7 +9,7 @@
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogshadowedsceneshader.h"
-#include "GraphicsDevice.h"
+#include "ogshader.h"
 
 
 COGShadowedSceneShader::COGShadowedSceneShader () : m_pFog(NULL)
@@ -76,40 +76,40 @@ void COGShadowedSceneShader::Setup ()
 
     float fFogStart = m_pFog->GetStart();
 	float fFogEnd = m_pFog->GetEnd();
-    Vec4 vFogColor = m_pFog->GetColor();
+    OGVec4 vFogColor = m_pFog->GetColor();
 
 	const float fFogRcpEndStartDiff = 1.0f / (fFogEnd - fFogStart);
 
     glUniform1f(m_uiFogEndLoc, fFogEnd);
 	glUniform1f(m_uiFogRcpDiffLoc, fFogRcpEndStartDiff);
-    glUniform3fv(m_uiFogColorLoc, 1, Vec3(vFogColor.x, vFogColor.y, vFogColor.z).ptr());
+    glUniform3fv(m_uiFogColorLoc, 1, OGVec3(vFogColor.x, vFogColor.y, vFogColor.z).ptr());
     glUniform1f(m_uiFogEnabled, m_pFog->IsEnabled() ? 1.0f : 0.0f);
 }
 
 
 // set model matrix
-void COGShadowedSceneShader::SetModelMatrix (const MATRIX& _mModel)
+void COGShadowedSceneShader::SetModelMatrix (const OGMatrix& _mModel)
 {
     m_mModel = _mModel;
 }
 
 
 // set view matrix
-void COGShadowedSceneShader::SetViewMatrix (const MATRIX& _mView)
+void COGShadowedSceneShader::SetViewMatrix (const OGMatrix& _mView)
 {
     m_mView = _mView;
 }
 
 
 // set projection matrix
-void COGShadowedSceneShader::SetProjectionMatrix (const MATRIX& _mProj)
+void COGShadowedSceneShader::SetProjectionMatrix (const OGMatrix& _mProj)
 {
     m_mProjection = _mProj;
 }
 
 
 // set shadow matrix
-void COGShadowedSceneShader::SetShadowMatrix (const MATRIX& _mShadowMVP)
+void COGShadowedSceneShader::SetShadowMatrix (const OGMatrix& _mShadowMVP)
 {
     m_mShadowMVP = _mShadowMVP;
 }

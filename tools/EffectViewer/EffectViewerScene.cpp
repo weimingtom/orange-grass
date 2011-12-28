@@ -51,15 +51,15 @@ bool CEffectViewerScene::Init ()
 
 	UpdateCamera();
 
-	Vec3 vLightDir = Vec3(0,1,0);
-	Vec4 vLightColor = Vec4(1,1,1,1);
+	OGVec3 vLightDir = OGVec3(0,1,0);
+	OGVec4 vLightColor = OGVec4(1,1,1,1);
 	IOGLight* pMainLight = m_pRenderer->GetLightMgr()->CreateLight();
 	pMainLight->type = OG_LIGHT_DIRECTIONAL;
 	pMainLight->vPosition = vLightDir;
 	pMainLight->fIntensity = 100.0f;
-	pMainLight->vAmbientColor = Vec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
-	pMainLight->vDiffuseColor = Vec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
-	pMainLight->vSpecularColor = Vec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
+	pMainLight->vAmbientColor = OGVec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
+	pMainLight->vDiffuseColor = OGVec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
+	pMainLight->vSpecularColor = OGVec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
 
 	glDisable(GL_CULL_FACE);
 	glEnable(GL_NORMALIZE);
@@ -116,14 +116,14 @@ void CEffectViewerScene::Update (unsigned long _ElapsedTime)
 			m_pCurEffect->Start();
 		}
 
-		Vec3 vDir = Vec3(0,0,-1);
+		OGVec3 vDir = OGVec3(0,0,-1);
 
 		if (m_pCurEffect->IsDynamic())
 		{
 			m_pCurPhysics->SetPosition(m_pCurPhysics->GetPosition() + vDir * 1.0f);
 		}
 
-		Vec3 vPos = m_pCurPhysics->GetPosition();
+		OGVec3 vPos = m_pCurPhysics->GetPosition();
 		m_pCurEffect->SetDirection(vDir);
 		m_pCurEffect->UpdatePosition(vPos);
 		m_pCurEffect->SetStartFinishPositions(vPos, vPos + (vDir * 100.0f));
@@ -140,7 +140,7 @@ void CEffectViewerScene::Update (unsigned long _ElapsedTime)
 // Render controller scene
 void CEffectViewerScene::RenderScene ()
 {
-	m_pRenderer->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
+	m_pRenderer->ClearFrame(OGVec4(0.3f, 0.3f, 0.4f, 1.0f));
 
 	RenderHelpers();
 
@@ -156,11 +156,11 @@ void CEffectViewerScene::RenderScene ()
 	unsigned long VBOSwitches;
 	unsigned long DrawCalls;
 	GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, VBOSwitches, DrawCalls);
-	m_pRenderer->DisplayString(Vec2(85.0f, 2.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
-	m_pRenderer->DisplayString(Vec2(85.0f, 6.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
-	m_pRenderer->DisplayString(Vec2(85.0f,10.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
-	m_pRenderer->DisplayString(Vec2(85.0f,14.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
-	m_pRenderer->DisplayString(Vec2(85.0f,18.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
+	m_pRenderer->DisplayString(OGVec2(85.0f, 2.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
+	m_pRenderer->DisplayString(OGVec2(85.0f, 6.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
+	m_pRenderer->DisplayString(OGVec2(85.0f,10.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
+	m_pRenderer->DisplayString(OGVec2(85.0f,14.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
+	m_pRenderer->DisplayString(OGVec2(85.0f,18.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
 	GetStatistics()->Reset();
 	m_pRenderer->FinishRenderMode();
 
@@ -197,7 +197,7 @@ void CEffectViewerScene::RenderHelpers()
 		if (m_pCurPhysics)
 		{
 			glMatrixMode(GL_MODELVIEW);
-			MATRIX mWorld = m_pCurPhysics->GetWorldTransform();
+			OGMatrix mWorld = m_pCurPhysics->GetWorldTransform();
 			MatrixMultiply(mWorld, mWorld, m_mView);
 			glLoadMatrixf(mWorld.f);
 		}
@@ -226,7 +226,7 @@ void CEffectViewerScene::SetupEffect(const char* _pEffectAlias)
 		m_pCurEffect = GetEffectsManager()->CreateEffect(_pEffectAlias);
 
 	    m_pCurPhysics = GetPhysics()->CreateObject(&m_PhysicalParams, m_pCurEffect->GetAABB(), NULL);
-		m_pCurPhysics->SetWorldTransform(Vec3(0,0,0), Vec3(0,0,0), Vec3(1,1,1));
+		m_pCurPhysics->SetWorldTransform(OGVec3(0,0,0), OGVec3(0,0,0), OGVec3(1,1,1));
 		GetPhysics()->AddObject(m_pCurPhysics);
 
 		m_pCurNode = m_pSg->CreateEffectNode(m_pCurEffect, m_pCurPhysics);
@@ -251,13 +251,13 @@ void CEffectViewerScene::CameraZoom (float _fFactor)
 // update camera
 void CEffectViewerScene::UpdateCamera()
 {
-    Vec3 vTarget (0, 0, 0);
+    OGVec3 vTarget (0, 0, 0);
 	if (m_pCurPhysics)
 	{
 		vTarget = m_pCurPhysics->GetPosition();
 	}
-	Vec3 vDir (0, 1.0f, 0.4f);
+	OGVec3 vDir (0, 1.0f, 0.4f);
 	vDir = vDir.normalize();
-	Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
+	OGVec3 vUp = vDir.cross (OGVec3(1, 0, 0));
 	m_pCamera->Setup (vTarget + (vDir*m_fCameraDistance), vTarget, vUp);
 }

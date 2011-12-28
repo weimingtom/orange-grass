@@ -119,7 +119,7 @@ void CStartMenuScreenController::Update (unsigned long _ElapsedTime)
 // Render controller scene
 void CStartMenuScreenController::RenderScene ()
 {
-	m_pRenderer->ClearFrame(Vec4(0.0f, 0.0f, 0.0f, 1.0f));
+	m_pRenderer->ClearFrame(OGVec4(0.0f, 0.0f, 0.0f, 1.0f));
 
     if (m_State != CSTATE_ACTIVE)
         return;
@@ -168,14 +168,14 @@ void CStartMenuScreenController::Deactivate ()
 
 
 // Control vector change event handler.
-bool CStartMenuScreenController::OnVectorChanged (const Vec3& _vVec)
+bool CStartMenuScreenController::OnVectorChanged (const OGVec3& _vVec)
 {
     return false;
 }
 
 
 // Touch event handler.
-bool CStartMenuScreenController::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
+bool CStartMenuScreenController::OnTouch (const OGVec2& _vPos, IOGTouchParam _param)
 {
 	if (m_State == CSTATE_ACTIVE)
 	{

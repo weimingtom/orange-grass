@@ -23,10 +23,10 @@ public:
 	virtual ~IOGInputReceiver() {}
 
 	// Control vector change event handler.
-	virtual bool OnVectorChanged (const Vec3& _vVec) = 0;
+	virtual bool OnVectorChanged (const OGVec3& _vVec) = 0;
 
 	// Touch event handler.
-	virtual bool OnTouch (const Vec2& _vPos, IOGTouchParam _param) = 0;
+	virtual bool OnTouch (const OGVec2& _vPos, IOGTouchParam _param) = 0;
 };
 
 

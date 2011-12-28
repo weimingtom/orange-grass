@@ -31,20 +31,20 @@ public:
 	virtual void Setup ();
 
     // set model matrix
-    virtual void SetModelMatrix (const MATRIX& _mModel){}
+    virtual void SetModelMatrix (const OGMatrix& _mModel){}
 
     // set view matrix
-    virtual void SetViewMatrix (const MATRIX& _mView){}
+    virtual void SetViewMatrix (const OGMatrix& _mView){}
 
     // set projection matrix
-    virtual void SetProjectionMatrix (const MATRIX& _mProj);
+    virtual void SetProjectionMatrix (const OGMatrix& _mProj);
     
     // set alpha test
     virtual void EnableAlphaTest (bool _bEnabled) {}
 
 protected:
 
-    MATRIX  m_mProjection;
+    OGMatrix  m_mProjection;
 
 	unsigned int m_uiVertShader;
 	unsigned int m_uiFragShader;

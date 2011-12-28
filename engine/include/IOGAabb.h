@@ -22,13 +22,13 @@ public:
 	}
 
 	// Construct AABB using minimum and maximum
-	IOGAabb (const Vec3& _vMin, const Vec3& _vMax)
+	IOGAabb (const OGVec3& _vMin, const OGVec3& _vMax)
 	{
 		SetMinMax (_vMin, _vMax);
 	}
 
 	// Set minimum and maximum of AABB
-	void SetMinMax (const Vec3& _vMin, const Vec3& _vMax)
+	void SetMinMax (const OGVec3& _vMin, const OGVec3& _vMax)
 	{
 		m_vMin = _vMin;
 		m_vMax = _vMax;
@@ -39,8 +39,8 @@ public:
 	// Embrace AABB
 	void EmbraceAABB (const IOGAabb& _aabb)
 	{
-		const Vec3& vNewMin = _aabb.GetMin();
-		const Vec3& vNewMax = _aabb.GetMax();
+		const OGVec3& vNewMin = _aabb.GetMin();
+		const OGVec3& vNewMax = _aabb.GetMax();
 
 		if (vNewMin.x < m_vMin.x) m_vMin.x = vNewMin.x;
 		if (vNewMin.y < m_vMin.y) m_vMin.y = vNewMin.y;
@@ -54,13 +54,13 @@ public:
 	}
 
 	// Get AABB minimum
-	const Vec3& GetMin () const { return m_vMin; }
+	const OGVec3& GetMin () const { return m_vMin; }
 
 	// Get AABB maximum
-	const Vec3& GetMax () const { return m_vMax; }
+	const OGVec3& GetMax () const { return m_vMax; }
 
 	// Get AABB maximum
-	const Vec3& GetCenter () const { return m_vCenter; }
+	const OGVec3& GetCenter () const { return m_vCenter; }
 
 	// Get size x
 	float GetSizeX () const { return m_vMax.x - m_vMin.x; }
@@ -76,11 +76,11 @@ public:
 
     // Check AABB-line intersection
     bool CheckIntersection ( 
-        const Vec3& _LineStart, 
-        const Vec3& _LineEnd ) const
+        const OGVec3& _LineStart, 
+        const OGVec3& _LineEnd ) const
     {
-        Vec3 vStart = _LineStart;
-        Vec3 vEnd = _LineEnd;
+        OGVec3 vStart = _LineStart;
+        OGVec3 vEnd = _LineEnd;
         for ( int Axis = 0; Axis < 3; ++Axis )
         {
             int Res = ClipAxialLine ( vStart, vEnd, -1, Axis, -m_vMin [ Axis ] );
@@ -97,9 +97,9 @@ public:
 
 private:
 
-	Vec3	m_vMin;
-	Vec3	m_vMax;
-	Vec3	m_vCenter;
+	OGVec3	m_vMin;
+	OGVec3	m_vMax;
+	OGVec3	m_vCenter;
 	float	m_fBoundingRadius;
 };
 

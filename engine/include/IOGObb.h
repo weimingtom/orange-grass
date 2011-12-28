@@ -29,7 +29,7 @@ public:
 	}
 
 	// Update OBB transformation
-	void UpdateTransform (const MATRIX& _mTransform)
+	void UpdateTransform (const OGMatrix& _mTransform)
 	{
         m_vMin = m_Aabb.GetMin();
         m_vMax = m_Aabb.GetMax();
@@ -51,32 +51,32 @@ public:
 
     // Check OBB-ray intersection
     bool CheckIntersection (
-        const Vec3&	_vRayStart,
-        const Vec3&	_vRayDir
+        const OGVec3&	_vRayStart,
+        const OGVec3&	_vRayDir
         ) const
     {
-        Vec3 vOrg = VectorConvertToLocal ( _vRayStart - m_vCenter );
-        Vec3 vDirection = VectorConvertToLocal ( _vRayDir );
+        OGVec3 vOrg = VectorConvertToLocal ( _vRayStart - m_vCenter );
+        OGVec3 vDirection = VectorConvertToLocal ( _vRayDir );
         return m_TransformedAabb.CheckIntersection (vOrg, vOrg + vDirection * 200000.f);
     }
 
     // Check OBB-line intersection
     bool CheckLineIntersection (
-        const Vec3&	_vRayStart,
-        const Vec3&	_vRayEnd
+        const OGVec3&	_vRayStart,
+        const OGVec3&	_vRayEnd
         ) const
     {
-        Vec3 vOrg = VectorConvertToLocal ( _vRayStart - m_vCenter );
-        Vec3 vDir = (_vRayEnd - _vRayStart);
+        OGVec3 vOrg = VectorConvertToLocal ( _vRayStart - m_vCenter );
+        OGVec3 vDir = (_vRayEnd - _vRayStart);
         float fLen = vDir.length();
-        Vec3 vDirection = VectorConvertToLocal ( vDir.normalized() );
+        OGVec3 vDirection = VectorConvertToLocal ( vDir.normalized() );
         return m_TransformedAabb.CheckIntersection (vOrg, vOrg + vDirection * fLen);
     }
 
     // Convert point to world space
-    Vec3 VectorConvertToWorld (const Vec3& _Vector) const
+    OGVec3 VectorConvertToWorld (const OGVec3& _Vector) const
     {
-        Vec3 RetVector;
+        OGVec3 RetVector;
         for ( int i = 0; i < 3; ++i )
             RetVector [i] = _Vector.dot ( m_vAxis [i] )  + m_vCenter [i];
 
@@ -84,9 +84,9 @@ public:
     }
 
     // Convert point to local space
-    Vec3 VectorConvertToLocal (const Vec3& _Vector) const
+    OGVec3 VectorConvertToLocal (const OGVec3& _Vector) const
     {
-        Vec3 RetVector;
+        OGVec3 RetVector;
         for ( int i = 0; i < 3; ++i )
             RetVector [i] = 
                 m_vAxis [0][i] * _Vector.x +
@@ -99,10 +99,10 @@ public:
 public:
 
 	bool	m_bTransformed;
-	Vec3	m_vMin;
-	Vec3	m_vMax;
-	Vec3	m_vCenter;
-	Vec3	m_vAxis[3];
+	OGVec3	m_vMin;
+	OGVec3	m_vMax;
+	OGVec3	m_vCenter;
+	OGVec3	m_vAxis[3];
     IOGAabb m_Aabb;
     IOGAabb m_TransformedAabb;
 };

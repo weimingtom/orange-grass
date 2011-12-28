@@ -17,7 +17,7 @@ CEditorLevelScene::CEditorLevelScene()
     m_pCurLevel = NULL;
 	m_pCurActor = NULL;
 	m_pPickedActor = NULL;
-	m_vCurScaling = Vec3(1,1,1);
+	m_vCurScaling = OGVec3(1,1,1);
 	m_CurActorType = OG_ACTOR_NONE;
 	m_fAirBotHeight = 80.0f;
 	m_fCameraDistance = 400.0f;
@@ -140,7 +140,7 @@ void CEditorLevelScene::Update (unsigned long _ElapsedTime)
 // Render controller scene
 void CEditorLevelScene::RenderScene ()
 {
-	m_pRenderer->ClearFrame(Vec4(0.3f, 0.3f, 0.4f, 1.0f));
+	m_pRenderer->ClearFrame(OGVec4(0.3f, 0.3f, 0.4f, 1.0f));
 
 	if (m_pCurLevel)
     {
@@ -155,7 +155,7 @@ void CEditorLevelScene::RenderScene ()
         m_pRenderer->FinishRenderMode();
 
 		m_pRenderer->StartRenderMode(OG_RENDERMODE_SHADOWMAP);
-	    m_pRenderer->ClearFrame(Vec4(0.0f, 0.0f, 0.0f, 0.0f));
+	    m_pRenderer->ClearFrame(OGVec4(0.0f, 0.0f, 0.0f, 0.0f));
 		m_pRenderer->EnableColor(false);
 		m_pSg->RenderLandscape(m_pCamera);
 		m_pRenderer->EnableColor(true);
@@ -193,11 +193,11 @@ void CEditorLevelScene::RenderScene ()
 	unsigned long DrawCalls;
 	GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, 
 		VBOSwitches, DrawCalls);
-	m_pRenderer->DisplayString(Vec2(85.0f, 2.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
-	m_pRenderer->DisplayString(Vec2(85.0f, 6.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
-	m_pRenderer->DisplayString(Vec2(85.0f,10.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
-	m_pRenderer->DisplayString(Vec2(85.0f,14.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
-	m_pRenderer->DisplayString(Vec2(85.0f,18.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
+	m_pRenderer->DisplayString(OGVec2(85.0f, 2.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
+	m_pRenderer->DisplayString(OGVec2(85.0f, 6.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
+	m_pRenderer->DisplayString(OGVec2(85.0f,10.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
+	m_pRenderer->DisplayString(OGVec2(85.0f,14.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
+	m_pRenderer->DisplayString(OGVec2(85.0f,18.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
 	GetStatistics()->Reset();
 	m_pRenderer->FinishRenderMode();
 
@@ -272,15 +272,15 @@ bool CEditorLevelScene::LoadLevel (const std::string& _LevelName)
 	}
 	
 	IOGActor* pPlayerActor = m_pActorMgr->GetPlayersActor();
-	Vec3 vCraftPos = m_pCurLevel->GetStartPosition();
+	OGVec3 vCraftPos = m_pCurLevel->GetStartPosition();
 	vCraftPos.y = m_fAirBotHeight;
 	if (!pPlayerActor)
 	{
 		pPlayerActor = m_pActorMgr->CreateActor(
 			std::string("helicopter_player"),
 			vCraftPos, 
-            Vec3(0,0,0), 
-            Vec3(1,1,1));
+            OGVec3(0,0,0), 
+            OGVec3(1,1,1));
 		m_pActorMgr->AddActor(pPlayerActor);
 	}
 	else
@@ -310,8 +310,8 @@ void CEditorLevelScene::SetEditMode (TerrainEditMode _Mode)
         case EDITMODE_OBJECTS:
             {
                 m_pPickedActor = NULL;
-                m_vCurRotation = Vec3(0, 0, 0);
-                m_vCurScaling = Vec3(1, 1, 1);
+                m_vCurRotation = OGVec3(0, 0, 0);
+                m_vCurScaling = OGVec3(1, 1, 1);
                 if (m_CurModelAlias.empty())
                     SetNewCurrentNodeForPlacement(NULL);
                 else
@@ -321,8 +321,8 @@ void CEditorLevelScene::SetEditMode (TerrainEditMode _Mode)
 
         case EDITMODE_ADJUST:
             {
-                m_vCurRotation = Vec3(0, 0, 0);
-                m_vCurScaling = Vec3(1, 1, 1);
+                m_vCurRotation = OGVec3(0, 0, 0);
+                m_vCurScaling = OGVec3(1, 1, 1);
                 m_pPickedActor = NULL;
                 SetNewCurrentNodeForPlacement(NULL);
             }
@@ -330,8 +330,8 @@ void CEditorLevelScene::SetEditMode (TerrainEditMode _Mode)
 
         case EDITMODE_SETTINGS:
             {
-                m_vCurRotation = Vec3(0, 0, 0);
-                m_vCurScaling = Vec3(1, 1, 1);
+                m_vCurRotation = OGVec3(0, 0, 0);
+                m_vCurScaling = OGVec3(1, 1, 1);
                 m_pPickedActor = NULL;
                 SetNewCurrentNodeForPlacement(NULL);
             }
@@ -353,9 +353,9 @@ void CEditorLevelScene::SetNewCurrentNodeForPlacement(const char* _pModelAlias)
 
 		m_pCurActor = m_pActorMgr->CreateActor(
             m_CurModelAlias,
-            Vec3(0,0,0), 
-            Vec3(0,0,0), 
-            Vec3(1,1,1));
+            OGVec3(0,0,0), 
+            OGVec3(0,0,0), 
+            OGVec3(1,1,1));
 		m_pCurActor->Activate(true);
 		m_CurActorType = m_pCurActor->GetType();
 	}
@@ -367,12 +367,12 @@ void CEditorLevelScene::SetNewCurrentNodeForPlacement(const char* _pModelAlias)
 
 
 // Place the current node
-void CEditorLevelScene::PlaceCurrentNode (const Vec3& _vPos)
+void CEditorLevelScene::PlaceCurrentNode (const OGVec3& _vPos)
 {
     if (m_pCurLevel == NULL || m_pCurActor == NULL)
         return;
 
-    Vec3 vIntersection = _vPos;
+    OGVec3 vIntersection = _vPos;
 	if (m_CurActorType == OG_ACTOR_AIRBOT || m_CurActorType == OG_ACTOR_PLAYER)
 	{
 		vIntersection.y = m_fAirBotHeight;
@@ -388,12 +388,12 @@ void CEditorLevelScene::PlaceCurrentNode (const Vec3& _vPos)
 
 
 // Update current actor's position
-void CEditorLevelScene::UpdateCurrentNodePosition (const Vec3& _vPos)
+void CEditorLevelScene::UpdateCurrentNodePosition (const OGVec3& _vPos)
 {
     if (m_pCurActor == NULL)
         return;
 
-    Vec3 vPos = _vPos;
+    OGVec3 vPos = _vPos;
     if (m_CurActorType == OG_ACTOR_AIRBOT || m_CurActorType == OG_ACTOR_PLAYER)
     {
         vPos.y = m_fAirBotHeight;
@@ -403,7 +403,7 @@ void CEditorLevelScene::UpdateCurrentNodePosition (const Vec3& _vPos)
 
 
 // Update level start position
-void CEditorLevelScene::UpdateLevelStartPosition (const Vec3& _vPos)
+void CEditorLevelScene::UpdateLevelStartPosition (const OGVec3& _vPos)
 {
     if (m_pCurLevel == NULL)
         return;
@@ -413,7 +413,7 @@ void CEditorLevelScene::UpdateLevelStartPosition (const Vec3& _vPos)
     IOGActor* pPlayerActor = m_pActorMgr->GetPlayersActor();
     if (pPlayerActor)
     {
-        Vec3 vCraftPos = _vPos;
+        OGVec3 vCraftPos = _vPos;
         vCraftPos.y = m_fAirBotHeight;
         pPlayerActor->GetPhysicalObject()->SetPosition(vCraftPos);
     }
@@ -421,7 +421,7 @@ void CEditorLevelScene::UpdateLevelStartPosition (const Vec3& _vPos)
 
 
 // Update level start position
-void CEditorLevelScene::UpdateLevelFinishPosition (const Vec3& _vPos)
+void CEditorLevelScene::UpdateLevelFinishPosition (const OGVec3& _vPos)
 {
     if (m_pCurLevel == NULL)
         return;
@@ -452,9 +452,9 @@ void CEditorLevelScene::UpdateLevelActiveWidth (float _fWidthDiff)
 
 
 // Get picking ray
-void CEditorLevelScene::GetMousePickingRay (Vec3& _vPos, Vec3& _vRay, int _mouseX, int _mouseY)
+void CEditorLevelScene::GetMousePickingRay (OGVec3& _vPos, OGVec3& _vRay, int _mouseX, int _mouseY)
 {
-    Vec3 vPick = m_pRenderer->UnprojectCoords (_mouseX, _mouseY);
+    OGVec3 vPick = m_pRenderer->UnprojectCoords (_mouseX, _mouseY);
     _vPos = m_pCamera->GetPosition();
     _vRay = vPick - _vPos;
     _vRay.normalize();
@@ -462,12 +462,12 @@ void CEditorLevelScene::GetMousePickingRay (Vec3& _vPos, Vec3& _vRay, int _mouse
 
 
 // Get terrain intersection position.
-bool CEditorLevelScene::GetTerrainIntersection (Vec3& _vOutPos, int _mouseX, int _mouseY)
+bool CEditorLevelScene::GetTerrainIntersection (OGVec3& _vOutPos, int _mouseX, int _mouseY)
 {
     if (m_pCurLevel == NULL)
         return false;
 
-	Vec3 vPos, vVec;
+	OGVec3 vPos, vVec;
 	GetMousePickingRay(vPos, vVec, _mouseX, _mouseY);
 	return m_pCurLevel->GetTerrain()->GetRayIntersection(vPos, vVec, &_vOutPos);
 }
@@ -476,18 +476,18 @@ bool CEditorLevelScene::GetTerrainIntersection (Vec3& _vOutPos, int _mouseX, int
 // Pick actor
 void CEditorLevelScene::PickActor (int _mouseX, int _mouseY)
 {
-    Vec3 vPos, vVec;
+    OGVec3 vPos, vVec;
     GetMousePickingRay(vPos, vVec, _mouseX, _mouseY);
     m_pPickedActor = m_pActorMgr->GetNearestIntersectedActor(vPos, vVec);
 }
 
 
 // Update picked actor's position
-void CEditorLevelScene::UpdatePickedActorPosition (const Vec3& _vDiff)
+void CEditorLevelScene::UpdatePickedActorPosition (const OGVec3& _vDiff)
 {
 	if (m_pPickedActor)
 	{
-		Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); 
+		OGVec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition(); 
 		vPos += _vDiff;
 		m_pPickedActor->GetPhysicalObject()->SetPosition(vPos);
 	}
@@ -495,7 +495,7 @@ void CEditorLevelScene::UpdatePickedActorPosition (const Vec3& _vDiff)
 
 
 // Update selected actor's rotation
-void CEditorLevelScene::UpdateSelectedActorRotation (const Vec3& _vRotationDiff, bool _bCoarse)
+void CEditorLevelScene::UpdateSelectedActorRotation (const OGVec3& _vRotationDiff, bool _bCoarse)
 {
 	float fStep = _bCoarse ? m_fCoarseAngleStep : m_fFineAngleStep;
 	if (m_pCurActor)
@@ -505,7 +505,7 @@ void CEditorLevelScene::UpdateSelectedActorRotation (const Vec3& _vRotationDiff,
 	}
 	if (m_pPickedActor)
 	{
-		Vec3 vRot = m_pPickedActor->GetPhysicalObject()->GetRotation();
+		OGVec3 vRot = m_pPickedActor->GetPhysicalObject()->GetRotation();
 		vRot += fStep * _vRotationDiff;
 		m_pPickedActor->GetPhysicalObject()->SetRotation(vRot);
 	}
@@ -518,13 +518,13 @@ void CEditorLevelScene::UpdateSelectedActorScaling (float _fScalingDiff, bool _b
 	float fStep = _bCoarse ? m_fCoarseAngleStep : m_fFineAngleStep;
 	if (m_pCurActor)
 	{
-		m_vCurScaling += Vec3(1,1,1) * (fStep * _fScalingDiff);
+		m_vCurScaling += OGVec3(1,1,1) * (fStep * _fScalingDiff);
 		m_pCurActor->GetPhysicalObject()->SetScaling(m_vCurScaling);
 	}
 	if (m_pPickedActor)
 	{
-		Vec3 vScale = m_pPickedActor->GetPhysicalObject()->GetScaling();
-		vScale += Vec3(1,1,1) * (fStep * _fScalingDiff);
+		OGVec3 vScale = m_pPickedActor->GetPhysicalObject()->GetScaling();
+		vScale += OGVec3(1,1,1) * (fStep * _fScalingDiff);
 		m_pPickedActor->GetPhysicalObject()->SetScaling(vScale);
 	}
 }
@@ -537,13 +537,13 @@ void CEditorLevelScene::ResetSelectedActorTansform ()
 	{
 		m_vCurScaling.x = m_vCurScaling.y = m_vCurScaling.z = 1;
 		m_vCurRotation.x = m_vCurRotation.y = m_vCurRotation.z = 0;
-		Vec3 vPos = m_pCurActor->GetPhysicalObject()->GetPosition();
+		OGVec3 vPos = m_pCurActor->GetPhysicalObject()->GetPosition();
 		m_pCurActor->GetPhysicalObject()->SetWorldTransform(vPos, m_vCurRotation, m_vCurScaling);
 	}
 	if (m_pPickedActor)
 	{
-		Vec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition();
-		m_pPickedActor->GetPhysicalObject()->SetWorldTransform(vPos, Vec3(0, 0, 0), Vec3(1, 1, 1));
+		OGVec3 vPos = m_pPickedActor->GetPhysicalObject()->GetPosition();
+		m_pPickedActor->GetPhysicalObject()->SetWorldTransform(vPos, OGVec3(0, 0, 0), OGVec3(1, 1, 1));
 	}
 }
 
@@ -569,7 +569,7 @@ void CEditorLevelScene::CameraZoom (float _fFactor)
 // Camera move
 void CEditorLevelScene::CameraMove (float _fX, float _fZ)
 {
-	m_pCamera->Strafe(5.5f, Vec3(_fX, 0, _fZ));
+	m_pCamera->Strafe(5.5f, OGVec3(_fX, 0, _fZ));
 }
 
 
@@ -582,14 +582,14 @@ void CEditorLevelScene::CameraMode (CamModes mode)
     {
     case CAMMODE_EDITOR:
         {
-            Vec3 vTarget (200, 0, -100);
+            OGVec3 vTarget (200, 0, -100);
             if (m_pCurLevel)
             {
                 vTarget = m_pActorMgr->GetPlayersActor()->GetPhysicalObject()->GetPosition();
             }
-	        Vec3 vDir (0, 1.0f, 0.4f);
+	        OGVec3 vDir (0, 1.0f, 0.4f);
 	        vDir = vDir.normalize();
-	        Vec3 vUp = vDir.cross (Vec3(1, 0, 0));
+	        OGVec3 vUp = vDir.cross (OGVec3(1, 0, 0));
 	        m_pCamera->Setup (vTarget + (vDir* m_fCameraDistance), vTarget, vUp);
             m_pCamera->Update();
         }
@@ -597,19 +597,19 @@ void CEditorLevelScene::CameraMode (CamModes mode)
 
     case CAMMODE_GAME:
         {
-        	Vec3 vCameraDir = GetGlobalVars()->GetVec3Var("cam_dir");
-	        Vec3 vCameraOffset = GetGlobalVars()->GetVec3Var("cam_offset");
+        	OGVec3 vCameraDir = GetGlobalVars()->GetVec3Var("cam_dir");
+	        OGVec3 vCameraOffset = GetGlobalVars()->GetVec3Var("cam_offset");
         	float fCameraTargetDistance = GetGlobalVars()->GetFVar("cam_distance");
 
-            Vec3 vTarget (200, m_fAirBotHeight, -100);
+            OGVec3 vTarget (200, m_fAirBotHeight, -100);
             if (m_pCurLevel)
             {
                 vTarget = m_pActorMgr->GetPlayersActor()->GetPhysicalObject()->GetPosition() + vCameraOffset;
             }
 
-            Vec3 vPos = vTarget + (vCameraDir * fCameraTargetDistance);
+            OGVec3 vPos = vTarget + (vCameraDir * fCameraTargetDistance);
 
-	        Vec3 vUp = vCameraDir.cross (Vec3(1, 0, 0));
+	        OGVec3 vUp = vCameraDir.cross (OGVec3(1, 0, 0));
 	        m_pCamera->Setup (vPos, vTarget, vUp);
             m_pCamera->Update();
         }

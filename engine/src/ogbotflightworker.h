@@ -32,7 +32,7 @@ public:
 
 protected:
 
-    Vec3		m_vStartPos;
+    OGVec3		m_vStartPos;
 };
 
 

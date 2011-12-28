@@ -51,7 +51,7 @@ void COGSceneMesh::UnloadSubMeshes ()
 // Render parts of the mesh.
 void COGSceneMesh::RenderParts (const IOGFrustum& _frustum)
 {
-	MATRIX mNodeWorld;
+	OGMatrix mNodeWorld;
 	PartsList::const_iterator iter = m_TerraParts.begin();
 	for (; iter != m_TerraParts.end(); ++iter)
 	{

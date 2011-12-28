@@ -39,14 +39,14 @@ void COGFinishLevelWorker::Update (unsigned long _ElapsedTime)
 	if (!m_bActive)
 		return;
 
-    const Vec3& vActorPos = m_pActor->GetPhysicalObject()->GetPosition();
+    const OGVec3& vActorPos = m_pActor->GetPhysicalObject()->GetPosition();
 
     switch (m_WrkState)
     {
     case FINISHWRK_STATE_MOVING:
         if (Dist2DSq(vActorPos, m_vTarget) >= 1000.0f)
         {
-            Vec3 vMoveDir = Vec3(m_vTarget.x, vActorPos.y, m_vTarget.z) - vActorPos;
+            OGVec3 vMoveDir = OGVec3(m_vTarget.x, vActorPos.y, m_vTarget.z) - vActorPos;
             vMoveDir.normalize();
             m_pActor->GetPhysicalObject()->Move(vMoveDir);
         }
@@ -59,7 +59,7 @@ void COGFinishLevelWorker::Update (unsigned long _ElapsedTime)
     case FINISHWRK_STATE_LANDING:
         if (vActorPos.y > 10.0f)
         {
-            m_pActor->GetPhysicalObject()->Move(Vec3(0, -1.0f, 0));
+            m_pActor->GetPhysicalObject()->Move(OGVec3(0, -1.0f, 0));
         }
         else
         {
@@ -89,7 +89,7 @@ void COGFinishLevelWorker::Reset ()
 
 
 // Set target.
-void COGFinishLevelWorker::SetTarget(const Vec3& _vTarget) 
+void COGFinishLevelWorker::SetTarget(const OGVec3& _vTarget) 
 {
     m_vTarget = _vTarget;
     m_OrientWorker.SetTarget(_vTarget);

@@ -33,7 +33,7 @@ COGSgLandscapeNode::~COGSgLandscapeNode ()
 
 
 // get world transform.
-const MATRIX& COGSgLandscapeNode::GetWorldTransform () const
+const OGMatrix& COGSgLandscapeNode::GetWorldTransform () const
 {
     return m_World;
 }
@@ -77,7 +77,7 @@ IOGPhysicalObject* COGSgLandscapeNode::GetPhysics ()
 
 
 // Get active point
-bool COGSgLandscapeNode::GetActivePoint (Vec3& _point, const std::string& _Alias)
+bool COGSgLandscapeNode::GetActivePoint (OGVec3& _point, const std::string& _Alias)
 {
     return false;
 }

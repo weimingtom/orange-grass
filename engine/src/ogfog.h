@@ -19,10 +19,10 @@ public:
 	virtual ~COGFog ();
 
 	// set light color.
-	virtual void SetColor (const Vec4& _vColor);
+	virtual void SetColor (const OGVec4& _vColor);
 	
 	// get light color.
-	virtual const Vec4& GetColor () const {return m_Color;}
+	virtual const OGVec4& GetColor () const {return m_Color;}
 
 	// set fog start.
 	virtual void SetStart (float _fStart);
@@ -50,7 +50,7 @@ public:
 
 private:
 
-	Vec4	m_Color;
+	OGVec4	m_Color;
 	float	m_fStart;
 	float	m_fEnd;
 	float	m_fDensity;

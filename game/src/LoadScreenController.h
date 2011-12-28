@@ -64,10 +64,10 @@ private:
 
 	// UI layout settings
 	std::string		m_LoadSprStr;
-	Vec2			m_LoadSprPos;
-	Vec2			m_LoadSprSize;
+	OGVec2			m_LoadSprPos;
+	OGVec2			m_LoadSprSize;
 
-	Vec2			m_LoadLabelPos;
+	OGVec2			m_LoadLabelPos;
 };
 
 #endif

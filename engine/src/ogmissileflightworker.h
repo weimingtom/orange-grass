@@ -28,7 +28,7 @@ public:
 	virtual void Activate (bool _bActive);
 
 	// Set target.
-	virtual void SetTarget (const Vec3& _vTarget);
+	virtual void SetTarget (const OGVec3& _vTarget);
 
 	// Set target.
 	virtual void SetTarget (IOGActor* _pTarget);
@@ -53,9 +53,9 @@ protected:
         WRK_STATUS_STRAIGHT
     };
 
-    Vec3		m_vStartPos;
+    OGVec3		m_vStartPos;
 
-    Vec3        m_vTarget;
+    OGVec3        m_vTarget;
     IOGActor*   m_pTarget;
     bool        m_bTargeted;
 

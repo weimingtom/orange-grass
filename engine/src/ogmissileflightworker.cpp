@@ -39,7 +39,7 @@ bool COGMissileFlightWorker::Create(IOGActor* _pActor)
 
 
 // Set target.
-void COGMissileFlightWorker::SetTarget (const Vec3& _vTarget)
+void COGMissileFlightWorker::SetTarget (const OGVec3& _vTarget)
 {
     m_vTarget = _vTarget;
     m_bTargeted = true;
@@ -124,12 +124,12 @@ void COGMissileFlightWorker::UpdateTargeted (unsigned long _ElapsedTime)
 
 	case WRK_STATUS_TARGETING:
 		{
-			Vec3 vTargetPos = m_pTarget ? m_pTarget->GetPhysicalObject()->GetPosition() : m_vTarget;
+			OGVec3 vTargetPos = m_pTarget ? m_pTarget->GetPhysicalObject()->GetPosition() : m_vTarget;
 
 			m_pActor->GetPhysicalObject()->Orient(vTargetPos);
 			m_pActor->GetPhysicalObject()->Accelerate(1.0f);
 
-			Vec3 vCurPos = m_pActor->GetPhysicalObject()->GetPosition();
+			OGVec3 vCurPos = m_pActor->GetPhysicalObject()->GetPosition();
 			float fDistToTarget = Dist2D(vCurPos, vTargetPos);
 			if (fDistToTarget > m_fPrevDistToTarget)
 			{

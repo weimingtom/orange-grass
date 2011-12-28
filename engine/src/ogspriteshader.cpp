@@ -9,7 +9,7 @@
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogspriteshader.h"
-#include "GraphicsDevice.h"
+#include "ogshader.h"
 
 
 COGSpriteShader::COGSpriteShader ()
@@ -71,7 +71,7 @@ void COGSpriteShader::Setup ()
 
 
 // set projection matrix
-void COGSpriteShader::SetProjectionMatrix (const MATRIX& _mProj)
+void COGSpriteShader::SetProjectionMatrix (const OGMatrix& _mProj)
 {
     m_mProjection = _mProj;
 }

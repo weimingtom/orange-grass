@@ -11,8 +11,7 @@
 
 #include "IOGTerrain.h"
 #include "IOGMaterial.h"
-#include "Geometry.h"
-#include "Mathematics.h"
+#include "IOGMath.h"
 #include "ogresource.h"
 #include "IOGRenderer.h"
 #include "IOGSettingsReader.h"
@@ -32,16 +31,16 @@ public:
 	virtual void Unload ();
 
 	// Render terrain.
-	virtual void Render (const MATRIX& _mWorld);
+	virtual void Render (const OGMatrix& _mWorld);
 
 	// Render all.
-	virtual void RenderAll (const MATRIX& _mWorld);
+	virtual void RenderAll (const OGMatrix& _mWorld);
 
 	// Get type of the renderable.
 	virtual RenderableType GetRenderableType () const { return OG_RENDERABLE_TERRAIN; }
 
     // Get ray intersection
-    virtual bool GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos);
+    virtual bool GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos);
 
     // Get mesh geometry
     virtual const std::vector<OGFace>& GetGeometry () const {return m_pMesh->GetGeometry(); }
@@ -62,9 +61,9 @@ private:
 
 	struct Cfg
 	{
-        Vec4 material_ambient;
-        Vec4 material_diffuse;
-        Vec4 material_specular;
+        OGVec4 material_ambient;
+        OGVec4 material_diffuse;
+        OGVec4 material_specular;
 		std::string mesh_file;
 		std::string texture_alias;
 		std::string objects_texture_alias;

@@ -22,9 +22,9 @@ public:
 	// Create actor.
 	virtual bool Create (
 		IOGActorParams* _pParams,
-		const Vec3& _vPos,
-		const Vec3& _vRot,
-        const Vec3& _vScale) = 0;
+		const OGVec3& _vPos,
+		const OGVec3& _vRot,
+        const OGVec3& _vScale) = 0;
 
 	// Set game event handler.
     virtual void SetGameEventHandler (IOGGameEventsHandler* _pHandler) {m_pGameEventsHandler = _pHandler;}
@@ -88,8 +88,8 @@ public:
 
 	// Check actor's OBB intersection with ray.
 	virtual bool CheckIntersection (
-        const Vec3& _vRayStart,
-        const Vec3& _vRayDir ) const;
+        const OGVec3& _vRayStart,
+        const OGVec3& _vRayDir ) const;
 
     // collision event handler
 	virtual bool OnCollision (const IOGCollision& _Collision);

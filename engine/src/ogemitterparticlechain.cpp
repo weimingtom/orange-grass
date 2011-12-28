@@ -19,7 +19,7 @@ COGEmitterParticleChain::COGEmitterParticleChain()
 	m_Texture = std::string("effects");
 	m_MappingId = 12;
 	m_NumParticles = 12;
-	m_color = Vec4(0.6f, 0.7f, 1.0f, 0.2f);
+	m_color = OGVec4(0.6f, 0.7f, 1.0f, 0.2f);
 
 	AddStringParam("texture", &m_Texture);
 	AddIntParam("mapping", &m_MappingId);
@@ -48,10 +48,10 @@ void COGEmitterParticleChain::Init(IOGGroupNode* _pNode)
 	{
 		ParticleFormat particle;
 		particle.scale = ((float)m_NumParticles - i) / 6.5f;
-        particle.pVertices[0].t = Vec2(m_pMapping->t1.x, m_pMapping->t0.y);
-        particle.pVertices[1].t = Vec2(m_pMapping->t0.x, m_pMapping->t0.y);
-        particle.pVertices[2].t = Vec2(m_pMapping->t1.x, m_pMapping->t1.y);
-        particle.pVertices[3].t = Vec2(m_pMapping->t0.x, m_pMapping->t1.y);
+        particle.pVertices[0].t = OGVec2(m_pMapping->t1.x, m_pMapping->t0.y);
+        particle.pVertices[1].t = OGVec2(m_pMapping->t0.x, m_pMapping->t0.y);
+        particle.pVertices[2].t = OGVec2(m_pMapping->t1.x, m_pMapping->t1.y);
+        particle.pVertices[3].t = OGVec2(m_pMapping->t0.x, m_pMapping->t1.y);
 		particle.pVertices[0].c = m_color;
 		particle.pVertices[1].c = m_color;
 		particle.pVertices[2].c = m_color;
@@ -77,25 +77,25 @@ void COGEmitterParticleChain::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGEmitterParticleChain::Render (const MATRIX& _mWorld, const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight)
+void COGEmitterParticleChain::Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-    MATRIX mId; 
+    OGMatrix mId; 
     MatrixIdentity(mId);
     m_pRenderer->SetModelMatrix(mId);
 	m_pRenderer->SetBlend(m_Blend);
 	m_pRenderer->SetTexture(m_pTexture);
 
-    Vec3 vOffset = Vec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
+    OGVec3 vOffset = OGVec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
 
     std::vector<ParticleFormat>::iterator iter = m_BBList.begin();
     for (; iter != m_BBList.end(); ++iter)
     {
 		ParticleFormat& particle = *iter;
-		Vec3 vSUp = _vUp * particle.scale;
-		Vec3 vSRight = _vRight * particle.scale;
+		OGVec3 vSUp = _vUp * particle.scale;
+		OGVec3 vSRight = _vRight * particle.scale;
 		particle.pVertices[0].p = vOffset + vSRight + vSUp + particle.offset;
 		particle.pVertices[1].p = vOffset - vSRight + vSUp + particle.offset;
 		particle.pVertices[2].p = vOffset + vSRight - vSUp + particle.offset;

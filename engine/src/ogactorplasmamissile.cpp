@@ -23,9 +23,9 @@ COGActorPlasmaMissile::~COGActorPlasmaMissile()
 
 // Create actor.
 bool COGActorPlasmaMissile::Create (IOGActorParams* _pParams,
-                                    const Vec3& _vPos,
-                                    const Vec3& _vRot,
-                                    const Vec3& _vScale)
+                                    const OGVec3& _vPos,
+                                    const OGVec3& _vRot,
+                                    const OGVec3& _vScale)
 {
 	m_pParams = _pParams;
 
@@ -93,7 +93,7 @@ void COGActorPlasmaMissile::Activate (bool _bActive)
 		m_FlightWorker.Reset();
 		m_FlightWorker.Activate(true);
 		m_pHeadEffect->Start();
-		Vec3 vDir = m_pPhysicalObject->GetDirection();
+		OGVec3 vDir = m_pPhysicalObject->GetDirection();
 		m_pHeadEffect->SetDirection(-vDir);
         m_pPhysicalObject->Update(1);
 	}
@@ -110,8 +110,8 @@ void COGActorPlasmaMissile::Fire ()
 {
 	COGActorBullet::Fire();
 
-    Vec3 vRot = m_pOwner->GetPhysicalObject()->GetRotation();
-	m_pPhysicalObject->SetWorldTransform(m_vLaunchOffset, vRot, Vec3(1,1,1));
+    OGVec3 vRot = m_pOwner->GetPhysicalObject()->GetRotation();
+	m_pPhysicalObject->SetWorldTransform(m_vLaunchOffset, vRot, OGVec3(1,1,1));
     Activate(true);
 }
 

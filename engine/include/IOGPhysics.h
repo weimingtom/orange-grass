@@ -34,10 +34,10 @@ public:
 	virtual void RemoveObject (IOGPhysicalObject* _pObject) = 0;
 
     // Set level borders
-    virtual void SetLevelBorders (const Vec3& _vStart, const Vec3& _vFinish, float _fWidth) = 0;
+    virtual void SetLevelBorders (const OGVec3& _vStart, const OGVec3& _vFinish, float _fWidth) = 0;
 
     // Get borders at point
-    virtual void GetBordersAtPoint (const Vec3& _vPos, Vec3& _vLeft, Vec3& _vRight) = 0;
+    virtual void GetBordersAtPoint (const OGVec3& _vPos, OGVec3& _vLeft, OGVec3& _vRight) = 0;
 
 	// Update transforms.
 	virtual void Update (unsigned long _ElapsedTime) = 0;

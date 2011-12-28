@@ -31,7 +31,7 @@ public:
 	virtual void Render ();
 
 	// Hit test.
-	virtual bool IsHit (const Vec2& _vPos);
+	virtual bool IsHit (const OGVec2& _vPos);
 
 protected:
 
@@ -42,10 +42,10 @@ protected:
 
 	// UI layout settings
 	std::string			m_HUDSprStr;
-	Vec2				m_Size;
-    Vec2				m_Position;
-	Vec2				m_WeaponIconPos;
-	Vec2				m_WeaponIconSize;
+	OGVec2				m_Size;
+    OGVec2				m_Position;
+	OGVec2				m_WeaponIconPos;
+	OGVec2				m_WeaponIconSize;
 };
 
 

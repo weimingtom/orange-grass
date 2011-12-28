@@ -1,7 +1,7 @@
+#include "OrangeGrass.h"
 #include <string>
-#include "Shader.h"
-#include "ResourceFile.h"
-#include "Macros.h"
+#include "ogshader.h"
+#include "ogresourcefile.h"
 
 
 /*****************************************************************************
@@ -39,8 +39,7 @@ unsigned int ShaderLoadSourceFromMemory(
 		char* pszInfoLog = new char[i32InfoLogLength];
         glGetShaderInfoLog(*pObject, i32InfoLogLength, &i32CharsWritten, pszInfoLog);
 		
-		// Displays the error!
-		//printf("Failed to compile fragment shader: %s\n", pszInfoLog);
+        OG_LOG_ERROR("ShaderLoadSourceFromMemory: Failed to compile fragment shader: %s", pszInfoLog);
 		delete [] pszInfoLog;
 		
 		// Delete shader.
@@ -76,7 +75,7 @@ unsigned int ShaderLoadBinaryFromMemory(
     glShaderBinary(1, pObject, Format, ShaderData, (GLint)Size);
     if (glGetError() != GL_NO_ERROR)
     {
-    	//*pReturnError = CString("Failed to load binary shader\n");
+        OG_LOG_ERROR("ShaderLoadBinaryFromMemory: Failed to load binary shader");
     	glDeleteShader(*pObject);
     	return OG_FAIL;
     }
@@ -104,20 +103,20 @@ unsigned int ShaderLoadFromFile(
 {
     if(Format)
     {
-        CResourceFile ShaderFile;
+        COGResourceFile ShaderFile;
         if (ShaderFile.Open(pszBinFile))
         {
             if(ShaderLoadBinaryFromMemory(ShaderFile.DataPtr(), ShaderFile.Size(), Type, Format, pObject) == OG_SUCCESS)
                 return OG_SUCCESS;
         }
 
-        //*pReturnError += CString("Failed to open shader ") + pszBinFile + "\n";
+        OG_LOG_WARNING("ShaderLoadFromFile: Failed to open shader %s", pszBinFile);
     }
 
-    CResourceFile ShaderFile;
+    COGResourceFile ShaderFile;
     if (!ShaderFile.Open(pszSrcFile))
     {
-        //*pReturnError += CString("Failed to open shader ") + pszSrcFile + "\n";
+        OG_LOG_ERROR("ShaderLoadFromFile: Failed to open shader %s", pszSrcFile);
         return OG_FAIL;
     }
 
@@ -167,7 +166,7 @@ unsigned int CreateProgram(
 		glGetProgramiv(*pProgramObject, GL_INFO_LOG_LENGTH, &i32InfoLogLength);
 		char* pszInfoLog = new char[i32InfoLogLength];
 		glGetProgramInfoLog(*pProgramObject, i32InfoLogLength, &i32CharsWritten, pszInfoLog);
-		//*pReturnError = CString("Failed to link: ") + pszInfoLog + "\n";
+        OG_LOG_ERROR("CreateProgram: Failed to link: %s", pszInfoLog);
 		delete [] pszInfoLog;
 		return OG_FAIL;
 	}

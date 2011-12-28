@@ -9,7 +9,7 @@
 #ifndef IOGGUILIFEBAR_H_
 #define IOGGUILIFEBAR_H_
 
-#include "Mathematics.h"
+#include "IOGMath.h"
 #include <string>
 #include "IOGSettingsReader.h"
 

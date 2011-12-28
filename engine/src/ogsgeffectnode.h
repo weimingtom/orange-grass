@@ -9,7 +9,7 @@
 #ifndef OGSGEFFECTNODE_H_
 #define OGSGEFFECTNODE_H_
 
-#include "Mathematics.h"
+#include "IOGMath.h"
 #include "IOGSgNode.h"
 #include "IOGAnimationController.h"
 
@@ -23,7 +23,7 @@ public:
 	virtual ~COGSgEffectNode ();
 
 	// get world transform.
-	virtual const MATRIX& GetWorldTransform () const;
+	virtual const OGMatrix& GetWorldTransform () const;
 
 	// Get OBB
 	virtual const IOGObb& GetOBB () const;
@@ -50,7 +50,7 @@ public:
     virtual void StartAnimation (const std::string& _Alias);
 
 	// Get active point
-    virtual bool GetActivePoint (Vec3& _point, const std::string& _Alias);
+    virtual bool GetActivePoint (OGVec3& _point, const std::string& _Alias);
 
 	// Get active state
 	virtual bool IsActive () const { return m_bActive; }
@@ -59,7 +59,7 @@ public:
 	virtual void Activate (bool _bActive);
 
 	// Set billboard basis vectors.
-	void SetBillboardVectors (const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight);
+	void SetBillboardVectors (const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight);
 
 protected:
 

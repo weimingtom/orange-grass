@@ -17,13 +17,13 @@ COGPhysicalObject::COGPhysicalObject () :	m_Type (OG_PHYSICS_NONE),
                                             m_bUpdated(false)
 {
     m_fStrafe = 0.0f;
-    m_vScaling = Vec3(1);
-    m_vLook = Vec3(0,0,-1);
-    m_vUp = Vec3(0,1,0);
-    m_vRight = Vec3(1,0,0);
-    m_vMove = Vec3(0,0,0);
-	m_vAcceleration = Vec3(0,0,0);
-    m_vTorque = Vec3(0,0,0);
+    m_vScaling = OGVec3(1);
+    m_vLook = OGVec3(0,0,-1);
+    m_vUp = OGVec3(0,1,0);
+    m_vRight = OGVec3(1,0,0);
+    m_vMove = OGVec3(0,0,0);
+	m_vAcceleration = OGVec3(0,0,0);
+    m_vTorque = OGVec3(0,0,0);
 }
 
 
@@ -65,7 +65,7 @@ void COGPhysicalObject::Activate (bool _bActive)
 
 
 // get world transform.
-const MATRIX& COGPhysicalObject::GetWorldTransform () const
+const OGMatrix& COGPhysicalObject::GetWorldTransform () const
 {
 	return m_mWorld;
 }
@@ -73,16 +73,16 @@ const MATRIX& COGPhysicalObject::GetWorldTransform () const
 
 // set world transform.
 void COGPhysicalObject::SetWorldTransform (
-	const Vec3& _vPos, 
-	const Vec3& _vRot, 
-	const Vec3& _vScale)
+	const OGVec3& _vPos, 
+	const OGVec3& _vRot, 
+	const OGVec3& _vScale)
 {
     m_vPosition = _vPos;
     m_vRotation = _vRot;
     m_vScaling = _vScale;
-    m_vMove = Vec3(0,0,0);
-	m_vAcceleration = Vec3(0,0,0);
-    m_vTorque = Vec3(0,0,0);
+    m_vMove = OGVec3(0,0,0);
+	m_vAcceleration = OGVec3(0,0,0);
+    m_vTorque = OGVec3(0,0,0);
     m_fStrafe = 0.0f;
 
 	WorldMatrixFromTransforms(m_mWorld, m_vPosition, m_vRotation, m_vScaling);
@@ -94,35 +94,35 @@ void COGPhysicalObject::SetWorldTransform (
 
 
 // get position.
-const Vec3& COGPhysicalObject::GetPosition () const
+const OGVec3& COGPhysicalObject::GetPosition () const
 {
 	return m_vPosition;
 }
 
 
 // get rotation.
-const Vec3& COGPhysicalObject::GetRotation () const
+const OGVec3& COGPhysicalObject::GetRotation () const
 {
 	return m_vRotation;
 }
 
 
 // get scaling.
-const Vec3& COGPhysicalObject::GetScaling () const
+const OGVec3& COGPhysicalObject::GetScaling () const
 {
 	return m_vScaling;
 }
 
 
 // get direction.
-const Vec3& COGPhysicalObject::GetDirection () const
+const OGVec3& COGPhysicalObject::GetDirection () const
 {
     return m_vLook;
 }
 
 
 // set position.
-void COGPhysicalObject::SetPosition (const Vec3& _vPos)
+void COGPhysicalObject::SetPosition (const OGVec3& _vPos)
 {
 	m_vPosition = _vPos;
 	m_bUpdated = false;
@@ -130,7 +130,7 @@ void COGPhysicalObject::SetPosition (const Vec3& _vPos)
 
 
 // set rotation.
-void COGPhysicalObject::SetRotation (const Vec3& _vRot)
+void COGPhysicalObject::SetRotation (const OGVec3& _vRot)
 {
 	m_vRotation = _vRot;
 	m_bUpdated = false;
@@ -138,7 +138,7 @@ void COGPhysicalObject::SetRotation (const Vec3& _vRot)
 
 
 // set scaling.
-void COGPhysicalObject::SetScaling (const Vec3& _vScale)
+void COGPhysicalObject::SetScaling (const OGVec3& _vScale)
 {
 	m_vScaling = _vScale;
 	m_bUpdated = false;
@@ -169,7 +169,7 @@ void COGPhysicalObject::Accelerate (float _fDir)
 
 
 // move.
-void COGPhysicalObject::Move (const Vec3& _vDir)
+void COGPhysicalObject::Move (const OGVec3& _vDir)
 {
 	m_vMove = _vDir * m_pParams->fMaxSpeed;
 	m_bUpdated = false;
@@ -177,10 +177,10 @@ void COGPhysicalObject::Move (const Vec3& _vDir)
 
 
 // orient on point.
-bool COGPhysicalObject::Orient (const Vec3& _vPoint)
+bool COGPhysicalObject::Orient (const OGVec3& _vPoint)
 {
 	bool bDone = false;
-    Vec3 vDirOnTarget = (_vPoint - m_vPosition).normalized();
+    OGVec3 vDirOnTarget = (_vPoint - m_vPosition).normalized();
     float fAngle = GetAngle(m_vLook, vDirOnTarget);
 
 	float fTorqueAngle = (fAngle > 0) ? -m_pParams->fTorque : m_pParams->fTorque;
@@ -200,7 +200,7 @@ bool COGPhysicalObject::Orient (const Vec3& _vPoint)
 bool COGPhysicalObject::Stabilize ()
 {
 	bool bDone = false;
-    float fAngle = GetAngle(m_vLook, Vec3(0,0,-1.0f));
+    float fAngle = GetAngle(m_vLook, OGVec3(0,0,-1.0f));
 
 	float fTorqueAngle = (fAngle > 0) ? -m_pParams->fTorque : m_pParams->fTorque;
     if (fabsf(fAngle) < m_pParams->fTorque)
@@ -257,8 +257,8 @@ void COGPhysicalObject::Update (unsigned long _ElapsedTime)
 	UpdateDirections();
 	StabilizeRotation();
 
-    m_vTorque = Vec3(0,0,0);
-	m_vMove = Vec3(0,0,0);
+    m_vTorque = OGVec3(0,0,0);
+	m_vMove = OGVec3(0,0,0);
     m_fStrafe /= 1.08f;
 
     m_bUpdated = true;
@@ -268,14 +268,14 @@ void COGPhysicalObject::Update (unsigned long _ElapsedTime)
 // Update directions.
 void COGPhysicalObject::UpdateDirections ()
 {
-    MATRIX mR;
+    OGMatrix mR;
     MatrixRotationY(mR, m_vRotation.y);
 
-    MatrixVec3Multiply(m_vLook, Vec3(0,0,-1), mR);
+    MatrixVec3Multiply(m_vLook, OGVec3(0,0,-1), mR);
 	m_vLook.normalize();
-    MatrixVec3Multiply(m_vRight, Vec3(1,0,0), mR);
+    MatrixVec3Multiply(m_vRight, OGVec3(1,0,0), mR);
 	m_vRight.normalize();
-    MatrixVec3Multiply(m_vUp, Vec3(0,1,0), mR);
+    MatrixVec3Multiply(m_vUp, OGVec3(0,1,0), mR);
 	m_vUp.normalize();
 }
 

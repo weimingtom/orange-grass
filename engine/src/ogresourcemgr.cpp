@@ -9,7 +9,7 @@
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogresourcemgr.h"
-#include "Pathes.h"
+#include "ogresourcefile.h"
 
 
 COGResourceMgr::COGResourceMgr ()

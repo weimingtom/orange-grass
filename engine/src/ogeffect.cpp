@@ -59,7 +59,7 @@ void COGEffect::Init(OGEffectType _Type, const std::string& _File)
     }
     pReader->CloseSource(pSource);
 
-    m_AABB.SetMinMax(Vec3(-1,-1,-1), Vec3(1,1,1));
+    m_AABB.SetMinMax(OGVec3(-1,-1,-1), OGVec3(1,1,1));
 }
 
 
@@ -79,7 +79,7 @@ void COGEffect::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGEffect::Render (const MATRIX& _mWorld)
+void COGEffect::Render (const OGMatrix& _mWorld)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
@@ -93,7 +93,7 @@ void COGEffect::Render (const MATRIX& _mWorld)
 
 
 // Set billboard basis vectors.
-void COGEffect::SetBillboardVectors (const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight)
+void COGEffect::SetBillboardVectors (const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight)
 {
     m_vCameraLook = _vLook;
 	m_vCameraUp = _vUp;
@@ -102,7 +102,7 @@ void COGEffect::SetBillboardVectors (const Vec3& _vLook, const Vec3& _vUp, const
 
 
 // Set direction.
-void COGEffect::SetDirection (const Vec3& _vDir)
+void COGEffect::SetDirection (const OGVec3& _vDir)
 {
     TEmittersList::iterator iter = m_Emitters.begin();
     for (; iter != m_Emitters.end(); ++iter)
@@ -113,7 +113,7 @@ void COGEffect::SetDirection (const Vec3& _vDir)
 
 
 // Update position.
-void COGEffect::UpdatePosition (const Vec3& _vPosition)
+void COGEffect::UpdatePosition (const OGVec3& _vPosition)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
@@ -155,7 +155,7 @@ void COGEffect::Stop ()
 
 
 // Set start and finish positions.
-void COGEffect::SetStartFinishPositions (const Vec3& _vStartPos, const Vec3& _vFinishPos)
+void COGEffect::SetStartFinishPositions (const OGVec3& _vStartPos, const OGVec3& _vFinishPos)
 {
     TEmittersList::iterator iter = m_Emitters.begin();
     for (; iter != m_Emitters.end(); ++iter)

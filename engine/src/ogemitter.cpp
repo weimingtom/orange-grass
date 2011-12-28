@@ -24,7 +24,7 @@ COGEmitter::~COGEmitter()
 
 
 // Update position.
-void COGEmitter::UpdatePosition (const Vec3& _vPosition)
+void COGEmitter::UpdatePosition (const OGVec3& _vPosition)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
@@ -44,7 +44,7 @@ void COGEmitter::UpdatePosition (const Vec3& _vPosition)
 
 
 // Set direction.
-void COGEmitter::SetDirection (const Vec3& _vDir)
+void COGEmitter::SetDirection (const OGVec3& _vDir)
 {
 	m_Direction = _vDir;
 }
@@ -127,7 +127,7 @@ void COGEmitter::SetFloatParam (const std::string& _Alias, float* _pValue)
 
 
 // get color parameter.
-Vec4* COGEmitter::GetColorParam (const std::string& _Alias)
+OGVec4* COGEmitter::GetColorParam (const std::string& _Alias)
 {
 	TColorParamList::const_iterator iter = m_ColorParams.find(_Alias);
 	if (iter != m_ColorParams.end())
@@ -139,7 +139,7 @@ Vec4* COGEmitter::GetColorParam (const std::string& _Alias)
 
 
 // set color parameter.
-void COGEmitter::SetColorParam (const std::string& _Alias, Vec4* _pValue)
+void COGEmitter::SetColorParam (const std::string& _Alias, OGVec4* _pValue)
 {
 	TColorParamList::iterator iter = m_ColorParams.find(_Alias);
 	if (iter != m_ColorParams.end())
@@ -171,7 +171,7 @@ void COGEmitter::AddFloatParam (const std::string& _Alias, float* _pValue)
 
 
 // add color param.
-void COGEmitter::AddColorParam (const std::string& _Alias, Vec4* _pValue)
+void COGEmitter::AddColorParam (const std::string& _Alias, OGVec4* _pValue)
 {
 	m_ColorParams[_Alias] = _pValue;
 }

@@ -7,7 +7,6 @@
  *
  */
 #include "OpenGL2.h"
-#include "GraphicsDevice.h"
 #include "ogrendertarget.h"
 
 

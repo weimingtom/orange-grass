@@ -79,8 +79,8 @@ private:
 	IOGCamera*			m_pCamera;
 	IOGActorManager*	m_pActorMgr;
 
-	MATRIX			m_mProjection; 
-	MATRIX			m_mView;
+	OGMatrix			m_mProjection; 
+	OGMatrix			m_mView;
 
 	IOGActor*		m_pCurActor;
 

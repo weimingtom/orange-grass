@@ -39,11 +39,11 @@ bool COGWeapon::Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams)
 	m_WeaponCoolDownMax = m_pWeaponParams->cooldown;
 	m_WeaponCoolDown = m_WeaponCoolDownMax;
 
-    Vec3 vStart = _pOwner->GetPhysicalObject()->GetPosition();
+    OGVec3 vStart = _pOwner->GetPhysicalObject()->GetPosition();
     for (int i = 0; i < MaxMissiles; ++i)
     {
         COGActorBullet* pMissile = (COGActorBullet*)GetActorManager()->CreateActor(
-			m_pWeaponParams->actor, Vec3(0,0,0), Vec3(0,0,0), Vec3(1,1,1));
+			m_pWeaponParams->actor, OGVec3(0,0,0), OGVec3(0,0,0), OGVec3(1,1,1));
         pMissile->SetTeam(_pOwner->GetTeam());
         pMissile->SetDamagePoints(m_pWeaponParams->hitpoints);
         GetActorManager()->AddActor(pMissile);
@@ -56,7 +56,7 @@ bool COGWeapon::Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams)
 // Fire missile.
 void COGWeapon::Fire (IOGActor* _pTarget, bool _bFollow)
 {
-    Vec3 launches[3];
+    OGVec3 launches[3];
     int NumLaunch = 0;
 
     switch (m_pWeaponParams->pos)
@@ -129,9 +129,9 @@ void COGWeapon::Fire (IOGActor* _pTarget, bool _bFollow)
 
 
 // Fire.
-void COGWeapon::Fire (const Vec3& _vTarget)
+void COGWeapon::Fire (const OGVec3& _vTarget)
 {
-    Vec3 launches[3];
+    OGVec3 launches[3];
     int NumLaunch = 0;
 
     switch (m_pWeaponParams->pos)

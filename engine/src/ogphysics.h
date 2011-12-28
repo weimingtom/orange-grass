@@ -41,10 +41,10 @@ public:
 	virtual void UpdateAll (unsigned long _ElapsedTime);
 
     // Set level borders
-    virtual void SetLevelBorders (const Vec3& _vStart, const Vec3& _vFinish, float _fWidth);
+    virtual void SetLevelBorders (const OGVec3& _vStart, const OGVec3& _vFinish, float _fWidth);
 
     // Get borders at point
-    virtual void GetBordersAtPoint (const Vec3& _vPos, Vec3& _vLeft, Vec3& _vRight);
+    virtual void GetBordersAtPoint (const OGVec3& _vPos, OGVec3& _vLeft, OGVec3& _vRight);
 
 private:
 
@@ -56,8 +56,8 @@ private:
 	TObjList			m_MissileObjList;
 	TObjList			m_BonusObjList;
 
-	Vec3				m_vLeftBorder[3];
-    Vec3				m_vRightBorder[3];
+	OGVec3				m_vLeftBorder[3];
+    OGVec3				m_vRightBorder[3];
 };
 
 #endif

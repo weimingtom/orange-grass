@@ -9,7 +9,7 @@
 #ifndef IOGGUIBUTTON_H_
 #define IOGGUIBUTTON_H_
 
-#include "Mathematics.h"
+#include "IOGMath.h"
 #include <string>
 #include "IOGInputReceiver.h"
 
@@ -20,16 +20,16 @@ public:
 	virtual ~IOGGuiButton() {}
 
 	// Load graphics.
-    virtual void Load (const std::string& _SprN, const std::string& _SprPr, const Vec2& _Size) = 0;
+    virtual void Load (const std::string& _SprN, const std::string& _SprPr, const OGVec2& _Size) = 0;
 
 	// Unload graphics.
     virtual void Unload () = 0;
 
 	// Set button position.
-    virtual void SetPosition (const Vec2& _Pos) = 0;
+    virtual void SetPosition (const OGVec2& _Pos) = 0;
 
 	// Touch event handler.
-	virtual bool OnTouch (const Vec2& _vPos, IOGTouchParam _param) = 0;
+	virtual bool OnTouch (const OGVec2& _vPos, IOGTouchParam _param) = 0;
 
 	// Render sprite.
 	virtual void Render () = 0;

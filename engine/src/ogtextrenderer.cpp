@@ -13,9 +13,7 @@
 #include <string.h>
 
 
-#include "Mathematics.h"
-#include "Geometry.h"
-
+#include "IOGMath.h"
 #include "ogtextrenderer.h"
 #include "ogtextrenderer_data.h"
 
@@ -234,7 +232,7 @@ bool COGTextRenderer::APIUpLoad4444(unsigned char *pSource, unsigned int nSize, 
 
 		if (!p8888)
 		{
-			//_RPT0(_CRT_WARN,"Not enough memory!\n");
+            OG_LOG_WARNING("COGTextRenderer::APIUpLoad4444: Not enough memory!");
 			return false;
 		}
 
@@ -452,7 +450,7 @@ void COGTextRenderer::DrawLineUP(SDisplayTextAPIVertex *pVtx, unsigned int nVert
 			return;
 		}
 
-		m_nVtxCacheMax = _MIN(m_nVtxCacheMax * 2, MAX_CACHED_VTX);
+		m_nVtxCacheMax = OG_MIN(m_nVtxCacheMax * 2, MAX_CACHED_VTX);
 		m_pVtxCache = (SDisplayTextAPIVertex*) reallocEM(m_pVtxCache, sizeof(*m_pVtxCache), m_nVtxCacheMax * sizeof(*m_pVtxCache));
 	}
 

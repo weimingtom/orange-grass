@@ -68,7 +68,7 @@ void COGGuiWeaponPanel::Render ()
 
 
 // Hit test.
-bool COGGuiWeaponPanel::IsHit (const Vec2& _vPos)
+bool COGGuiWeaponPanel::IsHit (const OGVec2& _vPos)
 {
     if (_vPos.x >= m_Position.x && 
         _vPos.y >= m_Position.y &&

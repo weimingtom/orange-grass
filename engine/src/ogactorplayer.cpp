@@ -24,9 +24,9 @@ COGActorPlayer::~COGActorPlayer()
 
 // Create actor.
 bool COGActorPlayer::Create (IOGActorParams* _pParams,
-                             const Vec3& _vPos,
-                             const Vec3& _vRot,
-                             const Vec3& _vScale)
+                             const OGVec3& _vPos,
+                             const OGVec3& _vRot,
+                             const OGVec3& _vScale)
 {
     if (!COGActorBot::Create(_pParams, _vPos, _vRot, _vScale))
         return false;
@@ -58,13 +58,13 @@ void COGActorPlayer::OnAddedToManager ()
 
 
 // Control vector change event handler.
-bool COGActorPlayer::OnVectorChanged (const Vec3& _vVec)
+bool COGActorPlayer::OnVectorChanged (const OGVec3& _vVec)
 {
     if (m_bFinishLineFlight)
         return false;
 
 #ifdef WIN32
-	Vec3 v = _vVec;
+	OGVec3 v = _vVec;
 	if (v.length() > 1.0f)
 	{
 		v.normalize();
@@ -78,7 +78,7 @@ bool COGActorPlayer::OnVectorChanged (const Vec3& _vVec)
 
 
 // Touch event handler.
-bool COGActorPlayer::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
+bool COGActorPlayer::OnTouch (const OGVec2& _vPos, IOGTouchParam _param)
 {
     if (_param != OG_TOUCH_DOWN)
         return false;
@@ -86,11 +86,11 @@ bool COGActorPlayer::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
     if (m_bFinishLineFlight)
         return false;
 
-    Vec3 vP = GetRenderer()->UnprojectCoords((int)_vPos.x, (int)_vPos.y);
-    Vec3 vCam = GetRenderer()->GetCamera()->GetPosition();
+    OGVec3 vP = GetRenderer()->UnprojectCoords((int)_vPos.x, (int)_vPos.y);
+    OGVec3 vCam = GetRenderer()->GetCamera()->GetPosition();
 
-    Vec3 vDir = (vP - vCam).normalized();
-    Vec3 vPoint = FindIntersectionWithPlane(
+    OGVec3 vDir = (vP - vCam).normalized();
+    OGVec3 vPoint = FindIntersectionWithPlane(
         m_pPhysicalObject->GetPosition().y, 
         vCam, 
         vDir);
@@ -141,7 +141,7 @@ void COGActorPlayer::Update (unsigned long _ElapsedTime)
 void COGActorPlayer::UpdateAlive (unsigned long _ElapsedTime)
 {
     COGActorBot::UpdateAlive(_ElapsedTime);
-	m_pPhysicalObject->Move(Vec3(0, 0, -1.0f));
+	m_pPhysicalObject->Move(OGVec3(0, 0, -1.0f));
 
     UpdateSpecParams(_ElapsedTime);
 
@@ -257,7 +257,7 @@ void COGActorPlayer::UpdateSpecParams (unsigned long _ElapsedTime)
 // Check if finish condition is satisfied.
 bool COGActorPlayer::CheckFinishCondition ()
 {
-	const Vec3& vCurPoint = m_pPhysicalObject->GetPosition();
+	const OGVec3& vCurPoint = m_pPhysicalObject->GetPosition();
 	if (Dist2DSq(vCurPoint, m_vFinishPoint) <= 30000.0f)
 	{
 		return true;

@@ -21,7 +21,7 @@ COGEmitterGlow::COGEmitterGlow()
 	m_fInitialScale = 2.0f;
 	m_fInitialAngleMin = -3.14f;
 	m_fInitialAngleMax = 3.14f;
-	m_color = Vec4(1.0f, 1.0f, 1.0f, 0.6f);
+	m_color = OGVec4(1.0f, 1.0f, 1.0f, 0.6f);
 
 	AddStringParam("texture", &m_Texture);
 	AddIntParam("mapping", &m_MappingId);
@@ -68,12 +68,12 @@ void COGEmitterGlow::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGEmitterGlow::Render (const MATRIX& _mWorld, const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight)
+void COGEmitterGlow::Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-    MATRIX mId; 
+    OGMatrix mId; 
     MatrixIdentity(mId);
     m_pRenderer->SetModelMatrix(mId);
 	m_pRenderer->SetBlend(m_Blend);
@@ -81,11 +81,11 @@ void COGEmitterGlow::Render (const MATRIX& _mWorld, const Vec3& _vLook, const Ve
 
     if (m_Status != OG_EFFECTSTATUS_STOPPED)
     {
-		MATRIX mR;
+		OGMatrix mR;
         MatrixRotationAxis(mR, m_Glow.angle, _vLook.x, _vLook.y, _vLook.z);
 
-        Vec3 vSUp = _vUp * m_Glow.scale;
-        Vec3 vSRight = _vRight * m_Glow.scale;
+        OGVec3 vSUp = _vUp * m_Glow.scale;
+        OGVec3 vSRight = _vRight * m_Glow.scale;
 
 		BBVert* pVert = NULL;
         pVert = &m_Glow.pVertices[0];

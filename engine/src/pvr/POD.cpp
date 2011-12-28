@@ -1,15 +1,18 @@
+#include "OrangeGrass.h"
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include "POD.h"
+#include "../ogresourcefile.h"
 
-#include <Resource.h>
-#include "ModelPOD.h"
 
 #define PVRTMODELPOD_TAG_MASK			(0x80000000)
 #define PVRTMODELPOD_TAG_START			(0x00000000)
 #define PVRTMODELPOD_TAG_END			(0x80000000)
 #define CFAH		                    (1024)
+#define PVRTMODELPOD_VERSION	        ("AB.POD.2.0") /*!< POD file version string */
+#define PVRTMODELPODSF_FIXED	        (0x00000001)   /*!< PVRTMODELPOD Fixed-point 16.16 data (otherwise float) flag */
 
 
 /*!****************************************************************************
@@ -106,15 +109,15 @@ enum EPODFileName
 
 struct SPVRTPODImpl
 {
-	float	fFrame;		/*!< Frame number */
-	float	fBlend;		/*!< Frame blend	(AKA fractional part of animation frame number) */
-	int			nFrame;		/*!< Frame number (AKA integer part of animation frame number) */
+	float	fFrame;		    /*!< Frame number */
+	float	fBlend;		    /*!< Frame blend	(AKA fractional part of animation frame number) */
+	int		nFrame;		    /*!< Frame number (AKA integer part of animation frame number) */
 
 	float	*pfCache;		/*!< Cache indicating the frames at which the matrix cache was filled */
-	MATRIX	*pWmCache;		/*!< Cache of world matrices */
-	MATRIX	*pWmZeroCache;	/*!< Pre-calculated frame 0 matrices */
+	OGMatrix	*pWmCache;		/*!< Cache of world matrices */
+	OGMatrix	*pWmZeroCache;	/*!< Pre-calculated frame 0 matrices */
 
-	bool		bFromMemory;	/*!< Was the mesh data loaded from memory? */
+	bool	bFromMemory;	/*!< Was the mesh data loaded from memory? */
 };
 
 
@@ -127,7 +130,7 @@ struct SPVRTPODImpl
  @Description		Read a vector
 *****************************************************************************/
 void PVRTVertexRead(
-	VECTOR4		* const pV,
+	OGVec4		* const pV,
 	const void			* const pData,
 	const EPVRTDataType	eType,
 	const int			nCnt)
@@ -281,7 +284,7 @@ void PVRTVertexRead(
 /*!***************************************************************************
  @Function			ReadCPODData
  @Modified			s The CPODData to read into
- @Input				src CResourceFile object to read data from.
+ @Input				src COGResourceFile object to read data from.
  @Input				nSpec
  @Input				bValidData
  @Return			true if successful
@@ -289,7 +292,7 @@ void PVRTVertexRead(
 *****************************************************************************/
 static bool ReadCPODData(
 	CPODData			&s,
-	CResourceFile		&src,
+	COGResourceFile		&src,
 	const unsigned int	nSpec,
 	const bool			bValidData)
 {
@@ -326,13 +329,13 @@ static bool ReadCPODData(
 /*!***************************************************************************
  @Function			ReadCamera
  @Modified			s The SPODCamera to read into
- @Input				src	CResourceFile object to read data from.
+ @Input				src	COGResourceFile object to read data from.
  @Return			true if successful
  @Description		Read a camera block in from a pod file
 *****************************************************************************/
 static bool ReadCamera(
 	SPODCamera	&s,
-	CResourceFile		&src)
+	COGResourceFile		&src)
 {
 	unsigned int nName, nLen;
 
@@ -358,13 +361,13 @@ static bool ReadCamera(
 /*!***************************************************************************
  @Function			ReadLight
  @Modified			s The SPODLight to read into
- @Input				src	CResourceFile object to read data from.
+ @Input				src	COGResourceFile object to read data from.
  @Return			true if successful
  @Description		Read a light block in from a pod file
 *****************************************************************************/
 static bool ReadLight(
 	SPODLight	&s,
-	CResourceFile		&src)
+	COGResourceFile		&src)
 {
 	unsigned int nName, nLen;
 
@@ -388,13 +391,13 @@ static bool ReadLight(
 /*!***************************************************************************
  @Function			ReadMaterial
  @Modified			s The SPODMaterial to read into
- @Input				src	CResourceFile object to read data from.
+ @Input				src	COGResourceFile object to read data from.
  @Return			true if successful
  @Description		Read a material block in from a pod file
 *****************************************************************************/
 static bool ReadMaterial(
 	SPODMaterial	&s,
-	CResourceFile			&src)
+	COGResourceFile			&src)
 {
 	unsigned int nName, nLen;
 
@@ -424,13 +427,13 @@ static bool ReadMaterial(
 /*!***************************************************************************
  @Function			ReadMesh
  @Modified			s The SPODMesh to read into
- @Input				src	CResourceFile object to read data from.
+ @Input				src	COGResourceFile object to read data from.
  @Return			true if successful
  @Description		Read a mesh block in from a pod file
 *****************************************************************************/
 static bool ReadMesh(
 	SPODMesh	&s,
-	CResourceFile		&src)
+	COGResourceFile		&src)
 {
 	unsigned int	nName, nLen;
 	unsigned int	nUVWs=0;
@@ -475,13 +478,13 @@ static bool ReadMesh(
 /*!***************************************************************************
  @Function			ReadNode
  @Modified			s The SPODNode to read into
- @Input				src	CResourceFile object to read data from.
+ @Input				src	COGResourceFile object to read data from.
  @Return			true if successful
  @Description		Read a node block in from a pod file
 *****************************************************************************/
 static bool ReadNode(
 	SPODNode	&s,
-	CResourceFile		&src)
+	COGResourceFile		&src)
 {
 	unsigned int nName, nLen;
 	bool bOldNodeFormat = false;
@@ -549,13 +552,13 @@ static bool ReadNode(
 /*!***************************************************************************
  @Function			ReadTexture
  @Modified			s The SPODTexture to read into
- @Input				src	CResourceFile object to read data from.
+ @Input				src	COGResourceFile object to read data from.
  @Return			true if successful
  @Description		Read a texture block in from a pod file
 *****************************************************************************/
 static bool ReadTexture(
 	SPODTexture	&s,
-	CResourceFile		&src)
+	COGResourceFile		&src)
 {
 	unsigned int nName, nLen;
 
@@ -577,13 +580,13 @@ static bool ReadTexture(
 /*!***************************************************************************
  @Function			ReadScene
  @Modified			s The SPODScene to read into
- @Input				src	CResourceFile object to read data from.
+ @Input				src	COGResourceFile object to read data from.
  @Return			true if successful
  @Description		Read a scene block in from a pod file
 *****************************************************************************/
 static bool ReadScene(
 	SPODScene	&s,
-	CResourceFile		&src)
+	COGResourceFile		&src)
 {
 	unsigned int nName, nLen;
 	unsigned int nCameras=0, nLights=0, nMaterials=0, nMeshes=0, nTextures=0, nNodes=0;
@@ -630,7 +633,7 @@ static bool ReadScene(
 /*!***************************************************************************
  @Function			Read
  @Output			pS				SPODScene data. May be NULL.
- @Input				src				CResourceFile object to read data from.
+ @Input				src				COGResourceFile object to read data from.
  @Output			pszExpOpt		Export options.
  @Input				count			Data size.
  @Description		Loads the specified ".POD" file; returns the scene in
@@ -642,7 +645,7 @@ static bool ReadScene(
 *****************************************************************************/
 static bool Read(
 	SPODScene		* const pS,
-	CResourceFile			&src,
+	COGResourceFile			&src,
 	char			* const pszExpOpt,
 	const size_t	count)
 {
@@ -650,7 +653,7 @@ static bool Read(
 	bool			bVersionOK = false, bDone = false;
 
 	if(pS)
-		pS->bBigEndian = !PVRTIsLittleEndian();
+		pS->bBigEndian = !IsLittleEndian();
 
 	while(src.ReadMarker(nName, nLen))
 	{
@@ -680,7 +683,7 @@ static bool Read(
 		case ePODFileExpOpt:
 			if(pszExpOpt)
 			{
-				if(!src.Read(pszExpOpt, min(nLen, (unsigned int) count))) return false;
+				if(!src.Read(pszExpOpt, OG_MIN(nLen, (unsigned int) count))) return false;
 				return true;
 			}
 			break;
@@ -689,7 +692,7 @@ static bool Read(
 			return bVersionOK == true && bDone == true;
 
 		case (unsigned int) ePODFileEndiannessMisMatch:
-			printf("Error: Endianness mismatch between the .pod file and the platform.\n");
+			OG_LOG_ERROR("POD Read: Endianness mismatch between the .pod file and the platform.");
 			return false;
 
 		}
@@ -704,7 +707,7 @@ static bool Read(
 	*/
 	if(pS->nFlags & PVRTMODELPODSF_FIXED)
     {
-        printf("Cannot read the fixed-point POD.\n");
+        OG_LOG_ERROR("POD Read: Cannot read the fixed-point POD.");
 		return false;
     }
 
@@ -731,7 +734,7 @@ bool CPVRTModelPOD::ReadFromFile(
 	char			* const pszExpOpt,
 	const size_t	count)
 {
-	CResourceFile src;
+	COGResourceFile src;
     if(!src.Open(pszFileName))
 		return false;
 
@@ -764,8 +767,8 @@ bool CPVRTModelPOD::InitImpl()
 
 	// Allocate world-matrix cache
 	m_pImpl->pfCache		= new float[nNumNode];
-	m_pImpl->pWmCache		= new  MATRIX[nNumNode];
-	m_pImpl->pWmZeroCache	= new  MATRIX[nNumNode];
+	m_pImpl->pWmCache		= new  OGMatrix[nNumNode];
+	m_pImpl->pWmZeroCache	= new  OGMatrix[nNumNode];
 	FlushCache();
 
 	return true;
@@ -926,10 +929,10 @@ void CPVRTModelPOD::SetFrame(const float fFrame)
 					applies the parent's transform too. Uses animation data.
 *****************************************************************************/
 void CPVRTModelPOD::GetRotationMatrix(
-	MATRIX		&mOut,
+	OGMatrix		&mOut,
 	const SPODNode	&node) const
 {
-	 QUATERNION	q;
+	 OGQuat	q;
 
 	if(node.pfAnimRotation)
 	{
@@ -937,13 +940,13 @@ void CPVRTModelPOD::GetRotationMatrix(
 		{
 			QuaternionSlerp(
 			    q,
-				(QUATERNION&)node.pfAnimRotation[4*m_pImpl->nFrame],
-				(QUATERNION&)node.pfAnimRotation[4*(m_pImpl->nFrame+1)], m_pImpl->fBlend);
+				(OGQuat&)node.pfAnimRotation[4*m_pImpl->nFrame],
+				(OGQuat&)node.pfAnimRotation[4*(m_pImpl->nFrame+1)], m_pImpl->fBlend);
 			QuaternionToRotationMatrix(mOut, q);
 		}
 		else
 		{
-			QuaternionToRotationMatrix(mOut, *(QUATERNION*)node.pfAnimRotation);
+			QuaternionToRotationMatrix(mOut, *(OGQuat*)node.pfAnimRotation);
 		}
 	}
 	else
@@ -959,9 +962,9 @@ void CPVRTModelPOD::GetRotationMatrix(
  @Description	Generates the world matrix for the given Mesh Instance;
 				applies the parent's transform too. Uses animation data.
 *****************************************************************************/
-MATRIX CPVRTModelPOD::GetRotationMatrix(const SPODNode &node) const
+OGMatrix CPVRTModelPOD::GetRotationMatrix(const SPODNode &node) const
 {
-	MATRIX mOut;
+	OGMatrix mOut;
 	GetRotationMatrix(mOut,node);
 	return mOut;
 }
@@ -974,10 +977,10 @@ MATRIX CPVRTModelPOD::GetRotationMatrix(const SPODNode &node) const
 					applies the parent's transform too. Uses animation data.
 *****************************************************************************/
 void CPVRTModelPOD::GetScalingMatrix(
-	MATRIX		&mOut,
+	OGMatrix		&mOut,
 	const SPODNode	&node) const
 {
-	 VECTOR3 v;
+	 OGVec3 v;
 
 	if(node.pfAnimScale)
 	{
@@ -985,8 +988,8 @@ void CPVRTModelPOD::GetScalingMatrix(
 		{
 			Vec3Lerp(
 			    v,
-				(VECTOR3&)node.pfAnimScale[7*(m_pImpl->nFrame+0)],
-				(VECTOR3&)node.pfAnimScale[7*(m_pImpl->nFrame+1)], m_pImpl->fBlend);
+				(OGVec3&)node.pfAnimScale[7*(m_pImpl->nFrame+0)],
+				(OGVec3&)node.pfAnimScale[7*(m_pImpl->nFrame+1)], m_pImpl->fBlend);
 			MatrixScaling(mOut, v.x, v.y, v.z);
 	}
 	else
@@ -1007,9 +1010,9 @@ void CPVRTModelPOD::GetScalingMatrix(
  @Description	Generates the world matrix for the given Mesh Instance;
 				applies the parent's transform too. Uses animation data.
 *****************************************************************************/
-MATRIX CPVRTModelPOD::GetScalingMatrix(const SPODNode &node) const
+OGMatrix CPVRTModelPOD::GetScalingMatrix(const SPODNode &node) const
 {
-	MATRIX mOut;
+	OGMatrix mOut;
 	GetScalingMatrix(mOut, node);
 	return mOut;
 }
@@ -1022,7 +1025,7 @@ MATRIX CPVRTModelPOD::GetScalingMatrix(const SPODNode &node) const
 					Instance. Uses animation data.
 *****************************************************************************/
 void CPVRTModelPOD::GetTranslation(
-	VECTOR3		&V,
+	OGVec3		&V,
 	const SPODNode	&node) const
 {
 	if(node.pfAnimPosition)
@@ -1031,12 +1034,12 @@ void CPVRTModelPOD::GetTranslation(
 		{
 			Vec3Lerp(
 			    V,
-				(VECTOR3&)node.pfAnimPosition[3 * (m_pImpl->nFrame+0)],
-				(VECTOR3&)node.pfAnimPosition[3 * (m_pImpl->nFrame+1)], m_pImpl->fBlend);
+				(OGVec3&)node.pfAnimPosition[3 * (m_pImpl->nFrame+0)],
+				(OGVec3&)node.pfAnimPosition[3 * (m_pImpl->nFrame+1)], m_pImpl->fBlend);
 		}
 		else
 		{
-			V = *(VECTOR3*) node.pfAnimPosition;
+			V = *(OGVec3*) node.pfAnimPosition;
 		}
 	}
 	else
@@ -1052,9 +1055,9 @@ void CPVRTModelPOD::GetTranslation(
  @Description	Generates the translation vector for the given Mesh
 				Instance. Uses animation data.
 *****************************************************************************/
-VECTOR3 CPVRTModelPOD::GetTranslation(const SPODNode &node) const
+OGVec3 CPVRTModelPOD::GetTranslation(const SPODNode &node) const
 {
-	VECTOR3 vOut;
+	OGVec3 vOut;
 	GetTranslation(vOut, node);
 	return vOut;
 }
@@ -1067,18 +1070,18 @@ VECTOR3 CPVRTModelPOD::GetTranslation(const SPODNode &node) const
 					applies the parent's transform too. Uses animation data.
 *****************************************************************************/
 void CPVRTModelPOD::GetTranslationMatrix(
-	MATRIX		&mOut,
+	OGMatrix		&mOut,
 	const SPODNode	&node) const
 {
-	 VECTOR3 v;
+	 OGVec3 v;
 
 	if(node.pfAnimPosition)
 	{
 		if(node.nAnimFlags & ePODHasPositionAni)
 		{
 			Vec3Lerp(v,
-				(VECTOR3&)node.pfAnimPosition[3*(m_pImpl->nFrame+0)],
-				(VECTOR3&)node.pfAnimPosition[3*(m_pImpl->nFrame+1)], m_pImpl->fBlend);
+				(OGVec3&)node.pfAnimPosition[3*(m_pImpl->nFrame+0)],
+				(OGVec3&)node.pfAnimPosition[3*(m_pImpl->nFrame+1)], m_pImpl->fBlend);
 			MatrixTranslation(mOut, v.x, v.y, v.z);
 		}
 		else
@@ -1099,9 +1102,9 @@ void CPVRTModelPOD::GetTranslationMatrix(
  @Description	Generates the world matrix for the given Mesh Instance;
 				applies the parent's transform too. Uses animation data.
 *****************************************************************************/
-MATRIX CPVRTModelPOD::GetTranslationMatrix(const SPODNode &node) const
+OGMatrix CPVRTModelPOD::GetTranslationMatrix(const SPODNode &node) const
 {
-	MATRIX mOut;
+	OGMatrix mOut;
 	GetTranslationMatrix(mOut, node);
 	return mOut;
 }
@@ -1113,17 +1116,17 @@ MATRIX CPVRTModelPOD::GetTranslationMatrix(const SPODNode &node) const
  @Description	Generates the world matrix for the given Mesh Instance;
 				applies the parent's transform too. Uses animation data.
 *****************************************************************************/
-void CPVRTModelPOD::GetTransformationMatrix(MATRIX &mOut, const SPODNode &node) const
+void CPVRTModelPOD::GetTransformationMatrix(OGMatrix &mOut, const SPODNode &node) const
 {
 	if(node.pfAnimMatrix)
 	{
 		if(node.nAnimFlags & ePODHasMatrixAni)
 		{
-			mOut = *((MATRIX*) &node.pfAnimMatrix[16*m_pImpl->nFrame]);
+			mOut = *((OGMatrix*) &node.pfAnimMatrix[16*m_pImpl->nFrame]);
 		}
 		else
 		{
-			mOut = *((MATRIX*) node.pfAnimMatrix);
+			mOut = *((OGMatrix*) node.pfAnimMatrix);
 		}
 	}
 	else
@@ -1139,10 +1142,10 @@ void CPVRTModelPOD::GetTransformationMatrix(MATRIX &mOut, const SPODNode &node) 
 					applies the parent's transform too. Uses animation data.
 *****************************************************************************/
 void CPVRTModelPOD::GetWorldMatrixNoCache(
-	MATRIX		&mOut,
+	OGMatrix		&mOut,
 	const SPODNode	&node) const
 {
-	 MATRIX mTmp;
+	 OGMatrix mTmp;
 
 	if(node.pfAnimMatrix) // The transformations are stored as matrices
 		GetTransformationMatrix(mOut, node);
@@ -1176,9 +1179,9 @@ void CPVRTModelPOD::GetWorldMatrixNoCache(
  @Description	Generates the world matrix for the given Mesh Instance;
 				applies the parent's transform too. Uses animation data.
 *****************************************************************************/
-MATRIX CPVRTModelPOD::GetWorldMatrixNoCache(const SPODNode& node) const
+OGMatrix CPVRTModelPOD::GetWorldMatrixNoCache(const SPODNode& node) const
 {
-	MATRIX mWorld;
+	OGMatrix mWorld;
 	GetWorldMatrixNoCache(mWorld,node);
 	return mWorld;
 }
@@ -1191,7 +1194,7 @@ MATRIX CPVRTModelPOD::GetWorldMatrixNoCache(const SPODNode& node) const
 					applies the parent's transform too. Uses animation data.
 *****************************************************************************/
 void CPVRTModelPOD::GetWorldMatrix(
-	MATRIX		&mOut,
+	OGMatrix		&mOut,
 	const SPODNode	&node) const
 {
 	unsigned int nIdx;
@@ -1227,9 +1230,9 @@ void CPVRTModelPOD::GetWorldMatrix(
  @Description	Generates the world matrix for the given Mesh Instance;
 				applies the parent's transform too. Uses animation data.
 *****************************************************************************/
-MATRIX CPVRTModelPOD::GetWorldMatrix(const SPODNode& node) const
+OGMatrix CPVRTModelPOD::GetWorldMatrix(const SPODNode& node) const
 {
-	MATRIX mWorld;
+	OGMatrix mWorld;
 	GetWorldMatrix(mWorld,node);
 	return mWorld;
 }
@@ -1241,11 +1244,11 @@ MATRIX CPVRTModelPOD::GetWorldMatrix(const SPODNode& node) const
  @Input				NodeBone		Bone to take the matrix from
  @Description		Generates the world matrix for the given bone.
 *****************************************************************************/
-void CPVRTModelPOD::GetBoneWorldMatrix(MATRIX		    &mOut,
+void CPVRTModelPOD::GetBoneWorldMatrix(OGMatrix		    &mOut,
                                        const SPODNode	&NodeMesh,
                                        const SPODNode	&NodeBone)
 {
-    MATRIX	mTmp;
+    OGMatrix	mTmp;
     float	fFrame;
 
     fFrame = m_pImpl->fFrame;
@@ -1275,11 +1278,11 @@ void CPVRTModelPOD::GetBoneWorldMatrix(MATRIX		    &mOut,
  @Returns		Bone world matrix
  @Description	Generates the world matrix for the given bone.
 *****************************************************************************/
-MATRIX CPVRTModelPOD::GetBoneWorldMatrix(
+OGMatrix CPVRTModelPOD::GetBoneWorldMatrix(
 	const SPODNode	&NodeMesh,
 	const SPODNode	&NodeBone)
 {
-	MATRIX mOut;
+	OGMatrix mOut;
 	GetBoneWorldMatrix(mOut,NodeMesh,NodeBone);
 	return mOut;
 }
@@ -1299,12 +1302,12 @@ MATRIX CPVRTModelPOD::GetBoneWorldMatrix(
 					camera.
 *****************************************************************************/
 float CPVRTModelPOD::GetCamera(
-	VECTOR3			&vFrom,
-	VECTOR3			&vTo,
-	VECTOR3			&vUp,
+	OGVec3			&vFrom,
+	OGVec3			&vTo,
+	OGVec3			&vUp,
 	const unsigned int	nIdx) const
 {
-	 MATRIX		mTmp;
+	 OGMatrix		mTmp;
 	float		*pfData;
 	SPODCamera		*pCam;
 	const SPODNode	*pNd;
@@ -1360,11 +1363,11 @@ float CPVRTModelPOD::GetCamera(
 					not changed.
 *****************************************************************************/
 float CPVRTModelPOD::GetCameraPos(
-	VECTOR3			&vFrom,
-	VECTOR3			&vTo,
+	OGVec3			&vFrom,
+	OGVec3			&vTo,
 	const unsigned int	nIdx) const
 {
-	 MATRIX		mTmp;
+	 OGMatrix		mTmp;
 	float		*pfData;
 	SPODCamera		*pCam;
 	const SPODNode	*pNd;
@@ -1411,11 +1414,11 @@ float CPVRTModelPOD::GetCameraPos(
 					Uses animation data.
 *****************************************************************************/
 void CPVRTModelPOD::GetLight(
-	VECTOR3			&vPos,
-	VECTOR3			&vDir,
+	OGVec3			&vPos,
+	OGVec3			&vDir,
 	const unsigned int	nIdx) const
 {
-	 MATRIX		mTmp;
+	 OGMatrix		mTmp;
 	const SPODNode	*pNd;
 
 	_ASSERT(nIdx < nNumLight);
@@ -1439,40 +1442,40 @@ void CPVRTModelPOD::GetLight(
 /*!***************************************************************************
  @Function		GetLight
  @Input			nIdx			Light number
- @Return		VECTOR4 position/direction of light with w set correctly
+ @Return		OGVec4 position/direction of light with w set correctly
  @Description	Calculate the position or direction of the given Light.
 				Uses animation data.
 *****************************************************************************/
-Vec4 CPVRTModelPOD::GetLightPosition(const unsigned int u32Idx) const
+OGVec4 CPVRTModelPOD::GetLightPosition(const unsigned int u32Idx) const
 {	// TODO: make this a real function instead of just wrapping GetLight()
-	Vec3 vPos, vDir;
+	OGVec3 vPos, vDir;
 	GetLight(vPos,vDir,u32Idx);
 
 	_ASSERT(u32Idx < nNumLight);
 	_ASSERT(pLight[u32Idx].eType==ePODPoint);
-	return Vec4(vPos,1);
+	return OGVec4(vPos,1);
 }
 
 /*!***************************************************************************
  @Function		GetLightDirection
  @Input			u32Idx			Light number
- @Return		VECTOR4 direction of light with w set correctly
+ @Return		OGVec4 direction of light with w set correctly
  @Description	Calculate the direction of the given Light. Uses animation data.
 *****************************************************************************/
-Vec4 CPVRTModelPOD::GetLightDirection(const unsigned int u32Idx) const
+OGVec4 CPVRTModelPOD::GetLightDirection(const unsigned int u32Idx) const
 {	// TODO: make this a real function instead of just wrapping GetLight()
-	Vec3 vPos, vDir;
+	OGVec3 vPos, vDir;
 	GetLight(vPos,vDir,u32Idx);
 
 	_ASSERT(u32Idx < nNumLight);
 	_ASSERT(pLight[u32Idx].eType==ePODDirectional);
-	return Vec4(vDir,1);
+	return OGVec4(vDir,1);
 }
 
 /*!***************************************************************************
  @Function			CreateSkinIdxWeight
- @Output			pIdx				Four bytes containing matrix indices for vertex (0..255) (D3D: use UBYTE4)
- @Output			pWeight				Four bytes containing blend weights for vertex (0.0 .. 1.0) (D3D: use D3DCOLOR)
+ @Output			pIdx				Four bytes containing matrix indices for vertex (0..255)
+ @Output			pWeight				Four bytes containing blend weights for vertex (0.0 .. 1.0)
  @Input				nVertexBones		Number of bones this vertex uses
  @Input				pnBoneIdx			Pointer to 'nVertexBones' indices
  @Input				pfBoneWeight		Pointer to 'nVertexBones' blend weights
@@ -1480,11 +1483,11 @@ Vec4 CPVRTModelPOD::GetLightDirection(const unsigned int u32Idx) const
 					vertex. Call once per vertex of a boned mesh.
 *****************************************************************************/
 bool CPVRTModelPOD::CreateSkinIdxWeight(
-	char			* const pIdx,			// Four bytes containing matrix indices for vertex (0..255) (D3D: use UBYTE4)
-	char			* const pWeight,		// Four bytes containing blend weights for vertex (0.0 .. 1.0) (D3D: use D3DCOLOR)
-	const int		nVertexBones,			// Number of bones this vertex uses
-	const int		* const pnBoneIdx,		// Pointer to 'nVertexBones' indices
-	const float	* const pfBoneWeight)	// Pointer to 'nVertexBones' blend weights
+	char* const pIdx,
+	char* const pWeight,
+	int	nVertexBones,
+	const int* const pnBoneIdx,
+	const float* const pfBoneWeight)
 {
 	int i, nSum;
 	int nIdx[4];
@@ -1497,12 +1500,12 @@ bool CPVRTModelPOD::CreateSkinIdxWeight(
 
 		if(nIdx[i] > 255)
 		{
-			_RPT0(_CRT_WARN, "Too many bones (highest index is 255).\n");
+			OG_LOG_WARNING("CPVRTModelPOD::CreateSkinIdxWeight - Too many bones (highest index is 255).");
 			return false;
 		}
 
-		nWeight[i]	= max(nWeight[i], 0);
-		nWeight[i]	= min(nWeight[i], 255);
+		nWeight[i]	= OG_MAX(nWeight[i], 0);
+		nWeight[i]	= OG_MIN(nWeight[i], 255);
 	}
 
 	for(; i < 4; ++i)

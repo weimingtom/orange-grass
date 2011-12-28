@@ -23,22 +23,22 @@ public:
     virtual void Init(OGEffectType _Type, const std::string& _File);
 
 	// Set billboard basis vectors.
-	virtual void SetBillboardVectors (const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight);
+	virtual void SetBillboardVectors (const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight);
 
 	// Set direction.
-	virtual void SetDirection (const Vec3& _vDir);
+	virtual void SetDirection (const OGVec3& _vDir);
 
 	// Set start and finish positions.
-    virtual void SetStartFinishPositions (const Vec3& _vStartPos, const Vec3& _vFinishPos);
+    virtual void SetStartFinishPositions (const OGVec3& _vStartPos, const OGVec3& _vFinishPos);
 
 	// Update.
 	virtual void Update (unsigned long _ElapsedTime);
 
 	// Update position.
-	virtual void UpdatePosition (const Vec3& _vPosition);
+	virtual void UpdatePosition (const OGVec3& _vPosition);
 
 	// Render.
-	virtual void Render (const MATRIX& _mWorld);
+	virtual void Render (const OGMatrix& _mWorld);
 
 	// Get combined AABB
     virtual const IOGAabb& GetAABB () const {return m_AABB;}
@@ -67,9 +67,9 @@ public:
 protected:
 	
     IOGAabb         m_AABB;
-    Vec3			m_vCameraLook;
-    Vec3			m_vCameraUp;
-    Vec3			m_vCameraRight;
+    OGVec3			m_vCameraLook;
+    OGVec3			m_vCameraUp;
+    OGVec3			m_vCameraRight;
     OGEffectStatus	m_Status;
     OGEffectType	m_Type;
 

@@ -10,7 +10,7 @@
 #define IOGGLOBALVARSTABLE_H_
 
 #include <string>
-#include "Mathematics.h"
+#include "IOGMath.h"
 
 
 class IOGGlobalVarsTable
@@ -33,20 +33,20 @@ public:
 		const std::string& _VarAlias, 
 		const std::string& _SVar) = 0;
 
-	// set Vec2 variable.
+	// set OGVec2 variable.
 	virtual void SetVec2Var (
 		const std::string& _VarAlias, 
-		const Vec2& _vVar) = 0;
+		const OGVec2& _vVar) = 0;
 
-	// set Vec3 variable.
+	// set OGVec3 variable.
 	virtual void SetVec3Var (
 		const std::string& _VarAlias, 
-		const Vec3& _vVar) = 0;
+		const OGVec3& _vVar) = 0;
 
-	// set Vec4 variable.
+	// set OGVec4 variable.
 	virtual void SetVec4Var (
 		const std::string& _VarAlias, 
-		const Vec4& _vVar) = 0;
+		const OGVec4& _vVar) = 0;
 
 	// get integer variable.
 	virtual int GetIVar (const std::string& _VarAlias) = 0;
@@ -57,14 +57,14 @@ public:
 	// get string variable.
 	virtual const std::string& GetSVar (const std::string& _VarAlias) = 0;
 
-	// get Vec2 variable.
-	virtual const Vec2& GetVec2Var (const std::string& _VarAlias) = 0;
+	// get OGVec2 variable.
+	virtual const OGVec2& GetVec2Var (const std::string& _VarAlias) = 0;
 
-	// get Vec3 variable.
-	virtual const Vec3& GetVec3Var (const std::string& _VarAlias) = 0;
+	// get OGVec3 variable.
+	virtual const OGVec3& GetVec3Var (const std::string& _VarAlias) = 0;
 
-	// get Vec4 variable.
-	virtual const Vec4& GetVec4Var (const std::string& _VarAlias) = 0;
+	// get OGVec4 variable.
+	virtual const OGVec4& GetVec4Var (const std::string& _VarAlias) = 0;
 };
 
 

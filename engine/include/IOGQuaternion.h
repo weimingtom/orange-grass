@@ -8,7 +8,7 @@
 #ifndef QUATERNION_H_
 #define QUATERNION_H_
 
-#include "Matrix.h"
+#include "IOGMatrix.h"
 
 
 /*!***************************************************************************
@@ -20,7 +20,7 @@ typedef struct
 	float y;	/*!< y coordinate */
 	float z;	/*!< z coordinate */
 	float w;	/*!< w coordinate */
-} QUATERNION;
+} OGQuat;
 
 
 /*!***************************************************************************
@@ -28,7 +28,7 @@ typedef struct
  @Output         qOut resulting quaternion
  @Description    Set quaternion to identity value.
  ****************************************************************************/
-void QuaternionIdentity(QUATERNION& qOut);
+void QuaternionIdentity(OGQuat& qOut);
 
 
 /*!***************************************************************************
@@ -39,8 +39,8 @@ void QuaternionIdentity(QUATERNION& qOut);
  @Description    Build quaternion from axis and angle.
  ****************************************************************************/
 void QuaternionRotationAxis(
-	QUATERNION& qOut,
-	const VECTOR3& vAxis,
+	OGQuat& qOut,
+	const OGVec3& vAxis,
 	float fAngle);
 
 
@@ -52,8 +52,8 @@ void QuaternionRotationAxis(
  @Description    Convert to axis and angle.
  ****************************************************************************/
 void QuaternionToAxisAngle(
-	const QUATERNION& qIn,
-	VECTOR3& vAxis,
+	const OGQuat& qIn,
+	OGVec3& vAxis,
 	float& fAngle);
 
 
@@ -66,9 +66,9 @@ void QuaternionToAxisAngle(
  @Description    Spherical linear interpolation.
  ****************************************************************************/
 void QuaternionSlerp(
-	QUATERNION& qOut,
-	const QUATERNION& qA,
-	const QUATERNION& qB,
+	OGQuat& qOut,
+	const OGQuat& qA,
+	const OGQuat& qB,
 	float t);
 
 
@@ -77,7 +77,7 @@ void QuaternionSlerp(
  @Output         quat resulting quaternion
  @Description    Normalize quaternion.
  ****************************************************************************/
-void QuaternionNormalize(QUATERNION &quat);
+void QuaternionNormalize(OGQuat &quat);
 
 
 /*!***************************************************************************
@@ -86,7 +86,7 @@ void QuaternionNormalize(QUATERNION &quat);
  @Input          quat quaternion
  @Description    Create rotation matrix from quaternion.
  ****************************************************************************/
-void QuaternionToRotationMatrix(MATRIX& mOut, const QUATERNION& quat);
+void QuaternionToRotationMatrix(OGMatrix& mOut, const OGQuat& quat);
 
 
 /*!***************************************************************************
@@ -96,9 +96,9 @@ void QuaternionToRotationMatrix(MATRIX& mOut, const QUATERNION& quat);
  @Description    quaternions multiplication
  ****************************************************************************/
 void QuaternionMultiply(
-	QUATERNION& qOut,
-	const QUATERNION& qA,
-	const QUATERNION& qB);
+	OGQuat& qOut,
+	const OGQuat& qA,
+	const OGQuat& qB);
 
 
 #endif

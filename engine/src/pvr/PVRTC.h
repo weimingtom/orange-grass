@@ -1,5 +1,5 @@
-#ifndef _TEXTURE_h_
-#define _TEXTURE_h_
+#ifndef PVRTC_H_
+#define PVRTC_H_
 
 #include "OpenGL2.h"
 #include <stdio.h>

@@ -26,7 +26,7 @@ public:
 	virtual void Update (unsigned long _ElapsedTime);
 
 	// Set target.
-    void SetTarget(const Vec3& _vTarget);
+    void SetTarget(const OGVec3& _vTarget);
 
 	// Set active state.
 	virtual void Activate (bool _bActive);
@@ -42,7 +42,7 @@ protected:
         FINISHWRK_STATE_LANDING
     };
 
-    Vec3 m_vTarget;
+    OGVec3 m_vTarget;
     COGOrientWorker m_OrientWorker;
     FinishLevelWorkerState m_WrkState;
 };

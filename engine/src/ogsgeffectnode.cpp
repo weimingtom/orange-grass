@@ -34,7 +34,7 @@ COGSgEffectNode::~COGSgEffectNode ()
 
 
 // get world transform.
-const MATRIX& COGSgEffectNode::GetWorldTransform () const
+const OGMatrix& COGSgEffectNode::GetWorldTransform () const
 {
     return m_pPhysics->GetWorldTransform();
 }
@@ -63,7 +63,7 @@ void COGSgEffectNode::Render ()
 	if (!m_bActive)
 		return;
 
-    const MATRIX& mWorld = m_pPhysics->GetWorldTransform();
+    const OGMatrix& mWorld = m_pPhysics->GetWorldTransform();
     m_pRenderable->Render(mWorld);
 }
 
@@ -76,7 +76,7 @@ IOGPhysicalObject* COGSgEffectNode::GetPhysics ()
 
 
 // Get active point
-bool COGSgEffectNode::GetActivePoint (Vec3& _point, const std::string& _Alias)
+bool COGSgEffectNode::GetActivePoint (OGVec3& _point, const std::string& _Alias)
 {
     return false;
 }
@@ -96,7 +96,7 @@ void COGSgEffectNode::Activate (bool _bActive)
 
 
 // Set billboard basis vectors.
-void COGSgEffectNode::SetBillboardVectors (const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight)
+void COGSgEffectNode::SetBillboardVectors (const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight)
 {
     m_pRenderable->SetBillboardVectors(_vLook, _vUp, _vRight);
 }

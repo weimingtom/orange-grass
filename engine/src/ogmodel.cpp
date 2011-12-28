@@ -215,7 +215,7 @@ void COGModel::Unload ()
 
 
 // Render mesh.
-void COGModel::Render (const MATRIX& _mWorld, unsigned int _Frame)
+void COGModel::Render (const OGMatrix& _mWorld, unsigned int _Frame)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
@@ -225,7 +225,7 @@ void COGModel::Render (const MATRIX& _mWorld, unsigned int _Frame)
 
 
 // Render solid parts of the mesh.
-void COGModel::RenderSolidParts (const MATRIX& _mWorld, unsigned int _Frame)
+void COGModel::RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
@@ -235,7 +235,7 @@ void COGModel::RenderSolidParts (const MATRIX& _mWorld, unsigned int _Frame)
 
 
 // Render transparent parts of the mesh.
-void COGModel::RenderTransparentParts (const MATRIX& _mWorld, unsigned int _Frame, float _fSpin)
+void COGModel::RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fSpin)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
@@ -259,7 +259,7 @@ unsigned int COGModel::GetNumRenderables () const
 
 
 // Get part's transformed OBB after applying animation
-bool COGModel::GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const MATRIX& _mWorld) const
+bool COGModel::GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld) const
 {
 	return m_pMesh->GetTransformedOBB(_obb, _Part, _Frame, _mWorld);
 }

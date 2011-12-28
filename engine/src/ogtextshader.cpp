@@ -9,7 +9,7 @@
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogtextshader.h"
-#include "GraphicsDevice.h"
+#include "ogshader.h"
 
 
 COGTextShader::COGTextShader ()
@@ -66,7 +66,7 @@ void COGTextShader::Setup ()
 
 
 // set projection matrix
-void COGTextShader::SetProjectionMatrix (const MATRIX& _mProj)
+void COGTextShader::SetProjectionMatrix (const OGMatrix& _mProj)
 {
     m_mProjection = _mProj;
 }

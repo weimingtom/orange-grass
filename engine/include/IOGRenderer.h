@@ -65,25 +65,25 @@ public:
 	virtual void SetBlend (OGBlendType _Blend) = 0;
 
 	// set model matrix.
-	virtual void SetModelMatrix (const MATRIX& _mModel) = 0;
+	virtual void SetModelMatrix (const OGMatrix& _mModel) = 0;
 
 	// set view matrix.
-	virtual void SetViewMatrix (const MATRIX& _mView) = 0;
+	virtual void SetViewMatrix (const OGMatrix& _mView) = 0;
 
 	// get model matrix.
-	virtual void GetModelMatrix (MATRIX& _mModel) = 0;
+	virtual void GetModelMatrix (OGMatrix& _mModel) = 0;
 
 	// get view matrix.
-	virtual void GetViewMatrix (MATRIX& _mView) = 0;
+	virtual void GetViewMatrix (OGMatrix& _mView) = 0;
 
 	// get projection matrix.
-	virtual void GetProjectionMatrix (MATRIX& _mProjection) = 0;
+	virtual void GetProjectionMatrix (OGMatrix& _mProjection) = 0;
 
 	// add rendering command.
 	virtual void RenderMesh (void* _pMesh) = 0;
 
 	// clear frame buffer with the given color
-	virtual void ClearFrame (const Vec4& _vClearColor) = 0;
+	virtual void ClearFrame (const OGVec4& _vClearColor) = 0;
 
 	// Get scene light.
 	virtual IOGLightMgr* GetLightMgr () = 0;
@@ -119,10 +119,10 @@ public:
 	virtual void Reset () = 0;
 
     // Unproject screen coords.
-    virtual Vec3 UnprojectCoords (int _X, int _Y) = 0;
+    virtual OGVec3 UnprojectCoords (int _X, int _Y) = 0;
 
     // Display string.
-    virtual void DisplayString (const Vec2& _vPos, float _fScale, unsigned int Colour, const char * const pszFormat, ...) = 0;
+    virtual void DisplayString (const OGVec2& _vPos, float _fScale, unsigned int Colour, const char * const pszFormat, ...) = 0;
 
     // Draw effects buffer.
     virtual void DrawEffectBuffer (void* _pBuffer, int _StartId, int _NumVertices) = 0;

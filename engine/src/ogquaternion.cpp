@@ -5,12 +5,12 @@
  *  Copyright 2009-2012 Viacheslav Bogdanov. All rights reserved.
  *
  ****************************************************************************/
+#include "IOGCoreHelpers.h"
 #include <math.h>
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include "Quaternion.h"
-#include "Macros.h"
+#include "IOGQuaternion.h"
 
 
 /*!***************************************************************************
@@ -18,7 +18,7 @@
  @Output         qOut resulting quaternion
  @Description    Set quaternion to identity value.
  ****************************************************************************/
-void QuaternionIdentity(QUATERNION& qOut)
+void QuaternionIdentity(OGQuat& qOut)
 {
     qOut.x = 0;
     qOut.y = 0;
@@ -35,8 +35,8 @@ void QuaternionIdentity(QUATERNION& qOut)
  @Description    Build quaternion from axis and angle.
  ****************************************************************************/
 void QuaternionRotationAxis(
-    QUATERNION& qOut,
-    const VECTOR3& vAxis,
+    OGQuat& qOut,
+    const OGVec3& vAxis,
     float fAngle)
 {
     float fSin, fCos;
@@ -63,8 +63,8 @@ void QuaternionRotationAxis(
  @Description    Convert to axis and angle.
  ****************************************************************************/
 void QuaternionToAxisAngle(
-    const QUATERNION& qIn,
-    VECTOR3& vAxis,
+    const OGQuat& qIn,
+    OGVec3& vAxis,
     float& fAngle)
 {
     float	fCosAngle, fSinAngle;
@@ -96,9 +96,9 @@ void QuaternionToAxisAngle(
  @Description    Spherical linear interpolation.
  ****************************************************************************/
 void QuaternionSlerp(
-    QUATERNION& qOut,
-    const QUATERNION& qA,
-    const QUATERNION& qB,
+    OGQuat& qOut,
+    const OGQuat& qA,
+    const OGQuat& qB,
     float t)
 {
     float fCosine, fAngle, A, B;
@@ -106,7 +106,7 @@ void QuaternionSlerp(
     /* Parameter checking */
     if (t<0.0f || t>1.0f)
     {
-        printf("MatrixQuaternionSlerp : Bad parameters\n");
+        OG_LOG_WARNING("QuaternionSlerp: Bad parameters");
         qOut.x = 0;
         qOut.y = 0;
         qOut.z = 0;
@@ -119,7 +119,7 @@ void QuaternionSlerp(
 
     if (fCosine < 0)
     {
-        QUATERNION qi;
+        OGQuat qi;
         qi.x = -qB.x;
         qi.y = -qB.y;
         qi.z = -qB.z;
@@ -129,7 +129,7 @@ void QuaternionSlerp(
         return;
     }
 
-    fCosine = _MIN(fCosine, 1.0f);
+    fCosine = OG_MIN(fCosine, 1.0f);
     fAngle = acosf(fCosine);
 
     /* Avoid a division by zero */
@@ -159,7 +159,7 @@ void QuaternionSlerp(
  @Output         quat resulting quaternion
  @Description    Normalize quaternion.
  ****************************************************************************/
-void QuaternionNormalize(QUATERNION& quat)
+void QuaternionNormalize(OGQuat& quat)
 {
     float	fMagnitude;
     float	temp;
@@ -186,9 +186,9 @@ void QuaternionNormalize(QUATERNION& quat)
  @Input          quat quaternion
  @Description    Create rotation matrix from quaternion.
  ****************************************************************************/
-void QuaternionToRotationMatrix(MATRIX& mOut, const QUATERNION& quat)
+void QuaternionToRotationMatrix(OGMatrix& mOut, const OGQuat& quat)
 {
-    const QUATERNION *pQ;
+    const OGQuat *pQ;
     pQ = &quat;
 
     /* Fill matrix members */
@@ -221,11 +221,11 @@ void QuaternionToRotationMatrix(MATRIX& mOut, const QUATERNION& quat)
  @Description    quaternions multiplication
  ****************************************************************************/
 void QuaternionMultiply(
-    QUATERNION& qOut,
-    const QUATERNION& qA,
-    const QUATERNION& qB)
+    OGQuat& qOut,
+    const OGQuat& qA,
+    const OGQuat& qB)
 {
-    VECTOR3	CrossProduct;
+    OGVec3	CrossProduct;
 
     /* Compute scalar component */
     qOut.w = (qA.w*qB.w) - (qA.x*qB.x + qA.y*qB.y + qA.z*qB.z);

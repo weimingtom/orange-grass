@@ -10,7 +10,7 @@
 #define IOGSPRITE_H_
 
 #include "IOGTexture.h"
-#include "Mathematics.h"
+#include "IOGMath.h"
 
 
 class IOGSprite
@@ -22,7 +22,7 @@ public:
 	virtual void SetMapping (unsigned int _Mapping) = 0;
 		
 	// Render sprite.
-	virtual void Render (const Vec2& _vPos, const Vec2& _vSize) = 0;
+	virtual void Render (const OGVec2& _vPos, const OGVec2& _vSize) = 0;
 };
 
 

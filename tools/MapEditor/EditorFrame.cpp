@@ -5,7 +5,7 @@
 #include "EditorFrame.h"
 #include <ToolFramework.h>
 #include "sample.xpm"
-#include "..\include\Pathes.h"
+//#include "..\include\Pathes.h"
 
 
 #define ID_DEF_ABOUT			10000
@@ -185,19 +185,27 @@ void CEditorFrame::CreateLightingPanelControls(wxPanel* _pPanel)
 	wxSize szDifClr = wxSize(rightBorder, 30);
 	wxPoint posDifClr = wxPoint(posClrDesc.x + 5, posClrDesc.y + 15);
 	wxStaticBox* DifClrDesc = new wxStaticBox(_pPanel, wxID_ANY, _T("Diffuse:"), posDifClr, szDifClr);
-	m_pDifColorPicker = new wxColourPickerCtrl(_pPanel, CTRLID_DIFCOLORSLIDER, wxColor(0xFFFFFFFF), wxPoint(posDifClr.x + 80, posDifClr.y+5), szDifClr, wxCLRP_DEFAULT_STYLE | wxCLRP_SHOW_LABEL);	wxSize szAmbClr = wxSize(rightBorder, 30);
+	m_pDifColorPicker = new wxColourPickerCtrl(_pPanel, CTRLID_DIFCOLORSLIDER, wxColor(0xFFFFFFFF), wxPoint(posDifClr.x + 80, posDifClr.y+5), szDifClr, wxCLRP_DEFAULT_STYLE | wxCLRP_SHOW_LABEL);
+	wxSize szAmbClr = wxSize(rightBorder, 30);
 	wxPoint posAmbClr = wxPoint(posClrDesc.x + 5, posClrDesc.y + 50);
 	wxStaticBox* AmbClrDesc = new wxStaticBox(_pPanel, wxID_ANY, _T("Ambient:"), posAmbClr, szAmbClr);
-	m_pAmbColorPicker = new wxColourPickerCtrl(_pPanel, CTRLID_AMBCOLORSLIDER, wxColor(0xFFFFFFFF), wxPoint(posAmbClr.x + 80, posAmbClr.y+5), szAmbClr, wxCLRP_DEFAULT_STYLE | wxCLRP_SHOW_LABEL);	wxSize szSpcClr = wxSize(rightBorder, 30);
+	m_pAmbColorPicker = new wxColourPickerCtrl(_pPanel, CTRLID_AMBCOLORSLIDER, wxColor(0xFFFFFFFF), wxPoint(posAmbClr.x + 80, posAmbClr.y+5), szAmbClr, wxCLRP_DEFAULT_STYLE | wxCLRP_SHOW_LABEL);
+	wxSize szSpcClr = wxSize(rightBorder, 30);
 	wxPoint posSpcClr = wxPoint(posClrDesc.x + 5, posClrDesc.y + 85);
 	wxStaticBox* SpcClrDesc = new wxStaticBox(_pPanel, wxID_ANY, _T("Specular:"), posSpcClr, szSpcClr);
-	m_pSpcColorPicker = new wxColourPickerCtrl(_pPanel, CTRLID_SPCCOLORSLIDER, wxColor(0xFFFFFFFF), wxPoint(posSpcClr.x + 80, posSpcClr.y+5), szSpcClr, wxCLRP_DEFAULT_STYLE | wxCLRP_SHOW_LABEL);	m_pXDirSlider = new wxSlider(_pPanel, CTRLID_XDIRSLIDER, 0, -100, 100, wxPoint(posClrDesc.x + 5, posClrDesc.y + 120), wxSize(rightBorder, 40), wxSL_LABELS);	m_pZDirSlider = new wxSlider(_pPanel, CTRLID_ZDIRSLIDER, 0, -100, 100, wxPoint(posClrDesc.x + 5, posClrDesc.y + 165), wxSize(rightBorder, 40), wxSL_LABELS);
+	m_pSpcColorPicker = new wxColourPickerCtrl(_pPanel, CTRLID_SPCCOLORSLIDER, wxColor(0xFFFFFFFF), wxPoint(posSpcClr.x + 80, posSpcClr.y+5), szSpcClr, wxCLRP_DEFAULT_STYLE | wxCLRP_SHOW_LABEL);
+	m_pXDirSlider = new wxSlider(_pPanel, CTRLID_XDIRSLIDER, 0, -100, 100, wxPoint(posClrDesc.x + 5, posClrDesc.y + 120), wxSize(rightBorder, 40), wxSL_LABELS);
+	m_pZDirSlider = new wxSlider(_pPanel, CTRLID_ZDIRSLIDER, 0, -100, 100, wxPoint(posClrDesc.x + 5, posClrDesc.y + 165), wxSize(rightBorder, 40), wxSL_LABELS);
+
 	wxSize szFogClrDesc = wxSize(panelSize.GetWidth(), 160);
 	wxPoint posFogClrDesc = wxPoint(0, posClrDesc.y + szClrDesc.y + 15);
 	wxStaticBox* FogClrDesc = new wxStaticBox(_pPanel, wxID_ANY, _T("Fog:"), posFogClrDesc, szFogClrDesc);
 	wxSize szFogClr = wxSize(rightBorder, 30);
 	wxPoint posFogClr = wxPoint(posFogClrDesc.x + 5, posFogClrDesc.y + 15);
-	m_pFogColorPicker = new wxColourPickerCtrl(_pPanel, CTRLID_FOGCOLORSLIDER, wxColor(0xFFFFFFFF), posFogClr, szFogClr, wxCLRP_DEFAULT_STYLE | wxCLRP_SHOW_LABEL);	m_pFogNearSlider = new wxSlider(_pPanel, CTRLID_FOGNEARSLIDER, 0, 0, 600, wxPoint(posFogClrDesc.x + 5, posFogClrDesc.y + 60), wxSize(rightBorder, 40), wxSL_LABELS);	m_pFogFarSlider = new wxSlider(_pPanel, CTRLID_FOGFARSLIDER, 0, 0, 600, wxPoint(posFogClrDesc.x + 5, posFogClrDesc.y + 105), wxSize(rightBorder, 40), wxSL_LABELS);}
+	m_pFogColorPicker = new wxColourPickerCtrl(_pPanel, CTRLID_FOGCOLORSLIDER, wxColor(0xFFFFFFFF), posFogClr, szFogClr, wxCLRP_DEFAULT_STYLE | wxCLRP_SHOW_LABEL);
+	m_pFogNearSlider = new wxSlider(_pPanel, CTRLID_FOGNEARSLIDER, 0, 0, 600, wxPoint(posFogClrDesc.x + 5, posFogClrDesc.y + 60), wxSize(rightBorder, 40), wxSL_LABELS);
+	m_pFogFarSlider = new wxSlider(_pPanel, CTRLID_FOGFARSLIDER, 0, 0, 600, wxPoint(posFogClrDesc.x + 5, posFogClrDesc.y + 105), wxSize(rightBorder, 40), wxSL_LABELS);
+}
 
 
 /// @brief App exit handler.
@@ -437,8 +445,8 @@ void CEditorFrame::OnDiffuseColorChange(wxColourPickerEvent& event)
 		wxColour clr = event.GetColour();
 
 		IOGLight* pMainLight = GetRenderer()->GetLightMgr()->GetLight(0);
-		Vec3 vLightColor = Vec3(clr.Red()/255.0f, clr.Green()/255.0f, clr.Blue()/255.0f);
-		pMainLight->vDiffuseColor = Vec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
+		OGVec3 vLightColor = OGVec3(clr.Red()/255.0f, clr.Green()/255.0f, clr.Blue()/255.0f);
+		pMainLight->vDiffuseColor = OGVec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
 	}
 
 	FireUpdateEvent();
@@ -456,8 +464,8 @@ void CEditorFrame::OnAmbientColorChange(wxColourPickerEvent& event)
 		wxColour clr = event.GetColour();
 
 		IOGLight* pMainLight = GetRenderer()->GetLightMgr()->GetLight(0);
-		Vec3 vLightColor = Vec3(clr.Red()/255.0f, clr.Green()/255.0f, clr.Blue()/255.0f);
-		pMainLight->vAmbientColor = Vec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
+		OGVec3 vLightColor = OGVec3(clr.Red()/255.0f, clr.Green()/255.0f, clr.Blue()/255.0f);
+		pMainLight->vAmbientColor = OGVec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
 	}
 
 	FireUpdateEvent();
@@ -475,8 +483,8 @@ void CEditorFrame::OnSpecularColorChange(wxColourPickerEvent& event)
 		wxColour clr = event.GetColour();
 
 		IOGLight* pMainLight = GetRenderer()->GetLightMgr()->GetLight(0);
-		Vec3 vLightColor = Vec3(clr.Red()/255.0f, clr.Green()/255.0f, clr.Blue()/255.0f);
-		pMainLight->vSpecularColor = Vec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
+		OGVec3 vLightColor = OGVec3(clr.Red()/255.0f, clr.Green()/255.0f, clr.Blue()/255.0f);
+		pMainLight->vSpecularColor = OGVec4(vLightColor.x, vLightColor.y, vLightColor.z, 1.0f);
 	}
 
 	FireUpdateEvent();
@@ -492,7 +500,7 @@ void CEditorFrame::OnXDirSlider(wxScrollEvent& event)
 	IOGLight* pMainLight = GetRenderer()->GetLightMgr()->GetLight(0);
 	if (pMainLight)
 	{
-		Vec3 vD = pMainLight->vPosition;
+		OGVec3 vD = pMainLight->vPosition;
 		vD.x = (float)m_pXDirSlider->GetValue() / 100.0f;
 		vD.y = 1.0f;
 		vD.z = (float)event.GetPosition() / 100.0f;
@@ -512,7 +520,7 @@ void CEditorFrame::OnZDirSlider(wxScrollEvent& event)
 	IOGLight* pMainLight = GetRenderer()->GetLightMgr()->GetLight(0);
 	if (pMainLight)
 	{
-		Vec3 vD = pMainLight->vPosition;
+		OGVec3 vD = pMainLight->vPosition;
 		vD.x = (float)event.GetPosition() / 100.0f;
 		vD.y = 1.0f;
 		vD.z = (float)m_pZDirSlider->GetValue() / 100.0f;
@@ -529,7 +537,7 @@ void CEditorFrame::OnFogColorChange(wxColourPickerEvent& event)
 	SetSettingsMode();
 
 	wxColour clr = event.GetColour();
-	Vec4 vFogColor = Vec4(clr.Red()/255.0f, clr.Green()/255.0f, clr.Blue()/255.0f, 1.0f);
+	OGVec4 vFogColor = OGVec4(clr.Red()/255.0f, clr.Green()/255.0f, clr.Blue()/255.0f, 1.0f);
     GetRenderer()->GetFog()->SetColor(vFogColor);
 
 	FireUpdateEvent();
@@ -591,7 +599,7 @@ void CEditorFrame::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& event
 		255);
 	m_pSpcColorPicker->SetColour(spcclr);
 
-    Vec4 vFogColor = GetRenderer()->GetFog()->GetColor();
+    OGVec4 vFogColor = GetRenderer()->GetFog()->GetColor();
 	wxColour fogclr = wxColour(
 		(unsigned char)(vFogColor.x * 255.0f),
 		(unsigned char)(vFogColor.y * 255.0f),
@@ -599,7 +607,7 @@ void CEditorFrame::OnLevelLoadEvent ( CommonToolEvent<LevelLoadEventData>& event
 		255);
 	m_pFogColorPicker->SetColour(fogclr);
 
-	Vec3 vD = pMainLight->vPosition.normalized();
+	OGVec3 vD = pMainLight->vPosition.normalized();
 	m_pXDirSlider->SetValue((int)(vD.x * 100.0f));
 	m_pZDirSlider->SetValue((int)(vD.z * 100.0f));
 

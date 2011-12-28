@@ -9,7 +9,7 @@
 #ifndef IOGGUIBONUSBAR_H_
 #define IOGGUIBONUSBAR_H_
 
-#include "Mathematics.h"
+#include "IOGMath.h"
 #include <string>
 #include "IOGSettingsReader.h"
 

@@ -1,13 +1,5 @@
-#ifndef _MODELPOD_H_
-#define _MODELPOD_H_
-
-#include <Mathematics.h>
-#include <Geometry.h>
-#include <MemoryManager.h>
-#include "Macros.h"
-
-#define PVRTMODELPOD_VERSION	("AB.POD.2.0") /*!< POD file version string */
-#define PVRTMODELPODSF_FIXED	(0x00000001)   /*!< PVRTMODELPOD Fixed-point 16.16 data (otherwise float) flag */
+#ifndef POD_H_
+#define POD_H_
 
 
 /*!****************************************************************************
@@ -124,7 +116,7 @@ public:
 ******************************************************************************/
 struct SPODCamera 
 {
-    int			nIdxTarget;			/*!< Index of the target object */
+    int		nIdxTarget;			/*!< Index of the target object */
     float	fFOV;				/*!< Field of view */
     float	fFar;				/*!< Far clip plane */
     float	fNear;				/*!< Near clip plane */
@@ -176,11 +168,11 @@ struct SPODMesh
 ******************************************************************************/
 struct SPODNode 
 {
-    int			nIdx;				/*!< Index into mesh, light or camera array, depending on which object list contains this Node */
-    char		*pszName;			/*!< Name of object */
-    int			nIdxMaterial;		/*!< Index of material used on this mesh */
-    int			nIdxParent;			/*!< Index into MeshInstance array; recursively apply ancestor's transforms after this instance's. */
-    unsigned int nAnimFlags;		/*!< Stores which animation arrays the POD Node contains */
+    int		nIdx;				/*!< Index into mesh, light or camera array, depending on which object list contains this Node */
+    char	*pszName;			/*!< Name of object */
+    int		nIdxMaterial;		/*!< Index of material used on this mesh */
+    int		nIdxParent;			/*!< Index into MeshInstance array; recursively apply ancestor's transforms after this instance's. */
+    unsigned int nAnimFlags;	/*!< Stores which animation arrays the POD Node contains */
     float	*pfAnimPosition;	/*!< 3 floats per frame of animation. */
     float	*pfAnimRotation;	/*!< 4 floats per frame of animation. */
     float	*pfAnimScale;		/*!< 7 floats per frame of animation. */
@@ -204,15 +196,15 @@ struct SPODTexture
 ******************************************************************************/
 struct SPODMaterial 
 {
-    char		*pszName;			/*!< Name of material */
-    int			nIdxTexDiffuse;		/*!< Idx into textures for diffuse texture */
+    char	*pszName;			/*!< Name of material */
+    int		nIdxTexDiffuse;		/*!< Idx into textures for diffuse texture */
     float	fMatOpacity;		/*!< Material opacity (used with vertex alpha ?) */
     float	pfMatAmbient[3];	/*!< Ambient RGB value */
     float	pfMatDiffuse[3];	/*!< Diffuse RGB value */
     float	pfMatSpecular[3];	/*!< Specular RGB value */
     float	fMatShininess;		/*!< Material shininess */
-    char		*pszEffectFile;		/*!< Name of effect file */
-    char		*pszEffectName;		/*!< Name of effect in the effect file */
+    char	*pszEffectFile;		/*!< Name of effect file */
+    char	*pszEffectName;		/*!< Name of effect in the effect file */
 };
 
 
@@ -222,8 +214,8 @@ struct SPODMaterial
 ******************************************************************************/
 struct SPODScene 
 {
-    float	pfColourBackground[3];	/*!< Background colour */
-    float	pfColourAmbient[3];		/*!< Ambient colour */
+    float	    pfColourBackground[3];	/*!< Background colour */
+    float	    pfColourAmbient[3];		/*!< Ambient colour */
 
     unsigned int	nNumCamera;			/*!< The length of the array pCamera */
     SPODCamera		*pCamera;			/*!< Camera nodes array */
@@ -330,7 +322,7 @@ public:
      @Description	Generates the world matrix for the given Mesh Instance;
                     applies the parent's transform too. Uses animation data.
     *****************************************************************************/
-    void GetRotationMatrix(MATRIX &mOut, const SPODNode &node) const;
+    void GetRotationMatrix(OGMatrix &mOut, const SPODNode &node) const;
 
     /*!***************************************************************************
      @Function		GetRotationMatrix
@@ -339,7 +331,7 @@ public:
      @Description	Generates the world matrix for the given Mesh Instance;
                     applies the parent's transform too. Uses animation data.
     *****************************************************************************/
-    MATRIX GetRotationMatrix(const SPODNode	&node) const;
+    OGMatrix GetRotationMatrix(const SPODNode	&node) const;
 
     /*!***************************************************************************
      @Function		GetScalingMatrix
@@ -348,7 +340,7 @@ public:
      @Description	Generates the world matrix for the given Mesh Instance;
                     applies the parent's transform too. Uses animation data.
     *****************************************************************************/
-    void GetScalingMatrix(MATRIX &mOut, const SPODNode &node) const;
+    void GetScalingMatrix(OGMatrix &mOut, const SPODNode &node) const;
 
     /*!***************************************************************************
      @Function		GetScalingMatrix
@@ -357,7 +349,7 @@ public:
      @Description	Generates the world matrix for the given Mesh Instance;
                     applies the parent's transform too. Uses animation data.
     *****************************************************************************/
-    MATRIX GetScalingMatrix(const SPODNode &node) const;
+    OGMatrix GetScalingMatrix(const SPODNode &node) const;
 
     /*!***************************************************************************
      @Function		GetTranslation
@@ -366,7 +358,7 @@ public:
      @Description	Generates the translation vector for the given Mesh
                     Instance. Uses animation data.
     *****************************************************************************/
-    void GetTranslation(VECTOR3 &V, const SPODNode& node) const;
+    void GetTranslation(OGVec3 &V, const SPODNode& node) const;
 
     /*!***************************************************************************
      @Function		GetTranslation
@@ -375,7 +367,7 @@ public:
      @Description	Generates the translation vector for the given Mesh
                     Instance. Uses animation data.
     *****************************************************************************/
-    VECTOR3 GetTranslation(const SPODNode &node) const;
+    OGVec3 GetTranslation(const SPODNode &node) const;
 
     /*!***************************************************************************
      @Function		GetTranslationMatrix
@@ -384,7 +376,7 @@ public:
      @Description	Generates the world matrix for the given Mesh Instance;
                     applies the parent's transform too. Uses animation data.
     *****************************************************************************/
-    void GetTranslationMatrix( MATRIX &mOut, const SPODNode &node) const;
+    void GetTranslationMatrix( OGMatrix &mOut, const SPODNode &node) const;
 
     /*!***************************************************************************
      @Function		GetTranslationMatrix
@@ -393,7 +385,7 @@ public:
      @Description	Generates the world matrix for the given Mesh Instance;
                     applies the parent's transform too. Uses animation data.
     *****************************************************************************/
-    MATRIX GetTranslationMatrix(const SPODNode	&node) const;
+    OGMatrix GetTranslationMatrix(const SPODNode	&node) const;
 
     /*!***************************************************************************
      @Function		GetTransformationMatrix
@@ -402,7 +394,7 @@ public:
      @Description	Generates the world matrix for the given Mesh Instance;
                     applies the parent's transform too. Uses animation data.
     *****************************************************************************/
-    void GetTransformationMatrix(MATRIX &mOut, const SPODNode &node) const;
+    void GetTransformationMatrix(OGMatrix &mOut, const SPODNode &node) const;
 
     /*!***************************************************************************
      @Function		GetWorldMatrixNoCache
@@ -411,7 +403,7 @@ public:
      @Description	Generates the world matrix for the given Mesh Instance;
                     applies the parent's transform too. Uses animation data.
     *****************************************************************************/
-    void GetWorldMatrixNoCache(MATRIX &mOut, const SPODNode &node) const;
+    void GetWorldMatrixNoCache(OGMatrix &mOut, const SPODNode &node) const;
 
     /*!***************************************************************************
      @Function		GetWorldMatrixNoCache
@@ -420,7 +412,7 @@ public:
      @Description	Generates the world matrix for the given Mesh Instance;
                     applies the parent's transform too. Uses animation data.
     *****************************************************************************/
-    MATRIX GetWorldMatrixNoCache(const SPODNode &node) const;
+    OGMatrix GetWorldMatrixNoCache(const SPODNode &node) const;
 
     /*!***************************************************************************
      @Function		GetWorldMatrix
@@ -429,7 +421,7 @@ public:
      @Description	Generates the world matrix for the given Mesh Instance;
                     applies the parent's transform too. Uses animation data.
     *****************************************************************************/
-    void GetWorldMatrix( MATRIX	&mOut, const SPODNode &node) const;
+    void GetWorldMatrix( OGMatrix	&mOut, const SPODNode &node) const;
 
     /*!***************************************************************************
      @Function		GetWorldMatrix
@@ -438,7 +430,7 @@ public:
      @Description	Generates the world matrix for the given Mesh Instance;
                     applies the parent's transform too. Uses animation data.
     *****************************************************************************/
-    MATRIX GetWorldMatrix(const SPODNode& node) const;
+    OGMatrix GetWorldMatrix(const SPODNode& node) const;
 
     /*!***************************************************************************
      @Function		GetBoneWorldMatrix
@@ -448,7 +440,7 @@ public:
      @Description	Generates the world matrix for the given bone.
     *****************************************************************************/
     void GetBoneWorldMatrix(
-        MATRIX		&mOut,
+        OGMatrix		&mOut,
         const SPODNode	&NodeMesh,
         const SPODNode	&NodeBone);
 
@@ -459,7 +451,7 @@ public:
      @Returns		Bone world matrix
      @Description	Generates the world matrix for the given bone.
     *****************************************************************************/
-    MATRIX GetBoneWorldMatrix(
+    OGMatrix GetBoneWorldMatrix(
         const SPODNode	&NodeMesh,
         const SPODNode	&NodeBone);
 
@@ -477,9 +469,9 @@ public:
                     correct direction of the target, one unit away from the camera.
     *****************************************************************************/
     float GetCamera(
-        VECTOR3			&vFrom,
-        VECTOR3			&vTo,
-        VECTOR3			&vUp,
+        OGVec3			&vFrom,
+        OGVec3			&vTo,
+        OGVec3			&vUp,
         const unsigned int	nIdx) const;
 
     /*!***************************************************************************
@@ -494,8 +486,8 @@ public:
                     not changed.
     *****************************************************************************/
     float GetCameraPos(
-        VECTOR3			&vFrom,
-        VECTOR3			&vTo,
+        OGVec3			&vFrom,
+        OGVec3			&vTo,
         const unsigned int	nIdx) const;
 
     /*!***************************************************************************
@@ -507,25 +499,25 @@ public:
                     Uses animation data.
     *****************************************************************************/
     void GetLight(
-        VECTOR3			&vPos,
-        VECTOR3			&vDir,
+        OGVec3			&vPos,
+        OGVec3			&vDir,
         const unsigned int	nIdx) const;
 
     /*!***************************************************************************
      @Function		GetLightPosition
      @Input			u32Idx			Light number
-     @Return		VECTOR4         position of light with w set correctly
+     @Return		OGVec4         position of light with w set correctly
      @Description	Calculate the position the given Light. Uses animation data.
     *****************************************************************************/
-    Vec4 GetLightPosition(const unsigned int u32Idx) const;
+    OGVec4 GetLightPosition(const unsigned int u32Idx) const;
 
     /*!***************************************************************************
      @Function		GetLightDirection
      @Input			u32Idx			Light number
-     @Return		VECTOR4         direction of light with w set correctly
+     @Return		OGVec4         direction of light with w set correctly
      @Description	Calculate the direction of the given Light. Uses animation data.
     *****************************************************************************/
-    Vec4 GetLightDirection(const unsigned int u32Idx) const;
+    OGVec4 GetLightDirection(const unsigned int u32Idx) const;
 
     /*!***************************************************************************
      @Function		CreateSkinIdxWeight

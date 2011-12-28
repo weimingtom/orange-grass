@@ -86,13 +86,13 @@ void COGGuiBonusbar::Render ()
         BonusEntry& bonus = m_Entries[i];
         if (bonus.m_pBonus)
         {
-            Vec2 vPos = m_Position + Vec2(0, (m_Size.y + m_fVertInterval) * i);
-            m_pFrame->Render(m_Position + Vec2(0, (m_Size.y + m_fVertInterval) * i), m_Size);
+            OGVec2 vPos = m_Position + OGVec2(0, (m_Size.y + m_fVertInterval) * i);
+            m_pFrame->Render(m_Position + OGVec2(0, (m_Size.y + m_fVertInterval) * i), m_Size);
             bonus.m_pBonus->Render(vPos + m_BonusIcoPos, m_BonusIcoSize);
             if (bonus.m_MaxVal > 0)
             {
                 float fPercent = (float)bonus.m_Val / (float)bonus.m_MaxVal;
-                m_pCooldown->Render(vPos + m_CoolDownBarPos, Vec2(m_CoolDownBarSize.x * fPercent, m_CoolDownBarSize.y));
+                m_pCooldown->Render(vPos + m_CoolDownBarPos, OGVec2(m_CoolDownBarSize.x * fPercent, m_CoolDownBarSize.y));
             }
         }
     }

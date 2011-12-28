@@ -26,7 +26,7 @@ COGGuiButton::~COGGuiButton()
 
 
 // Load graphics.
-void COGGuiButton::Load (const std::string& _SprN, const std::string& _SprPr, const Vec2& _Size)
+void COGGuiButton::Load (const std::string& _SprN, const std::string& _SprPr, const OGVec2& _Size)
 {
     m_pNormal = m_pResourceMgr->GetSprite(OG_RESPOOL_UI, _SprN);
     m_pPressed = m_pResourceMgr->GetSprite(OG_RESPOOL_UI, _SprPr);
@@ -45,14 +45,14 @@ void COGGuiButton::Unload ()
 
 
 // Set button position.
-void COGGuiButton::SetPosition (const Vec2& _Pos)
+void COGGuiButton::SetPosition (const OGVec2& _Pos)
 {
     m_Position = _Pos;
 }
 
 
 // Touch event handler.
-bool COGGuiButton::OnTouch (const Vec2& _vPos, IOGTouchParam _param)
+bool COGGuiButton::OnTouch (const OGVec2& _vPos, IOGTouchParam _param)
 {
     if (_param == OG_TOUCH_UP)
     {

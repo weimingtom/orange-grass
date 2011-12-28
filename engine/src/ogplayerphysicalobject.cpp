@@ -46,7 +46,7 @@ void COGPlayerPhysicalObject::Update (unsigned long _ElapsedTime)
 // Bound object position to be in level space.
 bool COGPlayerPhysicalObject::BoundPosition ()
 {
-	Vec3 vLeftBorder, vRightBorder;
+	OGVec3 vLeftBorder, vRightBorder;
 	m_pPhysics->GetBordersAtPoint(m_vPosition, vLeftBorder, vRightBorder);
 	OG_CLAMP(m_vPosition.x, vLeftBorder.x, vRightBorder.x);
 	return true;

@@ -42,10 +42,10 @@ protected:
 	// UI layout settings
 	std::string			m_PanelSprStr;
 	std::string			m_BarSprStr;
-	Vec2				m_Size;
-    Vec2				m_Position;
-	Vec2				m_BarPos;
-	Vec2				m_BarSize;
+	OGVec2				m_Size;
+    OGVec2				m_Position;
+	OGVec2				m_BarPos;
+	OGVec2				m_BarSize;
 	int					m_MaxBars;
 };
 

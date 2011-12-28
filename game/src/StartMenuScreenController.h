@@ -47,10 +47,10 @@ public:
 	virtual void Deactivate ();
 
     // Control vector change event handler.
-	virtual bool OnVectorChanged (const Vec3& _vVec);
+	virtual bool OnVectorChanged (const OGVec3& _vVec);
 
 	// Touch event handler.
-	virtual bool OnTouch (const Vec2& _vPos, IOGTouchParam _param);
+	virtual bool OnTouch (const OGVec2& _vPos, IOGTouchParam _param);
 	
 private:
 	
@@ -70,24 +70,24 @@ private:
 
 	// UI layout settings
 	std::string		m_LogoSprStr;
-	Vec2			m_LogoSprPos;
-	Vec2			m_LogoSprSize;
+	OGVec2			m_LogoSprPos;
+	OGVec2			m_LogoSprSize;
 
 	std::string		m_BackSprStr;
-	Vec2			m_BackSprPos;
-	Vec2			m_BackSprSize;
+	OGVec2			m_BackSprPos;
+	OGVec2			m_BackSprSize;
 
-	Vec2			m_DemoLabelPos;
+	OGVec2			m_DemoLabelPos;
 
 	std::string		m_NewBtnNSprStr;
 	std::string		m_NewBtnPrSprStr;
-	Vec2			m_NewBtnPos;
-	Vec2			m_NewBtnSize;
+	OGVec2			m_NewBtnPos;
+	OGVec2			m_NewBtnSize;
 #ifdef WIN32
 	std::string		m_ExitBtnNSprStr;
 	std::string		m_ExitBtnPrSprStr;
-	Vec2			m_ExitBtnPos;
-	Vec2			m_ExitBtnSize;
+	OGVec2			m_ExitBtnPos;
+	OGVec2			m_ExitBtnSize;
 #endif
 };
 

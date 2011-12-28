@@ -27,7 +27,7 @@ public:
 	virtual void Fire (IOGActor* _pTarget, bool _bFollow);
 
 	// Fire.
-	virtual void Fire (const Vec3& _vTarget);
+	virtual void Fire (const OGVec3& _vTarget);
 
 	// Update actor.
 	virtual void Update (unsigned long _ElapsedTime);

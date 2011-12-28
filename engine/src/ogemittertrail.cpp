@@ -25,7 +25,7 @@ COGEmitterTrail::COGEmitterTrail()
 	m_fInitialScale = 2.0f;
 	m_fScaleInc = 0.1f;
     m_fRotateInc = 0.1f;
-	m_color = Vec4(0.6f, 0.6f, 0.6f, 0.2f);
+	m_color = OGVec4(0.6f, 0.6f, 0.6f, 0.2f);
 
 	AddStringParam("texture", &m_Texture);
 	AddIntParam("mapping", &m_MappingId);
@@ -101,7 +101,7 @@ void COGEmitterTrail::Update (unsigned long _ElapsedTime)
 
 	if (m_Status == OG_EFFECTSTATUS_STARTED && m_bPositionUpdated && m_vCurPosition != m_vPrevPosition)
 	{
-		Vec3 vDir = m_vPrevPosition - m_vCurPosition;
+		OGVec3 vDir = m_vPrevPosition - m_vCurPosition;
 		float fDist = vDir.length();
 		vDir.normalize();
 		unsigned int numVertsAtOnce = (unsigned int)((fDist + m_fDistanceAccum) / m_fEmitDistance);
@@ -132,18 +132,18 @@ void COGEmitterTrail::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGEmitterTrail::Render (const MATRIX& _mWorld, const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight)
+void COGEmitterTrail::Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-    MATRIX mId; 
+    OGMatrix mId; 
     MatrixIdentity(mId);
     m_pRenderer->SetModelMatrix(mId);
 	m_pRenderer->SetBlend(m_Blend);
 	m_pRenderer->SetTexture(m_pTexture);
 
-    MATRIX mR;
+    OGMatrix mR;
 	BBVert* pVert = NULL;
     std::vector<ParticleFormat>::iterator iter = m_BBList.begin();
     for (; iter != m_BBList.end(); ++iter)
@@ -157,8 +157,8 @@ void COGEmitterTrail::Render (const MATRIX& _mWorld, const Vec3& _vLook, const V
 
         MatrixRotationAxis(mR, particle.angle, _vLook.x, _vLook.y, _vLook.z);
 
-        Vec3 vSUp = _vUp * particle.scale;
-		Vec3 vSRight = _vRight * particle.scale;
+        OGVec3 vSUp = _vUp * particle.scale;
+		OGVec3 vSRight = _vRight * particle.scale;
 
 		pVert = &particle.pVertices[0];
         MatrixVecMultiply(pVert->p, vSRight + vSUp, mR);

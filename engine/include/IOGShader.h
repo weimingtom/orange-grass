@@ -9,7 +9,7 @@
 #ifndef IOGSHADER_H_
 #define IOGSHADER_H_
 
-#include "Mathematics.h"
+#include "IOGMath.h"
 #include <string>
 
 
@@ -31,13 +31,13 @@ public:
 	virtual void Setup () = 0;
 
     // set model matrix
-    virtual void SetModelMatrix (const MATRIX& _mModel) = 0;
+    virtual void SetModelMatrix (const OGMatrix& _mModel) = 0;
 
     // set view matrix
-    virtual void SetViewMatrix (const MATRIX& _mView) = 0;
+    virtual void SetViewMatrix (const OGMatrix& _mView) = 0;
 
     // set projection matrix
-    virtual void SetProjectionMatrix (const MATRIX& _mProj) = 0;
+    virtual void SetProjectionMatrix (const OGMatrix& _mProj) = 0;
     
     // set alpha test
     virtual void EnableAlphaTest (bool _bEnabled) = 0;    

@@ -9,7 +9,7 @@
 #ifndef OGSGLANDSCAPENODE_H_
 #define OGSGLANDSCAPENODE_H_
 
-#include "Mathematics.h"
+#include "IOGMath.h"
 #include "IOGSgNode.h"
 #include "IOGAnimationController.h"
 #include "IOGTerrain.h"
@@ -24,7 +24,7 @@ public:
 	virtual ~COGSgLandscapeNode ();
 
 	// get world transform.
-	virtual const MATRIX& GetWorldTransform () const;
+	virtual const OGMatrix& GetWorldTransform () const;
 
 	// Get OBB
 	virtual const IOGObb& GetOBB () const;
@@ -54,7 +54,7 @@ public:
     virtual void StartAnimation (const std::string& _Alias);
 
 	// Get active point
-    virtual bool GetActivePoint (Vec3& _point, const std::string& _Alias);
+    virtual bool GetActivePoint (OGVec3& _point, const std::string& _Alias);
 
 	// Get active state
 	virtual bool IsActive () const { return m_bActive; }
@@ -67,7 +67,7 @@ protected:
     IOGTerrain*             m_pRenderable;
     bool					m_bActive;
     IOGObb                  m_OBB;
-    MATRIX                  m_World;
+    OGMatrix                  m_World;
 	std::vector<IOGObb>		m_TransformedOBBs;
 };
 

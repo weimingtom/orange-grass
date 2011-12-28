@@ -185,7 +185,7 @@ void COGTerrain::Unload ()
 
 
 // Render terrain.
-void COGTerrain::Render (const MATRIX& _mWorld)
+void COGTerrain::Render (const OGMatrix& _mWorld)
 {
 	const IOGFrustum& frustum = GetRenderer()->GetCamera()->GetFrustum();
 
@@ -197,14 +197,14 @@ void COGTerrain::Render (const MATRIX& _mWorld)
 
 
 // Render all.
-void COGTerrain::RenderAll (const MATRIX& _mWorld)
+void COGTerrain::RenderAll (const OGMatrix& _mWorld)
 {
 	Render(_mWorld);
 }
 
 
 // Get ray intersection
-bool COGTerrain::GetRayIntersection (const Vec3& _vRayPos, const Vec3& _vRayDir, Vec3* _pOutPos)
+bool COGTerrain::GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos)
 {
     if (m_pMesh)
     {

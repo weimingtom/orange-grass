@@ -1,14 +1,17 @@
-#include "ResourceFile.h"
-#include "Macros.h"
+#include "OrangeGrass.h"
+#include "ogresourcefile.h"
 #include <stdio.h>
 #include <string.h>
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 
 /*!***************************************************************************
-@Function			CResourceFile
+@Function			COGResourceFile
 @Description		Constructor
 *****************************************************************************/
-CResourceFile::CResourceFile() :
+COGResourceFile::COGResourceFile() :
 	m_bOpen(false),
 	m_Size(0),
     m_BytesReadCount(0),
@@ -18,10 +21,10 @@ CResourceFile::CResourceFile() :
 
 
 /*!***************************************************************************
-@Function			~CResourceFile
+@Function			~COGResourceFile
 @Description		Destructor
 *****************************************************************************/
-CResourceFile::~CResourceFile()
+COGResourceFile::~COGResourceFile()
 {
     Close();
 }
@@ -33,7 +36,7 @@ CResourceFile::~CResourceFile()
 @Returns			true if the file is open
 @Description		Opens file
 *****************************************************************************/
-bool CResourceFile::Open(const char* pszFilename)
+bool COGResourceFile::Open(const char* pszFilename)
 {
 	FILE* pFile = fopen(pszFilename, "rb");
 	if (pFile)
@@ -72,7 +75,7 @@ bool CResourceFile::Open(const char* pszFilename)
 @Returns			true if succeeded
 @Description		Reads number of bytes from file
 *****************************************************************************/
-bool CResourceFile::Read(void* lpBuffer, unsigned int dwNumberOfBytesToRead)
+bool COGResourceFile::Read(void* lpBuffer, unsigned int dwNumberOfBytesToRead)
 {
 	_ASSERT(lpBuffer);
 	_ASSERT(m_bOpen);
@@ -92,7 +95,7 @@ bool CResourceFile::Read(void* lpBuffer, unsigned int dwNumberOfBytesToRead)
 @Returns			true if succeeded
 @Description		Skips reading number of bytes from file
 *****************************************************************************/
-bool CResourceFile::Skip(unsigned int nBytes)
+bool COGResourceFile::Skip(unsigned int nBytes)
 {
 	_ASSERT(m_bOpen);
 
@@ -111,7 +114,7 @@ bool CResourceFile::Skip(unsigned int nBytes)
 @Returns			true if succeeded
 @Description		Reads marker from file
 *****************************************************************************/
-bool CResourceFile::ReadMarker(unsigned int &nName, unsigned int &nLen)
+bool COGResourceFile::ReadMarker(unsigned int &nName, unsigned int &nLen)
 {
     if(!Read(&nName, sizeof(nName)))
         return false;
@@ -125,7 +128,7 @@ bool CResourceFile::ReadMarker(unsigned int &nName, unsigned int &nLen)
 @Function			Close
 @Description		Closes the file
 *****************************************************************************/
-void CResourceFile::Close()
+void COGResourceFile::Close()
 {
 	if (m_bOpen)
 	{
@@ -135,4 +138,35 @@ void CResourceFile::Close()
 		m_Size = 0;
         m_BytesReadCount = 0;
 	}
+}
+
+/*!***************************************************************************
+ @Function			GetResourcePathASCII
+ @Output            _pOutPath output path string
+ @Input				_PathLength max. path length
+ @Description		Returns the full path to resources
+ ****************************************************************************/
+void GetResourcePathASCII(char* _pOutPath, int _PathLength)
+{
+#ifdef WIN32
+    {
+        wchar_t* pPath = new wchar_t [ _PathLength ];
+        GetModuleFileName ( NULL, pPath, _PathLength );
+        WideCharToMultiByte( CP_ACP, 0, pPath, -1, _pOutPath, _PathLength, "", false );
+    }
+    int pos = (int)strlen( _pOutPath );
+    while ( --pos )
+    {
+        if ( _pOutPath [ pos ] == '\\') 
+        {
+            _pOutPath [ pos + 1 ] = '\0';
+            break;
+        }
+        else
+            _pOutPath [ pos + 1 ] = ' ';
+    }
+#else
+	NSString* readPath = [[NSBundle mainBundle] resourcePath];
+	[readPath getCString:_pOutPath maxLength:_PathLength encoding:NSASCIIStringEncoding];
+#endif
 }

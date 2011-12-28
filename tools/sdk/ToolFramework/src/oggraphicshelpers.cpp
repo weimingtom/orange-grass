@@ -14,8 +14,8 @@
 // Draw AABB
 void DrawAABB (const IOGAabb& _aabb)
 {
-	const Vec3& min = _aabb.GetMin();
-	const Vec3& max = _aabb.GetMax();
+	const OGVec3& min = _aabb.GetMin();
+	const OGVec3& max = _aabb.GetMax();
 
     glBegin(GL_LINE_STRIP);
         glColor3f(0.9f, 0.4f, 0.4f);
@@ -62,17 +62,17 @@ void DrawAABB (const IOGAabb& _aabb)
 // Draw OBB
 void DrawOBB (const IOGObb& _obb)
 {
-    Vec3 vMin = _obb.m_vMin;
-    Vec3 vMax = _obb.m_vMax;
+    OGVec3 vMin = _obb.m_vMin;
+    OGVec3 vMax = _obb.m_vMax;
 
-    Vec3 vA = _obb.VectorConvertToWorld ( Vec3 ( vMin.x, vMin.y, vMin.z) );
-	Vec3 vB = _obb.VectorConvertToWorld ( Vec3 ( vMin.x, vMin.y, vMax.z) );
-	Vec3 vC = _obb.VectorConvertToWorld ( Vec3 ( vMax.x, vMin.y, vMax.z) );
-	Vec3 vD = _obb.VectorConvertToWorld ( Vec3 ( vMax.x, vMin.y, vMin.z) );
-	Vec3 vE = _obb.VectorConvertToWorld ( Vec3 ( vMin.x, vMax.y, vMin.z) );
-	Vec3 vF = _obb.VectorConvertToWorld ( Vec3 ( vMin.x, vMax.y, vMax.z) );
-	Vec3 vG = _obb.VectorConvertToWorld ( Vec3 ( vMax.x, vMax.y, vMax.z) );
-	Vec3 vH = _obb.VectorConvertToWorld ( Vec3 ( vMax.x, vMax.y, vMin.z) );
+    OGVec3 vA = _obb.VectorConvertToWorld ( OGVec3 ( vMin.x, vMin.y, vMin.z) );
+	OGVec3 vB = _obb.VectorConvertToWorld ( OGVec3 ( vMin.x, vMin.y, vMax.z) );
+	OGVec3 vC = _obb.VectorConvertToWorld ( OGVec3 ( vMax.x, vMin.y, vMax.z) );
+	OGVec3 vD = _obb.VectorConvertToWorld ( OGVec3 ( vMax.x, vMin.y, vMin.z) );
+	OGVec3 vE = _obb.VectorConvertToWorld ( OGVec3 ( vMin.x, vMax.y, vMin.z) );
+	OGVec3 vF = _obb.VectorConvertToWorld ( OGVec3 ( vMin.x, vMax.y, vMax.z) );
+	OGVec3 vG = _obb.VectorConvertToWorld ( OGVec3 ( vMax.x, vMax.y, vMax.z) );
+	OGVec3 vH = _obb.VectorConvertToWorld ( OGVec3 ( vMax.x, vMax.y, vMin.z) );
 
 	DrawLine ( vA, vB );
 	DrawLine ( vB, vC );
@@ -92,7 +92,7 @@ void DrawOBB (const IOGObb& _obb)
 
 
 // Draw line
-void DrawLine (const Vec3& _vStart, const Vec3& _vEnd)
+void DrawLine (const OGVec3& _vStart, const OGVec3& _vEnd)
 {
     glBegin(GL_LINES);
         glColor3f(0.9f, 0.4f, 0.4f);
@@ -128,7 +128,7 @@ void DrawCoordGrid (int _Bounds, int _Step, int _MajorStep)
 
 
 // Draw point patch grid
-void DrawPatchGrid (int _NumPatchVerts, const Vec3* _pGridData)
+void DrawPatchGrid (int _NumPatchVerts, const OGVec3* _pGridData)
 {
 	float fPointSize = 3.0f;
 	glPointSize(fPointSize);
@@ -166,12 +166,12 @@ void DrawGeometryGrid (const std::vector<OGFace>& _GridData)
 
 
 // Draw level ranges
-void DrawLevelRanges (const Vec3& _StartPoint, const Vec3& _FinishPoint, float _fWidth, float _fHeight)
+void DrawLevelRanges (const OGVec3& _StartPoint, const OGVec3& _FinishPoint, float _fWidth, float _fHeight)
 {
 	glPointSize(6.0f);
 
-	Vec3 min = _StartPoint; min.x = _StartPoint.x - _fWidth/2.0f; min.y = 0.0f;
-	Vec3 max = _FinishPoint; max.x = _FinishPoint.x + _fWidth/2.0f; max.y = _fHeight;
+	OGVec3 min = _StartPoint; min.x = _StartPoint.x - _fWidth/2.0f; min.y = 0.0f;
+	OGVec3 max = _FinishPoint; max.x = _FinishPoint.x + _fWidth/2.0f; max.y = _fHeight;
 	
     glBegin(GL_LINE_STRIP);
         glColor3f(0.8f, 0.8f, 0.8f);

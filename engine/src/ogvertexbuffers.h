@@ -8,9 +8,9 @@
  */
 #ifndef OGVERTEXBUFFERS_H_
 #define OGVERTEXBUFFERS_H_
-#include "Geometry.h"
 #include "IOGStatistics.h"
 #include "IOGVertexBuffers.h"
+#include "pvr/POD.h"
 
 
 class COGVertexBuffers : public IOGVertexBuffers

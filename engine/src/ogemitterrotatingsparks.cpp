@@ -22,7 +22,7 @@ COGEmitterRotatingSparks::COGEmitterRotatingSparks()
 	m_fAlphaInc = 0.02f;
 	m_fScaleInc = 1.5f;
 	m_fInitialScale = 3.0f;
-    m_color = Vec4(1.0f, 1.0f, 1.0f, 0.5f);
+    m_color = OGVec4(1.0f, 1.0f, 1.0f, 0.5f);
 
 	AddStringParam("texture", &m_Texture);
 	AddIntParam("mapping", &m_MappingId);
@@ -58,17 +58,17 @@ void COGEmitterRotatingSparks::Init(IOGGroupNode* _pNode)
         p.angle = 0.0f;
         p.axis = a;
         p.tilt = i * 0.7f;
-        p.offset = Vec3(0,0,0);
+        p.offset = OGVec3(0,0,0);
         m_color.y = GetRandomRange(0, 90) * 0.01f;
         m_color.z = GetRandomRange(0, 70) * 0.01f;
         p.pVertices[0].c = m_color;
-        p.pVertices[0].t = Vec2(m_pMapping->t1.x, m_pMapping->t0.y);
+        p.pVertices[0].t = OGVec2(m_pMapping->t1.x, m_pMapping->t0.y);
         p.pVertices[1].c = m_color;
-        p.pVertices[1].t = Vec2(m_pMapping->t0.x, m_pMapping->t0.y);
+        p.pVertices[1].t = OGVec2(m_pMapping->t0.x, m_pMapping->t0.y);
         p.pVertices[2].c = m_color;
-        p.pVertices[2].t = Vec2(m_pMapping->t1.x, m_pMapping->t1.y);
+        p.pVertices[2].t = OGVec2(m_pMapping->t1.x, m_pMapping->t1.y);
         p.pVertices[3].c = m_color;
-        p.pVertices[3].t = Vec2(m_pMapping->t0.x, m_pMapping->t1.y);
+        p.pVertices[3].t = OGVec2(m_pMapping->t0.x, m_pMapping->t1.y);
         p.bDirty = true;
         ++a;
         if (a > 2)
@@ -130,27 +130,27 @@ void COGEmitterRotatingSparks::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGEmitterRotatingSparks::Render (const MATRIX& _mWorld, const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight)
+void COGEmitterRotatingSparks::Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-    MATRIX mId; 
+    OGMatrix mId; 
     MatrixIdentity(mId);
     m_pRenderer->SetModelMatrix(mId);
 	m_pRenderer->SetBlend(m_Blend);
 	m_pRenderer->SetTexture(m_pTexture);
 
-    Vec3 vOffset = Vec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
+    OGVec3 vOffset = OGVec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
 
-    MATRIX mR;
+    OGMatrix mR;
 	std::vector<ParticleFormat>::iterator iter = m_BBList.begin();
 	for (; iter != m_BBList.end(); ++iter)
 	{
 		ParticleFormat& p = (*iter);
 
-        Vec3 vUp = _vUp * p.scale;
-        Vec3 vRight = _vRight * p.scale;
+        OGVec3 vUp = _vUp * p.scale;
+        OGVec3 vRight = _vRight * p.scale;
 
         if (m_Status == OG_EFFECTSTATUS_STARTED)
         {
@@ -160,7 +160,7 @@ void COGEmitterRotatingSparks::Render (const MATRIX& _mWorld, const Vec3& _vLook
                 MatrixRotationY(mR, p.tilt);
             else
                 MatrixRotationZ(mR, p.tilt);
-            p.offset = Vec3(10, 0, 0);
+            p.offset = OGVec3(10, 0, 0);
             if (p.bDirty)
             {
                 p.bDirty = false;
@@ -170,7 +170,7 @@ void COGEmitterRotatingSparks::Render (const MATRIX& _mWorld, const Vec3& _vLook
         }
         else if (m_Status == OG_EFFECTSTATUS_STOPPED)
         {
-            Vec3 vDir = (p.pVertices[0].p - vOffset).normalized();
+            OGVec3 vDir = (p.pVertices[0].p - vOffset).normalized();
             p.offset += vDir * 3;
         }
 

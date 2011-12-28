@@ -1,10 +1,10 @@
+#include "OrangeGrass.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
-
-#include "Texture.h"
-#include "ResourceFile.h"
-#include "Macros.h"
+#include "OpenGL2.h"
+#include "../ogresourcefile.h"
+#include "PVRTC.h"
 
 
 #define PT_INDEX    (2)	/*The Punch-through index*/
@@ -19,6 +19,7 @@
 
 // Define an expression to either wrap or clamp large or small vals to the
 // legal coordinate range
+#define CLAMP(X, lower, upper)   (OG_MIN(OG_MAX((X),(lower)), (upper)))
 #define LIMIT_COORD(Val, Size, AssumeImageTiles) \
       ((AssumeImageTiles)? WRAP_COORD((Val), (Size)): CLAMP((Val), 0, (Size)-1))
 
@@ -124,7 +125,7 @@ unsigned int LoadTextureFromPVR(
     GLuint* const texName, 
     const void* psTextureHeader)
 {
-    CResourceFile TexFile;
+    COGResourceFile TexFile;
     if (!TexFile.Open(filename)) 
         return 0;
 
@@ -140,7 +141,7 @@ unsigned int LoadTextureFromPVR(
         if(psPVRHeader->dwHeaderSize==PVRTEX_V1_HEADER_SIZE)
         {	
             // react to old psPVRHeader: i.e. fill in numsurfs as this is missing from old header
-            printf("LoadTextureFromPVR warning: this is an old pvr\n");
+            OG_LOG_WARNING("LoadTextureFromPVR: this is an old pvr.");
             if(psPVRHeader->dwpfFlags & PVRTEX_CUBEMAP)
                 u32NumSurfs = 6;
             else
@@ -149,7 +150,7 @@ unsigned int LoadTextureFromPVR(
         else
         {	
             // not a pvr at all
-            printf("LoadTextureFromPVR failed: not a valid pvr.\n");
+            OG_LOG_ERROR("LoadTextureFromPVR: not a valid pvr.");
             return 0;
         }
     }
@@ -187,7 +188,7 @@ unsigned int LoadTextureFromPVR(
         && ((psPVRHeader->dwpfFlags & PVRTEX_PIXELTYPE)!=OGL_PVRTC4) )
     {
         // We need to load untwiddled textures -- hw will twiddle for us.
-        printf("LoadTextureFromPVR failed: texture should be untwiddled.\n");
+        OG_LOG_ERROR("LoadTextureFromPVR: texture should be untwiddled.");
         return 0;
     }
 
@@ -242,7 +243,6 @@ unsigned int LoadTextureFromPVR(
             IsCompressedFormat = true;
             textureFormat = GL_UNSIGNED_BYTE;
             textureType = GL_RGBA;
-            printf("LoadTextureFromPVR warning: PVRTC2 not supported. Converting to RGBA8888 instead. ");
         }
         break;
 
@@ -260,14 +260,13 @@ unsigned int LoadTextureFromPVR(
             IsCompressedFormat = true;
             textureFormat = GL_UNSIGNED_BYTE;
             textureType = GL_RGBA;
-            printf("LoadTextureFromPVR warning: PVRTC4 not supported. Converting to RGBA8888 instead. ");
         }
         break;
 
     // NOT SUPPORTED
     case OGL_RGB_555:
     default:
-        printf("LoadTextureFromPVR failed: pixel type not supported.");
+        OG_LOG_ERROR("LoadTextureFromPVR: pixel type not supported.");
         return 0;
     }
 
@@ -292,7 +291,7 @@ unsigned int LoadTextureFromPVR(
 
     if(glGetError())
     {
-        printf("LoadTextureFromPVR failed: glBindTexture() failed. ");
+        OG_LOG_ERROR("LoadTextureFromPVR: glBindTexture() failed.");
         return 0;
     }
 
@@ -305,7 +304,7 @@ unsigned int LoadTextureFromPVR(
         unsigned int nSizeX= psPVRHeader->dwWidth, nSizeY = psPVRHeader->dwHeight;
         unsigned int CompressedImageSize = 0;
 
-        for(nMIPMapLevel = 0; nMIPMapLevel <= nTextureLevelsNeeded; nSizeX=_MAX(nSizeX/2, 1), nSizeY=_MAX(nSizeY/2, 1), nMIPMapLevel++)
+        for(nMIPMapLevel = 0; nMIPMapLevel <= nTextureLevelsNeeded; nSizeX=OG_MAX(nSizeX/2, 1), nSizeY=OG_MAX(nSizeY/2, 1), nMIPMapLevel++)
         {
             // Do Alpha-swap if needed
             theTextureToLoad = theTexturePtr;
@@ -400,7 +399,7 @@ unsigned int LoadTextureFromPVR(
 
             if(glGetError())
             {
-                printf("LoadTextureFromPVR failed: glBindTexture() failed. ");
+                OG_LOG_ERROR("LoadTextureFromPVR: glBindTexture() failed.");
                 return 0;
             }
 
@@ -1081,8 +1080,8 @@ static void Decompress(AMTC_BLOCK_STRUCT *pCompressedData,
     /*
     // For MBX don't allow the sizes to get too small
     */
-    BlkXDim = _MAX(2, XDim / XBlockSize);
-    BlkYDim = _MAX(2, YDim / BLK_Y_SIZE);
+    BlkXDim = OG_MAX(2, XDim / XBlockSize);
+    BlkYDim = OG_MAX(2, YDim / BLK_Y_SIZE);
 
     /*
     // Step through the pixels of the image decompressing each one in turn
@@ -1348,13 +1347,13 @@ int ETCDecompress(const void * const pSrcData,
     int i32read;
     if(x<ETC_MIN_TEXWIDTH || y<ETC_MIN_TEXHEIGHT)
     {	// decompress into a buffer big enought to take the minimum size
-        char* pTempBuffer =	(char*) malloc(_MAX(x,ETC_MIN_TEXWIDTH)*_MAX(y,ETC_MIN_TEXHEIGHT)*4 * sizeof(char));
-        memset(pTempBuffer, 0, _MAX(x,ETC_MIN_TEXWIDTH)*_MAX(y,ETC_MIN_TEXHEIGHT)*4 * sizeof(char));
+        char* pTempBuffer =	(char*) malloc(OG_MAX(x,ETC_MIN_TEXWIDTH)*OG_MAX(y,ETC_MIN_TEXHEIGHT)*4 * sizeof(char));
+        memset(pTempBuffer, 0, OG_MAX(x,ETC_MIN_TEXWIDTH)*OG_MAX(y,ETC_MIN_TEXHEIGHT)*4 * sizeof(char));
 
-        i32read = ETCTextureDecompress(pSrcData,_MAX(x,ETC_MIN_TEXWIDTH),_MAX(y,ETC_MIN_TEXHEIGHT),pTempBuffer,nMode);
+        i32read = ETCTextureDecompress(pSrcData,OG_MAX(x,ETC_MIN_TEXWIDTH),OG_MAX(y,ETC_MIN_TEXHEIGHT),pTempBuffer,nMode);
         for(unsigned int i=0;i<y;i++)
         {	// copy from larger temp buffer to output data
-            memcpy((char*)(pDestData)+i*x*4,pTempBuffer+_MAX(x,ETC_MIN_TEXWIDTH)*4*i,x*4);
+            memcpy((char*)(pDestData)+i*x*4,pTempBuffer+OG_MAX(x,ETC_MIN_TEXWIDTH)*4*i,x*4);
         }
         if(pTempBuffer) 
             free(pTempBuffer);

@@ -21,7 +21,7 @@ COGEmitterRingWave::COGEmitterRingWave()
 	m_fInitialScale = 8.0f;
 	m_fScaleInc = 1.5f;
 	m_fAlphaDec = 0.08f;
-	m_color = Vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	m_color = OGVec4(1.0f, 1.0f, 1.0f, 1.0f);
 
 	AddStringParam("texture", &m_Texture);
 	AddIntParam("mapping", &m_MappingId);
@@ -46,10 +46,10 @@ void COGEmitterRingWave::Init(IOGGroupNode* _pNode)
 	m_pMapping = m_pTexture->GetMapping(m_MappingId);
     m_Blend = OG_BLEND_ALPHAONE;
 
-    m_Wave.pVertices[0].t = Vec2(m_pMapping->t1.x, m_pMapping->t0.y);
-    m_Wave.pVertices[1].t = Vec2(m_pMapping->t0.x, m_pMapping->t0.y);
-    m_Wave.pVertices[2].t = Vec2(m_pMapping->t1.x, m_pMapping->t1.y);
-    m_Wave.pVertices[3].t = Vec2(m_pMapping->t0.x, m_pMapping->t1.y);
+    m_Wave.pVertices[0].t = OGVec2(m_pMapping->t1.x, m_pMapping->t0.y);
+    m_Wave.pVertices[1].t = OGVec2(m_pMapping->t0.x, m_pMapping->t0.y);
+    m_Wave.pVertices[2].t = OGVec2(m_pMapping->t1.x, m_pMapping->t1.y);
+    m_Wave.pVertices[3].t = OGVec2(m_pMapping->t0.x, m_pMapping->t1.y);
 
 	m_bPositionUpdated = false;
 }
@@ -78,21 +78,21 @@ void COGEmitterRingWave::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGEmitterRingWave::Render (const MATRIX& _mWorld, const Vec3& _vLook, const Vec3& _vUp, const Vec3& _vRight)
+void COGEmitterRingWave::Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight)
 {
 	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
 		return;
 
-    MATRIX mId; 
+    OGMatrix mId; 
     MatrixIdentity(mId);
     m_pRenderer->SetModelMatrix(mId);
 	m_pRenderer->SetBlend(m_Blend);
 	m_pRenderer->SetTexture(m_pTexture);
 
-    Vec3 vOffset = Vec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
+    OGVec3 vOffset = OGVec3(_mWorld.f[12], _mWorld.f[13], _mWorld.f[14]);
 
-    Vec3 vUp = Vec3(0,0,1) * m_Wave.scale;
-    Vec3 vRight = Vec3(1,0,0) * m_Wave.scale;
+    OGVec3 vUp = OGVec3(0,0,1) * m_Wave.scale;
+    OGVec3 vRight = OGVec3(1,0,0) * m_Wave.scale;
     m_Wave.pVertices[0].p = vOffset + vRight + vUp;
     m_Wave.pVertices[1].p = vOffset - vRight + vUp;
     m_Wave.pVertices[2].p = vOffset + vRight - vUp;

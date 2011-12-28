@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\include;.\sdk\PVR\include;.\sdk\OpenGL2\include;.\sdk\tinyxml\include;.\sdk\lua\include;&quot;.\sdk\STLport-5.2.1\stlport&quot;"
+				AdditionalIncludeDirectories=".\include;.\sdk\OpenGL2\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -600,6 +600,14 @@
 							>
 						</File>
 						<File
+							RelativePath=".\src\ogshader.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\src\ogshader.h"
+							>
+						</File>
+						<File
 							RelativePath=".\src\ogshadowedsceneshader.cpp"
 							>
 						</File>
@@ -671,6 +679,14 @@
 				</File>
 				<File
 					RelativePath=".\src\ogresource.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ogresourcefile.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ogresourcefile.h"
 					>
 				</File>
 				<File
@@ -910,6 +926,42 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="PVR"
+				>
+				<File
+					RelativePath=".\src\pvr\POD.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\pvr\POD.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\pvr\PVRTC.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\pvr\PVRTC.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="Math"
+				>
+				<File
+					RelativePath=".\src\ogmatrix.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ogquaternion.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ogvector.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Interface"
@@ -1056,11 +1108,23 @@
 					>
 				</File>
 				<File
+					RelativePath=".\include\IOGMatrix.h"
+					>
+				</File>
+				<File
 					RelativePath=".\include\IOGObb.h"
 					>
 				</File>
 				<File
 					RelativePath=".\include\IOGPlane.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\IOGQuaternion.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\IOGVector.h"
 					>
 				</File>
 			</Filter>

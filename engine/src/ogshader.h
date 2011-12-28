@@ -1,5 +1,5 @@
-#ifndef _SHADER_H_
-#define _SHADER_H_
+#ifndef OGSHADER_H_
+#define OGSHADER_H_
 
 #include "OpenGL2.h"
 #include <stdio.h>

@@ -54,31 +54,31 @@ public:
     void SetNewCurrentNodeForPlacement(const char* _pModelAlias);
 
 	// Place the current node
-	void PlaceCurrentNode (const Vec3& _vPos);
+	void PlaceCurrentNode (const OGVec3& _vPos);
 
 	// Update current actor's position
-	void UpdateCurrentNodePosition (const Vec3& _vPos);
+	void UpdateCurrentNodePosition (const OGVec3& _vPos);
 
 	// Update level start position
-	void UpdateLevelStartPosition (const Vec3& _vPos);
+	void UpdateLevelStartPosition (const OGVec3& _vPos);
 
 	// Update level start position
-	void UpdateLevelFinishPosition (const Vec3& _vPos);
+	void UpdateLevelFinishPosition (const OGVec3& _vPos);
 
 	// Update level active width
 	void UpdateLevelActiveWidth (float _fWidthDiff);
 
 	// Get terrain intersection position.
-	bool GetTerrainIntersection (Vec3& _vOutPos, int _mouseX, int _mouseY);
+	bool GetTerrainIntersection (OGVec3& _vOutPos, int _mouseX, int _mouseY);
 
 	// Pick actor
 	void PickActor (int _mouseX, int _mouseY);
 
 	// Update picked actor's position
-	void UpdatePickedActorPosition (const Vec3& _vDiff);
+	void UpdatePickedActorPosition (const OGVec3& _vDiff);
 
 	// Update selected actor's rotation
-	void UpdateSelectedActorRotation (const Vec3& _vRotationDiff, bool _bCoarse);
+	void UpdateSelectedActorRotation (const OGVec3& _vRotationDiff, bool _bCoarse);
 
 	// Update selected actor's scaling
 	void UpdateSelectedActorScaling (float _fScalingDiff, bool _bCoarse);
@@ -107,7 +107,7 @@ public:
 private:
 
 	// Get picking ray
-	void GetMousePickingRay (Vec3& _vPos, Vec3& _vRay, int _mouseX, int _mouseY);
+	void GetMousePickingRay (OGVec3& _vPos, OGVec3& _vRay, int _mouseX, int _mouseY);
 
     // Render scene helpers.
     void RenderHelpers();
@@ -122,14 +122,14 @@ private:
 	IOGLevelManager*	m_pLevelMgr;
 
 	IOGLevel*	    m_pCurLevel;
-	MATRIX			m_mProjection; 
-	MATRIX			m_mView;
+	OGMatrix			m_mProjection; 
+	OGMatrix			m_mView;
 
 	IOGActor*		m_pCurActor;
 	IOGActor*		m_pPickedActor;
 
-	Vec3			m_vCurRotation;
-	Vec3			m_vCurScaling;
+	OGVec3			m_vCurRotation;
+	OGVec3			m_vCurScaling;
 	OGActorType		m_CurActorType;
 	std::string		m_CurModelAlias;
 	float			m_fAirBotHeight;

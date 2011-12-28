@@ -9,7 +9,7 @@
 #ifndef IOGPHYSICALPARAMS_H_
 #define IOGPHYSICALPARAMS_H_
 
-#include "Mathematics.h"
+#include "IOGMath.h"
 #include "IOGObb.h"
 
 

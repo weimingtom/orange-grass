@@ -34,7 +34,7 @@ void COGBotFallingWorker::Update (unsigned long _ElapsedTime)
 	if (!m_bActive)
 		return;
 
-	Vec3 vCurPos = m_pActor->GetPhysicalObject()->GetPosition();
+	OGVec3 vCurPos = m_pActor->GetPhysicalObject()->GetPosition();
 	if (vCurPos.y <= 10.0f)
 	{
 		Activate(false);

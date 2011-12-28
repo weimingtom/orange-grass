@@ -28,6 +28,11 @@
 #include "IOGFPSCounter.h"
 #include "common.h"
 
+#include "IOGVector.h"
+#include "IOGMatrix.h"
+#include "IOGQuaternion.h"
+
+
 void StartOrangeGrass();
 void FinishOrangeGrass();
 
