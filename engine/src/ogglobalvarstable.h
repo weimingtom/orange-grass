@@ -10,7 +10,7 @@
 #define OGGLOBALVARSTABLE_H_
 
 #include "IOGGlobalVarsTable.h"
-#include <hash_map>
+#include <map>
 
 
 class COGGlobalVarsTable : public IOGGlobalVarsTable
@@ -69,12 +69,12 @@ public:
 
 private:
 
-	std::hash_map<std::string, int>			m_IVarsList;
-	std::hash_map<std::string, float>		m_FVarsList;
-	std::hash_map<std::string, std::string>	m_SVarsList;
-	std::hash_map<std::string, Vec2>		m_Vec2VarsList;
-	std::hash_map<std::string, Vec3>		m_Vec3VarsList;
-	std::hash_map<std::string, Vec4>		m_Vec4VarsList;
+    std::map<std::string, int>			m_IVarsList;
+    std::map<std::string, float>		m_FVarsList;
+    std::map<std::string, std::string>  m_SVarsList;
+    std::map<std::string, Vec2>		    m_Vec2VarsList;
+    std::map<std::string, Vec3>		    m_Vec3VarsList;
+    std::map<std::string, Vec4>		    m_Vec4VarsList;
 };
 
 

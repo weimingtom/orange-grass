@@ -18,7 +18,6 @@ subject to the following restrictions:
 #include "../src/Matrix.h"
 #include "../src/Quaternion.h"
 #include "../src/Vector.h"
-#include "../src/Transform.h"
 #include "../src/Endian.h"
 
 #endif

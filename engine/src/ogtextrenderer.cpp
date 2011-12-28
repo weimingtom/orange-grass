@@ -370,29 +370,29 @@ unsigned int COGTextRenderer::UpdateLine(
 
 		/* CLIPPING */
 		/* Filling vertex data */
-		pVertices[VertexCount+0].sx		= f2vt(XPos);
-		pVertices[VertexCount+0].sy		= f2vt(YPos);
+		pVertices[VertexCount+0].sx		= XPos;
+		pVertices[VertexCount+0].sy		= YPos;
 		pVertices[VertexCount+0].sz		= 0;
-		pVertices[VertexCount+0].tu		= f2vt(UPos);
-		pVertices[VertexCount+0].tv		= f2vt(VPos);
+		pVertices[VertexCount+0].tu		= UPos;
+		pVertices[VertexCount+0].tv		= VPos;
 
-		pVertices[VertexCount+1].sx		= f2vt(XPos+XSize);
-		pVertices[VertexCount+1].sy		= f2vt(YPos);
+		pVertices[VertexCount+1].sx		= XPos+XSize;
+		pVertices[VertexCount+1].sy		= YPos;
 		pVertices[VertexCount+1].sz		= 0;
-		pVertices[VertexCount+1].tu		= f2vt(UPos+USize);
-		pVertices[VertexCount+1].tv		= f2vt(VPos);
+		pVertices[VertexCount+1].tu		= UPos+USize;
+		pVertices[VertexCount+1].tv		= VPos;
 
-		pVertices[VertexCount+2].sx		= f2vt(XPos);
-		pVertices[VertexCount+2].sy		= f2vt(YPos+YSize);
+		pVertices[VertexCount+2].sx		= XPos;
+		pVertices[VertexCount+2].sy		= YPos+YSize;
 		pVertices[VertexCount+2].sz		= 0;
-		pVertices[VertexCount+2].tu		= f2vt(UPos);
-		pVertices[VertexCount+2].tv		= f2vt(VPos-VSize);
+		pVertices[VertexCount+2].tu		= UPos;
+		pVertices[VertexCount+2].tv		= VPos-VSize;
 
-		pVertices[VertexCount+3].sx		= f2vt(XPos+XSize);
-		pVertices[VertexCount+3].sy		= f2vt(YPos+YSize);
+		pVertices[VertexCount+3].sx		= XPos+XSize;
+		pVertices[VertexCount+3].sy		= YPos+YSize;
 		pVertices[VertexCount+3].sz		= 0;
-		pVertices[VertexCount+3].tu		= f2vt(UPos+USize);
-		pVertices[VertexCount+3].tv		= f2vt(VPos-VSize);
+		pVertices[VertexCount+3].tu		= UPos+USize;
+		pVertices[VertexCount+3].tv		= VPos-VSize;
 
 		float r = ((float)((Colour & 0xFF)>>0)) / 255.0f;
 		float g = ((float)((Colour & 0xFF00)>>8)) / 255.0f;
@@ -463,14 +463,14 @@ void COGTextRenderer::DrawLineUP(SDisplayTextAPIVertex *pVtx, unsigned int nVert
 
 void COGTextRenderer::Rotate(SDisplayTextAPIVertex * const pv, unsigned int nCnt)
 {
-	VERTTYPE x, y;
+	float x, y;
 	for(unsigned int i = 0; i < nCnt; ++i)
 	{
-		x = VERTTYPEDIV((VERTTYPE&)pv[i].sx, f2vt(m_WindowWidth));
-		y = VERTTYPEDIV((VERTTYPE&)pv[i].sy, f2vt(m_WindowHeight));
+		x = (float&)pv[i].sx / m_WindowWidth;
+		y = (float&)pv[i].sy / m_WindowHeight;
 		
-		(VERTTYPE&)pv[i].sx = VERTTYPEMUL(-y+f2vt(1.0f), f2vt(m_WindowWidth));
-		(VERTTYPE&)pv[i].sy = VERTTYPEMUL(x, f2vt(m_WindowHeight));
+		(float&)pv[i].sx = (-y+1.0f) * m_WindowWidth;
+		(float&)pv[i].sy = x * m_WindowHeight;
 	}
 }
 

@@ -1,31 +1,3 @@
-/******************************************************************************
-
- @File         PVRTModelPOD.cpp
-
- @Title        
-
- @Copyright    Copyright (C) 2003 - 2008 by Imagination Technologies Limited.
-
- @Platform     ANSI compatible
-
- @Description  Code to load POD files - models exported from MAX.
-
-******************************************************************************/
-/*
-Changes to this file:
-Oolong Engine for the iPhone / iPod touch
-Copyright (c) 2007-2008 Wolfgang Engel  http://code.google.com/p/oolongengine/
-
-This software is provided 'as-is', without any express or implied warranty.
-In no event will the authors be held liable for any damages arising from the use of this software.
-Permission is granted to anyone to use this software for any purpose, 
-including commercial applications, and to alter it and redistribute it freely, 
-subject to the following restrictions:
-
-1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
-2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
-3. This notice may not be removed or altered from any source distribution.
-*/
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -34,18 +6,12 @@ subject to the following restrictions:
 #include <Resource.h>
 #include "ModelPOD.h"
 
-/****************************************************************************
-** Defines
-****************************************************************************/
 #define PVRTMODELPOD_TAG_MASK			(0x80000000)
 #define PVRTMODELPOD_TAG_START			(0x00000000)
 #define PVRTMODELPOD_TAG_END			(0x80000000)
+#define CFAH		                    (1024)
 
-#define CFAH		(1024)
 
-/****************************************************************************
-** Enumerations
-****************************************************************************/
 /*!****************************************************************************
  @Struct      EPODFileName
  @Brief       Enum for the binary pod blocks
@@ -138,35 +104,184 @@ enum EPODFileName
 	ePODFileData
 };
 
-/****************************************************************************
-** Structures
-****************************************************************************/
 struct SPVRTPODImpl
 {
-	VERTTYPE	fFrame;		/*!< Frame number */
-	VERTTYPE	fBlend;		/*!< Frame blend	(AKA fractional part of animation frame number) */
+	float	fFrame;		/*!< Frame number */
+	float	fBlend;		/*!< Frame blend	(AKA fractional part of animation frame number) */
 	int			nFrame;		/*!< Frame number (AKA integer part of animation frame number) */
 
-	VERTTYPE	*pfCache;		/*!< Cache indicating the frames at which the matrix cache was filled */
+	float	*pfCache;		/*!< Cache indicating the frames at which the matrix cache was filled */
 	MATRIX	*pWmCache;		/*!< Cache of world matrices */
 	MATRIX	*pWmZeroCache;	/*!< Pre-calculated frame 0 matrices */
 
 	bool		bFromMemory;	/*!< Was the mesh data loaded from memory? */
-
-#ifdef _DEBUG
-	__int64	nWmTotal, nWmCacheHit, nWmZeroCacheHit;
-	float	fHitPerc, fHitPercZero;
-#endif
 };
 
 
-/****************************************************************************
-** Local code: File reading
-****************************************************************************/
+/*!***************************************************************************
+ @Function			DataTypeRead
+ @Output			pV
+ @Input				pData
+ @Input				eType
+ @Input				nCnt
+ @Description		Read a vector
+*****************************************************************************/
+void PVRTVertexRead(
+	VECTOR4		* const pV,
+	const void			* const pData,
+	const EPVRTDataType	eType,
+	const int			nCnt)
+{
+	int		i;
+	float	*pOut = (float*)pV;
+
+	pV->x = 0;
+	pV->y = 0;
+	pV->z = 0;
+	pV->w = 1;
+
+	switch(eType)
+	{
+	default:
+		_ASSERT(false);
+		break;
+
+	case EPODDataFloat:
+		for(i = 0; i < nCnt; ++i)
+			pOut[i] = ((float*)pData)[i];
+		break;
+
+	case EPODDataFixed16_16:
+		for(i = 0; i < nCnt; ++i)
+			pOut[i] = ((int*)pData)[i] * 1.0f / (float)(1 << 16);
+		break;
+
+	case EPODDataInt:
+		for(i = 0; i < nCnt; ++i)
+			pOut[i] = (float)((int*)pData)[i];
+		break;
+
+	case EPODDataByte:
+		for(i = 0; i < nCnt; ++i)
+			pOut[i] = (float)((char*)pData)[i];
+		break;
+
+	case EPODDataByteNorm:
+		for(i = 0; i < nCnt; ++i)
+			pOut[i] = (float)((char*)pData)[i] / (float)((1 << 7)-1);
+		break;
+
+	case EPODDataUnsignedByte:
+		for(i = 0; i < nCnt; ++i)
+			pOut[i] = (float)((unsigned char*)pData)[i];
+		break;
+
+	case EPODDataShort:
+		for(i = 0; i < nCnt; ++i)
+			pOut[i] = (float)((short*)pData)[i];
+		break;
+
+	case EPODDataShortNorm:
+		for(i = 0; i < nCnt; ++i)
+			pOut[i] = (float)((short*)pData)[i] / (float)((1 << 15)-1);
+		break;
+
+	case EPODDataUnsignedShort:
+		for(i = 0; i < nCnt; ++i)
+			pOut[i] = (float)((unsigned short*)pData)[i];
+		break;
+
+	case EPODDataRGBA:
+		{
+			unsigned int dwVal = *(unsigned int*)pData;
+			unsigned char v[4];
+
+			v[0] = dwVal >> 24;
+			v[1] = dwVal >> 16;
+			v[2] = dwVal >>  8;
+			v[3] = dwVal >>  0;
+
+			for(i = 0; i < 4; ++i)
+				pOut[i] = 1.0f / 255.0f * (float)v[i];
+		}
+		break;
+
+	case EPODDataARGB:
+	case EPODDataD3DCOLOR:
+		{
+			unsigned int dwVal = *(unsigned int*)pData;
+			unsigned char v[4];
+
+			v[0] = dwVal >> 16;
+			v[1] = dwVal >>  8;
+			v[2] = dwVal >>  0;
+			v[3] = dwVal >> 24;
+
+			for(i = 0; i < 4; ++i)
+				pOut[i] = 1.0f / 255.0f * (float)v[i];
+		}
+		break;
+
+	case EPODDataUBYTE4:
+		{
+			unsigned int dwVal = *(unsigned int*)pData;
+			unsigned char v[4];
+
+			v[0] = dwVal >>  0;
+			v[1] = dwVal >>  8;
+			v[2] = dwVal >> 16;
+			v[3] = dwVal >> 24;
+
+			for(i = 0; i < 4; ++i)
+				pOut[i] = v[i];
+		}
+		break;
+
+	case EPODDataDEC3N:
+		{
+			int dwVal = *(int*)pData;
+			int v[4];
+
+			v[0] = (dwVal << 22) >> 22;
+			v[1] = (dwVal << 12) >> 22;
+			v[2] = (dwVal <<  2) >> 22;
+			v[3] = 0;
+
+			for(i = 0; i < 3; ++i)
+				pOut[i] = (float)v[i] * (1.0f / 511.0f);
+		}
+		break;
+	}
+}
+
+/*!***************************************************************************
+ @Function			PVRTVertexRead
+ @Output			pV
+ @Input				pData
+ @Input				eType
+ @Description		Read an int
+*****************************************************************************/
+void PVRTVertexRead(
+	unsigned int		* const pV,
+	const void			* const pData,
+	const EPVRTDataType	eType)
+{
+	switch(eType)
+	{
+	default:
+		_ASSERT(false);
+		break;
+
+	case EPODDataUnsignedShort:
+		*pV = *(unsigned short*)pData;
+		break;
+	}
+}
+
 /*!***************************************************************************
  @Function			ReadCPODData
  @Modified			s The CPODData to read into
- @Input				src CSource object to read data from.
+ @Input				src CResourceFile object to read data from.
  @Input				nSpec
  @Input				bValidData
  @Return			true if successful
@@ -174,7 +289,7 @@ struct SPVRTPODImpl
 *****************************************************************************/
 static bool ReadCPODData(
 	CPODData			&s,
-	CSource				&src,
+	CResourceFile		&src,
 	const unsigned int	nSpec,
 	const bool			bValidData)
 {
@@ -190,7 +305,16 @@ static bool ReadCPODData(
 		case ePODFileDataType:	if(!src.Read(s.eType)) return false;					break;
 		case ePODFileN:			if(!src.Read(s.n)) return false;						break;
 		case ePODFileStride:	if(!src.Read(s.nStride)) return false;					break;
-		case ePODFileData:		if(bValidData) { if(!src.ReadAfterAlloc(s.pData, nLen)) return false; } else { if(!src.Read(s.pData)) return false; }	break;
+		case ePODFileData:		
+            if(bValidData) 
+            { 
+                if(!src.ReadAfterAlloc(s.pData, nLen)) return false; 
+            } 
+            else 
+            { 
+                if(!src.Read(s.pData)) return false; 
+            }
+            break;
 
 		default:
 			if(!src.Skip(nLen)) return false;
@@ -202,13 +326,13 @@ static bool ReadCPODData(
 /*!***************************************************************************
  @Function			ReadCamera
  @Modified			s The SPODCamera to read into
- @Input				src	CSource object to read data from.
+ @Input				src	CResourceFile object to read data from.
  @Return			true if successful
  @Description		Read a camera block in from a pod file
 *****************************************************************************/
 static bool ReadCamera(
 	SPODCamera	&s,
-	CSource		&src)
+	CResourceFile		&src)
 {
 	unsigned int nName, nLen;
 
@@ -234,13 +358,13 @@ static bool ReadCamera(
 /*!***************************************************************************
  @Function			ReadLight
  @Modified			s The SPODLight to read into
- @Input				src	CSource object to read data from.
+ @Input				src	CResourceFile object to read data from.
  @Return			true if successful
  @Description		Read a light block in from a pod file
 *****************************************************************************/
 static bool ReadLight(
 	SPODLight	&s,
-	CSource		&src)
+	CResourceFile		&src)
 {
 	unsigned int nName, nLen;
 
@@ -264,13 +388,13 @@ static bool ReadLight(
 /*!***************************************************************************
  @Function			ReadMaterial
  @Modified			s The SPODMaterial to read into
- @Input				src	CSource object to read data from.
+ @Input				src	CResourceFile object to read data from.
  @Return			true if successful
  @Description		Read a material block in from a pod file
 *****************************************************************************/
 static bool ReadMaterial(
 	SPODMaterial	&s,
-	CSource			&src)
+	CResourceFile			&src)
 {
 	unsigned int nName, nLen;
 
@@ -300,13 +424,13 @@ static bool ReadMaterial(
 /*!***************************************************************************
  @Function			ReadMesh
  @Modified			s The SPODMesh to read into
- @Input				src	CSource object to read data from.
+ @Input				src	CResourceFile object to read data from.
  @Return			true if successful
  @Description		Read a mesh block in from a pod file
 *****************************************************************************/
 static bool ReadMesh(
 	SPODMesh	&s,
-	CSource		&src)
+	CResourceFile		&src)
 {
 	unsigned int	nName, nLen;
 	unsigned int	nUVWs=0;
@@ -351,20 +475,20 @@ static bool ReadMesh(
 /*!***************************************************************************
  @Function			ReadNode
  @Modified			s The SPODNode to read into
- @Input				src	CSource object to read data from.
+ @Input				src	CResourceFile object to read data from.
  @Return			true if successful
  @Description		Read a node block in from a pod file
 *****************************************************************************/
 static bool ReadNode(
 	SPODNode	&s,
-	CSource		&src)
+	CResourceFile		&src)
 {
 	unsigned int nName, nLen;
 	bool bOldNodeFormat = false;
-	VERTTYPE fPos[3]   = {0,0,0};
-	VERTTYPE fQuat[4]  = {0,0,0,f2vt(1)};
-	VERTTYPE fScale[7] = {f2vt(1),f2vt(1),f2vt(1),0,0,0,0};
-	unsigned int nSizeOfOldScale = sizeof(VERTTYPE) * 3;
+	float fPos[3]   = {0,0,0};
+	float fQuat[4]  = {0,0,0,1};
+	float fScale[7] = {1,1,1,0,0,0,0};
+	unsigned int nSizeOfOldScale = sizeof(float) * 3;
 
 	while(src.ReadMarker(nName, nLen))
 	{
@@ -377,7 +501,7 @@ static bool ReadNode(
 					s.nAnimFlags |= ePODHasPositionAni;
 				else
 				{
-					s.pfAnimPosition = (VERTTYPE*) malloc(sizeof(fPos));
+					s.pfAnimPosition = (float*) malloc(sizeof(fPos));
 					memcpy(s.pfAnimPosition, fPos, sizeof(fPos));
 				}
 
@@ -385,7 +509,7 @@ static bool ReadNode(
 					s.nAnimFlags |= ePODHasRotationAni;
 				else
 				{
-					s.pfAnimRotation = (VERTTYPE*) malloc(sizeof(fQuat));
+					s.pfAnimRotation = (float*) malloc(sizeof(fQuat));
 					memcpy(s.pfAnimRotation, fQuat, sizeof(fQuat));
 				}
 
@@ -393,7 +517,7 @@ static bool ReadNode(
 					s.nAnimFlags |= ePODHasScaleAni;
 				else
 				{
-					s.pfAnimScale = (VERTTYPE*) malloc(sizeof(fScale));
+					s.pfAnimScale = (float*) malloc(sizeof(fScale));
 					memcpy(s.pfAnimScale, fScale, sizeof(fScale));
 				}
 			}
@@ -425,13 +549,13 @@ static bool ReadNode(
 /*!***************************************************************************
  @Function			ReadTexture
  @Modified			s The SPODTexture to read into
- @Input				src	CSource object to read data from.
+ @Input				src	CResourceFile object to read data from.
  @Return			true if successful
  @Description		Read a texture block in from a pod file
 *****************************************************************************/
 static bool ReadTexture(
 	SPODTexture	&s,
-	CSource		&src)
+	CResourceFile		&src)
 {
 	unsigned int nName, nLen;
 
@@ -453,13 +577,13 @@ static bool ReadTexture(
 /*!***************************************************************************
  @Function			ReadScene
  @Modified			s The SPODScene to read into
- @Input				src	CSource object to read data from.
+ @Input				src	CResourceFile object to read data from.
  @Return			true if successful
  @Description		Read a scene block in from a pod file
 *****************************************************************************/
 static bool ReadScene(
 	SPODScene	&s,
-	CSource		&src)
+	CResourceFile		&src)
 {
 	unsigned int nName, nLen;
 	unsigned int nCameras=0, nLights=0, nMaterials=0, nMeshes=0, nTextures=0, nNodes=0;
@@ -506,7 +630,7 @@ static bool ReadScene(
 /*!***************************************************************************
  @Function			Read
  @Output			pS				SPODScene data. May be NULL.
- @Input				src				CSource object to read data from.
+ @Input				src				CResourceFile object to read data from.
  @Output			pszExpOpt		Export options.
  @Input				count			Data size.
  @Description		Loads the specified ".POD" file; returns the scene in
@@ -518,7 +642,7 @@ static bool ReadScene(
 *****************************************************************************/
 static bool Read(
 	SPODScene		* const pS,
-	CSource			&src,
+	CResourceFile			&src,
 	char			* const pszExpOpt,
 	const size_t	count)
 {
@@ -565,7 +689,7 @@ static bool Read(
 			return bVersionOK == true && bDone == true;
 
 		case (unsigned int) ePODFileEndiannessMisMatch:
-			//PVRTErrorOutputDebug("Error: Endianness mismatch between the .pod file and the platform.\n");
+			printf("Error: Endianness mismatch between the .pod file and the platform.\n");
 			return false;
 
 		}
@@ -578,20 +702,15 @@ static bool Read(
 	/*
 		Convert data to fixed or float point as this build desires
 	*/
-#ifdef PVRT_FIXED_POINT_ENABLE
-	if(!(pS->nFlags & PVRTMODELPODSF_FIXED))
-		PVRTModelPODToggleFixedPoint(*pS);
-#else
 	if(pS->nFlags & PVRTMODELPODSF_FIXED)
-		PVRTModelPODToggleFixedPoint(*pS);
-#endif
+    {
+        printf("Cannot read the fixed-point POD.\n");
+		return false;
+    }
 
 	return bVersionOK == true && bDone == true;
 }
 
-/****************************************************************************
-** Class: CPVRTModelPOD
-****************************************************************************/
 
 /*!***************************************************************************
  @Function			ReadFromFile
@@ -612,9 +731,8 @@ bool CPVRTModelPOD::ReadFromFile(
 	char			* const pszExpOpt,
 	const size_t	count)
 {
-	CSourceStream src;
-
-	if(!src.Init(pszFileName))
+	CResourceFile src;
+    if(!src.Open(pszFileName))
 		return false;
 
 	memset(this, 0, sizeof(*this));
@@ -625,296 +743,6 @@ bool CPVRTModelPOD::ReadFromFile(
 	return true;
 }
 
-/*!***************************************************************************
- @Function			ReadFromMemory
- @Input				scene			Scene data from the header file
- @Return			PVR_SUCCESS if successful, PVR_FAIL if not
- @Description		Sets the scene data from the supplied data structure. Use
-					when loading from .H files.
-*****************************************************************************/
-bool CPVRTModelPOD::ReadFromMemory(
-	const SPODScene &scene)
-{
-	Destroy();
-
-	memset(this, 0, sizeof(*this));
-
-	*(SPODScene*)this = scene;
-
-	if(InitImpl() != true)
-		return false;
-
-	m_pImpl->bFromMemory = true;
-
-	return true;
-}
-
-/*!***************************************************************************
- @Function			CopyCPODData
- @Input				Target
- @Input				Source
- @Input				ui32No
- @Input				bInterleaved
- @Description		Used by CopyFromMemory to copy the CPODData
-*****************************************************************************/
-void CopyCPODData(CPODData &Target, CPODData &Source, unsigned int ui32No, bool bInterleaved)
-{
-	free(Target.pData);
-
-	Target.eType	= Source.eType;
-	Target.n		= Source.n;
-	Target.nStride  = Source.nStride;
-
-	if(bInterleaved)
-	{
-		Target.pData = Source.pData;
-	}
-	else if(Source.pData)
-	{
-		size_t ui32Size = PVRTModelPODDataStride(Target) * ui32No;
-
-		if(SafeAlloc(Target.pData, ui32Size))
-			memcpy(Target.pData, Source.pData, ui32Size);
-	}
-}
-
-/*!***************************************************************************
- @Function			CopyFromMemory
- @Input				scene			Scene data
- @Return			PVR_SUCCESS if successful, PVR_FAIL if not
- @Description		Sets the scene data from the supplied data structure.
-*****************************************************************************/
-bool CPVRTModelPOD::CopyFromMemory(const SPODScene &scene)
-{
-	Destroy();
-
-	unsigned int i,j;
-
-	// SPODScene
-	nNumFrame	= scene.nNumFrame;
-	nFlags		= scene.nFlags;
-	bBigEndian	= scene.bBigEndian;
-
-	for(i = 0; i < 3; ++i)
-	{
-		pfColourBackground[i] = scene.pfColourBackground[i];
-		pfColourAmbient[i]	  = scene.pfColourAmbient[i];
-	}
-
-	// Nodes
-	if(scene.nNumNode && SafeAlloc(pNode, sizeof(SPODNode) * scene.nNumNode))
-	{
-		nNumNode     = scene.nNumNode;
-		nNumMeshNode = scene.nNumMeshNode;
-
-		for(i = 0; i < nNumNode; ++i)
-		{
-			pNode[i].nIdx = scene.pNode[i].nIdx;
-			pNode[i].nIdxMaterial = scene.pNode[i].nIdxMaterial;
-			pNode[i].nIdxParent = scene.pNode[i].nIdxParent;
-			pNode[i].nAnimFlags = scene.pNode[i].nAnimFlags;
-
-			if(scene.pNode[i].pszName && SafeAlloc(pNode[i].pszName, strlen(scene.pNode[i].pszName) + 1))
-				memcpy(pNode[i].pszName, scene.pNode[i].pszName, strlen(scene.pNode[i].pszName) + 1);
-
-			int i32Size;
-
-			i32Size = scene.pNode[i].nAnimFlags & ePODHasPositionAni ? scene.nNumFrame : 1;
-
-			if(scene.pNode[i].pfAnimPosition && SafeAlloc(pNode[i].pfAnimPosition, sizeof(*pNode[i].pfAnimPosition) * i32Size * 3))
-				memcpy(pNode[i].pfAnimPosition, scene.pNode[i].pfAnimPosition, sizeof(*pNode[i].pfAnimPosition) * i32Size * 3);
-
-			i32Size = scene.pNode[i].nAnimFlags & ePODHasRotationAni ? scene.nNumFrame : 1;
-
-			if(scene.pNode[i].pfAnimRotation && SafeAlloc(pNode[i].pfAnimRotation, sizeof(*pNode[i].pfAnimRotation) * i32Size * 4))
-				memcpy(pNode[i].pfAnimRotation, scene.pNode[i].pfAnimRotation, sizeof(*pNode[i].pfAnimRotation) * i32Size * 4);
-
-			i32Size = scene.pNode[i].nAnimFlags & ePODHasScaleAni ? scene.nNumFrame : 1;
-
-			if(scene.pNode[i].pfAnimScale && SafeAlloc(pNode[i].pfAnimScale, sizeof(*pNode[i].pfAnimScale) * i32Size * 7))
-				memcpy(pNode[i].pfAnimScale, scene.pNode[i].pfAnimScale, sizeof(*pNode[i].pfAnimScale) * i32Size * 7);
-
-			i32Size = scene.pNode[i].nAnimFlags & ePODHasMatrixAni ? scene.nNumFrame : 1;
-
-			if(scene.pNode[i].pfAnimMatrix && SafeAlloc(pNode[i].pfAnimMatrix, sizeof(*pNode[i].pfAnimMatrix) * i32Size * 16))
-				memcpy(pNode[i].pfAnimMatrix, scene.pNode[i].pfAnimMatrix, sizeof(*pNode[i].pfAnimMatrix) * i32Size * 16);
-		}
-	}
-
-	// Meshes
-	if(scene.nNumMesh && SafeAlloc(pMesh, sizeof(SPODMesh) * scene.nNumMesh))
-	{
-		nNumMesh = scene.nNumMesh;
-
-		for(i = 0; i < nNumMesh; ++i)
-		{
-			size_t  i32Stride = 0;
-			bool bInterleaved = scene.pMesh[i].pInterleaved != 0;
-			pMesh[i].nNumVertex = scene.pMesh[i].nNumVertex;
-			pMesh[i].nNumFaces  = scene.pMesh[i].nNumFaces;
-
-			// Face data
-			CopyCPODData(pMesh[i].sFaces	 , scene.pMesh[i].sFaces	 , pMesh[i].nNumFaces * 3, false);
-
-			// Vertex data
-			CopyCPODData(pMesh[i].sVertex	 , scene.pMesh[i].sVertex	 , pMesh[i].nNumVertex, bInterleaved);
-			i32Stride += PVRTModelPODDataStride(pMesh[i].sVertex);
-
-			CopyCPODData(pMesh[i].sNormals	 , scene.pMesh[i].sNormals	 , pMesh[i].nNumVertex, bInterleaved);
-			i32Stride += PVRTModelPODDataStride(pMesh[i].sNormals);
-
-			CopyCPODData(pMesh[i].sTangents	 , scene.pMesh[i].sTangents	 , pMesh[i].nNumVertex, bInterleaved);
-			i32Stride += PVRTModelPODDataStride(pMesh[i].sTangents);
-
-			CopyCPODData(pMesh[i].sBinormals , scene.pMesh[i].sBinormals , pMesh[i].nNumVertex, bInterleaved);
-			i32Stride += PVRTModelPODDataStride(pMesh[i].sBinormals);
-
-			CopyCPODData(pMesh[i].sVtxColours, scene.pMesh[i].sVtxColours, pMesh[i].nNumVertex, bInterleaved);
-			i32Stride += PVRTModelPODDataStride(pMesh[i].sVtxColours);
-
-			CopyCPODData(pMesh[i].sBoneIdx	 , scene.pMesh[i].sBoneIdx	 , pMesh[i].nNumVertex, bInterleaved);
-			i32Stride += PVRTModelPODDataStride(pMesh[i].sBoneIdx);
-
-			CopyCPODData(pMesh[i].sBoneWeight, scene.pMesh[i].sBoneWeight, pMesh[i].nNumVertex, bInterleaved);
-			i32Stride += PVRTModelPODDataStride(pMesh[i].sBoneWeight);
-
-			if(scene.pMesh[i].nNumUVW && SafeAlloc(pMesh[i].psUVW, sizeof(CPODData) * scene.pMesh[i].nNumUVW))
-			{
-				pMesh[i].nNumUVW = scene.pMesh[i].nNumUVW;
-
-				for(j = 0; j < pMesh[i].nNumUVW; ++j)
-				{
-					CopyCPODData(pMesh[i].psUVW[j], scene.pMesh[i].psUVW[j], pMesh[i].nNumVertex, bInterleaved);
-					i32Stride += PVRTModelPODDataStride(pMesh[i].psUVW[j]);
-				}
-			}
-
-			// Allocate and copy interleaved array
-			if(bInterleaved && SafeAlloc(pMesh[i].pInterleaved, pMesh[i].nNumVertex * i32Stride))
-				memcpy(pMesh[i].pInterleaved, scene.pMesh[i].pInterleaved, pMesh[i].nNumVertex * i32Stride);
-
-			if(scene.pMesh[i].pnStripLength && SafeAlloc(pMesh[i].pnStripLength, sizeof(*pMesh[i].pnStripLength) * pMesh[i].nNumFaces))
-			{
-				memcpy(pMesh[i].pnStripLength, scene.pMesh[i].pnStripLength, sizeof(*pMesh[i].pnStripLength) * pMesh[i].nNumFaces);
-				pMesh[i].nNumStrips = scene.pMesh[i].nNumStrips;
-			}
-
-			if(scene.pMesh[i].sBoneBatches.nBatchCnt)
-			{
-				pMesh[i].sBoneBatches.Release();
-
-				pMesh[i].sBoneBatches.nBatchBoneMax = scene.pMesh[i].sBoneBatches.nBatchBoneMax;
-				pMesh[i].sBoneBatches.nBatchCnt     = scene.pMesh[i].sBoneBatches.nBatchCnt;
-
-				if(scene.pMesh[i].sBoneBatches.pnBatches)
-				{
-					pMesh[i].sBoneBatches.pnBatches = new int[pMesh[i].sBoneBatches.nBatchCnt * pMesh[i].sBoneBatches.nBatchBoneMax];
-
-					if(pMesh[i].sBoneBatches.pnBatches)
-						memcpy(pMesh[i].sBoneBatches.pnBatches, scene.pMesh[i].sBoneBatches.pnBatches, pMesh[i].sBoneBatches.nBatchCnt * pMesh[i].sBoneBatches.nBatchBoneMax * sizeof(*pMesh[i].sBoneBatches.pnBatches));
-				}
-
-				if(scene.pMesh[i].sBoneBatches.pnBatchBoneCnt)
-				{
-					pMesh[i].sBoneBatches.pnBatchBoneCnt = new int[pMesh[i].sBoneBatches.nBatchCnt];
-
-					if(pMesh[i].sBoneBatches.pnBatchBoneCnt)
-						memcpy(pMesh[i].sBoneBatches.pnBatchBoneCnt, scene.pMesh[i].sBoneBatches.pnBatchBoneCnt, pMesh[i].sBoneBatches.nBatchCnt * sizeof(*pMesh[i].sBoneBatches.pnBatchBoneCnt));
-				}
-
-				if(scene.pMesh[i].sBoneBatches.pnBatchOffset)
-				{
-					pMesh[i].sBoneBatches.pnBatchOffset = new int[pMesh[i].sBoneBatches.nBatchCnt];
-
-					if(pMesh[i].sBoneBatches.pnBatchOffset)
-						memcpy(pMesh[i].sBoneBatches.pnBatchOffset, scene.pMesh[i].sBoneBatches.pnBatchOffset, pMesh[i].sBoneBatches.nBatchCnt * sizeof(*pMesh[i].sBoneBatches.pnBatchOffset));
-				}
-			}
-
-			pMesh[i].ePrimitiveType = scene.pMesh[i].ePrimitiveType;
-		}
-	}
-
-	// Cameras
-	if(scene.nNumCamera && SafeAlloc(pCamera, sizeof(SPODCamera) * scene.nNumCamera))
-	{
-		nNumCamera = scene.nNumCamera;
-
-		for(i = 0; i < nNumCamera; ++i)
-		{
-			pCamera[i].nIdxTarget = scene.pCamera[i].nIdxTarget;
-			pCamera[i].fNear = scene.pCamera[i].fNear;
-			pCamera[i].fFar  = scene.pCamera[i].fFar;
-			pCamera[i].fFOV  = scene.pCamera[i].fFOV;
-
-			if(scene.pCamera[i].pfAnimFOV && SafeAlloc(pCamera[i].pfAnimFOV, sizeof(*pCamera[i].pfAnimFOV) * scene.nNumFrame))
-				memcpy(pCamera[i].pfAnimFOV, scene.pCamera[i].pfAnimFOV, sizeof(*pCamera[i].pfAnimFOV) * scene.nNumFrame);
-		}
-	}
-
-	// Lights
-	if(scene.nNumLight && SafeAlloc(pLight, sizeof(SPODLight) * scene.nNumLight))
-	{
-		nNumLight = scene.nNumLight;
-
-		for(i = 0; i < nNumLight; ++i)
-		{
-			pLight[i].nIdxTarget = scene.pLight[i].nIdxTarget;
-
-			for(j = 0; j < 3; ++j)
-				pLight[i].pfColour[j] = scene.pLight[i].pfColour[j];
-
-			pLight[i].eType = scene.pLight[i].eType;
-		}
-	}
-
-	// Textures
-	if(scene.nNumTexture && SafeAlloc(pTexture, sizeof(SPODTexture) * scene.nNumTexture))
-	{
-		nNumTexture = scene.nNumTexture;
-
-		for(i = 0; i < nNumTexture; ++i)
-		{
-			if(scene.pTexture[i].pszName && SafeAlloc(pTexture[i].pszName, strlen(scene.pTexture[i].pszName) + 1))
-				memcpy(pTexture[i].pszName, scene.pTexture[i].pszName, strlen(scene.pTexture[i].pszName) + 1);
-		}
-	}
-
-	// Materials
-	if(scene.nNumMaterial && SafeAlloc(pMaterial, sizeof(SPODMaterial) * scene.nNumMaterial))
-	{
-		nNumMaterial = scene.nNumMaterial;
-
-		for(i = 0; i < nNumMaterial; ++i)
-		{
-			if(scene.pMaterial[i].pszName && SafeAlloc(pMaterial[i].pszName, strlen(scene.pMaterial[i].pszName) + 1))
-				memcpy(pMaterial[i].pszName, scene.pMaterial[i].pszName, strlen(scene.pMaterial[i].pszName) + 1);
-
-			pMaterial[i].nIdxTexDiffuse = scene.pMaterial[i].nIdxTexDiffuse;
-			pMaterial[i].fMatOpacity = scene.pMaterial[i].fMatOpacity;
-
-			for(j = 0; j < 3; ++j)
-			{
-				pMaterial[i].pfMatAmbient[j]  = scene.pMaterial[i].pfMatAmbient[j];
-				pMaterial[i].pfMatDiffuse[j]  = scene.pMaterial[i].pfMatDiffuse[j];
-				pMaterial[i].pfMatSpecular[j] = scene.pMaterial[i].pfMatSpecular[j];
-			}
-
-			pMaterial[i].fMatShininess = scene.pMaterial[i].fMatShininess;
-
-			if(scene.pMaterial[i].pszEffectFile && SafeAlloc(pMaterial[i].pszEffectFile, strlen(scene.pMaterial[i].pszEffectFile) + 1))
-				memcpy(pMaterial[i].pszEffectFile, scene.pMaterial[i].pszEffectFile, strlen(scene.pMaterial[i].pszEffectFile) + 1);
-
-			if(scene.pMaterial[i].pszEffectName && SafeAlloc(pMaterial[i].pszEffectName, strlen(scene.pMaterial[i].pszEffectName) + 1))
-				memcpy(pMaterial[i].pszEffectName, scene.pMaterial[i].pszEffectName, strlen(scene.pMaterial[i].pszEffectName) + 1);
-		}
-	}
-
-	if(InitImpl() != true)
-		return false;
-
-	return true;
-}
 
 /*!***********************************************************************
  @Function		InitImpl
@@ -934,12 +762,8 @@ bool CPVRTModelPOD::InitImpl()
 	// Zero implementation data
 	memset(m_pImpl, 0, sizeof(*m_pImpl));
 
-#ifdef _DEBUG
-	m_pImpl->nWmTotal = 0;
-#endif
-
 	// Allocate world-matrix cache
-	m_pImpl->pfCache		= new VERTTYPE[nNumNode];
+	m_pImpl->pfCache		= new float[nNumNode];
 	m_pImpl->pWmCache		= new  MATRIX[nNumNode];
 	m_pImpl->pWmZeroCache	= new  MATRIX[nNumNode];
 	FlushCache();
@@ -964,12 +788,15 @@ void CPVRTModelPOD::FlushCache()
 	memset(m_pImpl->pfCache, 0, nNumNode * sizeof(*m_pImpl->pfCache));
 }
 
+
 /*!***************************************************************************
  @Function			Constructor
  @Description		Initializes the pointer to scene data to NULL
 *****************************************************************************/
 CPVRTModelPOD::CPVRTModelPOD() : m_pImpl(NULL)
-{}
+{
+}
+
 
 /*!***************************************************************************
  @Function			Destructor
@@ -979,6 +806,7 @@ CPVRTModelPOD::~CPVRTModelPOD()
 {
 	Destroy();
 }
+
 
 /*!***************************************************************************
  @Function			Destroy
@@ -1067,7 +895,7 @@ void CPVRTModelPOD::Destroy()
  @Description		Set the animation frame for which subsequent Get*() calls
 					should return data.
 *****************************************************************************/
-void CPVRTModelPOD::SetFrame(const VERTTYPE fFrame)
+void CPVRTModelPOD::SetFrame(const float fFrame)
 {
 	if(nNumFrame) {
 		/*
@@ -1077,9 +905,9 @@ void CPVRTModelPOD::SetFrame(const VERTTYPE fFrame)
 			number allowed is 98, since that will blend between frames 98 and
 			99. (99 being of course the 100th frame.)
 		*/
-		_ASSERT(fFrame <= f2vt((float)(nNumFrame-1)));
-		m_pImpl->nFrame = (int)vt2f(fFrame);
-		m_pImpl->fBlend = fFrame - f2vt(m_pImpl->nFrame);
+		_ASSERT(fFrame <= (float)(nNumFrame-1));
+		m_pImpl->nFrame = (int)fFrame;
+		m_pImpl->fBlend = fFrame - m_pImpl->nFrame;
 	}
 	else
 	{
@@ -1107,15 +935,15 @@ void CPVRTModelPOD::GetRotationMatrix(
 	{
 		if(node.nAnimFlags & ePODHasRotationAni)
 		{
-			MatrixQuaternionSlerp(
-			q,
+			QuaternionSlerp(
+			    q,
 				(QUATERNION&)node.pfAnimRotation[4*m_pImpl->nFrame],
 				(QUATERNION&)node.pfAnimRotation[4*(m_pImpl->nFrame+1)], m_pImpl->fBlend);
-			MatrixRotationQuaternion(mOut, q);
+			QuaternionToRotationMatrix(mOut, q);
 		}
 		else
 		{
-			MatrixRotationQuaternion(mOut, *(QUATERNION*)node.pfAnimRotation);
+			QuaternionToRotationMatrix(mOut, *(QUATERNION*)node.pfAnimRotation);
 		}
 	}
 	else
@@ -1155,8 +983,8 @@ void CPVRTModelPOD::GetScalingMatrix(
 	{
 		if(node.nAnimFlags & ePODHasScaleAni)
 		{
-			MatrixVec3Lerp(
-			v,
+			Vec3Lerp(
+			    v,
 				(VECTOR3&)node.pfAnimScale[7*(m_pImpl->nFrame+0)],
 				(VECTOR3&)node.pfAnimScale[7*(m_pImpl->nFrame+1)], m_pImpl->fBlend);
 			MatrixScaling(mOut, v.x, v.y, v.z);
@@ -1201,8 +1029,8 @@ void CPVRTModelPOD::GetTranslation(
 	{
 		if(node.nAnimFlags & ePODHasPositionAni)
 		{
-			MatrixVec3Lerp(
-			V,
+			Vec3Lerp(
+			    V,
 				(VECTOR3&)node.pfAnimPosition[3 * (m_pImpl->nFrame+0)],
 				(VECTOR3&)node.pfAnimPosition[3 * (m_pImpl->nFrame+1)], m_pImpl->fBlend);
 		}
@@ -1248,7 +1076,7 @@ void CPVRTModelPOD::GetTranslationMatrix(
 	{
 		if(node.nAnimFlags & ePODHasPositionAni)
 		{
-			MatrixVec3Lerp(v,
+			Vec3Lerp(v,
 				(VECTOR3&)node.pfAnimPosition[3*(m_pImpl->nFrame+0)],
 				(VECTOR3&)node.pfAnimPosition[3*(m_pImpl->nFrame+1)], m_pImpl->fBlend);
 			MatrixTranslation(mOut, v.x, v.y, v.z);
@@ -1368,12 +1196,6 @@ void CPVRTModelPOD::GetWorldMatrix(
 {
 	unsigned int nIdx;
 
-#ifdef _DEBUG
-	++m_pImpl->nWmTotal;
-	m_pImpl->fHitPerc = (float)m_pImpl->nWmCacheHit / (float)m_pImpl->nWmTotal;
-	m_pImpl->fHitPercZero = (float)m_pImpl->nWmZeroCacheHit / (float)m_pImpl->nWmTotal;
-#endif
-
 	// Calculate a node index
 	nIdx = (unsigned int)(&node - pNode);
 
@@ -1381,9 +1203,6 @@ void CPVRTModelPOD::GetWorldMatrix(
 	if(m_pImpl->fFrame == 0)
 	{
 		mOut = m_pImpl->pWmZeroCache[nIdx];
-#ifdef _DEBUG
-		++m_pImpl->nWmZeroCacheHit;
-#endif
 		return;
 	}
 
@@ -1391,9 +1210,6 @@ void CPVRTModelPOD::GetWorldMatrix(
 	if(m_pImpl->fFrame == m_pImpl->pfCache[nIdx])
 	{
 		mOut = m_pImpl->pWmCache[nIdx];
-#ifdef _DEBUG
-		++m_pImpl->nWmCacheHit;
-#endif
 		return;
 	}
 
@@ -1425,33 +1241,31 @@ MATRIX CPVRTModelPOD::GetWorldMatrix(const SPODNode& node) const
  @Input				NodeBone		Bone to take the matrix from
  @Description		Generates the world matrix for the given bone.
 *****************************************************************************/
-void CPVRTModelPOD::GetBoneWorldMatrix(
-	MATRIX		&mOut,
-	const SPODNode	&NodeMesh,
-	const SPODNode	&NodeBone)
+void CPVRTModelPOD::GetBoneWorldMatrix(MATRIX		    &mOut,
+                                       const SPODNode	&NodeMesh,
+                                       const SPODNode	&NodeBone)
 {
-	 MATRIX	mTmp;
-	VERTTYPE	fFrame;
+    MATRIX	mTmp;
+    float	fFrame;
 
-	fFrame = m_pImpl->fFrame;
+    fFrame = m_pImpl->fFrame;
 
-	SetFrame(0);
+    SetFrame(0);
 
-	// Transform by object matrix
-	GetWorldMatrix(mOut, NodeMesh);
+    // Transform by object matrix
+    GetWorldMatrix(mOut, NodeMesh);
 
-	// Back transform bone from frame 0 position
-	GetWorldMatrix(mTmp, NodeBone);
-	 MatrixInverse(mTmp, mTmp);
-	 MatrixMultiply(mOut, mOut, mTmp);
+    // Back transform bone from frame 0 position
+    GetWorldMatrix(mTmp, NodeBone);
+    MatrixInverse(mTmp, mTmp);
+    MatrixMultiply(mOut, mOut, mTmp);
 
-	// The bone origin should now be at the origin
+    // The bone origin should now be at the origin
+    SetFrame(fFrame);
 
-	SetFrame(fFrame);
-
-	// Transform bone into frame fFrame position
-	GetWorldMatrix(mTmp, NodeBone);
-	MatrixMultiply(mOut, mOut, mTmp);
+    // Transform bone into frame fFrame position
+    GetWorldMatrix(mTmp, NodeBone);
+    MatrixMultiply(mOut, mOut, mTmp);
 }
 
 /*!***************************************************************************
@@ -1484,14 +1298,14 @@ MATRIX CPVRTModelPOD::GetBoneWorldMatrix(
 					correct direction of the target, one unit away from the
 					camera.
 *****************************************************************************/
-VERTTYPE CPVRTModelPOD::GetCamera(
+float CPVRTModelPOD::GetCamera(
 	VECTOR3			&vFrom,
 	VECTOR3			&vTo,
 	VECTOR3			&vUp,
 	const unsigned int	nIdx) const
 {
 	 MATRIX		mTmp;
-	VERTTYPE		*pfData;
+	float		*pfData;
 	SPODCamera		*pCam;
 	const SPODNode	*pNd;
 
@@ -1514,17 +1328,6 @@ VERTTYPE CPVRTModelPOD::GetCamera(
 	vTo.y = -mTmp.f[5] + mTmp.f[13];
 	vTo.z = -mTmp.f[6] + mTmp.f[14];
 
-#if defined(BUILD_DX9) || defined(BUILD_DX10)
-	/*
-		When you rotate the camera from "straight forward" to "straight down", in
-		D3D the UP vector will be [0, 0, 1]
-	*/
-	vUp.x = mTmp.f[ 8];
-	vUp.y = mTmp.f[ 9];
-	vUp.z = mTmp.f[10];
-#endif
-
-#if defined(BUILD_OGL) || defined(BUILD_OGLES) || defined(BUILD_OGLES2)
 	/*
 		When you rotate the camera from "straight forward" to "straight down", in
 		OpenGL the UP vector will be [0, 0, -1]
@@ -1532,7 +1335,6 @@ VERTTYPE CPVRTModelPOD::GetCamera(
 	vUp.x = -mTmp.f[ 8];
 	vUp.y = -mTmp.f[ 9];
 	vUp.z = -mTmp.f[10];
-#endif
 
 	/*
 		Find & calculate FOV value
@@ -1557,13 +1359,13 @@ VERTTYPE CPVRTModelPOD::GetCamera(
 					If the queried camera does not have a target, *pvTo is
 					not changed.
 *****************************************************************************/
-VERTTYPE CPVRTModelPOD::GetCameraPos(
+float CPVRTModelPOD::GetCameraPos(
 	VECTOR3			&vFrom,
 	VECTOR3			&vTo,
 	const unsigned int	nIdx) const
 {
 	 MATRIX		mTmp;
-	VERTTYPE		*pfData;
+	float		*pfData;
 	SPODCamera		*pCam;
 	const SPODNode	*pNd;
 
@@ -1682,7 +1484,7 @@ bool CPVRTModelPOD::CreateSkinIdxWeight(
 	char			* const pWeight,		// Four bytes containing blend weights for vertex (0.0 .. 1.0) (D3D: use D3DCOLOR)
 	const int		nVertexBones,			// Number of bones this vertex uses
 	const int		* const pnBoneIdx,		// Pointer to 'nVertexBones' indices
-	const VERTTYPE	* const pfBoneWeight)	// Pointer to 'nVertexBones' blend weights
+	const float	* const pfBoneWeight)	// Pointer to 'nVertexBones' blend weights
 {
 	int i, nSum;
 	int nIdx[4];
@@ -1691,7 +1493,7 @@ bool CPVRTModelPOD::CreateSkinIdxWeight(
 	for(i = 0; i < nVertexBones; ++i)
 	{
 		nIdx[i]		= pnBoneIdx[i];
-		nWeight[i]	= (int)vt2f((VERTTYPEMUL(f2vt(255.0f), pfBoneWeight[i])));
+		nWeight[i]	= (int)(255.0f * pfBoneWeight[i]);
 
 		if(nIdx[i] > 255)
 		{
@@ -1736,30 +1538,15 @@ bool CPVRTModelPOD::CreateSkinIdxWeight(
 		_ASSERT(nSum == 255);
 	}
 
-#if defined(BUILD_DX9)
-	*(unsigned int*)pIdx = D3DCOLOR_ARGB(nIdx[3], nIdx[2], nIdx[1], nIdx[0]);					// UBYTE4 is WZYX
-	*(unsigned int*)pWeight = D3DCOLOR_RGBA(nWeight[0], nWeight[1], nWeight[2], nWeight[3]);	// D3DCOLORs are WXYZ
-#endif
-#if defined(BUILD_DX10)
-	*(unsigned int*)pIdx = D3DXCOLOR((float)nIdx[3], (float)nIdx[2],(float) nIdx[1], (float)nIdx[0]);					//
-	*(unsigned int*)pWeight = D3DXCOLOR((float)nWeight[0], (float)nWeight[1], (float)nWeight[2], (float)nWeight[3]);	//
-#endif
-
-#if defined(BUILD_OGL) || defined(BUILD_OGLES) || defined(BUILD_OGLES2)
 	// Return indices and weights as bytes
 	for(i = 0; i < 4; ++i)
 	{
 		pIdx[i]		= nIdx[i];
 		pWeight[i]	= nWeight[i];
 	}
-#endif
-
 	return true;
 }
 
-/****************************************************************************
-** Code
-****************************************************************************/
 
 /*!***************************************************************************
  @Function			ModelPODDataTypeSize
@@ -1849,446 +1636,6 @@ size_t PVRTModelPODDataStride(const CPODData &data)
 }
 
 /*!***************************************************************************
- @Function			PVRTModelPODDataConvert
- @Modified			data		Data elements to convert
- @Input				eNewType	New type of elements
- @Input				nCnt		Number of elements
- @Description		Convert the format of the array of vectors.
-*****************************************************************************/
-void PVRTModelPODDataConvert(CPODData &data, const unsigned int nCnt, const EPVRTDataType eNewType)
-{
-	 VECTOR4	v;
-	unsigned int	i;
-	CPODData		old;
-
-	if(!data.pData || data.eType == eNewType)
-		return;
-
-	old = data;
-
-	switch(eNewType)
-	{
-	case EPODDataFloat:
-	case EPODDataInt:
-	case EPODDataUnsignedShort:
-	case EPODDataFixed16_16:
-	case EPODDataUnsignedByte:
-	case EPODDataShort:
-	case EPODDataShortNorm:
-	case EPODDataByte:
-	case EPODDataByteNorm:
-		data.n = old.n * PVRTModelPODDataTypeComponentCount(old.eType);
-		break;
-	case EPODDataRGBA:
-	case EPODDataARGB:
-	case EPODDataD3DCOLOR:
-	case EPODDataUBYTE4:
-	case EPODDataDEC3N:
-		data.n = 1;
-		break;
-	default:
-		break;
-	}
-
-	data.eType = eNewType;
-	data.nStride = (unsigned int)PVRTModelPODDataStride(data);
-
-	// If the old & new strides are identical, we can convert it in place
-	if(old.nStride != data.nStride)
-	{
-		data.pData = (unsigned char*)malloc(data.nStride * nCnt);
-	}
-
-	for(i = 0; i < nCnt; ++i)
-	{
-		PVRTVertexRead(&v, old.pData + i * old.nStride, old.eType, old.n);
-		PVRTVertexWrite(data.pData + i * data.nStride, eNewType, data.n * PVRTModelPODDataTypeComponentCount(data.eType), &v);
-	}
-
-	if(old.nStride != data.nStride)
-	{
-		free(old.pData);
-	}
-}
-
-static int BitCount(unsigned int n)
-{
-	int nRet = 0;
-	while(n)
-	{
-		if(n & 0x01)
-			++nRet;
-
-		n >>= 1;
-	}
-	return nRet;
-}
-
-/*!***************************************************************************
- @Function			PVRTModelPODDataShred
- @Modified			data		Data elements to modify
- @Input				nCnt		Number of elements
- @Input				nMask		Channel masks
- @Description		Reduce the number of dimensions in 'data' using the channel
-					masks in 'nMask'.
-*****************************************************************************/
-void PVRTModelPODDataShred(CPODData &data, const unsigned int nCnt, const unsigned int nMask)
-{
-	CPODData		old;
-	 VECTOR4	v;
-	unsigned int	i, j, nCh;
-
-	if(!data.pData)
-		return;
-
-	old = data;
-
-	// Count the number of output channels
-	data.n = BitCount(nMask);
-	if(data.n > old.n)
-		data.n = old.n;
-
-	// Allocate output memory
-	data.nStride = (unsigned int)PVRTModelPODDataStride(data);
-	data.pData = (unsigned char*)malloc(data.nStride * nCnt);
-
-	for(i = 0; i < nCnt; ++i)
-	{
-		// Read the vector
-		PVRTVertexRead(&v, old.pData + i * old.nStride, old.eType, old.n);
-
-		// Shred the vector
-		nCh = 0;
-		for(j = 0; j < 4; ++j)
-		{
-			if(nMask & (1 << j))
-			{
-				((unsigned int*)&v)[nCh] = ((unsigned int*)&v)[j];
-				++nCh;
-			}
-		}
-
-		for(; nCh < 4; ++nCh)
-			((unsigned int*)&v)[nCh] = 0;
-
-		// Write the vector
-		PVRTVertexWrite((char*)data.pData + i * data.nStride, data.eType, data.n * PVRTModelPODDataTypeComponentCount(data.eType), &v);
-	}
-
-	free(old.pData);
-}
-
-/*!***************************************************************************
- @Function			InterleaveArray
- @Modified			pInterleaved
- @Modified			data
- @Input				nNumVertex
- @Input				nStride
- @Input				nOffset
- @Description		Interleaves the pod data
-*****************************************************************************/
-static void InterleaveArray(
-	char			* const pInterleaved,
-	CPODData		&data,
-	const int		nNumVertex,
-	const size_t	nStride,
-	size_t			&nOffset)
-{
-	if(!data.nStride)
-		return;
-
-	for(int i = 0; i < nNumVertex; ++i)
-		memcpy(pInterleaved + i * nStride + nOffset, (char*)data.pData + i * data.nStride, data.nStride);
-	free(data.pData);
-	data.nStride	= (unsigned int)nStride;
-	data.pData		= (unsigned char*)nOffset;
-	nOffset += (int)PVRTModelPODDataStride(data);
-}
-
-/*!***************************************************************************
- @Function			DeinterleaveArray
- @Input				data
- @Input				pInter
- @Input				nNumVertex
- @Description		DeInterleaves the pod data
-*****************************************************************************/
-static void DeinterleaveArray(
-	CPODData			&data,
-	const void			* const pInter,
-	const int			nNumVertex)
-{
-	unsigned int	nSrcStride	= data.nStride;
-	unsigned int	nDestStride	= (unsigned int)PVRTModelPODDataStride(data);
-	const char		*pSrc		= (char*)pInter + (size_t)data.pData;
-
-	if(!nSrcStride)
-		return;
-
-	data.pData = 0;
-	SafeAlloc(data.pData, nDestStride * nNumVertex);
-	data.nStride	= nDestStride;
-
-	for(int i = 0; i < nNumVertex; ++i)
-		memcpy((char*)data.pData + i * nDestStride, pSrc + i * nSrcStride, nDestStride);
-}
-
-/*!***************************************************************************
- @Function		PVRTModelPODToggleInterleaved
- @Modified		mesh		Mesh to modify
- @Description	Switches the supplied mesh to or from interleaved data format.
-*****************************************************************************/
-void PVRTModelPODToggleInterleaved(SPODMesh &mesh)
-{
-	unsigned int i;
-
-	if(!mesh.nNumVertex)
-		return;
-
-	if(mesh.pInterleaved)
-	{
-		/*
-			De-interleave
-		*/
-		DeinterleaveArray(mesh.sVertex, mesh.pInterleaved, mesh.nNumVertex);
-		DeinterleaveArray(mesh.sNormals, mesh.pInterleaved, mesh.nNumVertex);
-		DeinterleaveArray(mesh.sTangents, mesh.pInterleaved, mesh.nNumVertex);
-		DeinterleaveArray(mesh.sBinormals, mesh.pInterleaved, mesh.nNumVertex);
-
-		for(i = 0; i < mesh.nNumUVW; ++i)
-			DeinterleaveArray(mesh.psUVW[i], mesh.pInterleaved, mesh.nNumVertex);
-
-		DeinterleaveArray(mesh.sVtxColours, mesh.pInterleaved, mesh.nNumVertex);
-		DeinterleaveArray(mesh.sBoneIdx, mesh.pInterleaved, mesh.nNumVertex);
-		DeinterleaveArray(mesh.sBoneWeight, mesh.pInterleaved, mesh.nNumVertex);
-		free(mesh.pInterleaved);
-	}
-	else
-	{
-		size_t nStride, nOffset;
-
-		/*
-			Interleave
-		*/
-
-		// Calculate how much data the interleaved array must store
-		nStride = PVRTModelPODDataStride(mesh.sVertex);
-		nStride += PVRTModelPODDataStride(mesh.sNormals);
-		nStride += PVRTModelPODDataStride(mesh.sTangents);
-		nStride += PVRTModelPODDataStride(mesh.sBinormals);
-
-		for(i = 0; i < mesh.nNumUVW; ++i)
-			nStride += PVRTModelPODDataStride(mesh.psUVW[i]);
-
-		nStride += PVRTModelPODDataStride(mesh.sVtxColours);
-		nStride += PVRTModelPODDataStride(mesh.sBoneIdx);
-		nStride += PVRTModelPODDataStride(mesh.sBoneWeight);
-
-		// Allocate interleaved array
-		SafeAlloc(mesh.pInterleaved, mesh.nNumVertex * nStride);
-
-		// Interleave the data
-		nOffset = 0;
-		InterleaveArray((char*)mesh.pInterleaved, mesh.sVertex, mesh.nNumVertex, nStride, nOffset);
-		InterleaveArray((char*)mesh.pInterleaved, mesh.sNormals, mesh.nNumVertex, nStride, nOffset);
-		InterleaveArray((char*)mesh.pInterleaved, mesh.sTangents, mesh.nNumVertex, nStride, nOffset);
-		InterleaveArray((char*)mesh.pInterleaved, mesh.sBinormals, mesh.nNumVertex, nStride, nOffset);
-		InterleaveArray((char*)mesh.pInterleaved, mesh.sVtxColours, mesh.nNumVertex, nStride, nOffset);
-
-		for(i = 0; i < mesh.nNumUVW; ++i)
-			InterleaveArray((char*)mesh.pInterleaved, mesh.psUVW[i], mesh.nNumVertex, nStride, nOffset);
-
-		InterleaveArray((char*)mesh.pInterleaved, mesh.sBoneIdx, mesh.nNumVertex, nStride, nOffset);
-		InterleaveArray((char*)mesh.pInterleaved, mesh.sBoneWeight, mesh.nNumVertex, nStride, nOffset);
-	}
-}
-
-/*!***************************************************************************
- @Function			PVRTModelPODDeIndex
- @Modified			mesh		Mesh to modify
- @Description		De-indexes the supplied mesh. The mesh must be
-					Interleaved before calling this function.
-*****************************************************************************/
-void PVRTModelPODDeIndex(SPODMesh &mesh)
-{
-	unsigned char *pNew = 0;
-
-	if(!mesh.pInterleaved || !mesh.nNumVertex)
-		return;
-
-	_ASSERT(mesh.nNumVertex && mesh.nNumFaces);
-
-	// Create a new vertex list
-	mesh.nNumVertex = PVRTModelPODCountIndices(mesh);
-	SafeAlloc(pNew, mesh.sVertex.nStride * mesh.nNumVertex);
-
-	// Deindex the vertices
-	for(unsigned int i = 0; i < mesh.nNumVertex; ++i)
-		memcpy(pNew + i * mesh.sVertex.nStride, (char*)mesh.pInterleaved + ((unsigned short*)mesh.sFaces.pData)[i] * mesh.sVertex.nStride, mesh.sVertex.nStride);
-
-	// Replace the old vertex list
-	free(mesh.pInterleaved);
-	mesh.pInterleaved = pNew;
-
-	// Get rid of the index list
-	free(mesh.sFaces.pData);
-	mesh.sFaces.n		= 0;
-	mesh.sFaces.nStride	= 0;
-}
-
-/*!***************************************************************************
- @Function			PVRTModelPODToggleStrips
- @Modified			mesh		Mesh to modify
- @Description		Converts the supplied mesh to or from strips.
-*****************************************************************************/
-void PVRTModelPODToggleStrips(SPODMesh &mesh)
-{
-	CPODData	old;
-	size_t	nIdxSize, nTriStride;
-
-	if(!mesh.nNumFaces)
-		return;
-
-	_ASSERT(mesh.sFaces.n == 1);
-	nIdxSize	= PVRTModelPODDataTypeSize(mesh.sFaces.eType);
-	nTriStride	= PVRTModelPODDataStride(mesh.sFaces) * 3;
-
-	old					= mesh.sFaces;
-	mesh.sFaces.pData	= 0;
-	SafeAlloc(mesh.sFaces.pData, nTriStride * mesh.nNumFaces);
-
-	if(mesh.nNumStrips)
-	{
-		unsigned int nListIdxCnt, nStripIdxCnt;
-
-		/*
-			Convert to list
-		*/
-		nListIdxCnt		= 0;
-		nStripIdxCnt	= 0;
-		for(unsigned int i = 0; i < mesh.nNumStrips; ++i)
-		{
-			for(unsigned int j = 0; j < mesh.pnStripLength[i]; ++j)
-			{
-				if(j)
-				{
-					_ASSERT(j == 1); // Because this will surely break with any other number
-
-					memcpy(
-						(char*)mesh.sFaces.pData	+ nIdxSize * nListIdxCnt,
-						(char*)old.pData			+ nIdxSize * (nStripIdxCnt - 1),
-						nIdxSize);
-					nListIdxCnt += 1;
-
-					memcpy(
-						(char*)mesh.sFaces.pData	+ nIdxSize * nListIdxCnt,
-						(char*)old.pData			+ nIdxSize * (nStripIdxCnt - 2),
-						nIdxSize);
-					nListIdxCnt += 1;
-
-					memcpy(
-						(char*)mesh.sFaces.pData	+ nIdxSize * nListIdxCnt,
-						(char*)old.pData			+ nIdxSize * nStripIdxCnt,
-						nIdxSize);
-					nListIdxCnt += 1;
-
-					nStripIdxCnt += 1;
-				}
-				else
-				{
-					memcpy(
-						(char*)mesh.sFaces.pData	+ nIdxSize * nListIdxCnt,
-						(char*)old.pData			+ nIdxSize * nStripIdxCnt,
-						nTriStride);
-
-					nStripIdxCnt += 3;
-					nListIdxCnt += 3;
-				}
-			}
-		}
-
-		_ASSERT(nListIdxCnt == mesh.nNumFaces*3);
-		free(mesh.pnStripLength);
-		mesh.nNumStrips = 0;
-	}
-	else
-	{
-		int		nIdxCnt;
-		unsigned int n0, n1, n2;
-		unsigned int p0, p1, p2;
-
-		/*
-			Convert to strips
-		*/
-		//mesh.pnStripLength	= (unsigned int*)calloc(mesh.nNumFaces, sizeof(*mesh.pnStripLength));
-		mesh.pnStripLength	= (unsigned int*)malloc(mesh.nNumFaces * sizeof(*mesh.pnStripLength));
-		memset(mesh.pnStripLength, 0 , mesh.nNumFaces * sizeof(*mesh.pnStripLength));
-		mesh.nNumStrips		= 0;
-		nIdxCnt				= 0;
-
-		n0 = 0;
-		n1 = 0;
-		n2 = 0;
-
-		for(unsigned int i = 0; i < mesh.nNumFaces; ++i)
-		{
-			p0 = n0;
-			p1 = n1;
-			p2 = n2;
-
-			PVRTVertexRead(&n0, (char*)old.pData + (3 * i + 0) * old.nStride, old.eType);
-			PVRTVertexRead(&n1, (char*)old.pData + (3 * i + 1) * old.nStride, old.eType);
-			PVRTVertexRead(&n2, (char*)old.pData + (3 * i + 2) * old.nStride, old.eType);
-
-			if(mesh.pnStripLength[mesh.nNumStrips])
-			{
-				if(mesh.pnStripLength[mesh.nNumStrips] & 0x01)
-				{
-					if(p1 == n1 && p2 == n0)
-					{
-						PVRTVertexWrite((char*)mesh.sFaces.pData + nIdxCnt * mesh.sFaces.nStride, mesh.sFaces.eType, n2);
-						++nIdxCnt;
-						mesh.pnStripLength[mesh.nNumStrips] += 1;
-						continue;
-					}
-				}
-				else
-				{
-					if(p2 == n1 && p0 == n0)
-					{
-						PVRTVertexWrite((char*)mesh.sFaces.pData + nIdxCnt * mesh.sFaces.nStride, mesh.sFaces.eType, n2);
-						++nIdxCnt;
-						mesh.pnStripLength[mesh.nNumStrips] += 1;
-						continue;
-					}
-				}
-
-				++mesh.nNumStrips;
-			}
-
-			/*
-				Start of strip, copy entire triangle
-			*/
-			PVRTVertexWrite((char*)mesh.sFaces.pData + nIdxCnt * mesh.sFaces.nStride, mesh.sFaces.eType, n0);
-			++nIdxCnt;
-			PVRTVertexWrite((char*)mesh.sFaces.pData + nIdxCnt * mesh.sFaces.nStride, mesh.sFaces.eType, n1);
-			++nIdxCnt;
-			PVRTVertexWrite((char*)mesh.sFaces.pData + nIdxCnt * mesh.sFaces.nStride, mesh.sFaces.eType, n2);
-			++nIdxCnt;
-
-			mesh.pnStripLength[mesh.nNumStrips] += 1;
-		}
-
-		if(mesh.pnStripLength[mesh.nNumStrips])
-			++mesh.nNumStrips;
-
-		SafeRealloc(mesh.sFaces.pData, nIdxCnt * nIdxSize);
-		mesh.pnStripLength	= (unsigned int*)realloc(mesh.pnStripLength, sizeof(*mesh.pnStripLength) * mesh.nNumStrips);
-	}
-
-	free(old.pData);
-}
-
-/*!***************************************************************************
  @Function		PVRTModelPODCountIndices
  @Input			mesh		Mesh
  @Return		Number of indices used by mesh
@@ -2308,265 +1655,3 @@ unsigned int PVRTModelPODCountIndices(const SPODMesh &mesh)
 
 	return mesh.nNumFaces * 3;
 }
-
-static void FloatToFixed(int * const pn, const float * const pf, unsigned int n)
-{
-	if(!pn || !pf) return;
-	while(n)
-	{
-		--n;
-		pn[n] = (int)(pf[n] * (float)(1<<16));
-	}
-}
-static void FixedToFloat(float * const pf, const int * const pn, unsigned int n)
-{
-	if(!pn || !pf) return;
-	while(n)
-	{
-		--n;
-		pf[n] = (float)pn[n] / (float)(1<<16);
-	}
-}
-
-/*!***************************************************************************
- @Function		PVRTModelPODToggleFixedPoint
- @Modified		s		Scene to modify
- @Description	Switch all non-vertex data between fixed-point and
-				floating-point.
-*****************************************************************************/
-void PVRTModelPODToggleFixedPoint(SPODScene &s)
-{
-	unsigned int i;
-	int i32TransformNo;
-
-	if(s.nFlags & PVRTMODELPODSF_FIXED)
-	{
-		/*
-			Convert to floating-point
-		*/
-		for(i = 0; i < s.nNumCamera; ++i)
-		{
-			FixedToFloat((float*)&s.pCamera[i].fFOV, (int*)&s.pCamera[i].fFOV, 1);
-			FixedToFloat((float*)&s.pCamera[i].fFar, (int*)&s.pCamera[i].fFar, 1);
-			FixedToFloat((float*)&s.pCamera[i].fNear, (int*)&s.pCamera[i].fNear, 1);
-			FixedToFloat((float*)s.pCamera[i].pfAnimFOV, (int*)s.pCamera[i].pfAnimFOV, s.nNumFrame);
-		}
-
-		for(i = 0; i < s.nNumLight; ++i)
-		{
-			FixedToFloat((float*)&s.pLight[i].pfColour, (int*)&s.pLight[i].pfColour, 3);
-		}
-
-		for(i = 0; i < s.nNumNode; ++i)
-		{
-			i32TransformNo = s.pNode[i].nAnimFlags & ePODHasPositionAni ? s.nNumFrame : 1;
-			FixedToFloat((float*)s.pNode[i].pfAnimPosition,	(int*)s.pNode[i].pfAnimPosition,	3  * i32TransformNo);
-
-			i32TransformNo = s.pNode[i].nAnimFlags & ePODHasRotationAni ? s.nNumFrame : 1;
-			FixedToFloat((float*)s.pNode[i].pfAnimRotation,	(int*)s.pNode[i].pfAnimRotation,	4  * i32TransformNo);
-
-			i32TransformNo = s.pNode[i].nAnimFlags & ePODHasScaleAni ? s.nNumFrame : 1;
-			FixedToFloat((float*)s.pNode[i].pfAnimScale,	(int*)s.pNode[i].pfAnimScale,		7  * i32TransformNo);
-
-			i32TransformNo = s.pNode[i].nAnimFlags & ePODHasMatrixAni ? s.nNumFrame : 1;
-			FixedToFloat((float*)s.pNode[i].pfAnimMatrix,	(int*)s.pNode[i].pfAnimMatrix,		16 * i32TransformNo);
-		}
-
-		for(i = 0; i < s.nNumMaterial; ++i)
-		{
-			FixedToFloat((float*)&s.pMaterial[i].fMatOpacity,	(int*)&s.pMaterial[i].fMatOpacity,		1);
-			FixedToFloat((float*)s.pMaterial[i].pfMatAmbient,	(int*)s.pMaterial[i].pfMatAmbient,		3);
-			FixedToFloat((float*)s.pMaterial[i].pfMatDiffuse,	(int*)s.pMaterial[i].pfMatDiffuse,		3);
-			FixedToFloat((float*)s.pMaterial[i].pfMatSpecular,	(int*)s.pMaterial[i].pfMatSpecular,		3);
-			FixedToFloat((float*)&s.pMaterial[i].fMatShininess,	(int*)&s.pMaterial[i].fMatShininess,	1);
-		}
-
-		FixedToFloat((float*)s.pfColourBackground,	(int*)s.pfColourBackground,	3);
-		FixedToFloat((float*)s.pfColourAmbient,		(int*)s.pfColourAmbient,	3);
-	}
-	else
-	{
-		/*
-			Convert to Fixed-point
-		*/
-		for(i = 0; i < s.nNumCamera; ++i)
-		{
-			FloatToFixed((int*)&s.pCamera[i].fFOV, (float*)&s.pCamera[i].fFOV, 1);
-			FloatToFixed((int*)&s.pCamera[i].fFar, (float*)&s.pCamera[i].fFar, 1);
-			FloatToFixed((int*)&s.pCamera[i].fNear, (float*)&s.pCamera[i].fNear, 1);
-			FloatToFixed((int*)s.pCamera[i].pfAnimFOV, (float*)s.pCamera[i].pfAnimFOV, s.nNumFrame);
-		}
-
-		for(i = 0; i < s.nNumLight; ++i)
-		{
-			FloatToFixed((int*)&s.pLight[i].pfColour, (float*)&s.pLight[i].pfColour, 3);
-		}
-
-		for(i = 0; i < s.nNumNode; ++i)
-		{
-			i32TransformNo = s.pNode[i].nAnimFlags & ePODHasPositionAni ? s.nNumFrame : 1;
-			FloatToFixed((int*)s.pNode[i].pfAnimPosition,	(float*)s.pNode[i].pfAnimPosition,	3 * i32TransformNo);
-
-			i32TransformNo = s.pNode[i].nAnimFlags & ePODHasRotationAni ? s.nNumFrame : 1;
-			FloatToFixed((int*)s.pNode[i].pfAnimRotation,	(float*)s.pNode[i].pfAnimRotation,	4 * i32TransformNo);
-
-			i32TransformNo = s.pNode[i].nAnimFlags & ePODHasScaleAni ? s.nNumFrame : 1;
-			FloatToFixed((int*)s.pNode[i].pfAnimScale,	(float*)s.pNode[i].pfAnimScale,		7 * i32TransformNo);
-
-			i32TransformNo = s.pNode[i].nAnimFlags & ePODHasMatrixAni ? s.nNumFrame : 1;
-			FloatToFixed((int*)s.pNode[i].pfAnimMatrix,	(float*)s.pNode[i].pfAnimMatrix,		16 * i32TransformNo);
-		}
-
-		for(i = 0; i < s.nNumMaterial; ++i)
-		{
-			FloatToFixed((int*)&s.pMaterial[i].fMatOpacity,	(float*)&s.pMaterial[i].fMatOpacity,		1);
-			FloatToFixed((int*)s.pMaterial[i].pfMatAmbient,	(float*)s.pMaterial[i].pfMatAmbient,		3);
-			FloatToFixed((int*)s.pMaterial[i].pfMatDiffuse,	(float*)s.pMaterial[i].pfMatDiffuse,		3);
-			FloatToFixed((int*)s.pMaterial[i].pfMatSpecular,	(float*)s.pMaterial[i].pfMatSpecular,		3);
-			FloatToFixed((int*)&s.pMaterial[i].fMatShininess,	(float*)&s.pMaterial[i].fMatShininess,	1);
-		}
-
-		FloatToFixed((int*)s.pfColourBackground,	(float*)s.pfColourBackground,	3);
-		FloatToFixed((int*)s.pfColourAmbient,		(float*)s.pfColourAmbient,	3);
-	}
-
-	// Done
-	s.nFlags ^= PVRTMODELPODSF_FIXED;
-}
-
-/*!***************************************************************************
- @Function		ToggleCPODDataEndianness
- @Modified		Target The pod data
- @Input			ui32No Number of vertices
- @Modified		pInterleaved The pod scenes interleaved data
- @Description	Modify the endianness of Target and pInterleaved
-*****************************************************************************/
-void ToggleCPODDataEndianness(CPODData &Target, unsigned int ui32No, unsigned char* pInterleaved)
-{
-	size_t ui32Size = PVRTModelPODDataTypeSize(Target.eType);
-
-	if(Target.n > 0 && ui32Size > 1)
-	{
-		if(!pInterleaved && Target.pData)
-		{
-
-			for(unsigned int i = 0; i < ui32Size * Target.n * ui32No; i += (unsigned int) ui32Size)
-				PVRTByteSwap(&Target.pData[i], (int) ui32Size);
-
-		}
-		else if(pInterleaved) // Toggle data in array
-		{
-			unsigned char* pData = pInterleaved + (size_t) Target.pData;
-
-			while(ui32No > 0)
-			{
-				for(unsigned int i = 0; i < ui32Size * Target.n; i += (unsigned int) ui32Size)
-				{
-					PVRTByteSwap(&pData[i], (int) ui32Size);
-				}
-
-				pData += Target.nStride;
-
-				--ui32No;
-			}
-		}
-	}
-}
-
-/*!***************************************************************************
- @Function		PVRTModelPODToggleEndianness
- @Modified		scene
- @Description	Modify the endianness of the scene
-*****************************************************************************/
-void PVRTModelPODToggleEndianness(SPODScene &scene)
-{
-	unsigned int i,j;
-
-	// Nodes
-	for(i = 0; i < scene.nNumNode; ++i)
-	{
-		unsigned int i32Size;
-
-		i32Size = scene.pNode[i].nAnimFlags & ePODHasPositionAni ? scene.nNumFrame : 1;
-
-		if(scene.pNode[i].pfAnimPosition)
-		{
-			for(j = 0; j < i32Size * 3; ++j)
-				PVRTByteSwap((unsigned char*) &scene.pNode[i].pfAnimPosition[j], sizeof(*scene.pNode[i].pfAnimPosition));
-		}
-
-		i32Size = scene.pNode[i].nAnimFlags & ePODHasRotationAni ? scene.nNumFrame : 1;
-
-		if(scene.pNode[i].pfAnimRotation)
-		{
-			for(j = 0; j < i32Size * 4; ++j)
-				PVRTByteSwap((unsigned char*) &scene.pNode[i].pfAnimRotation[j], sizeof(*scene.pNode[i].pfAnimRotation));
-		}
-
-		i32Size = scene.pNode[i].nAnimFlags & ePODHasScaleAni ? scene.nNumFrame : 1;
-
-		if(scene.pNode[i].pfAnimScale)
-		{
-			for(j = 0; j < i32Size * 7; ++j)
-				PVRTByteSwap((unsigned char*) &scene.pNode[i].pfAnimScale[j], sizeof(*scene.pNode[i].pfAnimScale));
-		}
-
-		i32Size = scene.pNode[i].nAnimFlags & ePODHasMatrixAni ? scene.nNumFrame : 1;
-
-		if(scene.pNode[i].pfAnimMatrix)
-		{
-			for(j = 0; j < i32Size * 16; ++j)
-				PVRTByteSwap((unsigned char*) &scene.pNode[i].pfAnimMatrix[j], sizeof(*scene.pNode[i].pfAnimMatrix));
-		}
-	}
-
-	// Meshes
-	for(i = 0; i < scene.nNumMesh; ++i)
-	{
-		// Face data
-		ToggleCPODDataEndianness(scene.pMesh[i].sFaces, scene.pMesh[i].nNumFaces * 3, 0);
-
-		// Vertex data
-		ToggleCPODDataEndianness(scene.pMesh[i].sVertex	    , scene.pMesh[i].nNumVertex, scene.pMesh[i].pInterleaved);
-		ToggleCPODDataEndianness(scene.pMesh[i].sNormals	, scene.pMesh[i].nNumVertex, scene.pMesh[i].pInterleaved);
-		ToggleCPODDataEndianness(scene.pMesh[i].sTangents	, scene.pMesh[i].nNumVertex, scene.pMesh[i].pInterleaved);
-		ToggleCPODDataEndianness(scene.pMesh[i].sBinormals  , scene.pMesh[i].nNumVertex, scene.pMesh[i].pInterleaved);
-		ToggleCPODDataEndianness(scene.pMesh[i].sVtxColours	, scene.pMesh[i].nNumVertex, scene.pMesh[i].pInterleaved);
-		ToggleCPODDataEndianness(scene.pMesh[i].sBoneIdx	, scene.pMesh[i].nNumVertex, scene.pMesh[i].pInterleaved);
-		ToggleCPODDataEndianness(scene.pMesh[i].sBoneWeight	, scene.pMesh[i].nNumVertex, scene.pMesh[i].pInterleaved);
-
-		for(j = 0; j < scene.pMesh[i].nNumUVW; ++j)
-			ToggleCPODDataEndianness(scene.pMesh[i].psUVW[j], scene.pMesh[i].nNumVertex, scene.pMesh[i].pInterleaved);
-
-		if(scene.pMesh[i].pnStripLength)
-		{
-			for(j = 0; j < scene.pMesh[i].nNumFaces; ++j)
-				PVRTByteSwap((unsigned char*) &scene.pMesh[i].pnStripLength[j], sizeof(*scene.pMesh[i].pnStripLength));
-		}
-
-		for(j = 0; j < (unsigned int) scene.pMesh[i].sBoneBatches.nBatchCnt; ++j)
-		{
-			PVRTByteSwap((unsigned char*) &scene.pMesh[i].sBoneBatches.pnBatchBoneCnt[j], sizeof(*scene.pMesh[i].sBoneBatches.pnBatchBoneCnt));
-			PVRTByteSwap((unsigned char*) &scene.pMesh[i].sBoneBatches.pnBatchOffset[j], sizeof(*scene.pMesh[i].sBoneBatches.pnBatchOffset));
-		}
-
-		for(j = 0; j < (unsigned int) scene.pMesh[i].sBoneBatches.nBatchCnt * scene.pMesh[i].sBoneBatches.nBatchBoneMax; ++j)
-			PVRTByteSwap((unsigned char*) &scene.pMesh[i].sBoneBatches.pnBatches[j], sizeof(*scene.pMesh[i].sBoneBatches.pnBatches));
-	}
-
-	// Cameras
-	for(i = 0; i < scene.nNumCamera; ++i)
-	{
-		if(scene.pCamera[i].pfAnimFOV)
-		{
-			for(j = 0; j < sizeof(*scene.pCamera[i].pfAnimFOV) * scene.nNumFrame; ++i)
-				PVRTByteSwap((unsigned char*) &scene.pCamera[i].pfAnimFOV[i], sizeof(*scene.pCamera[i].pfAnimFOV));
-		}
-	}
-
-	scene.bBigEndian = !scene.bBigEndian;
-}
-
-/*****************************************************************************
- End of file (ModelPOD.cpp)
-*****************************************************************************/

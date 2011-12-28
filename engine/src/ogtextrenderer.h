@@ -45,9 +45,9 @@ private:
     // A structure for our vertex type
     struct SDisplayTextAPIVertex
     {
-	    VERTTYPE sx, sy, sz;
-	    VERTTYPE r, g, b, a;
-	    VERTTYPE tu, tv;
+	    float sx, sy, sz;
+	    float r, g, b, a;
+	    float tu, tv;
     };
 
 private:

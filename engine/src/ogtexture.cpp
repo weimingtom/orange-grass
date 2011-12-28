@@ -10,12 +10,8 @@
 #include "ogtexture.h"
 
 
-COGTexture::COGTexture () : m_TextureId (0),
-							m_pTexture (NULL)
+COGTexture::COGTexture () : m_TextureId (0)
 {
-	m_pTexture = (CTexture*)malloc(sizeof(CTexture));
-	memset(m_pTexture, 0, sizeof(CTexture));
-
 	IOGMapping* pNewMapping = new IOGMapping;
 	pNewMapping->upper_left = Vec2(0.0f, 0.0f);
 	pNewMapping->size = Vec2(0.0f, 0.0f);
@@ -30,11 +26,9 @@ COGTexture::COGTexture () : m_TextureId (0),
 
 COGTexture::~COGTexture ()
 {
-	if (m_pTexture)
+	if (m_TextureId != 0)
 	{
-		m_pTexture->ReleaseTexture(m_TextureId);
-		free(m_pTexture);
-		m_pTexture = NULL;
+        glDeleteTextures(1, &m_TextureId);
 
 		std::vector<IOGMapping*>::iterator iter = m_MappingsList.begin();
 		for (; iter != m_MappingsList.end(); ++iter)
@@ -42,8 +36,8 @@ COGTexture::~COGTexture ()
 			OG_SAFE_DELETE((*iter));
 		}
 		m_MappingsList.clear();
+    	m_TextureId = 0;
 	}
-	m_TextureId = 0;
 }
 
 
@@ -63,7 +57,7 @@ bool COGTexture::Load ()
 	}
 
 	PVR_Texture_Header header;
-	if(!m_pTexture->LoadTextureFromPVR(m_ResourceFile.c_str(), &m_TextureId, &header))
+	if(!LoadTextureFromPVR(m_ResourceFile.c_str(), &m_TextureId, &header))
 	{
         OG_LOG_ERROR("Failed to load texture file %s", m_ResourceFile.c_str());
 		return false;
@@ -99,7 +93,6 @@ void COGTexture::Unload ()
 		return;
 	}
 
-	memset(m_pTexture, 0, sizeof(CTexture));
 	m_TextureId = 0;
 
 	m_Width = 0;

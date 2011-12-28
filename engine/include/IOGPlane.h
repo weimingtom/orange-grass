@@ -22,7 +22,7 @@ public:
 	}
 
 	// Initializing plane.
-	IOGPlane(VERTTYPE x, VERTTYPE y, VERTTYPE z, VERTTYPE w)
+	IOGPlane(float x, float y, float z, float w)
 	{
 		Plane.x = x;
 		Plane.y = y;
@@ -31,7 +31,7 @@ public:
 	}
 
 	// Initializing plane.
-	void Set(const VERTTYPE x, const VERTTYPE y, const VERTTYPE z, const VERTTYPE w)
+	void Set(const float x, const float y, const float z, const float w)
 	{
 		Plane.x = x;
 		Plane.y = y;
@@ -75,15 +75,15 @@ public:
 	}
 
 	// calculate the distance between a point and a plane
-	inline VERTTYPE DistanceToPlane(const VECTOR3& point) const
+	inline float DistanceToPlane(const VECTOR3& point) const
 	{
-		return MatrixVec3DotProduct((const VECTOR3&)Plane, point) + Plane.w;
+		return Vec3DotProduct((const VECTOR3&)Plane, point) + Plane.w;
 	}
 
 	// normalize plane
 	inline void NormalizePlane()
 	{
-		MatrixVec4Normalize(Plane, Plane);
+		Vec4Normalize(Plane, Plane);
 	}
 
 private:

@@ -49,7 +49,6 @@ public:
 private:
 	
 	unsigned int	m_TextureId;
-	CTexture*		m_pTexture;
 	unsigned int	m_Width;
 	unsigned int	m_Height;
 

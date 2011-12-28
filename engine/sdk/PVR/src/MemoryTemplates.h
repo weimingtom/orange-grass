@@ -1,4 +1,3 @@
-
 #ifndef MEMORYMGR_H_
 #define MEMORYMGR_H_
 
@@ -18,7 +17,7 @@ T *reallocEM(T *array, size_t old_size, size_t new_size)
 
    delete [] array;
    
-   return copy(array, array + old_size, temp);
+   return std::copy(array, array + old_size, temp);
 }
 
 
@@ -39,6 +38,7 @@ bool SafeAlloc(T* &ptr, size_t cnt)
 	return true;
 }
 
+
 template <typename T>
 void SafeRealloc(T* &ptr, size_t cnt)
 {
@@ -52,10 +52,9 @@ void SafeRealloc(T* &ptr, size_t cnt)
    delete [] ptr;
    
    // copy temp starting whereever ptr has started before
-   copy(ptr, ptr + old_size, temp);
+   std::copy(ptr, ptr + old_size, temp);
 
  	_ASSERT(ptr);
 }
 
-//char* StrDup(const char *string);
 #endif

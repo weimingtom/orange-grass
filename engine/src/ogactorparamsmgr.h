@@ -10,7 +10,7 @@
 #define OGACTORPARAMSMGR_H_
 
 #include "IOGActorParamsManager.h"
-#include <hash_map>
+#include <map>
 #include "IOGSettingsReader.h"
 
 
@@ -59,9 +59,9 @@ private:
 
 	IOGSettingsReader*	m_pReader;
 
-    std::hash_map<std::string, IOGActorParams*>		m_ParamsList;
-    std::hash_map<std::string, IOGWeaponParams*>	m_WeaponParamsList;
-    std::hash_map<std::string, IOGBonusParams*>		m_BonusParamsList;
+    std::map<std::string, IOGActorParams*>	m_ParamsList;
+    std::map<std::string, IOGWeaponParams*> m_WeaponParamsList;
+    std::map<std::string, IOGBonusParams*>	m_BonusParamsList;
 };
 
 #endif

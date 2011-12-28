@@ -16,11 +16,7 @@ subject to the following restrictions:
 #define GEOMETRY_H_
 
 
-#include "../src/BoneBatch.h"
 #include "../src/ModelPOD.h"
-#include "../src/Vertex.h"
-#include "../src/VertexLookup.h"
-#include "../src/TriStrip.h"
 
 
 #endif

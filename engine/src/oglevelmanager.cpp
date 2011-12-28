@@ -115,7 +115,7 @@ bool COGLevelManager::SaveLevel ()
 // get level list (for editor).
 void COGLevelManager::GetLevelList (std::vector<std::string>& _LevelList) const
 {
-	std::hash_map<std::string, COGLevel*>::const_iterator iter = m_LevelList.begin();
+	std::map<std::string, COGLevel*>::const_iterator iter = m_LevelList.begin();
 	for (; iter != m_LevelList.end(); ++iter)
 	{
 		_LevelList.push_back(iter->first);

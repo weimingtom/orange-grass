@@ -1,108 +1,113 @@
-/******************************************************************************
-
- @File         PVRTResourceFile.h
-
- @Title        
-
- @Copyright    Copyright (C) 2007 - 2008 by Imagination Technologies Limited.
-
- @Platform     ANSI compatible
-
- @Description  Simple resource file wrapper
-
-******************************************************************************/
-/*
-All changes:
-Oolong Engine for the iPhone / iPod touch
-Copyright (c) 2007-2008 Wolfgang Engel  http://code.google.com/p/oolongengine/
-
-This software is provided 'as-is', without any express or implied warranty.
-In no event will the authors be held liable for any damages arising from the use of this software.
-Permission is granted to anyone to use this software for any purpose, 
-including commercial applications, and to alter it and redistribute it freely, 
-subject to the following restrictions:
-
-1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
-2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
-3. This notice may not be removed or altered from any source distribution.
-*/
 #ifndef RESOURCEFILE_H_
 #define RESOURCEFILE_H_
 
 #include <stdlib.h>
-#include <string>
-using namespace std;
 
 
 /*!***************************************************************************
- @Class CPVRTResourceFile
+ @Class CResourceFile
  @Brief Simple resource file wrapper
 *****************************************************************************/
-class CPVRTResourceFile
+class CResourceFile
 {
 public:
 	/*!***************************************************************************
-	@Function			SetReadPath
-	@Input				pszReadPath The path where you would like to read from
-	@Description		Sets the read path
-	*****************************************************************************/
-	static void SetReadPath(const char* pszReadPath);
-
-	/*!***************************************************************************
-	@Function			GetReadPath
-	@Returns			The currently set read path
-	@Description		Returns the currently set read path
-	*****************************************************************************/
-	static string GetReadPath();
-
-	/*!***************************************************************************
-	@Function			CPVRTResourceFile
-	@Input				pszFilename Name of the file you would like to open
+	@Function			CResourceFile
 	@Description		Constructor
 	*****************************************************************************/
-	CPVRTResourceFile(const char* pszFilename);
+	CResourceFile();
 
 	/*!***************************************************************************
-	@Function			~CPVRTResourceFile
+	@Function			~CResourceFile
 	@Description		Destructor
 	*****************************************************************************/
-	virtual ~CPVRTResourceFile();
+	virtual ~CResourceFile();
+
+    /*!***************************************************************************
+	@Function			Open
+	@Input				pszFilename Name of the file you would like to open
+	@Returns			true if the file is open
+	@Description		Opens file
+	*****************************************************************************/
+	bool Open(const char* pszFilename);
 
 	/*!***************************************************************************
 	@Function			IsOpen
 	@Returns			true if the file is open
 	@Description		Is the file open
 	*****************************************************************************/
-	bool IsOpen() const;
-
-	/*!***************************************************************************
-	@Function			IsMemoryFile
-	@Returns			true if the file was opened from memory
-	@Description		Was the file opened from memory
-	*****************************************************************************/
-	bool IsMemoryFile() const;
+    bool IsOpen() const { return m_bOpen; }
 
 	/*!***************************************************************************
 	@Function			Size
 	@Returns			The size of the opened file
 	@Description		Returns the size of the opened file
 	*****************************************************************************/
-	size_t Size() const;
+    size_t Size() const { return m_Size; }
 
 	/*!***************************************************************************
 	@Function			DataPtr
 	@Returns			A pointer to the file data
 	@Description		Returns a pointer to the file data
 	*****************************************************************************/
-	const void* DataPtr() const;
+	const void* DataPtr() const { return m_pData; }
 	
 	/*!***************************************************************************
 	@Function			StringPtr
 	@Returns			The file data as a string
 	@Description		Returns the file as a null-terminated string
 	*****************************************************************************/
-	// convenience getter. Also makes it clear that you get a null-terminated buffer.
-	const char* StringPtr() const;
+    const char* StringPtr() const { return m_pData; }
+
+	/*!***************************************************************************
+	@Function			Read
+	@Output				lpBuffer output buffer
+	@Input				dwNumberOfBytesToRead number of bytes to read
+	@Returns			true if succeeded
+	@Description		Reads number of bytes from file
+	*****************************************************************************/
+    bool Read(void* lpBuffer, unsigned int dwNumberOfBytesToRead);
+
+    /*!***************************************************************************
+	@Function			Skip
+	@Input				nBytes number of bytes to skip
+	@Returns			true if succeeded
+	@Description		Skips reading number of bytes from file
+	*****************************************************************************/
+	bool Skip(unsigned int nBytes);
+
+	/*!***************************************************************************
+	@Function			Read
+	@Output				n data
+	@Returns			true if succeeded
+	@Description		Reads data from file
+	*****************************************************************************/
+	template <typename T> bool Read(T &n) { return Read(&n, sizeof(T)); }
+
+	/*!***************************************************************************
+	@Function			ReadMarker
+	@Output				nName output name
+	@Output				nLen output length
+	@Returns			true if succeeded
+	@Description		Reads marker from file
+	*****************************************************************************/
+	bool ReadMarker(unsigned int &nName, unsigned int &nLen);
+
+	/*!***************************************************************************
+	@Function			ReadAfterAlloc
+	@Output				lpBuffer output buffer
+	@Input				dwNumberOfBytesToRead number of bytes to read
+	@Returns			true if succeeded
+	@Description		Allocates memory and reads number of bytes from file
+	*****************************************************************************/
+	template <typename T> bool ReadAfterAlloc(
+        T* &lpBuffer, 
+        unsigned int dwNumberOfBytesToRead)
+    {
+        if(!SafeAlloc(lpBuffer, dwNumberOfBytesToRead))
+            return false;
+        return Read(lpBuffer, dwNumberOfBytesToRead);
+    }
 
 	/*!***************************************************************************
 	@Function			Close
@@ -112,15 +117,10 @@ public:
 
 protected:
 	bool m_bOpen;
-	bool m_bMemoryFile;
 	size_t m_Size;
+	size_t m_BytesReadCount;
 	const char* m_pData;
-
-	static string s_ReadPath;
 };
 
-#endif // _PVRTRESOURCEFILE_H_
 
-/*****************************************************************************
- End of file (PVRTResourceFile.h)
-*****************************************************************************/
+#endif

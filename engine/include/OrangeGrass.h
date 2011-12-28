@@ -25,7 +25,7 @@
 #include "IOGSettingsReader.h"
 #include "IOGAppSettings.h"
 #include "IOGGameSequence.h"
-#include "IOGLuaVM.h"
+#include "IOGFPSCounter.h"
 #include "common.h"
 
 void StartOrangeGrass();
@@ -46,7 +46,7 @@ IOGGlobalVarsTable* GetGlobalVars ();
 IOGSettingsReader* GetSettingsReader ();
 IOGAppSettings* GetAppSettings ();
 IOGGameSequence* GetGameSequence ();
-IOGLuaVM* GetLuaVM ();
+IOGFPSCounter* GetFPSCounter ();
 
 
 // Parse the actor type string and convert it to internal type

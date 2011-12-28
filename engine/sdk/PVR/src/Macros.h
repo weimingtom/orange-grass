@@ -1,17 +1,10 @@
-/*
-Oolong Engine for the iPhone / iPod touch
-Copyright (c) 2007-2008 Wolfgang Engel  http://code.google.com/p/oolongengine/
-
-This software is provided 'as-is', without any express or implied warranty.
-In no event will the authors be held liable for any damages arising from the use of this software.
-Permission is granted to anyone to use this software for any purpose, 
-including commercial applications, and to alter it and redistribute it freely, 
-subject to the following restrictions:
-
-1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software. If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
-2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
-3. This notice may not be removed or altered from any source distribution.
-*/
+/*****************************************************************************
+ *  Macros.h
+ *  OrangeGrass
+ *
+ *  Copyright 2009-2012 Viacheslav Bogdanov. All rights reserved.
+ *
+ ****************************************************************************/
 #ifndef MACROS_H_
 #define MACROS_H_
 
@@ -19,32 +12,44 @@ subject to the following restrictions:
 #include <crtdbg.h>
 #endif
 
-#define PT_INDEX (2)	/*The Punch-through index*/
 
-#define BLK_Y_SIZE 	(4) /*always 4 for all 2D block types*/
+#define PI			(3.1415926535f)
+#define PIOVERTWO	(PI / 2.0f)
+#define TWOPI		(PI * 2.0f)
+#define ONE		    (1.0f)
 
-#define BLK_X_MAX	(8)	/*Max X dimension for blocks*/
+#define OG_SUCCESS	1
+#define OG_FAIL		0
 
-#define BLK_X_2BPP	(8) /*dimensions for the two formats*/
-#define BLK_X_4BPP	(4)
+#define _MIN(X,Y)               (((X)<(Y))? (X):(Y))
+#define _MAX(X,Y)               (((X)>(Y))? (X):(Y))
+#define _ABS(a)		            ((a) <= 0 ? -(a) : (a) )
+#define CLAMP(X, lower, upper)  (_MIN(_MAX((X),(lower)), (upper)))
+#define RGBA(r, g, b, a)        ((GLuint) (((a) << 24) | ((b) << 16) | ((g) << 8) | (r)))
 
-#define _MIN(X,Y) (((X)<(Y))? (X):(Y))
-#define _MAX(X,Y) (((X)>(Y))? (X):(Y))
 
-#define WRAP_COORD(Val, Size) ((Val) & ((Size)-1))
+// Define a 64-bit type for various platforms
+#if defined(__int64) || defined(WIN32)
+#define INT64BIT __int64
+#else
+#define INT64BIT long long int
+#endif
 
-#define CLAMP(X, lower, upper) (_MIN(_MAX((X),(lower)), (upper)))
+#ifndef WIN32
+typedef struct _LARGE_INTEGER
+	{
+		union
+		{
+			struct
+			{
+				unsigned long LowPart;
+				long HighPart;
+			};
+			INT64BIT QuadPart;
+		};
+	} LARGE_INTEGER, *PLARGE_INTEGER;
+#endif
 
-#define POWER_OF_2(X)   util_number_is_power_2(X)
-
-//
-// Define an expression to either wrap or clamp large or small vals to the
-// legal coordinate range
-//
-#define LIMIT_COORD(Val, Size, AssumeImageTiles) \
-      ((AssumeImageTiles)? WRAP_COORD((Val), (Size)): CLAMP((Val), 0, (Size)-1))
-	  
-#define RGBA(r, g, b, a)   ((GLuint) (((a) << 24) | ((b) << 16) | ((g) << 8) | (r)))
 
 /****************************************************************************
 ** Defines
@@ -77,4 +82,4 @@ subject to the following restrictions:
 #define _ASSERT(X) //
 #endif
 
-#endif // MACROS_H_
+#endif

@@ -17,8 +17,6 @@ subject to the following restrictions:
 
 
 #include "../src/ResourceFile.h"
-#include "../src/MemoryFile.h"
-#include "../src/Streaming.h"
 
 
 #endif

@@ -151,10 +151,6 @@
 				RelativePath=".\src\Macros.h"
 				>
 			</File>
-			<File
-				RelativePath=".\src\Types.h"
-				>
-			</File>
 			<Filter
 				Name="Math"
 				>
@@ -171,6 +167,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\Quaternion.cpp"
+					>
+				</File>
+				<File
 					RelativePath=".\src\Quaternion.h"
 					>
 				</File>
@@ -183,14 +183,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\Transform.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\Transform.h"
-					>
-				</File>
-				<File
 					RelativePath=".\src\Vector.cpp"
 					>
 				</File>
@@ -200,56 +192,8 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="Geometry"
-				>
-				<File
-					RelativePath=".\src\BoneBatch.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\BoneBatch.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ModelPOD.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ModelPOD.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\TriStrip.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\TriStrip.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\Vertex.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\Vertex.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\VertexLookup.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\VertexLookup.h"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="Resource"
 				>
-				<File
-					RelativePath=".\src\MemoryFile.h"
-					>
-				</File>
 				<File
 					RelativePath=".\src\ResourceFile.cpp"
 					>
@@ -262,18 +206,18 @@
 					RelativePath=".\src\win32\ResourcePath.cpp"
 					>
 				</File>
-				<File
-					RelativePath=".\src\Streaming.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\Streaming.h"
-					>
-				</File>
 			</Filter>
 			<Filter
 				Name="Graphics"
 				>
+				<File
+					RelativePath=".\src\ModelPOD.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ModelPOD.h"
+					>
+				</File>
 				<File
 					RelativePath=".\src\Shader.cpp"
 					>
@@ -288,18 +232,6 @@
 				</File>
 				<File
 					RelativePath=".\src\Texture.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Utility"
-				>
-				<File
-					RelativePath=".\src\win32\Timer.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\win32\Timer.h"
 					>
 				</File>
 			</Filter>

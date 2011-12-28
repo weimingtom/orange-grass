@@ -806,19 +806,19 @@
 					>
 				</File>
 				<File
+					RelativePath=".\src\ogfpscounter.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\ogfpscounter.h"
+					>
+				</File>
+				<File
 					RelativePath=".\src\ogglobalvarstable.cpp"
 					>
 				</File>
 				<File
 					RelativePath=".\src\ogglobalvarstable.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogluavm.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogluavm.h"
 					>
 				</File>
 				<File
@@ -1096,11 +1096,11 @@
 					>
 				</File>
 				<File
-					RelativePath=".\include\IOGGlobalVarsTable.h"
+					RelativePath=".\include\IOGFPSCounter.h"
 					>
 				</File>
 				<File
-					RelativePath=".\include\IOGLuaVM.h"
+					RelativePath=".\include\IOGGlobalVarsTable.h"
 					>
 				</File>
 				<File

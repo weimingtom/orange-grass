@@ -1,41 +1,22 @@
-/******************************************************************************
-
- @File         Shader.cpp
-
- @Title        PFX file parser.
-
- @Copyright    Copyright (C)  Imagination Technologies Limited.
-
- @Platform     ANSI compatible
-
- @Description  Shader handling for OpenGL ES 2.0
-
-******************************************************************************/
-
 #include <string>
 #include "Shader.h"
 #include "ResourceFile.h"
+#include "Macros.h"
 
-#define GL_SUCCESS		0x3000
-#define SUCCESS			1
-#define FAIL			0
 
-/*!***************************************************************************
+/*****************************************************************************
  @Function		ShaderLoadSourceFromMemory
- @Input			pszShaderCode	shader source code
- @Input			Type			type of shader (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER)
- @Output		pObject			the resulting shader object
- @Output		pReturnError	the error message if it failed
- @Return		SUCCESS on success and FAIL on failure (also fills the str string)
- @Description	Loads a shader source code into memory and compiles it.
-*****************************************************************************/
-unsigned int ShaderLoadSourceFromMemory(	const char* pszShaderCode, 
-											const GLenum Type, 
-											GLuint* const pObject)
+ @Input         pszShaderCode	shader source code
+ @Input         Type			GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
+ @Output        pObject		    the resulting shader object
+ @Returns       OG_SUCCESS on success and OG_FAIL on failure
+ @Description   Loads a shader source file into memory and passes it to the GL.
+ ****************************************************************************/
+unsigned int ShaderLoadSourceFromMemory(	
+    const char* pszShaderCode, 
+    GLenum Type, 
+    GLuint* const pObject)
 {
-//#if __IPHONE_OS_VERSION_MAX_ALLOWED < 30000
-//	return SUCCESS;
-//#endif
 	// Create the shader object.
     *pObject = glCreateShader(Type);
 	
@@ -66,28 +47,28 @@ unsigned int ShaderLoadSourceFromMemory(	const char* pszShaderCode,
 		glDeleteShader(*pObject);
 		
 		// Return false, couldn't compile.
-		return FAIL;
+		return OG_FAIL;
 	}
-	
-	return SUCCESS;
+	return OG_SUCCESS;
 }
 
-/*!***************************************************************************
+
+/*****************************************************************************
  @Function		ShaderLoadBinaryFromMemory
- @Input			ShaderData		shader compiled binary data
- @Input			Size			size of shader binary data in bytes
- @Input			Type			type of shader (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER)
- @Input			Format			shader binary format
- @Output		pObject			the resulting shader object
- @Output		pReturnError	the error message if it failed
- @Return		SUCCESS on success and FAIL on failure (also fills the str string)
- @Description	Takes a shader binary from memory and passes it to the GL.
-*****************************************************************************/
-unsigned int ShaderLoadBinaryFromMemory(	const void* const ShaderData, 
-											const size_t Size, 
-											const GLenum Type, 
-											const GLenum Format, 
-											GLuint* const pObject) 
+ @Input         ShaderData		shader compiled binary data
+ @Input         Size			shader binary data size (bytes)
+ @Input         Type			GL_VERTEX_SHADER or GL_FRAGMENT_SHADER
+ @Input         Format			shader binary format
+ @Output        pObject		    the resulting shader object
+ @Returns       OG_SUCCESS on success and OG_FAIL on failure
+ @Description   Loads a shader binary file into memory and passes it to the GL.
+ ****************************************************************************/
+unsigned int ShaderLoadBinaryFromMemory(	
+    const void* const ShaderData, 
+    size_t Size, 
+    GLenum Type, 
+    GLenum Format, 
+    GLuint* const pObject) 
 {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 30000
 	// Create and compile the shader object
@@ -97,56 +78,49 @@ unsigned int ShaderLoadBinaryFromMemory(	const void* const ShaderData,
     {
     	//*pReturnError = CString("Failed to load binary shader\n");
     	glDeleteShader(*pObject);
-    	return FAIL;
+    	return OG_FAIL;
     }
 #endif
-	return SUCCESS;
+	return OG_SUCCESS;
 }
+
 
 /*!***************************************************************************
  @Function		ShaderLoadFromFile
- @Input			pszBinFile		binary shader filename
- @Input			pszSrcFile		source shader filename
- @Input			Type			type of shader (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER)
- @Input			Format			shader binary format, or 0 for source shader
- @Output		pObject			the resulting shader object
- @Output		pReturnError	the error message if it failed
- @Input			pContext		Context
- @Return		SUCCESS on success and FAIL on failure (also fills pReturnError)
- @Description	Loads a shader file into memory and passes it to the GL.
-*****************************************************************************/
-unsigned int ShaderLoadFromFile(	const char* const pszBinFile, 
-									const char* const pszSrcFile, 
-									const GLenum Type,
-									const GLenum Format, 
-									GLuint* const pObject)
+ @Input			pszBinFile	binary shader filename
+ @Input			pszSrcFile	source shader filename
+ @Input			Type		type of shader (GL_VERTEX_SHADER or GL_FRAGMENT_SHADER)
+ @Input			Format		shader binary format, or 0 for source shader
+ @Output		pObject		the resulting shader object
+ @Returns       OG_SUCCESS on success and OG_FAIL on failure
+ @Description   Loads a shader file into memory and passes it to the GL.
+ ****************************************************************************/
+unsigned int ShaderLoadFromFile(	
+    const char* const pszBinFile, 
+    const char* const pszSrcFile, 
+    GLenum Type,
+    GLenum Format, 
+    GLuint* const pObject)
 {
-//#if __IPHONE_OS_VERSION_MAX_ALLOWED < 30000
-//	return SUCCESS;
-//#endif
-
     if(Format)
     {
-        CPVRTResourceFile ShaderFile(pszBinFile);
-        if (ShaderFile.IsOpen())
+        CResourceFile ShaderFile;
+        if (ShaderFile.Open(pszBinFile))
         {
-                //if(ShaderLoadBinaryFromMemory(ShaderFile.DataPtr(), ShaderFile.Size(), Type, Format, pObject, pReturnError) == SUCCESS)
-				if(ShaderLoadBinaryFromMemory(ShaderFile.DataPtr(), ShaderFile.Size(), Type, Format, pObject) == SUCCESS)
-                        return SUCCESS;
+            if(ShaderLoadBinaryFromMemory(ShaderFile.DataPtr(), ShaderFile.Size(), Type, Format, pObject) == OG_SUCCESS)
+                return OG_SUCCESS;
         }
 
         //*pReturnError += CString("Failed to open shader ") + pszBinFile + "\n";
     }
 
-
-    CPVRTResourceFile ShaderFile(pszSrcFile);
-    if (!ShaderFile.IsOpen())
+    CResourceFile ShaderFile;
+    if (!ShaderFile.Open(pszSrcFile))
     {
-            //*pReturnError += CString("Failed to open shader ") + pszSrcFile + "\n";
-            return FAIL;
+        //*pReturnError += CString("Failed to open shader ") + pszSrcFile + "\n";
+        return OG_FAIL;
     }
 
-    //return ShaderLoadSourceFromMemory(ShaderFile.StringPtr(), Type, pObject, pReturnError);
 	return ShaderLoadSourceFromMemory(ShaderFile.StringPtr(), Type, pObject);
 }
 
@@ -158,20 +132,16 @@ unsigned int ShaderLoadFromFile(	const char* const pszBinFile,
  @Input			FragmentShader			the fragment shader to link
  @Input			pszAttribs				an array of attribute names
  @Input			i32NumAttribs			the number of attributes to bind
- @Output		pReturnError			the error message if it failed
- @Returns		SUCCESS on success, FAIL if failure
+ @Returns		PVR_SUCCESS on success, PVR_FAIL if failure
  @Description	Links a shader program.
-*****************************************************************************/
-unsigned int CreateProgram(	GLuint* const pProgramObject, 
-							const GLuint VertexShader, 
-							const GLuint FragmentShader, 
-							const char** const pszAttribs,
-							const int i32NumAttribs)
+ ****************************************************************************/
+unsigned int CreateProgram(	
+    GLuint* const pProgramObject, 
+    GLuint VertexShader, 
+    GLuint FragmentShader, 
+    const char** const pszAttribs,
+    int i32NumAttribs)
 {
-//#if __IPHONE_OS_VERSION_MAX_ALLOWED < 30000
-//	return SUCCESS;
-//#endif
-
 	// Create the shader program.
 	*pProgramObject = glCreateProgram();
 
@@ -199,37 +169,10 @@ unsigned int CreateProgram(	GLuint* const pProgramObject,
 		glGetProgramInfoLog(*pProgramObject, i32InfoLogLength, &i32CharsWritten, pszInfoLog);
 		//*pReturnError = CString("Failed to link: ") + pszInfoLog + "\n";
 		delete [] pszInfoLog;
-		return FAIL;
+		return OG_FAIL;
 	}
 
 	// Actually use the created program.
 	glUseProgram(*pProgramObject);
-
-	return SUCCESS;
+	return OG_SUCCESS;
 }
-
-/*!***************************************************************************
- @Function		TestGLError
- @Output		pszLocation			the error message if it failed
- @Returns		SUCCESS on success, FAIL if failure
- @Description	Tests for last state encountered.
- *****************************************************************************/
-bool TestGLError(const char* pszLocation)
-{
-	/*
-	 TestGLError returns the last error that has happened using egl,
-	 not the status of the last called function. The user has to
-	 check after every single egl call or at least once every frame.
-	 */
-	GLint iErr = glGetError();
-	if (iErr != GL_SUCCESS)
-	{
-		return FAIL;
-	}
-	
-	return SUCCESS;
-}
-
-/*****************************************************************************
- End of file (Shader.cpp)
-*****************************************************************************/

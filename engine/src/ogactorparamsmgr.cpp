@@ -18,19 +18,19 @@ COGActorParamsMgr::COGActorParamsMgr ()
 
 COGActorParamsMgr::~COGActorParamsMgr ()
 {
-	std::hash_map<std::string, IOGActorParams*>::iterator iter = m_ParamsList.begin();
+	std::map<std::string, IOGActorParams*>::iterator iter = m_ParamsList.begin();
 	for( ; iter != m_ParamsList.end(); ++iter )
 	{
 		OG_SAFE_DELETE (iter->second);
 	}	
 
-	std::hash_map<std::string, IOGWeaponParams*>::iterator witer = m_WeaponParamsList.begin();
+	std::map<std::string, IOGWeaponParams*>::iterator witer = m_WeaponParamsList.begin();
 	for( ; witer != m_WeaponParamsList.end(); ++witer )
 	{
 		OG_SAFE_DELETE (witer->second);
 	}	
 
-	std::hash_map<std::string, IOGBonusParams*>::iterator biter = m_BonusParamsList.begin();
+	std::map<std::string, IOGBonusParams*>::iterator biter = m_BonusParamsList.begin();
 	for( ; biter != m_BonusParamsList.end(); ++biter )
 	{
 		OG_SAFE_DELETE (biter->second);
@@ -283,7 +283,7 @@ bool COGActorParamsMgr::LoadBonusParamsConfig (const std::string& _Alias, const 
 void COGActorParamsMgr::GetParamsList (std::list<IOGActorParams*>& _List)
 {
 	_List.clear();
-	std::hash_map<std::string, IOGActorParams*>::iterator iter = m_ParamsList.begin();
+	std::map<std::string, IOGActorParams*>::iterator iter = m_ParamsList.begin();
 	for( ; iter != m_ParamsList.end(); ++iter )
 	{
 		_List.push_back(iter->second);

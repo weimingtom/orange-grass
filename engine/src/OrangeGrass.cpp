@@ -23,8 +23,8 @@
 #include "ogsettingsreader.h"
 #include "ogappsettings.h"
 #include "oggamesequence.h"
-#include "ogluavm.h"
-#include <hash_map>
+#include "ogfpscounter.h"
+#include <map>
 
 
 static IOGResourceMgr* g_pResourceMgr = NULL;
@@ -42,13 +42,13 @@ static IOGGlobalVarsTable* g_pGlobalVars = NULL;
 static IOGSettingsReader* g_pSettingsReader = NULL;
 static IOGAppSettings* g_pAppSettings = NULL;
 static IOGGameSequence* g_pGameSequence = NULL;
-static IOGLuaVM* g_pLuaVM = NULL;
+static IOGFPSCounter* g_pFPS = NULL;
 
-static std::hash_map<std::string, OGActorType> g_ActorTypeLookup;
-static std::hash_map<std::string, OGPhysicsType> g_PhysicsTypeLookup;
-static std::hash_map<std::string, OGWeaponPos> g_WeaponPosLookup;
-static std::hash_map<std::string, OGBonusType> g_BonusTypeLookup;
-static std::hash_map<std::string, OGBlendType> g_BlendTypeLookup;
+static std::map<std::string, OGActorType> g_ActorTypeLookup;
+static std::map<std::string, OGPhysicsType> g_PhysicsTypeLookup;
+static std::map<std::string, OGWeaponPos> g_WeaponPosLookup;
+static std::map<std::string, OGBonusType> g_BonusTypeLookup;
+static std::map<std::string, OGBlendType> g_BlendTypeLookup;
 
 
 void StartOrangeGrass()
@@ -98,7 +98,7 @@ void FinishOrangeGrass()
 // Parse the actor type string and convert it to internal type
 OGActorType ParseActorType (const std::string& _ActorTypeStr)
 {
-    std::hash_map<std::string, OGActorType>::const_iterator iter = g_ActorTypeLookup.find(_ActorTypeStr);
+    std::map<std::string, OGActorType>::const_iterator iter = g_ActorTypeLookup.find(_ActorTypeStr);
     if (iter != g_ActorTypeLookup.end())
     {
         return iter->second;
@@ -110,7 +110,7 @@ OGActorType ParseActorType (const std::string& _ActorTypeStr)
 // Parse the physics type string and convert it to internal type
 OGPhysicsType ParsePhysicsType (const std::string& _PhysicsTypeStr)
 {
-    std::hash_map<std::string, OGPhysicsType>::const_iterator iter = g_PhysicsTypeLookup.find(_PhysicsTypeStr);
+    std::map<std::string, OGPhysicsType>::const_iterator iter = g_PhysicsTypeLookup.find(_PhysicsTypeStr);
     if (iter != g_PhysicsTypeLookup.end())
     {
         return iter->second;
@@ -122,7 +122,7 @@ OGPhysicsType ParsePhysicsType (const std::string& _PhysicsTypeStr)
 // Parse the weapon position type string and convert it to internal type
 OGWeaponPos ParseWeaponPositionType (const std::string& _WeaponPosTypeStr)
 {
-    std::hash_map<std::string, OGWeaponPos>::const_iterator iter = g_WeaponPosLookup.find(_WeaponPosTypeStr);
+    std::map<std::string, OGWeaponPos>::const_iterator iter = g_WeaponPosLookup.find(_WeaponPosTypeStr);
     if (iter != g_WeaponPosLookup.end())
     {
         return iter->second;
@@ -134,7 +134,7 @@ OGWeaponPos ParseWeaponPositionType (const std::string& _WeaponPosTypeStr)
 // Parse the bonus type string and convert it to internal type
 OGBonusType ParseBonusType (const std::string& _BonusTypeStr)
 {
-    std::hash_map<std::string, OGBonusType>::const_iterator iter = g_BonusTypeLookup.find(_BonusTypeStr);
+    std::map<std::string, OGBonusType>::const_iterator iter = g_BonusTypeLookup.find(_BonusTypeStr);
     if (iter != g_BonusTypeLookup.end())
     {
         return iter->second;
@@ -146,7 +146,7 @@ OGBonusType ParseBonusType (const std::string& _BonusTypeStr)
 // Parse the blend type string and convert it to internal type
 OGBlendType ParseBlendType (const std::string& _BlendTypeStr)
 {
-    std::hash_map<std::string, OGBlendType>::const_iterator iter = g_BlendTypeLookup.find(_BlendTypeStr);
+    std::map<std::string, OGBlendType>::const_iterator iter = g_BlendTypeLookup.find(_BlendTypeStr);
     if (iter != g_BlendTypeLookup.end())
     {
         return iter->second;
@@ -306,11 +306,11 @@ IOGGameSequence* GetGameSequence ()
 }
 
 
-IOGLuaVM* GetLuaVM ()
+IOGFPSCounter* GetFPSCounter ()
 {
-	if (g_pLuaVM == NULL)
+	if (g_pFPS == NULL)
 	{
-		g_pLuaVM = new COGLuaVM ();
+		g_pFPS = new COGFPSCounter ();
 	}
-	return g_pLuaVM;
+	return g_pFPS;
 }

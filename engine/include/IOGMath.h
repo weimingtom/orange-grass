@@ -84,8 +84,8 @@ inline bool CheckTriangleIntersection (	const Vec3& _orig, const Vec3& _dir,
 	edge1 = _p1 - _p0;
 	edge2 = _p2 - _p0;
 
-	MatrixVec3CrossProduct(pvec, _dir, edge2);
-	det = MatrixVec3DotProduct(edge1, pvec);
+	Vec3CrossProduct(pvec, _dir, edge2);
+	det = Vec3DotProduct(edge1, pvec);
 
 	if (det > -CTI_Epsilon && det < CTI_Epsilon)
 		return false;
@@ -93,17 +93,17 @@ inline bool CheckTriangleIntersection (	const Vec3& _orig, const Vec3& _dir,
 
 	tvec = _orig - _p0;
 
-	*_fU = MatrixVec3DotProduct(tvec, pvec) * inv_det;
+	*_fU = Vec3DotProduct(tvec, pvec) * inv_det;
 	if (*_fU < 0.0f || *_fU > 1.0f)
 		return false;
 
-	MatrixVec3CrossProduct(qvec, tvec, edge1);
+	Vec3CrossProduct(qvec, tvec, edge1);
 
-	*_fV = MatrixVec3DotProduct(_dir, qvec) * inv_det;
+	*_fV = Vec3DotProduct(_dir, qvec) * inv_det;
 	if (*_fV < 0.0f || *_fU + *_fV > 1.0f)
 		return false;
 
-	*_fT = MatrixVec3DotProduct(edge2, qvec) * inv_det;
+	*_fT = Vec3DotProduct(edge2, qvec) * inv_det;
 	return true;
 }
 
