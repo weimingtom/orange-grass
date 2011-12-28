@@ -10,7 +10,7 @@
 #define OGSETTINGSREADER_H_
 
 #include "IOGSettingsReader.h"
-#include "tinyxml.h"
+#include "tinyxml/tinyxml.h"
 
 
 struct COGSettingsSource : public IOGSettingsSource

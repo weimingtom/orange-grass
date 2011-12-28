@@ -882,6 +882,34 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="XML"
+				>
+				<File
+					RelativePath=".\src\tinyxml\tinystr.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\tinyxml\tinystr.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\tinyxml\tinyxml.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\tinyxml\tinyxml.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\tinyxml\tinyxmlerror.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\tinyxml\tinyxmlparser.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Interface"
