@@ -12,7 +12,7 @@
 @Description		Constructor
 *****************************************************************************/
 COGResourceFile::COGResourceFile() :
-	m_bOpen(false),
+	m_bOpenForRead(false),
 	m_Size(0),
     m_BytesReadCount(0),
     m_pData(NULL)
@@ -31,12 +31,12 @@ COGResourceFile::~COGResourceFile()
 
 
 /*!***************************************************************************
-@Function			Open
+@Function			OpenForRead
 @Input				pszFilename Name of the file you would like to open
 @Returns			true if the file is open
-@Description		Opens file
+@Description		Opens file for reading
 *****************************************************************************/
-bool COGResourceFile::Open(const char* pszFilename)
+bool COGResourceFile::OpenForRead(const char* pszFilename)
 {
 	FILE* pFile = fopen(pszFilename, "rb");
 	if (pFile)
@@ -59,12 +59,12 @@ bool COGResourceFile::Open(const char* pszFilename)
 		else
 		{
 			m_pData = pData;
-			m_bOpen = true;
+			m_bOpenForRead = true;
 		}
         m_BytesReadCount = 0;
 		fclose(pFile);
 	}
-    return m_bOpen;
+    return m_bOpenForRead;
 }
 
 
@@ -78,7 +78,7 @@ bool COGResourceFile::Open(const char* pszFilename)
 bool COGResourceFile::Read(void* lpBuffer, unsigned int dwNumberOfBytesToRead)
 {
 	_ASSERT(lpBuffer);
-	_ASSERT(m_bOpen);
+	_ASSERT(m_bOpenForRead);
 
 	if (m_BytesReadCount + dwNumberOfBytesToRead > Size()) 
         return false;
@@ -97,7 +97,7 @@ bool COGResourceFile::Read(void* lpBuffer, unsigned int dwNumberOfBytesToRead)
 *****************************************************************************/
 bool COGResourceFile::Skip(unsigned int nBytes)
 {
-	_ASSERT(m_bOpen);
+	_ASSERT(m_bOpenForRead);
 
     if (m_BytesReadCount + nBytes > Size()) 
         return false;
@@ -116,6 +116,8 @@ bool COGResourceFile::Skip(unsigned int nBytes)
 *****************************************************************************/
 bool COGResourceFile::ReadMarker(unsigned int &nName, unsigned int &nLen)
 {
+	_ASSERT(m_bOpenForRead);
+
     if(!Read(&nName, sizeof(nName)))
         return false;
     if(!Read(&nLen, sizeof(nLen)))
@@ -130,15 +132,17 @@ bool COGResourceFile::ReadMarker(unsigned int &nName, unsigned int &nLen)
 *****************************************************************************/
 void COGResourceFile::Close()
 {
-	if (m_bOpen)
+	if (m_bOpenForRead)
 	{
     	delete [] (char*)m_pData;
-		m_bOpen = false;
 		m_pData = NULL;
+
+        m_bOpenForRead = false;
 		m_Size = 0;
         m_BytesReadCount = 0;
 	}
 }
+
 
 /*!***************************************************************************
  @Function			GetResourcePathASCII
@@ -159,7 +163,7 @@ void GetResourcePathASCII(char* _pOutPath, int _PathLength)
     {
         if ( _pOutPath [ pos ] == '\\') 
         {
-            _pOutPath [ pos + 1 ] = '\0';
+            _pOutPath [ pos ] = '\0';
             break;
         }
         else

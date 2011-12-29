@@ -104,7 +104,7 @@ unsigned int ShaderLoadFromFile(
     if(Format)
     {
         COGResourceFile ShaderFile;
-        if (ShaderFile.Open(pszBinFile))
+        if (ShaderFile.OpenForRead(pszBinFile))
         {
             if(ShaderLoadBinaryFromMemory(ShaderFile.DataPtr(), ShaderFile.Size(), Type, Format, pObject) == OG_SUCCESS)
                 return OG_SUCCESS;
@@ -114,7 +114,7 @@ unsigned int ShaderLoadFromFile(
     }
 
     COGResourceFile ShaderFile;
-    if (!ShaderFile.Open(pszSrcFile))
+    if (!ShaderFile.OpenForRead(pszSrcFile))
     {
         OG_LOG_ERROR("ShaderLoadFromFile: Failed to open shader %s", pszSrcFile);
         return OG_FAIL;

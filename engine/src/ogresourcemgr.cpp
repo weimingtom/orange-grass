@@ -16,11 +16,7 @@ COGResourceMgr::COGResourceMgr ()
 {
 	char path[OG_MAX_PATH];
 	GetResourcePathASCII(path, OG_MAX_PATH);
-#ifndef WIN32
-    m_ResPath = std::string(path) + std::string("/") + std::string("GameResources");
-#else
-	m_ResPath = std::string(path) + std::string("GameResources");
-#endif
+	m_ResPath = std::string(path) + std::string("/GameResources");
 	m_pReader = GetSettingsReader();
 }
 
@@ -80,7 +76,7 @@ bool COGResourceMgr::Load (OGResourcePool _PoolId)
 		break;
 
 	case OG_RESPOOL_GAME:
-		strResourceConfig = m_ResPath + std::string("/resources_game.xml");
+		strResourceConfig = GetFullPath("resources_game.xml");
 		pCurPool = &m_PoolGame;
 		break;
 
@@ -185,7 +181,7 @@ bool COGResourceMgr::Unload (OGResourcePool _PoolId)
 // Load resource manager configuration
 bool COGResourceMgr::LoadConfig (COGResourceMgr::Cfg& _cfg, const std::string& _ConfigFile)
 {
-	IOGSettingsSource* pSource = m_pReader->OpenSource(/*GetFullPath(*/_ConfigFile/*)*/);
+	IOGSettingsSource* pSource = m_pReader->OpenSource(_ConfigFile);
 	if (!pSource)
 		return false;
 

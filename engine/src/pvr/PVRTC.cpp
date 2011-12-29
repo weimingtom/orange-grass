@@ -15,7 +15,7 @@
 
 #define WRAP_COORD(Val, Size) ((Val) & ((Size)-1))
 
-#define POWER_OF_2(X)   util_number_is_power_2(X)
+#define POWER_OF_2(X)   IsPowerOf2(X)
 
 // Define an expression to either wrap or clamp large or small vals to the
 // legal coordinate range
@@ -126,7 +126,7 @@ unsigned int LoadTextureFromPVR(
     const void* psTextureHeader)
 {
     COGResourceFile TexFile;
-    if (!TexFile.Open(filename)) 
+    if (!TexFile.OpenForRead(filename)) 
         return 0;
 
     PVR_Texture_Header* psPVRHeader = (PVR_Texture_Header*)TexFile.DataPtr();
@@ -467,29 +467,6 @@ void PVRTCDecompress(
     Decompress((AMTC_BLOCK_STRUCT*)pCompressedData,Do2bitMode,XDim,YDim,1,pResultImage);
 }
 
-
-/******************************************************************************
-* Function Name: util_number_is_power_2
-*
-* Inputs       : input - A number.
-* Outputs      : -
-* Returns      : TRUE if the number is an integer power of two, else FALSE.
-* Globals Used : -
-*
-* Description  : Check that a number is an integer power of two, i.e.
-*                1, 2, 4, 8, ... etc.
-*                Returns FALSE for zero.
-* Pre-condition: -
-*****************************************************************************/
-int util_number_is_power_2( unsigned  input )
-{
-    unsigned minus1;
-
-    if( !input ) return 0;
-
-    minus1 = input - 1;
-    return ( (input | minus1) == (input ^ minus1) ) ? 1 : 0;
-}
 
 /***********************************************************/
 /*

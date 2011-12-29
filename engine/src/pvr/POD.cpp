@@ -735,7 +735,7 @@ bool CPVRTModelPOD::ReadFromFile(
 	const size_t	count)
 {
 	COGResourceFile src;
-    if(!src.Open(pszFileName))
+    if(!src.OpenForRead(pszFileName))
 		return false;
 
 	memset(this, 0, sizeof(*this));

@@ -24,19 +24,19 @@ public:
 	virtual ~COGResourceFile();
 
     /*!***************************************************************************
-	@Function			Open
+	@Function			OpenForRead
 	@Input				pszFilename Name of the file you would like to open
 	@Returns			true if the file is open
-	@Description		Opens file
+	@Description		Opens file for reading
 	*****************************************************************************/
-	bool Open(const char* pszFilename);
+	bool OpenForRead(const char* pszFilename);
 
 	/*!***************************************************************************
-	@Function			IsOpen
-	@Returns			true if the file is open
-	@Description		Is the file open
+	@Function			IsOpenForRead
+	@Returns			true if the file is open for read
+	@Description		Is the file open for read
 	*****************************************************************************/
-    bool IsOpen() const { return m_bOpen; }
+    bool IsOpenForRead() const { return m_bOpenForRead; }
 
 	/*!***************************************************************************
 	@Function			Size
@@ -116,7 +116,7 @@ public:
 	void Close();
 
 protected:
-	bool m_bOpen;
+	bool m_bOpenForRead;
 	size_t m_Size;
 	size_t m_BytesReadCount;
 	const char* m_pData;

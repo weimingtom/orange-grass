@@ -8,6 +8,7 @@
  */
 #include "OrangeGrass.h"
 #include "oglevel.h"
+#include "ogresourcefile.h"
 
 
 COGLevel::COGLevel () : m_pTerrain(NULL)
@@ -93,8 +94,9 @@ bool COGLevel::Load ()
 	IOGSgNode* pTerrainSg = GetSceneGraph()->CreateLandscapeNode(m_pTerrain);
 	GetSceneGraph()->AddLandscapeNode(pTerrainSg);
 
-    FILE* pIn = fopen(cfg.scene_file.c_str(), "rb");
-    if (pIn == NULL)
+    COGResourceFile level_file;
+    level_file.OpenForRead(cfg.scene_file.c_str());
+    if (!level_file.IsOpenForRead())
     {
 		OG_LOG_WARNING("No level scene found in file %s", cfg.scene_file.c_str());
 
@@ -118,79 +120,62 @@ bool COGLevel::Load ()
 
     // Prolog: "SCN" + version
     char signature[4];
-    fread(&signature[0], sizeof(char), 3, pIn);
+    level_file.Read(signature, 3);
     signature[3] = 0;
     if (strcmp(&signature[0], "SCN") != 0)
     {
 		OG_LOG_ERROR("Level loading failure: signature mismatch");
-        fclose(pIn);
+        level_file.Close();
         return false;
     }
     unsigned int ver = 0;
-    fread(&ver, sizeof(unsigned int), 1, pIn);
+    level_file.Read(ver);
     if (ver > GetLevelManager()->GetVersion())
     {
 		OG_LOG_ERROR("Level loading failure: trying to load newer version %d while current is %d", ver, GetLevelManager()->GetVersion());
-        fclose(pIn);
+        level_file.Close();
         return false;
     }
 
     // Level start position
-    fread(&m_vStartPos.x, sizeof(float), 1, pIn);
-    fread(&m_vStartPos.y, sizeof(float), 1, pIn);
-    fread(&m_vStartPos.z, sizeof(float), 1, pIn);
+    level_file.Read(m_vStartPos);
 
     // Level finish position
-    fread(&m_vFinishPos.x, sizeof(float), 1, pIn);
-    fread(&m_vFinishPos.y, sizeof(float), 1, pIn);
-    fread(&m_vFinishPos.z, sizeof(float), 1, pIn);
+    level_file.Read(m_vFinishPos);
 
     // Level light direction
-    fread(&m_vLightDir.x, sizeof(float), 1, pIn);
-    fread(&m_vLightDir.y, sizeof(float), 1, pIn);
-    fread(&m_vLightDir.z, sizeof(float), 1, pIn);
+    level_file.Read(m_vLightDir);
 
 	// Ver.2 and higher
 	if (ver == 2)
 	{
 		// Level active width
-	    fread(&m_fActiveWidth, sizeof(float), 1, pIn);
+        level_file.Read(m_fActiveWidth);
 
 		// Level light color
-		fread(&m_vLightAmbColor.x, sizeof(float), 1, pIn);
-		fread(&m_vLightAmbColor.y, sizeof(float), 1, pIn);
-		fread(&m_vLightAmbColor.z, sizeof(float), 1, pIn);
+        level_file.Read(m_vLightAmbColor);
         m_vLightDifColor = m_vLightAmbColor;
         m_vLightSpcColor = m_vLightAmbColor;
 	}
     else if (ver >= 3)
     {
 		// Level active width
-	    fread(&m_fActiveWidth, sizeof(float), 1, pIn);
+        level_file.Read(m_fActiveWidth);
 
 		// Level ambient light color
-		fread(&m_vLightAmbColor.x, sizeof(float), 1, pIn);
-		fread(&m_vLightAmbColor.y, sizeof(float), 1, pIn);
-		fread(&m_vLightAmbColor.z, sizeof(float), 1, pIn);
+        level_file.Read(m_vLightAmbColor);
 
 		// Level diffuse light color
-		fread(&m_vLightDifColor.x, sizeof(float), 1, pIn);
-		fread(&m_vLightDifColor.y, sizeof(float), 1, pIn);
-		fread(&m_vLightDifColor.z, sizeof(float), 1, pIn);
+        level_file.Read(m_vLightDifColor);
 
 		// Level specular light color
-		fread(&m_vLightSpcColor.x, sizeof(float), 1, pIn);
-		fread(&m_vLightSpcColor.y, sizeof(float), 1, pIn);
-		fread(&m_vLightSpcColor.z, sizeof(float), 1, pIn);
+        level_file.Read(m_vLightSpcColor);
 
 		// Level fog params
-	    fread(&m_fFogStart, sizeof(float), 1, pIn);
-	    fread(&m_fFogEnd, sizeof(float), 1, pIn);
-	    fread(&m_fFogDensity, sizeof(float), 1, pIn);
-		fread(&m_vFogColor.x, sizeof(float), 1, pIn);
-		fread(&m_vFogColor.y, sizeof(float), 1, pIn);
-		fread(&m_vFogColor.z, sizeof(float), 1, pIn);
-		fread(&m_vFogColor.w, sizeof(float), 1, pIn);
+        level_file.Read(m_fFogStart);
+        level_file.Read(m_fFogEnd);
+        level_file.Read(m_fFogDensity);
+        level_file.Read(m_vFogColor);
     }
 
     GetPhysics()->SetLevelBorders(m_vStartPos, m_vFinishPos, m_fActiveWidth);
@@ -209,43 +194,37 @@ bool COGLevel::Load ()
 	GetRenderer()->GetFog()->SetDensity(m_fFogDensity);
 
     unsigned int numActors = 0;
-    fread(&numActors, sizeof(unsigned int), 1, pIn);
+    level_file.Read(numActors);
     for (unsigned int i = 0; i < numActors; ++i)
     {
         // actor's model alias
         char pAlias[OG_MAX_PATH];
         unsigned int AliasLen = 0;
-        fread(&AliasLen, sizeof(unsigned int), 1, pIn);
-        fread(&pAlias[0], sizeof(char), AliasLen, pIn);
+        level_file.Read(AliasLen);
+        level_file.Read(&pAlias[0], AliasLen);
         pAlias[AliasLen] = 0;
 
         // type
         OGActorType type = OG_ACTOR_NONE;
-        fread(&type, sizeof(OGActorType), 1, pIn);
+        level_file.Read(type);
 
         // position
         OGVec3 vPos;
-        fread(&vPos.x, sizeof(float), 1, pIn);
-        fread(&vPos.y, sizeof(float), 1, pIn);
-        fread(&vPos.z, sizeof(float), 1, pIn);
+        level_file.Read(vPos);
 
         // rotation
         OGVec3 vRot;
-        fread(&vRot.x, sizeof(float), 1, pIn);
-        fread(&vRot.y, sizeof(float), 1, pIn);
-        fread(&vRot.z, sizeof(float), 1, pIn);
+        level_file.Read(vRot);
 
         // scaling
         OGVec3 vScale;
-        fread(&vScale.x, sizeof(float), 1, pIn);
-        fread(&vScale.y, sizeof(float), 1, pIn);
-        fread(&vScale.z, sizeof(float), 1, pIn);
+        level_file.Read(vScale);
 
 		IOGActor* pActor = GetActorManager()->CreateActor(std::string(pAlias), vPos, vRot, vScale);
         GetActorManager()->AddActor(pActor);
     }
 
-    fclose(pIn);
+    level_file.Close();
 
 	m_LoadState = OG_RESSTATE_LOADED;
     return true;    

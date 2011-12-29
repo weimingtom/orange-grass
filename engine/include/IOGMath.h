@@ -77,9 +77,15 @@ inline float Dist3DSq ( const OGVec3& _p1, const OGVec3& _p2 )
 
 
 // Check ray intersection with the triangle
-inline bool CheckTriangleIntersection (	const OGVec3& _orig, const OGVec3& _dir, 
-										const OGVec3& _p0, const OGVec3& _p1, const OGVec3& _p2,
-										float* _fT, float* _fU, float* _fV)
+inline bool CheckTriangleIntersection (	
+    const OGVec3& _orig, 
+    const OGVec3& _dir, 
+    const OGVec3& _p0, 
+    const OGVec3& _p1, 
+    const OGVec3& _p2,
+    float* _fT, 
+    float* _fU, 
+    float* _fV)
 {
 	static const float CTI_Epsilon = 0.0001f;
 	OGVec3 edge1, edge2, tvec, pvec, qvec;
@@ -113,8 +119,12 @@ inline bool CheckTriangleIntersection (	const OGVec3& _orig, const OGVec3& _dir,
 
 
 // Converting barycentric coords. to world coords.
-inline OGVec3 Barycentric2World (float _fU, float _fV,
-							   const OGVec3& _p0, const OGVec3& _p1, const OGVec3& _p2)
+inline OGVec3 Barycentric2World (
+    float _fU, 
+    float _fV,
+    const OGVec3& _p0, 
+    const OGVec3& _p1, 
+    const OGVec3& _p2)
 {
 	float w = 1.0f - ( _fU + _fV);
 	float x = w * _p0.x + _fU * _p1.x + _fV * _p2.x;
@@ -136,7 +146,11 @@ inline OGVec3 Vec3Lerp (float _fFactor, const OGVec3& _p0, const OGVec3& _p1)
 
 
 // Make a world transformation matrix from the position, rotation and scling matrices
-inline void WorldMatrixFromTransforms (OGMatrix& _mWorld, const OGVec3& _vPos, const OGVec3& _vRot, const OGVec3& _vScale)
+inline void WorldMatrixFromTransforms (
+    OGMatrix& _mWorld, 
+    const OGVec3& _vPos, 
+    const OGVec3& _vRot,
+    const OGVec3& _vScale)
 {
     OGMatrix mX, mY, mZ, mS, mT;
     MatrixTranslation(mT, _vPos.x, _vPos.y, _vPos.z);
@@ -156,12 +170,11 @@ inline void WorldMatrixFromTransforms (OGMatrix& _mWorld, const OGVec3& _vPos, c
 //			0 if front-side intersection
 //			1 if rear-side intersection
 inline int ClipAxialLine ( 
-                          OGVec3& _Vec0, 
-                          OGVec3& _Vec1, 
-                          int	_Sign,
-                          int	_Axis,
-                          float	_BoxCoordValue
-                          )
+    OGVec3& _Vec0, 
+    OGVec3& _Vec1, 
+    int	_Sign,
+    int	_Axis,
+    float _BoxCoordValue)
 {
     // calculate the distance to the point
     float d0 = _Vec0[ _Axis ] * _Sign - _BoxCoordValue;
@@ -192,8 +205,7 @@ inline int ClipAxialLine (
 inline OGVec3 FindIntersectionWithPlane ( 
     float _fHeight,
     const OGVec3& _vRayOrig,
-    const OGVec3& _vRayDir
-    )
+    const OGVec3& _vRayDir)
 {
     OGVec3 vIntersectionPoint;
     float fFactorLine = (float)( ( _fHeight - _vRayOrig.y ) / _vRayDir.y );
@@ -225,7 +237,12 @@ inline float GetAngle (const OGVec3& _vV1, const OGVec3& _vV2)
 
 
 // Rotate 2D point
-inline void Rotate2DPoint ( float& _X, float& _Y, float _Angle, float _CenterX, float _CenterY )
+inline void Rotate2DPoint ( 
+    float& _X, 
+    float& _Y, 
+    float _Angle, 
+    float _CenterX, 
+    float _CenterY )
 {
     float sin = sinf ( _Angle );
     float cos = cosf ( _Angle );
@@ -238,6 +255,19 @@ inline void Rotate2DPoint ( float& _X, float& _Y, float _Angle, float _CenterX, 
 
     _X = RetX + _CenterX;
     _Y = RetY + _CenterY;
+}
+
+
+// check if number is power of 2
+inline bool IsPowerOf2 (unsigned int input)
+{
+    unsigned int minus1;
+
+    if( !input ) 
+        return 0;
+
+    minus1 = input - 1;
+    return ( (input | minus1) == (input ^ minus1) );
 }
 
 
