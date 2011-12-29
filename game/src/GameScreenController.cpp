@@ -10,6 +10,9 @@
 #include "OrangeGrass.h"
 
 
+static bool g_bShadowsEnabled = false;
+
+
 CGameScreenController::CGameScreenController() :	m_pGlobalVars(NULL),
 													m_pResourceMgr(NULL),
 													m_pSg(NULL),
@@ -158,17 +161,20 @@ void CGameScreenController::RenderScene ()
 	m_pSg->RenderLandscape(m_pCamera);
 	m_pRenderer->FinishRenderMode();
 
-    m_pRenderer->StartRenderMode(OG_RENDERMODE_SHADOWMAP);
-    m_pRenderer->ClearFrame(OGVec4(0.0f, 0.0f, 0.0f, 0.0f));
-	m_pRenderer->EnableColor(false);
-    m_pSg->RenderLandscape(m_pCamera);
-	m_pRenderer->EnableColor(true);
-    m_pSg->RenderScene(m_pCamera);
-    m_pRenderer->FinishRenderMode();
+    if (g_bShadowsEnabled)
+    {
+        m_pRenderer->StartRenderMode(OG_RENDERMODE_SHADOWMAP);
+        m_pRenderer->ClearFrame(OGVec4(0.0f, 0.0f, 0.0f, 0.0f));
+        m_pRenderer->EnableColor(false);
+        m_pSg->RenderLandscape(m_pCamera);
+        m_pRenderer->EnableColor(true);
+        m_pSg->RenderScene(m_pCamera);
+        m_pRenderer->FinishRenderMode();
 
-    m_pRenderer->StartRenderMode(OG_RENDERMODE_SHADOWEDSCENE);
-    m_pSg->RenderLandscape(m_pCamera);
-    m_pRenderer->FinishRenderMode();
+        m_pRenderer->StartRenderMode(OG_RENDERMODE_SHADOWEDSCENE);
+        m_pSg->RenderLandscape(m_pCamera);
+        m_pRenderer->FinishRenderMode();
+    }
 
     m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
 	m_pSg->RenderScene(m_pCamera);

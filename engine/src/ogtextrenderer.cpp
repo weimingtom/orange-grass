@@ -520,7 +520,7 @@ int COGTextRenderer::Flush()
 // Stores, writes and restores Render States
 void COGTextRenderer::APIRenderStates(int nAction)
 {
-	static GLint iFrontFace, iCullFaceMode, iDestBlend, iSrcBlend;
+	static GLint iFrontFace, iCullFaceMode;//, iDestBlend, iSrcBlend;
 	static GLboolean bCullFace, bDepthTest, bBlend;
 
 	/* Saving or restoring states ? */
@@ -532,8 +532,8 @@ void COGTextRenderer::APIRenderStates(int nAction)
 		bBlend = glIsEnabled(GL_BLEND);
 		glGetIntegerv(GL_FRONT_FACE, &iFrontFace);
 		glGetIntegerv(GL_CULL_FACE_MODE, &iCullFaceMode);
-		glGetIntegerv(GL_BLEND_DST, &iDestBlend);
-		glGetIntegerv(GL_BLEND_SRC, &iSrcBlend);
+		//glGetIntegerv(GL_BLEND_DST, &iDestBlend);
+		//glGetIntegerv(GL_BLEND_SRC, &iSrcBlend);
         glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
         /* Culling */
@@ -543,8 +543,8 @@ void COGTextRenderer::APIRenderStates(int nAction)
         glActiveTexture(GL_TEXTURE0);
 
 		/* Blending mode */
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		//glEnable(GL_BLEND);
+		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		/* Set Z compare properties */
 		glDisable(GL_DEPTH_TEST);
@@ -560,7 +560,7 @@ void COGTextRenderer::APIRenderStates(int nAction)
 		glFrontFace(iFrontFace);
 		glCullFace(iCullFaceMode);
 
-		glBlendFunc(iSrcBlend, iDestBlend);
+		//glBlendFunc(iSrcBlend, iDestBlend);
 		if(bBlend == 0) 
             glDisable(GL_BLEND);
 		break;

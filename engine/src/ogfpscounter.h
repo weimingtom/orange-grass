@@ -1,6 +1,7 @@
 #ifndef OGFPSCOUNTER_H_
 #define OGFPSCOUNTER_H_
 
+#include <IOGCoreHelpers.h>
 #include <IOGFPSCounter.h>
 
 class COGFPSCounter : public IOGFPSCounter

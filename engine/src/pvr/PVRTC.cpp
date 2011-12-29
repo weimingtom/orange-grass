@@ -317,12 +317,12 @@ unsigned int LoadTextureFromPVR(
                 if ((psPVRHeader->dwpfFlags & PVRTEX_PIXELTYPE)==OGL_PVRTC2)
                 {
                     // PVRTC2 case
-                    CompressedImageSize = ( max(nSizeX, PVRTC2_MIN_TEXWIDTH) * max(nSizeY, PVRTC2_MIN_TEXHEIGHT) * psPVRHeader->dwBitCount + 7) / 8;
+                    CompressedImageSize = ( OG_MAX(nSizeX, PVRTC2_MIN_TEXWIDTH) * OG_MAX(nSizeY, PVRTC2_MIN_TEXHEIGHT) * psPVRHeader->dwBitCount + 7) / 8;
                 }
                 else
                 {
                     // PVRTC4 case
-                    CompressedImageSize = ( max(nSizeX, PVRTC4_MIN_TEXWIDTH) * max(nSizeY, PVRTC4_MIN_TEXHEIGHT) * psPVRHeader->dwBitCount + 7) / 8;
+                    CompressedImageSize = ( OG_MAX(nSizeX, PVRTC4_MIN_TEXWIDTH) * OG_MAX(nSizeY, PVRTC4_MIN_TEXHEIGHT) * psPVRHeader->dwBitCount + 7) / 8;
                 }
 
                 if(((int)nMIPMapLevel - (int)nLoadFromLevel) >= 0)
