@@ -43,9 +43,9 @@
 	#define OG_LOG_WARNING(STR, ...)	{FILE* pF = fopen("log.txt", "at"); if (pF) { fprintf(pF, "[WARNING]: "); fprintf(pF, STR, ## __VA_ARGS__); fprintf(pF, "\n"); fclose(pF); }}
 	#define OG_LOG_ERROR(STR, ...)		{FILE* pF = fopen("log.txt", "at"); if (pF) { fprintf(pF, "[ERROR]: "); fprintf(pF, STR, ## __VA_ARGS__); fprintf(pF, "\n"); fclose(pF); }}
 #else
-	#define OG_LOG_INFO(STR, ...)
-	#define OG_LOG_WARNING(STR, ...)
-	#define OG_LOG_ERROR(STR, ...)
+	#define OG_LOG_INFO(STR, ...)       NSLog(@STR, ##__VA_ARGS__)
+	#define OG_LOG_WARNING(STR, ...)    NSLog(@STR, ##__VA_ARGS__)
+	#define OG_LOG_ERROR(STR, ...)      NSLog(@STR, ##__VA_ARGS__)
 #endif
 
 

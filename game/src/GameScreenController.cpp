@@ -10,7 +10,7 @@
 #include "OrangeGrass.h"
 
 
-static bool g_bShadowsEnabled = false;
+static bool g_bShadowsEnabled = true;
 
 
 CGameScreenController::CGameScreenController() :	m_pGlobalVars(NULL),

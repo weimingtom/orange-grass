@@ -108,6 +108,8 @@ unsigned int ShaderLoadFromFile(
         {
             if(ShaderLoadBinaryFromMemory(ShaderFile.DataPtr(), ShaderFile.Size(), Type, Format, pObject) == OG_SUCCESS)
                 return OG_SUCCESS;
+            else
+                OG_LOG_ERROR("ShaderLoadFromFile: Failed to load binary shader %s", pszBinFile);
         }
 
         OG_LOG_WARNING("ShaderLoadFromFile: Failed to open shader %s", pszBinFile);
@@ -120,7 +122,12 @@ unsigned int ShaderLoadFromFile(
         return OG_FAIL;
     }
 
-	return ShaderLoadSourceFromMemory(ShaderFile.StringPtr(), Type, pObject);
+	unsigned int result = ShaderLoadSourceFromMemory(ShaderFile.StringPtr(), Type, pObject);
+    if (result == OG_FAIL)
+    {
+        OG_LOG_ERROR("ShaderLoadFromFile: Failed to load source shader %s", pszSrcFile);
+    }
+    return result;
 }
 
 
