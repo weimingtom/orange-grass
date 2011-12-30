@@ -25,19 +25,6 @@ COGResourceMgr::~COGResourceMgr ()
 }
 
 
-//// get resource path
-//const std::string& COGResourceMgr::GetResourcePath ()
-//{
-//    if (m_ResPath.empty())
-//    {
-//	    char path[OG_MAX_PATH];
-//	    GetResourcePathASCII(path, OG_MAX_PATH);
-//	    m_ResPath = std::string(path) + std::string("/GameResources");
-//    }
-//    return m_ResPath;
-//}
-
-
 // get UI resource path
 std::string COGResourceMgr::GetUIPath (const std::string& _File) const
 {

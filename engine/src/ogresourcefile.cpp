@@ -225,35 +225,3 @@ void ShutdownResourceSystem ()
         g_pResourceStorage = NULL;
     }
 }
-
-
-///*!***************************************************************************
-// @Function			GetResourcePathASCII
-// @Output            _pOutPath output path string
-// @Input				_PathLength max. path length
-// @Description		Returns the full path to resources
-// ****************************************************************************/
-//void GetResourcePathASCII(char* _pOutPath, int _PathLength)
-//{
-//#ifdef WIN32
-//    {
-//        wchar_t* pPath = new wchar_t [ _PathLength ];
-//        GetModuleFileName ( NULL, pPath, _PathLength );
-//        WideCharToMultiByte( CP_ACP, 0, pPath, -1, _pOutPath, _PathLength, "", false );
-//    }
-//    int pos = (int)strlen( _pOutPath );
-//    while ( --pos )
-//    {
-//        if ( _pOutPath [ pos ] == '\\') 
-//        {
-//            _pOutPath [ pos ] = '\0';
-//            break;
-//        }
-//        else
-//            _pOutPath [ pos + 1 ] = ' ';
-//    }
-//#else
-//	NSString* readPath = [[NSBundle mainBundle] resourcePath];
-//	[readPath getCString:_pOutPath maxLength:_PathLength encoding:NSASCIIStringEncoding];
-//#endif
-//}

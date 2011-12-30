@@ -140,13 +140,4 @@ void InitializeResourceSystem (const std::string& _ResourcePath, bool _bSingleSt
 void ShutdownResourceSystem ();
 
 
-///*!***************************************************************************
-// @Function			GetResourcePathASCII
-// @Output            _pOutPath output path string
-// @Input				_PathLength max. path length
-// @Description		Returns the full path to resources
-// ****************************************************************************/
-//void GetResourcePathASCII(char* _pOutPath, int _PathLength);
-
-
 #endif
