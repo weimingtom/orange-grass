@@ -26,8 +26,8 @@ public:
 	COGResourceMgr ();
 	virtual ~COGResourceMgr ();
 
-    // get resource path
-    virtual const std::string& GetResourcePath ();
+    //// get resource path
+    //virtual const std::string& GetResourcePath ();
 
     // get full resource path
     virtual std::string GetFullPath (const std::string& _File) const;
@@ -115,7 +115,7 @@ private:
 	
 private:
 
-	std::string			m_ResPath;
+	//std::string			m_ResPath;
 	ResourcePool		m_PoolUI;
 	ResourcePool		m_PoolGame;
 	IOGSettingsReader*	m_pReader;

@@ -118,7 +118,6 @@ public:
 
 protected:
 	bool m_bOpenForRead;
-	bool m_bSingleResourceData;
 	size_t m_Size;
 	size_t m_BytesReadCount;
 	const char* m_pData;
@@ -126,12 +125,28 @@ protected:
 
 
 /*!***************************************************************************
- @Function			GetResourcePathASCII
- @Output            _pOutPath output path string
- @Input				_PathLength max. path length
- @Description		Returns the full path to resources
+ @Function			InitializeResourceSystem
+ @Input				_ResourcePath   storage path
+ @Input				_bSingleStorage is a single storage flag
+ @Description		Initializes resource system
  ****************************************************************************/
-void GetResourcePathASCII(char* _pOutPath, int _PathLength);
+void InitializeResourceSystem (const std::string& _ResourcePath, bool _bSingleStorage);
+
+
+/*!***************************************************************************
+ @Function			ShutdownResourceSystem
+ @Description		Shutdown resource system
+ ****************************************************************************/
+void ShutdownResourceSystem ();
+
+
+///*!***************************************************************************
+// @Function			GetResourcePathASCII
+// @Output            _pOutPath output path string
+// @Input				_PathLength max. path length
+// @Description		Returns the full path to resources
+// ****************************************************************************/
+//void GetResourcePathASCII(char* _pOutPath, int _PathLength);
 
 
 #endif

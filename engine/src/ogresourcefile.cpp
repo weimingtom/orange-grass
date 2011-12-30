@@ -5,10 +5,17 @@
 #ifdef WIN32
 #include <windows.h>
 #endif
+#include "unzip/unzip.h"
 
 
 // static string represents full path to resource file or folder
-static std::string g_strResourcePath = std::string("");
+static std::string  g_strResourcePath = std::string("");
+
+// resource storage file (ex.: Android .APK)
+static void*        g_pResourceStorage = NULL;
+
+// single resource storage file flag
+static bool         g_bSingleResourceData = false;
 
 
 /*!***************************************************************************
@@ -17,7 +24,6 @@ static std::string g_strResourcePath = std::string("");
 *****************************************************************************/
 COGResourceFile::COGResourceFile() :
 	m_bOpenForRead(false),
-    m_bSingleResourceData(false),
 	m_Size(0),
     m_BytesReadCount(0),
     m_pData(NULL)
@@ -43,20 +49,37 @@ COGResourceFile::~COGResourceFile()
 *****************************************************************************/
 bool COGResourceFile::OpenForRead(const std::string& Filename)
 {
-    if (m_bSingleResourceData)
+    if (g_bSingleResourceData)
     {
+        char strCurrentFileName[260];
+        std::string strPath = std::string("GameResources") + Filename;
+		unz_file_info file_info;
+		if ( unzLocateFile ( g_pResourceStorage, strPath.c_str(), 2 ) == UNZ_OK )
+		{
+			unzGetCurrentFileInfo ( g_pResourceStorage, &file_info,
+									strCurrentFileName, 
+									sizeof ( strCurrentFileName ) - 1,
+									NULL, 0, NULL, 0 );
+			m_Size = file_info.uncompressed_size;
+			char* pData = new char [ m_Size + 1 ];
+		    pData[m_Size] = '\0';
+			unzOpenCurrentFile ( g_pResourceStorage );
+			unzReadCurrentFile ( g_pResourceStorage, pData, m_Size );
+			unzCloseCurrentFile ( g_pResourceStorage );
+            m_pData = pData;
 
+            m_BytesReadCount = 0;
+            m_bOpenForRead = true;
+		}
+        else
+        {
+            OG_LOG_ERROR("COGResourceFile::OpenForRead: cannot find resource file %s at resource storage.", strPath.c_str());
+        }
     }
     else
     {
-        if (g_strResourcePath.empty())
-        {
-            char path[OG_MAX_PATH];
-            GetResourcePathASCII(path, OG_MAX_PATH);
-            g_strResourcePath = std::string(path) + std::string("/GameResources");
-        }
-
-	    FILE* pFile = fopen((g_strResourcePath + Filename).c_str(), "rb");
+        std::string strFilename = g_strResourcePath + std::string("/GameResources") + Filename;
+	    FILE* pFile = fopen(strFilename.c_str(), "rb");
 	    if (pFile)
 	    {
 		    // Get the file size
@@ -82,6 +105,10 @@ bool COGResourceFile::OpenForRead(const std::string& Filename)
             m_BytesReadCount = 0;
 		    fclose(pFile);
 	    }
+        else
+        {
+            OG_LOG_ERROR("COGResourceFile::OpenForRead: cannot find resource file %s at filesystem.", strFilename.c_str());
+        }
     }
     return m_bOpenForRead;
 }
@@ -164,32 +191,69 @@ void COGResourceFile::Close()
 
 
 /*!***************************************************************************
- @Function			GetResourcePathASCII
- @Output            _pOutPath output path string
- @Input				_PathLength max. path length
- @Description		Returns the full path to resources
+ @Function			InitializeResourceSystem
+ @Input				_ResourcePath   storage path
+ @Input				_bSingleStorage is a single storage flag
+ @Description		Initializes resource system
  ****************************************************************************/
-void GetResourcePathASCII(char* _pOutPath, int _PathLength)
+void InitializeResourceSystem (const std::string& _ResourcePath, bool _bSingleStorage)
 {
-#ifdef WIN32
+    g_strResourcePath = _ResourcePath;
+    g_bSingleResourceData = _bSingleStorage;
+
+    if (_bSingleStorage)
     {
-        wchar_t* pPath = new wchar_t [ _PathLength ];
-        GetModuleFileName ( NULL, pPath, _PathLength );
-        WideCharToMultiByte( CP_ACP, 0, pPath, -1, _pOutPath, _PathLength, "", false );
-    }
-    int pos = (int)strlen( _pOutPath );
-    while ( --pos )
-    {
-        if ( _pOutPath [ pos ] == '\\') 
+        std::string resStorage = g_strResourcePath + std::string("/resources.pak");
+        g_pResourceStorage = unzOpen (resStorage.c_str());
+        if (!g_pResourceStorage)
         {
-            _pOutPath [ pos ] = '\0';
-            break;
+            OG_LOG_ERROR("Cannot open resource storage at %s", resStorage.c_str());
         }
-        else
-            _pOutPath [ pos + 1 ] = ' ';
     }
-#else
-	NSString* readPath = [[NSBundle mainBundle] resourcePath];
-	[readPath getCString:_pOutPath maxLength:_PathLength encoding:NSASCIIStringEncoding];
-#endif
 }
+
+
+/*!***************************************************************************
+ @Function			ShutdownResourceSystem
+ @Description		Shutdown resource system
+ ****************************************************************************/
+void ShutdownResourceSystem ()
+{
+    if (g_pResourceStorage)
+    {
+        unzClose ( g_pResourceStorage );
+        g_pResourceStorage = NULL;
+    }
+}
+
+
+///*!***************************************************************************
+// @Function			GetResourcePathASCII
+// @Output            _pOutPath output path string
+// @Input				_PathLength max. path length
+// @Description		Returns the full path to resources
+// ****************************************************************************/
+//void GetResourcePathASCII(char* _pOutPath, int _PathLength)
+//{
+//#ifdef WIN32
+//    {
+//        wchar_t* pPath = new wchar_t [ _PathLength ];
+//        GetModuleFileName ( NULL, pPath, _PathLength );
+//        WideCharToMultiByte( CP_ACP, 0, pPath, -1, _pOutPath, _PathLength, "", false );
+//    }
+//    int pos = (int)strlen( _pOutPath );
+//    while ( --pos )
+//    {
+//        if ( _pOutPath [ pos ] == '\\') 
+//        {
+//            _pOutPath [ pos ] = '\0';
+//            break;
+//        }
+//        else
+//            _pOutPath [ pos + 1 ] = ' ';
+//    }
+//#else
+//	NSString* readPath = [[NSBundle mainBundle] resourcePath];
+//	[readPath getCString:_pOutPath maxLength:_PathLength encoding:NSASCIIStringEncoding];
+//#endif
+//}

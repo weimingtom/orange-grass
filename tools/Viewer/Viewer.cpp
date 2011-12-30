@@ -11,7 +11,9 @@ IMPLEMENT_APP(CViewerApp)
 /// @return true if success
 bool CViewerApp::OnInit()
 {
-	StartOrangeGrass();
+    char path[OG_MAX_PATH];
+    GetResourcePathASCII(path, OG_MAX_PATH);
+    StartOrangeGrass(path, false);
 
     CViewerFrame* pFrame = new CViewerFrame(NULL);
 	SetTopWindow(pFrame);

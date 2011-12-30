@@ -2,6 +2,7 @@
 #define TOOLSETTINGS_H_
 
 #include <wx\colour.h>
+#include <string>
 
 
 enum TerrainEditMode
@@ -20,6 +21,15 @@ enum SettingsMode
     SETMODE_LEVEL_FINISH,
     SETMODE_LEVEL_WIDTH
 };
+
+
+/*!***************************************************************************
+ @Function			GetResourcePathASCII
+ @Output            _pOutPath output path string
+ @Input				_PathLength max. path length
+ @Description		Returns the full path to resources
+ ****************************************************************************/
+void GetResourcePathASCII(char* _pOutPath, int _PathLength);
 
 
 class ToolSettings

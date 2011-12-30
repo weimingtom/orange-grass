@@ -1,4 +1,5 @@
 #include "ToolSettings.h"
+#include <windows.h>
 
 static ToolSettings* g_pToolSettings = NULL;
 
@@ -26,4 +27,27 @@ ToolSettings* GetToolSettings ()
 		g_pToolSettings = new ToolSettings ();
 	}
 	return g_pToolSettings;
+}
+
+
+/*!***************************************************************************
+ @Function			GetResourcePathASCII
+ @Output            _pOutPath output path string
+ @Input				_PathLength max. path length
+ @Description		Returns the full path to resources
+ ****************************************************************************/
+void GetResourcePathASCII(char* _pOutPath, int _PathLength)
+{
+    GetModuleFileName ( NULL, _pOutPath, _PathLength );
+    int pos = (int)strlen( _pOutPath );
+    while ( --pos )
+    {
+        if ( _pOutPath [ pos ] == '\\') 
+        {
+            _pOutPath [ pos ] = '\0';
+            break;
+        }
+        else
+            _pOutPath [ pos + 1 ] = ' ';
+    }
 }

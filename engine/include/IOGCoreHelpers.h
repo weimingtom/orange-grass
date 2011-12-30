@@ -16,10 +16,18 @@
 #include <algorithm>
 #include <iostream>
 #include <cstddef>
+#define _CRT_WARN 0
+#include <assert.h>
+
+
+// result values
+#define OG_SUCCESS	    1
+#define OG_FAIL		    0
 
 
 // maximal path length
 #define OG_MAX_PATH		2048
+
 
 // Helpers to safely delete objects and arrays
 #define OG_SAFE_DELETE(x)           {if(x){ delete x; x = 0; }}
@@ -34,7 +42,7 @@
 
 
 // Clamping value to the range
-#define OG_CLAMP(a, min, max)   {if ((a) < (min)) { (a) = (min); } else if ((a) > (max)) { (a) = (max); }}
+#define OG_CLAMP(a, min, max)       {if ((a) < (min)) { (a) = (min); } else if ((a) > (max)) { (a) = (max); }}
 
 
 // Logging
@@ -49,13 +57,20 @@
 #endif
 
 
-#define PI			(3.1415926535f)
-#define PIOVERTWO	(PI / 2.0f)
-#define TWOPI		(PI * 2.0f)
-#define ONE		    (1.0f)
+// floating point macros
+#define PI			        (3.1415926535f)
+#define PIOVERTWO	        (PI / 2.0f)
+#define TWOPI		        (PI * 2.0f)
+#define FP_BITS(fp)			(*(unsigned long*)&(fp))
+#define FP_ABS_BITS(fp)		(FP_BITS(fp)&0x7FFFFFFF)
+#define FP_SIGN_BIT(fp)		(FP_BITS(fp)&0x80000000)
+#define FP_ONE_BITS			0x3F800000
+#define	FP_SIGN_BIT_SHIFT	31
 
-#define OG_SUCCESS	1
-#define OG_FAIL		0
+
+// radian-degree conversion
+#define TO_RADIAN(degree)   ((degree) * (PI / 180.0f))
+#define TO_DEGREE(radian)   ((radian) * (180.0f / PI))
 
 
 // Define a 64-bit type for various platforms
@@ -80,6 +95,7 @@ typedef struct _LARGE_INTEGER
 } LARGE_INTEGER, *PLARGE_INTEGER;
 #endif
 
+
 /*!***************************************************************************
  @Function		IsLittleEndian
  @Returns		True if the platform the code is ran on is little endian
@@ -101,9 +117,6 @@ inline bool IsLittleEndian()
 	return bLittleEndian;
 }
 
-
-#define _CRT_WARN 0
-#include <assert.h>
 
 #ifndef _ASSERT
 #define _ASSERT(X) //
@@ -146,5 +159,6 @@ void SafeRealloc(T* &ptr, size_t cnt)
    std::copy(ptr, ptr + old_size, temp);
  	_ASSERT(ptr);
 }
+
 
 #endif

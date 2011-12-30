@@ -24,6 +24,7 @@
 #include "ogappsettings.h"
 #include "oggamesequence.h"
 #include "ogfpscounter.h"
+#include "ogresourcefile.h"
 #include <map>
 
 
@@ -51,7 +52,7 @@ static std::map<std::string, OGBonusType> g_BonusTypeLookup;
 static std::map<std::string, OGBlendType> g_BlendTypeLookup;
 
 
-void StartOrangeGrass()
+void StartOrangeGrass(const std::string& _ResourcePath, bool _bSingleStorage)
 {
 	g_ActorTypeLookup["static"] = OG_ACTOR_STATIC;
 	g_ActorTypeLookup["land_bot"] = OG_ACTOR_LANDBOT;
@@ -82,6 +83,8 @@ void StartOrangeGrass()
 	g_BlendTypeLookup["test"] = OG_BLEND_ALPHATEST;
 	g_BlendTypeLookup["blend"] = OG_BLEND_ALPHABLEND;
 	g_BlendTypeLookup["add"] = OG_BLEND_ALPHAADD;
+
+    InitializeResourceSystem(_ResourcePath, _bSingleStorage);
 }
 
 
@@ -92,6 +95,8 @@ void FinishOrangeGrass()
 	g_WeaponPosLookup.clear();
 	g_BonusTypeLookup.clear();
 	g_BlendTypeLookup.clear();
+
+    ShutdownResourceSystem();
 }
 
 

@@ -33,7 +33,7 @@
 #include "IOGQuaternion.h"
 
 
-void StartOrangeGrass();
+void StartOrangeGrass(const std::string& _ResourcePath, bool _bSingleStorage);
 void FinishOrangeGrass();
 
 IOGResourceMgr* GetResourceMgr ();

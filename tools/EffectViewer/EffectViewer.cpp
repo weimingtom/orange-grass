@@ -11,7 +11,9 @@ IMPLEMENT_APP(CEffectViewerApp)
 /// @return true if success
 bool CEffectViewerApp::OnInit()
 {
-	StartOrangeGrass();
+    char path[OG_MAX_PATH];
+    GetResourcePathASCII(path, OG_MAX_PATH);
+    StartOrangeGrass(path, false);
 
     CEffectViewerFrame* pFrame = new CEffectViewerFrame(NULL);
 	SetTopWindow(pFrame);

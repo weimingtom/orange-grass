@@ -12,6 +12,15 @@ int				ScrWidth, ScrHeight;
 std::vector<std::string> CmdParams;
 
 
+/*!***************************************************************************
+ @Function			GetResourcePathASCII
+ @Output            _pOutPath output path string
+ @Input				_PathLength max. path length
+ @Description		Returns the full path to resources
+ ****************************************************************************/
+void GetResourcePathASCII(char* _pOutPath, int _PathLength);
+
+
 /// Application initialization.
 void Initialize ()
 {
@@ -207,7 +216,9 @@ int WINAPI WinMain( HINSTANCE hInstance,
 					LPSTR lpszCmdLine,
 					int nCmdShow )
 {
-	StartOrangeGrass();
+    char path[OG_MAX_PATH];
+    GetResourcePathASCII(path, OG_MAX_PATH);
+    StartOrangeGrass(path, false);
 
 	char* pch;
 	pch = strtok (lpszCmdLine, " -");
@@ -239,4 +250,31 @@ int WINAPI WinMain( HINSTANCE hInstance,
 	FinishOrangeGrass();
 
 	return (int)msg.wParam;
+}
+
+
+/*!***************************************************************************
+ @Function			GetResourcePathASCII
+ @Output            _pOutPath output path string
+ @Input				_PathLength max. path length
+ @Description		Returns the full path to resources
+ ****************************************************************************/
+void GetResourcePathASCII(char* _pOutPath, int _PathLength)
+{
+    {
+        wchar_t* pPath = new wchar_t [ _PathLength ];
+        GetModuleFileName ( NULL, pPath, _PathLength );
+        WideCharToMultiByte( CP_ACP, 0, pPath, -1, _pOutPath, _PathLength, "", false );
+    }
+    int pos = (int)strlen( _pOutPath );
+    while ( --pos )
+    {
+        if ( _pOutPath [ pos ] == '\\') 
+        {
+            _pOutPath [ pos ] = '\0';
+            break;
+        }
+        else
+            _pOutPath [ pos + 1 ] = ' ';
+    }
 }

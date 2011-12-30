@@ -11,7 +11,9 @@ IMPLEMENT_APP(CEditorApp)
 /// @return true if success
 bool CEditorApp::OnInit()
 {
-	StartOrangeGrass();
+    char path[OG_MAX_PATH];
+    GetResourcePathASCII(path, OG_MAX_PATH);
+    StartOrangeGrass(path, false);
 
     CEditorFrame* pFrame = new CEditorFrame(
 		NULL, wxID_ANY, "OG Editor", wxDefaultPosition, wxDefaultSize, 

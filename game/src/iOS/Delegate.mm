@@ -15,6 +15,13 @@ static bool Landscape = false;
 static float AccelSensivity = 2.0f;
 
 
+void GetResourcePathASCII(char* _pOutPath, int _PathLength)
+{
+    NSString* readPath = [[NSBundle mainBundle] resourcePath];
+    [readPath getCString:_pOutPath maxLength:_PathLength encoding:NSASCIIStringEncoding];
+}
+
+
 @implementation AppController
 
 - (void) update
@@ -93,7 +100,9 @@ static float AccelSensivity = 2.0f;
     accel = [Accel alloc];
     [accel SetupAccelerometer: kFPS];
 	
-	StartOrangeGrass();
+    char path[OG_MAX_PATH];
+    GetResourcePathASCII(path, OG_MAX_PATH);
+    StartOrangeGrass(path, false);
 	
 	shell = new CGameSystem();
 	if(!shell)
