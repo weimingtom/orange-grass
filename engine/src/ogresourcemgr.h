@@ -27,7 +27,7 @@ public:
 	virtual ~COGResourceMgr ();
 
     // get resource path
-    virtual const std::string& GetResourcePath () const;
+    virtual const std::string& GetResourcePath ();
 
     // get full resource path
     virtual std::string GetFullPath (const std::string& _File) const;

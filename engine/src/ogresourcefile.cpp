@@ -7,12 +7,17 @@
 #endif
 
 
+// static string represents full path to resource file or folder
+static std::string g_strResourcePath = std::string("");
+
+
 /*!***************************************************************************
 @Function			COGResourceFile
 @Description		Constructor
 *****************************************************************************/
 COGResourceFile::COGResourceFile() :
 	m_bOpenForRead(false),
+    m_bSingleResourceData(false),
 	m_Size(0),
     m_BytesReadCount(0),
     m_pData(NULL)
@@ -32,38 +37,52 @@ COGResourceFile::~COGResourceFile()
 
 /*!***************************************************************************
 @Function			OpenForRead
-@Input				pszFilename Name of the file you would like to open
+@Input				Filename Name of the file you would like to open
 @Returns			true if the file is open
 @Description		Opens file for reading
 *****************************************************************************/
-bool COGResourceFile::OpenForRead(const char* pszFilename)
+bool COGResourceFile::OpenForRead(const std::string& Filename)
 {
-	FILE* pFile = fopen(pszFilename, "rb");
-	if (pFile)
-	{
-		// Get the file size
-		fseek(pFile, 0, SEEK_END);
-		m_Size = ftell(pFile);
-		fseek(pFile, 0, SEEK_SET);
+    if (m_bSingleResourceData)
+    {
 
-		// read the data, append a 0 byte as the data might represent a string
-		char* pData = new char[m_Size + 1];
-		pData[m_Size] = '\0';
-		size_t BytesRead = fread(pData, 1, m_Size, pFile);
+    }
+    else
+    {
+        if (g_strResourcePath.empty())
+        {
+            char path[OG_MAX_PATH];
+            GetResourcePathASCII(path, OG_MAX_PATH);
+            g_strResourcePath = std::string(path) + std::string("/GameResources");
+        }
 
-		if (BytesRead != m_Size)
-		{
-			delete [] pData;
-			m_Size = 0;
-		}
-		else
-		{
-			m_pData = pData;
-			m_bOpenForRead = true;
-		}
-        m_BytesReadCount = 0;
-		fclose(pFile);
-	}
+	    FILE* pFile = fopen((g_strResourcePath + Filename).c_str(), "rb");
+	    if (pFile)
+	    {
+		    // Get the file size
+		    fseek(pFile, 0, SEEK_END);
+		    m_Size = ftell(pFile);
+		    fseek(pFile, 0, SEEK_SET);
+
+		    // read the data, append a 0 byte as the data might represent a string
+		    char* pData = new char[m_Size + 1];
+		    pData[m_Size] = '\0';
+		    size_t BytesRead = fread(pData, 1, m_Size, pFile);
+
+		    if (BytesRead != m_Size)
+		    {
+			    delete [] pData;
+			    m_Size = 0;
+		    }
+		    else
+		    {
+			    m_pData = pData;
+			    m_bOpenForRead = true;
+		    }
+            m_BytesReadCount = 0;
+		    fclose(pFile);
+	    }
+    }
     return m_bOpenForRead;
 }
 

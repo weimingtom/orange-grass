@@ -27,6 +27,8 @@
 #define MAT32 14
 #define MAT33 15
 
+#define MAT(m,r,c) (m)[(c)*4+(r)]
+
 #define _11 0
 #define _12 1
 #define _13 2
@@ -237,6 +239,15 @@ void MatrixInverse(OGMatrix& mOut, const OGMatrix& mIn);
                 MatrixInverse() cannot.
  ****************************************************************************/
 void MatrixInverseEx(OGMatrix& mOut, const OGMatrix& mIn);
+
+
+/*!***************************************************************************
+ @Function      MatrixInverseEx2
+ @Output        Output matrix
+ @Input         Input matrix
+ @Description   Another one matrix inversion from MESA.
+ ****************************************************************************/
+bool MatrixInverseEx2(OGMatrix& mOut, const OGMatrix& mIn);
 
 
 /*!***************************************************************************

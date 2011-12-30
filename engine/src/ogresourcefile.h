@@ -2,6 +2,7 @@
 #define OGRESOURCEFILE_H_
 
 #include <stdlib.h>
+#include <string>
 
 
 /*!***************************************************************************
@@ -25,11 +26,11 @@ public:
 
     /*!***************************************************************************
 	@Function			OpenForRead
-	@Input				pszFilename Name of the file you would like to open
+	@Input				Filename Name of the file you would like to open
 	@Returns			true if the file is open
 	@Description		Opens file for reading
 	*****************************************************************************/
-	bool OpenForRead(const char* pszFilename);
+    bool OpenForRead(const std::string& Filename);
 
 	/*!***************************************************************************
 	@Function			IsOpenForRead
@@ -117,6 +118,7 @@ public:
 
 protected:
 	bool m_bOpenForRead;
+	bool m_bSingleResourceData;
 	size_t m_Size;
 	size_t m_BytesReadCount;
 	const char* m_pData;

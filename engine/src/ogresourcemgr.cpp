@@ -14,9 +14,6 @@
 
 COGResourceMgr::COGResourceMgr ()
 {
-	char path[OG_MAX_PATH];
-	GetResourcePathASCII(path, OG_MAX_PATH);
-	m_ResPath = std::string(path) + std::string("/GameResources");
 	m_pReader = GetSettingsReader();
 }
 
@@ -29,8 +26,14 @@ COGResourceMgr::~COGResourceMgr ()
 
 
 // get resource path
-const std::string& COGResourceMgr::GetResourcePath () const
+const std::string& COGResourceMgr::GetResourcePath ()
 {
+    if (m_ResPath.empty())
+    {
+	    char path[OG_MAX_PATH];
+	    GetResourcePathASCII(path, OG_MAX_PATH);
+	    m_ResPath = std::string(path) + std::string("/GameResources");
+    }
     return m_ResPath;
 }
 
@@ -51,14 +54,14 @@ std::string COGResourceMgr::GetUIPath (const std::string& _File) const
 		UIProfile = std::string("iPad/");
 	}
 
-	return m_ResPath + std::string("/UI/") + UIProfile + UIMode + _File;
+	return std::string("/UI/") + UIProfile + UIMode + _File;
 }
 
 
 // get full resource path
 std::string COGResourceMgr::GetFullPath (const std::string& _File) const
 {
-	return m_ResPath + std::string("/") + _File;
+	return std::string("/") + _File;
 }
 
 

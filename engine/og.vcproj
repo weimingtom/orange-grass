@@ -366,14 +366,6 @@
 					>
 				</File>
 				<File
-					RelativePath=".\src\oggrutility.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\oggrutility.h"
-					>
-				</File>
-				<File
 					RelativePath=".\src\oglight.cpp"
 					>
 				</File>

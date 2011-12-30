@@ -29,7 +29,7 @@ public:
 	virtual ~IOGResourceMgr () {}
 
     // get resource path
-    virtual const std::string& GetResourcePath () const = 0;
+    virtual const std::string& GetResourcePath () = 0;
 
     // get full resource path
     virtual std::string GetFullPath (const std::string& _File) const = 0;

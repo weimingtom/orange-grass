@@ -8,6 +8,7 @@
  */
 #include "OrangeGrass.h"
 #include "ogsettingsreader.h"
+#include "ogresourcefile.h"
 
 
 COGSettingsReader::COGSettingsReader()
@@ -19,18 +20,28 @@ COGSettingsReader::~COGSettingsReader()
 {
 }
 
+
 // open settings source.
 IOGSettingsSource* COGSettingsReader::OpenSource (const std::string& _File)
 {
-	COGSettingsSource* pSource = new COGSettingsSource;
+    COGResourceFile ResFile;
+    if (!ResFile.OpenForRead(_File))
+    {
+        OG_LOG_ERROR("COGSettingsReader cannot open file %s", _File.c_str());
+        return NULL;
+    }
 
+	COGSettingsSource* pSource = new COGSettingsSource;
     pSource->pSource = new TiXmlDocument (_File.c_str());
-	if (!pSource->pSource->LoadFile (_File.c_str()))
+    if (!pSource->pSource->LoadFile (ResFile.DataPtr(), ResFile.Size(), TIXML_DEFAULT_ENCODING))
 	{
+        OG_LOG_ERROR("COGSettingsReader cannot load or parse file %s", _File.c_str());
 		OG_SAFE_DELETE(pSource->pSource);
 		OG_SAFE_DELETE(pSource);
+        ResFile.Close();
 		return NULL;
 	}
+    ResFile.Close();
 
     pSource->pDoc = new TiXmlHandle (pSource->pSource);
 	return pSource;

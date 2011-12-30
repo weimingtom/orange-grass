@@ -95,7 +95,7 @@ bool COGLevel::Load ()
 	GetSceneGraph()->AddLandscapeNode(pTerrainSg);
 
     COGResourceFile level_file;
-    level_file.OpenForRead(cfg.scene_file.c_str());
+    level_file.OpenForRead(cfg.scene_file);
     if (!level_file.IsOpenForRead())
     {
 		OG_LOG_WARNING("No level scene found in file %s", cfg.scene_file.c_str());

@@ -271,6 +271,75 @@ inline bool IsPowerOf2 (unsigned int input)
 }
 
 
+// Transform point from world coords. to screen coords.
+inline bool Project(
+    const OGVec3& _Pos,
+    const OGMatrix& _mModelView, 
+    const OGMatrix& _mProj,
+    int ViewWidth, 
+    int ViewHeight,
+    int& _ScrX, 
+    int& _ScrY)
+{
+    OGVec4 in;
+	in.x = _Pos.x;
+	in.y = _Pos.y;
+	in.z = _Pos.z;
+	in.w = 1.0f;
+
+    MatrixVec4Multiply(in, in, _mModelView);
+    MatrixVec4Multiply(in, in, _mProj);
+
+	if (in.w == 0)
+		return false;
+
+	in.x /= in.w;
+	in.y /= in.w;
+	in.z /= in.w;
+
+	_ScrX = (int)((1 + in.x) * ViewWidth / 2);
+	_ScrY = (int)((1 + in.y) * ViewHeight / 2);
+    return true;
+}
+
+
+// Transform point from screen coords. to world coords.
+inline bool UnProject(
+    int _ScrX, 
+    int _ScrY,
+    float _ScrZ,
+    const OGMatrix& _mModelView, 
+    const OGMatrix& _mProj,
+    int ViewWidth, 
+    int ViewHeight,
+    OGVec3& _outPos)
+{
+	// transformation matrices
+	OGMatrix m, A;
+	OGVec4 in, out;
+
+	// normalize coords. from -1 to 1
+	in.x = (float)_ScrX * 2 / ViewWidth - 1.0f;
+	in.y = (float)_ScrY * 2 / ViewHeight - 1.0f;
+	in.z = 2 * _ScrZ - 1.0f;
+	in.w = 1.0f;
+
+	// calculate inverse transformation
+	MatrixMultiply(A, _mModelView, _mProj);
+    MatrixInverseEx2(m, A);
+
+	// transform point with the unprojection matrix
+	MatrixVec4Multiply(out, in, m);
+	if (out.w == 0.0f)
+		return false;
+
+    _outPos.x = out.x / out.w;
+	_outPos.y = out.y / out.w;
+	_outPos.z = out.z / out.w;
+	return true;
+}
+
+
 // get random number in range
 inline int GetRandomRange (int _Min, int _Max)
 {

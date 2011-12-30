@@ -543,8 +543,8 @@ void COGTextRenderer::APIRenderStates(int nAction)
         glActiveTexture(GL_TEXTURE0);
 
 		/* Blending mode */
-		//glEnable(GL_BLEND);
-		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		/* Set Z compare properties */
 		glDisable(GL_DEPTH_TEST);

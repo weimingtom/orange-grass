@@ -15,7 +15,6 @@
 #include "ogmaterial.h"
 #include "ogsprite.h"
 #include "ogvertexbuffers.h"
-#include "oggrutility.h"
 
 
 COGSprite::SprVert g_RTVertices[4];
@@ -540,22 +539,20 @@ void COGRenderer::Reset ()
 // Unproject screen coords.
 OGVec3 COGRenderer::UnprojectCoords (int _X, int _Y)
 {
-    float* pMV = m_mView.f;
-    float* pP = m_mProjection.f;
-	float x0, y0, z0;
+    OGVec3 vOut;
 #ifdef WIN32
-	UnProject((float)_X, (float)(m_Height - _Y), 0.0f, pMV, pP, m_Width, m_Height, &x0, &y0, &z0);
+    UnProject(_X, m_Height - _Y, 0, m_mView, m_mProjection, m_Width, m_Height, vOut);
 #else
 	if (m_bLandscapeMode)
 	{
-		UnProject((float)_Y, (float)_X, 0.0f, pMV, pP, m_Height, m_Width, &x0, &y0, &z0);
+        UnProject(_Y, _X, 0, m_mView, m_mProjection, m_Height, m_Width, vOut);
 	}
 	else
 	{
-		UnProject((float)_X, (float)(m_Height - _Y), 0.0f, pMV, pP, m_Width, m_Height, &x0, &y0, &z0);
+        UnProject(_X, m_Height - _Y, 0, m_mView, m_mProjection, m_Width, m_Height, vOut);
 	}
 #endif    
-    return OGVec3(x0, y0, z0);
+    return vOut;
 }
 
 

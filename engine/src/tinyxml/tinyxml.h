@@ -1406,6 +1406,8 @@ public:
 		document data before loading.
 	*/
 	bool LoadFile( TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );
+	/// Create a document with a name, pointer to data and data size
+	bool LoadFile( const void* _pData, unsigned long _Size, TiXmlEncoding encoding = TIXML_DEFAULT_ENCODING );
 	/// Save a file using the current document value. Returns true if successful.
 	bool SaveFile() const;
 	/// Load a file using the given filename. Returns true if successful.
