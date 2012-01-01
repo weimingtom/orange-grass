@@ -51,9 +51,17 @@
 	#define OG_LOG_WARNING(STR, ...)	{FILE* pF = fopen("log.txt", "at"); if (pF) { fprintf(pF, "[WARNING]: "); fprintf(pF, STR, ## __VA_ARGS__); fprintf(pF, "\n"); fclose(pF); }}
 	#define OG_LOG_ERROR(STR, ...)		{FILE* pF = fopen("log.txt", "at"); if (pF) { fprintf(pF, "[ERROR]: "); fprintf(pF, STR, ## __VA_ARGS__); fprintf(pF, "\n"); fclose(pF); }}
 #else
-	#define OG_LOG_INFO(STR, ...)       NSLog(@STR, ##__VA_ARGS__)
+#ifdef __APPLE__
+    #define OG_LOG_INFO(STR, ...)       NSLog(@STR, ##__VA_ARGS__)
 	#define OG_LOG_WARNING(STR, ...)    NSLog(@STR, ##__VA_ARGS__)
 	#define OG_LOG_ERROR(STR, ...)      NSLog(@STR, ##__VA_ARGS__)
+#else
+    #include <jni.h>
+    #include <android/log.h>
+    #define OG_LOG_INFO(STR, ...)       __android_log_print(ANDROID_LOG_INFO, "liborangegrass", STR, ##__VA_ARGS__)
+	#define OG_LOG_WARNING(STR, ...)    __android_log_print(ANDROID_LOG_WARNING, "liborangegrass", STR, ##__VA_ARGS__)
+	#define OG_LOG_ERROR(STR, ...)      __android_log_print(ANDROID_LOG_ERROR, "liborangegrass", STR, ##__VA_ARGS__)
+#endif
 #endif
 
 
