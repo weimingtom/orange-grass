@@ -1,6 +1,5 @@
-LOCAL_PATH := $(call my-dir)
+UNZIPPATH := engine/src/unzip
 
-LOCAL_SRC_FILES := \
-                    ioapi.c \
-                    unzip.c \
-                    zip.c \
+LOCAL_SRC_FILES +=  $(UNZIPPATH)/ioapi.c \
+                    $(UNZIPPATH)/unzip.c \
+                    $(UNZIPPATH)/zip.c

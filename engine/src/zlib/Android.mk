@@ -1,15 +1,14 @@
-LOCAL_PATH := $(call my-dir)
+ZLIBPATH := engine/src/zlib
 
-LOCAL_SRC_FILES := \
-                    adler32.c \
-                    compress.c \
-                    crc32.c \
-                    deflate.c \
-                    gzio.c \
-                    infback.c \
-                    inffast.c \
-                    inflate.c \
-                    inftrees.c \
-                    trees.c \
-                    uncompr.c \
-                    zutil.c \
+LOCAL_SRC_FILES +=  $(ZLIBPATH)/adler32.c \
+                    $(ZLIBPATH)/compress.c \
+                    $(ZLIBPATH)/crc32.c \
+                    $(ZLIBPATH)/deflate.c \
+                    $(ZLIBPATH)/gzio.c \
+                    $(ZLIBPATH)/infback.c \
+                    $(ZLIBPATH)/inffast.c \
+                    $(ZLIBPATH)/inflate.c \
+                    $(ZLIBPATH)/inftrees.c \
+                    $(ZLIBPATH)/trees.c \
+                    $(ZLIBPATH)/uncompr.c \
+                    $(ZLIBPATH)/zutil.c
