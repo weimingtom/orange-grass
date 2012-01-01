@@ -230,7 +230,7 @@ unsigned int LoadTextureFromPVR(
         break;
 
     case OGL_PVRTC2:
-#ifndef WIN32
+#if (TARGET_OS_IPHONE == 1)
         if(IsPVRTCSupported)
         {
             IsCompressedFormatSupported = IsCompressedFormat = true;
@@ -247,7 +247,7 @@ unsigned int LoadTextureFromPVR(
         break;
 
     case OGL_PVRTC4:
-#ifndef WIN32
+#if (TARGET_OS_IPHONE == 1)
         if(IsPVRTCSupported)
         {
             IsCompressedFormatSupported = IsCompressedFormat = true;
