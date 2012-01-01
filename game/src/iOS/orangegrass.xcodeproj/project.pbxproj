@@ -72,7 +72,6 @@
 		B2542AC612D6ACF8000DE568 /* ogfog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A3B12D6ACF8000DE568 /* ogfog.cpp */; };
 		B2542AC712D6ACF8000DE568 /* oggamesequence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A3D12D6ACF8000DE568 /* oggamesequence.cpp */; };
 		B2542AC812D6ACF8000DE568 /* ogglobalvarstable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A3F12D6ACF8000DE568 /* ogglobalvarstable.cpp */; };
-		B2542AC912D6ACF8000DE568 /* oggrutility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A4112D6ACF8000DE568 /* oggrutility.cpp */; };
 		B2542ACA12D6ACF8000DE568 /* ogguibonusbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A4312D6ACF8000DE568 /* ogguibonusbar.cpp */; };
 		B2542ACB12D6ACF8000DE568 /* ogguibutton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A4512D6ACF8000DE568 /* ogguibutton.cpp */; };
 		B2542ACC12D6ACF8000DE568 /* ogguilifebar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2542A4712D6ACF8000DE568 /* ogguilifebar.cpp */; };
@@ -118,6 +117,22 @@
 		B2969BC112D3B2F7009BCE6D /* Delegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = B2969BC012D3B2F7009BCE6D /* Delegate.mm */; };
 		B2969C2612D3B884009BCE6D /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B2969C2512D3B884009BCE6D /* icon.png */; };
 		B2BD483112EBA15B005A7210 /* GameResources in Resources */ = {isa = PBXBuildFile; fileRef = B2BD473012EBA15B005A7210 /* GameResources */; };
+		B2E3706F14B0DEEB0036B723 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3704D14B0DEEB0036B723 /* ioapi.c */; };
+		B2E3707114B0DEEB0036B723 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3705114B0DEEB0036B723 /* unzip.c */; };
+		B2E3707214B0DEEB0036B723 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3705314B0DEEB0036B723 /* zip.c */; };
+		B2E3707314B0DEEB0036B723 /* adler32.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3705614B0DEEB0036B723 /* adler32.c */; };
+		B2E3707414B0DEEB0036B723 /* compress.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3705714B0DEEB0036B723 /* compress.c */; };
+		B2E3707514B0DEEB0036B723 /* crc32.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3705814B0DEEB0036B723 /* crc32.c */; };
+		B2E3707614B0DEEB0036B723 /* deflate.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3705A14B0DEEB0036B723 /* deflate.c */; };
+		B2E3707714B0DEEB0036B723 /* gzio.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3705C14B0DEEB0036B723 /* gzio.c */; };
+		B2E3707814B0DEEB0036B723 /* infback.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3705D14B0DEEB0036B723 /* infback.c */; };
+		B2E3707914B0DEEB0036B723 /* inffast.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3705E14B0DEEB0036B723 /* inffast.c */; };
+		B2E3707A14B0DEEB0036B723 /* inflate.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3706114B0DEEB0036B723 /* inflate.c */; };
+		B2E3707B14B0DEEB0036B723 /* inftrees.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3706314B0DEEB0036B723 /* inftrees.c */; };
+		B2E3707C14B0DEEB0036B723 /* README in Resources */ = {isa = PBXBuildFile; fileRef = B2E3706514B0DEEB0036B723 /* README */; };
+		B2E3707D14B0DEEB0036B723 /* trees.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3706614B0DEEB0036B723 /* trees.c */; };
+		B2E3707E14B0DEEB0036B723 /* uncompr.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3706814B0DEEB0036B723 /* uncompr.c */; };
+		B2E3708014B0DEEB0036B723 /* zutil.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3706D14B0DEEB0036B723 /* zutil.c */; };
 		B2EB606613AE3D780000B23D /* ogvertexbuffers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B2EB606413AE3D780000B23D /* ogvertexbuffers.cpp */; };
 /* End PBXBuildFile section */
 
@@ -303,8 +318,6 @@
 		B2542A3E12D6ACF8000DE568 /* oggamesequence.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oggamesequence.h; path = ../../../engine/src/oggamesequence.h; sourceTree = SOURCE_ROOT; };
 		B2542A3F12D6ACF8000DE568 /* ogglobalvarstable.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogglobalvarstable.cpp; path = ../../../engine/src/ogglobalvarstable.cpp; sourceTree = SOURCE_ROOT; };
 		B2542A4012D6ACF8000DE568 /* ogglobalvarstable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogglobalvarstable.h; path = ../../../engine/src/ogglobalvarstable.h; sourceTree = SOURCE_ROOT; };
-		B2542A4112D6ACF8000DE568 /* oggrutility.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = oggrutility.cpp; path = ../../../engine/src/oggrutility.cpp; sourceTree = SOURCE_ROOT; };
-		B2542A4212D6ACF8000DE568 /* oggrutility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = oggrutility.h; path = ../../../engine/src/oggrutility.h; sourceTree = SOURCE_ROOT; };
 		B2542A4312D6ACF8000DE568 /* ogguibonusbar.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogguibonusbar.cpp; path = ../../../engine/src/ogguibonusbar.cpp; sourceTree = SOURCE_ROOT; };
 		B2542A4412D6ACF8000DE568 /* ogguibonusbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogguibonusbar.h; path = ../../../engine/src/ogguibonusbar.h; sourceTree = SOURCE_ROOT; };
 		B2542A4512D6ACF8000DE568 /* ogguibutton.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogguibutton.cpp; path = ../../../engine/src/ogguibutton.cpp; sourceTree = SOURCE_ROOT; };
@@ -393,6 +406,37 @@
 		B2969BC012D3B2F7009BCE6D /* Delegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Delegate.mm; sourceTree = "<group>"; };
 		B2969C2512D3B884009BCE6D /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = resources/icon.png; sourceTree = "<group>"; };
 		B2BD473012EBA15B005A7210 /* GameResources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GameResources; path = ../../data/GameResources; sourceTree = SOURCE_ROOT; };
+		B2E3704C14B0DEEB0036B723 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		B2E3704D14B0DEEB0036B723 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		B2E3704E14B0DEEB0036B723 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		B2E3705114B0DEEB0036B723 /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		B2E3705214B0DEEB0036B723 /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		B2E3705314B0DEEB0036B723 /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		B2E3705414B0DEEB0036B723 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		B2E3705614B0DEEB0036B723 /* adler32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = adler32.c; sourceTree = "<group>"; };
+		B2E3705714B0DEEB0036B723 /* compress.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = compress.c; sourceTree = "<group>"; };
+		B2E3705814B0DEEB0036B723 /* crc32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = crc32.c; sourceTree = "<group>"; };
+		B2E3705914B0DEEB0036B723 /* crc32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crc32.h; sourceTree = "<group>"; };
+		B2E3705A14B0DEEB0036B723 /* deflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = deflate.c; sourceTree = "<group>"; };
+		B2E3705B14B0DEEB0036B723 /* deflate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = deflate.h; sourceTree = "<group>"; };
+		B2E3705C14B0DEEB0036B723 /* gzio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gzio.c; sourceTree = "<group>"; };
+		B2E3705D14B0DEEB0036B723 /* infback.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = infback.c; sourceTree = "<group>"; };
+		B2E3705E14B0DEEB0036B723 /* inffast.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = inffast.c; sourceTree = "<group>"; };
+		B2E3705F14B0DEEB0036B723 /* inffast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inffast.h; sourceTree = "<group>"; };
+		B2E3706014B0DEEB0036B723 /* inffixed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inffixed.h; sourceTree = "<group>"; };
+		B2E3706114B0DEEB0036B723 /* inflate.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = inflate.c; sourceTree = "<group>"; };
+		B2E3706214B0DEEB0036B723 /* inflate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inflate.h; sourceTree = "<group>"; };
+		B2E3706314B0DEEB0036B723 /* inftrees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = inftrees.c; sourceTree = "<group>"; };
+		B2E3706414B0DEEB0036B723 /* inftrees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = inftrees.h; sourceTree = "<group>"; };
+		B2E3706514B0DEEB0036B723 /* README */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README; sourceTree = "<group>"; };
+		B2E3706614B0DEEB0036B723 /* trees.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = trees.c; sourceTree = "<group>"; };
+		B2E3706714B0DEEB0036B723 /* trees.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = trees.h; sourceTree = "<group>"; };
+		B2E3706814B0DEEB0036B723 /* uncompr.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = uncompr.c; sourceTree = "<group>"; };
+		B2E3706914B0DEEB0036B723 /* zconf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zconf.h; sourceTree = "<group>"; };
+		B2E3706A14B0DEEB0036B723 /* zconf.in.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zconf.in.h; sourceTree = "<group>"; };
+		B2E3706C14B0DEEB0036B723 /* zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zlib.h; sourceTree = "<group>"; };
+		B2E3706D14B0DEEB0036B723 /* zutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zutil.c; sourceTree = "<group>"; };
+		B2E3706E14B0DEEB0036B723 /* zutil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zutil.h; sourceTree = "<group>"; };
 		B2EB606413AE3D780000B23D /* ogvertexbuffers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ogvertexbuffers.cpp; path = ../../../engine/src/ogvertexbuffers.cpp; sourceTree = "<group>"; };
 		B2EB606513AE3D780000B23D /* ogvertexbuffers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogvertexbuffers.h; path = ../../../engine/src/ogvertexbuffers.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -639,6 +683,7 @@
 				B2BD48E112EBC62D005A7210 /* Resources */,
 				B2BD48DF12EBC5B7005A7210 /* SceneGraph */,
 				B211E47D14ACFF52006DC372 /* XML */,
+				B2E3708114B0DF090036B723 /* ZIP */,
 				B2542AA412D6ACF8000DE568 /* OrangeGrass.cpp */,
 			);
 			name = src;
@@ -750,8 +795,6 @@
 				B2542A1612D6ACF8000DE568 /* oganimationcontroller.h */,
 				B2542A3B12D6ACF8000DE568 /* ogfog.cpp */,
 				B2542A3C12D6ACF8000DE568 /* ogfog.h */,
-				B2542A4112D6ACF8000DE568 /* oggrutility.cpp */,
-				B2542A4212D6ACF8000DE568 /* oggrutility.h */,
 				B2542A5312D6ACF8000DE568 /* oglight.cpp */,
 				B2542A5412D6ACF8000DE568 /* oglight.h */,
 				B2542A5712D6ACF8000DE568 /* ogmaterial.cpp */,
@@ -1014,6 +1057,62 @@
 			name = Engine;
 			sourceTree = "<group>";
 		};
+		B2E3704B14B0DEEB0036B723 /* unzip */ = {
+			isa = PBXGroup;
+			children = (
+				B2E3704C14B0DEEB0036B723 /* crypt.h */,
+				B2E3704D14B0DEEB0036B723 /* ioapi.c */,
+				B2E3704E14B0DEEB0036B723 /* ioapi.h */,
+				B2E3705114B0DEEB0036B723 /* unzip.c */,
+				B2E3705214B0DEEB0036B723 /* unzip.h */,
+				B2E3705314B0DEEB0036B723 /* zip.c */,
+				B2E3705414B0DEEB0036B723 /* zip.h */,
+			);
+			name = unzip;
+			path = ../../../engine/src/unzip;
+			sourceTree = "<group>";
+		};
+		B2E3705514B0DEEB0036B723 /* zlib */ = {
+			isa = PBXGroup;
+			children = (
+				B2E3705614B0DEEB0036B723 /* adler32.c */,
+				B2E3705714B0DEEB0036B723 /* compress.c */,
+				B2E3705814B0DEEB0036B723 /* crc32.c */,
+				B2E3705914B0DEEB0036B723 /* crc32.h */,
+				B2E3705A14B0DEEB0036B723 /* deflate.c */,
+				B2E3705B14B0DEEB0036B723 /* deflate.h */,
+				B2E3705C14B0DEEB0036B723 /* gzio.c */,
+				B2E3705D14B0DEEB0036B723 /* infback.c */,
+				B2E3705E14B0DEEB0036B723 /* inffast.c */,
+				B2E3705F14B0DEEB0036B723 /* inffast.h */,
+				B2E3706014B0DEEB0036B723 /* inffixed.h */,
+				B2E3706114B0DEEB0036B723 /* inflate.c */,
+				B2E3706214B0DEEB0036B723 /* inflate.h */,
+				B2E3706314B0DEEB0036B723 /* inftrees.c */,
+				B2E3706414B0DEEB0036B723 /* inftrees.h */,
+				B2E3706514B0DEEB0036B723 /* README */,
+				B2E3706614B0DEEB0036B723 /* trees.c */,
+				B2E3706714B0DEEB0036B723 /* trees.h */,
+				B2E3706814B0DEEB0036B723 /* uncompr.c */,
+				B2E3706914B0DEEB0036B723 /* zconf.h */,
+				B2E3706A14B0DEEB0036B723 /* zconf.in.h */,
+				B2E3706C14B0DEEB0036B723 /* zlib.h */,
+				B2E3706D14B0DEEB0036B723 /* zutil.c */,
+				B2E3706E14B0DEEB0036B723 /* zutil.h */,
+			);
+			name = zlib;
+			path = ../../../engine/src/zlib;
+			sourceTree = "<group>";
+		};
+		B2E3708114B0DF090036B723 /* ZIP */ = {
+			isa = PBXGroup;
+			children = (
+				B2E3704B14B0DEEB0036B723 /* unzip */,
+				B2E3705514B0DEEB0036B723 /* zlib */,
+			);
+			name = ZIP;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1065,6 +1164,7 @@
 			files = (
 				B2969C2612D3B884009BCE6D /* icon.png in Resources */,
 				B2BD483112EBA15B005A7210 /* GameResources in Resources */,
+				B2E3707C14B0DEEB0036B723 /* README in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1113,7 +1213,6 @@
 				B2542AC612D6ACF8000DE568 /* ogfog.cpp in Sources */,
 				B2542AC712D6ACF8000DE568 /* oggamesequence.cpp in Sources */,
 				B2542AC812D6ACF8000DE568 /* ogglobalvarstable.cpp in Sources */,
-				B2542AC912D6ACF8000DE568 /* oggrutility.cpp in Sources */,
 				B2542ACA12D6ACF8000DE568 /* ogguibonusbar.cpp in Sources */,
 				B2542ACB12D6ACF8000DE568 /* ogguibutton.cpp in Sources */,
 				B2542ACC12D6ACF8000DE568 /* ogguilifebar.cpp in Sources */,
@@ -1181,6 +1280,21 @@
 				B211E4AA14AD0389006DC372 /* Accelerometer.m in Sources */,
 				B211E4AB14AD0389006DC372 /* TouchScreen.mm in Sources */,
 				B211E4BF14AD0E36006DC372 /* EAGLView.m in Sources */,
+				B2E3706F14B0DEEB0036B723 /* ioapi.c in Sources */,
+				B2E3707114B0DEEB0036B723 /* unzip.c in Sources */,
+				B2E3707214B0DEEB0036B723 /* zip.c in Sources */,
+				B2E3707314B0DEEB0036B723 /* adler32.c in Sources */,
+				B2E3707414B0DEEB0036B723 /* compress.c in Sources */,
+				B2E3707514B0DEEB0036B723 /* crc32.c in Sources */,
+				B2E3707614B0DEEB0036B723 /* deflate.c in Sources */,
+				B2E3707714B0DEEB0036B723 /* gzio.c in Sources */,
+				B2E3707814B0DEEB0036B723 /* infback.c in Sources */,
+				B2E3707914B0DEEB0036B723 /* inffast.c in Sources */,
+				B2E3707A14B0DEEB0036B723 /* inflate.c in Sources */,
+				B2E3707B14B0DEEB0036B723 /* inftrees.c in Sources */,
+				B2E3707D14B0DEEB0036B723 /* trees.c in Sources */,
+				B2E3707E14B0DEEB0036B723 /* uncompr.c in Sources */,
+				B2E3708014B0DEEB0036B723 /* zutil.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
