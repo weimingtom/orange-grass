@@ -218,7 +218,8 @@ int WINAPI WinMain( HINSTANCE hInstance,
 {
     char path[OG_MAX_PATH];
     GetResourcePathASCII(path, OG_MAX_PATH);
-    StartOrangeGrass(path, false);
+    std::string strPath = std::string(path) + std::string("/../assets/");
+    StartOrangeGrass(strPath, false);
 
 	char* pch;
 	pch = strtok (lpszCmdLine, " -");

@@ -13,7 +13,8 @@ bool CEditorApp::OnInit()
 {
     char path[OG_MAX_PATH];
     GetResourcePathASCII(path, OG_MAX_PATH);
-    StartOrangeGrass(path, false);
+    std::string strPath = std::string(path) + std::string("/../assets/");
+    StartOrangeGrass(strPath, false);
 
     CEditorFrame* pFrame = new CEditorFrame(
 		NULL, wxID_ANY, "OG Editor", wxDefaultPosition, wxDefaultSize, 

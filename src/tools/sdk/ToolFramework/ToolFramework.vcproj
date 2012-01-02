@@ -19,7 +19,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\lib"
-			IntermediateDirectory="..\..\..\bin\tools\toolframework"
+			IntermediateDirectory="..\..\..\..\bin\win32\tools\toolframework"
 			ConfigurationType="4"
 			CharacterSet="0"
 			>
@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\wxWidgets\include;..\..\..\engine\include;..\..\..\engine\sdk\OpenGL2\include;..\..\..\engine\SDK\PVR\include;"
+				AdditionalIncludeDirectories="..\wxWidgets\include;..\..\..\engine\include;..\..\..\engine\sdk\OpenGL2\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

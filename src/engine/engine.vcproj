@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="og"
+	Name="engine"
 	ProjectGUID="{8D9287B3-0AC5-434C-BDD4-F78B40254471}"
-	RootNamespace="og"
+	RootNamespace="engine"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -19,7 +19,7 @@
 		<Configuration
 			Name="Debug|Win32"
 			OutputDirectory=".\lib"
-			IntermediateDirectory="..\bin\og"
+			IntermediateDirectory="..\..\bin\win32\engine"
 			ConfigurationType="4"
 			CharacterSet="1"
 			>

@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9,00"
-	Name="MapEditor"
-	ProjectGUID="{7E602DBF-D2F0-4FEE-B1B9-EE22859A8B0E}"
-	RootNamespace="MapEditor"
+	Name="Viewer"
+	ProjectGUID="{026DD97A-A1CF-40D9-A652-56A2C6A47CF2}"
+	RootNamespace="Viewer"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -18,8 +18,8 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="..\..\bin\tools\MapEditor"
-			IntermediateDirectory="..\..\bin\tools\MapEditor"
+			OutputDirectory="..\..\..\bin\win32\tools\Viewer"
+			IntermediateDirectory="..\..\..\bin\win32\tools\Viewer"
 			ConfigurationType="1"
 			CharacterSet="0"
 			>
@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\SDK\wxWidgets\include;..\..\engine\include;..\..\engine\sdk\OpenGL2\include;..\SDK\ToolFramework\include"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;wxUSE_GUI=1;_WXDEBUG_;WXDEBUG=1;_CRT_SECURE_NO_WARNINGS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;wxUSE_GUI=1;_WXDEBUG_;WXDEBUG=1"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -62,7 +62,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="opengl32.lib glu32.lib glew32.lib wxbase28d.lib wxmsw28d_core.lib wxmsw28d_gl.lib wxmsw28d_adv.lib wxmsw28d_aui.lib wxtiffd.lib wxjpegd.lib wxpngd.lib wxzlibd.lib wxregexd.lib wxexpatd.lib wxmsw28d_html.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib odbc32.lib og.lib toolframework.lib"
+				AdditionalDependencies="opengl32.lib glu32.lib glew32.lib wxbase28d.lib wxmsw28d_core.lib wxmsw28d_gl.lib wxmsw28d_adv.lib wxmsw28d_aui.lib winmm.lib comctl32.lib rpcrt4.lib wsock32.lib engine.lib ToolFramework.lib"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\SDK\wxWidgets\lib\vc_lib;..\..\engine\lib;..\..\engine\sdk\OpenGL2\lib;..\SDK\ToolFramework\lib"
 				GenerateDebugInformation="true"
@@ -90,13 +90,13 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy ..\..\bin\tools\MapEditor\MapEditor.exe ..\..\game\data\MapEditor.exe"
+				CommandLine="copy ..\..\..\bin\win32\tools\viewer\Viewer.exe ..\..\..\version\Viewer.exe"
 			/>
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\Version\MapEditor\"
-			IntermediateDirectory="..\Binary\MapEditor"
+			OutputDirectory="..\Version\Viewer\"
+			IntermediateDirectory="..\Binary\Viewer"
 			ConfigurationType="1"
 			CharacterSet="0"
 			WholeProgramOptimization="1"
@@ -180,40 +180,40 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\Editor.cpp"
+				RelativePath=".\Viewer.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\Editor.h"
+				RelativePath=".\Viewer.h"
 				>
 			</File>
 			<File
-				RelativePath=".\EditorCanvas.cpp"
+				RelativePath=".\ViewerCanvas.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\EditorCanvas.h"
+				RelativePath=".\ViewerCanvas.h"
 				>
 			</File>
 			<File
-				RelativePath=".\EditorFrame.cpp"
+				RelativePath=".\ViewerFrame.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\EditorFrame.h"
+				RelativePath=".\ViewerFrame.h"
 				>
 			</File>
 			<File
-				RelativePath=".\EditorLevelScene.cpp"
+				RelativePath=".\ViewerScene.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\EditorLevelScene.h"
+				RelativePath=".\ViewerScene.h"
 				>
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\MapEditor.rc"
+			RelativePath=".\Viewer.rc"
 			>
 			<FileConfiguration
 				Name="Debug|Win32"

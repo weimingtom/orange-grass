@@ -13,7 +13,8 @@ bool CEffectViewerApp::OnInit()
 {
     char path[OG_MAX_PATH];
     GetResourcePathASCII(path, OG_MAX_PATH);
-    StartOrangeGrass(path, false);
+    std::string strPath = std::string(path) + std::string("/../assets/");
+    StartOrangeGrass(strPath, false);
 
     CEffectViewerFrame* pFrame = new CEffectViewerFrame(NULL);
 	SetTopWindow(pFrame);

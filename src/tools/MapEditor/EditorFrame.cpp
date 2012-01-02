@@ -364,7 +364,7 @@ void CEditorFrame::OnLoadResource ( CommonToolEvent<ResLoadEventData>& event )
 	const ResLoadEventData& evtData = event.GetEventCustomData();
     char path[OG_MAX_PATH];
     GetResourcePathASCII(path, OG_MAX_PATH);
-	std::string IconPath = std::string(path) + std::string("/GameResources/") + std::string(evtData.m_ResourceIcon);
+	std::string IconPath = std::string(path) + std::string("/../assets/GameResources/") + std::string(evtData.m_ResourceIcon);
     wxString resourceText = evtData.m_Resource;
 	wxString resourceGroupText = evtData.m_ResourceGroup;
 	wxString resourceIconText = wxString::Format(_T("<img src=\"%s\" />"), IconPath.c_str());
