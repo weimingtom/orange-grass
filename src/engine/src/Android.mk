@@ -1,26 +1,7 @@
 ENGINEPATH := engine/src
 
 LOCAL_C_INCLUDES += engine/include
-LOCAL_SRC_FILES +=  $(ENGINEPATH)/ogactor.cpp \
-                    $(ENGINEPATH)/ogactorairbot.cpp \
-                    $(ENGINEPATH)/ogactorbonus.cpp \
-                    $(ENGINEPATH)/ogactorbot.cpp \
-                    $(ENGINEPATH)/ogactorbullet.cpp \
-                    $(ENGINEPATH)/ogactorgaussray.cpp \
-                    $(ENGINEPATH)/ogactorlandbot.cpp \
-                    $(ENGINEPATH)/ogactormanager.cpp \
-                    $(ENGINEPATH)/ogactormissile.cpp \
-                    $(ENGINEPATH)/ogactorparamsmgr.cpp \
-                    $(ENGINEPATH)/ogactorplasmamissile.cpp \
-                    $(ENGINEPATH)/ogactorplayer.cpp \
-                    $(ENGINEPATH)/ogactorstatic.cpp \
-                    $(ENGINEPATH)/ogairphysicalobject.cpp \
-                    $(ENGINEPATH)/oganimationcontroller.cpp \
-                    $(ENGINEPATH)/ogappsettings.cpp \
-                    $(ENGINEPATH)/ogbasemesh.cpp \
-                    $(ENGINEPATH)/ogbonusphysicalobject.cpp \
-                    $(ENGINEPATH)/ogbotfallingworker.cpp \
-                    $(ENGINEPATH)/ogbotflightworker.cpp \
+LOCAL_SRC_FILES +=  $(ENGINEPATH)/ogbasemesh.cpp \
                     $(ENGINEPATH)/ogcamera.cpp \
                     $(ENGINEPATH)/ogcoloreffectshader.cpp \
                     $(ENGINEPATH)/ogeffect.cpp \
@@ -35,51 +16,29 @@ LOCAL_SRC_FILES +=  $(ENGINEPATH)/ogactor.cpp \
                     $(ENGINEPATH)/ogemitterrotatingsparks.cpp \
                     $(ENGINEPATH)/ogemitterscrollingray.cpp \
                     $(ENGINEPATH)/ogemittertrail.cpp \
-                    $(ENGINEPATH)/ogfinishlevelworker.cpp \
                     $(ENGINEPATH)/ogfog.cpp \
                     $(ENGINEPATH)/ogfpscounter.cpp \
-                    $(ENGINEPATH)/oggamesequence.cpp \
                     $(ENGINEPATH)/ogglobalvarstable.cpp \
-                    $(ENGINEPATH)/ogguibonusbar.cpp \
-                    $(ENGINEPATH)/ogguibutton.cpp \
-                    $(ENGINEPATH)/ogguilifebar.cpp \
-                    $(ENGINEPATH)/ogguiweaponpanel.cpp \
                     $(ENGINEPATH)/oginputdispatcher.cpp \
-                    $(ENGINEPATH)/oglandphysicalobject.cpp \
-                    $(ENGINEPATH)/oglevel.cpp \
-                    $(ENGINEPATH)/oglevelmanager.cpp \
                     $(ENGINEPATH)/oglight.cpp \
                     $(ENGINEPATH)/ogmaterial.cpp \
                     $(ENGINEPATH)/ogmatrix.cpp \
                     $(ENGINEPATH)/ogmesh.cpp \
-                    $(ENGINEPATH)/ogmissileflightworker.cpp \
-                    $(ENGINEPATH)/ogmissilephysicalobject.cpp \
                     $(ENGINEPATH)/ogmodel.cpp \
                     $(ENGINEPATH)/ogmodelshader.cpp \
-                    $(ENGINEPATH)/ogorientworker.cpp \
-                    $(ENGINEPATH)/ogphysicalobject.cpp \
-                    $(ENGINEPATH)/ogphysics.cpp \
-                    $(ENGINEPATH)/ogplayerphysicalobject.cpp \
                     $(ENGINEPATH)/ogquaternion.cpp \
                     $(ENGINEPATH)/ogrenderer.cpp \
                     $(ENGINEPATH)/ogrendertarget.cpp \
                     $(ENGINEPATH)/ogresource.cpp \
                     $(ENGINEPATH)/ogresourcefile.cpp \
                     $(ENGINEPATH)/ogresourcemgr.cpp \
-                    $(ENGINEPATH)/ogscenegraph.cpp \
                     $(ENGINEPATH)/ogscenemesh.cpp \
                     $(ENGINEPATH)/ogsettingsreader.cpp \
-                    $(ENGINEPATH)/ogsgeffectnode.cpp \
-                    $(ENGINEPATH)/ogsglandscapenode.cpp \
-                    $(ENGINEPATH)/ogsgnode.cpp \
                     $(ENGINEPATH)/ogshader.cpp \
                     $(ENGINEPATH)/ogshadowedsceneshader.cpp \
                     $(ENGINEPATH)/ogshadowmodelshader.cpp \
                     $(ENGINEPATH)/ogsprite.cpp \
-                    $(ENGINEPATH)/ogspritepool.cpp \
                     $(ENGINEPATH)/ogspriteshader.cpp \
-                    $(ENGINEPATH)/ogstabilizeworker.cpp \
-                    $(ENGINEPATH)/ogstaticphysicalobject.cpp \
                     $(ENGINEPATH)/ogstatistics.cpp \
                     $(ENGINEPATH)/ogterrain.cpp \
                     $(ENGINEPATH)/ogtextrenderer.cpp \
@@ -87,6 +46,4 @@ LOCAL_SRC_FILES +=  $(ENGINEPATH)/ogactor.cpp \
                     $(ENGINEPATH)/ogtexture.cpp \
                     $(ENGINEPATH)/ogvector.cpp \
                     $(ENGINEPATH)/ogvertexbuffers.cpp \
-                    $(ENGINEPATH)/ogweapon.cpp \
-                    $(ENGINEPATH)/ogworker.cpp \
                     $(ENGINEPATH)/OrangeGrass.cpp

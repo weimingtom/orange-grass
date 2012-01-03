@@ -47,7 +47,7 @@
 
 // Logging
 #ifdef WIN32
-	#define OG_LOG_INFO(STR, ...)		{FILE* pF = fopen("log.txt", "at"); if (pF) { fprintf(pF, "[INFO]: "); fprintf(pF, STR, ## __VA_ARGS__); fprintf(pF, "\n"); fclose(pF); }}
+    #define OG_LOG_INFO(STR, ...)		{FILE* pF = fopen("log.txt", "at"); if (pF) { fprintf(pF, "[INFO]: "); fprintf(pF, STR, ## __VA_ARGS__); fprintf(pF, "\n"); fclose(pF); }}
 	#define OG_LOG_WARNING(STR, ...)	{FILE* pF = fopen("log.txt", "at"); if (pF) { fprintf(pF, "[WARNING]: "); fprintf(pF, STR, ## __VA_ARGS__); fprintf(pF, "\n"); fclose(pF); }}
 	#define OG_LOG_ERROR(STR, ...)		{FILE* pF = fopen("log.txt", "at"); if (pF) { fprintf(pF, "[ERROR]: "); fprintf(pF, STR, ## __VA_ARGS__); fprintf(pF, "\n"); fclose(pF); }}
 #else
@@ -59,7 +59,7 @@
     #include <jni.h>
     #include <android/log.h>
     #define OG_LOG_INFO(STR, ...)       __android_log_print(ANDROID_LOG_INFO, "liborangegrass", STR, ##__VA_ARGS__)
-	#define OG_LOG_WARNING(STR, ...)    __android_log_print(ANDROID_LOG_WARNING, "liborangegrass", STR, ##__VA_ARGS__)
+	#define OG_LOG_WARNING(STR, ...)    __android_log_print(ANDROID_LOG_INFO, "liborangegrass", STR, ##__VA_ARGS__)
 	#define OG_LOG_ERROR(STR, ...)      __android_log_print(ANDROID_LOG_ERROR, "liborangegrass", STR, ##__VA_ARGS__)
 #endif
 #endif
@@ -67,8 +67,6 @@
 
 // floating point macros
 #define PI			        (3.1415926535f)
-#define PIOVERTWO	        (PI / 2.0f)
-#define TWOPI		        (PI * 2.0f)
 #define FP_BITS(fp)			(*(unsigned long*)&(fp))
 #define FP_ABS_BITS(fp)		(FP_BITS(fp)&0x7FFFFFFF)
 #define FP_SIGN_BIT(fp)		(FP_BITS(fp)&0x80000000)
