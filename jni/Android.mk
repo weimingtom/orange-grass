@@ -1,6 +1,6 @@
 LOCAL_PATH := $(realpath $(call my-dir)/..)
-ENGINEDIR := $(LOCAL_PATH)/engine
-GAMEDIR := $(LOCAL_PATH)/skycrasher
+ENGINEDIR := $(LOCAL_PATH)/src/engine
+GAMEDIR := $(LOCAL_PATH)/src/skycrasher
 
 include $(CLEAR_VARS)
 include $(ENGINEDIR)/src/zlib/Android.mk
@@ -9,6 +9,7 @@ include $(ENGINEDIR)/src/tinyxml/Android.mk
 include $(ENGINEDIR)/src/pvr/Android.mk
 include $(ENGINEDIR)/src/Android.mk
 include $(GAMEDIR)/game/src/Android.mk
+include $(GAMEDIR)/launcher/android/Android.mk
 
 LOCAL_MODULE     := liborangegrass
 LOCAL_CFLAGS     := -Werror

@@ -1,7 +1,7 @@
-GAMEPATH := skycrasher/game/src
+GAMEPATH := src/skycrasher/game/src
 
-LOCAL_C_INCLUDES += skycrasher/game/include \
-                    engine/include
+LOCAL_C_INCLUDES += src/skycrasher/game/include \
+                    src/engine/include
 
 LOCAL_SRC_FILES +=  $(GAMEPATH)/Game.cpp \
                     $(GAMEPATH)/GameScreenController.cpp \

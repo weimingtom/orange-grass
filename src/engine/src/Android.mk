@@ -1,6 +1,6 @@
-ENGINEPATH := engine/src
+ENGINEPATH := src/engine/src
 
-LOCAL_C_INCLUDES += engine/include
+LOCAL_C_INCLUDES += src/engine/include
 LOCAL_SRC_FILES +=  $(ENGINEPATH)/ogbasemesh.cpp \
                     $(ENGINEPATH)/ogcamera.cpp \
                     $(ENGINEPATH)/ogcoloreffectshader.cpp \

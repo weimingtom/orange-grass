@@ -1,4 +1,4 @@
-TINYXMLPATH := engine/src/tinyxml
+TINYXMLPATH := src/engine/src/tinyxml
 
 LOCAL_SRC_FILES +=  $(TINYXMLPATH)/tinystr.cpp \
                     $(TINYXMLPATH)/tinyxml.cpp \

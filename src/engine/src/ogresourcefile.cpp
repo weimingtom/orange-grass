@@ -203,8 +203,11 @@ void InitializeResourceSystem (const std::string& _ResourcePath, bool _bSingleSt
 
     if (_bSingleStorage)
     {
-        std::string resStorage = g_strResourcePath + std::string("/resources.pak");
-        g_pResourceStorage = unzOpen (resStorage.c_str());
+    	std::string resStorage = g_strResourcePath;
+#ifdef WIN32
+    	resStorage = g_strResourcePath + std::string("/resources.pak");
+#endif
+    	g_pResourceStorage = unzOpen (resStorage.c_str());
         if (!g_pResourceStorage)
         {
             OG_LOG_ERROR("Cannot open resource storage at %s", resStorage.c_str());
