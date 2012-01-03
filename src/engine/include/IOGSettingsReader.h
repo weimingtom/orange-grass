@@ -11,7 +11,6 @@
 
 #include <string>
 #include "IOGMath.h"
-#include "IOGActorParams.h"
 #include "IOGRenderer.h"
 
 

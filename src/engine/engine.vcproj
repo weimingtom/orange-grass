@@ -155,200 +155,8 @@
 				>
 			</File>
 			<Filter
-				Name="GameLogic"
-				>
-				<File
-					RelativePath=".\src\ogactor.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactor.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorairbot.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorairbot.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorbonus.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorbonus.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorbot.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorbot.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorbullet.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorbullet.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorgaussray.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorgaussray.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorlandbot.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorlandbot.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactormanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactormanager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactormissile.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactormissile.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorparamsmgr.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorparamsmgr.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorplasmamissile.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorplasmamissile.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorplayer.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorplayer.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorstatic.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogactorstatic.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\oggamesequence.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\oggamesequence.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogweapon.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogweapon.h"
-					>
-				</File>
-				<Filter
-					Name="Workers"
-					>
-					<File
-						RelativePath=".\src\ogbotfallingworker.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\ogbotfallingworker.h"
-						>
-					</File>
-					<File
-						RelativePath=".\src\ogbotflightworker.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\ogbotflightworker.h"
-						>
-					</File>
-					<File
-						RelativePath=".\src\ogfinishlevelworker.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\ogfinishlevelworker.h"
-						>
-					</File>
-					<File
-						RelativePath=".\src\ogmissileflightworker.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\ogmissileflightworker.h"
-						>
-					</File>
-					<File
-						RelativePath=".\src\ogorientworker.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\ogorientworker.h"
-						>
-					</File>
-					<File
-						RelativePath=".\src\ogstabilizeworker.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\ogstabilizeworker.h"
-						>
-					</File>
-					<File
-						RelativePath=".\src\ogworker.cpp"
-						>
-					</File>
-					<File
-						RelativePath=".\src\ogworker.h"
-						>
-					</File>
-				</Filter>
-			</Filter>
-			<Filter
 				Name="Graphics"
 				>
-				<File
-					RelativePath=".\src\oganimationcontroller.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\oganimationcontroller.h"
-					>
-				</File>
 				<File
 					RelativePath=".\src\ogbasemesh.cpp"
 					>
@@ -545,6 +353,14 @@
 					Name="Renderer"
 					>
 					<File
+						RelativePath=".\src\ogcamera.cpp"
+						>
+					</File>
+					<File
+						RelativePath=".\src\ogcamera.h"
+						>
+					</File>
+					<File
 						RelativePath=".\src\ogrenderer.cpp"
 						>
 					</File>
@@ -650,22 +466,6 @@
 				Name="Resources"
 				>
 				<File
-					RelativePath=".\src\oglevel.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\oglevel.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\oglevelmanager.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\oglevelmanager.h"
-					>
-				</File>
-				<File
 					RelativePath=".\src\ogresource.cpp"
 					>
 				</File>
@@ -691,128 +491,8 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="SceneGraph"
-				>
-				<File
-					RelativePath=".\src\ogcamera.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogcamera.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogscenegraph.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogscenegraph.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogsgeffectnode.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogsgeffectnode.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogsglandscapenode.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogsglandscapenode.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogsgnode.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogsgnode.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Physics"
-				>
-				<File
-					RelativePath=".\src\ogairphysicalobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogairphysicalobject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogbonusphysicalobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogbonusphysicalobject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\oglandphysicalobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\oglandphysicalobject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogmissilephysicalobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogmissilephysicalobject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogphysicalobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogphysicalobject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogphysics.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogphysics.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogplayerphysicalobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogplayerphysicalobject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogstaticphysicalobject.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogstaticphysicalobject.h"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="Core"
 				>
-				<File
-					RelativePath=".\src\ogappsettings.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogappsettings.h"
-					>
-				</File>
 				<File
 					RelativePath=".\src\ogfpscounter.cpp"
 					>
@@ -843,50 +523,6 @@
 				</File>
 				<File
 					RelativePath=".\src\ogstatistics.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="GUI"
-				>
-				<File
-					RelativePath=".\src\ogguibonusbar.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogguibonusbar.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogguibutton.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogguibutton.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogguilifebar.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogguilifebar.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogguiweaponpanel.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogguiweaponpanel.h"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogspritepool.cpp"
-					>
-				</File>
-				<File
-					RelativePath=".\src\ogspritepool.h"
 					>
 				</File>
 			</Filter>
@@ -1116,7 +752,7 @@
 					>
 				</File>
 				<File
-					RelativePath=".\include\IOGAnimationController.h"
+					RelativePath=".\include\IOGCamera.h"
 					>
 				</File>
 				<File
@@ -1177,54 +813,6 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="SceneGraph"
-				>
-				<File
-					RelativePath=".\include\IOGCamera.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGSceneGraph.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGSgNode.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="GameLogic"
-				>
-				<File
-					RelativePath=".\include\IOGActor.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGActorManager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGActorParams.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGActorParamsManager.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGGameEventsHandler.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGGameSequence.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGWeapon.h"
-					>
-				</File>
-			</Filter>
-			<Filter
 				Name="Math"
 				>
 				<File
@@ -1264,35 +852,11 @@
 				Name="Resources"
 				>
 				<File
-					RelativePath=".\include\IOGLevel.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGLevelManager.h"
+					RelativePath=".\include\IOGResourceFile.h"
 					>
 				</File>
 				<File
 					RelativePath=".\include\IOGResourceMgr.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="Physics"
-				>
-				<File
-					RelativePath=".\include\IOGCollisionListener.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGPhysicalObject.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGPhysicalParams.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGPhysics.h"
 					>
 				</File>
 			</Filter>
@@ -1312,10 +876,6 @@
 				Name="Core"
 				>
 				<File
-					RelativePath=".\include\IOGAppSettings.h"
-					>
-				</File>
-				<File
 					RelativePath=".\include\IOGCoreHelpers.h"
 					>
 				</File>
@@ -1333,30 +893,6 @@
 				</File>
 				<File
 					RelativePath=".\include\IOGStatistics.h"
-					>
-				</File>
-			</Filter>
-			<Filter
-				Name="GUI"
-				>
-				<File
-					RelativePath=".\include\IOGGuiBonusbar.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGGuiButton.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGGuiLifebar.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGGuiWeaponPanel.h"
-					>
-				</File>
-				<File
-					RelativePath=".\include\IOGSpritePool.h"
 					>
 				</File>
 			</Filter>

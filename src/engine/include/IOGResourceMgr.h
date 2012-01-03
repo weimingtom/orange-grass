@@ -23,6 +23,15 @@ enum OGResourcePool
 };
 
 
+// Resource loading state
+enum OGResourceState
+{
+    OG_RESSTATE_UNKNOWN,
+    OG_RESSTATE_DEFINED,
+    OG_RESSTATE_LOADED,
+};
+
+
 class IOGResourceMgr
 {
 public:

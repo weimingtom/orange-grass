@@ -28,15 +28,6 @@ enum OGResourceTypes
 };
 
 
-// Resource loading state
-enum OGResourceState
-{
-    OG_RESSTATE_UNKNOWN,
-    OG_RESSTATE_DEFINED,
-    OG_RESSTATE_LOADED,
-};
-
-
 // Base resource class
 class COGResource
 {

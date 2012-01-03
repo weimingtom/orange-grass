@@ -11,21 +11,15 @@
 
 #include "IOGCoreHelpers.h"
 #include "IOGResourceMgr.h"
-#include "IOGLevelManager.h"
-#include "IOGSceneGraph.h"
-#include "IOGActorManager.h"
-#include "IOGSpritePool.h"
-#include "IOGPhysics.h"
+#include "IOGResourceFile.h"
 #include "IOGInputDispatcher.h"
 #include "IOGRenderer.h"
 #include "IOGStatistics.h"
 #include "IOGEffectsManager.h"
-#include "IOGActorParamsManager.h"
 #include "IOGGlobalVarsTable.h"
 #include "IOGSettingsReader.h"
-#include "IOGAppSettings.h"
-#include "IOGGameSequence.h"
 #include "IOGFPSCounter.h"
+#include "IOGTerrain.h"
 #include "common.h"
 
 #include "IOGVector.h"
@@ -37,34 +31,21 @@ void StartOrangeGrass(const std::string& _ResourcePath, bool _bSingleStorage);
 void FinishOrangeGrass();
 
 IOGResourceMgr* GetResourceMgr ();
-IOGLevelManager* GetLevelManager ();
-IOGSceneGraph* GetSceneGraph ();
-IOGActorManager* GetActorManager ();
-IOGPhysics* GetPhysics ();
 IOGInputDispatcher* GetInput ();
 IOGRenderer* GetRenderer ();
 IOGStatistics* GetStatistics ();
-IOGSpritePool* GetSpritePool ();
 IOGEffectsManager* GetEffectsManager ();
-IOGActorParamsMgr* GetActorParamsMgr ();
 IOGGlobalVarsTable* GetGlobalVars ();
 IOGSettingsReader* GetSettingsReader ();
-IOGAppSettings* GetAppSettings ();
-IOGGameSequence* GetGameSequence ();
 IOGFPSCounter* GetFPSCounter ();
 
 
-// Parse the actor type string and convert it to internal type
-OGActorType ParseActorType (const std::string& _ActorTypeStr);
+IOGResourceFile* CreateResourceFile ();
+void DestroyResourceFile (IOGResourceFile* _pFile);
 
-// Parse the physics type string and convert it to internal type
-OGPhysicsType ParsePhysicsType (const std::string& _PhysicsTypeStr);
+IOGTerrain* CreateTerrain (const std::string& _TerrainFile);
+void DestroyTerrain (IOGTerrain* _pTerrain);
 
-// Parse the weapon position type string and convert it to internal type
-OGWeaponPos ParseWeaponPositionType (const std::string& _WeaponPosTypeStr);
-
-// Parse the bonus type string and convert it to internal type
-OGBonusType ParseBonusType (const std::string& _BonusTypeStr);
 
 // Parse the blend type string and convert it to internal type
 OGBlendType ParseBlendType (const std::string& _BlendTypeStr);

@@ -1,27 +1,22 @@
-#ifndef OGRESOURCEFILE_H_
-#define OGRESOURCEFILE_H_
+#ifndef IOGRESOURCEFILE_H_
+#define IOGRESOURCEFILE_H_
 
-#include "IOGResourceFile.h"
+#include <stdlib.h>
+#include <string>
 
 
 /*!***************************************************************************
- @Class COGResourceFile
+ @Class IOGResourceFile
  @Brief Resource file wrapper
-*****************************************************************************/
-class COGResourceFile : public IOGResourceFile
+ ****************************************************************************/
+class IOGResourceFile
 {
 public:
-	/*!***************************************************************************
-	@Function			COGResourceFile
-	@Description		Constructor
-	*****************************************************************************/
-	COGResourceFile();
-
 	/*!***************************************************************************
 	@Function			~COGResourceFile
 	@Description		Destructor
 	*****************************************************************************/
-	virtual ~COGResourceFile();
+    virtual ~IOGResourceFile() {}
 
     /*!***************************************************************************
 	@Function			OpenForRead
@@ -29,35 +24,35 @@ public:
 	@Returns			true if the file is open
 	@Description		Opens file for reading
 	*****************************************************************************/
-    virtual bool OpenForRead(const std::string& Filename);
+    virtual bool OpenForRead(const std::string& Filename) = 0;
 
 	/*!***************************************************************************
 	@Function			IsOpenForRead
 	@Returns			true if the file is open for read
 	@Description		Is the file open for read
 	*****************************************************************************/
-    virtual bool IsOpenForRead() const { return m_bOpenForRead; }
+    virtual bool IsOpenForRead() const = 0;
 
 	/*!***************************************************************************
 	@Function			Size
 	@Returns			The size of the opened file
 	@Description		Returns the size of the opened file
 	*****************************************************************************/
-    virtual size_t Size() const { return m_Size; }
+    virtual size_t Size() const = 0;
 
 	/*!***************************************************************************
 	@Function			DataPtr
 	@Returns			A pointer to the file data
 	@Description		Returns a pointer to the file data
 	*****************************************************************************/
-	virtual const void* DataPtr() const { return m_pData; }
+	virtual const void* DataPtr() const = 0;
 	
 	/*!***************************************************************************
 	@Function			StringPtr
 	@Returns			The file data as a string
 	@Description		Returns the file as a null-terminated string
 	*****************************************************************************/
-    virtual const char* StringPtr() const { return m_pData; }
+    virtual const char* StringPtr() const = 0;
 
 	/*!***************************************************************************
 	@Function			Read
@@ -66,7 +61,7 @@ public:
 	@Returns			true if succeeded
 	@Description		Reads number of bytes from file
 	*****************************************************************************/
-    virtual bool Read(void* lpBuffer, unsigned int dwNumberOfBytesToRead);
+    virtual bool Read(void* lpBuffer, unsigned int dwNumberOfBytesToRead) = 0;
 
     /*!***************************************************************************
 	@Function			Skip
@@ -74,15 +69,7 @@ public:
 	@Returns			true if succeeded
 	@Description		Skips reading number of bytes from file
 	*****************************************************************************/
-	virtual bool Skip(unsigned int nBytes);
-
-	/*!***************************************************************************
-	@Function			Read
-	@Output				n data
-	@Returns			true if succeeded
-	@Description		Reads data from file
-	*****************************************************************************/
-	template <typename T> bool Read(T &n) { return Read(&n, sizeof(T)); }
+	virtual bool Skip(unsigned int nBytes) = 0;
 
 	/*!***************************************************************************
 	@Function			ReadMarker
@@ -91,52 +78,14 @@ public:
 	@Returns			true if succeeded
 	@Description		Reads marker from file
 	*****************************************************************************/
-	virtual bool ReadMarker(unsigned int &nName, unsigned int &nLen);
-
-	/*!***************************************************************************
-	@Function			ReadAfterAlloc
-	@Output				lpBuffer output buffer
-	@Input				dwNumberOfBytesToRead number of bytes to read
-	@Returns			true if succeeded
-	@Description		Allocates memory and reads number of bytes from file
-	*****************************************************************************/
-	template <typename T> bool ReadAfterAlloc(
-        T* &lpBuffer, 
-        unsigned int dwNumberOfBytesToRead)
-    {
-        if(!SafeAlloc(lpBuffer, dwNumberOfBytesToRead))
-            return false;
-        return Read(lpBuffer, dwNumberOfBytesToRead);
-    }
+	virtual bool ReadMarker(unsigned int &nName, unsigned int &nLen) = 0;
 
 	/*!***************************************************************************
 	@Function			Close
 	@Description		Closes the file
 	*****************************************************************************/
-	virtual void Close();
-
-protected:
-	bool m_bOpenForRead;
-	size_t m_Size;
-	size_t m_BytesReadCount;
-	const char* m_pData;
+	virtual void Close() = 0;
 };
-
-
-/*!***************************************************************************
- @Function			InitializeResourceSystem
- @Input				_ResourcePath   storage path
- @Input				_bSingleStorage is a single storage flag
- @Description		Initializes resource system
- ****************************************************************************/
-void InitializeResourceSystem (const std::string& _ResourcePath, bool _bSingleStorage);
-
-
-/*!***************************************************************************
- @Function			ShutdownResourceSystem
- @Description		Shutdown resource system
- ****************************************************************************/
-void ShutdownResourceSystem ();
 
 
 #endif

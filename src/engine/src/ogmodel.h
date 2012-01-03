@@ -15,6 +15,7 @@
 #include "IOGSettingsReader.h"
 #include "ogmesh.h"
 #include <map>
+#include <list>
 
 
 class COGModel : public IOGModel, public COGResource
