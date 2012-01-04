@@ -27,7 +27,7 @@ class OrangeGrassView extends GLSurfaceView
     {
         super(context);
         m_context = context;
-        init(false, 0, 0);
+        init(false, 16, 0);
     }
 
     public OrangeGrassView(Context context, boolean translucent, int depth, int stencil) 
@@ -78,7 +78,6 @@ class OrangeGrassView extends GLSurfaceView
         }
         Renderer.assetsPath = appInfo.sourceDir;
         setRenderer(ogRenderer);
-        setDebugFlags(DEBUG_LOG_GL_CALLS);
     }
     
     public boolean onKeyDown(final int keyCode, final KeyEvent event) 

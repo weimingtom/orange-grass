@@ -132,6 +132,7 @@ void CStartMenuScreenController::RenderScene ()
     m_pExitBtn->Render();
 #endif
 	m_pRenderer->FinishRenderMode();
+
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
     m_pRenderer->DisplayString(m_DemoLabelPos, 0.3f, 0x7FFFFFFF, "Demo version: %d.%d", 0, 23);
 	m_pRenderer->FinishRenderMode();
