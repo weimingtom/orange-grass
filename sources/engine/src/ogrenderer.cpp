@@ -65,8 +65,8 @@ bool COGRenderer::Init ()
 {
     glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
 
-    glEnable(GL_TEXTURE_2D);
-	glActiveTexture(GL_TEXTURE0);
+    //glEnable(GL_TEXTURE_2D);
+	//glActiveTexture(GL_TEXTURE0);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 

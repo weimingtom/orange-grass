@@ -11,6 +11,7 @@
 #include <stdarg.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdarg.h>
 
 
 #include "IOGMath.h"
@@ -25,8 +26,9 @@
 
 COGTextRenderer::COGTextRenderer()
 {
-	// Initialise all variables
+	// Initialize all variables
 	memset(this, 0, sizeof(*this));
+	m_uTexture = 0;
 }
 
 
@@ -191,12 +193,26 @@ bool COGTextRenderer::APIUpLoad4444(unsigned char *pSource, unsigned int nSize, 
 	unsigned short	R, G, B, A;
 	unsigned short	*p8888,  *pDestByte;
 	unsigned char   *pSrcByte;
+	unsigned int    err = 0;
 
 	/* Only square textures */
 	x = nSize;
 	y = nSize;
 
+	err = glGetError();
+	if (err)
+	{
+		OG_LOG_ERROR("COGTextRenderer::APIUpLoad4444: previous GL failure found with %d", err);
+		return false;
+	}
+
 	glGenTextures(1, &m_uTexture);
+	err = glGetError();
+	if (err)
+	{
+		OG_LOG_ERROR("COGTextRenderer::APIUpLoad4444: glGenTextures failed with %d", err);
+		return false;
+	}
 
 	/* Load texture from data */
 
@@ -206,6 +222,13 @@ bool COGTextRenderer::APIUpLoad4444(unsigned char *pSource, unsigned int nSize, 
 		/* Allocate temporary memory */
 		p8888 = (unsigned short *) malloc(nSize * nSize * sizeof(unsigned short));
 		memset(p8888, 0, nSize * nSize * sizeof(unsigned short));
+
+		if (!p8888)
+		{
+            OG_LOG_ERROR("COGTextRenderer::APIUpLoad4444: Not enough memory!");
+			return false;
+		}
+
 		pDestByte = p8888;
 
 		/* Set source pointer (after offset of 16) */
@@ -266,17 +289,31 @@ bool COGTextRenderer::APIUpLoad4444(unsigned char *pSource, unsigned int nSize, 
 
 	/* Bind texture */
 	glBindTexture(GL_TEXTURE_2D, m_uTexture);
+	err = glGetError();
+	if (err)
+	{
+		OG_LOG_ERROR("COGTextRenderer::APIUpLoad4444: glBindTexture failed with %d", err);
+		free(p8888);
+		return false;
+	}
 
 	/* Default settings: bilinear */
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	err = glGetError();
+	if (err)
+	{
+		OG_LOG_ERROR("COGTextRenderer::APIUpLoad4444: glTexParameterf failed with %d", err);
+		free(p8888);
+		return false;
+	}
 
 	/* Now load texture */
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, x, y, 0, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, p8888);
-
-	if (glGetError())
+	err = glGetError();
+	if (err)
 	{
-		OG_LOG_ERROR("COGTextRenderer::APIUpLoad4444: glTexImage2D failed");
+		OG_LOG_ERROR("COGTextRenderer::APIUpLoad4444: glTexImage2D failed with %d", err);
 		free(p8888);
 		return false;
 	}
