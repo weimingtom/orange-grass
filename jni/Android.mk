@@ -1,6 +1,6 @@
 LOCAL_PATH := $(realpath $(call my-dir)/..)
-ENGINEDIR := $(LOCAL_PATH)/src/engine
-GAMEDIR := $(LOCAL_PATH)/src/skycrasher
+ENGINEDIR := $(LOCAL_PATH)/sources/engine
+GAMEDIR := $(LOCAL_PATH)/sources/skycrasher
 
 include $(CLEAR_VARS)
 include $(ENGINEDIR)/src/zlib/Android.mk

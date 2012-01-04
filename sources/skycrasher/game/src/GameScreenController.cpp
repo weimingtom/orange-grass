@@ -10,7 +10,7 @@
 #include "Game.h"
 
 
-static bool g_bShadowsEnabled = true;
+static bool g_bShadowsEnabled = false;
 
 
 CGameScreenController::CGameScreenController() :	m_pGlobalVars(NULL),

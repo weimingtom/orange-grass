@@ -1,4 +1,4 @@
-ZLIBPATH := src/engine/src/zlib
+ZLIBPATH := sources/engine/src/zlib
 
 LOCAL_SRC_FILES +=  $(ZLIBPATH)/adler32.c \
                     $(ZLIBPATH)/compress.c \

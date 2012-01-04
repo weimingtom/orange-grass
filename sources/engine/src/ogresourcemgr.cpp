@@ -40,6 +40,10 @@ std::string COGResourceMgr::GetUIPath (const std::string& _File) const
 	{
 		UIProfile = std::string("iPad/");
 	}
+	else if (prof.compare("android_WVGA") == 0)
+	{
+		UIProfile = std::string("android_WVGA/");
+	}
 
 	return std::string("/UI/") + UIProfile + UIMode + _File;
 }
