@@ -35,5 +35,6 @@ public class OrangeGrassLib {
       * @param x the current touch x coordinate
       * @param y the current touch y coordinate
       */
-     public static native void ontouch(float x, float y);
+     public static native void ontouchdown(float x, float y);
+     public static native void ontouchup(float x, float y);
 }

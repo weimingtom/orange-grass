@@ -31,20 +31,22 @@ class OrangeGrassView extends GLSurfaceView {
         init(false, 0, 0);
     }
 
-    public OrangeGrassView(Context context, boolean translucent, int depth, int stencil) {
+    public OrangeGrassView(Context context, boolean translucent, int depth, int stencil) 
+    {
         super(context);
         m_context = context;
         init(translucent, depth, stencil);
     }
 
-    private void init(boolean translucent, int depth, int stencil) {
-
+    private void init(boolean translucent, int depth, int stencil) 
+    {
         /* By default, GLSurfaceView() creates a RGB_565 opaque surface.
          * If we want a translucent one, we should change the surface's
          * format here, using PixelFormat.TRANSLUCENT for GL Surfaces
          * is interpreted as any 32-bit surface with alpha by SurfaceFlinger.
          */
-        if (translucent) {
+        if (translucent) 
+        {
             this.getHolder().setFormat(PixelFormat.TRANSLUCENT);
         }
 
@@ -68,7 +70,7 @@ class OrangeGrassView extends GLSurfaceView {
         PackageManager packMgmr = m_context.getPackageManager();
         try 
         {
-            appInfo = packMgmr.getApplicationInfo("og.app", 0);
+            appInfo = packMgmr.getApplicationInfo("skycrasher.launcher.android", 0);
         }
         catch (NameNotFoundException e) 
         {
@@ -92,19 +94,24 @@ class OrangeGrassView extends GLSurfaceView {
     
     public boolean onTouchEvent(final MotionEvent event)
     {
-        queueEvent(new Runnable() {
-            // This method will be called on the rendering
-            // thread:
-            public void run() {
-            	ogRenderer.onTouchEvent(event);
-            }});
+        queueEvent(new Runnable() 
+			        {
+			            // This method will be called on the rendering
+			            // thread:
+			            public void run() 
+			            {
+			            	ogRenderer.onTouchEvent(event);
+			            }
+			        });
         return true;
     }
     
 
-    private static class ContextFactory implements GLSurfaceView.EGLContextFactory {
+    private static class ContextFactory implements GLSurfaceView.EGLContextFactory 
+    {
         private static int EGL_CONTEXT_CLIENT_VERSION = 0x3098;
-        public EGLContext createContext(EGL10 egl, EGLDisplay display, EGLConfig eglConfig) {
+        public EGLContext createContext(EGL10 egl, EGLDisplay display, EGLConfig eglConfig) 
+        {
             Log.w(TAG, "creating OpenGL ES 2.0 context");
             checkEglError("Before eglCreateContext", egl);
             int[] attrib_list = {EGL_CONTEXT_CLIENT_VERSION, 2, EGL10.EGL_NONE };
@@ -113,21 +120,26 @@ class OrangeGrassView extends GLSurfaceView {
             return context;
         }
 
-        public void destroyContext(EGL10 egl, EGLDisplay display, EGLContext context) {
+        public void destroyContext(EGL10 egl, EGLDisplay display, EGLContext context) 
+        {
             egl.eglDestroyContext(display, context);
         }
     }
 
-    private static void checkEglError(String prompt, EGL10 egl) {
+    private static void checkEglError(String prompt, EGL10 egl) 
+    {
         int error;
-        while ((error = egl.eglGetError()) != EGL10.EGL_SUCCESS) {
+        while ((error = egl.eglGetError()) != EGL10.EGL_SUCCESS) 
+        {
             Log.e(TAG, String.format("%s: EGL error: 0x%x", prompt, error));
         }
     }
 
-    private static class ConfigChooser implements GLSurfaceView.EGLConfigChooser {
+    private static class ConfigChooser implements GLSurfaceView.EGLConfigChooser 
+    {
 
-        public ConfigChooser(int r, int g, int b, int a, int depth, int stencil) {
+        public ConfigChooser(int r, int g, int b, int a, int depth, int stencil) 
+        {
             mRedSize = r;
             mGreenSize = g;
             mBlueSize = b;
@@ -233,8 +245,15 @@ class OrangeGrassView extends GLSurfaceView {
 
         public void onTouchEvent(MotionEvent event)
         {
-            Log.i(VIEW_LOG_TAG, String.format("Touch: [x=%f, y=%f]", event.getX(), event.getY()));
-            OrangeGrassLib.ontouch(event.getX(), event.getY());
+            int action = event.getAction();
+            if (action == MotionEvent.ACTION_DOWN)
+            {
+            	OrangeGrassLib.ontouchdown(event.getX(), event.getY());
+            }
+            else if (action == MotionEvent.ACTION_UP)
+            {
+            	OrangeGrassLib.ontouchup(event.getX(), event.getY());
+            }
         }
 
         public void onKeyDown(int keyCode, KeyEvent event) 

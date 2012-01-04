@@ -41,8 +41,21 @@ void renderFrame()
 }
 
 
-void onTouch(float x, float y)
+void onTouchDown(float x, float y)
 {
+	if (pGameSystem)
+	{
+		pGameSystem->OnPointerDown((int)x, (int)y);
+	}
+}
+
+
+void onTouchUp(float x, float y)
+{
+	if (pGameSystem)
+	{
+		pGameSystem->OnPointerUp((int)x, (int)y);
+	}
 }
 
 
@@ -50,7 +63,8 @@ extern "C"
 {
     JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_init(JNIEnv * env, jobject obj, jint width, jint height, jstring assetsPath);
     JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_step(JNIEnv * env, jobject obj);
-    JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_ontouch(JNIEnv * env, jobject obj, jfloat x, jfloat y);
+    JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_ontouchdown(JNIEnv * env, jobject obj, jfloat x, jfloat y);
+    JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_ontouchup(JNIEnv * env, jobject obj, jfloat x, jfloat y);
 };
 
 JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_init(JNIEnv * env, jobject obj, jint width, jint height, jstring assetsPath)
@@ -66,7 +80,12 @@ JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_step(JNIE
     renderFrame();
 }
 
-JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_ontouch(JNIEnv * env, jobject obj, jfloat x, jfloat y)
+JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_ontouchdown(JNIEnv * env, jobject obj, jfloat x, jfloat y)
 {
-    onTouch(x, y);
+    onTouchDown(x, y);
+}
+
+JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_ontouchup(JNIEnv * env, jobject obj, jfloat x, jfloat y)
+{
+    onTouchUp(x, y);
 }
