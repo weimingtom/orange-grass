@@ -232,7 +232,7 @@ bool COGTextRenderer::APIUpLoad4444(unsigned char *pSource, unsigned int nSize, 
 
 		if (!p8888)
 		{
-            OG_LOG_WARNING("COGTextRenderer::APIUpLoad4444: Not enough memory!");
+            OG_LOG_ERROR("COGTextRenderer::APIUpLoad4444: Not enough memory!");
 			return false;
 		}
 
@@ -270,7 +270,7 @@ bool COGTextRenderer::APIUpLoad4444(unsigned char *pSource, unsigned int nSize, 
 
 	if (glGetError())
 	{
-		OG_LOG_WARNING("COGTextRenderer::APIUpLoad4444: glTexImage2D failed");
+		OG_LOG_ERROR("COGTextRenderer::APIUpLoad4444: glTexImage2D failed");
 		free(p8888);
 		return false;
 	}

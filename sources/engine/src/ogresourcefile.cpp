@@ -54,7 +54,6 @@ bool COGResourceFile::OpenForRead(const std::string& Filename)
         char strCurrentFileName[2048];
         std::string strPath = std::string("assets/GameResources") + Filename;
 		unz_file_info file_info;
-        OG_LOG_INFO("COGResourceFile::OpenForRead: Loading %s from resource storage.", strPath.c_str());
 		if ( unzLocateFile ( g_pResourceStorage, strPath.c_str(), 2 ) == UNZ_OK )
 		{
 			unzGetCurrentFileInfo ( g_pResourceStorage, &file_info,
@@ -211,10 +210,6 @@ void InitializeResourceSystem (const std::string& _ResourcePath, bool _bSingleSt
         {
             OG_LOG_ERROR("Cannot open resource storage at %s", resStorage.c_str());
         }
-        else
-        {
-            OG_LOG_INFO("Resource storage at %s opened SUCCESSFULLY", resStorage.c_str());
-        }
     }
 }
 
@@ -228,7 +223,6 @@ void ShutdownResourceSystem ()
     if (g_pResourceStorage)
     {
         unzClose ( g_pResourceStorage );
-        OG_LOG_INFO("Resource storage was closed");
         g_pResourceStorage = NULL;
     }
 }
