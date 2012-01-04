@@ -217,8 +217,9 @@ int WINAPI WinMain( HINSTANCE hInstance,
 {
     char path[OG_MAX_PATH];
     GetResourcePathASCII(path, OG_MAX_PATH);
-    std::string strPath = std::string(path) + std::string("/../assets/");
-    StartOrangeGrass(strPath, false);
+    //std::string strPath = std::string(path) + std::string("/../assets/");
+    std::string strPath = std::string(path) + std::string("/orange-grass.apk");
+    StartOrangeGrass(strPath, true);
     StartGameCore();
 
 	char* pch;
