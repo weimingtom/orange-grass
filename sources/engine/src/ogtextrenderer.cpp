@@ -28,7 +28,6 @@ COGTextRenderer::COGTextRenderer()
 {
 	// Initialize all variables
 	memset(this, 0, sizeof(*this));
-	m_uTexture = 0;
 }
 
 
@@ -121,7 +120,7 @@ void COGTextRenderer::DisplayText(float fPosX, float fPosY, float fScale, unsign
 
 	/* Reading the arguments to create our Text string */
 	va_start(args, pszFormat);
-	vsprintf(Text, pszFormat, args);		// Could use _vsnprintf but e.g. LinuxVP does not support it
+	vsprintf(Text, pszFormat, args);
 	va_end(args);
 
 	/* nothing to be drawn */
@@ -199,13 +198,6 @@ bool COGTextRenderer::APIUpLoad4444(unsigned char *pSource, unsigned int nSize, 
 	x = nSize;
 	y = nSize;
 
-	err = glGetError();
-	if (err)
-	{
-		OG_LOG_ERROR("COGTextRenderer::APIUpLoad4444: previous GL failure found with %d", err);
-		return false;
-	}
-
 	glGenTextures(1, &m_uTexture);
 	err = glGetError();
 	if (err)
@@ -215,7 +207,6 @@ bool COGTextRenderer::APIUpLoad4444(unsigned char *pSource, unsigned int nSize, 
 	}
 
 	/* Load texture from data */
-
 	/* Format is 4444-packed, expand it into 8888 */
 	if (nMode==0)
 	{
