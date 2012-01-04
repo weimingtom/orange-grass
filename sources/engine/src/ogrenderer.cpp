@@ -449,7 +449,7 @@ void COGRenderer::FinishRenderMode()
 		m_pText->Flush();
 		glDisable(GL_BLEND); 
 		glEnable(GL_DEPTH_TEST);
-	    glEnable(GL_CULL_FACE);
+	    //glEnable(GL_CULL_FACE);
 		break;
 
     case OG_RENDERMODE_SHADOWMAP:

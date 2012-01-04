@@ -29,14 +29,17 @@ bool setupGraphics(int w, int h, const char* assetsPath)
 
 void renderFrame()
 {
-	if (pGameSystem && pGameSystem->GetControllerState() != SYSSTATE_EXIT)
+	if (pGameSystem)
 	{
-		pGameSystem->Update(33);
-		pGameSystem->Draw();
-	}
-	else
-	{
-		OG_SAFE_DELETE(pGameSystem);
+		if (pGameSystem->GetControllerState() != SYSSTATE_EXIT)
+		{
+			pGameSystem->Update(33);
+			pGameSystem->Draw();
+		}
+		else
+		{
+			OG_SAFE_DELETE(pGameSystem);
+		}
 	}
 }
 

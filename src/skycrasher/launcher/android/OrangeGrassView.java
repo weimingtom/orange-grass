@@ -6,11 +6,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
-import android.view.View;
 
 import javax.microedition.khronos.egl.EGL10;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -19,7 +17,8 @@ import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.opengles.GL10;
 
 
-class OrangeGrassView extends GLSurfaceView {
+class OrangeGrassView extends GLSurfaceView 
+{
     private static String TAG = "OrangeGrassView";
     private static Renderer ogRenderer = null;
     private Context m_context = null;
@@ -79,30 +78,32 @@ class OrangeGrassView extends GLSurfaceView {
         }
         Renderer.assetsPath = appInfo.sourceDir;
         setRenderer(ogRenderer);
+        setDebugFlags(DEBUG_LOG_GL_CALLS);
     }
     
     public boolean onKeyDown(final int keyCode, final KeyEvent event) 
     {
-        queueEvent(new Runnable() {
-            // This method will be called on the rendering
-            // thread:
-            public void run() {
+        queueEvent(new Runnable() 
+        {
+            // This method will be called on the rendering thread:
+            public void run() 
+            {
             	ogRenderer.onKeyDown(keyCode, event);
-            }});
+            }
+        });
         return true;
     }
     
     public boolean onTouchEvent(final MotionEvent event)
     {
         queueEvent(new Runnable() 
-			        {
-			            // This method will be called on the rendering
-			            // thread:
-			            public void run() 
-			            {
-			            	ogRenderer.onTouchEvent(event);
-			            }
-			        });
+        {
+            // This method will be called on the rendering thread:
+            public void run()
+            {
+            	ogRenderer.onTouchEvent(event);
+            }
+        });
         return true;
     }
     

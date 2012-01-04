@@ -270,6 +270,7 @@ bool COGTextRenderer::APIUpLoad4444(unsigned char *pSource, unsigned int nSize, 
 
 	if (glGetError())
 	{
+		OG_LOG_WARNING("COGTextRenderer::APIUpLoad4444: glTexImage2D failed");
 		free(p8888);
 		return false;
 	}
