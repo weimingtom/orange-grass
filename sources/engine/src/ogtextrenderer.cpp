@@ -59,11 +59,16 @@ bool COGTextRenderer::SetTextures(
 	}
 
 	/* Check whether textures are already set up just in case */
-	if (m_bTexturesSet) return true;
+	if (m_bTexturesSet) 
+        return true;
 
 	/* This is the texture with the fonts. Type 1 because there is only alpha component (RGB are white). */
 	bStatus = APIUpLoad4444((unsigned char *)DisplayTextABC_Pixels, 256, 1);
-	if (!bStatus) return false;
+	if (!bStatus) 
+    {
+        OG_LOG_ERROR("COGTextRenderer::SetTextures: Failed to load font");
+        return false;
+    }
 
 	/* INDEX BUFFERS */
 	m_pwFacesFont = (unsigned short*) malloc(DISPLAYTEXT_MAX_RENDERABLE_LETTERS * 2 * 3 * sizeof(unsigned short));
@@ -161,7 +166,8 @@ void COGTextRenderer::DisplayText(float fPosX, float fPosY, float fScale, unsign
 void COGTextRenderer::ReleaseTextures()
 {
 	/* Only release textures if they've been allocated */
-	if (!m_bTexturesSet) return;
+	if (!m_bTexturesSet) 
+        return;
 
 	/* Release IndexBuffer */
 	free(m_pwFacesFont);
@@ -299,7 +305,8 @@ unsigned int COGTextRenderer::UpdateLine(
 	float		fScaleX, fScaleY, fPreXPos;
 
 	/* Nothing to update */
-	if (Text==NULL) return 0;
+	if (Text==NULL) 
+        return 0;
 
 	if (fScale>0)
 	{
@@ -521,7 +528,7 @@ int COGTextRenderer::Flush()
 // Stores, writes and restores Render States
 void COGTextRenderer::APIRenderStates(int nAction)
 {
-	static GLint iFrontFace, iCullFaceMode;//, iDestBlend, iSrcBlend;
+	static GLint iFrontFace, iCullFaceMode;
 	static GLboolean bCullFace, bDepthTest, bBlend;
 
 	/* Saving or restoring states ? */
@@ -533,8 +540,6 @@ void COGTextRenderer::APIRenderStates(int nAction)
 		bBlend = glIsEnabled(GL_BLEND);
 		glGetIntegerv(GL_FRONT_FACE, &iFrontFace);
 		glGetIntegerv(GL_CULL_FACE_MODE, &iCullFaceMode);
-		//glGetIntegerv(GL_BLEND_DST, &iDestBlend);
-		//glGetIntegerv(GL_BLEND_SRC, &iSrcBlend);
         glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, 0 );
 
         /* Culling */
@@ -561,7 +566,6 @@ void COGTextRenderer::APIRenderStates(int nAction)
 		glFrontFace(iFrontFace);
 		glCullFace(iCullFaceMode);
 
-		//glBlendFunc(iSrcBlend, iDestBlend);
 		if(bBlend == 0) 
             glDisable(GL_BLEND);
 		break;

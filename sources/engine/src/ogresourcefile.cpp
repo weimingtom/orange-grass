@@ -79,7 +79,6 @@ bool COGResourceFile::OpenForRead(const std::string& Filename)
     else
     {
         std::string strFilename = g_strResourcePath + std::string("/GameResources") + Filename;
-        OG_LOG_INFO("COGResourceFile::OpenForRead: Loading %s from filesystem.", strFilename.c_str());
 	    FILE* pFile = fopen(strFilename.c_str(), "rb");
 	    if (pFile)
 	    {

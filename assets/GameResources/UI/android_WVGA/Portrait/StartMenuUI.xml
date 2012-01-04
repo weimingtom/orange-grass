@@ -4,5 +4,5 @@
 	<Back sprite="back" x="129" y="145" width="222" height="189" />
 	<NewBtn sprite_n="new_n" sprite_pr="new_pr" x="129" y="215" width="222" height="42" />
 	<ExitBtn sprite_n="exit_n" sprite_pr="exit_pr" x="129" y="255" width="222" height="42" />
-	<DemoLabel x="60" y="693" />
+	<DemoLabel x="60" y="93" />
 </StartMenu>

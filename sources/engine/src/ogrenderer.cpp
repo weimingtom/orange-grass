@@ -120,13 +120,7 @@ void COGRenderer::SetViewport (
 
 	m_bLandscapeMode = (GetGlobalVars()->GetIVar("landscape") == 1);
 
-#ifdef WIN32
-	MatrixOrthoRH(m_mOrthoProj, (float)m_Width, (float)m_Height, -1, 1, false);
-    MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(m_Width)/float(m_Height), m_fZNear, m_fZFar, false);
- 	m_pText->SetTextures(_Width, _Height, false);
-    m_mTextProj.f[0] = 2.0f/(m_Width);
-    m_mTextProj.f[5] = -2.0f/(m_Height);
-#else
+#ifndef WIN32
 	if (m_bLandscapeMode)
 	{
 		MatrixOrthoRH(m_mOrthoProj, (float)m_Height, (float)m_Width, -1, 1, true);
@@ -136,6 +130,7 @@ void COGRenderer::SetViewport (
 		m_mTextProj.f[5] = -2.0f/(m_Width);
 	}
 	else
+#endif
 	{
 		MatrixOrthoRH(m_mOrthoProj, (float)m_Width, (float)m_Height, -1, 1, false);
 		MatrixPerspectiveFovRH(m_mProjection, m_fFOV, float(m_Width)/float(m_Height), m_fZNear, m_fZFar, false);
@@ -143,7 +138,6 @@ void COGRenderer::SetViewport (
 		m_mTextProj.f[0] = 2.0f/(m_Width);
 		m_mTextProj.f[5] = -2.0f/(m_Height);
 	}
-#endif
 
     m_pCamera->SetupViewport(m_mProjection, m_fFOV);
 
