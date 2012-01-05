@@ -228,9 +228,25 @@ class OrangeGrassView extends GLSurfaceView
     private static class Renderer implements GLSurfaceView.Renderer 
     {
         public static String assetsPath;
+        private static long startTime;
 
         public void onDrawFrame(GL10 gl) 
         {
+       	    long endTime = System.currentTimeMillis();
+       	    long dt = endTime - startTime;
+       	    if (dt < 33)
+       	    {
+				try 
+       	        {
+					Thread.sleep(33 - dt);
+				} 
+				catch (InterruptedException e) 
+				{
+					e.printStackTrace();
+				}
+       	    }
+            startTime = System.currentTimeMillis();
+        	    
             OrangeGrassLib.step();
         }
 
@@ -241,6 +257,7 @@ class OrangeGrassView extends GLSurfaceView
 
         public void onSurfaceCreated(GL10 gl, EGLConfig config) 
         {
+            startTime = System.currentTimeMillis();
         }
 
         public void onTouchEvent(MotionEvent event)
