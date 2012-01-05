@@ -37,4 +37,5 @@ public class OrangeGrassLib {
       */
      public static native void ontouchdown(float x, float y);
      public static native void ontouchup(float x, float y);
+     public static native void onaccel(float x, float y);
 }

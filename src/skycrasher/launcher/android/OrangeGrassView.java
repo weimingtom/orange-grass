@@ -5,6 +5,9 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.PixelFormat;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.opengl.GLSurfaceView;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,11 +20,13 @@ import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.opengles.GL10;
 
 
-class OrangeGrassView extends GLSurfaceView 
+class OrangeGrassView extends GLSurfaceView implements SensorEventListener
 {
     private static String TAG = "OrangeGrassView";
     private static Renderer ogRenderer = null;
     private Context m_context = null;
+    private float gravity[] = new float[3];
+    private float accel[] = new float[3];
 
     public OrangeGrassView(Context context) 
     {
@@ -106,6 +111,28 @@ class OrangeGrassView extends GLSurfaceView
         return true;
     }
     
+    public void onSensorChanged(SensorEvent event)
+    {
+    	if (event.sensor.getType() != Sensor.TYPE_ACCELEROMETER)
+    		return;
+    	
+    	final float alpha = 0.8f;
+    	gravity[0] = alpha*gravity[0] + (1 - alpha)*event.values[0];
+    	gravity[1] = alpha*gravity[1] + (1 - alpha)*event.values[1];
+    	gravity[2] = alpha*gravity[2] + (1 - alpha)*event.values[2];
+    	accel[0] = event.values[0] - gravity[0];
+    	accel[1] = event.values[1] - gravity[1];
+    	accel[2] = event.values[2] - gravity[2];
+    	
+    	//float accelX = event.values[0];
+    	//float accelY = event.values[1];
+    	OrangeGrassLib.onaccel(accel[0], accel[1]);
+    }
+    
+	public void onAccuracyChanged(Sensor sensor, int accuracy) 
+	{
+		// TODO Auto-generated method stub
+	}
 
     private static class ContextFactory implements GLSurfaceView.EGLContextFactory 
     {
