@@ -9,7 +9,7 @@
 #ifndef OGACTORSTATIC_H_
 #define OGACTORSTATIC_H_
 
-#include "OGActor.h"
+#include "ogactor.h"
 
 
 class COGActorStatic : public COGActor
