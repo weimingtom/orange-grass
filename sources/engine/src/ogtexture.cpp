@@ -57,16 +57,50 @@ bool COGTexture::Load ()
         break;
 	}
 
-	PVR_Texture_Header header;
-	if(!LoadTextureFromPVR(m_ResourceFile.c_str(), &m_TextureId, &header))
+    TextureImageData* pImgData = LoadTextureFromPVR(m_ResourceFile.c_str());
+	if(!pImgData)
 	{
         OG_LOG_ERROR("Failed to load texture file %s", m_ResourceFile.c_str());
 		return false;
 	}
 
-	m_Width = header.dwWidth;
-	m_Height = header.dwHeight;
-	m_MappingsList[0]->size = OGVec2((float)m_Width, (float)m_Height);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glGenTextures(1, &m_TextureId);
+    glBindTexture(GL_TEXTURE_2D, m_TextureId);
+
+	m_Width = pImgData->dwWidth;
+	m_Height = pImgData->dwHeight;
+    for (unsigned int i = 0; i <= pImgData->dwMipLevels; ++i)
+    {
+        if (pImgData->isCompressed)
+        {
+            glCompressedTexImage2D(GL_TEXTURE_2D, i, pImgData->textureFormat, 
+                pImgData->pLevels[i].dwSizeX, pImgData->pLevels[i].dwSizeY, 0,
+                pImgData->pLevels[i].dwDataSize, pImgData->pLevels[i].pData);
+        }
+        else
+        {
+            glTexImage2D(GL_TEXTURE_2D, i, pImgData->textureType,
+                pImgData->pLevels[i].dwSizeX, pImgData->pLevels[i].dwSizeY, 0, 
+                pImgData->textureType, pImgData->textureFormat, pImgData->pLevels[i].pData);
+        }
+        free(pImgData->pLevels[i].pData);
+    }
+
+    if(!pImgData->dwMipLevels)
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
+    else
+    {
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
+    free(pImgData->pLevels);
+    free(pImgData);
+    pImgData = NULL;
+    m_MappingsList[0]->size = OGVec2((float)m_Width, (float)m_Height);
 
 	std::vector<IOGMapping*>::iterator iter = m_MappingsList.begin();
 	for (; iter != m_MappingsList.end(); ++iter)

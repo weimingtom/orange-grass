@@ -71,6 +71,16 @@ void FinishGameCore()
 	g_PhysicsTypeLookup.clear();
 	g_WeaponPosLookup.clear();
 	g_BonusTypeLookup.clear();
+
+    OG_SAFE_DELETE(g_pLevelMgr);
+    OG_SAFE_DELETE(g_pGame);
+    OG_SAFE_DELETE(g_pActorMgr);
+    OG_SAFE_DELETE(g_pSg);
+    OG_SAFE_DELETE(g_pPhysics);
+    OG_SAFE_DELETE(g_pSprPool);
+    OG_SAFE_DELETE(g_pActorParamsMgr);
+    OG_SAFE_DELETE(g_pAppSettings);
+    OG_SAFE_DELETE(g_pGameSequence);
 }
 
 

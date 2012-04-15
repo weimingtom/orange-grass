@@ -259,7 +259,7 @@ void COGPhysicalObject::Update (unsigned long _ElapsedTime)
 
     m_vTorque = OGVec3(0,0,0);
 	m_vMove = OGVec3(0,0,0);
-    m_fStrafe /= 1.08f;
+    m_fStrafe *= 0.9f;
 
     m_bUpdated = true;
 }

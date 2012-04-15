@@ -84,7 +84,6 @@ public:
 private:
 
     SystemState         m_State;
-    IOGScreenController*  m_pStartMenuScreen;
     IOGScreenController*  m_pLoadScreen;
     IOGScreenController*  m_pGameScreen;
     IOGScreenController*  m_pCurScreen;

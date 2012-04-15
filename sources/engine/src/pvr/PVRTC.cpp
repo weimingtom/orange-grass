@@ -116,23 +116,15 @@ const unsigned int ETC_MIN_TEXHEIGHT	= 4;
 
 
 // filename			Filename of the .PVR file to load the texture from
-// texName			the OpenGL ES texture name as returned by glBindTexture
-// psTextureHeader	Pointer to a PVR_Texture_Header struct. Modified to
-//					contain the header data of the returned texture Ignored if NULL.	
 // Allows textures to be stored in binary PVR files and loaded in. Loads the whole texture
-unsigned int LoadTextureFromPVR(
-    const char* const filename, 
-    GLuint* const texName, 
-    const void* psTextureHeader)
+TextureImageData* LoadTextureFromPVR(const char* const filename)
 {
     COGResourceFile TexFile;
     if (!TexFile.OpenForRead(filename)) 
-        return 0;
+        return NULL;
 
     PVR_Texture_Header* psPVRHeader = (PVR_Texture_Header*)TexFile.DataPtr();
     const void* const texPtr = NULL;
-    unsigned int nLoadFromLevel = 0;
-    unsigned int u32NumSurfs;
 
     // perform checks for old PVR psPVRHeader
     if(psPVRHeader->dwHeaderSize!=sizeof(PVR_Texture_Header))
@@ -143,15 +135,16 @@ unsigned int LoadTextureFromPVR(
             // react to old psPVRHeader: i.e. fill in numsurfs as this is missing from old header
             OG_LOG_WARNING("LoadTextureFromPVR: this is an old pvr.");
             if(psPVRHeader->dwpfFlags & PVRTEX_CUBEMAP)
-                u32NumSurfs = 6;
-            else
-                u32NumSurfs = 1;
+            {
+                OG_LOG_ERROR("LoadTextureFromPVR: cubmap textures are not supported.");
+                return NULL;
+            }
         }
         else
         {	
             // not a pvr at all
             OG_LOG_ERROR("LoadTextureFromPVR: not a valid pvr.");
-            return 0;
+            return NULL;
         }
     }
     else
@@ -161,25 +154,16 @@ unsigned int LoadTextureFromPVR(
         {	
             // encoded with old version of PVRTexTool before zero numsurfs bug found.
             if(psPVRHeader->dwpfFlags & PVRTEX_CUBEMAP)
-                u32NumSurfs = 6;
-            else
-                u32NumSurfs = 1;
-        }
-        else
-        {
-            u32NumSurfs = psPVRHeader->dwNumSurfs;
+            {
+                OG_LOG_ERROR("LoadTextureFromPVR: cubmap textures are not supported.");
+                return NULL;
+            }
         }
     }
 
-    GLuint textureName;
     GLenum textureFormat = 0;
     GLenum textureType = GL_RGB;
-    GLenum eTarget;
-
     bool IsPVRTCSupported = true;
-
-    // install warning value
-    *texName = 0;
     bool IsCompressedFormatSupported = false, IsCompressedFormat = false;
 
     /* Only accept untwiddled data UNLESS texture format is PVRTC */
@@ -189,42 +173,50 @@ unsigned int LoadTextureFromPVR(
     {
         // We need to load untwiddled textures -- hw will twiddle for us.
         OG_LOG_ERROR("LoadTextureFromPVR: texture should be untwiddled.");
-        return 0;
+        return NULL;
     }
 
+    unsigned int szElement = 0;
     switch(psPVRHeader->dwpfFlags & PVRTEX_PIXELTYPE)
     {
     case OGL_RGBA_4444:
+        szElement = 2;
         textureFormat = GL_UNSIGNED_SHORT_4_4_4_4;
         textureType = GL_RGBA;
         break;
 
     case OGL_RGBA_5551:
+        szElement = 2;
         textureFormat = GL_UNSIGNED_SHORT_5_5_5_1;
         textureType = GL_RGBA;
         break;
 
     case OGL_RGBA_8888:
+        szElement = 4;
         textureFormat = GL_UNSIGNED_BYTE;
         textureType = GL_RGBA;
         break;
 
     case OGL_RGB_565:
+        szElement = 2;
         textureFormat = GL_UNSIGNED_SHORT_5_6_5;
         textureType = GL_RGB;
         break;
 
     case OGL_RGB_888:
+        szElement = 3;
         textureFormat = GL_UNSIGNED_BYTE;
         textureType = GL_RGB;
         break;
 
     case OGL_I_8:
+        szElement = 1;
         textureFormat = GL_UNSIGNED_BYTE;
         textureType = GL_LUMINANCE;
         break;
 
     case OGL_AI_88:
+        szElement = 2;
         textureFormat = GL_UNSIGNED_BYTE;
         textureType = GL_LUMINANCE_ALPHA;
         break;
@@ -267,178 +259,102 @@ unsigned int LoadTextureFromPVR(
     case OGL_RGB_555:
     default:
         OG_LOG_ERROR("LoadTextureFromPVR: pixel type not supported.");
-        return 0;
+        return NULL;
     }
 
-    // load the texture up
-    // Never have row-aligned in psPVRHeaders
-    glPixelStorei(GL_UNPACK_ALIGNMENT,1);
+    char *theTexturePtr = (texPtr ? (char*)texPtr : (char*)psPVRHeader + psPVRHeader->dwHeaderSize);
+    char *theTextureToLoad = 0;
+    int	nMIPMapLevel;
+    int nTextureLevelsNeeded = (psPVRHeader->dwpfFlags & PVRTEX_MIPMAP) ? psPVRHeader->dwMipMapCount : 0;
+    unsigned int nSizeX = psPVRHeader->dwWidth, nSizeY = psPVRHeader->dwHeight;
+    unsigned int CompressedImageSize = 0;
 
-    glGenTextures(1, &textureName);
-
-    //  check that this data is cube map data or not.
-    if(psPVRHeader->dwpfFlags & PVRTEX_CUBEMAP)
-    { 		
-        // make the eTarget a Cube Map.
-        eTarget = GL_TEXTURE_CUBE_MAP;
-        glBindTexture(GL_TEXTURE_CUBE_MAP, textureName);
-    }
-    else
+    TextureImageData* pTexImageData = (TextureImageData*)malloc(sizeof(TextureImageData));
+    pTexImageData->dwMipLevels = nTextureLevelsNeeded;
+    pTexImageData->dwWidth = nSizeX;
+    pTexImageData->dwHeight = nSizeY;
+    pTexImageData->textureFormat = textureFormat;
+    pTexImageData->textureType = textureType;
+    pTexImageData->isCompressed = (IsCompressedFormat && IsCompressedFormatSupported);
+    pTexImageData->pLevels = (TextureMIPLevelData*)malloc(sizeof(TextureMIPLevelData) * (pTexImageData->dwMipLevels+1));
+    for(nMIPMapLevel = 0; nMIPMapLevel <= nTextureLevelsNeeded; nSizeX=OG_MAX(nSizeX/2, 1), nSizeY=OG_MAX(nSizeY/2, 1), nMIPMapLevel++)
     {
-        eTarget = GL_TEXTURE_2D;
-        glBindTexture(GL_TEXTURE_2D, textureName);
-    }
+        // Do Alpha-swap if needed
+        theTextureToLoad = theTexturePtr;
 
-    if(glGetError())
-    {
-        OG_LOG_ERROR("LoadTextureFromPVR: glBindTexture() failed.");
-        return 0;
-    }
+        unsigned int LevelSize = 0;
 
-    for(unsigned int i=0; i<u32NumSurfs; i++)
-    {
-        char *theTexturePtr = (texPtr? (char*)texPtr :  (char*)psPVRHeader + psPVRHeader->dwHeaderSize) + psPVRHeader->dwTextureDataSize * i;
-        char *theTextureToLoad = 0;
-        int	nMIPMapLevel;
-        int nTextureLevelsNeeded = (psPVRHeader->dwpfFlags & PVRTEX_MIPMAP)? psPVRHeader->dwMipMapCount : 0;
-        unsigned int nSizeX= psPVRHeader->dwWidth, nSizeY = psPVRHeader->dwHeight;
-        unsigned int CompressedImageSize = 0;
-
-        for(nMIPMapLevel = 0; nMIPMapLevel <= nTextureLevelsNeeded; nSizeX=OG_MAX(nSizeX/2, 1), nSizeY=OG_MAX(nSizeY/2, 1), nMIPMapLevel++)
+        // Load the Texture
+        /* If the texture is PVRTC then use GLCompressedTexImage2D */
+        if(IsCompressedFormat)
         {
-            // Do Alpha-swap if needed
-            theTextureToLoad = theTexturePtr;
-
-            // Load the Texture
-            /* If the texture is PVRTC then use GLCompressedTexImage2D */
-            if(IsCompressedFormat)
+            /* Calculate how many bytes this MIP level occupies */
+            if ((psPVRHeader->dwpfFlags & PVRTEX_PIXELTYPE)==OGL_PVRTC2)
             {
-                /* Calculate how many bytes this MIP level occupies */
-                if ((psPVRHeader->dwpfFlags & PVRTEX_PIXELTYPE)==OGL_PVRTC2)
+                // PVRTC2 case
+                CompressedImageSize = ( OG_MAX(nSizeX, PVRTC2_MIN_TEXWIDTH) * OG_MAX(nSizeY, PVRTC2_MIN_TEXHEIGHT) * psPVRHeader->dwBitCount + 7) / 8;
+            }
+            else
+            {
+                // PVRTC4 case
+                CompressedImageSize = ( OG_MAX(nSizeX, PVRTC4_MIN_TEXWIDTH) * OG_MAX(nSizeY, PVRTC4_MIN_TEXHEIGHT) * psPVRHeader->dwBitCount + 7) / 8;
+            }
+
+            LevelSize = CompressedImageSize;
+
+            if((int)nMIPMapLevel >= 0)
+            {
+                if(IsCompressedFormatSupported)
                 {
-                    // PVRTC2 case
-                    CompressedImageSize = ( OG_MAX(nSizeX, PVRTC2_MIN_TEXWIDTH) * OG_MAX(nSizeY, PVRTC2_MIN_TEXHEIGHT) * psPVRHeader->dwBitCount + 7) / 8;
+                    pTexImageData->pLevels[nMIPMapLevel].dwDataSize = CompressedImageSize;
+                    pTexImageData->pLevels[nMIPMapLevel].dwMIPLevel = nMIPMapLevel;
+                    pTexImageData->pLevels[nMIPMapLevel].dwSizeX = nSizeX;
+                    pTexImageData->pLevels[nMIPMapLevel].dwSizeY = nSizeY;
+                    pTexImageData->pLevels[nMIPMapLevel].pData = (unsigned char*)malloc(CompressedImageSize);
+                    memcpy(pTexImageData->pLevels[nMIPMapLevel].pData, theTextureToLoad, CompressedImageSize);
                 }
                 else
                 {
-                    // PVRTC4 case
-                    CompressedImageSize = ( OG_MAX(nSizeX, PVRTC4_MIN_TEXWIDTH) * OG_MAX(nSizeY, PVRTC4_MIN_TEXHEIGHT) * psPVRHeader->dwBitCount + 7) / 8;
-                }
-
-                if(((int)nMIPMapLevel - (int)nLoadFromLevel) >= 0)
-                {
-                    if(IsCompressedFormatSupported)
+                    // Convert PVRTC to 32-bit
+                    pTexImageData->pLevels[nMIPMapLevel].dwDataSize = nSizeX*nSizeY*4*sizeof(unsigned char);
+                    pTexImageData->pLevels[nMIPMapLevel].dwMIPLevel = nMIPMapLevel;
+                    pTexImageData->pLevels[nMIPMapLevel].dwSizeX = nSizeX;
+                    pTexImageData->pLevels[nMIPMapLevel].dwSizeY = nSizeY;
+                    pTexImageData->pLevels[nMIPMapLevel].pData = (unsigned char*)malloc(pTexImageData->pLevels[nMIPMapLevel].dwDataSize);
+                    memset(pTexImageData->pLevels[nMIPMapLevel].pData, 0, pTexImageData->pLevels[nMIPMapLevel].dwDataSize);
+                    if ((psPVRHeader->dwpfFlags & PVRTEX_PIXELTYPE)==OGL_PVRTC2)
                     {
-                        if(psPVRHeader->dwpfFlags&PVRTEX_CUBEMAP)
-                        {
-                            /* Load compressed texture data at selected MIP level */
-                            glCompressedTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X+i, nMIPMapLevel-nLoadFromLevel, textureFormat, nSizeX, nSizeY, 0,
-                                CompressedImageSize, theTextureToLoad);
-                        }
-                        else
-                        {
-                            /* Load compressed texture data at selected MIP level */
-                            glCompressedTexImage2D(GL_TEXTURE_2D, nMIPMapLevel-nLoadFromLevel, textureFormat, nSizeX, nSizeY, 0,
-                                CompressedImageSize, theTextureToLoad);
-
-                        }
+                        // PVRTC2 case
+                        PVRTCDecompress(theTextureToLoad, 1, nSizeX, nSizeY, pTexImageData->pLevels[nMIPMapLevel].pData);
                     }
                     else
                     {
-                        // Convert PVRTC to 32-bit
-                        unsigned char *u8TempTexture = (unsigned char*) malloc(nSizeX*nSizeY*4 * sizeof(unsigned char));
-                        memset(u8TempTexture, 0, nSizeX*nSizeY*4 * sizeof(unsigned char));
-
-                        if ((psPVRHeader->dwpfFlags & PVRTEX_PIXELTYPE)==OGL_PVRTC2)
-                        {
-                            // PVRTC2 case
-                            PVRTCDecompress(theTextureToLoad, 1, nSizeX, nSizeY, u8TempTexture);
-                        }
-                        else
-                        {
-                            // PVRTC4 case
-                            PVRTCDecompress(theTextureToLoad, 0, nSizeX, nSizeY, u8TempTexture);
-                        }
-
-                        if(psPVRHeader->dwpfFlags&PVRTEX_CUBEMAP)
-                        {
-                            // Load compressed cubemap data at selected MIP level
-                            // Upload the texture as 32-bits
-                            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X+i,nMIPMapLevel-nLoadFromLevel,GL_RGBA,
-                                nSizeX,nSizeY,0, GL_RGBA,GL_UNSIGNED_BYTE,u8TempTexture);
-                            free(u8TempTexture);
-                        }
-                        else
-                        {
-                            // Load compressed 2D data at selected MIP level
-                            // Upload the texture as 32-bits
-                            glTexImage2D(GL_TEXTURE_2D,nMIPMapLevel-nLoadFromLevel,GL_RGBA,
-                                nSizeX,nSizeY,0, GL_RGBA,GL_UNSIGNED_BYTE,u8TempTexture);
-                            free(u8TempTexture);
-                        }
+                        // PVRTC4 case
+                        PVRTCDecompress(theTextureToLoad, 0, nSizeX, nSizeY, pTexImageData->pLevels[nMIPMapLevel].pData);
                     }
                 }
-            }
-            else
-            {
-                if(((int)nMIPMapLevel - (int)nLoadFromLevel) >= 0)
-                {
-                    if(psPVRHeader->dwpfFlags&PVRTEX_CUBEMAP)
-                    {
-                        /* Load uncompressed texture data at selected MIP level */
-                        glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X+i,nMIPMapLevel-nLoadFromLevel,textureType,nSizeX,nSizeY,
-                            0, textureType,textureFormat,theTextureToLoad);
-                    }
-                    else
-                    {
-                        /* Load uncompressed texture data at selected MIP level */
-                        glTexImage2D(GL_TEXTURE_2D,nMIPMapLevel-nLoadFromLevel,textureType,nSizeX,nSizeY,0, textureType,textureFormat,theTextureToLoad);
-                    }
-                }
-            }
-
-            if(glGetError())
-            {
-                OG_LOG_ERROR("LoadTextureFromPVR: glBindTexture() failed.");
-                return 0;
-            }
-
-            // offset the texture pointer by one mip-map level
-            if ( IsCompressedFormat )
-            {
-                /* PVRTC case */
-                theTexturePtr += CompressedImageSize;
-            }
-            else
-            {
-                /* New formula that takes into account bit counts inferior to 8 (e.g. 1 bpp) */
-                theTexturePtr += (nSizeX * nSizeY * psPVRHeader->dwBitCount + 7) / 8;
             }
         }
+        else
+        {
+            LevelSize = (nSizeX * nSizeY * psPVRHeader->dwBitCount + 7) / 8;
+
+            if((int)nMIPMapLevel >= 0)
+            {
+                /* Load uncompressed texture data */
+                pTexImageData->pLevels[nMIPMapLevel].dwDataSize = LevelSize;
+                pTexImageData->pLevels[nMIPMapLevel].dwMIPLevel = nMIPMapLevel;
+                pTexImageData->pLevels[nMIPMapLevel].dwSizeX = nSizeX;
+                pTexImageData->pLevels[nMIPMapLevel].dwSizeY = nSizeY;
+                pTexImageData->pLevels[nMIPMapLevel].pData = (unsigned char*)malloc(pTexImageData->pLevels[nMIPMapLevel].dwDataSize);
+                memcpy(pTexImageData->pLevels[nMIPMapLevel].pData, theTextureToLoad, pTexImageData->pLevels[nMIPMapLevel].dwDataSize);
+            }
+        }
+
+        theTexturePtr += LevelSize;
     }
 
-    *texName = textureName;
-
-    if(psTextureHeader)
-    {
-        *(PVR_Texture_Header*)psTextureHeader = *psPVRHeader;
-        ((PVR_Texture_Header*)psTextureHeader)->dwPVR = PVRTEX_IDENTIFIER;
-        ((PVR_Texture_Header*)psTextureHeader)->dwNumSurfs = u32NumSurfs;
-    }
-
-    /* 2.0 Return line. */
-    if(!psPVRHeader->dwMipMapCount)
-    {
-        glTexParameteri(eTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameteri(eTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    }
-    else
-    {
-        glTexParameteri(eTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-        glTexParameteri(eTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    }
-
-    return 1; 
+    return pTexImageData; 
 }
 
 

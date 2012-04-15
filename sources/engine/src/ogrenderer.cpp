@@ -52,8 +52,8 @@ COGRenderer::~COGRenderer ()
 	m_ShadowModelShader.Unload();
 	m_ShadowedSceneShader.Unload();
 
-    OG_SAFE_DELETE(m_pRT);
     OG_SAFE_DELETE(m_pText);
+    OG_SAFE_DELETE(m_pRT);
     OG_SAFE_DELETE(m_pFog);
     OG_SAFE_DELETE(m_pLightMgr);
     OG_SAFE_DELETE(m_pCamera);

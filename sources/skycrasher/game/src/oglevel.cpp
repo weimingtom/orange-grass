@@ -236,7 +236,7 @@ bool COGLevel::Load ()
     DestroyResourceFile(level_file);
 
 	m_LoadState = OG_RESSTATE_LOADED;
-    return true;    
+    return true;
 }
 
 

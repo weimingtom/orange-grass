@@ -49,6 +49,15 @@ void FinishOrangeGrass()
 	g_BlendTypeLookup.clear();
 
     ShutdownResourceSystem();
+
+    OG_SAFE_DELETE(g_pResourceMgr);
+    OG_SAFE_DELETE(g_pInput);
+    OG_SAFE_DELETE(g_pRenderer);
+    OG_SAFE_DELETE(g_pStats);
+    OG_SAFE_DELETE(g_pEffectsMgr);
+    OG_SAFE_DELETE(g_pGlobalVars);
+    OG_SAFE_DELETE(g_pSettingsReader);
+    OG_SAFE_DELETE(g_pFPS);
 }
 
 

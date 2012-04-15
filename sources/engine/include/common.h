@@ -9,6 +9,6 @@
 #ifndef COMMON_H_
 #define COMMON_H_
 
-#define STATISTICS
+//#define STATISTICS
 
 #endif

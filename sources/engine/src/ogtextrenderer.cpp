@@ -26,8 +26,16 @@
 
 COGTextRenderer::COGTextRenderer()
 {
-	// Initialize all variables
-	memset(this, 0, sizeof(*this));
+    m_bScreenRotate = false;
+    m_uTexture = 0;
+	m_pwFacesFont = NULL;
+	m_pPrint3dVtx = NULL;
+	m_pVtxCache = NULL;
+	m_bTexturesSet = false;
+	m_nVtxCache = 0;
+	m_nVtxCacheMax = 0;
+    m_WindowWidth = 0.0f;
+    m_WindowHeight = 0.0f;
 }
 
 

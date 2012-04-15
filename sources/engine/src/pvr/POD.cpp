@@ -1145,31 +1145,31 @@ void CPVRTModelPOD::GetWorldMatrixNoCache(
 	OGMatrix		&mOut,
 	const SPODNode	&node) const
 {
-	 OGMatrix mTmp;
+    OGMatrix mTmp;
 
-	if(node.pfAnimMatrix) // The transformations are stored as matrices
-		GetTransformationMatrix(mOut, node);
-	else
-	{
-	// Scale
-	GetScalingMatrix(mOut, node);
+    if(node.pfAnimMatrix) // The transformations are stored as matrices
+        GetTransformationMatrix(mOut, node);
+    else
+    {
+        // Scale
+        GetScalingMatrix(mOut, node);
 
-	// Rotation
-	GetRotationMatrix(mTmp, node);
-	 MatrixMultiply(mOut, mOut, mTmp);
+        // Rotation
+        GetRotationMatrix(mTmp, node);
+        MatrixMultiply(mOut, mOut, mTmp);
 
-	// Translation
-	GetTranslationMatrix(mTmp, node);
-	 MatrixMultiply(mOut, mOut, mTmp);
-	 }
+        // Translation
+        GetTranslationMatrix(mTmp, node);
+        MatrixMultiply(mOut, mOut, mTmp);
+    }
 
-	// Do we have to worry about a parent?
-	if(node.nIdxParent < 0)
-		return;
+    // Do we have to worry about a parent?
+    if(node.nIdxParent < 0)
+        return;
 
-	// Apply parent's transform too.
-	GetWorldMatrixNoCache(mTmp, pNode[node.nIdxParent]);
-	MatrixMultiply(mOut, mOut, mTmp);
+    // Apply parent's transform too.
+    GetWorldMatrixNoCache(mTmp, pNode[node.nIdxParent]);
+    MatrixMultiply(mOut, mOut, mTmp);
 }
 
 /*!***************************************************************************
@@ -1312,43 +1312,46 @@ float CPVRTModelPOD::GetCamera(
 	SPODCamera		*pCam;
 	const SPODNode	*pNd;
 
-	_ASSERT(nIdx < nNumCamera);
+    _ASSERT(nIdx < nNumCamera);
 
-	// Camera nodes are after the mesh and light nodes in the array
-	pNd = &pNode[nNumMeshNode + nNumLight + nIdx];
+    // Camera nodes are after the mesh and light nodes in the array
+    pNd = &pNode[nNumMeshNode + nNumLight + nIdx];
 
-	pCam = &pCamera[pNd->nIdx];
+    pCam = &pCamera[pNd->nIdx];
 
-	GetWorldMatrix(mTmp, *pNd);
+    GetWorldMatrix(mTmp, *pNd);
 
-	// View position is 0,0,0,1 transformed by world matrix
-	vFrom.x = mTmp.f[12];
-	vFrom.y = mTmp.f[13];
-	vFrom.z = mTmp.f[14];
+    // View position is 0,0,0,1 transformed by world matrix
+    vFrom.x = mTmp.f[12];
+    vFrom.y = mTmp.f[13];
+    vFrom.z = mTmp.f[14];
 
-	// View direction is 0,-1,0,1 transformed by world matrix
-	vTo.x = -mTmp.f[4] + mTmp.f[12];
-	vTo.y = -mTmp.f[5] + mTmp.f[13];
-	vTo.z = -mTmp.f[6] + mTmp.f[14];
+    // View direction is 0,-1,0,1 transformed by world matrix
+    vTo.x = -mTmp.f[4] + mTmp.f[12];
+    vTo.y = -mTmp.f[5] + mTmp.f[13];
+    vTo.z = -mTmp.f[6] + mTmp.f[14];
 
-	/*
-		When you rotate the camera from "straight forward" to "straight down", in
-		OpenGL the UP vector will be [0, 0, -1]
-	*/
-	vUp.x = -mTmp.f[ 8];
-	vUp.y = -mTmp.f[ 9];
-	vUp.z = -mTmp.f[10];
+    /*
+    When you rotate the camera from "straight forward" to "straight down", in
+    OpenGL the UP vector will be [0, 0, -1]
+    */
+    vUp.x = -mTmp.f[ 8];
+    vUp.y = -mTmp.f[ 9];
+    vUp.z = -mTmp.f[10];
 
-	/*
-		Find & calculate FOV value
-	*/
-	if(pCam->pfAnimFOV) {
-		pfData = &pCam->pfAnimFOV[m_pImpl->nFrame];
+    /*
+    Find & calculate FOV value
+    */
+    if(pCam->pfAnimFOV) 
+    {
+        pfData = &pCam->pfAnimFOV[m_pImpl->nFrame];
 
-		return pfData[0] + m_pImpl->fBlend * (pfData[1] - pfData[0]);
-	} else {
-		return pCam->fFOV;
-	}
+        return pfData[0] + m_pImpl->fBlend * (pfData[1] - pfData[0]);
+    } 
+    else 
+    {
+        return pCam->fFOV;
+    }
 }
 
 /*!***************************************************************************

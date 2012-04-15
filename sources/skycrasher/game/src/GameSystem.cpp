@@ -14,17 +14,14 @@
 
 
 ///	@brief Constructor.
-CGameSystem::CGameSystem () :   m_pStartMenuScreen(NULL),
-								m_pLoadScreen(NULL),
+CGameSystem::CGameSystem () :   m_pLoadScreen(NULL),
                                 m_pGameScreen(NULL),
                                 m_pCurScreen(NULL)
 {
     m_State = SYSSTATE_ACTIVE;
-    m_pStartMenuScreen = new CStartMenuScreenController();
     m_pLoadScreen = new CLoadScreenController();
     m_pGameScreen = new CGameScreenController();
 
-	m_ScreenSequence.push_back(m_pStartMenuScreen);
 	m_ScreenSequence.push_back(m_pLoadScreen);
 	m_ScreenSequence.push_back(m_pGameScreen);
 
@@ -49,10 +46,8 @@ CGameSystem::CGameSystem () :   m_pStartMenuScreen(NULL),
 ///	@brief Destructor.
 CGameSystem::~CGameSystem ()
 {
-    OG_SAFE_DELETE(m_pStartMenuScreen);
     OG_SAFE_DELETE(m_pLoadScreen);
     OG_SAFE_DELETE(m_pGameScreen);
-	OG_SAFE_DELETE(m_pResourceMgr);
     m_pCurScreen = NULL;
 }
 

@@ -132,38 +132,36 @@ inline bool IsLittleEndian()
 template <typename T>
 T *reallocEM(T *array, size_t old_size, size_t new_size)
 {
-   T *temp = new T[new_size];
-
-   delete [] array;
-   
-   return std::copy(array, array + old_size, temp);
+    T *temp = new T[new_size];
+    delete [] array;
+    return std::copy(array, array + old_size, temp);
 }
 
 
 template <typename T>
 bool SafeAlloc(T* &ptr, size_t cnt)
 {
-	_ASSERT(!ptr);
-	if(cnt)
-	{
-		ptr = new T[cnt * sizeof(T)];
-		_ASSERT(ptr);
-		if(!ptr)
-			return false;
-	}
-	memset(ptr, 0, cnt *sizeof(T));
-	return true;
+    _ASSERT(!ptr);
+    if(cnt)
+    {
+        ptr = new T[cnt * sizeof(T)];
+        _ASSERT(ptr);
+        if(!ptr)
+            return false;
+    }
+    memset(ptr, 0, cnt *sizeof(T));
+    return true;
 }
 
 
 template <typename T>
 void SafeRealloc(T* &ptr, size_t cnt)
 {
-   T *temp = new T[cnt * sizeof(T)];
-   size_t old_size = sizeof(*ptr);
-   delete [] ptr;
-   std::copy(ptr, ptr + old_size, temp);
- 	_ASSERT(ptr);
+    T *temp = new T[cnt * sizeof(T)];
+    size_t old_size = sizeof(*ptr);
+    delete [] ptr;
+    std::copy(ptr, ptr + old_size, temp);
+    _ASSERT(ptr);
 }
 
 

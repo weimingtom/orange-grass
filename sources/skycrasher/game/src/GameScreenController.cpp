@@ -78,30 +78,30 @@ bool CGameScreenController::Init ()
 
 	IOGGroupNode* pRoot = m_pReader->OpenGroupNode(pSource, NULL, "GameScreen");
 
-	IOGGroupNode* pLifeHUDNode = m_pReader->OpenGroupNode(pSource, pRoot, "LifeHUD");
-	if (pLifeHUDNode != NULL)
-	{
-	    m_pLifeHUD = GetSpritePool()->CreateLifebar();
-		m_pLifeHUD->Load(pLifeHUDNode);
-		m_pReader->CloseGroupNode(pLifeHUDNode);
-	}
+    //IOGGroupNode* pLifeHUDNode = m_pReader->OpenGroupNode(pSource, pRoot, "LifeHUD");
+    //if (pLifeHUDNode != NULL)
+    //{
+    //    m_pLifeHUD = GetSpritePool()->CreateLifebar();
+    //    m_pLifeHUD->Load(pLifeHUDNode);
+    //    m_pReader->CloseGroupNode(pLifeHUDNode);
+    //}
 
-	IOGGroupNode* pSpecHUDNode = m_pReader->OpenGroupNode(pSource, pRoot, "SpecHUD");
-	if (pSpecHUDNode != NULL)
-	{
-	    m_pSpecHUD = GetSpritePool()->CreateBonusbar();
-		m_pSpecHUD->Load(pSpecHUDNode);
-		m_pReader->CloseGroupNode(pSpecHUDNode);
-	}
+    //IOGGroupNode* pSpecHUDNode = m_pReader->OpenGroupNode(pSource, pRoot, "SpecHUD");
+    //if (pSpecHUDNode != NULL)
+    //{
+    //    m_pSpecHUD = GetSpritePool()->CreateBonusbar();
+    //    m_pSpecHUD->Load(pSpecHUDNode);
+    //    m_pReader->CloseGroupNode(pSpecHUDNode);
+    //}
 
-	IOGGroupNode* pWeaponHUDNode = m_pReader->OpenGroupNode(pSource, pRoot, "WeaponHUD");
-	if (pWeaponHUDNode != NULL)
-	{
-		m_pWeaponHUD = GetSpritePool()->CreateWeaponPanel();
-		m_pWeaponHUD->Load(pWeaponHUDNode);
-		m_pWeaponHUD->UpdateData(m_pPlayer->GetWeapon()->GetParams()->icon_texture);
-		m_pReader->CloseGroupNode(pWeaponHUDNode);
-	}
+    //IOGGroupNode* pWeaponHUDNode = m_pReader->OpenGroupNode(pSource, pRoot, "WeaponHUD");
+    //if (pWeaponHUDNode != NULL)
+    //{
+    //    m_pWeaponHUD = GetSpritePool()->CreateWeaponPanel();
+    //    m_pWeaponHUD->Load(pWeaponHUDNode);
+    //    m_pWeaponHUD->UpdateData(m_pPlayer->GetWeapon()->GetParams()->icon_texture);
+    //    m_pReader->CloseGroupNode(pWeaponHUDNode);
+    //}
 
 	m_pReader->CloseGroupNode(pRoot);
 	m_pReader->CloseSource(pSource);
@@ -126,21 +126,20 @@ void CGameScreenController::Update (unsigned long _ElapsedTime)
     GetActorManager()->Update(_ElapsedTime);
 	m_pSg->Update(_ElapsedTime);
 
-    if (m_pPlayer)
-    {
-        unsigned int Life = m_pPlayer->GetHitPoints();
-        unsigned int MaxLife = m_pPlayer->GetParams()->gameplay.max_hitpoints;
-        m_pLifeHUD->UpdateData(Life, MaxLife);
-        
-        m_pSpecHUD->ResetData();
-        std::vector<IOGBonusParams> SpecParamsList;
-        m_pPlayer->GetSpecialParams(SpecParamsList);
-        for (unsigned int i = 0; i < SpecParamsList.size(); ++i)
-        {
-            IOGBonusParams& bonus = SpecParamsList[i];
-            m_pSpecHUD->SetData(i, bonus.icon_texture, bonus.value, bonus.cooldown);
-        }
-    }
+    //if (m_pPlayer)
+    //{
+    //    unsigned int Life = m_pPlayer->GetHitPoints();
+    //    unsigned int MaxLife = m_pPlayer->GetParams()->gameplay.max_hitpoints;
+    //    m_pLifeHUD->UpdateData(Life, MaxLife);
+    //    m_pSpecHUD->ResetData();
+    //    std::vector<IOGBonusParams> SpecParamsList;
+    //    m_pPlayer->GetSpecialParams(SpecParamsList);
+    //    for (unsigned int i = 0; i < SpecParamsList.size(); ++i)
+    //    {
+    //        IOGBonusParams& bonus = SpecParamsList[i];
+    //        m_pSpecHUD->SetData(i, bonus.icon_texture, bonus.value, bonus.cooldown);
+    //    }
+    //}
 }
 
 
@@ -190,44 +189,39 @@ void CGameScreenController::RenderScene ()
 
 	m_pRenderer->Reset();
 
-    if (!m_bFinishLine)
-    {
-        m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
-        m_pWeaponHUD->Render();
-        m_pLifeHUD->Render();
-        m_pSpecHUD->Render();
-        m_pRenderer->FinishRenderMode();
-    }
+    //if (!m_bFinishLine)
+    //{
+    //    m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
+    //    m_pWeaponHUD->Render();
+    //    m_pLifeHUD->Render();
+    //    m_pSpecHUD->Render();
+    //    m_pRenderer->FinishRenderMode();
+    //}
+	//m_pRenderer->Reset();
 
-	m_pRenderer->Reset();
-
-/*
-	unsigned long fps = 0;
-	if (m_ElapsedTime > 0)
-	{
-		fps = 1000/m_ElapsedTime;
-	}
-	m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
-	m_pRenderer->DisplayString(OGVec2(70.0f,4.0f), 0.4f, 0xFFFFFFFF, "FPS %d", fps);
+    //unsigned long fps = 0;
+    //if (m_ElapsedTime > 0)
+    //{
+    //    fps = 1000/m_ElapsedTime;
+    //}
+    //m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
+    //m_pRenderer->DisplayString(OGVec2(70.0f,4.0f), 0.4f, 0xFFFFFFFF, "FPS %d", fps);
 #ifdef STATISTICS
-	unsigned long Verts; 
-	unsigned long Faces;
-	unsigned long TextureSwitches;
-	unsigned long VBOSwitches;
-	unsigned long DrawCalls;
-	GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, 
-		VBOSwitches, DrawCalls);
-	m_pRenderer->DisplayString(OGVec2(70.0f, 8.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
-	m_pRenderer->DisplayString(OGVec2(70.0f,12.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
-	m_pRenderer->DisplayString(OGVec2(70.0f,16.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
-	m_pRenderer->DisplayString(OGVec2(70.0f,20.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
-	m_pRenderer->DisplayString(OGVec2(70.0f,24.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
-*/
-    GetStatistics()->Reset();
-/*    
+    //unsigned long Verts; 
+    //unsigned long Faces;
+    //unsigned long TextureSwitches;
+    //unsigned long VBOSwitches;
+    //unsigned long DrawCalls;
+    //GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, 
+    //    VBOSwitches, DrawCalls);
+    //m_pRenderer->DisplayString(OGVec2(70.0f, 8.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
+    //m_pRenderer->DisplayString(OGVec2(70.0f,12.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
+    //m_pRenderer->DisplayString(OGVec2(70.0f,16.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
+    //m_pRenderer->DisplayString(OGVec2(70.0f,20.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
+    //m_pRenderer->DisplayString(OGVec2(70.0f,24.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
+    //GetStatistics()->Reset();
 #endif
-	m_pRenderer->FinishRenderMode();
-*/
+    //m_pRenderer->FinishRenderMode();
 }
 
 
@@ -271,15 +265,15 @@ bool CGameScreenController::OnTouch (const OGVec2& _vPos, IOGTouchParam _param)
         return false;
     }
 
-    if (_param == OG_TOUCH_DOWN && m_pWeaponHUD->IsHit(_vPos))
-    {
-		IOGWeapon* pWeapon = m_pPlayer->GetWeapon();
-		if (pWeapon && pWeapon->IsReady())
-		{
-			pWeapon->Fire(NULL, false);
-		}
-		return true;
-	}
+    //if (_param == OG_TOUCH_DOWN && m_pWeaponHUD->IsHit(_vPos))
+    //{
+    //    IOGWeapon* pWeapon = m_pPlayer->GetWeapon();
+    //    if (pWeapon && pWeapon->IsReady())
+    //    {
+    //        pWeapon->Fire(NULL, false);
+    //    }
+    //    return true;
+    //}
     return false;
 }
 
@@ -321,7 +315,6 @@ void CGameScreenController::UpdateCamera ()
     {
         //OGVec3 vTarget = m_pPlayer->GetPhysicalObject()->GetPosition() + m_vCameraOffset;
         //OGVec3 vUp = m_vCameraDir.cross(OGVec3(1, 0, 0));
-
         //m_pCamera->Setup (m_pCamera->GetPosition(), vTarget, vUp);
 		m_pCamera->Update();
     }

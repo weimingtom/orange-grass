@@ -64,7 +64,7 @@ void COGSceneMesh::RenderParts (const IOGFrustum& _frustum)
 		// Gets the node model matrix
 		m_pScene->GetWorldMatrix(mNodeWorld, node);
 
-		if (_frustum.CheckAabb(*submesh.aabb))
+		//if (_frustum.CheckAabb(*submesh.aabb))
 		{
 			m_pRenderer->SetModelMatrix(mNodeWorld);
 			m_pRenderer->RenderMesh(submesh.buffer);

@@ -49,7 +49,7 @@ void Initialize ()
 /// Application shutdown.
 void Shutdown()
 {
-	OG_SAFE_DELETE(pGameSystem);
+    wglDeleteContext( shRC );
     PostQuitMessage(0);
 }
 
@@ -130,8 +130,6 @@ void CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime)
             //}
             pGameSystem->Update(33);
             pGameSystem->Draw();
-
-            glFlush();
             SwapBuffers(shDC);
         }
         else

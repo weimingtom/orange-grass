@@ -24,11 +24,35 @@ typedef struct PVR_Header_Texture_TAG
 } PVR_Texture_Header;
 
 
+typedef struct TextureMIPLevelData_TAG
+{
+    unsigned char* pData;
+    unsigned int dwDataSize;
+    unsigned int dwMIPLevel;
+    unsigned int dwSizeX;
+    unsigned int dwSizeY;
+} TextureMIPLevelData;
+
+
+typedef struct TextureImageData_TAG
+{
+    TextureMIPLevelData* pLevels;
+    GLenum textureFormat;
+    GLenum textureType;
+    bool isCompressed;
+    unsigned int dwMipLevels;
+    unsigned int dwWidth;
+    unsigned int dwHeight;
+} TextureImageData;
+
+
+//// Loads the whole texture from PVR.
+//unsigned int  LoadTextureFromPVR(
+//    const char* const filename, 
+//    GLuint* const texName, 
+//    const void* psTextureHeader=NULL);
 // Loads the whole texture from PVR.
-unsigned int  LoadTextureFromPVR(
-    const char* const filename, 
-    GLuint* const texName, 
-    const void* psTextureHeader=NULL);
+TextureImageData* LoadTextureFromPVR(const char* const filename);
 
 
 // PVRTC Decompression
