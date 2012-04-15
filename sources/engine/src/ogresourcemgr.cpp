@@ -28,24 +28,23 @@ COGResourceMgr::~COGResourceMgr ()
 // get UI resource path
 std::string COGResourceMgr::GetUIPath (const std::string& _File) const
 {
-	std::string UIMode = std::string("Landscape/");
-	if (GetGlobalVars()->GetIVar("landscape") == 0)
-	{
-		UIMode = std::string("Portrait/");
-	}
-
-	std::string UIProfile = std::string("iPhone/");
-	const std::string& prof = GetGlobalVars()->GetSVar("profile");
-	if (prof.compare("ipad") == 0)
-	{
-		UIProfile = std::string("iPad/");
-	}
-	else if (prof.compare("android_WVGA") == 0)
-	{
-		UIProfile = std::string("android_WVGA/");
-	}
-
-	return std::string("/UI/") + UIProfile + UIMode + _File;
+    //std::string UIMode = std::string("Landscape/");
+    //if (GetGlobalVars()->GetIVar("landscape") == 0)
+    //{
+    //    UIMode = std::string("Portrait/");
+    //}
+    //std::string UIProfile = std::string("iPhone/");
+    //const std::string& prof = GetGlobalVars()->GetSVar("profile");
+    //if (prof.compare("ipad") == 0)
+    //{
+    //    UIProfile = std::string("iPad/");
+    //}
+    //else if (prof.compare("android_WVGA") == 0)
+    //{
+    //    UIProfile = std::string("android_WVGA/");
+    //}
+    //return std::string("/UI/") + UIProfile + UIMode + _File;
+	return std::string("/UI/") + _File;
 }
 
 
