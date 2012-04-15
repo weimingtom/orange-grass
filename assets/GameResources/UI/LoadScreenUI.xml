@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <LoadScreen>
-	<!--
-	<LoadSpr sprite="load_scr" x="0" y="0" width="480" height="320" />
-	-->
 	<LoadLabel x="40" y="46" />
 </LoadScreen>

@@ -6,7 +6,6 @@
 	<Game>
 		<Levels>
 			<Level alias = "level_02" player = "helicopter_player" weapon = "missile_01"/>
-			<Level alias = "level_03" player = "helicopter_player" weapon = "plasma_01"/>
 		</Levels>
 	</Game>
 </Settings>

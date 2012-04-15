@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<Mesh file="Levels/Level_03/level_03.POD"/>
-<Material texture = "land_03">
-	<Ambient r = "0.3" g = "0.3" b = "0.3" a = "1.0" />
-	<Diffuse r = "1.0" g = "1.0" b = "1.0" a = "1.0" />
-	<Specular r = "0.0" g = "0.0" b = "0.0" a = "1.0" />
-</Material>
-<Objects texture = "land_03">
-</Objects>
