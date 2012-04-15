@@ -17,8 +17,14 @@ IOGGameSystem* pGameSystem = NULL;
 
 bool setupGraphics(int w, int h, const char* assetsPath)
 {
+	FinishGameCore();
+	FinishOrangeGrass();
+
 	StartOrangeGrass(assetsPath, true);
 	StartGameCore();
+
+	GetGlobalVars()->SetIVar("view_width", w);
+	GetGlobalVars()->SetIVar("view_height", h);
 	pGameSystem = GetGame();
 
     glViewport(0, 0, w, h);
