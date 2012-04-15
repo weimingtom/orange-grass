@@ -152,6 +152,8 @@ BOOL InitInstance ( HINSTANCE hInstance, int nCmdShow )
 		return FALSE;
 	} 
 
+	GetGlobalVars()->SetIVar("view_width", 480);
+	GetGlobalVars()->SetIVar("view_height", 800);
 	GetAppSettings()->Init("settings.xml");
 
 	if (CmdParams.size() == 2)
