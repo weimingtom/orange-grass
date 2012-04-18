@@ -115,6 +115,13 @@ const unsigned int ETC_MIN_TEXWIDTH		= 4;
 const unsigned int ETC_MIN_TEXHEIGHT	= 4;
 
 
+static bool CheckPVRTCSupport()
+{
+    const char *extensions = (const char*)glGetString(GL_EXTENSIONS);
+    return (strstr(extensions, "GL_IMG_texture_compression_pvrtc") != 0);
+}
+
+
 // filename			Filename of the .PVR file to load the texture from
 // Allows textures to be stored in binary PVR files and loaded in. Loads the whole texture
 TextureImageData* LoadTextureFromPVR(const char* const filename)
@@ -163,7 +170,8 @@ TextureImageData* LoadTextureFromPVR(const char* const filename)
 
     GLenum textureFormat = 0;
     GLenum textureType = GL_RGB;
-    bool IsPVRTCSupported = true;
+
+    bool IsPVRTCSupported = CheckPVRTCSupport();
     bool IsCompressedFormatSupported = false, IsCompressedFormat = false;
 
     /* Only accept untwiddled data UNLESS texture format is PVRTC */
@@ -222,14 +230,13 @@ TextureImageData* LoadTextureFromPVR(const char* const filename)
         break;
 
     case OGL_PVRTC2:
-#if (TARGET_OS_IPHONE == 1)
         if(IsPVRTCSupported)
         {
             IsCompressedFormatSupported = IsCompressedFormat = true;
             textureFormat = psPVRHeader->dwAlphaBitMask==0 ? GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG : GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG ;	// PVRTC2
+            OG_LOG_INFO("Loading compressed PVRTC2 texture: %s", filename);
         }
         else
-#endif
         {
             IsCompressedFormatSupported = false;
             IsCompressedFormat = true;
@@ -239,14 +246,13 @@ TextureImageData* LoadTextureFromPVR(const char* const filename)
         break;
 
     case OGL_PVRTC4:
-#if (TARGET_OS_IPHONE == 1)
         if(IsPVRTCSupported)
         {
             IsCompressedFormatSupported = IsCompressedFormat = true;
             textureFormat = psPVRHeader->dwAlphaBitMask==0 ? GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG : GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG ;	// PVRTC4
+            OG_LOG_INFO("Loading compressed PVRTC4 texture: %s", filename);
         }
         else
-#endif
         {
             IsCompressedFormatSupported = false;
             IsCompressedFormat = true;

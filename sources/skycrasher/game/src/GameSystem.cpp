@@ -8,7 +8,6 @@
  */
 #include "GameSystem.h"
 #include "Game.h"
-#include "StartMenuScreenController.h"
 #include "LoadScreenController.h"
 #include "GameScreenController.h"
 
@@ -46,16 +45,16 @@ CGameSystem::CGameSystem () :   m_pLoadScreen(NULL),
 ///	@brief Destructor.
 CGameSystem::~CGameSystem ()
 {
-    OG_SAFE_DELETE(m_pLoadScreen);
-    OG_SAFE_DELETE(m_pGameScreen);
-    m_pCurScreen = NULL;
+	Exit();
 }
 
 
 ///	@brief Exit from the program.
 void CGameSystem::Exit ()
 {
-	m_pGameScreen = NULL;
+    OG_SAFE_DELETE(m_pLoadScreen);
+    OG_SAFE_DELETE(m_pGameScreen);
+    m_pCurScreen = NULL;
     m_State = SYSSTATE_EXIT;
 }
 
@@ -70,6 +69,12 @@ void CGameSystem::ChangeModel ( int _Model, int _Param, int _Param2 )
 	{
 	case 1:
 		{
+			if (m_ScreenSequence.empty())
+			{
+				Exit();
+				return;
+			}
+
 			if (m_CurModel >= (int)m_ScreenSequence.size() - 1)
 			{
 				m_CurModel = -1;
@@ -78,6 +83,7 @@ void CGameSystem::ChangeModel ( int _Model, int _Param, int _Param2 )
 			m_pCurScreen = m_ScreenSequence[m_CurModel];
 			if (m_pCurScreen->Init())
 			{
+		        OG_LOG_INFO("Activating screen model...");
 				m_pCurScreen->Activate();
 			}
 			else
@@ -101,6 +107,7 @@ void CGameSystem::ChangeModel ( int _Model, int _Param, int _Param2 )
 				m_pCurScreen = m_ScreenSequence[m_CurModel];
 				if (m_pCurScreen->Init())
 				{
+			        OG_LOG_INFO("Activating screen model...");
 					m_pCurScreen->Activate();
 				}
 				else
@@ -127,6 +134,7 @@ void CGameSystem::Update ( unsigned long _ElapsedTime )
 	switch (state)
 	{
 	case CSTATE_INACTIVE:
+        OG_LOG_INFO("Changing screen model...");
         ChangeModel(1, 0, 0);
 		break;
 
@@ -144,7 +152,10 @@ void CGameSystem::Update ( unsigned long _ElapsedTime )
 void CGameSystem::Draw ()
 {
     if (!m_pCurScreen)
+    {
+        OG_LOG_ERROR("Current screen is empty somehow...");
         return;
+    }
     m_pCurScreen->RenderScene();
 }
 

@@ -45,6 +45,7 @@ COGVertexBuffers::COGVertexBuffers (SPODMesh* _pMesh) :	m_pMesh(_pMesh),
 	}
 	else
 	{
+		OG_LOG_ERROR("Non-interleaved geometry is not currently supported.");
 		return;
 	}
 

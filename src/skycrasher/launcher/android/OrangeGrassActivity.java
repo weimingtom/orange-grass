@@ -28,10 +28,23 @@ public class OrangeGrassActivity extends Activity
         mSensorManager.unregisterListener(mView);
     }
 
+    @Override protected void onStop() 
+    {
+    	super.onStop();
+    	finish();
+    }
+
     @Override protected void onResume() 
     {
         super.onResume();
         mView.onResume();
         mSensorManager.registerListener(mView, mAccelerometer, SensorManager.SENSOR_DELAY_GAME);
+    }
+
+    @Override protected void onDestroy() 
+    {
+    	super.onDestroy();
+        mSensorManager.unregisterListener(mView);
+    	mView.onDestroy();
     }
 }

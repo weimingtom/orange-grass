@@ -15,17 +15,47 @@
 IOGGameSystem* pGameSystem = NULL;
 
 
+void finishGame()
+{
+	OG_LOG_INFO("Finishing game core.");
+	FinishGameCore();
+	OG_LOG_INFO("Finishing engine.");
+	FinishOrangeGrass();
+	pGameSystem = NULL;
+	OG_LOG_INFO("Game finished, all subsystems are stopped.");
+}
+
+
 bool setupGraphics(int w, int h, const char* assetsPath)
 {
-	FinishGameCore();
-	FinishOrangeGrass();
+	if (pGameSystem)
+	{
+		finishGame();
+	}
+
+	OG_LOG_INFO("Starting game with: Width = [%d], Height = [%d], asset path = [%s]", w, h, assetsPath);
 
 	StartOrangeGrass(assetsPath, true);
 	StartGameCore();
 
-	GetGlobalVars()->SetIVar("view_width", w);
-	GetGlobalVars()->SetIVar("view_height", h);
+	IOGGlobalVarsTable* pGlobalVars = GetGlobalVars();
+	if (pGlobalVars)
+	{
+	    pGlobalVars->SetIVar("view_width", w);
+	    pGlobalVars->SetIVar("view_height", h);
+	}
+	else
+	{
+		OG_LOG_ERROR("Cannot start game - global vars table was not created.");
+		return false;
+	}
+
 	pGameSystem = GetGame();
+	if (pGameSystem == NULL)
+	{
+		OG_LOG_ERROR("Cannot start game - game system was not created.");
+		return false;
+	}
 
     glViewport(0, 0, w, h);
     glDisable(GL_CULL_FACE);
@@ -44,7 +74,7 @@ void renderFrame()
 		}
 		else
 		{
-			OG_SAFE_DELETE(pGameSystem);
+			finishGame();
 		}
 	}
 }
@@ -85,6 +115,7 @@ extern "C"
     JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_ontouchdown(JNIEnv * env, jobject obj, jfloat x, jfloat y);
     JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_ontouchup(JNIEnv * env, jobject obj, jfloat x, jfloat y);
     JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_onaccel(JNIEnv * env, jobject obj, jfloat x, jfloat y);
+    JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_destroy(JNIEnv * env, jobject obj);
 };
 
 JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_init(JNIEnv * env, jobject obj, jint width, jint height, jstring assetsPath)
@@ -113,4 +144,10 @@ JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_ontouchup
 JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_onaccel(JNIEnv * env, jobject obj, jfloat x, jfloat y)
 {
     onAccelerometer(x, y);
+}
+
+JNIEXPORT void JNICALL Java_skycrasher_launcher_android_OrangeGrassLib_destroy(JNIEnv * env, jobject obj)
+{
+	OG_LOG_INFO("Destroying activity.");
+	finishGame();
 }

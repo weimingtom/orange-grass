@@ -72,15 +72,24 @@ void FinishGameCore()
 	g_WeaponPosLookup.clear();
 	g_BonusTypeLookup.clear();
 
-    OG_SAFE_DELETE(g_pLevelMgr);
-    OG_SAFE_DELETE(g_pGame);
-    OG_SAFE_DELETE(g_pActorMgr);
-    OG_SAFE_DELETE(g_pSg);
-    OG_SAFE_DELETE(g_pPhysics);
-    OG_SAFE_DELETE(g_pSprPool);
-    OG_SAFE_DELETE(g_pActorParamsMgr);
-    OG_SAFE_DELETE(g_pAppSettings);
-    OG_SAFE_DELETE(g_pGameSequence);
+	OG_LOG_INFO("Finishing level manager");
+	OG_SAFE_DELETE(g_pLevelMgr);
+	OG_LOG_INFO("Finishing actor manager");
+	OG_SAFE_DELETE(g_pActorMgr);
+	OG_LOG_INFO("Finishing scene graph");
+	OG_SAFE_DELETE(g_pSg);
+	OG_LOG_INFO("Finishing physics");
+	OG_SAFE_DELETE(g_pPhysics);
+	OG_LOG_INFO("Finishing sprite pool");
+	OG_SAFE_DELETE(g_pSprPool);
+	OG_LOG_INFO("Finishing actor params manager");
+	OG_SAFE_DELETE(g_pActorParamsMgr);
+	OG_LOG_INFO("Finishing application settings manager");
+	OG_SAFE_DELETE(g_pAppSettings);
+	OG_LOG_INFO("Finishing game sequence");
+	OG_SAFE_DELETE(g_pGameSequence);
+	OG_LOG_INFO("Finishing game system");
+	OG_SAFE_DELETE(g_pGame);
 }
 
 

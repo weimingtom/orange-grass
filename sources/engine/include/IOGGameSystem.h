@@ -26,9 +26,6 @@ public:
     ///	@brief Destructor.
     virtual ~IOGGameSystem () {}
 
-    ///	@brief Exit from the program.
-    virtual void Exit () = 0;
-
     ///	@brief Change screen model.
     /// @param _Model screen model id.
     /// @param _Param screen model parameter #1.

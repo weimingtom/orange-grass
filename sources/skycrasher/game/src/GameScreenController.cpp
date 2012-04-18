@@ -118,8 +118,11 @@ void CGameScreenController::Update (unsigned long _ElapsedTime)
 {
 	m_ElapsedTime = _ElapsedTime;
 	if (m_State != CSTATE_ACTIVE)
+	{
+		OG_LOG_INFO("Game screen update - inactive state");
 		return;
-    
+	}
+
 	UpdateCamera();
 
     GetPhysics()->Update(_ElapsedTime);
@@ -148,6 +151,7 @@ void CGameScreenController::RenderScene ()
 {
 	if (m_State != CSTATE_ACTIVE)
     {
+	    OG_LOG_INFO("Game screen render - inactive state");
 		return;
     }
 
@@ -187,8 +191,6 @@ void CGameScreenController::RenderScene ()
     m_pSg->RenderEffects(m_pCamera);
     m_pRenderer->FinishRenderMode();
 
-	m_pRenderer->Reset();
-
     //if (!m_bFinishLine)
     //{
     //    m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
@@ -197,7 +199,8 @@ void CGameScreenController::RenderScene ()
     //    m_pSpecHUD->Render();
     //    m_pRenderer->FinishRenderMode();
     //}
-	//m_pRenderer->Reset();
+
+    m_pRenderer->Reset();
 
     //unsigned long fps = 0;
     //if (m_ElapsedTime > 0)
@@ -231,6 +234,7 @@ void CGameScreenController::Activate ()
 	m_State = CSTATE_ACTIVE;
     GetInput()->RegisterReceiver(this);
     m_bFinishLine = false;
+    OG_LOG_INFO("Game screen activated.");
 }
 
 
@@ -241,6 +245,7 @@ void CGameScreenController::Deactivate ()
 	if (m_pCurLevel)
 		GetLevelManager()->UnloadLevel();
     m_pPlayer = NULL;
+    OG_LOG_INFO("Game screen deactivated.");
     //GetInput()->UnregisterReceiver(this);
 }
 

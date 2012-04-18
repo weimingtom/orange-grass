@@ -9,7 +9,8 @@ varying lowp vec3 FogIntensity;
 void main()
 {
     lowp vec4 texColor = texture2D(sTexture, TexCoord);
-
+    gl_FragColor = vec4(mix(FogColor, texColor.rgb, FogIntensity), texColor.a);
+/*
     lowp vec3 color;
     if (FogEnabled > 0.0)
     {
@@ -20,5 +21,5 @@ void main()
         color = texColor.rgb;
     }
 
-    gl_FragColor = vec4(color, texColor.a);
+    gl_FragColor = vec4(color, texColor.a);*/
 }

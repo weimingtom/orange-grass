@@ -85,6 +85,11 @@ class OrangeGrassView extends GLSurfaceView implements SensorEventListener
         setRenderer(ogRenderer);
     }
     
+    public void onDestroy()
+    {
+    	ogRenderer.onDestroy();
+    }
+    
     public boolean onKeyDown(final int keyCode, final KeyEvent event) 
     {
         queueEvent(new Runnable() 
@@ -303,6 +308,11 @@ class OrangeGrassView extends GLSurfaceView implements SensorEventListener
         public void onKeyDown(int keyCode, KeyEvent event) 
         {
             // TODO: implement
+        }
+
+        public void onDestroy() 
+        {
+        	OrangeGrassLib.destroy();
         }
     }
 }

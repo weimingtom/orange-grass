@@ -16,12 +16,15 @@
 
 package skycrasher.launcher.android;
 
+import android.util.Log;
+
 // Wrapper for native library
 
 public class OrangeGrassLib {
 
      static {
          System.loadLibrary("orangegrass");
+         Log.i("OrangeGrassLib", "orangegrass lib was loaded");
      }
 
     /**
@@ -30,6 +33,7 @@ public class OrangeGrassLib {
      * @param assetPath the path to assets
      */
      public static native void init(int width, int height, String assetPath);
+     public static native void destroy();
      public static native void step();
      /**
       * @param x the current touch x coordinate

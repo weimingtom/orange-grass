@@ -24,7 +24,7 @@ public:
 	virtual ~CGameSystem ();
 
 	///	@brief Exit from the program.
-	virtual void Exit ();
+	void Exit ();
 
 	///	@brief Change screen model.
     /// @param _Model screen model id.

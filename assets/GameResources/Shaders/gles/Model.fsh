@@ -11,21 +11,14 @@ uniform lowp float AlphaReference;
 
 void main()
 {
-    lowp vec4 texColor = (texture2D(sTexture, TexCoord)) * vec4(DiffuseLight, 1.0);
+    lowp vec4 texColor = texture2D(sTexture, TexCoord);
     if (AlphaReference > 0.0 && texColor.a < AlphaReference)
     {
         discard;
     }
 
-    lowp vec3 color;
-    if (FogEnabled > 0.0)
-    {
-        color = mix(FogColor, texColor.rgb, FogIntensity);
-    }
-    else
-    {
-        color = texColor.rgb;
-    }
-    gl_FragColor = vec4(color, texColor.a);
+	lowp vec3 texColorShaded = texColor.rgb * DiffuseLight;
+    gl_FragColor.rgb = mix(FogColor, texColorShaded.rgb, FogIntensity);
+    gl_FragColor.a = texColor.a;
 }
 

@@ -11,6 +11,10 @@ include $(ENGINEDIR)/src/Android.mk
 include $(GAMEDIR)/game/src/Android.mk
 include $(GAMEDIR)/launcher/android/Android.mk
 
+ifeq ($(TARGET_ARCH_ABI),x86)
+LOCAL_CFLAGS += -fno-stack-protector 
+endif
+
 LOCAL_MODULE     := liborangegrass
 LOCAL_CFLAGS     := -Werror
 LOCAL_C_INCLUDES += $(ENGINEDIR)/include \

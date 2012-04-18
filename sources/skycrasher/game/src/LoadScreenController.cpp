@@ -71,9 +71,13 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 {
 	if (!m_bLoaded && m_State == CSTATE_ACTIVE && m_bDisplayed)
 	{
+		OG_LOG_INFO("Loading started");
 		GetActorParamsMgr()->Init();
+		OG_LOG_INFO("Actor params manager initialized");
         GetLevelManager()->Init();
+		OG_LOG_INFO("Level manager initialized");
 		GetResourceMgr()->Load(OG_RESPOOL_GAME);
+		OG_LOG_INFO("Resource managers loaded");
 
 		IOGLevelParams* pLevelParams = GetGameSequence()->GetLevel(0);
 
@@ -85,6 +89,7 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 			m_State = CSTATE_FAILED;
 			return;
 		}
+		OG_LOG_INFO("Current level loading finished");
 
 		OGVec3 vCraftPos = m_pCurLevel->GetStartPosition();
 		vCraftPos.y = 80.0f;
@@ -95,6 +100,8 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 			OGVec3(1,1,1));
 		pPlayerActor->SetWeapon(GetActorParamsMgr()->GetWeaponParams(pLevelParams->weapon));
 		GetActorManager()->AddActor(pPlayerActor);
+
+		OG_LOG_INFO("Player actor added");
 
 		m_bLoaded = true;
 		Deactivate();
@@ -146,6 +153,7 @@ void CLoadScreenController::Deactivate ()
 	{
 		m_pResourceMgr->ReleaseSprite(m_pLoadSpr);
 	}
+	OG_LOG_INFO("Loading screen deactivated");
     m_bDisplayed = false;
 	m_State = CSTATE_INACTIVE;
 }
