@@ -38,15 +38,18 @@ public:
 
     // set projection matrix
     virtual void SetProjectionMatrix (const OGMatrix& _mProj);
-
-    // set light direction
-    void SetLightDir (const OGVec3& _vLightDir);
-
-    // set fog params
-	void SetFogParams (bool _bEnable, float _fFogStart, float _fFogEnd, const OGVec4& _vFogColor) {}
     
     // set alpha test
     virtual void EnableAlphaTest (bool _bEnabled) {}
+
+    // set light and fog
+    virtual void SetLighting (IOGFog* _pFog, IOGLightMgr* _pLightMgr) {}
+
+    // set material
+    virtual void SetMaterial (IOGMaterial* _pMaterial) {}
+
+    // set camera
+    virtual void SetCamera (IOGCamera* _pCamera) {}
 
 protected:
 

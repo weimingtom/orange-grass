@@ -11,17 +11,11 @@
 
 #include "IOGRenderer.h"
 #include "IOGStatistics.h"
+#include "IOGShaderManager.h"
 #include "ogmesh.h"
 #include "ogrendertarget.h"
 #include "ogtextrenderer.h"
 #include "ogrendertarget.h"
-
-#include "ogmodelshader.h"
-#include "ogspriteshader.h"
-#include "ogcoloreffectshader.h"
-#include "ogtextshader.h"
-#include "ogshadowmodelshader.h"
-#include "ogshadowedsceneshader.h"
 
 #include <string>
 #include <map>
@@ -133,15 +127,16 @@ protected:
     IOGVertexBuffers*	m_pCurMesh;
 	OGBlendType			m_CurBlend;
 	IOGStatistics*		m_pStats;
+	IOGShaderManager*	m_pShaderMgr;
 	IOGFog*				m_pFog;
 	IOGLightMgr*		m_pLightMgr;
 	IOGCamera*			m_pCamera;
 	COGTextRenderer*	m_pText;
     COGRenderTarget*    m_pRT;
-	OGMatrix				m_mOrthoProj;
-	OGMatrix				m_mProjection;
-    OGMatrix              m_mTextProj;
-	OGMatrix				m_mView;
+	OGMatrix			m_mOrthoProj;
+	OGMatrix			m_mProjection;
+    OGMatrix            m_mTextProj;
+	OGMatrix			m_mView;
 	unsigned int		m_Width; 
 	unsigned int		m_Height;
 	float				m_fZNear;
@@ -150,16 +145,10 @@ protected:
 	bool				m_bLandscapeMode;
 	OGRenderMode		m_Mode;
 
-	OGMatrix				m_mWorld;
+	OGMatrix			m_mWorld;
     bool				m_bLightEnabled;
     bool				m_bFogEnabled;
 
-    COGModelShader          m_ModelShader;
-    COGSpriteShader         m_SpriteShader;
-    COGColorEffectShader    m_ColorEffectShader;
-    COGTextShader           m_TextShader;
-    COGShadowModelShader    m_ShadowModelShader;
-    COGShadowedSceneShader  m_ShadowedSceneShader;
     IOGShader*              m_pCurShader;
 };
 

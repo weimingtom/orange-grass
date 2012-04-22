@@ -37,6 +37,7 @@ LOCAL_SRC_FILES +=  $(ENGINEPATH)/ogbasemesh.cpp \
                     $(ENGINEPATH)/ogshader.cpp \
                     $(ENGINEPATH)/ogshadowedsceneshader.cpp \
                     $(ENGINEPATH)/ogshadowmodelshader.cpp \
+                    $(ENGINEPATH)/ogshadermanager.cpp \
                     $(ENGINEPATH)/ogsprite.cpp \
                     $(ENGINEPATH)/ogspriteshader.cpp \
                     $(ENGINEPATH)/ogstatistics.cpp \

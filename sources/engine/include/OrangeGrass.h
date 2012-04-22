@@ -11,6 +11,7 @@
 
 #include "IOGCoreHelpers.h"
 #include "IOGResourceMgr.h"
+#include "IOGShaderManager.h"
 #include "IOGResourceFile.h"
 #include "IOGInputDispatcher.h"
 #include "IOGRenderer.h"
@@ -33,6 +34,7 @@ void FinishOrangeGrass();
 IOGResourceMgr* GetResourceMgr ();
 IOGInputDispatcher* GetInput ();
 IOGRenderer* GetRenderer ();
+IOGShaderManager* GetShaderManager ();
 IOGStatistics* GetStatistics ();
 IOGEffectsManager* GetEffectsManager ();
 IOGGlobalVarsTable* GetGlobalVars ();
@@ -49,5 +51,8 @@ void DestroyTerrain (IOGTerrain* _pTerrain);
 
 // Parse the blend type string and convert it to internal type
 OGBlendType ParseBlendType (const std::string& _BlendTypeStr);
+
+// Parse the shader id string and convert it to internal type
+OGShaderID ParseShaderId (const std::string& _ShaderIdStr);
 
 #endif

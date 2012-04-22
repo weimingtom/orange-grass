@@ -31,9 +31,27 @@ public:
 	// get light.
 	virtual IOGLight* GetLight (unsigned int _Id);
 
+	// update global lighting.
+	virtual void UpdateGlobalLight (IOGCamera* _pCamera);
+
+    // get global lighting view matrix.
+    virtual const OGMatrix& GetGlobalLightViewMatrix () const { return m_LightView; }
+
+    // get global lighting projection matrix.
+    virtual const OGMatrix& GetGlobalLightProjMatrix () const { return m_LightProj; }
+
+    // get shadow matrix.
+    virtual const OGMatrix& GetShadowMatrix () const { return m_ShadowMVP; }
+
 private:
 
     std::vector<IOGLight*> m_Lights;
+
+    OGMatrix    m_LightProj;
+    OGMatrix    m_LightView;
+    OGMatrix    m_LightVP;
+    OGMatrix    m_SMTexAdj;
+    OGMatrix    m_ShadowMVP;
 };
 
 #endif

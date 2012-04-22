@@ -416,6 +416,14 @@
 							>
 						</File>
 						<File
+							RelativePath=".\src\ogshadermanager.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\src\ogshadermanager.h"
+							>
+						</File>
+						<File
 							RelativePath=".\src\ogshadowedsceneshader.cpp"
 							>
 						</File>
@@ -793,6 +801,10 @@
 				</File>
 				<File
 					RelativePath=".\include\IOGShader.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\IOGShaderManager.h"
 					>
 				</File>
 				<File

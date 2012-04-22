@@ -10,6 +10,7 @@
 #define IOGLIGHT_H_
 
 #include "IOGMath.h"
+#include "IOGCamera.h"
 
 
 enum OGLightType
@@ -46,6 +47,18 @@ public:
 
 	// get light.
 	virtual IOGLight* GetLight (unsigned int _Id) = 0;
+
+	// update global lighting.
+	virtual void UpdateGlobalLight (IOGCamera* _pCamera) = 0;
+
+    // get global lighting view matrix.
+    virtual const OGMatrix& GetGlobalLightViewMatrix () const = 0;
+
+    // get global lighting projection matrix.
+    virtual const OGMatrix& GetGlobalLightProjMatrix () const = 0;
+
+    // get shadow matrix.
+    virtual const OGMatrix& GetShadowMatrix () const = 0;
 };
 
 #endif

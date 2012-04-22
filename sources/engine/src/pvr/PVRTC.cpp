@@ -24,6 +24,15 @@
       ((AssumeImageTiles)? WRAP_COORD((Val), (Size)): CLAMP((Val), 0, (Size)-1))
 
 
+// define GLES-specific constants on desktops
+#ifndef GL_IMG_texture_compression_pvrtc
+#define GL_COMPRESSED_RGB_PVRTC_4BPPV1_IMG                      0x8C00
+#define GL_COMPRESSED_RGB_PVRTC_2BPPV1_IMG                      0x8C01
+#define GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG                     0x8C02
+#define GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG                     0x8C03
+#endif
+
+
 typedef enum iPixelType_TAG
 {
     MGLPT_ARGB_4444 = 0x00,

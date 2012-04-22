@@ -18,11 +18,6 @@
 
 
 COGSprite::SprVert g_RTVertices[4];
-OGMatrix g_LightProj;
-OGMatrix g_LightView;
-OGMatrix g_LightVP;
-OGMatrix g_SMTexAdj;
-OGMatrix g_ShadowMVP;
 
 
 COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
@@ -40,17 +35,13 @@ COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
     m_bFogEnabled = false;
 
 	m_pStats = GetStatistics();
+    m_pShaderMgr = GetShaderManager();
 }
 
 
 COGRenderer::~COGRenderer ()
 {
-	m_ModelShader.Unload();
-	m_SpriteShader.Unload();
-	m_ColorEffectShader.Unload();
-	m_TextShader.Unload();
-	m_ShadowModelShader.Unload();
-	m_ShadowedSceneShader.Unload();
+    m_pShaderMgr->Destroy();
 
     OG_SAFE_DELETE(m_pText);
     OG_SAFE_DELETE(m_pRT);
@@ -73,26 +64,8 @@ bool COGRenderer::Init ()
 	m_pCamera = new COGCamera ();
 	m_pFog = new COGFog ();
 	m_pText = new COGTextRenderer();
-#ifdef WIN32
-	std::string ShaderPath = std::string("Shaders/gl/");
-#else
-	std::string ShaderPath = std::string("Shaders/gles/");
-#endif
-
-    IOGResourceMgr* pResMgr = GetResourceMgr();
-	if (!m_ModelShader.Load(pResMgr->GetFullPath(ShaderPath + std::string("Model.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("Model.fsh"))))
+    if (!m_pShaderMgr->Init())
         return false;
-    if (!m_SpriteShader.Load(pResMgr->GetFullPath(ShaderPath + std::string("Sprite.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("Sprite.fsh"))))
-        return false;
-    if (!m_ColorEffectShader.Load(pResMgr->GetFullPath(ShaderPath + std::string("ColorEffect.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("ColorEffect.fsh"))))
-        return false;
-    if (!m_TextShader.Load(pResMgr->GetFullPath(ShaderPath + std::string("Text.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("Text.fsh"))))
-        return false;
-    if (!m_ShadowModelShader.Load(pResMgr->GetFullPath(ShaderPath + std::string("ShadowModel.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("ShadowModel.fsh"))))
-        return false;
-    if (!m_ShadowedSceneShader.Load(pResMgr->GetFullPath(ShaderPath + std::string("ShadowedScene.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("ShadowedScene.fsh"))))
-        return false;
-
 	return true;
 }
 
@@ -137,20 +110,14 @@ void COGRenderer::SetViewport (
 	}
 
     m_pCamera->SetupViewport(m_mProjection, m_fFOV);
-
     m_pRT = new COGRenderTarget();
-    MatrixScaling(g_SMTexAdj, 0.5f, 0.5f, 1.0f);
-    g_SMTexAdj.f[12] = 0.5f + 0.5f / m_pRT->GetSize();
-    g_SMTexAdj.f[13] = 0.5f + 0.5f / m_pRT->GetSize();
-    MatrixOrthoRH(g_LightProj, 400.0f, 400.0f, 0.01f, 1000.0f, false);
 }
 
 
 // Create vertex buffer for mesh.
 IOGVertexBuffers* COGRenderer::CreateVertexBuffer (void* _pMeshData)
 {
-	COGVertexBuffers* pVB = new COGVertexBuffers((SPODMesh*)_pMeshData);
-	return pVB;
+	return new COGVertexBuffers((SPODMesh*)_pMeshData);
 }
 
 
@@ -223,7 +190,9 @@ void COGRenderer::SetTexture (IOGTexture* _pTexture)
 
     if (_pTexture != m_pCurTexture)
     {
+#ifdef STATISTICS
 		m_pStats->AddTextureSwitch();
+#endif
         m_pCurTexture = _pTexture;
         m_pCurTexture->Apply();
     }
@@ -245,7 +214,7 @@ void COGRenderer::SetMaterial (IOGMaterial* _pMaterial)
         m_pCurMaterial = _pMaterial;
         if(m_Mode == OG_RENDERMODE_GEOMETRY)
         {
-            m_ModelShader.SetMaterial(m_pCurMaterial);
+            m_pCurShader->SetMaterial(m_pCurMaterial);
         }
     }
 }
@@ -309,88 +278,90 @@ void COGRenderer::StartRenderMode(OGRenderMode _Mode)
 	switch(m_Mode)
 	{
 	case OG_RENDERMODE_GEOMETRY:
-	    m_pCurShader = &m_ModelShader;
+        m_pCurShader = m_pShaderMgr->GetShader(OG_SHADER_MODEL);
         glDisable(GL_CULL_FACE);
 	    glEnable(GL_DEPTH_TEST);
 		SetViewMatrix(m_pCamera->GetViewMatrix());
-        m_ModelShader.SetProjectionMatrix(m_mProjection);
-        m_ModelShader.SetViewMatrix(m_mView);
-		EnableLight(true);
-        m_ModelShader.SetLighting(m_pFog, m_pLightMgr);
-        m_ModelShader.Setup();
+
+        m_pCurShader->SetCamera(m_pCamera);
+        m_pCurShader->SetProjectionMatrix(m_mProjection);
+        m_pCurShader->SetViewMatrix(m_mView);
+        m_pCurShader->SetLighting(m_pFog, m_pLightMgr);
+        m_pCurShader->Setup();
+
+        EnableLight(true);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
 		break;
 		
 	case OG_RENDERMODE_EFFECTS:
-	    m_pCurShader = &m_ColorEffectShader;
+        m_pCurShader = m_pShaderMgr->GetShader(OG_SHADER_COLOREFFECT);
 		glDisable(GL_CULL_FACE);
         glDisable(GL_DEPTH_TEST);
 		SetViewMatrix(m_pCamera->GetViewMatrix());
-        m_ColorEffectShader.SetProjectionMatrix(m_mProjection);
-        m_ColorEffectShader.SetViewMatrix(m_mView);
-		EnableLight(false);
-        m_ColorEffectShader.Setup();
+
+        m_pCurShader->SetCamera(m_pCamera);
+        m_pCurShader->SetProjectionMatrix(m_mProjection);
+        m_pCurShader->SetViewMatrix(m_mView);
+        m_pCurShader->SetLighting(m_pFog, m_pLightMgr);
+        m_pCurShader->Setup();
+
+        EnableLight(false);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
 		break;
 	
 	case OG_RENDERMODE_SPRITES:
-	    m_pCurShader = &m_SpriteShader;
+        m_pCurShader = m_pShaderMgr->GetShader(OG_SHADER_SPRITE);
 		SetBlend(OG_BLEND_ALPHABLEND);
         glDisable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
-        m_SpriteShader.SetProjectionMatrix(m_mOrthoProj);
-		EnableLight(false);
+
+        m_pCurShader->SetProjectionMatrix(m_mOrthoProj);
+        m_pCurShader->Setup();
+
+        EnableLight(false);
 		glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
 		glEnableVertexAttribArray(2);
-        m_SpriteShader.Setup();
 		break;
 
 	case OG_RENDERMODE_SHADOWMAP:
-        {
-            Reset();
+        m_pCurShader = m_pShaderMgr->GetShader(OG_SHADER_SHADOWMODEL);
+        Reset();
 
-            m_pCurShader = &m_ShadowModelShader;
-			glDisable (GL_BLEND);
-            glDisable(GL_CULL_FACE);
-            glEnable(GL_DEPTH_TEST);
-            m_pRT->Begin();
+        m_pLightMgr->UpdateGlobalLight(m_pCamera);
+        glDisable(GL_BLEND);
+        glDisable(GL_CULL_FACE);
+        glEnable(GL_DEPTH_TEST);
+        m_pRT->Begin();
 
-            float fLightHeight = m_pCamera->GetPosition().y;
-            OGVec3 vLookAt  = m_pCamera->GetPosition() + (m_pCamera->GetDirection() * 600.0f);
-            vLookAt.y = 0;
-            OGVec3 vEyePt = vLookAt - OGVec3(0, -1, 0) * fLightHeight;
-            MatrixLookAtRH(g_LightView, vEyePt, vLookAt, OGVec3(0, 0, -1));
-            MatrixMultiply(g_LightVP, g_LightView, g_LightProj);
+        m_pCurShader->SetCamera(m_pCamera);
+        m_pCurShader->SetProjectionMatrix(m_pLightMgr->GetGlobalLightProjMatrix());
+        m_pCurShader->SetViewMatrix(m_pLightMgr->GetGlobalLightViewMatrix());
+        m_pCurShader->SetLighting(m_pFog, m_pLightMgr);
+        m_pCurShader->Setup();
 
-            m_ShadowModelShader.SetProjectionMatrix(g_LightProj);
-            m_ShadowModelShader.SetViewMatrix(g_LightView);
-            m_ShadowModelShader.Setup();
-
-            glEnableVertexAttribArray(0);
-            glEnableVertexAttribArray(1);
-            glEnableVertexAttribArray(2);
-        }
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        glEnableVertexAttribArray(2);
 		break;
 
     case OG_RENDERMODE_SHADOWEDSCENE:
-	    m_pCurShader = &m_ShadowedSceneShader;
+        m_pCurShader = m_pShaderMgr->GetShader(OG_SHADER_SHADOWEDSCENE);
         glDisable(GL_CULL_FACE);
 	    glEnable(GL_DEPTH_TEST);
-    	glEnable (GL_BLEND); 
-		glBlendFunc (GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-        MatrixMultiply(g_ShadowMVP, g_LightVP, g_SMTexAdj);
+    	glEnable(GL_BLEND); 
+		glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     	glBindTexture(GL_TEXTURE_2D, m_pRT->GetTextureId());
 
-        m_ShadowedSceneShader.SetProjectionMatrix(m_mProjection);
-        m_ShadowedSceneShader.SetViewMatrix(m_mView);
-        m_ShadowedSceneShader.SetShadowMatrix(g_ShadowMVP);
-        m_ShadowedSceneShader.SetFog(m_pFog);
-        m_ShadowedSceneShader.Setup();
+        m_pCurShader->SetCamera(m_pCamera);
+        m_pCurShader->SetProjectionMatrix(m_mProjection);
+        m_pCurShader->SetViewMatrix(m_mView);
+        m_pCurShader->SetLighting(m_pFog, m_pLightMgr);
+        m_pCurShader->Setup();
 
         glEnableVertexAttribArray(0);
 		glEnableVertexAttribArray(1);
@@ -398,10 +369,11 @@ void COGRenderer::StartRenderMode(OGRenderMode _Mode)
         break;
 
     case OG_RENDERMODE_TEXT:
-	    m_pCurShader = &m_TextShader;
-        m_TextShader.SetProjectionMatrix(m_mTextProj);
+        m_pCurShader = m_pShaderMgr->GetShader(OG_SHADER_TEXT);
 		SetBlend(OG_BLEND_ALPHABLEND);
-        m_TextShader.Setup();
+
+        m_pCurShader->SetProjectionMatrix(m_mTextProj);
+        m_pCurShader->Setup();
         break;
 	}
 }

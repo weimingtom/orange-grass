@@ -11,6 +11,7 @@
 #include "ogresourcemgr.h"
 #include "oginputdispatcher.h"
 #include "ogrenderer.h"
+#include "ogshadermanager.h"
 #include "ogstatistics.h"
 #include "ogeffectsmanager.h"
 #include "ogglobalvarstable.h"
@@ -24,6 +25,7 @@
 static IOGResourceMgr* g_pResourceMgr = NULL;
 static IOGInputDispatcher* g_pInput = NULL;
 static IOGRenderer* g_pRenderer = NULL;
+static IOGShaderManager* g_pShaderManager = NULL;
 static IOGStatistics* g_pStats = NULL;
 static IOGEffectsManager* g_pEffectsMgr = NULL;
 static IOGGlobalVarsTable* g_pGlobalVars = NULL;
@@ -31,6 +33,7 @@ static IOGSettingsReader* g_pSettingsReader = NULL;
 static IOGFPSCounter* g_pFPS = NULL;
 
 static std::map<std::string, OGBlendType> g_BlendTypeLookup;
+static std::map<std::string, OGShaderID> g_ShaderIdLookup;
 
 
 void StartOrangeGrass(const std::string& _ResourcePath, bool _bSingleStorage)
@@ -40,6 +43,13 @@ void StartOrangeGrass(const std::string& _ResourcePath, bool _bSingleStorage)
 	g_BlendTypeLookup["blend"] = OG_BLEND_ALPHABLEND;
 	g_BlendTypeLookup["add"] = OG_BLEND_ALPHAADD;
 
+    g_ShaderIdLookup["coloreffect"] = OG_SHADER_COLOREFFECT;
+	g_ShaderIdLookup["model"] = OG_SHADER_MODEL;
+	g_ShaderIdLookup["shadowedscene"] = OG_SHADER_SHADOWEDSCENE;
+	g_ShaderIdLookup["shadowmodel"] = OG_SHADER_SHADOWMODEL;
+	g_ShaderIdLookup["sprite"] = OG_SHADER_SPRITE;
+	g_ShaderIdLookup["text"] = OG_SHADER_TEXT;
+
     InitializeResourceSystem(_ResourcePath, _bSingleStorage);
 }
 
@@ -47,10 +57,12 @@ void StartOrangeGrass(const std::string& _ResourcePath, bool _bSingleStorage)
 void FinishOrangeGrass()
 {
 	g_BlendTypeLookup.clear();
+	g_ShaderIdLookup.clear();
 
     ShutdownResourceSystem();
 
     OG_SAFE_DELETE(g_pRenderer);
+    OG_SAFE_DELETE(g_pShaderManager);
     OG_SAFE_DELETE(g_pResourceMgr);
     OG_SAFE_DELETE(g_pInput);
     OG_SAFE_DELETE(g_pEffectsMgr);
@@ -70,6 +82,18 @@ OGBlendType ParseBlendType (const std::string& _BlendTypeStr)
         return iter->second;
     }
     return OG_BLEND_NO;
+}
+
+
+// Parse the shader id string and convert it to internal type
+OGShaderID ParseShaderId (const std::string& _ShaderIdStr)
+{
+    std::map<std::string, OGShaderID>::const_iterator iter = g_ShaderIdLookup.find(_ShaderIdStr);
+    if (iter != g_ShaderIdLookup.end())
+    {
+        return iter->second;
+    }
+    return OG_SHADER_NO;
 }
 
 
@@ -101,6 +125,16 @@ IOGRenderer* GetRenderer ()
 		g_pRenderer->Init();
 	}
 	return g_pRenderer;
+}
+
+
+IOGShaderManager* GetShaderManager ()
+{
+	if (g_pShaderManager == NULL)
+	{
+		g_pShaderManager = new COGShaderManager ();
+	}
+	return g_pShaderManager;
 }
 
 

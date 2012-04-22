@@ -108,15 +108,9 @@ void COGShadowedSceneShader::SetProjectionMatrix (const OGMatrix& _mProj)
 }
 
 
-// set shadow matrix
-void COGShadowedSceneShader::SetShadowMatrix (const OGMatrix& _mShadowMVP)
-{
-    m_mShadowMVP = _mShadowMVP;
-}
-
-
-// set fog parameters
-void COGShadowedSceneShader::SetFog (IOGFog* _pFog)
+// set light and fog
+void COGShadowedSceneShader::SetLighting (IOGFog* _pFog, IOGLightMgr* _pLightMgr)
 {
     m_pFog = _pFog;
+    m_mShadowMVP = _pLightMgr->GetShadowMatrix();
 }

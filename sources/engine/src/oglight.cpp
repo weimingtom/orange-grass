@@ -14,6 +14,11 @@
 COGLightMgr::COGLightMgr ()
 {
     m_Lights.reserve(8);
+
+    MatrixScaling(m_SMTexAdj, 0.5f, 0.5f, 1.0f);
+    m_SMTexAdj.f[12] = 0.5f + 0.5f / 256.0f;
+    m_SMTexAdj.f[13] = 0.5f + 0.5f / 256.0f;
+    MatrixOrthoRH(m_LightProj, 400.0f, 400.0f, 0.01f, 1000.0f, false);
 }
 
 
@@ -68,4 +73,17 @@ IOGLight* COGLightMgr::GetLight (unsigned int _Id)
     }
 
     return m_Lights[_Id];
+}
+
+
+// update global lighting.
+void COGLightMgr::UpdateGlobalLight (IOGCamera* _pCamera)
+{
+    const OGVec3& vCameraPos = _pCamera->GetPosition();
+    OGVec3 vLookAt  = vCameraPos + (_pCamera->GetDirection() * 600.0f);
+    vLookAt.y = 0;
+    OGVec3 vEyePt = vLookAt - OGVec3(0, -1, 0) * vCameraPos.y;
+    MatrixLookAtRH(m_LightView, vEyePt, vLookAt, OGVec3(0, 0, -1));
+    MatrixMultiply(m_LightVP, m_LightView, m_LightProj);
+    MatrixMultiply(m_ShadowMVP, m_LightVP, m_SMTexAdj);
 }

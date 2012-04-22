@@ -11,6 +11,10 @@
 
 #include "IOGMath.h"
 #include <string>
+#include "IOGLight.h"
+#include "IOGFog.h"
+#include "IOGMaterial.h"
+#include "IOGCamera.h"
 
 
 class IOGShader
@@ -41,6 +45,15 @@ public:
     
     // set alpha test
     virtual void EnableAlphaTest (bool _bEnabled) = 0;    
+
+    // set light and fog
+    virtual void SetLighting (IOGFog* _pFog, IOGLightMgr* _pLightMgr) = 0;
+
+    // set material
+    virtual void SetMaterial (IOGMaterial* _pMaterial) = 0;
+
+    // set camera
+    virtual void SetCamera (IOGCamera* _pCamera) = 0;
 };
 
 

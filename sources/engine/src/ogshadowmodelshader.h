@@ -42,6 +42,15 @@ public:
     // set alpha test
     virtual void EnableAlphaTest (bool _bEnabled) {}
 
+    // set light and fog
+    virtual void SetLighting (IOGFog* _pFog, IOGLightMgr* _pLightMgr) {}
+
+    // set material
+    virtual void SetMaterial (IOGMaterial* _pMaterial) {}
+
+    // set camera
+    virtual void SetCamera (IOGCamera* _pCamera) {}
+
 protected:
 
     OGMatrix  m_mMV;
