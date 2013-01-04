@@ -1,22 +1,22 @@
-attribute highp vec4 inVertex;
-attribute highp vec3 inNormal;
-attribute highp vec2 inTexCoord;
+attribute vec4 inVertex;
+attribute vec3 inNormal;
+attribute vec2 inTexCoord;
 
-uniform highp mat4 MVPMatrix;
-uniform highp mat4 MVMatrix;
-uniform highp vec3 LightDirection;
+uniform mat4 MVPMatrix;
+uniform mat4 MVMatrix;
+uniform vec3 LightDirection;
 
-uniform highp float FogEnd;
-uniform highp float FogRcpEndStartDiff;
-uniform highp float FogEnabled;
+uniform float FogEnd;
+uniform float FogRcpEndStartDiff;
+uniform float FogEnabled;
 
-uniform highp vec3 MaterialAmbient;
-uniform highp vec3 MaterialDiffuse;
-uniform highp vec3 MaterialSpecular;
+uniform vec3 MaterialAmbient;
+uniform vec3 MaterialDiffuse;
+uniform vec3 MaterialSpecular;
 
-varying lowp vec3 DiffuseLight;
-varying mediump vec2 TexCoord;
-varying lowp vec3 FogIntensity;
+varying vec3 DiffuseLight;
+varying vec2 TexCoord;
+varying vec3 FogIntensity;
 
 void main()
 {
@@ -28,9 +28,9 @@ void main()
     if (FogEnabled > 0.0)
     {
         // transform position to view space as we need the distance to the eye for fog
-        highp vec3 viewPos = vec3(MVMatrix * inVertex);
-        highp float eyeDist = length(viewPos);
-        highp float fogIntensity = (FogEnd - eyeDist) * FogRcpEndStartDiff;
+        vec3 viewPos = vec3(MVMatrix * inVertex);
+        float eyeDist = length(viewPos);
+        float fogIntensity = (FogEnd - eyeDist) * FogRcpEndStartDiff;
         // clamp the intensity within a valid range
         FogIntensity = vec3(clamp(fogIntensity, 0.0, 1.0));
     }
