@@ -455,6 +455,14 @@
 							RelativePath=".\src\ogtextshader.h"
 							>
 						</File>
+						<File
+							RelativePath=".\src\ogtransparentmodelshader.cpp"
+							>
+						</File>
+						<File
+							RelativePath=".\src\ogtransparentmodelshader.h"
+							>
+						</File>
 					</Filter>
 				</Filter>
 			</Filter>

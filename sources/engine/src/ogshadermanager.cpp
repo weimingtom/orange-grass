@@ -9,6 +9,7 @@
 #include "ogshadermanager.h"
 #include "ogshader.h"
 #include "ogmodelshader.h"
+#include "ogtransparentmodelshader.h"
 #include "ogspriteshader.h"
 #include "ogcoloreffectshader.h"
 #include "ogtextshader.h"
@@ -48,6 +49,11 @@ bool COGShaderManager::Init ()
 	if (!pModelShader->Load(pResMgr->GetFullPath(ShaderPath + std::string("Model.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("Model.fsh"))))
         return false;
     m_ShaderStorage[OG_SHADER_MODEL] = pModelShader;
+
+    IOGShader* pTranspModelShader = new COGTransparentModelShader();
+	if (!pTranspModelShader->Load(pResMgr->GetFullPath(ShaderPath + std::string("TransparentModel.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("TransparentModel.fsh"))))
+        return false;
+    m_ShaderStorage[OG_SHADER_TRANSPARENTMODEL] = pTranspModelShader;
 
     IOGShader* pShadowedSceneShader = new COGShadowedSceneShader();
     if (!pShadowedSceneShader->Load(pResMgr->GetFullPath(ShaderPath + std::string("ShadowedScene.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("ShadowedScene.fsh"))))
