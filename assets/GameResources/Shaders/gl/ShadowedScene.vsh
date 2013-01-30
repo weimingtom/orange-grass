@@ -16,7 +16,9 @@ varying /*lowp*/ vec3 FogIntensity;
 void main()
 {
     gl_Position = MVPMatrix * (inVertex + vec4(0.0, 1.0, 0.0, 0.0));
-    TexCoord = ShadowMVPMatrix * inVertex;
+    vec4 txCoords = ShadowMVPMatrix * inVertex;
+    TexCoord = vec2(txCoords.x, txCoords.y);
+    //TexCoord = ShadowMVPMatrix * inVertex;
 
     // calculating fog
     if (FogEnabled > 0.0)
