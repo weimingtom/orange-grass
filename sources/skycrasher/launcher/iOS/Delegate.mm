@@ -3,6 +3,7 @@
 #import "Accelerometer.h"
 #import "TouchScreen.h"
 #include "OrangeGrass.h"
+#include "Game.h"
 
 
 #define kFPS			33.0
@@ -72,12 +73,10 @@ void GetResourcePathASCII(char* _pOutPath, int _PathLength)
             shell->OnPointerUp(x,y);
         }
     }
-
     
 	shell->Update(33);
     shell->Draw();
-	
-    glFlush();
+
 	[_glView swapBuffers];
 }
 
@@ -103,15 +102,25 @@ void GetResourcePathASCII(char* _pOutPath, int _PathLength)
     char path[OG_MAX_PATH];
     GetResourcePathASCII(path, OG_MAX_PATH);
     StartOrangeGrass(path, false);
+    StartGameCore();
 	
 	shell = new CGameSystem();
 	if(!shell)
 		printf("InitApplication error\n");
 
+    GetGlobalVars()->SetIVar("view_width", (int)rect.size.width);
+    GetGlobalVars()->SetIVar("view_height", (int)rect.size.height);
+    GetGlobalVars()->SetIVar("landscape", 0);
+    GetAppSettings()->Init("settings.xml");
+    
+    GetAppSettings()->InitScreenMode();
 	ScrWidth = GetGlobalVars()->GetIVar("view_width");
 	ScrHeight = GetGlobalVars()->GetIVar("view_height");
     Landscape = (GetGlobalVars()->GetIVar("landscape") == 1) ? true : false;
 	
+    glDisable(GL_CULL_FACE);
+    glViewport(0, 0, (int)rect.size.width, (int)rect.size.height);
+    
 	// create our rendering timer
 	[NSTimer scheduledTimerWithTimeInterval:(1.0 / kFPS) target:self selector:@selector(update) userInfo:nil repeats:YES];
 }
@@ -121,6 +130,7 @@ void GetResourcePathASCII(char* _pOutPath, int _PathLength)
 {
     if (shell) 
     {
+        FinishGameCore();
 		FinishOrangeGrass();
 		
         delete shell;

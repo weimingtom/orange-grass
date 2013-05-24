@@ -266,16 +266,17 @@ class OrangeGrassView extends GLSurfaceView implements SensorEventListener
         {
        	    long endTime = System.currentTimeMillis();
        	    long dt = endTime - startTime;
+       	    Log.i(TAG, String.format("DeltaTime: %d", dt));
        	    if (dt < 33)
        	    {
-				try 
+				/*try 
        	        {
-					Thread.sleep(33 - dt);
+					//Thread.sleep(33 - dt);
 				} 
 				catch (InterruptedException e) 
 				{
 					e.printStackTrace();
-				}
+				}*/
        	    }
             startTime = System.currentTimeMillis();
         	    

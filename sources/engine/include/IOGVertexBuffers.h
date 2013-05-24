@@ -13,7 +13,7 @@
 class IOGVertexBuffers
 {
 public:
-	~IOGVertexBuffers () {}
+	virtual ~IOGVertexBuffers () {}
 
 	// apply buffers.
 	virtual void Apply () const = 0;

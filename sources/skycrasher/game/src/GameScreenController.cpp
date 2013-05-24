@@ -202,13 +202,13 @@ void CGameScreenController::RenderScene ()
 
     m_pRenderer->Reset();
 
-    //unsigned long fps = 0;
-    //if (m_ElapsedTime > 0)
-    //{
-    //    fps = 1000/m_ElapsedTime;
-    //}
-    //m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
-    //m_pRenderer->DisplayString(OGVec2(70.0f,4.0f), 0.4f, 0xFFFFFFFF, "FPS %d", fps);
+    unsigned long fps = 0;
+    if (m_ElapsedTime > 0)
+    {
+        fps = 1000/m_ElapsedTime;
+    }
+    m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
+    m_pRenderer->DisplayString(OGVec2(70.0f,4.0f), 0.4f, 0xFFFFFFFF, "FPS %d", fps);
 #ifdef STATISTICS
     //unsigned long Verts; 
     //unsigned long Faces;
@@ -224,7 +224,7 @@ void CGameScreenController::RenderScene ()
     //m_pRenderer->DisplayString(OGVec2(70.0f,24.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
     //GetStatistics()->Reset();
 #endif
-    //m_pRenderer->FinishRenderMode();
+    m_pRenderer->FinishRenderMode();
 }
 
 

@@ -232,8 +232,6 @@ void COGEmitterScrollingRay::UpdateSegment (ParticleFormat& _Segment)
 {
     OGVec3 vStart = m_vStartPos + m_Direction * _Segment.pos;
     OGVec3 vFinish = m_vStartPos + m_Direction * (_Segment.pos + m_fSegment * _Segment.scale);
-
-    OGVec3 vSUp = OGVec3(0,0,-1) * m_fScale;
     OGVec3 vSRight = OGVec3(1,0,0) * m_fScale;
 
     _Segment.pVertices[0].p = vFinish + vSRight;

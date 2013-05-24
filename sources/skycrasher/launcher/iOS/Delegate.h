@@ -1,4 +1,4 @@
-#import "GLES20/EAGLView.h"
+#import "EAGLView.h"
 
 
 @interface AppController : NSObject

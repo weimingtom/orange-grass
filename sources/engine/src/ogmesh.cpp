@@ -33,27 +33,27 @@ void COGMesh::LoadSubMeshes ()
 		SPODMesh& Mesh = m_pScene->pMesh[pNode->nIdx];
 
         SubMeshType sbmtype = GetSubMeshType(i);
-        if (sbmtype == OG_SUBMESH_ACTPOINT)
-        {
-            OGVec3* pPtr = (OGVec3*)Mesh.pInterleaved;
-            ActPoint pt;
-            pt.pos = *pPtr;
-            pt.part = i;
-            m_ActivePoints[std::string(pNode->pszName)] = pt;
-            continue;
-        }
+		switch (sbmtype)
+		{
+            case OG_SUBMESH_ACTPOINT:
+            {
+                OGVec3* pPtr = (OGVec3*)Mesh.pInterleaved;
+                ActPoint pt;
+                pt.pos = *pPtr;
+                pt.part = i;
+                m_ActivePoints[std::string(pNode->pszName)] = pt;
+                continue;
+            }break;
+                
+            case OG_SUBMESH_BODY: m_SolidParts.push_back(m_NumParts); break;
+            case OG_SUBMESH_PROPELLER: m_TransparentParts.push_back(m_NumParts); break;
+		}
 
         SubMesh submesh;
         submesh.type = sbmtype;
         submesh.part = i;
         submesh.buffer = m_pRenderer->CreateVertexBuffer(&Mesh);
         m_SubMeshes.push_back(submesh);
-
-		switch (submesh.type)
-		{
-		case OG_SUBMESH_BODY: m_SolidParts.push_back(m_NumParts); break;
-		case OG_SUBMESH_PROPELLER: m_TransparentParts.push_back(m_NumParts); break;
-		}
         ++m_NumParts;
     }
 }

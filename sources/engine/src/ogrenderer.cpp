@@ -183,9 +183,10 @@ void COGRenderer::SetTexture (IOGTexture* _pTexture)
 {
     switch (m_Mode)
     {
-    //case OG_RENDERMODE_SHADOWMAP:
-    case OG_RENDERMODE_SHADOWEDSCENE:
-        return;
+        case OG_RENDERMODE_SHADOWEDSCENE:
+            return;
+        default:
+            break;
     }
 
     if (_pTexture != m_pCurTexture)
@@ -204,9 +205,11 @@ void COGRenderer::SetMaterial (IOGMaterial* _pMaterial)
 {
     switch (m_Mode)
     {
-    case OG_RENDERMODE_SHADOWMAP:
-    case OG_RENDERMODE_SHADOWEDSCENE:
-        return;
+        case OG_RENDERMODE_SHADOWMAP:
+        case OG_RENDERMODE_SHADOWEDSCENE:
+            return;
+        default:
+            break;
     }
 
     if (_pMaterial != m_pCurMaterial)
@@ -225,9 +228,11 @@ void COGRenderer::SetBlend (OGBlendType _Blend)
 {
     switch (m_Mode)
     {
-    case OG_RENDERMODE_SHADOWMAP:
-    case OG_RENDERMODE_SHADOWEDSCENE:
-        return;
+        case OG_RENDERMODE_SHADOWMAP:
+        case OG_RENDERMODE_SHADOWEDSCENE:
+            return;
+        default:
+            break;
     }
 
 	if (m_CurBlend != _Blend)

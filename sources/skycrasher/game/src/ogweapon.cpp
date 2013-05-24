@@ -39,7 +39,6 @@ bool COGWeapon::Create (IOGActor* _pOwner, IOGWeaponParams* _pWeaponParams)
 	m_WeaponCoolDownMax = m_pWeaponParams->cooldown;
 	m_WeaponCoolDown = m_WeaponCoolDownMax;
 
-    OGVec3 vStart = _pOwner->GetPhysicalObject()->GetPosition();
     for (int i = 0; i < MaxMissiles; ++i)
     {
         COGActorBullet* pMissile = (COGActorBullet*)GetActorManager()->CreateActor(

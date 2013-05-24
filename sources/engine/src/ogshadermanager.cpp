@@ -53,7 +53,7 @@ bool COGShaderManager::Init ()
     IOGShader* pTranspModelShader = new COGTransparentModelShader();
 	if (!pTranspModelShader->Load(pResMgr->GetFullPath(ShaderPath + std::string("TransparentModel.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("TransparentModel.fsh"))))
         return false;
-    m_ShaderStorage[OG_SHADER_TRANSPARENTMODEL] = pTranspModelShader;
+    m_ShaderStorage[OG_SHADER_TRANSPARENTMODEL] = pModelShader;//pTranspModelShader;
 
     IOGShader* pShadowedSceneShader = new COGShadowedSceneShader();
     if (!pShadowedSceneShader->Load(pResMgr->GetFullPath(ShaderPath + std::string("ShadowedScene.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("ShadowedScene.fsh"))))
