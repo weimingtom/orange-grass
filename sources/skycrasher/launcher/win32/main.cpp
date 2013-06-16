@@ -49,8 +49,8 @@ void Initialize ()
 /// Application shutdown.
 void Shutdown()
 {
-    wglDeleteContext( shRC );
     PostQuitMessage(0);
+    //wglDeleteContext( shRC );
 }
 
 

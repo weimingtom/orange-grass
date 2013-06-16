@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{CC585C74-71F7-4F38-85BE-B755AF6F1271}</ProjectGuid>
+    <RootNamespace>game</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\bin\win32\skycrasher\game\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\include;..\..\engine\include;..\..\engine\sdk\OpenGL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\GameScreenController.cpp" />
+    <ClCompile Include="src\GameSystem.cpp" />
+    <ClCompile Include="src\LoadScreenController.cpp" />
+    <ClCompile Include="src\StartMenuScreenController.cpp" />
+    <ClCompile Include="src\Game.cpp" />
+    <ClCompile Include="src\ogactormanager.cpp" />
+    <ClCompile Include="src\ogactorparamsmgr.cpp" />
+    <ClCompile Include="src\oggamesequence.cpp" />
+    <ClCompile Include="src\ogweapon.cpp" />
+    <ClCompile Include="src\ogbotfallingworker.cpp" />
+    <ClCompile Include="src\ogbotflightworker.cpp" />
+    <ClCompile Include="src\ogfinishlevelworker.cpp" />
+    <ClCompile Include="src\ogmissileflightworker.cpp" />
+    <ClCompile Include="src\ogorientworker.cpp" />
+    <ClCompile Include="src\ogstabilizeworker.cpp" />
+    <ClCompile Include="src\ogworker.cpp" />
+    <ClCompile Include="src\ogactor.cpp" />
+    <ClCompile Include="src\ogactorairbot.cpp" />
+    <ClCompile Include="src\ogactorbonus.cpp" />
+    <ClCompile Include="src\ogactorbot.cpp" />
+    <ClCompile Include="src\ogactorbullet.cpp" />
+    <ClCompile Include="src\ogactorgaussray.cpp" />
+    <ClCompile Include="src\ogactorlandbot.cpp" />
+    <ClCompile Include="src\ogactormissile.cpp" />
+    <ClCompile Include="src\ogactorplasmamissile.cpp" />
+    <ClCompile Include="src\ogactorplayer.cpp" />
+    <ClCompile Include="src\ogactorstatic.cpp" />
+    <ClCompile Include="src\ogguibonusbar.cpp" />
+    <ClCompile Include="src\ogguibutton.cpp" />
+    <ClCompile Include="src\ogguilifebar.cpp" />
+    <ClCompile Include="src\ogguiweaponpanel.cpp" />
+    <ClCompile Include="src\ogspritepool.cpp" />
+    <ClCompile Include="src\ogairphysicalobject.cpp" />
+    <ClCompile Include="src\ogbonusphysicalobject.cpp" />
+    <ClCompile Include="src\oglandphysicalobject.cpp" />
+    <ClCompile Include="src\ogmissilephysicalobject.cpp" />
+    <ClCompile Include="src\ogphysicalobject.cpp" />
+    <ClCompile Include="src\ogphysics.cpp" />
+    <ClCompile Include="src\ogplayerphysicalobject.cpp" />
+    <ClCompile Include="src\ogstaticphysicalobject.cpp" />
+    <ClCompile Include="src\oglevel.cpp" />
+    <ClCompile Include="src\oglevelmanager.cpp" />
+    <ClCompile Include="src\oganimationcontroller.cpp" />
+    <ClCompile Include="src\ogscenegraph.cpp" />
+    <ClCompile Include="src\ogsgeffectnode.cpp" />
+    <ClCompile Include="src\ogsglandscapenode.cpp" />
+    <ClCompile Include="src\ogsgnode.cpp" />
+    <ClCompile Include="src\ogappsettings.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\GameScreenController.h" />
+    <ClInclude Include="src\GameSystem.h" />
+    <ClInclude Include="src\LoadScreenController.h" />
+    <ClInclude Include="src\StartMenuScreenController.h" />
+    <ClInclude Include="include\Game.h" />
+    <ClInclude Include="include\IOGAppSettings.h" />
+    <ClInclude Include="include\IOGActor.h" />
+    <ClInclude Include="include\IOGActorManager.h" />
+    <ClInclude Include="include\IOGActorParams.h" />
+    <ClInclude Include="include\IOGActorParamsManager.h" />
+    <ClInclude Include="include\IOGGameEventsHandler.h" />
+    <ClInclude Include="include\IOGGameSequence.h" />
+    <ClInclude Include="include\IOGWeapon.h" />
+    <ClInclude Include="include\IOGGuiBonusbar.h" />
+    <ClInclude Include="include\IOGGuiButton.h" />
+    <ClInclude Include="include\IOGGuiLifebar.h" />
+    <ClInclude Include="include\IOGGuiWeaponPanel.h" />
+    <ClInclude Include="include\IOGSpritePool.h" />
+    <ClInclude Include="include\IOGCollisionListener.h" />
+    <ClInclude Include="include\IOGPhysicalObject.h" />
+    <ClInclude Include="include\IOGPhysicalParams.h" />
+    <ClInclude Include="include\IOGPhysics.h" />
+    <ClInclude Include="include\IOGAnimationController.h" />
+    <ClInclude Include="include\IOGSceneGraph.h" />
+    <ClInclude Include="include\IOGSgNode.h" />
+    <ClInclude Include="include\IOGLevel.h" />
+    <ClInclude Include="include\IOGLevelManager.h" />
+    <ClInclude Include="src\ogactormanager.h" />
+    <ClInclude Include="src\ogactorparamsmgr.h" />
+    <ClInclude Include="src\oggamesequence.h" />
+    <ClInclude Include="src\ogweapon.h" />
+    <ClInclude Include="src\ogbotfallingworker.h" />
+    <ClInclude Include="src\ogbotflightworker.h" />
+    <ClInclude Include="src\ogfinishlevelworker.h" />
+    <ClInclude Include="src\ogmissileflightworker.h" />
+    <ClInclude Include="src\ogorientworker.h" />
+    <ClInclude Include="src\ogstabilizeworker.h" />
+    <ClInclude Include="src\ogworker.h" />
+    <ClInclude Include="src\ogactor.h" />
+    <ClInclude Include="src\ogactorairbot.h" />
+    <ClInclude Include="src\ogactorbonus.h" />
+    <ClInclude Include="src\ogactorbot.h" />
+    <ClInclude Include="src\ogactorbullet.h" />
+    <ClInclude Include="src\ogactorgaussray.h" />
+    <ClInclude Include="src\ogactorlandbot.h" />
+    <ClInclude Include="src\ogactormissile.h" />
+    <ClInclude Include="src\ogactorplasmamissile.h" />
+    <ClInclude Include="src\ogactorplayer.h" />
+    <ClInclude Include="src\ogactorstatic.h" />
+    <ClInclude Include="src\ogguibonusbar.h" />
+    <ClInclude Include="src\ogguibutton.h" />
+    <ClInclude Include="src\ogguilifebar.h" />
+    <ClInclude Include="src\ogguiweaponpanel.h" />
+    <ClInclude Include="src\ogspritepool.h" />
+    <ClInclude Include="src\ogairphysicalobject.h" />
+    <ClInclude Include="src\ogbonusphysicalobject.h" />
+    <ClInclude Include="src\oglandphysicalobject.h" />
+    <ClInclude Include="src\ogmissilephysicalobject.h" />
+    <ClInclude Include="src\ogphysicalobject.h" />
+    <ClInclude Include="src\ogphysics.h" />
+    <ClInclude Include="src\ogplayerphysicalobject.h" />
+    <ClInclude Include="src\ogstaticphysicalobject.h" />
+    <ClInclude Include="src\oglevel.h" />
+    <ClInclude Include="src\oglevelmanager.h" />
+    <ClInclude Include="src\oganimationcontroller.h" />
+    <ClInclude Include="src\ogscenegraph.h" />
+    <ClInclude Include="src\ogsgeffectnode.h" />
+    <ClInclude Include="src\ogsglandscapenode.h" />
+    <ClInclude Include="src\ogsgnode.h" />
+    <ClInclude Include="src\ogappsettings.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

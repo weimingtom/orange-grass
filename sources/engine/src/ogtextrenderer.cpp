@@ -6,6 +6,9 @@
  *  Copyright 2009 __MyCompanyName__. All rights reserved.
  *
  */
+#pragma warning(push)
+#pragma warning(disable:4996)
+
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include <stdarg.h>
@@ -607,3 +610,5 @@ void COGTextRenderer::APIRenderStates(int nAction)
 		break;
 	}
 }
+
+#pragma warning(pop)

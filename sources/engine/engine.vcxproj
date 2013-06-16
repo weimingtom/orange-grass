@@ -1,0 +1,259 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8D9287B3-0AC5-434C-BDD4-F78B40254471}</ProjectGuid>
+    <RootNamespace>engine</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">lib\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\win32\engine\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\include;.\sdk\OpenGL2\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;_CRT_SECURE_NO_WARNINGS;D_SCL_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="src\OrangeGrass.cpp" />
+    <ClCompile Include="src\ogbasemesh.cpp" />
+    <ClCompile Include="src\ogfog.cpp" />
+    <ClCompile Include="src\oglight.cpp" />
+    <ClCompile Include="src\ogmaterial.cpp" />
+    <ClCompile Include="src\ogmesh.cpp" />
+    <ClCompile Include="src\ogmodel.cpp" />
+    <ClCompile Include="src\ogrendertarget.cpp" />
+    <ClCompile Include="src\ogscenemesh.cpp" />
+    <ClCompile Include="src\ogsprite.cpp" />
+    <ClCompile Include="src\ogterrain.cpp" />
+    <ClCompile Include="src\ogtexture.cpp" />
+    <ClCompile Include="src\ogeffect.cpp" />
+    <ClCompile Include="src\ogeffectsmanager.cpp" />
+    <ClCompile Include="src\ogemitter.cpp" />
+    <ClCompile Include="src\ogemitteranimatedbb.cpp" />
+    <ClCompile Include="src\ogemitterglow.cpp" />
+    <ClCompile Include="src\ogemitterlightflash.cpp" />
+    <ClCompile Include="src\ogemitterparticlechain.cpp" />
+    <ClCompile Include="src\ogemitterpulseglow.cpp" />
+    <ClCompile Include="src\ogemitterringwave.cpp" />
+    <ClCompile Include="src\ogemitterrotatingsparks.cpp" />
+    <ClCompile Include="src\ogemitterscrollingray.cpp" />
+    <ClCompile Include="src\ogemittertrail.cpp" />
+    <ClCompile Include="src\ogcamera.cpp" />
+    <ClCompile Include="src\ogrenderer.cpp" />
+    <ClCompile Include="src\ogtextrenderer.cpp" />
+    <ClCompile Include="src\ogvertexbuffers.cpp" />
+    <ClCompile Include="src\ogcoloreffectshader.cpp" />
+    <ClCompile Include="src\ogmodelshader.cpp" />
+    <ClCompile Include="src\ogshader.cpp" />
+    <ClCompile Include="src\ogshadermanager.cpp" />
+    <ClCompile Include="src\ogshadowedsceneshader.cpp" />
+    <ClCompile Include="src\ogshadowmodelshader.cpp" />
+    <ClCompile Include="src\ogspriteshader.cpp" />
+    <ClCompile Include="src\ogtextshader.cpp" />
+    <ClCompile Include="src\ogtransparentmodelshader.cpp" />
+    <ClCompile Include="src\oginputdispatcher.cpp" />
+    <ClCompile Include="src\ogresource.cpp" />
+    <ClCompile Include="src\ogresourcefile.cpp" />
+    <ClCompile Include="src\ogresourcemgr.cpp" />
+    <ClCompile Include="src\ogfpscounter.cpp" />
+    <ClCompile Include="src\ogglobalvarstable.cpp" />
+    <ClCompile Include="src\ogsettingsreader.cpp" />
+    <ClCompile Include="src\ogstatistics.cpp" />
+    <ClCompile Include="src\tinyxml\tinystr.cpp" />
+    <ClCompile Include="src\tinyxml\tinyxml.cpp" />
+    <ClCompile Include="src\tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="src\tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="src\pvr\POD.cpp" />
+    <ClCompile Include="src\pvr\PVRTC.cpp" />
+    <ClCompile Include="src\ogmatrix.cpp" />
+    <ClCompile Include="src\ogquaternion.cpp" />
+    <ClCompile Include="src\ogvector.cpp" />
+    <ClCompile Include="src\zlib\adler32.c" />
+    <ClCompile Include="src\zlib\compress.c" />
+    <ClCompile Include="src\zlib\crc32.c" />
+    <ClCompile Include="src\zlib\deflate.c" />
+    <ClCompile Include="src\zlib\gzio.c" />
+    <ClCompile Include="src\zlib\infback.c" />
+    <ClCompile Include="src\zlib\inffast.c" />
+    <ClCompile Include="src\zlib\inflate.c" />
+    <ClCompile Include="src\zlib\inftrees.c" />
+    <ClCompile Include="src\zlib\trees.c" />
+    <ClCompile Include="src\zlib\uncompr.c" />
+    <ClCompile Include="src\zlib\zutil.c" />
+    <ClCompile Include="src\unzip\ioapi.c" />
+    <ClCompile Include="src\unzip\iowin32.c" />
+    <ClCompile Include="src\unzip\unzip.c" />
+    <ClCompile Include="src\unzip\zip.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\ogbasemesh.h" />
+    <ClInclude Include="src\ogfog.h" />
+    <ClInclude Include="src\oglight.h" />
+    <ClInclude Include="src\ogmaterial.h" />
+    <ClInclude Include="src\ogmesh.h" />
+    <ClInclude Include="src\ogmodel.h" />
+    <ClInclude Include="src\ogrendertarget.h" />
+    <ClInclude Include="src\ogscenemesh.h" />
+    <ClInclude Include="src\ogsprite.h" />
+    <ClInclude Include="src\ogterrain.h" />
+    <ClInclude Include="src\ogtexture.h" />
+    <ClInclude Include="src\ogeffect.h" />
+    <ClInclude Include="src\ogeffectsmanager.h" />
+    <ClInclude Include="src\ogemitter.h" />
+    <ClInclude Include="src\ogemitteranimatedbb.h" />
+    <ClInclude Include="src\ogemitterglow.h" />
+    <ClInclude Include="src\ogemitterlightflash.h" />
+    <ClInclude Include="src\ogemitterparticlechain.h" />
+    <ClInclude Include="src\ogemitterpulseglow.h" />
+    <ClInclude Include="src\ogemitterringwave.h" />
+    <ClInclude Include="src\ogemitterrotatingsparks.h" />
+    <ClInclude Include="src\ogemitterscrollingray.h" />
+    <ClInclude Include="src\ogemittertrail.h" />
+    <ClInclude Include="src\ogcamera.h" />
+    <ClInclude Include="src\ogrenderer.h" />
+    <ClInclude Include="src\ogtextrenderer.h" />
+    <ClInclude Include="src\ogtextrenderer_data.h" />
+    <ClInclude Include="src\ogvertexbuffers.h" />
+    <ClInclude Include="src\ogcoloreffectshader.h" />
+    <ClInclude Include="src\ogmodelshader.h" />
+    <ClInclude Include="src\ogshader.h" />
+    <ClInclude Include="src\ogshadermanager.h" />
+    <ClInclude Include="src\ogshadowedsceneshader.h" />
+    <ClInclude Include="src\ogshadowmodelshader.h" />
+    <ClInclude Include="src\ogspriteshader.h" />
+    <ClInclude Include="src\ogtextshader.h" />
+    <ClInclude Include="src\ogtransparentmodelshader.h" />
+    <ClInclude Include="src\oginputdispatcher.h" />
+    <ClInclude Include="src\ogresource.h" />
+    <ClInclude Include="src\ogresourcefile.h" />
+    <ClInclude Include="src\ogresourcemgr.h" />
+    <ClInclude Include="src\ogfpscounter.h" />
+    <ClInclude Include="src\ogglobalvarstable.h" />
+    <ClInclude Include="src\ogsettingsreader.h" />
+    <ClInclude Include="src\ogstatistics.h" />
+    <ClInclude Include="src\tinyxml\tinystr.h" />
+    <ClInclude Include="src\tinyxml\tinyxml.h" />
+    <ClInclude Include="src\pvr\POD.h" />
+    <ClInclude Include="src\pvr\PVRTC.h" />
+    <ClInclude Include="src\zlib\crc32.h" />
+    <ClInclude Include="src\zlib\deflate.h" />
+    <ClInclude Include="src\zlib\inffast.h" />
+    <ClInclude Include="src\zlib\inffixed.h" />
+    <ClInclude Include="src\zlib\inflate.h" />
+    <ClInclude Include="src\zlib\inftrees.h" />
+    <ClInclude Include="src\zlib\trees.h" />
+    <ClInclude Include="src\zlib\zconf.h" />
+    <ClInclude Include="src\zlib\zconf.in.h" />
+    <ClInclude Include="src\zlib\zlib.h" />
+    <ClInclude Include="src\zlib\zutil.h" />
+    <ClInclude Include="src\unzip\crypt.h" />
+    <ClInclude Include="src\unzip\ioapi.h" />
+    <ClInclude Include="src\unzip\iowin32.h" />
+    <ClInclude Include="src\unzip\unzip.h" />
+    <ClInclude Include="src\unzip\zip.h" />
+    <ClInclude Include="include\common.h" />
+    <ClInclude Include="include\OrangeGrass.h" />
+    <ClInclude Include="include\IOGAnimation.h" />
+    <ClInclude Include="include\IOGCamera.h" />
+    <ClInclude Include="include\IOGEffect.h" />
+    <ClInclude Include="include\IOGEffectsManager.h" />
+    <ClInclude Include="include\IOGEmitter.h" />
+    <ClInclude Include="include\IOGFog.h" />
+    <ClInclude Include="include\IOGLight.h" />
+    <ClInclude Include="include\IOGMaterial.h" />
+    <ClInclude Include="include\IOGModel.h" />
+    <ClInclude Include="include\IOGRenderable.h" />
+    <ClInclude Include="include\IOGRenderer.h" />
+    <ClInclude Include="include\IOGShader.h" />
+    <ClInclude Include="include\IOGShaderManager.h" />
+    <ClInclude Include="include\IOGSprite.h" />
+    <ClInclude Include="include\IOGTerrain.h" />
+    <ClInclude Include="include\IOGTexture.h" />
+    <ClInclude Include="include\IOGVertexBuffers.h" />
+    <ClInclude Include="include\IOGAabb.h" />
+    <ClInclude Include="include\IOGFrustum.h" />
+    <ClInclude Include="include\IOGMath.h" />
+    <ClInclude Include="include\IOGMatrix.h" />
+    <ClInclude Include="include\IOGObb.h" />
+    <ClInclude Include="include\IOGPlane.h" />
+    <ClInclude Include="include\IOGQuaternion.h" />
+    <ClInclude Include="include\IOGVector.h" />
+    <ClInclude Include="include\IOGResourceFile.h" />
+    <ClInclude Include="include\IOGResourceMgr.h" />
+    <ClInclude Include="include\IOGInputDispatcher.h" />
+    <ClInclude Include="include\IOGInputReceiver.h" />
+    <ClInclude Include="include\IOGCoreHelpers.h" />
+    <ClInclude Include="include\IOGFPSCounter.h" />
+    <ClInclude Include="include\IOGGlobalVarsTable.h" />
+    <ClInclude Include="include\IOGSettingsReader.h" />
+    <ClInclude Include="include\IOGStatistics.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
