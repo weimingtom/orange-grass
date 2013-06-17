@@ -12,7 +12,6 @@ uniform /*highp*/ float FogEnabled;
 
 uniform /*highp*/ vec3 MaterialAmbient;
 uniform /*highp*/ vec3 MaterialDiffuse;
-uniform /*highp*/ vec3 MaterialSpecular;
 
 varying /*lowp*/ vec3 DiffuseLight;
 varying /*mediump*/ vec2 TexCoord;

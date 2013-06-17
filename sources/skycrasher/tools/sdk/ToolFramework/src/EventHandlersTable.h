@@ -5,6 +5,7 @@
 #include "ResourceLoadingEvent.h"
 #include "MaterialLoadEvent.h"
 #include "MaterialAdjustEvent.h"
+#include "MeshLoadEvent.h"
 #include "EffectLoadEvent.h"
 #include "EffectAdjustEvent.h"
 #include "ResourceSwitchEvent.h"

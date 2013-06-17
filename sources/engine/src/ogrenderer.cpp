@@ -219,6 +219,7 @@ void COGRenderer::SetMaterial (IOGMaterial* _pMaterial)
         {
             m_pCurShader->SetMaterial(m_pCurMaterial);
         }
+        SetBlend(m_pCurMaterial->GetBlend());
     }
 }
 

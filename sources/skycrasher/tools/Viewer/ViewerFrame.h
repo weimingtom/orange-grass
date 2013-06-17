@@ -65,6 +65,9 @@ private:
 	/// @brief Material loading event handler
 	void OnLoadMaterial ( CommonToolEvent<MtlLoadEventData>& event );
 
+	/// @brief Mesh loading event handler
+	void OnLoadMesh ( CommonToolEvent<MeshLoadEventData>& event );
+
 	/// @brief Resource switching event handler
 	void OnResourceSwitch ( wxTreeEvent& event );
 

@@ -44,6 +44,13 @@ const OGVec4& COGMaterial::GetSpecular () const
 }
 
 
+// get material blend.
+OGBlendType COGMaterial::GetBlend () const
+{
+    return m_Blend;
+}
+
+
 // set material ambient.
 void COGMaterial::SetAmbient (const OGVec4& _Value)
 {
@@ -62,4 +69,11 @@ void COGMaterial::SetDiffuse (const OGVec4& _Value)
 void COGMaterial::SetSpecular (const OGVec4& _Value)
 {
 	m_Specular = _Value;
+}
+
+
+// set material blend.
+void COGMaterial::SetBlend (OGBlendType _Value)
+{
+    m_Blend = _Value;
 }

@@ -132,10 +132,10 @@ void CViewerCanvas::OnKeyUp( wxKeyEvent& event )
 void CViewerCanvas::OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& event )
 {
 	const ResSwitchEventData& evtData = event.GetEventCustomData();
-	switch (evtData.m_ResourceType)
+    switch (evtData.m_pItem->type)
 	{
 	case RESTYPE_MODEL:
-		g_pScene->SetupModel(evtData.m_Resource);
+        g_pScene->SetupModel(evtData.m_pItem);
 		break;
 	}
 	Refresh();

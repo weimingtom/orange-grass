@@ -13,17 +13,28 @@
 #include <vector>
 #include <map>
 #include "ogresource.h"
-#include "IOGVertexBuffers.h"
 #include "IOGRenderer.h"
 #include "IOGRenderable.h"
 #include "pvr/POD.h"
 
 
-class COGBaseMesh : public COGResource
+class COGBaseMesh : public IOGMesh, public COGResource
 {
 public:
 	COGBaseMesh ();
 	virtual ~COGBaseMesh();
+
+    // Get list of all submeshes
+    virtual const std::vector<OGSubMesh>& GetSubMeshes () const { return m_SubMeshes; }
+
+    // Update submesh (for tools)
+    virtual void UpdateSubMesh (unsigned int _Id, const OGSubMesh& _SubMesh);
+
+    // Get mesh geometry
+    virtual const std::vector<OGFace>& GetGeometry () const { return m_Faces; }
+
+	// Get combined AABB
+    virtual const IOGAabb& GetAABB () const { return m_AABB; }
 	
 	// Load mesh.
 	virtual bool Load ();
@@ -31,17 +42,8 @@ public:
 	// Unload resource.
 	virtual void Unload ();
 
-	// Get combined AABB
-    virtual const IOGAabb& GetAABB () const { return m_AABB; }
-
-	// Get all submesh AABBs
-    void GetAllAABBs (std::vector<IOGAabb*>& _aabbs);
-
     // Get ray intersection
     bool GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos);
-
-    // Get mesh geometry
-    const std::vector<OGFace>& GetGeometry () const { return m_Faces; }
 
 protected:
 
@@ -57,18 +59,7 @@ protected:
     // unload sub-meshes
     virtual void UnloadSubMeshes () = 0;
 
-    // get sub-mesh type.
-    SubMeshType GetSubMeshType (unsigned int _Id);
-
 protected:
-
-    struct SubMesh
-    {
-        unsigned int        part;
-        SubMeshType         type;
-        IOGAabb*            aabb;
-        IOGVertexBuffers*   buffer;
-    };
 
     struct InternalMesh
     {
@@ -91,7 +82,7 @@ protected:
 	IOGAabb m_AABB;
 
     // SubMeshes list
-    std::vector<SubMesh> m_SubMeshes;
+    std::vector<OGSubMesh> m_SubMeshes;
 
     // Geometry (for mapeditor mostly)
 	std::vector<OGFace> m_Faces;

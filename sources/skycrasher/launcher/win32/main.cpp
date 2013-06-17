@@ -144,7 +144,7 @@ void CALLBACK TimerProc(HWND hWnd, UINT uMsg, UINT idEvent, DWORD dwTime)
 BOOL InitInstance ( HINSTANCE hInstance, int nCmdShow )
 {
 	shInstance = hInstance;
-	shWnd = FindWindow ( L"AirAssault.MainWindow", L"AirAssault" );
+	shWnd = FindWindow ( L"SkyCrasher.MainWindow", L"SkyCrasher" );
 
 	if ( shWnd )
 	{
@@ -184,13 +184,13 @@ BOOL InitInstance ( HINSTANCE hInstance, int nCmdShow )
     wc.hCursor			= LoadCursor(NULL, IDC_ARROW);
     wc.hbrBackground	= (HBRUSH)(COLOR_WINDOW + 1);
     wc.lpszMenuName		= 0;
-    wc.lpszClassName	= L"AirAssault.MainWindow";
+    wc.lpszClassName	= L"SkyCrasher.MainWindow";
 	RegisterClass ( &wc );
 	
     int wndSizeX = ScrWidth + (GetSystemMetrics(SM_CXBORDER) * 2);
     int wndSizeY = ScrHeight + GetSystemMetrics(SM_CYSIZE) + GetSystemMetrics(SM_CYBORDER);
 
-	shWnd = CreateWindow (	L"AirAssault.MainWindow", L"AirAssault", WS_SYSMENU|WS_OVERLAPPED,
+	shWnd = CreateWindow (	L"SkyCrasher.MainWindow", L"SkyCrasher", WS_SYSMENU|WS_OVERLAPPED,
 							(GetSystemMetrics(SM_CXSCREEN)-wndSizeX)/2, 
 							(GetSystemMetrics(SM_CYSCREEN)-wndSizeY)/2, 
 							wndSizeX, wndSizeY, NULL, NULL, hInstance, NULL);

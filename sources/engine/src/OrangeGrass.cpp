@@ -34,6 +34,7 @@ static IOGFPSCounter* g_pFPS = NULL;
 
 static std::map<std::string, OGBlendType> g_BlendTypeLookup;
 static std::map<std::string, OGShaderID> g_ShaderIdLookup;
+static std::map<std::string, SubMeshType> g_SubMeshTypeLookup;
 
 
 void StartOrangeGrass(const std::string& _ResourcePath, bool _bSingleStorage)
@@ -50,6 +51,10 @@ void StartOrangeGrass(const std::string& _ResourcePath, bool _bSingleStorage)
 	g_ShaderIdLookup["sprite"] = OG_SHADER_SPRITE;
 	g_ShaderIdLookup["text"] = OG_SHADER_TEXT;
 
+    g_SubMeshTypeLookup["propeller"] = OG_SUBMESH_PROPELLER;
+    g_SubMeshTypeLookup["actpointweapon01"] = OG_SUBMESH_ACTPOINT;
+    g_SubMeshTypeLookup["actpointweapon02"] = OG_SUBMESH_ACTPOINT;
+
     InitializeResourceSystem(_ResourcePath, _bSingleStorage);
 }
 
@@ -58,6 +63,7 @@ void FinishOrangeGrass()
 {
 	g_BlendTypeLookup.clear();
 	g_ShaderIdLookup.clear();
+	g_SubMeshTypeLookup.clear();
 
     ShutdownResourceSystem();
 
@@ -94,6 +100,18 @@ OGShaderID ParseShaderId (const std::string& _ShaderIdStr)
         return iter->second;
     }
     return OG_SHADER_NO;
+}
+
+
+// Parse the submesh type string and convert it to internal type
+SubMeshType ParseSubMeshType (const std::string& _SubMeshTypeStr)
+{
+    std::map<std::string, SubMeshType>::const_iterator iter = g_SubMeshTypeLookup.find(_SubMeshTypeStr);
+    if (iter != g_SubMeshTypeLookup.end())
+    {
+        return iter->second;
+    }
+    return OG_SUBMESH_BODY;
 }
 
 

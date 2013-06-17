@@ -25,9 +25,9 @@ COGColorEffectShader::~COGColorEffectShader ()
 // load shaders.
 bool COGColorEffectShader::Load (const std::string& _VertShader, const std::string& _FragmentShader)
 {
-    if(ShaderLoadFromFile("blank", _FragmentShader.c_str(), GL_FRAGMENT_SHADER, 0, &m_uiFragShader) == 0)
+    if(ShaderLoadFromFile(_FragmentShader.c_str(), GL_FRAGMENT_SHADER, &m_uiFragShader) == 0)
         return false;
-    if(ShaderLoadFromFile("blank", _VertShader.c_str(), GL_VERTEX_SHADER, 0, &m_uiVertShader) == 0)
+    if(ShaderLoadFromFile(_VertShader.c_str(), GL_VERTEX_SHADER, &m_uiVertShader) == 0)
         return false;
 
     const char* pszAttribs[] = { "inVertex", "inTexCoord", "inColor" };

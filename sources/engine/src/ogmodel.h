@@ -66,6 +66,9 @@ public:
 	// Get animation
     virtual IOGAnimation* GetAnimation (const std::string& _Alias);
 
+	// Get mesh
+    virtual IOGMesh* GetMesh () { return m_pMesh; }
+
 	// Get active point
     virtual bool GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame);
 
@@ -102,7 +105,6 @@ private:
 	COGMesh*	    m_pMesh;	
 	IOGTexture*	    m_pTexture;
     IOGMaterial*    m_pMaterial;
-	OGBlendType		m_Blend;
 
 	IOGRenderer*		m_pRenderer;
 	IOGSettingsReader*	m_pReader;

@@ -190,7 +190,7 @@ void CEffectViewerFrame::OnLoadResource ( CommonToolEvent<ResLoadEventData>& eve
 	const ResLoadEventData& evtData = event.GetEventCustomData();
 	wxString resourceText = evtData.m_Resource;
 
-	m_pTree->AppendItem(m_pTree->GetRootItem(), resourceText, -1, -1, new ResourceItem(RESTYPE_MODEL, resourceText) );
+	m_pTree->AppendItem(m_pTree->GetRootItem(), resourceText, -1, -1, new ResourceItem(RESTYPE_MODEL, resourceText, m_pTree->GetRootItem()) );
 	m_pTree->Expand(m_pTree->GetRootItem());
 }
 
@@ -205,7 +205,7 @@ void CEffectViewerFrame::OnResourceSwitch ( wxTreeEvent& event )
 	if(pData)
 	{
 		CommonToolEvent<ResSwitchEventData> cmd(EVENTID_RESSWITCH);
-		cmd.SetEventCustomData(ResSwitchEventData(pData->name, pData->type));
+		cmd.SetEventCustomData(ResSwitchEventData(pData));
 		GetEventHandlersTable()->FireEvent(EVENTID_RESSWITCH, &cmd);
 	}
 }

@@ -31,8 +31,9 @@ void COGMesh::LoadSubMeshes ()
     {
 		SPODNode* pNode = &m_pScene->pNode[i];
 		SPODMesh& Mesh = m_pScene->pMesh[pNode->nIdx];
+        std::string subMeshName = std::string(pNode->pszName);
 
-        SubMeshType sbmtype = GetSubMeshType(i);
+        SubMeshType sbmtype = ParseSubMeshType(subMeshName);
 		switch (sbmtype)
 		{
             case OG_SUBMESH_ACTPOINT:
@@ -41,7 +42,7 @@ void COGMesh::LoadSubMeshes ()
                 ActPoint pt;
                 pt.pos = *pPtr;
                 pt.part = i;
-                m_ActivePoints[std::string(pNode->pszName)] = pt;
+                m_ActivePoints[subMeshName] = pt;
                 continue;
             }break;
                 
@@ -49,9 +50,10 @@ void COGMesh::LoadSubMeshes ()
             case OG_SUBMESH_PROPELLER: m_TransparentParts.push_back(m_NumParts); break;
 		}
 
-        SubMesh submesh;
+        OGSubMesh submesh;
         submesh.type = sbmtype;
         submesh.part = i;
+        submesh.name = subMeshName;
         submesh.buffer = m_pRenderer->CreateVertexBuffer(&Mesh);
         m_SubMeshes.push_back(submesh);
         ++m_NumParts;
@@ -96,7 +98,7 @@ void COGMesh::RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Fra
 	std::vector<unsigned int>::const_iterator iter = m_TransparentParts.begin();
 	for (; iter != m_TransparentParts.end(); ++iter)
 	{
-		SubMesh& submesh = m_SubMeshes[*iter];
+		OGSubMesh& submesh = m_SubMeshes[*iter];
 		m_pScene->SetFrame((float)_Frame);
 		const SPODNode& node = m_pScene->pNode[submesh.part];
 
@@ -118,7 +120,7 @@ void COGMesh::RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Fra
 // Render part of the mesh.
 void COGMesh::RenderPart (const OGMatrix& _mWorld, unsigned int _Part, unsigned int _Frame)
 {
-    SubMesh& submesh = m_SubMeshes[_Part];
+    OGSubMesh& submesh = m_SubMeshes[_Part];
     m_pScene->SetFrame((float)_Frame);
     const SPODNode& node = m_pScene->pNode[submesh.part];
 
@@ -172,7 +174,7 @@ bool COGMesh::GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int 
 {
 	_obb.Create(GetPartAABB(_Part));
 
-    const SubMesh& submesh = m_SubMeshes[_Part];
+    const OGSubMesh& submesh = m_SubMeshes[_Part];
 	m_pScene->SetFrame((float)_Frame);
 	const SPODNode& node = m_pScene->pNode[submesh.part];
 	OGMatrix mNodeWorld;

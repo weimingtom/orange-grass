@@ -24,6 +24,7 @@ BEGIN_EVENT_TABLE(CViewerFrame, wxFrame)
     EVT_MENU(ID_DEF_AABB,               CViewerFrame::OnBounds)
     EVT_RESLOAD(wxID_ANY,               CViewerFrame::OnLoadResource )
     EVT_MTLLOAD(wxID_ANY,               CViewerFrame::OnLoadMaterial )
+    EVT_MESHLOAD(wxID_ANY,              CViewerFrame::OnLoadMesh )
     EVT_COMMAND_SCROLL(ID_DEF_DIFCOLOR, CViewerFrame::OnDiffuseSlider)
     EVT_COMMAND_SCROLL(ID_DEF_AMBCOLOR, CViewerFrame::OnAmbientSlider)
     EVT_COMMAND_SCROLL(ID_DEF_SPCCOLOR, CViewerFrame::OnSpecularSlider)
@@ -94,6 +95,7 @@ bool CViewerFrame::Create(wxWindow * parent,
 	m_pTree->Expand(m_pTree->GetRootItem());
 	GetEventHandlersTable()->AddEventHandler(EVENTID_RESLOAD, this);
 	GetEventHandlersTable()->AddEventHandler(EVENTID_MTLLOAD, this);
+	GetEventHandlersTable()->AddEventHandler(EVENTID_MESHLOAD, this);
 	m_pTree->Connect( wxEVT_COMMAND_TREE_SEL_CHANGED, wxTreeEventHandler( CViewerFrame::OnResourceSwitch ), NULL, this );
 
 	m_pSettingsPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, treeSize);
@@ -207,7 +209,7 @@ void CViewerFrame::OnLoadResource ( CommonToolEvent<ResLoadEventData>& event )
 	{
 		if (resourceGroupText.CmpNoCase((*iter).name) == 0)
 		{
-			m_pTree->AppendItem((*iter).item, resourceText, -1, -1, new ResourceItem(RESTYPE_MODEL, resourceText) );
+			m_pTree->AppendItem((*iter).item, resourceText, -1, -1, new ResourceItem(RESTYPE_MODEL, resourceText, (*iter).item) );
 			m_pTree->Expand((*iter).item);
 		}
 	}
@@ -224,6 +226,14 @@ void CViewerFrame::OnLoadMaterial ( CommonToolEvent<MtlLoadEventData>& event )
 }
 
 
+/// @brief Mesh loading event handler
+void CViewerFrame::OnLoadMesh ( CommonToolEvent<MeshLoadEventData>& event )
+{
+	const MeshLoadEventData& evtData = event.GetEventCustomData();
+    m_pTree->AppendItem(evtData.m_parentItem, evtData.m_name, -1, -1, new ResourceItem(RESTYPE_MESH, evtData.m_name, evtData.m_parentItem) );
+}
+
+
 /// @brief Resource switching event handler
 void CViewerFrame::OnResourceSwitch ( wxTreeEvent& event )
 {
@@ -234,7 +244,7 @@ void CViewerFrame::OnResourceSwitch ( wxTreeEvent& event )
 	if(pData)
 	{
 		CommonToolEvent<ResSwitchEventData> cmd(EVENTID_RESSWITCH);
-		cmd.SetEventCustomData(ResSwitchEventData(pData->name, pData->type));
+		cmd.SetEventCustomData(ResSwitchEventData(pData));
 		GetEventHandlersTable()->FireEvent(EVENTID_RESSWITCH, &cmd);
 	}
 }

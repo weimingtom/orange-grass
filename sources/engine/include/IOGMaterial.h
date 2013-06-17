@@ -9,6 +9,7 @@
 #ifndef IOGMATERIAL_H_
 #define IOGMATERIAL_H_
 
+#include "IOGRenderTypes.h"
 #include "IOGVector.h"
 
 
@@ -26,6 +27,9 @@ public:
 	// get material specular.
 	virtual const OGVec4& GetSpecular () const = 0;
 
+	// get material blend.
+	virtual OGBlendType GetBlend () const = 0;
+
 	// set material ambient.
 	virtual void SetAmbient (const OGVec4& _Value) = 0;
 
@@ -34,6 +38,9 @@ public:
 
 	// set material specular.
 	virtual void SetSpecular (const OGVec4& _Value) = 0;
+
+	// set material blend.
+	virtual void SetBlend (OGBlendType _Value) = 0;
 };
 
 #endif

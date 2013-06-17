@@ -25,9 +25,9 @@ COGModelShader::~COGModelShader ()
 // load shaders.
 bool COGModelShader::Load (const std::string& _VertShader, const std::string& _FragmentShader)
 {
-    if(ShaderLoadFromFile("blank", _FragmentShader.c_str(), GL_FRAGMENT_SHADER, 0, &m_uiFragShader) == 0)
+    if(ShaderLoadFromFile(_FragmentShader.c_str(), GL_FRAGMENT_SHADER, &m_uiFragShader) == 0)
         return false;
-    if(ShaderLoadFromFile("blank", _VertShader.c_str(), GL_VERTEX_SHADER, 0, &m_uiVertShader) == 0)
+    if(ShaderLoadFromFile(_VertShader.c_str(), GL_VERTEX_SHADER, &m_uiVertShader) == 0)
         return false;
 
     const char* pszAttribs[] = { "inVertex", "inNormal", "inTexCoord" };
@@ -48,7 +48,6 @@ bool COGModelShader::Load (const std::string& _VertShader, const std::string& _F
 
 	m_uiMaterialAmbient = glGetUniformLocation(m_uiId, "MaterialAmbient");
 	m_uiMaterialDiffuse = glGetUniformLocation(m_uiId, "MaterialDiffuse");
-	m_uiMaterialSpecular = glGetUniformLocation(m_uiId, "MaterialSpecular");
 
     return true;
 }
@@ -134,11 +133,9 @@ void COGModelShader::SetMaterial (IOGMaterial* _pMaterial)
 {
     const OGVec4& vAmbient = _pMaterial->GetAmbient();
     const OGVec4& vDiffuse = _pMaterial->GetDiffuse();
-    const OGVec4& vSpecular = _pMaterial->GetSpecular();
 
     glUniform3fv(m_uiMaterialAmbient, 1, OGVec3(vAmbient.x, vAmbient.y, vAmbient.z).ptr());
     glUniform3fv(m_uiMaterialDiffuse, 1, OGVec3(vDiffuse.x, vDiffuse.y, vDiffuse.z).ptr());
-    glUniform3fv(m_uiMaterialSpecular, 1, OGVec3(vSpecular.x, vSpecular.y, vSpecular.z).ptr());
 }
 
 

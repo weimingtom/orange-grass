@@ -27,6 +27,9 @@ public:
 	// get material specular.
 	virtual const OGVec4& GetSpecular () const;
 
+	// get material blend.
+	virtual OGBlendType GetBlend () const;
+
 	// set material ambient.
 	virtual void SetAmbient (const OGVec4& _Value);
 
@@ -36,11 +39,16 @@ public:
 	// set material specular.
 	virtual void SetSpecular (const OGVec4& _Value);
 
+	// set material blend.
+	virtual void SetBlend (OGBlendType _Value);
+
 private:
 
     OGVec4	m_Ambient;
     OGVec4	m_Diffuse;
     OGVec4	m_Specular;
+
+    OGBlendType m_Blend;
 };
 
 #endif

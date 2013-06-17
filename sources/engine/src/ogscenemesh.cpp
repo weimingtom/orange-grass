@@ -29,10 +29,12 @@ void COGSceneMesh::LoadSubMeshes ()
     {
 		SPODNode* pNode = &m_pScene->pNode[i];
 		SPODMesh& Mesh = m_pScene->pMesh[pNode->nIdx];
+        std::string subMeshName = std::string(pNode->pszName);
 
-        SubMesh submesh;
-        submesh.type = GetSubMeshType(i);
+        OGSubMesh submesh;
+        submesh.type = ParseSubMeshType(subMeshName);
         submesh.part = i;
+        submesh.name = subMeshName;
         submesh.buffer = m_pRenderer->CreateVertexBuffer(&Mesh);
         m_SubMeshes.push_back(submesh);
 		m_TerraParts.push_back(m_NumParts); 
@@ -56,7 +58,7 @@ void COGSceneMesh::RenderParts (const IOGFrustum& _frustum)
 	for (; iter != m_TerraParts.end(); ++iter)
 	{
 		unsigned int Id = *iter;
-		SubMesh& submesh = m_SubMeshes[Id];
+		OGSubMesh& submesh = m_SubMeshes[Id];
         
 		m_pScene->SetFrame(0);
 		const SPODNode& node = m_pScene->pNode[submesh.part];

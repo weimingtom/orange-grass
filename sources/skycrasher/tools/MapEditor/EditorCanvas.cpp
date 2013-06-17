@@ -476,11 +476,11 @@ void CEditorCanvas::OnMouseWheel(wxMouseEvent& event)
 void CEditorCanvas::OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& event )
 {
 	const ResSwitchEventData& evtData = event.GetEventCustomData();
-	switch (evtData.m_ResourceType)
+    switch (evtData.m_pItem->type)
 	{
 	case RESTYPE_MODEL:
         {
-			g_pScene->SetNewCurrentNodeForPlacement(evtData.m_Resource);
+            g_pScene->SetNewCurrentNodeForPlacement(evtData.m_pItem->name);
         }
 		break;
 	}

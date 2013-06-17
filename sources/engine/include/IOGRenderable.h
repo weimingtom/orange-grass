@@ -46,11 +46,4 @@ struct IOGActivePoint
 };
 
 
-struct OGFace
-{
-    OGVec3 vertices[3];
-    OGVec3 normal;
-};
-
-
 #endif

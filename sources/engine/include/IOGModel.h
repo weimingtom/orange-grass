@@ -12,8 +12,8 @@
 #include "IOGRenderable.h"
 #include "IOGTexture.h"
 #include "IOGMaterial.h"
+#include "IOGMesh.h"
 #include "IOGMath.h"
-#include "IOGAabb.h"
 #include "IOGObb.h"
 #include <vector>
 
@@ -34,6 +34,9 @@ public:
 
 	// Get material
 	virtual IOGMaterial* GetMaterial () = 0;
+
+	// Get mesh
+	virtual IOGMesh* GetMesh () = 0;
 
 	// Render mesh.
 	virtual void Render (const OGMatrix& _mWorld, unsigned int _Frame) = 0;

@@ -22,6 +22,13 @@ COGBaseMesh::~COGBaseMesh()
 }
 
 
+// Update submesh (for tools)
+void COGBaseMesh::UpdateSubMesh (unsigned int _Id, const OGSubMesh& _SubMesh)
+{
+    // TBD
+}
+
+
 // Load resource
 bool COGBaseMesh::Load ()
 {	
@@ -69,7 +76,7 @@ void COGBaseMesh::Unload ()
     m_Faces.clear();
     m_AABB.SetMinMax(OGVec3(0,0,0), OGVec3(0,0,0));
 
-    std::vector<SubMesh>::iterator iter = m_SubMeshes.begin();
+    std::vector<OGSubMesh>::iterator iter = m_SubMeshes.begin();
     for (; iter != m_SubMeshes.end(); ++iter)
     {
         OG_SAFE_DELETE((*iter).buffer);
@@ -94,11 +101,11 @@ void COGBaseMesh::CalculateGeometry ()
     unsigned int Part = 0;
     for (unsigned int i=0; i < m_pScene->nNumMeshNode; ++i)
 	{
-        if (GetSubMeshType(i) == OG_SUBMESH_ACTPOINT)
+        SPODNode* pNode = &m_pScene->pNode[i];
+        if (ParseSubMeshType(pNode->pszName) == OG_SUBMESH_ACTPOINT)
             continue;
 
         m_pScene->SetFrame(0);
-        SPODNode* pNode = &m_pScene->pNode[i];
 		m_pScene->GetWorldMatrix(mModel, *pNode);
 
         SPODMesh& Mesh = m_pScene->pMesh[pNode->nIdx];
@@ -144,18 +151,6 @@ void COGBaseMesh::CalculateGeometry ()
 }
 
 
-// Get all submesh AABBs
-void COGBaseMesh::GetAllAABBs (std::vector<IOGAabb*>& _aabbs)
-{
-    _aabbs.reserve(m_SubMeshes.size());
-    std::vector<SubMesh>::iterator iter = m_SubMeshes.begin();
-    for (; iter != m_SubMeshes.end(); ++iter)
-    {
-        _aabbs.push_back((*iter).aabb);
-    }
-}
-
-
 // Get ray intersection
 bool COGBaseMesh::GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos)
 {
@@ -178,23 +173,6 @@ bool COGBaseMesh::GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRa
 }
 
 
-// get sub-mesh type.
-SubMeshType COGBaseMesh::GetSubMeshType (unsigned int _Id)
-{
-    SPODNode* pNode = &m_pScene->pNode[_Id];
-
-    if (strstr(pNode->pszName, "propeller") == pNode->pszName)
-    {
-        return OG_SUBMESH_PROPELLER;
-    }
-    else if (strstr(pNode->pszName, "actpoint") == pNode->pszName)
-    {
-        return OG_SUBMESH_ACTPOINT;
-    }
-    return OG_SUBMESH_BODY;
-}
-
-
 // convert mesh to an internal format
 void COGBaseMesh::ConvertMesh ()
 {
@@ -205,7 +183,7 @@ void COGBaseMesh::ConvertMesh ()
     unsigned int Part = 0;
     for (unsigned int i=0; i < m_pScene->nNumMeshNode; ++i)
 	{
-        if (GetSubMeshType(i) == OG_SUBMESH_ACTPOINT)
+        if (m_SubMeshes[Part].type == OG_SUBMESH_ACTPOINT)
             continue;
 
         m_pScene->SetFrame(0);

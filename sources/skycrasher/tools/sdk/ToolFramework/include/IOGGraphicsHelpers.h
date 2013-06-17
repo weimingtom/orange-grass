@@ -9,6 +9,7 @@
 #ifndef IOGGRAPHICSHELPERS_H_
 #define IOGGRAPHICSHELPERS_H_
 
+#include "IOGGeometry.h"
 #include "IOGObb.h"
 #include "IOGRenderable.h"
 #include <vector>

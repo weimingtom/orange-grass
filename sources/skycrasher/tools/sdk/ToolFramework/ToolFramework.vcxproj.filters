@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Include">
+      <UniqueIdentifier>{c657d33d-0586-4a7c-875a-4eb6391dbfdc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\IOGGraphicsHelpers.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ToolFramework.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="src\CommonToolEvent.h" />
+    <ClInclude Include="src\EffectAdjustEvent.h" />
+    <ClInclude Include="src\EffectLoadEvent.h" />
+    <ClInclude Include="src\EventHandlersTable.h" />
+    <ClInclude Include="src\GraphControl.h" />
+    <ClInclude Include="src\LevelLoadingEvent.h" />
+    <ClInclude Include="src\LinearParamDialog.h" />
+    <ClInclude Include="src\ListboxLogger.h" />
+    <ClInclude Include="src\MaterialAdjustEvent.h" />
+    <ClInclude Include="src\MaterialLoadEvent.h" />
+    <ClInclude Include="src\ResourceGroup.h" />
+    <ClInclude Include="src\ResourceLoadingEvent.h" />
+    <ClInclude Include="src\ResourceSwitchEvent.h" />
+    <ClInclude Include="src\ToolCommandEvent.h" />
+    <ClInclude Include="src\ToolSettings.h" />
+    <ClInclude Include="src\MeshLoadEvent.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\EventHandlersTable.cpp" />
+    <ClCompile Include="src\GraphControl.cpp" />
+    <ClCompile Include="src\LinearParamDialog.cpp" />
+    <ClCompile Include="src\ListboxLogger.cpp" />
+    <ClCompile Include="src\oggraphicshelpers.cpp" />
+    <ClCompile Include="src\ToolSettings.cpp" />
+  </ItemGroup>
+</Project>

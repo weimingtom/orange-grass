@@ -1,0 +1,415 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{E9FBA7A0-9F64-43b1-BA9D-7DD1DA638542}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Interfaces">
+      <UniqueIdentifier>{7e0dfae6-4703-4275-a508-87ee71b92c94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interfaces\Core">
+      <UniqueIdentifier>{e3a205ca-1970-40e6-8415-e8b5ae7f03f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interfaces\GameLogic">
+      <UniqueIdentifier>{ee151605-d42e-4d9a-8e20-bcee31dfa155}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interfaces\GUI">
+      <UniqueIdentifier>{860f1e59-e212-44bf-a335-1b568886d516}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interfaces\Physics">
+      <UniqueIdentifier>{1af75fea-b816-4f75-9dcc-4036c6b538de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interfaces\SceneGraph">
+      <UniqueIdentifier>{23ab488e-2d2a-44f6-9c3f-daef89d11908}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Interfaces\Level">
+      <UniqueIdentifier>{302c5d6c-b23b-4e16-9e19-ce5548bda964}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Source Files">
+      <UniqueIdentifier>{086126e6-e1f1-4b0b-bf8b-6306c10a5125}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Source Files\GameLogic">
+      <UniqueIdentifier>{233d21f2-5141-48ff-84e8-a396b24e4723}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Source Files\GameLogic\Workers">
+      <UniqueIdentifier>{54234b68-26a0-4173-84c8-d969370a9779}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Source Files\GameLogic\Actors">
+      <UniqueIdentifier>{db73a254-803e-4f63-a94f-63614cb7b263}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Source Files\GUI">
+      <UniqueIdentifier>{8e5980e5-e4d7-4207-b706-2339b11efaf1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Source Files\Physics">
+      <UniqueIdentifier>{5429c75c-aea6-4588-a873-fc4dda5a6a0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Source Files\Level">
+      <UniqueIdentifier>{6bea55b3-ef10-4474-b922-456a299c6205}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Source Files\SceneGraph">
+      <UniqueIdentifier>{e6093355-b496-420d-ba54-a48e62c33144}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Source Files\Core">
+      <UniqueIdentifier>{f1abb94c-6ca3-452b-9249-2f85ba6d01b4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\GameScreenController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GameSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\LoadScreenController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\StartMenuScreenController.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Game.cpp">
+      <Filter>Source Files\Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogactormanager.cpp">
+      <Filter>Source Files\Source Files\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogactorparamsmgr.cpp">
+      <Filter>Source Files\Source Files\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\oggamesequence.cpp">
+      <Filter>Source Files\Source Files\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogweapon.cpp">
+      <Filter>Source Files\Source Files\GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogbotfallingworker.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Workers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogbotflightworker.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Workers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogfinishlevelworker.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Workers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogmissileflightworker.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Workers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogorientworker.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Workers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogstabilizeworker.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Workers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogworker.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Workers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogactor.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogactorairbot.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogactorbonus.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogactorbot.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogactorbullet.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogactorgaussray.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogactorlandbot.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogactormissile.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogactorplasmamissile.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogactorplayer.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogactorstatic.cpp">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogguibonusbar.cpp">
+      <Filter>Source Files\Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogguibutton.cpp">
+      <Filter>Source Files\Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogguilifebar.cpp">
+      <Filter>Source Files\Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogguiweaponpanel.cpp">
+      <Filter>Source Files\Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogspritepool.cpp">
+      <Filter>Source Files\Source Files\GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogairphysicalobject.cpp">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogbonusphysicalobject.cpp">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\oglandphysicalobject.cpp">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogmissilephysicalobject.cpp">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogphysicalobject.cpp">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogphysics.cpp">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogplayerphysicalobject.cpp">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogstaticphysicalobject.cpp">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\oglevel.cpp">
+      <Filter>Source Files\Source Files\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="src\oglevelmanager.cpp">
+      <Filter>Source Files\Source Files\Level</Filter>
+    </ClCompile>
+    <ClCompile Include="src\oganimationcontroller.cpp">
+      <Filter>Source Files\Source Files\SceneGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogscenegraph.cpp">
+      <Filter>Source Files\Source Files\SceneGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogsgeffectnode.cpp">
+      <Filter>Source Files\Source Files\SceneGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogsglandscapenode.cpp">
+      <Filter>Source Files\Source Files\SceneGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogsgnode.cpp">
+      <Filter>Source Files\Source Files\SceneGraph</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogappsettings.cpp">
+      <Filter>Source Files\Source Files\Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\GameScreenController.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GameSystem.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\LoadScreenController.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\StartMenuScreenController.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Game.h">
+      <Filter>Source Files\Interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGAppSettings.h">
+      <Filter>Source Files\Interfaces\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGActor.h">
+      <Filter>Source Files\Interfaces\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGActorManager.h">
+      <Filter>Source Files\Interfaces\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGActorParams.h">
+      <Filter>Source Files\Interfaces\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGActorParamsManager.h">
+      <Filter>Source Files\Interfaces\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGGameEventsHandler.h">
+      <Filter>Source Files\Interfaces\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGGameSequence.h">
+      <Filter>Source Files\Interfaces\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGWeapon.h">
+      <Filter>Source Files\Interfaces\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGGuiBonusbar.h">
+      <Filter>Source Files\Interfaces\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGGuiButton.h">
+      <Filter>Source Files\Interfaces\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGGuiLifebar.h">
+      <Filter>Source Files\Interfaces\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGGuiWeaponPanel.h">
+      <Filter>Source Files\Interfaces\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGSpritePool.h">
+      <Filter>Source Files\Interfaces\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGCollisionListener.h">
+      <Filter>Source Files\Interfaces\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGPhysicalObject.h">
+      <Filter>Source Files\Interfaces\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGPhysicalParams.h">
+      <Filter>Source Files\Interfaces\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGPhysics.h">
+      <Filter>Source Files\Interfaces\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGAnimationController.h">
+      <Filter>Source Files\Interfaces\SceneGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGSceneGraph.h">
+      <Filter>Source Files\Interfaces\SceneGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGSgNode.h">
+      <Filter>Source Files\Interfaces\SceneGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGLevel.h">
+      <Filter>Source Files\Interfaces\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGLevelManager.h">
+      <Filter>Source Files\Interfaces\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogactormanager.h">
+      <Filter>Source Files\Source Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogactorparamsmgr.h">
+      <Filter>Source Files\Source Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\oggamesequence.h">
+      <Filter>Source Files\Source Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogweapon.h">
+      <Filter>Source Files\Source Files\GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogbotfallingworker.h">
+      <Filter>Source Files\Source Files\GameLogic\Workers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogbotflightworker.h">
+      <Filter>Source Files\Source Files\GameLogic\Workers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogfinishlevelworker.h">
+      <Filter>Source Files\Source Files\GameLogic\Workers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogmissileflightworker.h">
+      <Filter>Source Files\Source Files\GameLogic\Workers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogorientworker.h">
+      <Filter>Source Files\Source Files\GameLogic\Workers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogstabilizeworker.h">
+      <Filter>Source Files\Source Files\GameLogic\Workers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogworker.h">
+      <Filter>Source Files\Source Files\GameLogic\Workers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogactor.h">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogactorairbot.h">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogactorbonus.h">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogactorbot.h">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogactorbullet.h">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogactorgaussray.h">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogactorlandbot.h">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogactormissile.h">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogactorplasmamissile.h">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogactorplayer.h">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogactorstatic.h">
+      <Filter>Source Files\Source Files\GameLogic\Actors</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogguibonusbar.h">
+      <Filter>Source Files\Source Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogguibutton.h">
+      <Filter>Source Files\Source Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogguilifebar.h">
+      <Filter>Source Files\Source Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogguiweaponpanel.h">
+      <Filter>Source Files\Source Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogspritepool.h">
+      <Filter>Source Files\Source Files\GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogairphysicalobject.h">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogbonusphysicalobject.h">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\oglandphysicalobject.h">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogmissilephysicalobject.h">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogphysicalobject.h">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogphysics.h">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogplayerphysicalobject.h">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogstaticphysicalobject.h">
+      <Filter>Source Files\Source Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\oglevel.h">
+      <Filter>Source Files\Source Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="src\oglevelmanager.h">
+      <Filter>Source Files\Source Files\Level</Filter>
+    </ClInclude>
+    <ClInclude Include="src\oganimationcontroller.h">
+      <Filter>Source Files\Source Files\SceneGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogscenegraph.h">
+      <Filter>Source Files\Source Files\SceneGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogsgeffectnode.h">
+      <Filter>Source Files\Source Files\SceneGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogsglandscapenode.h">
+      <Filter>Source Files\Source Files\SceneGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogsgnode.h">
+      <Filter>Source Files\Source Files\SceneGraph</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogappsettings.h">
+      <Filter>Source Files\Source Files\Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

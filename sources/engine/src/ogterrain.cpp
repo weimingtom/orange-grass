@@ -219,3 +219,15 @@ const IOGAabb& COGTerrain::GetAABB () const
 {
 	return m_pMesh->GetAABB();
 }
+
+
+// Get all submesh AABBs
+void COGTerrain::GetAllAABBs (std::vector<IOGAabb*>& _aabbs) 
+{
+    _aabbs.clear();
+
+    const std::vector<OGSubMesh>& subMeshes = m_pMesh->GetSubMeshes();
+    std::vector<OGSubMesh>::const_iterator it = subMeshes.begin();
+    for (; it != subMeshes.end(); ++it)
+        _aabbs.push_back(it->aabb);
+}

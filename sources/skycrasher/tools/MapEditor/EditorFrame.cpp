@@ -371,7 +371,7 @@ void CEditorFrame::OnLoadResource ( CommonToolEvent<ResLoadEventData>& event )
 	if (resourceGroupText.CmpNoCase(_T("Models")) == 0)
 	{
 		int n = m_pObjectsList->Append (resourceIconText);
-		m_ItemList[n] = new ResourceItem(RESTYPE_MODEL, resourceText);
+		m_ItemList[n] = new ResourceItem(RESTYPE_MODEL, resourceText, 0);
 	}
 }
 
@@ -383,7 +383,7 @@ void CEditorFrame::OnResourceSwitch ( wxCommandEvent& event )
 	if(pData)
 	{
 		CommonToolEvent<ResSwitchEventData> cmd(EVENTID_RESSWITCH);
-		cmd.SetEventCustomData(ResSwitchEventData(pData->name, pData->type));
+		cmd.SetEventCustomData(ResSwitchEventData(pData));
 		GetEventHandlersTable()->FireEvent(EVENTID_RESSWITCH, &cmd);
 
 		SetObjectsMode();

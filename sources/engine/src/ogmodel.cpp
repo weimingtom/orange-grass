@@ -13,8 +13,7 @@
 
 COGModel::COGModel() :	m_pMesh(NULL),
 						m_pTexture(NULL),
-                        m_pMaterial(NULL),
-						m_Blend(OG_BLEND_NO)
+                        m_pMaterial(NULL)
 {
     m_pRenderer = GetRenderer();
 	m_pReader = GetSettingsReader();
@@ -61,7 +60,7 @@ bool COGModel::Load ()
     m_pMaterial->SetAmbient(modelcfg.material_ambient);
     m_pMaterial->SetDiffuse(modelcfg.material_diffuse);
     m_pMaterial->SetSpecular(modelcfg.material_specular);
-	m_Blend = modelcfg.blend_type;
+    m_pMaterial->SetBlend(modelcfg.blend_type);
 
 	std::list<Cfg::Anim>::const_iterator anim_iter = modelcfg.anim_list.begin();
 	for (; anim_iter != modelcfg.anim_list.end(); ++anim_iter)
@@ -201,7 +200,6 @@ void COGModel::Unload ()
 	}
 
 	OG_SAFE_DELETE(m_pMaterial);
-	m_Blend = OG_BLEND_NO;
 
     std::map<std::string, IOGAnimation*>::iterator iter= m_pAnimations.begin();
 	for (; iter != m_pAnimations.end(); ++iter)
@@ -219,7 +217,6 @@ void COGModel::Render (const OGMatrix& _mWorld, unsigned int _Frame)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
-	m_pRenderer->SetBlend(m_Blend);
 	m_pMesh->Render (_mWorld, _Frame);
 }
 
@@ -229,7 +226,6 @@ void COGModel::RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame)
 {
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
-	m_pRenderer->SetBlend(m_Blend);
 	m_pMesh->RenderSolidParts(_mWorld, _Frame);
 }
 

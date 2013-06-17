@@ -8,11 +8,13 @@ enum ResourceType
 {
 	RESTYPE_TEXTURE,
 	RESTYPE_MODEL,
-	RESTYPE_TERRAIN
+	RESTYPE_TERRAIN,
+	RESTYPE_MESH
 };
 
 struct ResourceGroup
 {
+    ResourceGroup () {}
 	ResourceGroup (ResourceType _type, const wxString& _name)
 	{
 		name = _name;
@@ -28,14 +30,17 @@ struct ResourceGroup
 
 struct ResourceItem : public wxTreeItemData
 {
-	ResourceItem (ResourceType _type, const wxString& _name)
+    ResourceItem () {}
+	ResourceItem (ResourceType _type, const wxString& _name, const wxTreeItemId& _parentItem)
 	{
 		type = _type;
 		name = _name;
+        parentItem = _parentItem;
 	}
 
 	ResourceType	type;
 	wxString		name;
+    wxTreeItemId    parentItem;
 };
 
 

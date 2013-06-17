@@ -12,7 +12,6 @@ uniform float FogEnabled;
 
 uniform vec3 MaterialAmbient;
 uniform vec3 MaterialDiffuse;
-uniform vec3 MaterialSpecular;
 
 varying vec3 DiffuseLight;
 varying vec2 TexCoord;

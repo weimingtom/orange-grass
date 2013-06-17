@@ -199,33 +199,48 @@ void CViewerScene::RenderHelpers()
 
 
 // Setup model.
-void CViewerScene::SetupModel(const char* _pModelAlias)
+void CViewerScene::SetupModel(ResourceItem* _pModelItem)
 {
+    if (_pModelItem == NULL)
+        return;
+
     if (m_pCurActor)
     {
         m_pActorMgr->DestroyActor(m_pCurActor);
     }
 
-	if (_pModelAlias != NULL)
+    const char* pModelAlias = _pModelItem->name;
+	if (pModelAlias != NULL)
 	{
-		m_pCurActor = m_pActorMgr->CreateActor(
-            _pModelAlias,
-            OGVec3(0,0,0), 
-            OGVec3(0,0,0), 
-            OGVec3(1,1,1));
+		m_pCurActor = m_pActorMgr->CreateActor(pModelAlias, OGVec3(0,0,0), OGVec3(0,0,0), OGVec3(1,1,1));
         m_pActorMgr->AddActor(m_pCurActor);
         m_pCurActor->Activate(true);
 
         IOGModel* pModel = m_pResourceMgr->GetModel(OG_RESPOOL_GAME, m_pCurActor->GetParams()->model_alias);
-        CommonToolEvent<MtlLoadEventData> cmd(EVENTID_MTLLOAD);
-        cmd.SetEventCustomData(MtlLoadEventData(
-            pModel->GetMaterial()->GetAmbient().x,
-            pModel->GetMaterial()->GetDiffuse().x,
-            pModel->GetMaterial()->GetSpecular().x));
-        GetEventHandlersTable()->FireEvent(EVENTID_MTLLOAD, &cmd);
-	}
-	else
-	{
+        IOGMesh* pMesh = pModel->GetMesh();
+        if (pMesh)
+        {
+            const std::vector<OGSubMesh>& subMeshes = pMesh->GetSubMeshes();
+            size_t numSubMeshes = subMeshes.size();
+            for (size_t n = 0; n < numSubMeshes; ++n)
+            {
+                CommonToolEvent<MeshLoadEventData> cmd(EVENTID_MESHLOAD);
+                cmd.SetEventCustomData(MeshLoadEventData(subMeshes[n].name, (unsigned int)n, _pModelItem->GetId()));
+                GetEventHandlersTable()->FireEvent(EVENTID_MESHLOAD, &cmd);
+            }
+        }
+
+        IOGMaterial* pMaterial = pModel->GetMaterial();
+        if (pMaterial)
+        {
+            CommonToolEvent<MtlLoadEventData> cmd(EVENTID_MTLLOAD);
+            cmd.SetEventCustomData(MtlLoadEventData(
+                pMaterial->GetAmbient().x,
+                pMaterial->GetDiffuse().x,
+                pMaterial->GetSpecular().x,
+                pMaterial->GetBlend()));
+            GetEventHandlersTable()->FireEvent(EVENTID_MTLLOAD, &cmd);
+        }
 	}
 }
 

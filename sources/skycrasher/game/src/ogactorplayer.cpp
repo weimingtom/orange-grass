@@ -52,7 +52,11 @@ void COGActorPlayer::OnAddedToManager ()
 {
 	COGActorBot::OnAddedToManager();
 	GetInput()->RegisterReceiver(this);
-    m_vFinishPoint = GetLevelManager()->GetCurrentLevel()->GetFinishPosition();
+    IOGLevel* pCurLevel = GetLevelManager()->GetCurrentLevel();
+    if (pCurLevel)
+    {
+        m_vFinishPoint = pCurLevel->GetFinishPosition();
+    }
     m_FinishWorker.SetTarget(m_vFinishPoint);
 }
 

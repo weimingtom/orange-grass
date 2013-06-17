@@ -6,16 +6,18 @@
 struct MtlLoadEventData
 {
     MtlLoadEventData () {}
-    MtlLoadEventData (float _dif, float _amb, float _spc)
+    MtlLoadEventData (float _dif, float _amb, float _spc, int _blend)
     {
         m_dif = _dif;
         m_amb = _amb;
         m_spc = _spc;
+        m_blend = _blend;
     }
 
     float m_dif;
     float m_amb;
     float m_spc;
+    int m_blend;
 };
 
 

@@ -144,7 +144,7 @@ void CEffectViewerCanvas::OnKeyUp( wxKeyEvent& event )
 void CEffectViewerCanvas::OnResourceSwitch ( CommonToolEvent<ResSwitchEventData>& event )
 {
 	const ResSwitchEventData& evtData = event.GetEventCustomData();
-	g_pScene->SetupEffect(evtData.m_Resource);
+    g_pScene->SetupEffect(evtData.m_pItem->name);
 	Refresh();
 }
 

@@ -10,6 +10,7 @@ static const int EVENTID_MTLLOAD	    = 32004;
 static const int EVENTID_MTLADJUST	    = 32005;
 static const int EVENTID_EFFECTLOAD	    = 32006;
 static const int EVENTID_EFFECTADJUST	= 32007;
+static const int EVENTID_MESHLOAD	    = 32008;
 
 
 template <typename T>

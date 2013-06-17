@@ -151,6 +151,9 @@
     <ClCompile Include="src\unzip\zip.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\IOGGeometry.h" />
+    <ClInclude Include="include\IOGMesh.h" />
+    <ClInclude Include="include\IOGRenderTypes.h" />
     <ClInclude Include="src\ogbasemesh.h" />
     <ClInclude Include="src\ogfog.h" />
     <ClInclude Include="src\oglight.h" />

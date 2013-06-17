@@ -78,7 +78,6 @@ protected:
 
 	unsigned int m_uiMaterialAmbient;
 	unsigned int m_uiMaterialDiffuse;
-	unsigned int m_uiMaterialSpecular;
 
     IOGFog* m_pFog;
     IOGLightMgr* m_pLightMgr;

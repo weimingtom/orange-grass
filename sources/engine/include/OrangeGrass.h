@@ -55,4 +55,7 @@ OGBlendType ParseBlendType (const std::string& _BlendTypeStr);
 // Parse the shader id string and convert it to internal type
 OGShaderID ParseShaderId (const std::string& _ShaderIdStr);
 
+// Parse the submesh type string and convert it to internal type
+SubMeshType ParseSubMeshType (const std::string& _SubMeshTypeStr);
+
 #endif
