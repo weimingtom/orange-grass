@@ -52,7 +52,7 @@ public:
     virtual void GetAllAABBs (std::vector<IOGAabb*>& _aabbs);
 
 	// Get material
-	virtual IOGMaterial* GetMaterial () { return m_pMaterial; }
+	//virtual IOGMaterial* GetMaterial () { return m_pMaterial; }
 
 	// Save params
 	virtual bool SaveParams ();
@@ -66,7 +66,7 @@ private:
         OGVec4 material_specular;
 		std::string mesh_file;
 		std::string texture_alias;
-		std::string objects_texture_alias;
+		OGBlendType blend_type;
 	};
 
 	// Load terrain configuration
@@ -77,7 +77,6 @@ private:
 	COGSceneMesh*				m_pMesh;	
     IOGMaterial*				m_pMaterial;
 	IOGTexture*					m_pTexture;
-	IOGTexture*					m_pObjsTexture;
 	OGBlendType					m_Blend;
     IOGRenderer*                m_pRenderer;
 	IOGSettingsReader*			m_pReader;

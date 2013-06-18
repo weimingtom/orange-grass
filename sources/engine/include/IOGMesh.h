@@ -14,6 +14,12 @@
 #include <vector>
 
 
+struct OGMeshCfg
+{
+    std::string mesh_file;
+};
+
+
 struct OGSubMesh
 {
     unsigned int        part;

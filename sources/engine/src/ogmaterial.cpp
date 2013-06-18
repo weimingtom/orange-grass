@@ -7,6 +7,7 @@
  *
  */
 #include "OpenGL2.h"
+#include "OrangeGrass.h"
 #include "ogmaterial.h"
 
 
@@ -15,11 +16,40 @@ COGMaterial::COGMaterial ()
 	m_Specular = OGVec4(0.0f, 0.0f, 0.0f, 0.0f);
 	m_Ambient = OGVec4(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Diffuse = OGVec4(1.0f, 1.0f, 1.0f, 1.0f);
+    m_Blend = OG_BLEND_NO;
 }
 
 
 COGMaterial::~COGMaterial ()
 {
+}
+
+
+// load material from config
+void COGMaterial::LoadConfig (const OGMaterialCfg* _pCfg)
+{
+    if (!_pCfg)
+    {
+        OG_LOG_WARNING("Trying to load NULL config to material.");
+        return;
+    }
+
+    m_Ambient = _pCfg->material_ambient;
+    m_Diffuse = _pCfg->material_diffuse;
+    m_Specular = _pCfg->material_specular;
+    m_Blend = _pCfg->blend_type;
+}
+
+
+// save material config
+OGMaterialCfg COGMaterial::SaveConfig ()
+{
+    OGMaterialCfg cfg;
+    cfg.material_ambient = m_Ambient;
+    cfg.material_diffuse = m_Diffuse;
+    cfg.material_specular = m_Specular;
+    cfg.blend_type = m_Blend;
+    return cfg;
 }
 
 

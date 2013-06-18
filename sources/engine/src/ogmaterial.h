@@ -18,6 +18,12 @@ public:
     COGMaterial ();
 	virtual ~COGMaterial ();
 
+    // load material from config
+    virtual void LoadConfig (const OGMaterialCfg* _pCfg);
+
+    // save material config
+    virtual OGMaterialCfg SaveConfig ();
+
 	// get material ambient.
 	virtual const OGVec4& GetAmbient () const;
 

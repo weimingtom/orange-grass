@@ -79,6 +79,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ogmodelconfig.cpp" />
     <ClCompile Include="src\OrangeGrass.cpp" />
     <ClCompile Include="src\ogbasemesh.cpp" />
     <ClCompile Include="src\ogfog.cpp" />
@@ -160,6 +161,7 @@
     <ClInclude Include="src\ogmaterial.h" />
     <ClInclude Include="src\ogmesh.h" />
     <ClInclude Include="src\ogmodel.h" />
+    <ClInclude Include="src\ogmodelconfig.h" />
     <ClInclude Include="src\ogrendertarget.h" />
     <ClInclude Include="src\ogscenemesh.h" />
     <ClInclude Include="src\ogsprite.h" />

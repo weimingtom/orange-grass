@@ -1,5 +1,5 @@
 /*
- *  ogmodel.mm
+ *  ogmodel.cpp
  *  OrangeGrass
  *
  *  Created by Viacheslav Bogdanov on 08.11.09.

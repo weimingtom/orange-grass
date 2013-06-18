@@ -11,12 +11,29 @@
 
 #include "IOGRenderTypes.h"
 #include "IOGVector.h"
+#include <string>
+
+
+struct OGMaterialCfg
+{
+    std::string texture_alias;
+    OGBlendType blend_type;
+    OGVec4 material_ambient;
+    OGVec4 material_diffuse;
+    OGVec4 material_specular;
+};
 
 
 class IOGMaterial
 {
 public:
 	virtual ~IOGMaterial () {}
+
+    // load material from config
+    virtual void LoadConfig (const OGMaterialCfg* _pCfg) = 0;
+
+    // save material config
+    virtual OGMaterialCfg SaveConfig () = 0;
 
 	// get material ambient.
 	virtual const OGVec4& GetAmbient () const = 0;

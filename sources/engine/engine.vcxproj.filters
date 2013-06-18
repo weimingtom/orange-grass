@@ -278,6 +278,9 @@
     <ClCompile Include="src\unzip\zip.c">
       <Filter>Source Files\ZIP\unzip</Filter>
     </ClCompile>
+    <ClCompile Include="src\ogmodelconfig.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ogbasemesh.h">
@@ -591,6 +594,9 @@
     </ClInclude>
     <ClInclude Include="include\IOGGeometry.h">
       <Filter>Interface\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogmodelconfig.h">
+      <Filter>Source Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

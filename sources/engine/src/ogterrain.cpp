@@ -13,7 +13,6 @@
 COGTerrain::COGTerrain () :	m_pMesh(NULL),
                             m_pMaterial(NULL),
 							m_pTexture(NULL),
-							m_pObjsTexture(NULL),
 							m_Blend(OG_BLEND_NO)
 {
     m_pRenderer = GetRenderer();
@@ -54,10 +53,6 @@ bool COGTerrain::Load ()
 		return false;
 
 	m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, cfg.texture_alias);
-	if (!cfg.objects_texture_alias.empty())
-	{
-		m_pObjsTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, cfg.objects_texture_alias);
-	}
 
     m_pMaterial = m_pRenderer->CreateMaterial();
     m_pMaterial->SetAmbient(cfg.material_ambient);
@@ -91,6 +86,7 @@ bool COGTerrain::LoadConfig (COGTerrain::Cfg& _cfg)
 	if (pMaterialNode != NULL)
 	{
 		_cfg.texture_alias = m_pReader->ReadStringParam(pMaterialNode, "texture");
+		_cfg.blend_type = ParseBlendType(m_pReader->ReadStringParam(pMaterialNode, "blend"));
     	IOGGroupNode* pAmbientNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Ambient");
         if (pAmbientNode)
         {
@@ -111,13 +107,6 @@ bool COGTerrain::LoadConfig (COGTerrain::Cfg& _cfg)
         }
 
 		m_pReader->CloseGroupNode(pMaterialNode);
-	}
-	
-	IOGGroupNode* pObjectsNode = m_pReader->OpenGroupNode(pSource, NULL, "Objects");
-	if (pObjectsNode != NULL)
-	{
-		_cfg.objects_texture_alias = m_pReader->ReadStringParam(pObjectsNode, "texture");
-		m_pReader->CloseGroupNode(pObjectsNode);
 	}
 
 	m_pReader->CloseSource(pSource);
@@ -187,7 +176,7 @@ void COGTerrain::Unload ()
 // Render terrain.
 void COGTerrain::Render (const OGMatrix& _mWorld)
 {
-	const IOGFrustum& frustum = GetRenderer()->GetCamera()->GetFrustum();
+	const IOGFrustum& frustum = m_pRenderer->GetCamera()->GetFrustum();
 
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);

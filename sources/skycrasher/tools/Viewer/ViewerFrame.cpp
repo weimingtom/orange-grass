@@ -230,7 +230,10 @@ void CViewerFrame::OnLoadMaterial ( CommonToolEvent<MtlLoadEventData>& event )
 void CViewerFrame::OnLoadMesh ( CommonToolEvent<MeshLoadEventData>& event )
 {
 	const MeshLoadEventData& evtData = event.GetEventCustomData();
-    m_pTree->AppendItem(evtData.m_parentItem, evtData.m_name, -1, -1, new ResourceItem(RESTYPE_MESH, evtData.m_name, evtData.m_parentItem) );
+    if (!m_pTree->ItemHasChildren(evtData.m_parentItem))
+    {
+        m_pTree->AppendItem(evtData.m_parentItem, evtData.m_name, -1, -1, new ResourceItem(RESTYPE_MESH, evtData.m_name, evtData.m_parentItem));
+    }
 }
 
 

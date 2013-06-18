@@ -38,9 +38,6 @@ public:
 
 	// Get all submesh AABBs
     virtual void GetAllAABBs (std::vector<IOGAabb*>& _aabbs) = 0;
-
-	// Get material
-	virtual IOGMaterial* GetMaterial () = 0;
 };
 
 

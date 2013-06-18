@@ -12,6 +12,20 @@
 #include <string>
 
 
+struct OGAnimationCfg
+{
+    struct Anim
+    {
+        std::string anim_alias;
+        int anim_start;
+        int anim_end;
+        int speed;
+        int looped;
+    };
+    std::list<Anim> anim_list;
+};
+
+
 struct IOGAnimation
 {
 	std::string name;
