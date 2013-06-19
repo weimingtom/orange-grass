@@ -1,5 +1,9 @@
-varying highp vec2 v_textureCoord;
-varying highp vec4 v_color;
+#ifdef GL_ES
+precision mediump float;
+#endif
+
+varying vec2 v_textureCoord;
+varying vec4 v_color;
 uniform sampler2D sTexture;
 
 void main(void)

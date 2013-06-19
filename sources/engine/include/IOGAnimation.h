@@ -10,6 +10,7 @@
 #define IOGANIMATION_H_
 
 #include <string>
+#include <list>
 
 
 struct OGAnimationCfg

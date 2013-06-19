@@ -26,6 +26,7 @@ LOCAL_SRC_FILES +=  $(ENGINEPATH)/ogbasemesh.cpp \
                     $(ENGINEPATH)/ogmesh.cpp \
                     $(ENGINEPATH)/ogmodel.cpp \
                     $(ENGINEPATH)/ogmodelshader.cpp \
+                    $(ENGINEPATH)/ogmodelconfig.cpp \
                     $(ENGINEPATH)/ogquaternion.cpp \
                     $(ENGINEPATH)/ogrenderer.cpp \
                     $(ENGINEPATH)/ogrendertarget.cpp \

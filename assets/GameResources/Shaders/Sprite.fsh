@@ -1,7 +1,11 @@
+#ifdef GL_ES
+precision mediump float;
+#endif
+
 uniform sampler2D sTexture;
 
-varying highp vec2 TexCoord;
-varying highp vec4 VertexColor;
+varying vec2 TexCoord;
+varying vec4 VertexColor;
 
 void main()
 {

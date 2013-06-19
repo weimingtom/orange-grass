@@ -33,10 +33,7 @@ COGShaderManager::~COGShaderManager ()
 bool COGShaderManager::Init ()
 {
     IOGResourceMgr* pResMgr = GetResourceMgr();
-	std::string ShaderPath = std::string("Shaders/gles/");
-#ifdef WIN32
-	ShaderPath = std::string("Shaders/gl/");
-#endif
+	std::string ShaderPath = std::string("Shaders/");
 
     m_ShaderStorage[OG_SHADER_NO] = NULL;
 
