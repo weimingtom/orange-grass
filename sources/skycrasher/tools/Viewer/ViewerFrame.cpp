@@ -18,6 +18,7 @@ static const long TOOLBAR_STYLE = wxTB_FLAT | wxTB_DOCKABLE | wxTB_TEXT;
 
 
 BEGIN_EVENT_TABLE(CViewerFrame, wxFrame)
+    EVT_CLOSE(CViewerFrame::OnClose)
     EVT_MENU(wxID_EXIT,                 CViewerFrame::OnExit)
     EVT_MENU(wxID_SAVE,                 CViewerFrame::OnSave)
     EVT_MENU(ID_DEF_COORDGRID,          CViewerFrame::OnCoordGrid)
@@ -126,6 +127,13 @@ CViewerFrame::~CViewerFrame()
 void CViewerFrame::OnExit( wxCommandEvent& WXUNUSED(event) )
 {
 	Close(true);
+}
+
+
+/// @brief App exit handler.
+void CViewerFrame::OnClose(wxCloseEvent& event)
+{
+    Destroy();
 }
 
 

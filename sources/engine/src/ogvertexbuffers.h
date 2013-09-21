@@ -10,33 +10,63 @@
 #define OGVERTEXBUFFERS_H_
 #include "IOGStatistics.h"
 #include "IOGVertexBuffers.h"
-#include "pvr/POD.h"
 
 
 class COGVertexBuffers : public IOGVertexBuffers
 {
-	COGVertexBuffers();
+private:
+    COGVertexBuffers();
 
 public:
-	COGVertexBuffers (SPODMesh* _pMesh);
-	virtual ~COGVertexBuffers ();
+    COGVertexBuffers (
+        const void* _pVertexData, 
+        unsigned int _NumVertices,
+        unsigned int _NumFaces,
+        unsigned int _Stride, 
+        const void* _pIndexData, 
+        unsigned int _NumIndices);
 
-	// apply buffers.
-	virtual void Apply () const;
+    virtual ~COGVertexBuffers ();
 
-	// render buffer geometry.
-	virtual void Render () const;
+    // apply buffers.
+    virtual void Apply () const;
 
-	// is indexed
-	virtual bool IsIndexed() const {return (m_pMesh->sFaces.pData != 0);}
-	
+    // render buffer geometry.
+    virtual void Render () const;
+
+    // is indexed
+    virtual bool IsIndexed() const { return (m_pIndexData != NULL); }
+
+    // number of vertices
+    virtual unsigned int GetNumVertices () const { return m_NumVertices; }
+
+    // number of indices
+    virtual unsigned int GetNumIndices () const { return m_NumIndices; }
+
+    // number of faces
+    virtual unsigned int GetNumFaces () const { return m_NumFaces; }
+
+    // stride
+    virtual unsigned int GetStride () const { return m_Stride; }
+
+    // vertex data
+    virtual const void* GetVertexData () const { return m_pVertexData; }
+
+    // index data
+    virtual const void* GetIndexData () const { return m_pIndexData; }
+
 private:
 
-	unsigned int	m_VBO;
-	unsigned int	m_IBO;
-	unsigned int	m_NumVertices;
-	SPODMesh*		m_pMesh;
-	IOGStatistics*	m_pStats;
+    unsigned int    m_VBO;
+    unsigned int    m_IBO;
+    unsigned int    m_NumVertices;
+    unsigned int    m_NumIndices;
+    unsigned int    m_NumFaces;
+    unsigned int    m_Stride;
+    const void*     m_pVertexData;
+    const void*     m_pIndexData;
+
+    IOGStatistics*  m_pStats;
 };
 
 #endif

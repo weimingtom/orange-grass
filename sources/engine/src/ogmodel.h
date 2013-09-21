@@ -1,11 +1,11 @@
 /*
- *  ogmodel.h
- *  OrangeGrass
- *
- *  Created by Viacheslav Bogdanov on 08.11.09.
- *  Copyright 2009 __MyCompanyName__. All rights reserved.
- *
- */
+*  ogmodel.h
+*  OrangeGrass
+*
+*  Created by Viacheslav Bogdanov on 08.11.09.
+*  Copyright 2009 __MyCompanyName__. All rights reserved.
+*
+*/
 #ifndef OGMODEL_H_
 #define OGMODEL_H_
 
@@ -16,100 +16,107 @@
 #include "ogmesh.h"
 #include <map>
 #include <list>
+#include "pvr/POD.h"
 
 
 class COGModel : public IOGModel, public COGResource
 {
 public:
-	COGModel();
-	virtual ~COGModel();
-		
-	// Load model.
-	virtual bool Load ();
+    COGModel();
+    virtual ~COGModel();
 
-	// Unload resource.
-	virtual void Unload ();
+    // Load model.
+    virtual bool Load ();
 
-	// Render mesh.
-	virtual void Render (const OGMatrix& _mWorld, unsigned int _Frame);
+    // Unload resource.
+    virtual void Unload ();
 
-	// Render solid parts of the mesh.
-	virtual void RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame);
+    // Render mesh.
+    virtual void Render (const OGMatrix& _mWorld, unsigned int _Frame);
 
-	// Render transparent parts of the mesh.
-	virtual void RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fSpin);
+    // Render solid parts of the mesh.
+    virtual void RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame);
 
-	// Check if has submeshes of the following type
-	virtual bool HasSubmeshesOfType(SubMeshType _Type) const;
+    // Render transparent parts of the mesh.
+    virtual void RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fSpin);
+
+    // Check if has submeshes of the following type
+    virtual bool HasSubmeshesOfType(SubMeshType _Type) const;
 
     // Get num renderable parts.
-	virtual unsigned int GetNumRenderables () const;
+    virtual unsigned int GetNumRenderables () const;
 
-	// Get type of the renderable.
-	virtual RenderableType GetRenderableType () const { return OG_RENDERABLE_MODEL; }
+    // Get type of the renderable.
+    virtual RenderableType GetRenderableType () const { return OG_RENDERABLE_MODEL; }
 
-	// Get combined AABB
-	virtual const IOGAabb& GetAABB () const;
+    // Get combined AABB
+    virtual const IOGAabb& GetAABB () const;
 
-	// Get part's transformed OBB after applying animation
-	virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld) const;
+    // Get part's transformed OBB after applying animation
+    virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld) const;
 
-	// Get model alias
-	virtual const std::string& GetAlias () const;
+    // Get model alias
+    virtual const std::string& GetAlias () const;
 
-	// Get texture
-	virtual IOGTexture* GetTexture () { return m_pTexture; }
+    // Get texture
+    virtual IOGTexture* GetTexture () { return m_pTexture; }
 
-	// Get material
-	virtual IOGMaterial* GetMaterial () { return m_pMaterial; }
+    // Get material
+    virtual IOGMaterial* GetMaterial () { return m_pMaterial; }
 
-	// Get animation
+    // Get animation
     virtual IOGAnimation* GetAnimation (const std::string& _Alias);
 
-	// Get mesh
-    virtual IOGMesh* GetMesh () { return m_pMesh; }
+    // Get mesh
+    virtual const std::vector<IOGMesh*>& GetMeshes () const { return m_Meshes; }
 
-	// Get active point
+    // Get active point
     virtual bool GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame);
 
-	// Save params
-	virtual bool SaveParams ();
+    // Save params
+    virtual bool SaveParams ();
+
+    // Get ray intersection
+    virtual bool GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos);
 
 private:
 
-	struct Cfg
-	{
-		struct Anim
-		{
-			std::string anim_alias;
-			int anim_start;
-			int anim_end;
+    struct Cfg
+    {
+        struct Anim
+        {
+            std::string anim_alias;
+            int anim_start;
+            int anim_end;
             int speed;
             int looped;
-		};
+        };
 
-		std::string mesh_file;
-		std::string texture_alias;
-		OGBlendType blend_type;
-        OGVec4 material_ambient;
-        OGVec4 material_diffuse;
-        OGVec4 material_specular;
-		std::list<Anim> anim_list;
-	};
+        std::string mesh_file;
+        OGMaterialCfg material;
+        std::list<Anim> anim_list;
+    };
 
-	// Load model configuration
-	bool LoadConfig (COGModel::Cfg& _cfg);
+    // Load model configuration
+    bool LoadConfig (COGModel::Cfg& _cfg);
 
 private:
 
-	COGMesh*	    m_pMesh;	
-	IOGTexture*	    m_pTexture;
+    IOGTexture*     m_pTexture;
     IOGMaterial*    m_pMaterial;
+    CPVRTModelPOD*  m_pScene;
 
-	IOGRenderer*		m_pRenderer;
-	IOGSettingsReader*	m_pReader;
+    IOGAabb         m_AABB;
+    unsigned int    m_NumParts;
 
-	std::map<std::string, IOGAnimation*>	m_pAnimations;
+    IOGRenderer*        m_pRenderer;
+    IOGSettingsReader*  m_pReader;
+
+    std::vector<IOGMesh*>                   m_Meshes;
+    std::vector<unsigned int>               m_SolidParts;
+    std::vector<unsigned int>               m_TransparentParts;
+    std::map<std::string, OGActivePoint>    m_ActivePoints;
+    std::map<std::string, IOGAnimation*>    m_pAnimations;
 };
 
 

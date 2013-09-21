@@ -115,9 +115,15 @@ void COGRenderer::SetViewport (
 
 
 // Create vertex buffer for mesh.
-IOGVertexBuffers* COGRenderer::CreateVertexBuffer (void* _pMeshData)
+IOGVertexBuffers* COGRenderer::CreateVertexBuffer (
+    const void* _pVertexData, 
+    unsigned int _NumVertices, 
+    unsigned int _NumFaces,
+    unsigned int _Stride, 
+    const void* _pIndexData, 
+    unsigned int _NumIndices)
 {
-	return new COGVertexBuffers((SPODMesh*)_pMeshData);
+	return new COGVertexBuffers(_pVertexData, _NumVertices, _NumFaces, _Stride, _pIndexData, _NumIndices);
 }
 
 

@@ -1,11 +1,11 @@
 /*
- *  ogmesh.cpp
- *  OrangeGrass
- *
- *  Created by Viacheslav Bogdanov on 06.11.09.
- *  Copyright 2009 __MyCompanyName__. All rights reserved.
- *
- */
+*  ogmesh.cpp
+*  OrangeGrass
+*
+*  Created by Viacheslav Bogdanov on 06.11.09.
+*  Copyright 2009 __MyCompanyName__. All rights reserved.
+*
+*/
 #include "ogmesh.h"
 #include "OrangeGrass.h"
 
@@ -18,190 +18,105 @@ COGMesh::COGMesh ()
 
 COGMesh::~COGMesh()
 {
+    Unload();
+}
+
+// Load resource
+bool COGMesh::Load (
+    const char* _pName,
+    SubMeshType _Type,
+    unsigned int _Part,
+    const void* _pVertexData, 
+    unsigned int _NumVertices, 
+    unsigned int _NumFaces,
+    unsigned int _Stride, 
+    const void* _pIndexData, 
+    unsigned int _NumIndices)
+{
+    m_name = std::string(_pName);
+    m_type = _Type;
+    m_part = _Part;
+    m_buffer = m_pRenderer->CreateVertexBuffer(_pVertexData, _NumVertices, 
+        _NumFaces, _Stride, _pIndexData, _NumIndices);
+    m_aabb = new IOGAabb();
+    return true;
 }
 
 
-// load sub-meshes
-void COGMesh::LoadSubMeshes ()
+// Unload resource.
+void COGMesh::Unload ()
 {
-	m_SolidParts.reserve(m_pScene->nNumMeshNode);
-	m_TransparentParts.reserve(m_pScene->nNumMeshNode);
-
-    for(unsigned int i = 0; i < m_pScene->nNumMeshNode; ++i)
-    {
-		SPODNode* pNode = &m_pScene->pNode[i];
-		SPODMesh& Mesh = m_pScene->pMesh[pNode->nIdx];
-        std::string subMeshName = std::string(pNode->pszName);
-
-        SubMeshType sbmtype = ParseSubMeshType(subMeshName);
-		switch (sbmtype)
-		{
-            case OG_SUBMESH_ACTPOINT:
-            {
-                OGVec3* pPtr = (OGVec3*)Mesh.pInterleaved;
-                ActPoint pt;
-                pt.pos = *pPtr;
-                pt.part = i;
-                m_ActivePoints[subMeshName] = pt;
-                continue;
-            }break;
-                
-            case OG_SUBMESH_BODY: m_SolidParts.push_back(m_NumParts); break;
-            case OG_SUBMESH_PROPELLER: m_TransparentParts.push_back(m_NumParts); break;
-		}
-
-        OGSubMesh submesh;
-        submesh.type = sbmtype;
-        submesh.part = i;
-        submesh.name = subMeshName;
-        submesh.buffer = m_pRenderer->CreateVertexBuffer(&Mesh);
-        m_SubMeshes.push_back(submesh);
-        ++m_NumParts;
-    }
-}
-
-
-// unload sub-meshes
-void COGMesh::UnloadSubMeshes ()
-{
-	m_SolidParts.clear();
-	m_TransparentParts.clear();
-    m_ActivePoints.clear();
+    OG_SAFE_DELETE(m_buffer);
+    OG_SAFE_DELETE(m_aabb);
 }
 
 
 // Render mesh.
-void COGMesh::Render (const OGMatrix& _mWorld, unsigned int _Frame)
+void COGMesh::Render (const OGMatrix& _mWorld)
 {
-    if (_Frame > m_pScene->nNumFrame)
-        return;
-
-	RenderSolidParts(_mWorld, _Frame);
+    m_pRenderer->SetModelMatrix(_mWorld);
+    m_pRenderer->RenderMesh(m_buffer);
 }
 
 
-// Render solid parts of the mesh.
-void COGMesh::RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame)
+// calculate geometry
+void COGMesh::CalculateGeometry (const OGMatrix& _initialMat)
 {
-	std::vector<unsigned int>::const_iterator iter = m_SolidParts.begin();
-	for (; iter != m_SolidParts.end(); ++iter)
-	{
-        RenderPart(_mWorld, *iter, _Frame);
-	}
-}
+    OGVec3 v, vMinCorner, vMaxCorner;
 
+    OGVec3* pPtr = (OGVec3*)m_buffer->GetVertexData();
 
-// Render transparent parts of the mesh.
-void COGMesh::RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fSpin)
-{
-	OGMatrix mNodeWorld, mModel, mSpin;
-	std::vector<unsigned int>::const_iterator iter = m_TransparentParts.begin();
-	for (; iter != m_TransparentParts.end(); ++iter)
-	{
-		OGSubMesh& submesh = m_SubMeshes[*iter];
-		m_pScene->SetFrame((float)_Frame);
-		const SPODNode& node = m_pScene->pNode[submesh.part];
+    vMinCorner.x = vMaxCorner.x = pPtr->x; 
+    vMinCorner.y = vMaxCorner.y = pPtr->y; 
+    vMinCorner.z = vMaxCorner.z = pPtr->z;
+    MatrixVecMultiply(vMinCorner, vMinCorner, _initialMat);
+    MatrixVecMultiply(vMaxCorner, vMaxCorner, _initialMat);
 
-		MatrixRotationY(mSpin, _fSpin);
-
-		// Gets the node model matrix
-		m_pScene->GetWorldMatrix(mNodeWorld, node);
-		MatrixMultiply(mNodeWorld, mSpin, mNodeWorld);
-
-		// Multiply on the global world transform
-		MatrixMultiply(mModel, mNodeWorld, _mWorld);
-
-		m_pRenderer->SetModelMatrix(mModel);
-		m_pRenderer->RenderMesh(submesh.buffer);
-	}
-}
-
-
-// Render part of the mesh.
-void COGMesh::RenderPart (const OGMatrix& _mWorld, unsigned int _Part, unsigned int _Frame)
-{
-    OGSubMesh& submesh = m_SubMeshes[_Part];
-    m_pScene->SetFrame((float)_Frame);
-    const SPODNode& node = m_pScene->pNode[submesh.part];
-
-    // Gets the node model matrix
-    OGMatrix mNodeWorld;
-    m_pScene->GetWorldMatrix(mNodeWorld, node);
-
-    // Multiply on the global world transform
-    OGMatrix mModel;
-    MatrixMultiply(mModel, mNodeWorld, _mWorld);
-
-    m_pRenderer->SetModelMatrix(mModel);
-    m_pRenderer->RenderMesh(submesh.buffer);
-}
-
-
-// Get num animation frames.
-unsigned int COGMesh::GetNumFrames () const
-{
-    return m_pScene->nNumFrame;
-}
-
-
-// Check if has submeshes of the following type
-bool COGMesh::HasSubmeshesOfType(SubMeshType _Type) const
-{
-	switch (_Type)
-	{
-	case OG_SUBMESH_BODY: 
-		return !m_SolidParts.empty();
-
-	case OG_SUBMESH_PROPELLER: 
-		return !m_TransparentParts.empty();
-
-	case OG_SUBMESH_ACTPOINT: 
-		return !m_ActivePoints.empty();
-	}
-	return false;
-}
-
-
-// Get part AABB
-const IOGAabb& COGMesh::GetPartAABB (unsigned int _Part) const 
-{
-    return *(m_SubMeshes[_Part].aabb);
-}
-
-
-// Get part's transformed OBB after applying animation
-bool COGMesh::GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld) const
-{
-	_obb.Create(GetPartAABB(_Part));
-
-    const OGSubMesh& submesh = m_SubMeshes[_Part];
-	m_pScene->SetFrame((float)_Frame);
-	const SPODNode& node = m_pScene->pNode[submesh.part];
-	OGMatrix mNodeWorld;
-	m_pScene->GetWorldMatrix(mNodeWorld, node);
-    OGMatrix mModel;
-    MatrixMultiply(mModel, mNodeWorld, _mWorld);
-
-	_obb.UpdateTransform(mModel);
-	return true;
-}
-
-
-// Get active point
-bool COGMesh::GetActivePoint (OGVec3& _Point, const std::string& _Alias, unsigned int _Frame)
-{
-    std::map<std::string, ActPoint>::iterator iter = m_ActivePoints.find(_Alias);
-    if (iter != m_ActivePoints.end())
+    if(m_buffer->IsIndexed())
     {
-	    m_pScene->SetFrame((float)_Frame);
-        const SPODNode& node = m_pScene->pNode[iter->second.part];
+        unsigned int numIndices = m_buffer->GetNumIndices();
+        m_faces.reserve(numIndices / 3);
+        for (unsigned int n = 0; n < numIndices; n+=3)
+        {
+            OGFace face;
+            for (int k = 0; k < 3; ++k)
+            {
+                unsigned short ind = *(((unsigned short*)m_buffer->GetIndexData()) + n + k);
+                face.vertices[k] = *((OGVec3*)((unsigned char*)(pPtr)+m_buffer->GetStride() * ind));
 
-        // Gets the node model matrix
-        OGMatrix mNodeWorld;
-        m_pScene->GetWorldMatrix(mNodeWorld, node);
-        
-        MatrixVecMultiply(_Point, iter->second.pos, mNodeWorld);
-        return true;
+                OGVec3& v_out = face.vertices[k];
+                MatrixVecMultiply(v_out, face.vertices[k], _initialMat);
+
+                if (v_out.x < vMinCorner.x) vMinCorner.x = v_out.x;
+                if (v_out.y < vMinCorner.y) vMinCorner.y = v_out.y;
+                if (v_out.z < vMinCorner.z) vMinCorner.z = v_out.z;
+                if (v_out.x > vMaxCorner.x) vMaxCorner.x = v_out.x;
+                if (v_out.y > vMaxCorner.y) vMaxCorner.y = v_out.y;
+                if (v_out.z > vMaxCorner.z) vMaxCorner.z = v_out.z;
+            }
+            m_faces.push_back(face);
+        }
+    }
+
+    m_aabb->SetMinMax(vMinCorner, vMaxCorner);
+}
+
+
+// Get ray intersection
+bool COGMesh::GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos)
+{
+    float t, u, v;
+    unsigned int numFaces = m_faces.size();
+    for (unsigned int i = 0; i < numFaces; ++i)
+    {
+        OGVec3 p0 = m_faces[i].vertices[0];
+        OGVec3 p1 = m_faces[i].vertices[1];
+        OGVec3 p2 = m_faces[i].vertices[2];
+        if (CheckTriangleIntersection (_vRayPos, _vRayDir, p0, p1, p2, &t, &u, &v))
+        {
+            *_pOutPos = Barycentric2World(u, v, p0, p1, p2);
+            return true;
+        }
     }
     return false;
 }

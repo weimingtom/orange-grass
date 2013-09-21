@@ -9,7 +9,6 @@
 #ifndef OGLEVEL_H_
 #define OGLEVEL_H_
 
-#include "IOGTerrain.h"
 #include "IOGSettingsReader.h"
 
 
@@ -29,7 +28,7 @@ public:
 	virtual void Unload ();
 
 	// get associated terrain.
-	virtual IOGTerrain* GetTerrain ();
+	virtual IOGModel* GetTerrain ();
 
     // get resource load state
     OGResourceState GetLoadState () const {return m_LoadState;}
@@ -68,7 +67,7 @@ private:
 
 private:
 
-    IOGTerrain*	m_pTerrain;
+    IOGModel*   m_pTerrain;
     OGVec3		m_vStartPos;
     OGVec3		m_vFinishPos;
     float		m_fActiveWidth;
@@ -83,8 +82,8 @@ private:
     float		m_fFogEnd;
     float		m_fFogDensity;
 
-	IOGSettingsReader*	m_pReader;
-	std::string			m_SceneFile;
+    IOGSettingsReader*	m_pReader;
+    std::string			m_SceneFile;
 
     std::string		m_ResourceFile;
     std::string		m_ResourceAlias;

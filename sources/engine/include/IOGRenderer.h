@@ -33,6 +33,15 @@ public:
 		float _fZFar,
 		float _fFOV	) = 0;
 
+	// Create vertex buffer for mesh.
+	virtual IOGVertexBuffers* CreateVertexBuffer (
+        const void* _pVertexData, 
+        unsigned int _NumVertices, 
+        unsigned int _NumFaces,
+        unsigned int _Stride, 
+        const void* _pIndexData, 
+        unsigned int _NumIndices) = 0;
+
 	// add rendering command.
 	virtual void SetTexture (IOGTexture* _pTexture) = 0;
 
@@ -65,9 +74,6 @@ public:
 
 	// Get scene light.
 	virtual IOGLightMgr* GetLightMgr () = 0;
-
-	// Create vertex buffer for mesh.
-	virtual IOGVertexBuffers* CreateVertexBuffer (void* _pMeshData) = 0;
 
 	// Enable scene light.
 	virtual void EnableLight (bool _bEnable) = 0;

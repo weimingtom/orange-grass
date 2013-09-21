@@ -9,67 +9,64 @@
 #ifndef OGMESH_H_
 #define OGMESH_H_
 
-#include "ogbasemesh.h"
+#include "IOGMath.h"
+#include <vector>
+#include <map>
+#include "ogresource.h"
+#include "IOGRenderer.h"
+#include "IOGRenderable.h"
 
 
-class COGMesh : public COGBaseMesh
+class COGMesh : public IOGMesh
 {
 public:
-	COGMesh ();
-	virtual ~COGMesh();
+    COGMesh ();
+    virtual ~COGMesh();
 
-	// Render mesh.
-	virtual void Render (const OGMatrix& _mWorld, unsigned int _Frame);
+    // Load mesh.
+    virtual bool Load (
+        const char* _pName,
+        SubMeshType _Type,
+        unsigned int _Part,
+        const void* _pVertexData, 
+        unsigned int _NumVertices, 
+        unsigned int _NumFaces,
+        unsigned int _Stride, 
+        const void* _pIndexData, 
+        unsigned int _NumIndices);
 
-	// Render solid parts of the mesh.
-	virtual void RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame);
+    // Unload resource.
+    virtual void Unload ();
 
-	// Render transparent parts of the mesh.
-	virtual void RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fSpin);
+    // Render mesh.
+    virtual void Render (const OGMatrix& _mWorld);
 
-	// Render part of the mesh.
-	virtual void RenderPart (const OGMatrix& _mWorld, unsigned int _Part, unsigned int _Frame);
+    // Get type
+    virtual SubMeshType GetType() const { return m_type; }
 
-	// Check if has submeshes of the following type
-	virtual bool HasSubmeshesOfType(SubMeshType _Type) const;
+    // Get part
+    virtual unsigned int GetPart() const { return m_part; }
 
-    // Get num renderable parts.
-    virtual unsigned int GetNumRenderables () const { return m_NumParts; }
+    // Get name
+    virtual const std::string& GetName() const { return m_name; }
 
-    // Get num animation frames.
-	virtual unsigned int GetNumFrames () const;
+    // Get combined AABB
+    virtual const IOGAabb& GetAABB () const { return *m_aabb; }
 
-	// Get part AABB
-	virtual const IOGAabb& GetPartAABB (unsigned int _Part) const;
+    // Get ray intersection
+    virtual bool GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos);
 
-	// Get part's transformed OBB after applying animation
-	virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld) const;
-
-    // Get active point
-    virtual bool GetActivePoint (OGVec3& _Point, const std::string& _Alias, unsigned int _Frame);
-
-protected:
-
-    // load sub-meshes
-    virtual void LoadSubMeshes ();
-
-    // unload sub-meshes
-    virtual void UnloadSubMeshes ();
+    // calculate geometry
+    void CalculateGeometry (const OGMatrix& _initialMat);
 
 protected:
 
-    struct ActPoint
-    {
-        OGVec3 pos;
-        unsigned int part;
-    };
-
-protected:
-
-	std::vector<unsigned int>	m_SolidParts;
-	std::vector<unsigned int>	m_TransparentParts;
-
-    std::map<std::string, ActPoint> m_ActivePoints;
+    unsigned int        m_part;
+    SubMeshType         m_type;
+    std::string         m_name;
+    IOGAabb*            m_aabb;
+    IOGVertexBuffers*   m_buffer;
+    std::vector<OGFace> m_faces;
 
     IOGRenderer*    m_pRenderer;
 };

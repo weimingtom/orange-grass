@@ -10,7 +10,6 @@
 #define IOGLEVEL_H_
 
 #include "IOGModel.h"
-#include "IOGTerrain.h"
 
 
 class IOGLevel
@@ -19,7 +18,7 @@ public:
 	virtual ~IOGLevel () {}
 		
 	// get associated terrain.
-	virtual IOGTerrain* GetTerrain () = 0;
+	virtual IOGModel* GetTerrain () = 0;
 
 	// get level start position.
 	virtual const OGVec3& GetStartPosition () const = 0;

@@ -11,74 +11,60 @@
 #include "ogvertexbuffers.h"
 
 
-COGVertexBuffers::COGVertexBuffers () : m_pMesh(NULL),
-										m_VBO(0),
-										m_IBO(0),
-										m_NumVertices(0)
-{
-}
-
-
 COGVertexBuffers::~COGVertexBuffers ()
 {
-	if (m_VBO != 0)
-		glDeleteBuffers(1, &m_VBO);
-	if (m_IBO != 0)
-		glDeleteBuffers(1, &m_IBO);
+    if (m_VBO != 0)
+        glDeleteBuffers(1, &m_VBO);
+    if (m_IBO != 0)
+        glDeleteBuffers(1, &m_IBO);
 }
 
 
-// initialize VBO and IBO.
-COGVertexBuffers::COGVertexBuffers (SPODMesh* _pMesh) :	m_pMesh(_pMesh),
-														m_VBO(0),
-														m_IBO(0),
-														m_NumVertices(0)
+COGVertexBuffers::COGVertexBuffers (
+    const void* _pVertexData, 
+    unsigned int _NumVertices, 
+    unsigned int _NumFaces,
+    unsigned int _Stride, 
+    const void* _pIndexData, 
+    unsigned int _NumIndices)
 {
-	m_NumVertices = m_pMesh->nNumFaces * 3;
+    m_NumVertices = _NumVertices;
+    m_Stride = _Stride;
+    m_pVertexData = _pVertexData;
+    m_pIndexData = _pIndexData;
+    m_NumIndices = _NumIndices;
+    m_NumFaces = _NumFaces;
 
-	if (m_pMesh->pInterleaved)
-	{
-		glGenBuffers(1, &m_VBO);
-		unsigned int uiSize = m_pMesh->nNumVertex * m_pMesh->sVertex.nStride;
-		glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-		glBufferData(GL_ARRAY_BUFFER, uiSize, m_pMesh->pInterleaved, GL_STATIC_DRAW);
-	}
-	else
-	{
-		OG_LOG_ERROR("Non-interleaved geometry is not currently supported.");
-		return;
-	}
-
-	if(m_pMesh->sFaces.pData)
-	{
-		glGenBuffers(1, &m_IBO);
-		unsigned int uiSize = PVRTModelPODCountIndices(*m_pMesh) * sizeof(GLshort);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-		glBufferData(GL_ELEMENT_ARRAY_BUFFER, uiSize, m_pMesh->sFaces.pData, GL_STATIC_DRAW);
-	}
-
+    glGenBuffers(1, &m_VBO);
+    unsigned int VBOSize = m_NumVertices * m_Stride;
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBufferData(GL_ARRAY_BUFFER, VBOSize, m_pVertexData, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-	m_pStats = GetStatistics();
+    if(m_pIndexData)
+    {
+        glGenBuffers(1, &m_IBO);
+        unsigned int IBOSize = _NumIndices * sizeof(GLshort);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, IBOSize, m_pIndexData, GL_STATIC_DRAW);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    }
+
+    m_pStats = GetStatistics();
 }
 
 
 // apply buffers.
 void COGVertexBuffers::Apply () const
 {
-	// bind the VBO for the mesh
-	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-	// bind the index buffer, won't hurt if the handle is 0
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
 
-	// Setup pointers
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, m_pMesh->sVertex.nStride, m_pMesh->sVertex.pData);
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, m_pMesh->sNormals.nStride, m_pMesh->sNormals.pData);
-	if (m_pMesh->psUVW)
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, m_pMesh->psUVW[0].nStride, m_pMesh->psUVW[0].pData);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, m_Stride, (const void*)(0));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, m_Stride, (const void*)(0+sizeof(float)*3));
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, m_Stride, (const void*)(0+sizeof(float)*6));
 #ifdef STATISTICS
-	m_pStats->AddVBOSwitch();
+    m_pStats->AddVBOSwitch();
 #endif
 }
 
@@ -86,43 +72,16 @@ void COGVertexBuffers::Apply () const
 // render buffer geometry.
 void COGVertexBuffers::Render () const
 {
-    if(m_pMesh->nNumStrips == 0)
+    if(IsIndexed())
     {
-        if(IsIndexed())
-        {
-            // Indexed Triangle list
-            glDrawElements(GL_TRIANGLES, m_NumVertices, GL_UNSIGNED_SHORT, 0);
-		}
-        else
-        {
-            // Non-Indexed Triangle list
-            glDrawArrays(GL_TRIANGLES, 0, m_NumVertices);
-        }
-#ifdef STATISTICS
-		m_pStats->AddVertexCount(m_NumVertices, m_pMesh->nNumFaces);
-		m_pStats->AddDrawCall();
-#endif
+        glDrawElements(GL_TRIANGLES, m_NumFaces * 3, GL_UNSIGNED_SHORT, 0);
     }
     else
     {
-        for(unsigned int i = 0; i < m_pMesh->nNumStrips; ++i)
-        {
-            int offset = 0;
-            if(IsIndexed())
-            {
-                // Indexed Triangle strips
-                glDrawElements(GL_TRIANGLE_STRIP, m_pMesh->pnStripLength[i]+2, GL_UNSIGNED_SHORT, &((GLshort*)0)[offset]);
-            }
-            else
-            {
-                // Non-Indexed Triangle strips
-                glDrawArrays(GL_TRIANGLE_STRIP, offset, m_pMesh->pnStripLength[i]+2);
-            }
-            offset += m_pMesh->pnStripLength[i]+2;
-#ifdef STATISTICS
-			m_pStats->AddVertexCount(m_pMesh->pnStripLength[i]+2, 1);
-			m_pStats->AddDrawCall();
-#endif
-        }
+        glDrawArrays(GL_TRIANGLES, 0, m_NumFaces * 3);
     }
+#ifdef STATISTICS
+    m_pStats->AddVertexCount(m_NumVertices, m_NumFaces);
+    m_pStats->AddDrawCall();
+#endif
 }

@@ -71,9 +71,6 @@
     <ClCompile Include="src\OrangeGrass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ogbasemesh.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\ogfog.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
@@ -92,13 +89,7 @@
     <ClCompile Include="src\ogrendertarget.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\ogscenemesh.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="src\ogsprite.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ogterrain.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="src\ogtexture.cpp">
@@ -283,9 +274,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\ogbasemesh.h">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="src\ogfog.h">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
@@ -304,13 +292,7 @@
     <ClInclude Include="src\ogrendertarget.h">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\ogscenemesh.h">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="src\ogsprite.h">
-      <Filter>Source Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="src\ogterrain.h">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\ogtexture.h">
@@ -524,9 +506,6 @@
       <Filter>Interface\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="include\IOGSprite.h">
-      <Filter>Interface\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\IOGTerrain.h">
       <Filter>Interface\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="include\IOGTexture.h">

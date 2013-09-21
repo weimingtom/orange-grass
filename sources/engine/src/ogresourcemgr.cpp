@@ -114,14 +114,13 @@ bool COGResourceMgr::Load (OGResourcePool _PoolId)
 		pCurPool->m_ModelList[(*modeliter).alias] = pModel;
 	}
 
-	Cfg::TSpriteCfg::const_iterator spriter;
-	for (spriter = cfg.sprite_cfg_list.begin(); spriter != cfg.sprite_cfg_list.end(); ++spriter)
-	{
+    std::for_each(cfg.sprite_cfg_list.begin(), cfg.sprite_cfg_list.end(), [&](Cfg::SpriteResourceCfg s) 
+    {
 		COGSprite* pSprite = new COGSprite ();
-		pSprite->Init ((*spriter).alias, (*spriter).texture, _PoolId);
-		pSprite->SetMapping((*spriter).mapping);
-		pCurPool->m_SpriteList[(*spriter).alias] = pSprite;
-	}
+		pSprite->Init (s.alias, s.texture, _PoolId);
+		pSprite->SetMapping(s.mapping);
+		pCurPool->m_SpriteList[s.alias] = pSprite;
+    });
 
     pCurPool->m_bLoaded = true;
 	return true;
@@ -144,26 +143,13 @@ bool COGResourceMgr::Unload (OGResourcePool _PoolId)
 		break;
 
 	case OG_RESPOOL_NONE:
+    default:
 		return false;
 	}
 
-	std::map<std::string, COGTexture*>::iterator texture_iter = pCurPool->m_TextureList.begin();
-	for( ; texture_iter != pCurPool->m_TextureList.end(); ++texture_iter )
-	{
-		ReleaseTexture(texture_iter->second);
-	}
-	
-	std::map<std::string, COGModel*>::iterator model_iter = pCurPool->m_ModelList.begin();
-	for( ; model_iter != pCurPool->m_ModelList.end(); ++model_iter )
-	{
-		ReleaseModel(model_iter->second);
-	}
-	
-	std::map<std::string, COGSprite*>::iterator spr_iter = pCurPool->m_SpriteList.begin();
-	for( ; spr_iter != pCurPool->m_SpriteList.end(); ++spr_iter )
-	{
-		ReleaseSprite(spr_iter->second);
-	}
+    std::for_each(pCurPool->m_TextureList.begin(), pCurPool->m_TextureList.end(), [&](std::pair<const std::string, COGTexture*> ti) {ReleaseTexture(ti.second);});
+    std::for_each(pCurPool->m_ModelList.begin(), pCurPool->m_ModelList.end(), [&](std::pair<const std::string, COGModel*> ti) {ReleaseModel(ti.second);});
+    std::for_each(pCurPool->m_SpriteList.begin(), pCurPool->m_SpriteList.end(), [&](std::pair<const std::string, COGSprite*> ti) {ReleaseSprite(ti.second);});
 
     pCurPool->m_bLoaded = false;
 	
@@ -264,6 +250,7 @@ IOGTexture* COGResourceMgr::GetTexture (OGResourcePool _PoolId, const std::strin
 		break;
 
 	case OG_RESPOOL_NONE:
+    default:
 		return NULL;
 	}
 
@@ -304,6 +291,7 @@ IOGModel* COGResourceMgr::GetModel (OGResourcePool _PoolId, const std::string& _
 		break;
 
 	case OG_RESPOOL_NONE:
+    default:
 		return NULL;
 	}
 
@@ -344,6 +332,7 @@ IOGSprite* COGResourceMgr::GetSprite (OGResourcePool _PoolId, const std::string&
 		break;
 
 	case OG_RESPOOL_NONE:
+    default:
 		return NULL;
 	}
 
@@ -417,28 +406,17 @@ bool COGResourceMgr::ClearPool (OGResourcePool _PoolId)
 		break;
 
 	case OG_RESPOOL_NONE:
+    default:
 		return false;
 	}
 
-	std::map<std::string, COGTexture*>::iterator texture_iter = pCurPool->m_TextureList.begin();
-	for( ; texture_iter != pCurPool->m_TextureList.end(); ++texture_iter )
-	{
-		OG_SAFE_DELETE (texture_iter->second);
-	}
+    std::for_each(pCurPool->m_TextureList.begin(), pCurPool->m_TextureList.end(), [&](std::pair<const std::string, COGTexture*> ti) {OG_SAFE_DELETE(ti.second);});
 	pCurPool->m_TextureList.clear();
-	
-	std::map<std::string, COGModel*>::iterator model_iter = pCurPool->m_ModelList.begin();
-	for( ; model_iter != pCurPool->m_ModelList.end(); ++model_iter )
-	{
-		OG_SAFE_DELETE (model_iter->second);
-	}
+
+    std::for_each(pCurPool->m_ModelList.begin(), pCurPool->m_ModelList.end(), [&](std::pair<const std::string, COGModel*> ti) {OG_SAFE_DELETE(ti.second);});
 	pCurPool->m_ModelList.clear();
-	
-	std::map<std::string, COGSprite*>::iterator spr_iter = pCurPool->m_SpriteList.begin();
-	for( ; spr_iter != pCurPool->m_SpriteList.end(); ++spr_iter )
-	{
-		OG_SAFE_DELETE (spr_iter->second);
-	}
+
+    std::for_each(pCurPool->m_SpriteList.begin(), pCurPool->m_SpriteList.end(), [&](std::pair<const std::string, COGSprite*> ti) {OG_SAFE_DELETE(ti.second);});
 	pCurPool->m_SpriteList.clear();
 
     pCurPool->m_bLoaded = false;

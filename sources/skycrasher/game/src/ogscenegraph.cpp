@@ -59,7 +59,7 @@ IOGSgNode* COGSceneGraph::CreateEffectNode (IOGEffect* _pRenderable, IOGPhysical
 
 
 // Create scene graph landscape node
-IOGSgNode* COGSceneGraph::CreateLandscapeNode (IOGTerrain* _pRenderable)
+IOGSgNode* COGSceneGraph::CreateLandscapeNode (IOGModel* _pRenderable)
 {
     COGSgLandscapeNode* pNode = new COGSgLandscapeNode(_pRenderable);
     return pNode;

@@ -10,16 +10,16 @@
 #include "ogsglandscapenode.h"
 
 
-COGSgLandscapeNode::COGSgLandscapeNode () :   
-    m_pRenderable(NULL),
-    m_bActive(false)
+COGSgLandscapeNode::COGSgLandscapeNode ()
+    : m_pRenderable(NULL)
+    , m_bActive(false)
 {
 }
 
 
-COGSgLandscapeNode::COGSgLandscapeNode (IOGTerrain* _pRenderable) :   
-    m_pRenderable(_pRenderable),
-    m_bActive(true)
+COGSgLandscapeNode::COGSgLandscapeNode (IOGModel* _pRenderable) 
+    : m_pRenderable(_pRenderable)
+    , m_bActive(true)
 {
     m_OBB.Create(m_pRenderable->GetAABB());
     MatrixIdentity(m_World);
@@ -55,17 +55,17 @@ void COGSgLandscapeNode::Update (unsigned long _ElapsedTime)
 // render.
 void COGSgLandscapeNode::Render ()
 {
-	if (!m_bActive)
-		return;
+    if (!m_bActive)
+        return;
 
-    m_pRenderable->Render(m_World);
+    m_pRenderable->Render(m_World, 0);
 }
 
 
 // render all nodes.
 void COGSgLandscapeNode::RenderAll ()
 {
-    m_pRenderable->RenderAll(m_World);
+    m_pRenderable->Render(m_World, 0);
 }
 
 
@@ -92,5 +92,5 @@ void COGSgLandscapeNode::StartAnimation (const std::string& _Alias)
 // Set active state
 void COGSgLandscapeNode::Activate (bool _bActive)
 {
-	m_bActive = _bActive;
+    m_bActive = _bActive;
 }

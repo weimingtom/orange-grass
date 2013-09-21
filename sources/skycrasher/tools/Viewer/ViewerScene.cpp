@@ -15,6 +15,11 @@
 
 CViewerScene::CViewerScene()
 {
+	m_pResourceMgr = NULL;
+	m_pSg = NULL;
+	m_pRenderer = NULL;
+	m_pCamera = NULL;
+	m_pActorMgr = NULL;
 	m_pCurActor = NULL;
 	m_fCameraDistance = 200.0f;
 	m_bShowAABB = false;
@@ -26,7 +31,19 @@ CViewerScene::CViewerScene()
 
 CViewerScene::~CViewerScene()
 {
-    OG_SAFE_DELETE(m_pCurActor);
+    if (m_pResourceMgr)
+    {
+        m_pResourceMgr->Unload(OG_RESPOOL_GAME);
+    }
+
+    if (m_pActorMgr)
+    {
+        if (m_pCurActor)
+        {
+            m_pActorMgr->DestroyActor(m_pCurActor);
+            m_pCurActor = NULL;
+        }
+    }
 }
 
 
@@ -112,6 +129,7 @@ void CViewerScene::SetViewport (int _Width, int _Height)
 	glViewport(0, 0, m_ResX, m_ResY);
 	if (m_bInited)
 	{
+        m_pRenderer->EnableFog(false);
 		m_pRenderer->SetViewport(m_ResX, m_ResY, 4.0f, 4500.0f, 0.67f);
 	}
 }
@@ -217,15 +235,14 @@ void CViewerScene::SetupModel(ResourceItem* _pModelItem)
         m_pCurActor->Activate(true);
 
         IOGModel* pModel = m_pResourceMgr->GetModel(OG_RESPOOL_GAME, m_pCurActor->GetParams()->model_alias);
-        IOGMesh* pMesh = pModel->GetMesh();
-        if (pMesh)
+        if (pModel)
         {
-            const std::vector<OGSubMesh>& subMeshes = pMesh->GetSubMeshes();
+            const std::vector<IOGMesh*>& subMeshes = pModel->GetMeshes();
             size_t numSubMeshes = subMeshes.size();
             for (size_t n = 0; n < numSubMeshes; ++n)
             {
                 CommonToolEvent<MeshLoadEventData> cmd(EVENTID_MESHLOAD);
-                cmd.SetEventCustomData(MeshLoadEventData(subMeshes[n].name, (unsigned int)n, _pModelItem->GetId()));
+                cmd.SetEventCustomData(MeshLoadEventData(subMeshes[n]->GetName(), (unsigned int)n, _pModelItem->GetId()));
                 GetEventHandlersTable()->FireEvent(EVENTID_MESHLOAD, &cmd);
             }
         }

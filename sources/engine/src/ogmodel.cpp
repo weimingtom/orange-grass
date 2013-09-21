@@ -1,71 +1,123 @@
 /*
- *  ogmodel.cpp
- *  OrangeGrass
- *
- *  Created by Viacheslav Bogdanov on 08.11.09.
- *  Copyright 2009 __MyCompanyName__. All rights reserved.
- *
- */
+*  ogmodel.cpp
+*  OrangeGrass
+*
+*  Created by Viacheslav Bogdanov on 08.11.09.
+*  Copyright 2009 __MyCompanyName__. All rights reserved.
+*
+*/
 
 #include "OrangeGrass.h"
 #include "ogmodel.h"
 
 
-COGModel::COGModel() :	m_pMesh(NULL),
-						m_pTexture(NULL),
-                        m_pMaterial(NULL)
+COGModel::COGModel() 
+    : m_pTexture(NULL)
+    , m_pMaterial(NULL)
+    , m_pScene(NULL)
+    , m_NumParts(0)
 {
     m_pRenderer = GetRenderer();
-	m_pReader = GetSettingsReader();
+    m_pReader = GetSettingsReader();
 }
 
 
 COGModel::~COGModel()
 {
+    Unload();
 }
 
 
 // Load model.
 bool COGModel::Load ()
 {
-	switch (m_LoadState)
-	{
-	case OG_RESSTATE_UNKNOWN:
-		return false;
+    switch (m_LoadState)
+    {
+    case OG_RESSTATE_UNKNOWN:
+        return false;
 
-	case OG_RESSTATE_LOADED:
-        return true;    
+    case OG_RESSTATE_LOADED:
+        return true;
 
     case OG_RESSTATE_DEFINED:
-        break;	
+        break;
     }
 
-	Cfg modelcfg;
-	if (!LoadConfig(modelcfg))
-	{
-        OG_LOG_ERROR("Failed to load model from config");
-		return false;
-	}
-
-	m_pMesh = new COGMesh();
-	m_pMesh->Init(std::string(""), modelcfg.mesh_file, m_ResourcePool);
-	if (!m_pMesh->Load())
-	{
-		OG_LOG_ERROR("Failed to load model's mesh %s", modelcfg.mesh_file.c_str());
-		return false;
-	}
-
-	m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, modelcfg.texture_alias);
-    m_pMaterial = m_pRenderer->CreateMaterial();
-    m_pMaterial->SetAmbient(modelcfg.material_ambient);
-    m_pMaterial->SetDiffuse(modelcfg.material_diffuse);
-    m_pMaterial->SetSpecular(modelcfg.material_specular);
-    m_pMaterial->SetBlend(modelcfg.blend_type);
-
-	std::list<Cfg::Anim>::const_iterator anim_iter = modelcfg.anim_list.begin();
-	for (; anim_iter != modelcfg.anim_list.end(); ++anim_iter)
+    Cfg modelcfg;
+    if (!LoadConfig(modelcfg))
     {
-		const COGModel::Cfg::Anim& anim = (*anim_iter);
+        OG_LOG_ERROR("Failed to load model from config");
+        return false;
+    }
+
+    m_pScene = new CPVRTModelPOD();
+    if (!m_pScene->ReadFromFile(modelcfg.mesh_file.c_str()))
+    {
+        OG_LOG_ERROR("Failed to load mesh from file %s", modelcfg.mesh_file.c_str());
+        return false;
+    }
+    m_pScene->SetFrame(0);
+
+    m_NumParts = 0;
+    m_Meshes.reserve(m_pScene->nNumMeshNode);
+
+    m_SolidParts.reserve(m_pScene->nNumMeshNode);
+    m_TransparentParts.reserve(m_pScene->nNumMeshNode);
+
+    for(unsigned int i = 0; i < m_pScene->nNumMeshNode; ++i)
+    {
+        SPODNode* pNode = &m_pScene->pNode[i];
+        SPODMesh& Mesh = m_pScene->pMesh[pNode->nIdx];
+
+        std::string subMeshName = std::string(pNode->pszName);
+        SubMeshType sbmtype = ParseSubMeshType(subMeshName);
+        switch (sbmtype)
+        {
+        case OG_SUBMESH_ACTPOINT:
+            {
+                OGVec3* pPtr = (OGVec3*)Mesh.pInterleaved;
+                OGActivePoint pt;
+                pt.pos = *pPtr;
+                pt.part = i;
+                m_ActivePoints[subMeshName] = pt;
+                continue;
+            }
+            break;
+
+        case OG_SUBMESH_BODY: 
+            m_SolidParts.push_back(m_NumParts); 
+            break;
+        case OG_SUBMESH_PROPELLER: 
+            m_TransparentParts.push_back(m_NumParts); 
+            break;
+        }
+
+        COGMesh* pMesh = new COGMesh();
+        if (!pMesh->Load(subMeshName.c_str(), sbmtype, i, Mesh.pInterleaved, Mesh.nNumVertex, 
+            Mesh.nNumFaces, Mesh.sVertex.nStride, Mesh.sFaces.pData, PVRTModelPODCountIndices(Mesh)))
+        {
+            OG_LOG_ERROR("Failed to load model's mesh %s", modelcfg.mesh_file.c_str());
+            OG_SAFE_DELETE(pMesh);
+            return false;
+        }
+
+        OGMatrix mModel;
+        m_pScene->GetWorldMatrix(mModel, m_pScene->pNode[i]);
+        pMesh->CalculateGeometry(mModel);
+        m_AABB.EmbraceAABB(pMesh->GetAABB());
+
+        m_Meshes.push_back(pMesh);
+        ++m_NumParts;
+    }
+
+    m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, modelcfg.material.texture_alias);
+    m_pMaterial = m_pRenderer->CreateMaterial();
+    m_pMaterial->LoadConfig(&modelcfg.material);
+
+    std::list<Cfg::Anim>::const_iterator anim_iter = modelcfg.anim_list.begin();
+    for (; anim_iter != modelcfg.anim_list.end(); ++anim_iter)
+    {
+        const COGModel::Cfg::Anim& anim = (*anim_iter);
         IOGAnimation* pAnim = new IOGAnimation();
         pAnim->name = anim.anim_alias;
         pAnim->start_frame = (unsigned int)anim.anim_start;
@@ -75,7 +127,7 @@ bool COGModel::Load ()
         m_pAnimations[pAnim->name] = pAnim;
     }
 
-	m_LoadState = OG_RESSTATE_LOADED;
+    m_LoadState = OG_RESSTATE_LOADED;
     return true;
 }
 
@@ -83,48 +135,48 @@ bool COGModel::Load ()
 // Load model configuration
 bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
 {
-	IOGSettingsSource* pSource = m_pReader->OpenSource(m_ResourceFile);
-	if (!pSource)
-	{
-		OG_LOG_ERROR("Failed to load model config file %s", m_ResourceFile.c_str());
-		return false;
-	}
+    IOGSettingsSource* pSource = m_pReader->OpenSource(m_ResourceFile);
+    if (!pSource)
+    {
+        OG_LOG_ERROR("Failed to load model config file %s", m_ResourceFile.c_str());
+        return false;
+    }
 
-	IOGGroupNode* pMeshNode = m_pReader->OpenGroupNode(pSource, NULL, "Mesh");
-	if (pMeshNode != NULL)
-	{
-		_cfg.mesh_file = GetResourceMgr()->GetFullPath(m_pReader->ReadStringParam(pMeshNode, "file"));
-		m_pReader->CloseGroupNode(pMeshNode);
-	}
+    IOGGroupNode* pMeshNode = m_pReader->OpenGroupNode(pSource, NULL, "Mesh");
+    if (pMeshNode != NULL)
+    {
+        _cfg.mesh_file = GetResourceMgr()->GetFullPath(m_pReader->ReadStringParam(pMeshNode, "file"));
+        m_pReader->CloseGroupNode(pMeshNode);
+    }
 
-	IOGGroupNode* pMaterialNode = m_pReader->OpenGroupNode(pSource, NULL, "Material");
-	if (pMaterialNode != NULL)
-	{
-		_cfg.texture_alias = m_pReader->ReadStringParam(pMaterialNode, "texture");
-		_cfg.blend_type = ParseBlendType(m_pReader->ReadStringParam(pMaterialNode, "blend"));
-    	IOGGroupNode* pAmbientNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Ambient");
+    IOGGroupNode* pMaterialNode = m_pReader->OpenGroupNode(pSource, NULL, "Material");
+    if (pMaterialNode != NULL)
+    {
+        _cfg.material.texture_alias = m_pReader->ReadStringParam(pMaterialNode, "texture");
+        _cfg.material.blend_type = ParseBlendType(m_pReader->ReadStringParam(pMaterialNode, "blend"));
+        IOGGroupNode* pAmbientNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Ambient");
         if (pAmbientNode)
         {
-            _cfg.material_ambient = m_pReader->ReadVec4Param(pAmbientNode, "r", "g", "b", "a");
-    		m_pReader->CloseGroupNode(pAmbientNode);
+            _cfg.material.material_ambient = m_pReader->ReadVec4Param(pAmbientNode, "r", "g", "b", "a");
+            m_pReader->CloseGroupNode(pAmbientNode);
         }
-    	IOGGroupNode* pDiffuseNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Diffuse");
+        IOGGroupNode* pDiffuseNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Diffuse");
         if (pDiffuseNode)
         {
-            _cfg.material_diffuse = m_pReader->ReadVec4Param(pDiffuseNode, "r", "g", "b", "a");
-    		m_pReader->CloseGroupNode(pDiffuseNode);
+            _cfg.material.material_diffuse = m_pReader->ReadVec4Param(pDiffuseNode, "r", "g", "b", "a");
+            m_pReader->CloseGroupNode(pDiffuseNode);
         }
-    	IOGGroupNode* pSpecularNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Specular");
+        IOGGroupNode* pSpecularNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Specular");
         if (pSpecularNode)
         {
-            _cfg.material_specular = m_pReader->ReadVec4Param(pSpecularNode, "r", "g", "b", "a");
-    		m_pReader->CloseGroupNode(pSpecularNode);
+            _cfg.material.material_specular = m_pReader->ReadVec4Param(pSpecularNode, "r", "g", "b", "a");
+            m_pReader->CloseGroupNode(pSpecularNode);
         }
 
-		m_pReader->CloseGroupNode(pMaterialNode);
-	}
+        m_pReader->CloseGroupNode(pMaterialNode);
+    }
 
-	IOGGroupNode* pAnimationsNode = m_pReader->OpenGroupNode(pSource, NULL, "Animations");
+    IOGGroupNode* pAnimationsNode = m_pReader->OpenGroupNode(pSource, NULL, "Animations");
     if (pAnimationsNode)
     {
         IOGGroupNode* pAnimationNode = m_pReader->OpenGroupNode(pSource, pAnimationsNode, "Animation");
@@ -142,129 +194,185 @@ bool COGModel::LoadConfig (COGModel::Cfg& _cfg)
         m_pReader->CloseGroupNode(pAnimationsNode);
     }
 
-	m_pReader->CloseSource(pSource);
-	return true;
+    m_pReader->CloseSource(pSource);
+    return true;
 }
 
 
 // Save params
 bool COGModel::SaveParams ()
 {
-	IOGSettingsSource* pSource = m_pReader->OpenSource(m_ResourceFile);
-	if (!pSource)
-	{
-		OG_LOG_ERROR("Failed to load model config file %s", m_ResourceFile.c_str());
-		return false;
-	}
+    IOGSettingsSource* pSource = m_pReader->OpenSource(m_ResourceFile);
+    if (!pSource)
+    {
+        OG_LOG_ERROR("Failed to load model config file %s", m_ResourceFile.c_str());
+        return false;
+    }
 
-	IOGGroupNode* pMaterialNode = m_pReader->OpenGroupNode(pSource, NULL, "Material");
-	if (pMaterialNode != NULL)
-	{
-    	IOGGroupNode* pAmbientNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Ambient");
+    IOGGroupNode* pMaterialNode = m_pReader->OpenGroupNode(pSource, NULL, "Material");
+    if (pMaterialNode != NULL)
+    {
+        IOGGroupNode* pAmbientNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Ambient");
         if (pAmbientNode)
         {
             m_pReader->WriteVec4Param(pAmbientNode, "r", "g", "b", "a", m_pMaterial->GetAmbient());
-    		m_pReader->CloseGroupNode(pAmbientNode);
+            m_pReader->CloseGroupNode(pAmbientNode);
         }
-    	IOGGroupNode* pDiffuseNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Diffuse");
+        IOGGroupNode* pDiffuseNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Diffuse");
         if (pDiffuseNode)
         {
             m_pReader->WriteVec4Param(pDiffuseNode, "r", "g", "b", "a", m_pMaterial->GetDiffuse());
-    		m_pReader->CloseGroupNode(pDiffuseNode);
+            m_pReader->CloseGroupNode(pDiffuseNode);
         }
-    	IOGGroupNode* pSpecularNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Specular");
+        IOGGroupNode* pSpecularNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Specular");
         if (pSpecularNode)
         {
             m_pReader->WriteVec4Param(pSpecularNode, "r", "g", "b", "a", m_pMaterial->GetSpecular());
-    		m_pReader->CloseGroupNode(pSpecularNode);
+            m_pReader->CloseGroupNode(pSpecularNode);
         }
     }
 
     m_pReader->SaveSource(pSource, m_ResourceFile);
-	return true;
+    return true;
 }
 
 
 // Unload resource.
 void COGModel::Unload ()
 {
-	if (m_LoadState != OG_RESSTATE_LOADED)
-	{
-		return;
-	}
+    if (m_LoadState != OG_RESSTATE_LOADED)
+    {
+        return;
+    }
 
-	if (m_pMesh)
-	{
-		m_pMesh->Unload();
-		OG_SAFE_DELETE(m_pMesh);
-	}
+    m_SolidParts.clear();
+    m_TransparentParts.clear();
+    m_ActivePoints.clear();
 
-	OG_SAFE_DELETE(m_pMaterial);
+    OG_SAFE_DELETE(m_pScene);
+    OG_SAFE_DELETE(m_pMaterial);
 
-    std::map<std::string, IOGAnimation*>::iterator iter= m_pAnimations.begin();
-	for (; iter != m_pAnimations.end(); ++iter)
-	{
-		OG_SAFE_DELETE(iter->second);
-	}
+    std::for_each(m_Meshes.begin(), m_Meshes.end(), [](IOGMesh* m) { m->Unload(); OG_SAFE_DELETE(m); });
+    m_Meshes.clear();
+
+    std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [](std::pair<const std::string, IOGAnimation*> m) { OG_SAFE_DELETE(m.second); });
     m_pAnimations.clear();
 
-	m_LoadState = OG_RESSTATE_DEFINED;
+    m_LoadState = OG_RESSTATE_DEFINED;
 }
 
 
 // Render mesh.
 void COGModel::Render (const OGMatrix& _mWorld, unsigned int _Frame)
 {
+    m_pScene->SetFrame((float)_Frame);
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
-	m_pMesh->Render (_mWorld, _Frame);
+    std::for_each(m_SolidParts.begin(), m_SolidParts.end(), [&](unsigned int i) 
+    {
+        IOGMesh* pMesh = m_Meshes[i];
+
+        const SPODNode& node = m_pScene->pNode[pMesh->GetPart()];
+
+        // Get the node model matrix
+        OGMatrix mNodeWorld;
+        m_pScene->GetWorldMatrix(mNodeWorld, node);
+
+        // Multiply on the global world transform
+        OGMatrix mModel;
+        MatrixMultiply(mModel, mNodeWorld, _mWorld);
+
+        pMesh->Render(mModel);
+    });
 }
 
 
 // Render solid parts of the mesh.
 void COGModel::RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame)
 {
+    m_pScene->SetFrame((float)_Frame);
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
-	m_pMesh->RenderSolidParts(_mWorld, _Frame);
+    std::for_each(m_SolidParts.begin(), m_SolidParts.end(), [&](unsigned int i) 
+    {
+        IOGMesh* pMesh = m_Meshes[i];
+
+        const SPODNode& node = m_pScene->pNode[pMesh->GetPart()];
+
+        // Get the node model matrix
+        OGMatrix mNodeWorld;
+        m_pScene->GetWorldMatrix(mNodeWorld, node);
+
+        // Multiply on the global world transform
+        OGMatrix mModel;
+        MatrixMultiply(mModel, mNodeWorld, _mWorld);
+
+        pMesh->Render(mModel);
+    });
 }
 
 
 // Render transparent parts of the mesh.
 void COGModel::RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fSpin)
 {
+    m_pScene->SetFrame((float)_Frame);
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
-	m_pRenderer->SetBlend(OG_BLEND_ALPHABLEND);
-	m_pMesh->RenderTransparentParts(_mWorld, _Frame, _fSpin);
+    m_pRenderer->SetBlend(OG_BLEND_ALPHABLEND);
+    OGMatrix mSpin, mNodeWorld, mModel;
+    std::for_each(m_TransparentParts.begin(), m_TransparentParts.end(), [&](unsigned int i) 
+    {
+        IOGMesh* pMesh = m_Meshes[i];
+        const SPODNode& node = m_pScene->pNode[pMesh->GetPart()];
+        MatrixRotationY(mSpin, _fSpin);
+        m_pScene->GetWorldMatrix(mNodeWorld, node);
+        MatrixMultiply(mNodeWorld, mSpin, mNodeWorld);
+        MatrixMultiply(mModel, mNodeWorld, _mWorld);
+
+        pMesh->Render(mModel);
+    });
 }
 
 
 // Check if has submeshes of the following type
 bool COGModel::HasSubmeshesOfType(SubMeshType _Type) const
 {
-	return m_pMesh->HasSubmeshesOfType(_Type);
+    bool bResult = false;
+    std::for_each(m_Meshes.begin(), m_Meshes.end(), [&](IOGMesh* m)
+    { 
+        if (m->GetType() == _Type)
+            bResult = true;
+    });
+    return bResult;
 }
 
 
 // Get num renderable parts.
 unsigned int COGModel::GetNumRenderables () const
 {
-    return m_pMesh->GetNumRenderables();
+    return (unsigned int)m_Meshes.size();
 }
 
 
 // Get part's transformed OBB after applying animation
 bool COGModel::GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld) const
 {
-	return m_pMesh->GetTransformedOBB(_obb, _Part, _Frame, _mWorld);
+    const IOGMesh* pMesh = m_Meshes[_Part];
+    m_pScene->SetFrame((float)_Frame);
+    const SPODNode& node = m_pScene->pNode[pMesh->GetPart()];
+    OGMatrix mNodeWorld, mModel;
+    m_pScene->GetWorldMatrix(mNodeWorld, node);
+    MatrixMultiply(mModel, mNodeWorld, _mWorld);
+    _obb.Create(pMesh->GetAABB());
+    _obb.UpdateTransform(mModel);
+    return true;
 }
 
 
 // Get combined AABB
 const IOGAabb& COGModel::GetAABB () const
 {
-	return m_pMesh->GetAABB();
+    return m_AABB;
 }
 
 
@@ -285,9 +393,30 @@ IOGAnimation* COGModel::GetAnimation (const std::string& _Alias)
 // Get active point
 bool COGModel::GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame)
 {
-    if (!m_pMesh->GetActivePoint(_point.pos, _Alias, _Frame))
-        return false;
+    auto iter = m_ActivePoints.find(_Alias);
+    if (iter != m_ActivePoints.end())
+    {
+        m_pScene->SetFrame((float)_Frame);
+        // Gets the node model matrix
+        OGMatrix mNodeWorld;
+        m_pScene->GetWorldMatrix(mNodeWorld, m_pScene->pNode[iter->second.part]);
 
-    _point.alias = _Alias;
-    return true;
+        MatrixVecMultiply(_point.pos, iter->second.pos, mNodeWorld);
+        _point.alias = _Alias;
+        return true;
+    }
+
+    return false;
+}
+
+
+// Get ray intersection
+bool COGModel::GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos)
+{
+    for (auto it = m_Meshes.begin(); it != m_Meshes.end(); ++it)
+    {
+        if ((*it)->GetRayIntersection(_vRayPos, _vRayDir, _pOutPos))
+            return true;
+    }
+    return false;
 }

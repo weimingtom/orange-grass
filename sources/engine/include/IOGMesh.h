@@ -20,32 +20,38 @@ struct OGMeshCfg
 };
 
 
-struct OGSubMesh
+struct OGActivePoint
 {
-    unsigned int        part;
-    SubMeshType         type;
-    std::string         name;
-    IOGAabb*            aabb;
-    IOGVertexBuffers*   buffer;
+    OGVec3 pos;
+    unsigned int part;
 };
 
 
 class IOGMesh
 {
 public:
-	virtual ~IOGMesh() {}
+    virtual ~IOGMesh() {}
 
-    // Get list of all submeshes
-    virtual const std::vector<OGSubMesh>& GetSubMeshes () const = 0;
+    // Unload resource.
+    virtual void Unload () = 0;
 
-    // Update submesh (for tools)
-    virtual void UpdateSubMesh (unsigned int _Id, const OGSubMesh& _SubMesh) = 0;
+    // Render mesh.
+    virtual void Render (const OGMatrix& _mWorld) = 0;
 
-    // Get mesh geometry
-    virtual const std::vector<OGFace>& GetGeometry () const = 0;
+    // Get type
+    virtual SubMeshType GetType() const = 0;
+
+    // Get part
+    virtual unsigned int GetPart() const = 0;
+
+    // Get name
+    virtual const std::string& GetName() const = 0;
 
     // Get combined AABB
     virtual const IOGAabb& GetAABB () const = 0;
+
+    // Get ray intersection
+    virtual bool GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos) = 0;
 };
 
 #endif

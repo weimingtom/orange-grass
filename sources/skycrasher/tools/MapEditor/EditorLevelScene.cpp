@@ -239,11 +239,11 @@ void CEditorLevelScene::RenderHelpers()
 
     if (m_pCurLevel)
     {
-        std::vector<IOGAabb*> aabbs;
-        m_pCurLevel->GetTerrain()->GetAllAABBs(aabbs);
-        for (unsigned int i = 0; i < aabbs.size(); ++i)
+        std::vector<IOGMesh*> meshes;
+        m_pCurLevel->GetTerrain()->GetMeshes();
+        for (unsigned int i = 0; i < meshes.size(); ++i)
         {
-            DrawAABB(*aabbs[i]);
+            DrawAABB(meshes[i]->GetAABB());
         }
 
 		DrawLevelRanges(m_pCurLevel->GetStartPosition(),

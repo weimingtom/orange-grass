@@ -41,6 +41,9 @@ public:
     /// @param event - event structute.
     void OnExit(wxCommandEvent& event);
 
+    /// @brief App exit handler.
+    void OnClose(wxCloseEvent& event);
+
     /// @brief Save button handler.
     /// @param event - event structute.
     void OnSave(wxCommandEvent& event);

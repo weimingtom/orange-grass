@@ -17,10 +17,20 @@ bool CViewerApp::OnInit()
     StartOrangeGrass(strPath, false);
     StartGameCore();
 
-    CViewerFrame* pFrame = new CViewerFrame(NULL);
-	SetTopWindow(pFrame);
-	pFrame->Centre();
-	pFrame->Show();
+    m_pFrame = new CViewerFrame(NULL);
+	SetTopWindow(m_pFrame);
+	m_pFrame->Centre();
+	m_pFrame->Show();
 
     return true;
+}
+
+
+/// @brief Destroying handler.
+/// @return code
+int CViewerApp::OnExit()
+{
+    FinishGameCore();
+    FinishOrangeGrass();
+    return 0;
 }

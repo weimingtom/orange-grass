@@ -20,7 +20,7 @@
 #include "IOGGlobalVarsTable.h"
 #include "IOGSettingsReader.h"
 #include "IOGFPSCounter.h"
-#include "IOGTerrain.h"
+#include "IOGModel.h"
 #include "common.h"
 
 #include "IOGVector.h"
@@ -45,8 +45,8 @@ IOGFPSCounter* GetFPSCounter ();
 IOGResourceFile* CreateResourceFile ();
 void DestroyResourceFile (IOGResourceFile* _pFile);
 
-IOGTerrain* CreateTerrain (const std::string& _TerrainFile);
-void DestroyTerrain (IOGTerrain* _pTerrain);
+IOGModel* CreateTerrain (const std::string& _TerrainFile);
+void DestroyTerrain (IOGModel* _pTerrain);
 
 
 // Parse the blend type string and convert it to internal type

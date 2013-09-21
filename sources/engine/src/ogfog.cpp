@@ -9,7 +9,12 @@
 #include "ogfog.h"
 
 
-COGFog::COGFog () : m_bEnabled(false)
+COGFog::COGFog () 
+    : m_bEnabled(false)
+    , m_fDensity(0.0f)
+    , m_fStart(0.0f)
+    , m_fEnd(0.0f)
+    , m_Color(0.0f, 0.0f, 0.0f, 0.0f)
 {
 }
 

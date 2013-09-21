@@ -5,7 +5,7 @@ precision mediump float;
 uniform sampler2D sTexture;
 
 uniform vec3 FogColor;
-uniform float FogEnabled;
+uniform bool FogEnabled;
 
 varying vec3 DiffuseLight;
 varying vec2 TexCoord;
@@ -22,7 +22,14 @@ void main()
     }
 
     vec3 texColorShaded = texColor.rgb * DiffuseLight;
-    gl_FragColor.rgb = mix(FogColor, texColorShaded.rgb, FogIntensity);
+    if (FogEnabled)
+    {
+        gl_FragColor.rgb = mix(FogColor, texColorShaded.rgb, FogIntensity);
+    }
+    else
+    {
+        gl_FragColor.rgb = texColorShaded.rgb;
+    }
     gl_FragColor.a = texColor.a;
 }
 

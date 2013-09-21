@@ -1,11 +1,11 @@
 /*
- *  OrangeGrass.cpp
- *  OrangeGrass
- *
- *  Created by Viacheslav Bogdanov on 12.11.09.
- *  Copyright 2009 __MyCompanyName__. All rights reserved.
- *
- */
+*  OrangeGrass.cpp
+*  OrangeGrass
+*
+*  Created by Viacheslav Bogdanov on 12.11.09.
+*  Copyright 2009 __MyCompanyName__. All rights reserved.
+*
+*/
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogresourcemgr.h"
@@ -18,7 +18,7 @@
 #include "ogsettingsreader.h"
 #include "ogfpscounter.h"
 #include "ogresourcefile.h"
-#include "ogterrain.h"
+#include "ogmodel.h"
 #include <map>
 
 
@@ -39,17 +39,17 @@ static std::map<std::string, SubMeshType> g_SubMeshTypeLookup;
 
 void StartOrangeGrass(const std::string& _ResourcePath, bool _bSingleStorage)
 {
-	g_BlendTypeLookup["solid"] = OG_BLEND_SOLID;
-	g_BlendTypeLookup["test"] = OG_BLEND_ALPHATEST;
-	g_BlendTypeLookup["blend"] = OG_BLEND_ALPHABLEND;
-	g_BlendTypeLookup["add"] = OG_BLEND_ALPHAADD;
+    g_BlendTypeLookup["solid"] = OG_BLEND_SOLID;
+    g_BlendTypeLookup["test"] = OG_BLEND_ALPHATEST;
+    g_BlendTypeLookup["blend"] = OG_BLEND_ALPHABLEND;
+    g_BlendTypeLookup["add"] = OG_BLEND_ALPHAADD;
 
     g_ShaderIdLookup["coloreffect"] = OG_SHADER_COLOREFFECT;
-	g_ShaderIdLookup["model"] = OG_SHADER_MODEL;
-	g_ShaderIdLookup["shadowedscene"] = OG_SHADER_SHADOWEDSCENE;
-	g_ShaderIdLookup["shadowmodel"] = OG_SHADER_SHADOWMODEL;
-	g_ShaderIdLookup["sprite"] = OG_SHADER_SPRITE;
-	g_ShaderIdLookup["text"] = OG_SHADER_TEXT;
+    g_ShaderIdLookup["model"] = OG_SHADER_MODEL;
+    g_ShaderIdLookup["shadowedscene"] = OG_SHADER_SHADOWEDSCENE;
+    g_ShaderIdLookup["shadowmodel"] = OG_SHADER_SHADOWMODEL;
+    g_ShaderIdLookup["sprite"] = OG_SHADER_SPRITE;
+    g_ShaderIdLookup["text"] = OG_SHADER_TEXT;
 
     g_SubMeshTypeLookup["propeller"] = OG_SUBMESH_PROPELLER;
     g_SubMeshTypeLookup["actpointweapon01"] = OG_SUBMESH_ACTPOINT;
@@ -61,9 +61,9 @@ void StartOrangeGrass(const std::string& _ResourcePath, bool _bSingleStorage)
 
 void FinishOrangeGrass()
 {
-	g_BlendTypeLookup.clear();
-	g_ShaderIdLookup.clear();
-	g_SubMeshTypeLookup.clear();
+    g_BlendTypeLookup.clear();
+    g_ShaderIdLookup.clear();
+    g_SubMeshTypeLookup.clear();
 
     ShutdownResourceSystem();
 
@@ -117,92 +117,92 @@ SubMeshType ParseSubMeshType (const std::string& _SubMeshTypeStr)
 
 IOGResourceMgr* GetResourceMgr ()
 {
-	if (g_pResourceMgr == NULL)
-	{
-		g_pResourceMgr = new COGResourceMgr ();
-	}
-	return g_pResourceMgr;
+    if (g_pResourceMgr == NULL)
+    {
+        g_pResourceMgr = new COGResourceMgr ();
+    }
+    return g_pResourceMgr;
 }
 
 
 IOGInputDispatcher* GetInput ()
 {
-	if (g_pInput == NULL)
-	{
-		g_pInput = new COGInputDispatcher ();
-	}
-	return g_pInput;
+    if (g_pInput == NULL)
+    {
+        g_pInput = new COGInputDispatcher ();
+    }
+    return g_pInput;
 }
 
 
 IOGRenderer* GetRenderer ()
 {
-	if (g_pRenderer == NULL)
-	{
-		g_pRenderer = new COGRenderer ();
-		g_pRenderer->Init();
-	}
-	return g_pRenderer;
+    if (g_pRenderer == NULL)
+    {
+        g_pRenderer = new COGRenderer ();
+        g_pRenderer->Init();
+    }
+    return g_pRenderer;
 }
 
 
 IOGShaderManager* GetShaderManager ()
 {
-	if (g_pShaderManager == NULL)
-	{
-		g_pShaderManager = new COGShaderManager ();
-	}
-	return g_pShaderManager;
+    if (g_pShaderManager == NULL)
+    {
+        g_pShaderManager = new COGShaderManager ();
+    }
+    return g_pShaderManager;
 }
 
 
 IOGStatistics* GetStatistics ()
 {
-	if (g_pStats == NULL)
-	{
-		g_pStats = new COGStatistics ();
-	}
-	return g_pStats;
+    if (g_pStats == NULL)
+    {
+        g_pStats = new COGStatistics ();
+    }
+    return g_pStats;
 }
 
 
 IOGEffectsManager* GetEffectsManager ()
 {
-	if (g_pEffectsMgr == NULL)
-	{
-		g_pEffectsMgr = new COGEffectsManager ();
-	}
-	return g_pEffectsMgr;
+    if (g_pEffectsMgr == NULL)
+    {
+        g_pEffectsMgr = new COGEffectsManager ();
+    }
+    return g_pEffectsMgr;
 }
 
 
 IOGGlobalVarsTable* GetGlobalVars ()
 {
-	if (g_pGlobalVars == NULL)
-	{
-		g_pGlobalVars = new COGGlobalVarsTable ();
-	}
-	return g_pGlobalVars;
+    if (g_pGlobalVars == NULL)
+    {
+        g_pGlobalVars = new COGGlobalVarsTable ();
+    }
+    return g_pGlobalVars;
 }
 
 
 IOGSettingsReader* GetSettingsReader ()
 {
-	if (g_pSettingsReader == NULL)
-	{
-		g_pSettingsReader = new COGSettingsReader ();
-	}
-	return g_pSettingsReader;
+    if (g_pSettingsReader == NULL)
+    {
+        g_pSettingsReader = new COGSettingsReader ();
+    }
+    return g_pSettingsReader;
 }
 
 
 IOGFPSCounter* GetFPSCounter ()
 {
-	if (g_pFPS == NULL)
-	{
-		g_pFPS = new COGFPSCounter ();
-	}
-	return g_pFPS;
+    if (g_pFPS == NULL)
+    {
+        g_pFPS = new COGFPSCounter ();
+    }
+    return g_pFPS;
 }
 
 
@@ -219,11 +219,11 @@ void DestroyResourceFile (IOGResourceFile* _pFile)
 }
 
 
-IOGTerrain* CreateTerrain (const std::string& _TerrainFile)
+IOGModel* CreateTerrain (const std::string& _TerrainFile)
 {
-    COGTerrain* pTerrain = new COGTerrain();
-	pTerrain->Init(std::string(""), _TerrainFile, OG_RESPOOL_GAME);
-	if (!pTerrain->Load())
+    COGModel* pTerrain = new COGModel();
+    pTerrain->Init(std::string(""), _TerrainFile, OG_RESPOOL_GAME);
+    if (!pTerrain->Load())
     {
         OG_LOG_ERROR("Failed to load terrain from %s", _TerrainFile.c_str());
         OG_SAFE_DELETE(pTerrain);
@@ -233,11 +233,11 @@ IOGTerrain* CreateTerrain (const std::string& _TerrainFile)
 }
 
 
-void DestroyTerrain (IOGTerrain* _pTerrain)
+void DestroyTerrain (IOGModel* _pTerrain)
 {
-	if (_pTerrain)
-	{
-		((COGTerrain*)_pTerrain)->Unload();
-		OG_SAFE_DELETE(_pTerrain);
-	}
+    if (_pTerrain)
+    {
+        ((COGModel*)_pTerrain)->Unload();
+        OG_SAFE_DELETE(_pTerrain);
+    }
 }

@@ -39,7 +39,13 @@ public:
 		float _fFOV);
 
 	// Create vertex buffer for mesh.
-	virtual IOGVertexBuffers* CreateVertexBuffer (void* _pMeshData);
+	virtual IOGVertexBuffers* CreateVertexBuffer (
+        const void* _pVertexData, 
+        unsigned int _NumVertices, 
+        unsigned int _NumFaces, 
+        unsigned int _Stride, 
+        const void* _pIndexData, 
+        unsigned int _NumIndices);
 
 	// add rendering command.
 	virtual void SetTexture (IOGTexture* _pTexture);

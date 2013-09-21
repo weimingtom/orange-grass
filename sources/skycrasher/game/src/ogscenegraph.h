@@ -31,7 +31,7 @@ public:
 	virtual IOGSgNode* CreateEffectNode (IOGEffect* _pRenderable, IOGPhysicalObject* _pPhysics);
 
 	// Create scene graph landscape node
-	virtual IOGSgNode* CreateLandscapeNode (IOGTerrain* _pRenderable);
+	virtual IOGSgNode* CreateLandscapeNode (IOGModel* _pRenderable);
 
 	// Add scene graph node
 	virtual void AddNode (IOGSgNode* _pNode);

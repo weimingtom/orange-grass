@@ -13,7 +13,6 @@
 #include "IOGCamera.h"
 #include "IOGTexture.h"
 #include "IOGEffect.h"
-#include "IOGTerrain.h"
 #include "IOGModel.h"
 
 
@@ -33,7 +32,7 @@ public:
 	virtual IOGSgNode* CreateEffectNode (IOGEffect* _pRenderable, IOGPhysicalObject* _pPhysics) = 0;
 
 	// Create scene graph landscape node
-	virtual IOGSgNode* CreateLandscapeNode (IOGTerrain* _pRenderable) = 0;
+	virtual IOGSgNode* CreateLandscapeNode (IOGModel* _pRenderable) = 0;
 
 	// Add scene graph node
 	virtual void AddNode (IOGSgNode* _pNode) = 0;
