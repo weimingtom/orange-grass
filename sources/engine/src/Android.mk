@@ -1,8 +1,7 @@
 ENGINEPATH := sources/engine/src
 
 LOCAL_C_INCLUDES += sources/engine/include
-LOCAL_SRC_FILES +=  $(ENGINEPATH)/ogbasemesh.cpp \
-                    $(ENGINEPATH)/ogcamera.cpp \
+LOCAL_SRC_FILES +=  $(ENGINEPATH)/ogcamera.cpp \
                     $(ENGINEPATH)/ogcoloreffectshader.cpp \
                     $(ENGINEPATH)/ogeffect.cpp \
                     $(ENGINEPATH)/ogeffectsmanager.cpp \
@@ -33,7 +32,6 @@ LOCAL_SRC_FILES +=  $(ENGINEPATH)/ogbasemesh.cpp \
                     $(ENGINEPATH)/ogresource.cpp \
                     $(ENGINEPATH)/ogresourcefile.cpp \
                     $(ENGINEPATH)/ogresourcemgr.cpp \
-                    $(ENGINEPATH)/ogscenemesh.cpp \
                     $(ENGINEPATH)/ogsettingsreader.cpp \
                     $(ENGINEPATH)/ogshader.cpp \
                     $(ENGINEPATH)/ogshadowedsceneshader.cpp \
@@ -43,7 +41,6 @@ LOCAL_SRC_FILES +=  $(ENGINEPATH)/ogbasemesh.cpp \
                     $(ENGINEPATH)/ogsprite.cpp \
                     $(ENGINEPATH)/ogspriteshader.cpp \
                     $(ENGINEPATH)/ogstatistics.cpp \
-                    $(ENGINEPATH)/ogterrain.cpp \
                     $(ENGINEPATH)/ogtextrenderer.cpp \
                     $(ENGINEPATH)/ogtextshader.cpp \
                     $(ENGINEPATH)/ogtexture.cpp \
