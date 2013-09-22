@@ -57,7 +57,7 @@ public:
     virtual const IOGAabb& GetAABB () const = 0;
 
     // Get part's transformed OBB after applying animation
-    virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld) const = 0;
+    virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld) = 0;
 
     // Get animation
     virtual IOGAnimation* GetAnimation (const std::string& _Alias) = 0;

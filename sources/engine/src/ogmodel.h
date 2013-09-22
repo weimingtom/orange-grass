@@ -53,7 +53,7 @@ public:
     virtual const IOGAabb& GetAABB () const;
 
     // Get part's transformed OBB after applying animation
-    virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld) const;
+    virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld);
 
     // Get model alias
     virtual const std::string& GetAlias () const;
@@ -115,8 +115,51 @@ private:
     std::vector<IOGMesh*>                   m_Meshes;
     std::vector<unsigned int>               m_SolidParts;
     std::vector<unsigned int>               m_TransparentParts;
-    std::map<std::string, OGActivePoint>    m_ActivePoints;
+    std::map<std::string, IOGActivePoint>   m_ActivePoints;
     std::map<std::string, IOGAnimation*>    m_pAnimations;
+
+private:
+
+    struct MeshNode
+    {
+        MeshNode() 
+            : pfAnimPosition(NULL)
+            , pfAnimRotation(NULL)
+            , pfAnimScale(NULL)
+            , pfAnimMatrix(NULL)
+            , nAnimFlags(0)
+        {
+        }
+
+        ~MeshNode()
+        {
+            if (pfAnimPosition) free(pfAnimPosition);
+            if (pfAnimRotation) free(pfAnimRotation);
+            if (pfAnimScale) free(pfAnimScale);
+            if (pfAnimMatrix) free(pfAnimMatrix);
+        }
+
+        int             nIdx;
+        int             nIdxParent;
+        unsigned int    nAnimFlags;
+        float*          pfAnimPosition;
+        float*          pfAnimRotation;
+        float*          pfAnimScale;
+        float*          pfAnimMatrix;
+    };
+
+    void SetFrame(float fFrame);
+    void GetWorldMatrixNoCache(OGMatrix &mOut, const MeshNode &node) const;
+    void GetTransformationMatrix(OGMatrix &mOut, const MeshNode &node) const;
+    void GetScalingMatrix(OGMatrix &mOut, const MeshNode &node) const;
+    void GetRotationMatrix(OGMatrix &mOut, const MeshNode &node) const;
+    void GetTranslationMatrix(OGMatrix &mOut, const MeshNode& node) const;
+
+    unsigned int            nNumFrame;
+    int                     nFrame;
+    float                   fFrame;
+    float                   fBlend;
+    std::vector<MeshNode*>  m_pMeshNodes;
 };
 
 

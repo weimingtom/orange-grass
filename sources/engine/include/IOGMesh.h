@@ -20,13 +20,6 @@ struct OGMeshCfg
 };
 
 
-struct OGActivePoint
-{
-    OGVec3 pos;
-    unsigned int part;
-};
-
-
 class IOGMesh
 {
 public:

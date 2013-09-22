@@ -64,6 +64,8 @@ bool COGModel::Load ()
     m_SolidParts.reserve(m_pScene->nNumMeshNode);
     m_TransparentParts.reserve(m_pScene->nNumMeshNode);
 
+    nNumFrame = m_pScene->nNumFrame;
+
     for(unsigned int i = 0; i < m_pScene->nNumMeshNode; ++i)
     {
         SPODNode* pNode = &m_pScene->pNode[i];
@@ -76,7 +78,7 @@ bool COGModel::Load ()
         case OG_SUBMESH_ACTPOINT:
             {
                 OGVec3* pPtr = (OGVec3*)Mesh.pInterleaved;
-                OGActivePoint pt;
+                IOGActivePoint pt;
                 pt.pos = *pPtr;
                 pt.part = i;
                 m_ActivePoints[subMeshName] = pt;
@@ -84,10 +86,11 @@ bool COGModel::Load ()
             }
             break;
 
-        case OG_SUBMESH_BODY: 
+        case OG_SUBMESH_BODY:
             m_SolidParts.push_back(m_NumParts); 
             break;
-        case OG_SUBMESH_PROPELLER: 
+
+        case OG_SUBMESH_PROPELLER:
             m_TransparentParts.push_back(m_NumParts); 
             break;
         }
@@ -105,9 +108,52 @@ bool COGModel::Load ()
         m_pScene->GetWorldMatrix(mModel, m_pScene->pNode[i]);
         pMesh->CalculateGeometry(mModel);
         m_AABB.EmbraceAABB(pMesh->GetAABB());
-
         m_Meshes.push_back(pMesh);
+
         ++m_NumParts;
+    }
+
+    for (unsigned int n = 0; n < m_pScene->nNumNode; ++n)
+    {
+        SPODNode* pNode = &m_pScene->pNode[n];
+        MeshNode* pMeshNode = new MeshNode();
+        pMeshNode->nAnimFlags = pNode->nAnimFlags;
+        pMeshNode->nIdxParent = pNode->nIdxParent;
+        pMeshNode->nIdx = pNode->nIdx;
+        if (m_pScene->nNumFrame > 0)
+        {
+            if (pMeshNode->nAnimFlags & ePODHasMatrixAni)
+            {
+                size_t numBytes = m_pScene->nNumFrame * sizeof(float) * 16;
+                pMeshNode->pfAnimMatrix = (float*)malloc(numBytes);
+                memcpy(pMeshNode->pfAnimMatrix, pNode->pfAnimMatrix, numBytes);
+            }
+            if (pMeshNode->nAnimFlags & ePODHasPositionAni)
+            {
+                size_t numBytes = m_pScene->nNumFrame * sizeof(float) * 3;
+                pMeshNode->pfAnimPosition = (float*)malloc(numBytes);
+                memcpy(pMeshNode->pfAnimPosition, pNode->pfAnimPosition, numBytes);
+            }
+            if (pMeshNode->nAnimFlags & ePODHasRotationAni)
+            {
+                size_t numBytes = m_pScene->nNumFrame * sizeof(float) * 4;
+                pMeshNode->pfAnimRotation = (float*)malloc(numBytes);
+                memcpy(pMeshNode->pfAnimRotation, pNode->pfAnimRotation, numBytes);
+            }
+            if (pMeshNode->nAnimFlags & ePODHasScaleAni)
+            {
+                size_t numBytes = m_pScene->nNumFrame * sizeof(float) * 7;
+                pMeshNode->pfAnimScale = (float*)malloc(numBytes);
+                memcpy(pMeshNode->pfAnimScale, pNode->pfAnimScale, numBytes);
+            }
+        }
+        else
+        {
+            size_t numBytes = sizeof(float) * 16;
+            pMeshNode->pfAnimMatrix = (float*)malloc(numBytes);
+            memcpy(pMeshNode->pfAnimMatrix, pNode->pfAnimMatrix, numBytes);
+        }
+        m_pMeshNodes.push_back(pMeshNode);
     }
 
     m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, modelcfg.material.texture_alias);
@@ -258,6 +304,9 @@ void COGModel::Unload ()
     std::for_each(m_pAnimations.begin(), m_pAnimations.end(), [](std::pair<const std::string, IOGAnimation*> m) { OG_SAFE_DELETE(m.second); });
     m_pAnimations.clear();
 
+    std::for_each(m_pMeshNodes.begin(), m_pMeshNodes.end(), [](MeshNode* m) { OG_SAFE_DELETE(m); });
+    m_pMeshNodes.clear();
+
     m_LoadState = OG_RESSTATE_DEFINED;
 }
 
@@ -265,18 +314,21 @@ void COGModel::Unload ()
 // Render mesh.
 void COGModel::Render (const OGMatrix& _mWorld, unsigned int _Frame)
 {
-    m_pScene->SetFrame((float)_Frame);
+    //m_pScene->SetFrame((float)_Frame);
+    SetFrame((float)_Frame);
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
     std::for_each(m_SolidParts.begin(), m_SolidParts.end(), [&](unsigned int i) 
     {
         IOGMesh* pMesh = m_Meshes[i];
+        MeshNode* pMeshNode = m_pMeshNodes[pMesh->GetPart()];
 
-        const SPODNode& node = m_pScene->pNode[pMesh->GetPart()];
+        //const SPODNode& node = m_pScene->pNode[pMesh->GetPart()];
 
         // Get the node model matrix
         OGMatrix mNodeWorld;
-        m_pScene->GetWorldMatrix(mNodeWorld, node);
+        //m_pScene->GetWorldMatrix(mNodeWorld, node);
+        GetWorldMatrixNoCache(mNodeWorld, *pMeshNode);
 
         // Multiply on the global world transform
         OGMatrix mModel;
@@ -290,18 +342,21 @@ void COGModel::Render (const OGMatrix& _mWorld, unsigned int _Frame)
 // Render solid parts of the mesh.
 void COGModel::RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame)
 {
-    m_pScene->SetFrame((float)_Frame);
+    //m_pScene->SetFrame((float)_Frame);
+    SetFrame((float)_Frame);
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
     std::for_each(m_SolidParts.begin(), m_SolidParts.end(), [&](unsigned int i) 
     {
         IOGMesh* pMesh = m_Meshes[i];
+        MeshNode* pMeshNode = m_pMeshNodes[pMesh->GetPart()];
 
-        const SPODNode& node = m_pScene->pNode[pMesh->GetPart()];
+        //const SPODNode& node = m_pScene->pNode[pMesh->GetPart()];
 
         // Get the node model matrix
         OGMatrix mNodeWorld;
-        m_pScene->GetWorldMatrix(mNodeWorld, node);
+        //m_pScene->GetWorldMatrix(mNodeWorld, node);
+        GetWorldMatrixNoCache(mNodeWorld, *pMeshNode);
 
         // Multiply on the global world transform
         OGMatrix mModel;
@@ -315,7 +370,8 @@ void COGModel::RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame)
 // Render transparent parts of the mesh.
 void COGModel::RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fSpin)
 {
-    m_pScene->SetFrame((float)_Frame);
+    //m_pScene->SetFrame((float)_Frame);
+    SetFrame((float)_Frame);
     m_pRenderer->SetMaterial(m_pMaterial);
     m_pRenderer->SetTexture(m_pTexture);
     m_pRenderer->SetBlend(OG_BLEND_ALPHABLEND);
@@ -323,9 +379,12 @@ void COGModel::RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Fr
     std::for_each(m_TransparentParts.begin(), m_TransparentParts.end(), [&](unsigned int i) 
     {
         IOGMesh* pMesh = m_Meshes[i];
-        const SPODNode& node = m_pScene->pNode[pMesh->GetPart()];
+        //const SPODNode& node = m_pScene->pNode[pMesh->GetPart()];
+        MeshNode* pMeshNode = m_pMeshNodes[pMesh->GetPart()];
+
         MatrixRotationY(mSpin, _fSpin);
-        m_pScene->GetWorldMatrix(mNodeWorld, node);
+        //m_pScene->GetWorldMatrix(mNodeWorld, node);
+        GetWorldMatrixNoCache(mNodeWorld, *pMeshNode);
         MatrixMultiply(mNodeWorld, mSpin, mNodeWorld);
         MatrixMultiply(mModel, mNodeWorld, _mWorld);
 
@@ -355,13 +414,16 @@ unsigned int COGModel::GetNumRenderables () const
 
 
 // Get part's transformed OBB after applying animation
-bool COGModel::GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld) const
+bool COGModel::GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld)
 {
     const IOGMesh* pMesh = m_Meshes[_Part];
-    m_pScene->SetFrame((float)_Frame);
-    const SPODNode& node = m_pScene->pNode[pMesh->GetPart()];
+    //m_pScene->SetFrame((float)_Frame);
+    SetFrame((float)_Frame);
+    //const SPODNode& node = m_pScene->pNode[pMesh->GetPart()];
+    MeshNode* pMeshNode = m_pMeshNodes[pMesh->GetPart()];
     OGMatrix mNodeWorld, mModel;
-    m_pScene->GetWorldMatrix(mNodeWorld, node);
+    //m_pScene->GetWorldMatrix(mNodeWorld, node);
+    GetWorldMatrixNoCache(mNodeWorld, *pMeshNode);
     MatrixMultiply(mModel, mNodeWorld, _mWorld);
     _obb.Create(pMesh->GetAABB());
     _obb.UpdateTransform(mModel);
@@ -396,10 +458,13 @@ bool COGModel::GetActivePoint (IOGActivePoint& _point, const std::string& _Alias
     auto iter = m_ActivePoints.find(_Alias);
     if (iter != m_ActivePoints.end())
     {
-        m_pScene->SetFrame((float)_Frame);
+        SetFrame((float)_Frame);
+        //m_pScene->SetFrame((float)_Frame);
         // Gets the node model matrix
         OGMatrix mNodeWorld;
-        m_pScene->GetWorldMatrix(mNodeWorld, m_pScene->pNode[iter->second.part]);
+        //m_pScene->GetWorldMatrix(mNodeWorld, m_pScene->pNode[iter->second.part]);
+        MeshNode* pMeshNode = m_pMeshNodes[iter->second.part];
+        GetWorldMatrixNoCache(mNodeWorld, *pMeshNode);
 
         MatrixVecMultiply(_point.pos, iter->second.pos, mNodeWorld);
         _point.alias = _Alias;
@@ -419,4 +484,139 @@ bool COGModel::GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDi
             return true;
     }
     return false;
+}
+
+
+void COGModel::SetFrame(float fFrame)
+{
+    if(nNumFrame) 
+    {
+        nFrame = (int)fFrame;
+        fBlend = fFrame - nFrame;
+    }
+    else
+    {
+        fBlend = 0;
+        nFrame = 0;
+    }
+
+    fFrame = fFrame;
+}
+
+
+void COGModel::GetWorldMatrixNoCache(OGMatrix &mOut, const MeshNode &node) const
+{
+    OGMatrix mTmp;
+    if(node.pfAnimMatrix)
+    {
+        GetTransformationMatrix(mOut, node);
+    }
+    else
+    {
+        GetScalingMatrix(mOut, node);
+
+        GetRotationMatrix(mTmp, node);
+        MatrixMultiply(mOut, mOut, mTmp);
+
+        GetTranslationMatrix(mTmp, node);
+        MatrixMultiply(mOut, mOut, mTmp);
+    }
+
+    if(node.nIdxParent < 0)
+        return;
+
+    MeshNode* pNode = m_pMeshNodes[node.nIdxParent];
+    GetWorldMatrixNoCache(mTmp, *pNode);
+    MatrixMultiply(mOut, mOut, mTmp);
+}
+
+
+void COGModel::GetTransformationMatrix(OGMatrix &mOut, const MeshNode &node) const
+{
+    if(node.pfAnimMatrix)
+    {
+        if(node.nAnimFlags & ePODHasMatrixAni)
+        {
+            mOut = *((OGMatrix*) &node.pfAnimMatrix[16*nFrame]);
+        }
+        else
+        {
+            mOut = *((OGMatrix*) node.pfAnimMatrix);
+        }
+    }
+    else
+    {
+        MatrixIdentity(mOut);
+    }
+}
+
+
+void COGModel::GetScalingMatrix(OGMatrix &mOut, const MeshNode& node) const
+{
+    OGVec3 v;
+    if(node.pfAnimScale)
+    {
+        if(node.nAnimFlags & ePODHasScaleAni)
+        {
+            Vec3Lerp(v, (OGVec3&)node.pfAnimScale[7*(nFrame+0)],
+                (OGVec3&)node.pfAnimScale[7*(nFrame+1)], fBlend);
+            MatrixScaling(mOut, v.x, v.y, v.z);
+        }
+        else
+        {
+            MatrixScaling(mOut, node.pfAnimScale[0], node.pfAnimScale[1], node.pfAnimScale[2]);
+        }
+    }
+    else
+    {
+        MatrixIdentity(mOut);
+    }
+}
+
+
+void COGModel::GetRotationMatrix(OGMatrix &mOut, const MeshNode& node) const
+{
+    OGQuat q;
+    if(node.pfAnimRotation)
+    {
+        if(node.nAnimFlags & ePODHasRotationAni)
+        {
+            QuaternionSlerp(q, (OGQuat&)node.pfAnimRotation[4*nFrame],
+                (OGQuat&)node.pfAnimRotation[4*(nFrame+1)], fBlend);
+            QuaternionToRotationMatrix(mOut, q);
+        }
+        else
+        {
+            QuaternionToRotationMatrix(mOut, *(OGQuat*)node.pfAnimRotation);
+        }
+    }
+    else
+    {
+        MatrixIdentity(mOut);
+    }
+}
+
+
+void COGModel::GetTranslationMatrix(OGMatrix &mOut, const MeshNode& node) const
+{
+    OGVec3 v;
+
+    if(node.pfAnimPosition)
+    {
+        if(node.nAnimFlags & ePODHasPositionAni)
+        {
+            Vec3Lerp(v,
+                (OGVec3&)node.pfAnimPosition[3*(nFrame+0)],
+                (OGVec3&)node.pfAnimPosition[3*(nFrame+1)], fBlend);
+            MatrixTranslation(mOut, v.x, v.y, v.z);
+        }
+        else
+        {
+            MatrixTranslation(mOut, node.pfAnimPosition[0], node.pfAnimPosition[1], node.pfAnimPosition[2]);
+        }
+    }
+    else
+    {
+        MatrixIdentity(mOut);
+    }
 }
