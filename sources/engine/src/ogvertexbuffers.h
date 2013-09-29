@@ -63,8 +63,8 @@ private:
     unsigned int    m_NumIndices;
     unsigned int    m_NumFaces;
     unsigned int    m_Stride;
-    const void*     m_pVertexData;
-    const void*     m_pIndexData;
+    void*           m_pVertexData;
+    void*           m_pIndexData;
 
     IOGStatistics*  m_pStats;
 };

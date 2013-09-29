@@ -11,11 +11,11 @@
 
 
 COGModelConfig::COGModelConfig() :
-    m_pMaterialCfg (NULL),
+m_pMaterialCfg (NULL),
     m_pAnimationCfg (NULL),
     m_pMeshCfg (NULL)
 {
-	m_pReader = GetSettingsReader();
+    m_pReader = GetSettingsReader();
 }
 
 
@@ -30,12 +30,12 @@ COGModelConfig::~COGModelConfig()
 // Load model configuration
 bool COGModelConfig::LoadConfig (const std::string& _ConfigFile)
 {
-	IOGSettingsSource* pSource = m_pReader->OpenSource(_ConfigFile);
-	if (!pSource)
-	{
-		OG_LOG_ERROR("Failed to load model config file %s", _ConfigFile.c_str());
-		return false;
-	}
+    IOGSettingsSource* pSource = m_pReader->OpenSource(_ConfigFile);
+    if (!pSource)
+    {
+        OG_LOG_ERROR("Failed to load model config file %s", _ConfigFile.c_str());
+        return false;
+    }
     m_ConfigFile = _ConfigFile;
 
     // delete old configs
@@ -43,74 +43,75 @@ bool COGModelConfig::LoadConfig (const std::string& _ConfigFile)
     OG_SAFE_DELETE (m_pAnimationCfg);
     OG_SAFE_DELETE (m_pMeshCfg);
 
-	IOGGroupNode* pMeshNode = m_pReader->OpenGroupNode(pSource, NULL, "Mesh");
-	if (pMeshNode != NULL)
-	{
+    IOGGroupNode* pMeshNode = m_pReader->OpenGroupNode(pSource, NULL, "Mesh");
+    if (pMeshNode != NULL)
+    {
         m_pMeshCfg = new OGMeshCfg;
-		m_pMeshCfg->mesh_file = GetResourceMgr()->GetFullPath(m_pReader->ReadStringParam(pMeshNode, "file"));
-		m_pReader->CloseGroupNode(pMeshNode);
-	}
+        m_pMeshCfg->mesh_file = GetResourceMgr()->GetFullPath(m_pReader->ReadStringParam(pMeshNode, "file"));
+        m_pReader->CloseGroupNode(pMeshNode);
+    }
 
-	IOGGroupNode* pMaterialNode = m_pReader->OpenGroupNode(pSource, NULL, "Material");
-	if (pMaterialNode != NULL)
-	{
+    IOGGroupNode* pMaterialNode = m_pReader->OpenGroupNode(pSource, NULL, "Material");
+    if (pMaterialNode != NULL)
+    {
         m_pMaterialCfg = new OGMaterialCfg;
-		m_pMaterialCfg->texture_alias = m_pReader->ReadStringParam(pMaterialNode, "texture");
-		m_pMaterialCfg->blend_type = ParseBlendType(m_pReader->ReadStringParam(pMaterialNode, "blend"));
-    	IOGGroupNode* pAmbientNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Ambient");
+        m_pMaterialCfg->texture_alias = m_pReader->ReadStringParam(pMaterialNode, "texture");
+        m_pMaterialCfg->blend_type = ParseBlendType(m_pReader->ReadStringParam(pMaterialNode, "blend"));
+        IOGGroupNode* pAmbientNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Ambient");
         if (pAmbientNode)
         {
             m_pMaterialCfg->material_ambient = m_pReader->ReadVec4Param(pAmbientNode, "r", "g", "b", "a");
-    		m_pReader->CloseGroupNode(pAmbientNode);
+            m_pReader->CloseGroupNode(pAmbientNode);
         }
-    	IOGGroupNode* pDiffuseNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Diffuse");
+        IOGGroupNode* pDiffuseNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Diffuse");
         if (pDiffuseNode)
         {
             m_pMaterialCfg->material_diffuse = m_pReader->ReadVec4Param(pDiffuseNode, "r", "g", "b", "a");
-    		m_pReader->CloseGroupNode(pDiffuseNode);
+            m_pReader->CloseGroupNode(pDiffuseNode);
         }
-    	IOGGroupNode* pSpecularNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Specular");
+        IOGGroupNode* pSpecularNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Specular");
         if (pSpecularNode)
         {
             m_pMaterialCfg->material_specular = m_pReader->ReadVec4Param(pSpecularNode, "r", "g", "b", "a");
-    		m_pReader->CloseGroupNode(pSpecularNode);
+            m_pReader->CloseGroupNode(pSpecularNode);
         }
-		m_pReader->CloseGroupNode(pMaterialNode);
-	}
+        m_pReader->CloseGroupNode(pMaterialNode);
+    }
 
-	IOGGroupNode* pAnimationsNode = m_pReader->OpenGroupNode(pSource, NULL, "Animations");
+    IOGGroupNode* pAnimationsNode = m_pReader->OpenGroupNode(pSource, NULL, "Animations");
     if (pAnimationsNode)
     {
         m_pAnimationCfg = new OGAnimationCfg;
         IOGGroupNode* pAnimationNode = m_pReader->OpenGroupNode(pSource, pAnimationsNode, "Animation");
         while (pAnimationNode != NULL)
         {
-            OGAnimationCfg::Anim anim;
-            anim.anim_alias = m_pReader->ReadStringParam(pAnimationNode, "name");
-            anim.anim_start = m_pReader->ReadIntParam(pAnimationNode, "start_frame");
-            anim.anim_end = m_pReader->ReadIntParam(pAnimationNode, "end_frame");
-            anim.speed = m_pReader->ReadIntParam(pAnimationNode, "speed");
-            anim.looped = m_pReader->ReadIntParam(pAnimationNode, "looped");
-            m_pAnimationCfg->anim_list.push_back(anim);
+            //OGAnimationCfg::Anim anim;
+            IOGAnimation anim;
+            anim.name = m_pReader->ReadStringParam(pAnimationNode, "name");
+            anim.start_frame = (unsigned int)m_pReader->ReadIntParam(pAnimationNode, "start_frame");
+            anim.end_frame = (unsigned int)m_pReader->ReadIntParam(pAnimationNode, "end_frame");
+            anim.speed = (unsigned int)m_pReader->ReadIntParam(pAnimationNode, "speed");
+            anim.looped = m_pReader->ReadIntParam(pAnimationNode, "looped") ? true : false;
+            m_pAnimationCfg->anim_list[anim.name] = anim;
             pAnimationNode = m_pReader->ReadNextNode(pAnimationNode);
         }
         m_pReader->CloseGroupNode(pAnimationsNode);
     }
 
-	m_pReader->CloseSource(pSource);
-	return true;
+    m_pReader->CloseSource(pSource);
+    return true;
 }
 
 
 // Save params
 bool COGModelConfig::SaveConfig ()
 {
-	IOGSettingsSource* pSource = m_pReader->OpenSource(m_ConfigFile);
-	if (!pSource)
-	{
-		OG_LOG_ERROR("Failed to load model config file %s", m_ConfigFile.c_str());
-		return false;
-	}
+    IOGSettingsSource* pSource = m_pReader->OpenSource(m_ConfigFile);
+    if (!pSource)
+    {
+        OG_LOG_ERROR("Failed to load model config file %s", m_ConfigFile.c_str());
+        return false;
+    }
 
     if (m_pMaterialCfg)
     {
@@ -139,12 +140,12 @@ bool COGModelConfig::SaveConfig ()
     }
 
     if (!m_pReader->SaveSource(pSource, m_ConfigFile))
-	{
-		OG_LOG_ERROR("Failed to save model config file %s", m_ConfigFile.c_str());
-		return false;
-	}
+    {
+        OG_LOG_ERROR("Failed to save model config file %s", m_ConfigFile.c_str());
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 

@@ -272,6 +272,9 @@
     <ClCompile Include="src\ogmodelconfig.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\oganimationset.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ogfog.h">
@@ -575,6 +578,12 @@
       <Filter>Interface\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\ogmodelconfig.h">
+      <Filter>Source Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGAnimationManager.h">
+      <Filter>Interface\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\oganimationset.h">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

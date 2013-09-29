@@ -10,30 +10,20 @@
 #define IOGANIMATION_H_
 
 #include <string>
-#include <list>
-
-
-struct OGAnimationCfg
-{
-    struct Anim
-    {
-        std::string anim_alias;
-        int anim_start;
-        int anim_end;
-        int speed;
-        int looped;
-    };
-    std::list<Anim> anim_list;
-};
-
+#include <map>
 
 struct IOGAnimation
 {
-	std::string name;
-	unsigned int start_frame;
-	unsigned int end_frame;
+    std::string name;
+    unsigned int start_frame;
+    unsigned int end_frame;
     unsigned int speed;
     bool looped;
+};
+
+struct OGAnimationCfg
+{
+    std::map<std::string, IOGAnimation> anim_list;
 };
 
 #endif

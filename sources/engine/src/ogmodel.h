@@ -16,7 +16,8 @@
 #include "ogmesh.h"
 #include <map>
 #include <list>
-#include "pvr/POD.h"
+#include "ogmodelconfig.h"
+#include "oganimationset.h"
 
 
 class COGModel : public IOGModel, public COGResource
@@ -32,13 +33,13 @@ public:
     virtual void Unload ();
 
     // Render mesh.
-    virtual void Render (const OGMatrix& _mWorld, unsigned int _Frame);
+    virtual void Render (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend);
 
     // Render solid parts of the mesh.
-    virtual void RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame);
+    virtual void RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend);
 
     // Render transparent parts of the mesh.
-    virtual void RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fSpin);
+    virtual void RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend, float _fSpin);
 
     // Check if has submeshes of the following type
     virtual bool HasSubmeshesOfType(SubMeshType _Type) const;
@@ -50,13 +51,13 @@ public:
     virtual RenderableType GetRenderableType () const { return OG_RENDERABLE_MODEL; }
 
     // Get combined AABB
-    virtual const IOGAabb& GetAABB () const;
+    virtual const IOGAabb& GetAABB () const { return m_AABB; }
 
     // Get part's transformed OBB after applying animation
-    virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld);
+    virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, float _fBlend, const OGMatrix& _mWorld);
 
     // Get model alias
-    virtual const std::string& GetAlias () const;
+    virtual const std::string& GetAlias () const { return m_ResourceAlias; }
 
     // Get texture
     virtual IOGTexture* GetTexture () { return m_pTexture; }
@@ -71,7 +72,7 @@ public:
     virtual const std::vector<IOGMesh*>& GetMeshes () const { return m_Meshes; }
 
     // Get active point
-    virtual bool GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame);
+    virtual bool GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame, float _fBlend);
 
     // Save params
     virtual bool SaveParams ();
@@ -81,86 +82,22 @@ public:
 
 private:
 
-    struct Cfg
-    {
-        struct Anim
-        {
-            std::string anim_alias;
-            int anim_start;
-            int anim_end;
-            int speed;
-            int looped;
-        };
+    IOGTexture*         m_pTexture;
+    IOGMaterial*        m_pMaterial;
 
-        std::string mesh_file;
-        OGMaterialCfg material;
-        std::list<Anim> anim_list;
-    };
-
-    // Load model configuration
-    bool LoadConfig (COGModel::Cfg& _cfg);
-
-private:
-
-    IOGTexture*     m_pTexture;
-    IOGMaterial*    m_pMaterial;
-    CPVRTModelPOD*  m_pScene;
-
-    IOGAabb         m_AABB;
-    unsigned int    m_NumParts;
+    IOGAabb             m_AABB;
+    unsigned int        m_NumParts;
 
     IOGRenderer*        m_pRenderer;
     IOGSettingsReader*  m_pReader;
+
+    COGModelConfig      m_Cfg;
+    COGAnimationSet     m_AnimationSet;
 
     std::vector<IOGMesh*>                   m_Meshes;
     std::vector<unsigned int>               m_SolidParts;
     std::vector<unsigned int>               m_TransparentParts;
     std::map<std::string, IOGActivePoint>   m_ActivePoints;
-    std::map<std::string, IOGAnimation*>    m_pAnimations;
-
-private:
-
-    struct MeshNode
-    {
-        MeshNode() 
-            : pfAnimPosition(NULL)
-            , pfAnimRotation(NULL)
-            , pfAnimScale(NULL)
-            , pfAnimMatrix(NULL)
-            , nAnimFlags(0)
-        {
-        }
-
-        ~MeshNode()
-        {
-            if (pfAnimPosition) free(pfAnimPosition);
-            if (pfAnimRotation) free(pfAnimRotation);
-            if (pfAnimScale) free(pfAnimScale);
-            if (pfAnimMatrix) free(pfAnimMatrix);
-        }
-
-        int             nIdx;
-        int             nIdxParent;
-        unsigned int    nAnimFlags;
-        float*          pfAnimPosition;
-        float*          pfAnimRotation;
-        float*          pfAnimScale;
-        float*          pfAnimMatrix;
-    };
-
-    void SetFrame(float fFrame);
-    void GetWorldMatrixNoCache(OGMatrix &mOut, const MeshNode &node) const;
-    void GetTransformationMatrix(OGMatrix &mOut, const MeshNode &node) const;
-    void GetScalingMatrix(OGMatrix &mOut, const MeshNode &node) const;
-    void GetRotationMatrix(OGMatrix &mOut, const MeshNode &node) const;
-    void GetTranslationMatrix(OGMatrix &mOut, const MeshNode& node) const;
-
-    unsigned int            nNumFrame;
-    int                     nFrame;
-    float                   fFrame;
-    float                   fBlend;
-    std::vector<MeshNode*>  m_pMeshNodes;
 };
-
 
 #endif

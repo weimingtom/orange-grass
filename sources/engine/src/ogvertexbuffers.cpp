@@ -13,6 +13,10 @@
 
 COGVertexBuffers::~COGVertexBuffers ()
 {
+    if (m_pVertexData)
+        free(m_pVertexData);
+    if (m_pIndexData)
+        free(m_pIndexData);
     if (m_VBO != 0)
         glDeleteBuffers(1, &m_VBO);
     if (m_IBO != 0)
@@ -30,21 +34,27 @@ COGVertexBuffers::COGVertexBuffers (
 {
     m_NumVertices = _NumVertices;
     m_Stride = _Stride;
-    m_pVertexData = _pVertexData;
-    m_pIndexData = _pIndexData;
     m_NumIndices = _NumIndices;
     m_NumFaces = _NumFaces;
 
-    glGenBuffers(1, &m_VBO);
     unsigned int VBOSize = m_NumVertices * m_Stride;
+    m_pVertexData = malloc(VBOSize);
+    memcpy(m_pVertexData, _pVertexData, VBOSize);
+    //m_pVertexData = _pVertexData;
+
+    glGenBuffers(1, &m_VBO);
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
     glBufferData(GL_ARRAY_BUFFER, VBOSize, m_pVertexData, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    if(m_pIndexData)
+    if(_pIndexData)
     {
-        glGenBuffers(1, &m_IBO);
         unsigned int IBOSize = _NumIndices * sizeof(GLshort);
+        m_pIndexData = malloc(IBOSize);
+        memcpy(m_pIndexData, _pIndexData, IBOSize);
+        //m_pIndexData = _pIndexData;
+
+        glGenBuffers(1, &m_IBO);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, IBOSize, m_pIndexData, GL_STATIC_DRAW);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);

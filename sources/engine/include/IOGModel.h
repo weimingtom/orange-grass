@@ -39,13 +39,13 @@ public:
     virtual const std::vector<IOGMesh*>& GetMeshes () const = 0;
 
     // Render mesh.
-    virtual void Render (const OGMatrix& _mWorld, unsigned int _Frame) = 0;
+    virtual void Render (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend) = 0;
 
     // Render solid parts of the mesh.
-    virtual void RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame) = 0;
+    virtual void RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend) = 0;
 
     // Render transparent parts of the mesh.
-    virtual void RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fSpin) = 0;
+    virtual void RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend, float _fSpin) = 0;
 
     // Check if has submeshes of the following type
     virtual bool HasSubmeshesOfType(SubMeshType _Type) const = 0;
@@ -57,13 +57,13 @@ public:
     virtual const IOGAabb& GetAABB () const = 0;
 
     // Get part's transformed OBB after applying animation
-    virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, const OGMatrix& _mWorld) = 0;
+    virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, float _fBlend, const OGMatrix& _mWorld) = 0;
 
     // Get animation
     virtual IOGAnimation* GetAnimation (const std::string& _Alias) = 0;
 
     // Get active point
-    virtual bool GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame) = 0;
+    virtual bool GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame, float _fBlend) = 0;
 
     // Get ray intersection
     virtual bool GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos) = 0;
