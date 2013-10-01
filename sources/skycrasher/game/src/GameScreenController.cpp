@@ -160,12 +160,15 @@ void CGameScreenController::RenderScene ()
     m_pRenderer->EnableFog(true);
 	m_pRenderer->EnableLight(true);
 
+    m_pRenderer->PushGroupMarker(std::string("Rendering landscape geometry"));
 	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
 	m_pSg->RenderLandscape(m_pCamera);
 	m_pRenderer->FinishRenderMode();
+    m_pRenderer->PopGroupMarker();
 
     if (g_bShadowsEnabled)
     {
+        m_pRenderer->PushGroupMarker(std::string("Shadow map generation"));
         m_pRenderer->StartRenderMode(OG_RENDERMODE_SHADOWMAP);
         m_pRenderer->ClearFrame(OGVec4(0.0f, 0.0f, 0.0f, 0.0f));
         m_pRenderer->EnableColor(false);
@@ -173,23 +176,30 @@ void CGameScreenController::RenderScene ()
         m_pRenderer->EnableColor(true);
         m_pSg->RenderScene(m_pCamera);
         m_pRenderer->FinishRenderMode();
+        m_pRenderer->PopGroupMarker();
 
+        m_pRenderer->PushGroupMarker(std::string("Shadow map generation"));
         m_pRenderer->StartRenderMode(OG_RENDERMODE_SHADOWEDSCENE);
         m_pSg->RenderLandscape(m_pCamera);
         m_pRenderer->FinishRenderMode();
+        m_pRenderer->PopGroupMarker();
     }
 
+    m_pRenderer->PushGroupMarker(std::string("Rendering scene geometry"));
     m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
 	m_pSg->RenderScene(m_pCamera);
     m_pSg->RenderTransparentNodes(m_pCamera);
 	m_pRenderer->FinishRenderMode();
+    m_pRenderer->PopGroupMarker();
 
     m_pRenderer->EnableLight(false);
     m_pRenderer->EnableFog(false);
 
+    m_pRenderer->PushGroupMarker(std::string("Rendering effects"));
     m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);
     m_pSg->RenderEffects(m_pCamera);
     m_pRenderer->FinishRenderMode();
+    m_pRenderer->PopGroupMarker();
 
     //if (!m_bFinishLine)
     //{
@@ -207,6 +217,7 @@ void CGameScreenController::RenderScene ()
     {
         fps = 1000/m_ElapsedTime;
     }
+    m_pRenderer->PushGroupMarker(std::string("Rendering debug info"));
     m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
     m_pRenderer->DisplayString(OGVec2(70.0f,4.0f), 0.4f, 0xFFFFFFFF, "FPS %d", fps);
 #ifdef STATISTICS
@@ -225,6 +236,7 @@ void CGameScreenController::RenderScene ()
     //GetStatistics()->Reset();
 #endif
     m_pRenderer->FinishRenderMode();
+    m_pRenderer->PopGroupMarker();
 }
 
 

@@ -19,6 +19,6 @@ LOCAL_MODULE     := liborangegrass
 LOCAL_CFLAGS     := -Werror
 LOCAL_C_INCLUDES += $(ENGINEDIR)/include \
                     $(GAMEDIR)/game/include
-LOCAL_LDLIBS     := -llog -lGLESv2
+LOCAL_LDLIBS     := -llog -lGLESv2 -lEGL
 
 include $(BUILD_SHARED_LIBRARY)

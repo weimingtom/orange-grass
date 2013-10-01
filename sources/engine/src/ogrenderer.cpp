@@ -16,6 +16,35 @@
 #include "ogsprite.h"
 #include "ogvertexbuffers.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+/* GL_EXT_debug_marker */
+#ifndef GL_EXT_debug_marker
+#define GL_EXT_debug_marker 1
+#ifdef GL_GLEXT_PROTOTYPES
+GL_APICALL void GL_APIENTRY glInsertEventMarkerEXT (GLsizei length, const GLchar *marker);
+GL_APICALL void GL_APIENTRY glPushGroupMarkerEXT (GLsizei length, const GLchar *marker);
+GL_APICALL void GL_APIENTRY glPopGroupMarkerEXT (void);
+GL_APICALL void GL_APIENTRY glLabelObjectEXT (GLenum type, GLuint object, GLsizei length, const GLchar *label);
+GL_APICALL void GL_APIENTRY glGetObjectLabelEXT (GLenum type, GLuint object, GLsizei bufSize, GLsizei *length, GLchar *label);
+#endif
+typedef void (GL_APIENTRYP PFNGLLABELOBJECTEXTPROC) (GLenum type, GLuint object, GLsizei length, const GLchar *label);
+typedef void (GL_APIENTRYP PFNGLGETOBJECTLABELEXTPROC) (GLenum type, GLuint object, GLsizei bufSize, GLsizei *length, GLchar *label);
+typedef void (GL_APIENTRYP PFNGLINSERTEVENTMARKEREXTPROC) (GLsizei length, const GLchar *marker);
+typedef void (GL_APIENTRYP PFNGLPUSHGROUPMARKEREXTPROC) (GLsizei length, const GLchar *marker);
+typedef void (GL_APIENTRYP PFNGLPOPGROUPMARKEREXTPROC) (void);
+
+PFNGLINSERTEVENTMARKEREXTPROC glInsertEventMarkerEXT; 
+PFNGLPUSHGROUPMARKEREXTPROC glPushGroupMarkerEXT; 
+PFNGLPOPGROUPMARKEREXTPROC glPopGroupMarkerEXT;
+PFNGLLABELOBJECTEXTPROC glLabelObjectEXT;
+PFNGLGETOBJECTLABELEXTPROC glGetObjectLabelEXT;
+#endif
+
+#ifdef __cplusplus
+}
+#endif
 
 COGSprite::SprVert g_RTVertices[4];
 
@@ -54,6 +83,14 @@ COGRenderer::~COGRenderer ()
 // initialize renderer.
 bool COGRenderer::Init ()
 {
+#ifndef WIN32
+    glInsertEventMarkerEXT = (PFNGLINSERTEVENTMARKEREXTPROC) eglGetProcAddress("glInsertEventMarkerEXT");
+    glPushGroupMarkerEXT = (PFNGLPUSHGROUPMARKEREXTPROC) eglGetProcAddress("glPushGroupMarkerEXT");
+    glPopGroupMarkerEXT = (PFNGLPOPGROUPMARKEREXTPROC) eglGetProcAddress("glPopGroupMarkerEXT");
+    glLabelObjectEXT = (PFNGLLABELOBJECTEXTPROC) eglGetProcAddress("glLabelObjectEXT");
+    glGetObjectLabelEXT = (PFNGLGETOBJECTLABELEXTPROC) eglGetProcAddress("glGetObjectLabelEXT");
+#endif
+
     glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -617,4 +654,44 @@ void COGRenderer::DrawRT ()
 
 	glBindTexture(GL_TEXTURE_2D, m_pRT->GetTextureId());
     DrawSpriteBuffer(g_RTVertices, 0, 4);
+}
+
+
+// Debug - insert event marker.
+void COGRenderer::InsertEventMarker (const std::string& _MarkerStr)
+{
+#ifndef WIN32
+    if (glInsertEventMarkerEXT)
+        glInsertEventMarkerEXT(_MarkerStr.size()+1, _MarkerStr.c_str());
+#endif
+}
+
+
+// Debug - push group marker.
+void COGRenderer::PushGroupMarker (const std::string& _MarkerStr)
+{
+#ifndef WIN32
+    if (glPushGroupMarkerEXT)
+        glPushGroupMarkerEXT(_MarkerStr.size()+1, _MarkerStr.c_str());
+#endif
+}
+
+
+// Debug - pop group marker.
+void COGRenderer::PopGroupMarker ()
+{
+#ifndef WIN32
+    if (glPopGroupMarkerEXT)
+        glPopGroupMarkerEXT();
+#endif
+}
+
+
+// Debug - label object.
+void COGRenderer::LabelObject (unsigned int _ObjType, unsigned int _ObjId, const std::string& _ObjLabelStr)
+{
+#ifndef WIN32
+    if (glLabelObjectEXT)
+        glLabelObjectEXT(_ObjType, _ObjId, _ObjLabelStr.size()+1, _ObjLabelStr.c_str());
+#endif
 }

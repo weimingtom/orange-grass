@@ -9,6 +9,7 @@
 #include "OpenGL2.h"
 #include "pvr/PVRTC.h"
 #include "ogtexture.h"
+#include "OrangeGrass.h"
 
 
 COGTexture::COGTexture () : m_TextureId (0)
@@ -67,6 +68,8 @@ bool COGTexture::Load ()
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glGenTextures(1, &m_TextureId);
     glBindTexture(GL_TEXTURE_2D, m_TextureId);
+    
+    GetRenderer()->LabelObject(GL_TEXTURE, m_TextureId, m_ResourceFile);
 
 	m_Width = pImgData->dwWidth;
 	m_Height = pImgData->dwHeight;

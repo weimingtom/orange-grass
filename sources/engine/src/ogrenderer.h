@@ -126,6 +126,18 @@ public:
     // Draw render target.
     virtual void DrawRT ();
 
+    // Debug - insert event marker.
+    virtual void InsertEventMarker (const std::string& _MarkerStr);
+
+    // Debug - push group marker.
+    virtual void PushGroupMarker (const std::string& _MarkerStr);
+
+    // Debug - pop group marker.
+    virtual void PopGroupMarker ();
+
+    // Debug - label object.
+    virtual void LabelObject (unsigned int _ObjType, unsigned int _ObjId, const std::string& _ObjLabelStr);
+
 protected:
 
     IOGTexture*         m_pCurTexture;
@@ -155,7 +167,7 @@ protected:
     bool				m_bLightEnabled;
     bool				m_bFogEnabled;
 
-    IOGShader*              m_pCurShader;
+    IOGShader*          m_pCurShader;
 };
 
 #endif

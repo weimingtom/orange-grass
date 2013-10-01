@@ -116,6 +116,18 @@ public:
 
     // Draw render target.
     virtual void DrawRT () = 0;
+
+    // Debug - insert event marker.
+    virtual void InsertEventMarker (const std::string& _MarkerStr) = 0;
+
+    // Debug - push group marker.
+    virtual void PushGroupMarker (const std::string& _MarkerStr) = 0;
+
+    // Debug - pop group marker.
+    virtual void PopGroupMarker () = 0;
+
+    // Debug - label object.
+    virtual void LabelObject (unsigned int _ObjType, unsigned int _ObjId, const std::string& _ObjLabelStr) = 0;
 };
 
 #endif
