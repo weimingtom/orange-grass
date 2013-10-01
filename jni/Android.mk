@@ -16,7 +16,7 @@ LOCAL_CFLAGS += -fno-stack-protector
 endif
 
 LOCAL_MODULE     := liborangegrass
-LOCAL_CFLAGS     := -Werror
+LOCAL_CFLAGS     := -Werror -std=gnu++11
 LOCAL_C_INCLUDES += $(ENGINEDIR)/include \
                     $(GAMEDIR)/game/include
 LOCAL_LDLIBS     := -llog -lGLESv2 -lEGL
