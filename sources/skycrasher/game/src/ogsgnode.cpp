@@ -148,3 +148,22 @@ void COGSgNode::Activate (bool _bActive)
 {
     m_bActive = _bActive;
 }
+
+
+OGNode::OGNode(IOGModel* _pModel)
+    : m_pModel(_pModel)
+    , m_pParentNode(NULL)
+{
+
+}
+
+
+OGNode::~OGNode ()
+{
+}
+
+
+//// get world transform.
+//const OGMatrix& OGNode::GetWorldTransform () const
+//{
+//}

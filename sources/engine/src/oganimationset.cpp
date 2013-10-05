@@ -37,7 +37,7 @@ void COGAnimationSet::SetNumFrames(unsigned int _NumFrames)
 }
 
 
-void COGAnimationSet::AddNode(
+AnimationNode* COGAnimationSet::AddNode(
     int _Idx, 
     int _IdxParent, 
     unsigned int _AnimFlags, 
@@ -84,6 +84,34 @@ void COGAnimationSet::AddNode(
         memcpy(pNode->pfAnimMatrix, _pfAnimMatrix, numBytes);
     }
     m_Nodes.push_back(pNode);
+    return pNode;
+}
+
+
+AnimationNode* COGAnimationSet::BuildSG ()
+{
+    AnimationNode* pRoot = NULL;
+    size_t n = m_Nodes.size();
+    for (size_t i = 0; i < n; ++i)
+    {
+        AnimationNode* pCurNode = m_Nodes[i];
+        int curParent = pCurNode->nIdxParent;
+        if (curParent == -1)
+        {
+            if (pRoot != NULL)
+            {
+                OG_LOG_WARNING("Multiple roots!");
+            }
+            pRoot = pCurNode;
+        }
+        else
+        {
+            AnimationNode* pNodeParent = m_Nodes[curParent];
+            pNodeParent->pChilds.push_back(pCurNode);
+            pCurNode->pParent = pNodeParent;
+        }
+    }
+    return pRoot;
 }
 
 

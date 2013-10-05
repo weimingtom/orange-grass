@@ -10,6 +10,8 @@
 #define OGANIMATION_H_
 
 #include "IOGAnimation.h"
+#include "IOGRenderable.h"
+#include "IOGMesh.h"
 
 
 struct AnimationNode
@@ -20,6 +22,7 @@ struct AnimationNode
         , pfAnimScale(NULL)
         , pfAnimMatrix(NULL)
         , nAnimFlags(0)
+        , pParent(NULL)
     {
     }
 
@@ -38,6 +41,11 @@ struct AnimationNode
     float*          pfAnimRotation;
     float*          pfAnimScale;
     float*          pfAnimMatrix;
+
+    AnimationNode*              pParent;
+    std::vector<AnimationNode*> pChilds;
+    void*                       pBody;
+    SubMeshType                 BodyType;
 };
 
 
@@ -58,7 +66,7 @@ public:
 
     void Clear();
     void SetNumFrames(unsigned int _NumFrames);
-    void AddNode(
+    AnimationNode* AddNode(
         int _Idx, 
         int _IdxParent, 
         unsigned int _AnimFlags, 
@@ -66,6 +74,7 @@ public:
         const float* _pfAnimRotation, 
         const float* _pfAnimScale, 
         const float* _pfAnimMatrix);
+    AnimationNode* BuildSG ();
     void GetWorldMatrix(OGMatrix& mOut, unsigned int _NodeId, unsigned int _Frame, float _fBlend) const;
     void GetTransformationMatrix(OGMatrix& mOut, unsigned int _NodeId, unsigned int _Frame) const;
     void GetScalingMatrix(OGMatrix& mOut, unsigned int _NodeId, unsigned int _Frame, float _fBlend) const;

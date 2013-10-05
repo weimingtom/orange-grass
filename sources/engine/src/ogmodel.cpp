@@ -63,7 +63,7 @@ bool COGModel::Load ()
     {
         SPODNode* pNode = &pScene->pNode[i];
 
-        m_AnimationSet.AddNode(pNode->nIdx, pNode->nIdxParent, pNode->nAnimFlags, 
+        AnimationNode* pAnimNode = m_AnimationSet.AddNode(pNode->nIdx, pNode->nIdxParent, pNode->nAnimFlags, 
             pNode->pfAnimPosition, pNode->pfAnimRotation, pNode->pfAnimScale, pNode->pfAnimMatrix);
 
         if (pNode->nIdx >= 0)
@@ -81,16 +81,20 @@ bool COGModel::Load ()
                     pt.pos = *pPtr;
                     pt.part = i;
                     m_ActivePoints[subMeshName] = pt;
+                    pAnimNode->pBody = &m_ActivePoints[subMeshName];
+                    pAnimNode->BodyType = OG_SUBMESH_ACTPOINT;
                     continue;
                 }
                 break;
 
             case OG_SUBMESH_BODY:
                 m_SolidParts.push_back(m_NumParts); 
+                pAnimNode->BodyType = OG_SUBMESH_BODY;
                 break;
 
             case OG_SUBMESH_PROPELLER:
                 m_TransparentParts.push_back(m_NumParts);
+                pAnimNode->BodyType = OG_SUBMESH_PROPELLER;
                 break;
             }
 
@@ -103,6 +107,8 @@ bool COGModel::Load ()
                 return false;
             }
 
+            pAnimNode->pBody = pMesh;
+
             OGMatrix mModel;
             pScene->GetWorldMatrix(mModel, *pNode);
             pMesh->CalculateGeometry(mModel);
@@ -111,9 +117,16 @@ bool COGModel::Load ()
 
             ++m_NumParts;
         }
+        else
+        {
+            pAnimNode->BodyType = OG_SUBMESH_DUMMY;
+            pAnimNode->pBody = NULL;
+        }
     }
 
     delete pScene;
+
+    AnimationNode* pRootNode = m_AnimationSet.BuildSG();
 
     m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, m_Cfg.GetMaterialConfig()->texture_alias.c_str());
     m_pMaterial = m_pRenderer->CreateMaterial();

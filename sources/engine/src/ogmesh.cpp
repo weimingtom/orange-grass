@@ -48,6 +48,7 @@ void COGMesh::Unload ()
 {
     OG_SAFE_DELETE(m_buffer);
     OG_SAFE_DELETE(m_aabb);
+    m_faces.clear();
 }
 
 
@@ -63,7 +64,6 @@ void COGMesh::Render (const OGMatrix& _mWorld)
 void COGMesh::CalculateGeometry (const OGMatrix& _initialMat)
 {
     OGVec3 v, vMinCorner, vMaxCorner;
-
     OGVec3* pPtr = (OGVec3*)m_buffer->GetVertexData();
 
     vMinCorner.x = vMaxCorner.x = pPtr->x; 
@@ -75,6 +75,7 @@ void COGMesh::CalculateGeometry (const OGMatrix& _initialMat)
     if(m_buffer->IsIndexed())
     {
         unsigned int numIndices = m_buffer->GetNumIndices();
+        m_faces.clear();
         m_faces.reserve(numIndices / 3);
         for (unsigned int n = 0; n < numIndices; n+=3)
         {

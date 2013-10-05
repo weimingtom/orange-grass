@@ -33,9 +33,10 @@ enum SceneMeshType
 
 enum SubMeshType
 {
-    OG_SUBMESH_BODY         = 0,
-    OG_SUBMESH_PROPELLER    = 1,
-    OG_SUBMESH_ACTPOINT     = 2
+    OG_SUBMESH_DUMMY        = 0,
+    OG_SUBMESH_BODY         = 1,
+    OG_SUBMESH_PROPELLER    = 2,
+    OG_SUBMESH_ACTPOINT     = 3
 };
 
 
