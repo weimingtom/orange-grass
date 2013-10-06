@@ -55,19 +55,19 @@ AnimationNode* COGAnimationSet::AddNode(
         if (pNode->nAnimFlags & OGMatrixAnimation)
         {
             size_t numBytes = m_NumFrames * sizeof(float) * 16;
-            pNode->pfAnimMatrix = (float*)malloc(numBytes);
+            pNode->pfAnimMatrix = (OGMatrix*)malloc(numBytes);
             memcpy(pNode->pfAnimMatrix, _pfAnimMatrix, numBytes);
         }
         if (pNode->nAnimFlags & OGPositionAnimation)
         {
             size_t numBytes = m_NumFrames * sizeof(float) * 3;
-            pNode->pfAnimPosition = (float*)malloc(numBytes);
+            pNode->pfAnimPosition = (OGVec3*)malloc(numBytes);
             memcpy(pNode->pfAnimPosition, _pfAnimPosition, numBytes);
         }
         if (pNode->nAnimFlags & OGRotationAnimation)
         {
             size_t numBytes = m_NumFrames * sizeof(float) * 4;
-            pNode->pfAnimRotation = (float*)malloc(numBytes);
+            pNode->pfAnimRotation = (OGQuat*)malloc(numBytes);
             memcpy(pNode->pfAnimRotation, _pfAnimRotation, numBytes);
         }
         if (pNode->nAnimFlags & OGScaleAnimation)
@@ -80,7 +80,7 @@ AnimationNode* COGAnimationSet::AddNode(
     else
     {
         size_t numBytes = sizeof(float) * 16;
-        pNode->pfAnimMatrix = (float*)malloc(numBytes);
+        pNode->pfAnimMatrix = (OGMatrix*)malloc(numBytes);
         memcpy(pNode->pfAnimMatrix, _pfAnimMatrix, numBytes);
     }
     m_Nodes.push_back(pNode);
@@ -90,6 +90,7 @@ AnimationNode* COGAnimationSet::AddNode(
 
 AnimationNode* COGAnimationSet::BuildSG ()
 {
+    bool bRootCreated = false;
     AnimationNode* pRoot = NULL;
     size_t n = m_Nodes.size();
     for (size_t i = 0; i < n; ++i)
@@ -100,9 +101,34 @@ AnimationNode* COGAnimationSet::BuildSG ()
         {
             if (pRoot != NULL)
             {
-                OG_LOG_WARNING("Multiple roots!");
+                if (bRootCreated)
+                {
+                    pCurNode->pParent = pRoot;
+                    pRoot->pChilds.push_back(pCurNode);
+                }
+                else
+                {
+                    AnimationNode* pSingleRootNode = new AnimationNode();
+                    pSingleRootNode->pfAnimMatrix = (OGMatrix*)malloc(sizeof(OGMatrix));
+                    MatrixIdentity(*pSingleRootNode->pfAnimMatrix);
+                    pSingleRootNode->mTransform = *pSingleRootNode->pfAnimMatrix;
+                    pSingleRootNode->BodyType = OG_SUBMESH_DUMMY;
+                    pSingleRootNode->nAnimFlags = OGMatrixAnimation;
+                    pSingleRootNode->nIdx = n;
+                    pSingleRootNode->nIdxParent = -1;
+                    pCurNode->pParent = pSingleRootNode;
+                    pSingleRootNode->pChilds.push_back(pCurNode);
+                    pRoot->pParent = pSingleRootNode;
+                    pSingleRootNode->pChilds.push_back(pRoot);
+                    pRoot = pSingleRootNode;
+                    m_Nodes.push_back(pSingleRootNode);
+                    bRootCreated = true;
+                }
             }
-            pRoot = pCurNode;
+            else
+            {
+                pRoot = pCurNode;
+            }
         }
         else
         {
@@ -149,11 +175,11 @@ void COGAnimationSet::GetTransformationMatrix(OGMatrix &mOut, unsigned int _Node
     {
         if(pNode->nAnimFlags & OGMatrixAnimation)
         {
-            mOut = *((OGMatrix*) &pNode->pfAnimMatrix[16*_Frame]);
+            mOut = pNode->pfAnimMatrix[_Frame];
         }
         else
         {
-            mOut = *((OGMatrix*) pNode->pfAnimMatrix);
+            mOut = pNode->pfAnimMatrix[0];
         }
     }
     else
@@ -194,13 +220,12 @@ void COGAnimationSet::GetRotationMatrix(OGMatrix &mOut, unsigned int _NodeId, un
         if(pNode->nAnimFlags & OGRotationAnimation)
         {
             OGQuat q;
-            QuaternionSlerp(q, (OGQuat&)pNode->pfAnimRotation[4*_Frame],
-                (OGQuat&)pNode->pfAnimRotation[4*(_Frame+1)], _fBlend);
+            QuaternionSlerp(q, pNode->pfAnimRotation[_Frame], pNode->pfAnimRotation[_Frame+1], _fBlend);
             QuaternionToRotationMatrix(mOut, q);
         }
         else
         {
-            QuaternionToRotationMatrix(mOut, *(OGQuat*)pNode->pfAnimRotation);
+            QuaternionToRotationMatrix(mOut, pNode->pfAnimRotation[0]);
         }
     }
     else
@@ -218,14 +243,12 @@ void COGAnimationSet::GetTranslationMatrix(OGMatrix &mOut, unsigned int _NodeId,
         if(pNode->nAnimFlags & OGPositionAnimation)
         {
             OGVec3 v;
-            Vec3Lerp(v,
-                (OGVec3&)pNode->pfAnimPosition[3*(_Frame+0)],
-                (OGVec3&)pNode->pfAnimPosition[3*(_Frame+1)], _fBlend);
+            Vec3Lerp(v, pNode->pfAnimPosition[_Frame+0], pNode->pfAnimPosition[_Frame+1], _fBlend);
             MatrixTranslation(mOut, v.x, v.y, v.z);
         }
         else
         {
-            MatrixTranslation(mOut, pNode->pfAnimPosition[0], pNode->pfAnimPosition[1], pNode->pfAnimPosition[2]);
+            MatrixTranslation(mOut, pNode->pfAnimPosition[0].x, pNode->pfAnimPosition[0].y, pNode->pfAnimPosition[0].z);
         }
     }
     else

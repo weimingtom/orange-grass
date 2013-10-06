@@ -22,6 +22,8 @@ struct AnimationNode
         , pfAnimScale(NULL)
         , pfAnimMatrix(NULL)
         , nAnimFlags(0)
+        , nIdx(-1)
+        , nIdxParent(-1)
         , pParent(NULL)
     {
     }
@@ -37,11 +39,12 @@ struct AnimationNode
     int             nIdx;
     int             nIdxParent;
     unsigned int    nAnimFlags;
-    float*          pfAnimPosition;
-    float*          pfAnimRotation;
+    OGVec3*         pfAnimPosition;
+    OGQuat*         pfAnimRotation;
     float*          pfAnimScale;
-    float*          pfAnimMatrix;
+    OGMatrix*       pfAnimMatrix;
 
+    OGMatrix                    mTransform;
     AnimationNode*              pParent;
     std::vector<AnimationNode*> pChilds;
     void*                       pBody;
