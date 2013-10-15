@@ -16,19 +16,19 @@ class COGModelShader : public IOGShader
 {
 public:
     COGModelShader ();
-	virtual ~COGModelShader ();
+    virtual ~COGModelShader ();
 
     // load shaders.
-    virtual bool Load (const std::string& _VertShader, const std::string& _FragmentShader);
+    virtual bool Load (OGShaderID _Id, const std::string& _VertShader, const std::string& _FragmentShader);
 
     // unload shaders.
     virtual void Unload ();
-		
-	// apply the shader.
-	virtual void Apply ();
 
-	// setup the shader.
-	virtual void Setup ();
+    // apply the shader.
+    virtual void Apply ();
+
+    // setup the shader.
+    virtual void Setup ();
 
     // set model matrix
     virtual void SetModelMatrix (const OGMatrix& _mModel);
@@ -47,40 +47,45 @@ public:
 
     // set camera
     virtual void SetCamera (IOGCamera* _pCamera) {}
-    
+
     // set alpha test
     virtual void EnableAlphaTest (bool _bEnabled);
 
+    // get shader id
+    virtual OGShaderID GetShaderID () const { return m_Id; }
+
 protected:
 
-    OGMatrix  m_mMV;
-    OGMatrix  m_mMVP;
-    OGMatrix  m_mModel;
-    OGMatrix  m_mView;
-    OGMatrix  m_mProjection;
-    
-    // alpha test
-    float   m_fAlphaRef;
-    bool    m_bAlphaTest;
+    OGMatrix    m_mMV;
+    OGMatrix    m_mMVP;
+    OGMatrix    m_mModel;
+    OGMatrix    m_mView;
+    OGMatrix    m_mProjection;
 
-	unsigned int m_uiVertShader;
-	unsigned int m_uiFragShader;
+    OGShaderID  m_Id;
+
+    // alpha test
+    float       m_fAlphaRef;
+    bool        m_bAlphaTest;
+
+    unsigned int m_uiVertShader;
+    unsigned int m_uiFragShader;
     unsigned int m_uiId;
-	unsigned int m_uiMVPMatrixLoc;
-	unsigned int m_uiMVMatrixLoc;
-	unsigned int m_uiLightDirLoc;
+    unsigned int m_uiMVPMatrixLoc;
+    unsigned int m_uiMVMatrixLoc;
+    unsigned int m_uiLightDirLoc;
     unsigned int m_uiTextureLoc;
     unsigned int m_uiFogEndLoc;
-	unsigned int m_uiFogRcpDiffLoc;
-	unsigned int m_uiFogColorLoc;
-	unsigned int m_uiFogEnabled;
+    unsigned int m_uiFogRcpDiffLoc;
+    unsigned int m_uiFogColorLoc;
+    unsigned int m_uiFogEnabled;
     unsigned int m_uiAlphaReference;
 
-	unsigned int m_uiMaterialAmbient;
-	unsigned int m_uiMaterialDiffuse;
+    unsigned int m_uiMaterialAmbient;
+    unsigned int m_uiMaterialDiffuse;
 
-    IOGFog* m_pFog;
-    IOGLightMgr* m_pLightMgr;
+    IOGFog*         m_pFog;
+    IOGLightMgr*    m_pLightMgr;
 };
 
 #endif

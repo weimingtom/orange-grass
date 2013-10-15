@@ -149,22 +149,22 @@ void CGameScreenController::Update (unsigned long _ElapsedTime)
 // Render controller scene
 void CGameScreenController::RenderScene ()
 {
-	if (m_State != CSTATE_ACTIVE)
+    if (m_State != CSTATE_ACTIVE)
     {
-	    OG_LOG_INFO("Game screen render - inactive state");
-		return;
+        OG_LOG_INFO("Game screen render - inactive state");
+        return;
     }
 
-	m_pRenderer->ClearFrame(OGVec4(0.3f, 0.3f, 0.4f, 1.0f));
+    m_pRenderer->ClearFrame(OGVec4(0.3f, 0.3f, 0.4f, 1.0f));
 
     m_pRenderer->EnableFog(true);
-	m_pRenderer->EnableLight(true);
+    m_pRenderer->EnableLight(true);
 
-    m_pRenderer->PushGroupMarker(std::string("Rendering landscape geometry"));
-	m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
-	m_pSg->RenderLandscape(m_pCamera);
-	m_pRenderer->FinishRenderMode();
-    m_pRenderer->PopGroupMarker();
+    //m_pRenderer->PushGroupMarker(std::string("Rendering landscape geometry"));
+    //m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
+    //m_pSg->RenderLandscape(m_pCamera);
+    //m_pRenderer->FinishRenderMode();
+    //m_pRenderer->PopGroupMarker();
 
     if (g_bShadowsEnabled)
     {
@@ -184,12 +184,11 @@ void CGameScreenController::RenderScene ()
         m_pRenderer->FinishRenderMode();
         m_pRenderer->PopGroupMarker();
     }
-
+    /*
     m_pRenderer->PushGroupMarker(std::string("Rendering scene geometry"));
     m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
-	m_pSg->RenderScene(m_pCamera);
-    m_pSg->RenderTransparentNodes(m_pCamera);
-	m_pRenderer->FinishRenderMode();
+    m_pSg->RenderScene(m_pCamera);
+    m_pRenderer->FinishRenderMode();
     m_pRenderer->PopGroupMarker();
 
     m_pRenderer->EnableLight(false);
@@ -200,7 +199,7 @@ void CGameScreenController::RenderScene ()
     m_pSg->RenderEffects(m_pCamera);
     m_pRenderer->FinishRenderMode();
     m_pRenderer->PopGroupMarker();
-
+    */
     //if (!m_bFinishLine)
     //{
     //    m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
@@ -217,9 +216,9 @@ void CGameScreenController::RenderScene ()
     {
         fps = 1000/m_ElapsedTime;
     }
-    m_pRenderer->PushGroupMarker(std::string("Rendering debug info"));
-    m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
-    m_pRenderer->DisplayString(OGVec2(70.0f,4.0f), 0.4f, 0xFFFFFFFF, "FPS %d", fps);
+    //m_pRenderer->PushGroupMarker(std::string("Rendering debug info"));
+    //m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
+    //m_pRenderer->DisplayString(OGVec2(70.0f,4.0f), 0.4f, 0xFFFFFFFF, "FPS %d", fps);
 #ifdef STATISTICS
     //unsigned long Verts; 
     //unsigned long Faces;
@@ -235,8 +234,8 @@ void CGameScreenController::RenderScene ()
     //m_pRenderer->DisplayString(OGVec2(70.0f,24.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
     //GetStatistics()->Reset();
 #endif
-    m_pRenderer->FinishRenderMode();
-    m_pRenderer->PopGroupMarker();
+    //m_pRenderer->FinishRenderMode();
+    //m_pRenderer->PopGroupMarker();
 }
 
 

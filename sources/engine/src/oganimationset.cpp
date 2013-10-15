@@ -37,51 +37,27 @@ void COGAnimationSet::SetNumFrames(unsigned int _NumFrames)
 }
 
 
-AnimationNode* COGAnimationSet::AddNode(
-    int _Idx, 
-    int _IdxParent, 
-    unsigned int _AnimFlags, 
-    const float* _pfAnimPosition, 
-    const float* _pfAnimRotation, 
-    const float* _pfAnimScale, 
-    const float* _pfAnimMatrix)
+AnimationNode* COGAnimationSet::AddNode(int _Idx, int _IdxParent, const float* _pfAnimMatrix)
 {
     AnimationNode* pNode = new AnimationNode();
-    pNode->nAnimFlags = _AnimFlags;
     pNode->nIdxParent = _IdxParent;
     pNode->nIdx = _Idx;
+    const OGMatrix* pSrcMatrixArr = (const OGMatrix*)_pfAnimMatrix;
     if (m_NumFrames > 0)
     {
-        if (pNode->nAnimFlags & OGMatrixAnimation)
+        pNode->mTransformList.reserve(m_NumFrames);
+        for (unsigned int i = 0; i < m_NumFrames; ++i)
         {
-            size_t numBytes = m_NumFrames * sizeof(float) * 16;
-            pNode->pfAnimMatrix = (OGMatrix*)malloc(numBytes);
-            memcpy(pNode->pfAnimMatrix, _pfAnimMatrix, numBytes);
-        }
-        if (pNode->nAnimFlags & OGPositionAnimation)
-        {
-            size_t numBytes = m_NumFrames * sizeof(float) * 3;
-            pNode->pfAnimPosition = (OGVec3*)malloc(numBytes);
-            memcpy(pNode->pfAnimPosition, _pfAnimPosition, numBytes);
-        }
-        if (pNode->nAnimFlags & OGRotationAnimation)
-        {
-            size_t numBytes = m_NumFrames * sizeof(float) * 4;
-            pNode->pfAnimRotation = (OGQuat*)malloc(numBytes);
-            memcpy(pNode->pfAnimRotation, _pfAnimRotation, numBytes);
-        }
-        if (pNode->nAnimFlags & OGScaleAnimation)
-        {
-            size_t numBytes = m_NumFrames * sizeof(float) * 7;
-            pNode->pfAnimScale = (float*)malloc(numBytes);
-            memcpy(pNode->pfAnimScale, _pfAnimScale, numBytes);
+            OGMatrix m;
+            memcpy(m.f, &pSrcMatrixArr[i], sizeof(float) * 16);
+            pNode->mTransformList.push_back(m);
         }
     }
     else
     {
-        size_t numBytes = sizeof(float) * 16;
-        pNode->pfAnimMatrix = (OGMatrix*)malloc(numBytes);
-        memcpy(pNode->pfAnimMatrix, _pfAnimMatrix, numBytes);
+        OGMatrix m;
+        memcpy(m.f, pSrcMatrixArr, sizeof(float) * 16);
+        pNode->mTransformList.push_back(m);
     }
     m_Nodes.push_back(pNode);
     return pNode;
@@ -96,6 +72,7 @@ AnimationNode* COGAnimationSet::BuildSG ()
     for (size_t i = 0; i < n; ++i)
     {
         AnimationNode* pCurNode = m_Nodes[i];
+        pCurNode->nIdx = i;
         int curParent = pCurNode->nIdxParent;
         if (curParent == -1)
         {
@@ -103,23 +80,19 @@ AnimationNode* COGAnimationSet::BuildSG ()
             {
                 if (bRootCreated)
                 {
-                    pCurNode->pParent = pRoot;
-                    pRoot->pChilds.push_back(pCurNode);
+                    AttachChild(pRoot, pCurNode);
                 }
                 else
                 {
                     AnimationNode* pSingleRootNode = new AnimationNode();
-                    pSingleRootNode->pfAnimMatrix = (OGMatrix*)malloc(sizeof(OGMatrix));
-                    MatrixIdentity(*pSingleRootNode->pfAnimMatrix);
-                    pSingleRootNode->mTransform = *pSingleRootNode->pfAnimMatrix;
+                    OGMatrix mIdentity;
+                    MatrixIdentity(mIdentity);
+                    pSingleRootNode->mTransformList.push_back(mIdentity);
                     pSingleRootNode->BodyType = OG_SUBMESH_DUMMY;
-                    pSingleRootNode->nAnimFlags = OGMatrixAnimation;
                     pSingleRootNode->nIdx = n;
                     pSingleRootNode->nIdxParent = -1;
-                    pCurNode->pParent = pSingleRootNode;
-                    pSingleRootNode->pChilds.push_back(pCurNode);
-                    pRoot->pParent = pSingleRootNode;
-                    pSingleRootNode->pChilds.push_back(pRoot);
+                    AttachChild(pSingleRootNode, pCurNode);
+                    AttachChild(pSingleRootNode, pRoot);
                     pRoot = pSingleRootNode;
                     m_Nodes.push_back(pSingleRootNode);
                     bRootCreated = true;
@@ -133,126 +106,34 @@ AnimationNode* COGAnimationSet::BuildSG ()
         else
         {
             AnimationNode* pNodeParent = m_Nodes[curParent];
-            pNodeParent->pChilds.push_back(pCurNode);
-            pCurNode->pParent = pNodeParent;
+            pNodeParent->nIdx = curParent;
+            AttachChild(pNodeParent, pCurNode);
         }
     }
     return pRoot;
 }
 
 
-void COGAnimationSet::GetWorldMatrix(OGMatrix &mOut, unsigned int _NodeId, unsigned int _Frame, float _fBlend) const
+void COGAnimationSet::GetWorldMatrix(OGMatrix& _mOut, unsigned int _NodeId, unsigned int _Frame, float _fBlend) const
 {
     AnimationNode* pNode = m_Nodes[_NodeId];
-    OGMatrix mTmp;
-    if(pNode->pfAnimMatrix)
-    {
-        GetTransformationMatrix(mOut, _NodeId, _Frame);
-    }
+    if (pNode->mTransformList.size() > _Frame)
+        _mOut = pNode->mTransformList[_Frame];
     else
-    {
-        GetScalingMatrix(mOut, _NodeId, _Frame, _fBlend);
-
-        GetRotationMatrix(mTmp, _NodeId, _Frame, _fBlend);
-        MatrixMultiply(mOut, mOut, mTmp);
-
-        GetTranslationMatrix(mTmp, _NodeId, _Frame, _fBlend);
-        MatrixMultiply(mOut, mOut, mTmp);
-    }
+        _mOut = pNode->mTransformList[0];
 
     if(pNode->nIdxParent < 0)
         return;
 
+    OGMatrix mTmp;
     GetWorldMatrix(mTmp, pNode->nIdxParent, _Frame, _fBlend);
-    MatrixMultiply(mOut, mOut, mTmp);
+    MatrixMultiply(_mOut, _mOut, mTmp);
 }
 
 
-void COGAnimationSet::GetTransformationMatrix(OGMatrix &mOut, unsigned int _NodeId, unsigned int _Frame) const
+void COGAnimationSet::AttachChild(AnimationNode* _pParent, AnimationNode* _pChild)
 {
-    AnimationNode* pNode = m_Nodes[_NodeId];
-    if(pNode->pfAnimMatrix)
-    {
-        if(pNode->nAnimFlags & OGMatrixAnimation)
-        {
-            mOut = pNode->pfAnimMatrix[_Frame];
-        }
-        else
-        {
-            mOut = pNode->pfAnimMatrix[0];
-        }
-    }
-    else
-    {
-        MatrixIdentity(mOut);
-    }
-}
-
-
-void COGAnimationSet::GetScalingMatrix(OGMatrix &mOut, unsigned int _NodeId, unsigned int _Frame, float _fBlend) const
-{
-    AnimationNode* pNode = m_Nodes[_NodeId];
-    if(pNode->pfAnimScale)
-    {
-        if(pNode->nAnimFlags & OGScaleAnimation)
-        {
-            OGVec3 v;
-            Vec3Lerp(v, (OGVec3&)pNode->pfAnimScale[7*(_Frame+0)], (OGVec3&)pNode->pfAnimScale[7*(_Frame+1)], _fBlend);
-            MatrixScaling(mOut, v.x, v.y, v.z);
-        }
-        else
-        {
-            MatrixScaling(mOut, pNode->pfAnimScale[0], pNode->pfAnimScale[1], pNode->pfAnimScale[2]);
-        }
-    }
-    else
-    {
-        MatrixIdentity(mOut);
-    }
-}
-
-
-void COGAnimationSet::GetRotationMatrix(OGMatrix &mOut, unsigned int _NodeId, unsigned int _Frame, float _fBlend) const
-{
-    AnimationNode* pNode = m_Nodes[_NodeId];
-    if(pNode->pfAnimRotation)
-    {
-        if(pNode->nAnimFlags & OGRotationAnimation)
-        {
-            OGQuat q;
-            QuaternionSlerp(q, pNode->pfAnimRotation[_Frame], pNode->pfAnimRotation[_Frame+1], _fBlend);
-            QuaternionToRotationMatrix(mOut, q);
-        }
-        else
-        {
-            QuaternionToRotationMatrix(mOut, pNode->pfAnimRotation[0]);
-        }
-    }
-    else
-    {
-        MatrixIdentity(mOut);
-    }
-}
-
-
-void COGAnimationSet::GetTranslationMatrix(OGMatrix &mOut, unsigned int _NodeId, unsigned int _Frame, float _fBlend) const
-{
-    AnimationNode* pNode = m_Nodes[_NodeId];
-    if(pNode->pfAnimPosition)
-    {
-        if(pNode->nAnimFlags & OGPositionAnimation)
-        {
-            OGVec3 v;
-            Vec3Lerp(v, pNode->pfAnimPosition[_Frame+0], pNode->pfAnimPosition[_Frame+1], _fBlend);
-            MatrixTranslation(mOut, v.x, v.y, v.z);
-        }
-        else
-        {
-            MatrixTranslation(mOut, pNode->pfAnimPosition[0].x, pNode->pfAnimPosition[0].y, pNode->pfAnimPosition[0].z);
-        }
-    }
-    else
-    {
-        MatrixIdentity(mOut);
-    }
+    _pChild->pParent = _pParent;
+    _pChild->nIdxParent = _pParent->nIdx;
+    _pParent->ChildNodes.push_back(_pChild);
 }

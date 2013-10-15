@@ -1,11 +1,11 @@
 /*
- *  OGColorEffectShader.cpp
- *  OrangeGrass
- *
- *  Created by Viacheslav Bogdanov on 11.11.09.
- *  Copyright 2009 __MyCompanyName__. All rights reserved.
- *
- */
+*  OGColorEffectShader.cpp
+*  OrangeGrass
+*
+*  Created by Viacheslav Bogdanov on 11.11.09.
+*  Copyright 2009 __MyCompanyName__. All rights reserved.
+*
+*/
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogcoloreffectshader.h"
@@ -23,7 +23,7 @@ COGColorEffectShader::~COGColorEffectShader ()
 
 
 // load shaders.
-bool COGColorEffectShader::Load (const std::string& _VertShader, const std::string& _FragmentShader)
+bool COGColorEffectShader::Load (OGShaderID _Id, const std::string& _VertShader, const std::string& _FragmentShader)
 {
     if(ShaderLoadFromFile(_FragmentShader.c_str(), GL_FRAGMENT_SHADER, &m_uiFragShader) == 0)
         return false;
@@ -35,7 +35,9 @@ bool COGColorEffectShader::Load (const std::string& _VertShader, const std::stri
         return false;
 
     m_uiMVPMatrixLoc = glGetUniformLocation(m_uiId, "MVPMatrix");
-	m_uiTextureLoc = glGetUniformLocation(m_uiId, "sTexture");
+    m_uiTextureLoc = glGetUniformLocation(m_uiId, "sTexture");
+
+    m_Id = _Id;
 
     return true;
 }
@@ -44,9 +46,9 @@ bool COGColorEffectShader::Load (const std::string& _VertShader, const std::stri
 // unload shaders.
 void COGColorEffectShader::Unload ()
 {
-	glDeleteProgram(m_uiId);
-	glDeleteShader(m_uiVertShader);
-	glDeleteShader(m_uiFragShader);
+    glDeleteProgram(m_uiId);
+    glDeleteShader(m_uiVertShader);
+    glDeleteShader(m_uiFragShader);
 }
 
 
@@ -62,7 +64,7 @@ void COGColorEffectShader::Apply ()
 // setup the shader.
 void COGColorEffectShader::Setup ()
 {
-	glUseProgram(m_uiId);
+    glUseProgram(m_uiId);
     glUniform1i(m_uiTextureLoc, 0);
 }
 

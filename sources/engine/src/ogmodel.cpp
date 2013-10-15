@@ -63,8 +63,7 @@ bool COGModel::Load ()
     {
         SPODNode* pNode = &pScene->pNode[i];
 
-        AnimationNode* pAnimNode = m_AnimationSet.AddNode(pNode->nIdx, pNode->nIdxParent, pNode->nAnimFlags, 
-            pNode->pfAnimPosition, pNode->pfAnimRotation, pNode->pfAnimScale, pNode->pfAnimMatrix);
+        AnimationNode* pAnimNode = m_AnimationSet.AddNode(pNode->nIdx, pNode->nIdxParent, pNode->pfAnimMatrix);
 
         if (pNode->nIdx >= 0)
         {
@@ -168,54 +167,22 @@ void COGModel::Unload ()
 
 
 // Render mesh.
-void COGModel::Render (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend)
+void COGModel::Render (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend, float _fSpin)
 {
-    m_pRenderer->SetMaterial(m_pMaterial);
-    m_pRenderer->SetTexture(m_pTexture);
-    std::for_each(m_SolidParts.begin(), m_SolidParts.end(), [&](unsigned int i) 
+    std::for_each(m_Meshes.begin(), m_Meshes.end(), [&](IOGMesh* m) 
     {
-        IOGMesh* pMesh = m_Meshes[i];
+        OGBlendType blend = m_pMaterial->GetBlend();
         OGMatrix mNodeWorld, mModel;
-        m_AnimationSet.GetWorldMatrix(mNodeWorld, pMesh->GetPart(), _Frame, _fBlend);
+        m_AnimationSet.GetWorldMatrix(mNodeWorld, m->GetPart(), _Frame, _fBlend);
+        if (std::find(m_TransparentParts.begin(), m_TransparentParts.end(), m->GetPart()) != m_TransparentParts.end())
+        {
+            OGMatrix mSpin;
+            MatrixRotationY(mSpin, _fSpin);
+            MatrixMultiply(mNodeWorld, mSpin, mNodeWorld);
+            blend = OG_BLEND_ALPHABLEND;
+        }
         MatrixMultiply(mModel, mNodeWorld, _mWorld);
-        pMesh->Render(mModel);
-    });
-}
-
-
-// Render solid parts of the mesh.
-void COGModel::RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend)
-{
-    m_pRenderer->SetMaterial(m_pMaterial);
-    m_pRenderer->SetTexture(m_pTexture);
-    std::for_each(m_SolidParts.begin(), m_SolidParts.end(), [&](unsigned int i) 
-    {
-        IOGMesh* pMesh = m_Meshes[i];
-        OGMatrix mNodeWorld, mModel;
-        m_AnimationSet.GetWorldMatrix(mNodeWorld, pMesh->GetPart(), _Frame, _fBlend);
-        MatrixMultiply(mModel, mNodeWorld, _mWorld);
-        pMesh->Render(mModel);
-    });
-}
-
-
-// Render transparent parts of the mesh.
-void COGModel::RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend, float _fSpin)
-{
-    m_pRenderer->SetMaterial(m_pMaterial);
-    m_pRenderer->SetTexture(m_pTexture);
-    m_pRenderer->SetBlend(OG_BLEND_ALPHABLEND);
-    OGMatrix mSpin, mNodeWorld, mModel;
-    std::for_each(m_TransparentParts.begin(), m_TransparentParts.end(), [&](unsigned int i) 
-    {
-        IOGMesh* pMesh = m_Meshes[i];
-
-        MatrixRotationY(mSpin, _fSpin);
-        m_AnimationSet.GetWorldMatrix(mNodeWorld, pMesh->GetPart(), _Frame, _fBlend);
-        MatrixMultiply(mNodeWorld, mSpin, mNodeWorld);
-        MatrixMultiply(mModel, mNodeWorld, _mWorld);
-
-        pMesh->Render(mModel);
+        m_pRenderer->Render(m_pTexture, m_pMaterial, m->GetVertexBuffer(), mModel, blend, OG_SHADER_MODEL);
     });
 }
 

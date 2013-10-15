@@ -16,19 +16,19 @@ class COGShadowedSceneShader : public IOGShader
 {
 public:
     COGShadowedSceneShader ();
-	virtual ~COGShadowedSceneShader ();
+    virtual ~COGShadowedSceneShader ();
 
     // load shaders.
-    virtual bool Load (const std::string& _VertShader, const std::string& _FragmentShader);
+    virtual bool Load (OGShaderID _Id, const std::string& _VertShader, const std::string& _FragmentShader);
 
     // unload shaders.
     virtual void Unload ();
-		
-	// apply the shader.
-	virtual void Apply ();
 
-	// setup the shader.
-	virtual void Setup ();
+    // apply the shader.
+    virtual void Apply ();
+
+    // setup the shader.
+    virtual void Setup ();
 
     // set model matrix
     virtual void SetModelMatrix (const OGMatrix& _mModel);
@@ -38,7 +38,7 @@ public:
 
     // set projection matrix
     virtual void SetProjectionMatrix (const OGMatrix& _mProj);
-    
+
     // set alpha test
     virtual void EnableAlphaTest (bool _bEnabled) {}
 
@@ -51,25 +51,30 @@ public:
     // set camera
     virtual void SetCamera (IOGCamera* _pCamera) {}
 
+    // get shader id
+    virtual OGShaderID GetShaderID () const { return m_Id; }
+
 protected:
 
-    OGMatrix  m_mMV;
-    OGMatrix  m_mMVP;
-    OGMatrix  m_mModel;
-    OGMatrix  m_mView;
-    OGMatrix  m_mProjection;
-    OGMatrix  m_mShadowMVP;
+    OGMatrix    m_mMV;
+    OGMatrix    m_mMVP;
+    OGMatrix    m_mModel;
+    OGMatrix    m_mView;
+    OGMatrix    m_mProjection;
+    OGMatrix    m_mShadowMVP;
 
-	unsigned int m_uiVertShader;
-	unsigned int m_uiFragShader;
+    OGShaderID  m_Id;
+
+    unsigned int m_uiVertShader;
+    unsigned int m_uiFragShader;
     unsigned int m_uiId;
     unsigned int m_uiMVPMatrixLoc;
-	unsigned int m_uiMVMatrixLoc;
-	unsigned int m_uiShadowMVPMatrixLoc;
+    unsigned int m_uiMVMatrixLoc;
+    unsigned int m_uiShadowMVPMatrixLoc;
     unsigned int m_uiFogEndLoc;
-	unsigned int m_uiFogRcpDiffLoc;
-	unsigned int m_uiFogColorLoc;
-	unsigned int m_uiFogEnabled;
+    unsigned int m_uiFogRcpDiffLoc;
+    unsigned int m_uiFogColorLoc;
+    unsigned int m_uiFogEnabled;
 
     IOGFog* m_pFog;
 };

@@ -16,19 +16,19 @@ class COGColorEffectShader : public IOGShader
 {
 public:
     COGColorEffectShader ();
-	virtual ~COGColorEffectShader ();
+    virtual ~COGColorEffectShader ();
 
     // load shaders.
-    virtual bool Load (const std::string& _VertShader, const std::string& _FragmentShader);
+    virtual bool Load (OGShaderID _Id, const std::string& _VertShader, const std::string& _FragmentShader);
 
     // unload shaders.
     virtual void Unload ();
-		
-	// apply the shader.
-	virtual void Apply ();
 
-	// setup the shader.
-	virtual void Setup ();
+    // apply the shader.
+    virtual void Apply ();
+
+    // setup the shader.
+    virtual void Setup ();
 
     // set model matrix
     virtual void SetModelMatrix (const OGMatrix& _mModel);
@@ -51,19 +51,24 @@ public:
     // set camera
     virtual void SetCamera (IOGCamera* _pCamera) {}
 
+    // get shader id
+    virtual OGShaderID GetShaderID () const { return m_Id; }
+
 protected:
 
-    OGMatrix  m_mMV;
-    OGMatrix  m_mMVP;
-    OGMatrix  m_mModel;
-    OGMatrix  m_mView;
-    OGMatrix  m_mProjection;
+    OGMatrix    m_mMV;
+    OGMatrix    m_mMVP;
+    OGMatrix    m_mModel;
+    OGMatrix    m_mView;
+    OGMatrix    m_mProjection;
 
-	unsigned int m_uiVertShader;
-	unsigned int m_uiFragShader;
+    OGShaderID  m_Id;
+
+    unsigned int m_uiVertShader;
+    unsigned int m_uiFragShader;
     unsigned int m_uiId;
-	unsigned int m_uiMVPMatrixLoc;
-	unsigned int m_uiMVMatrixLoc;
+    unsigned int m_uiMVPMatrixLoc;
+    unsigned int m_uiMVMatrixLoc;
     unsigned int m_uiTextureLoc;
 };
 

@@ -39,13 +39,7 @@ public:
     virtual const std::vector<IOGMesh*>& GetMeshes () const = 0;
 
     // Render mesh.
-    virtual void Render (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend) = 0;
-
-    // Render solid parts of the mesh.
-    virtual void RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend) = 0;
-
-    // Render transparent parts of the mesh.
-    virtual void RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend, float _fSpin) = 0;
+    virtual void Render (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend, float _fSpin) = 0;
 
     // Check if has submeshes of the following type
     virtual bool HasSubmeshesOfType(SubMeshType _Type) const = 0;

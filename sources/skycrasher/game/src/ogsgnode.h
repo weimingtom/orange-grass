@@ -34,9 +34,6 @@ public:
     // render.
     virtual void Render ();
 
-    // render.
-    virtual void RenderTransparent ();
-
     // update transform.
     virtual void Update (unsigned long _ElapsedTime);
 
@@ -71,24 +68,6 @@ protected:
     float                   m_fSpin;
     std::vector<IOGObb>     m_TransformedOBBs;
     float                   m_fBlend;
-};
-
-
-class OGNode
-{
-public:
-    OGNode(IOGModel* _pModel);
-
-    virtual ~OGNode ();
-
-    // get world transform.
-    //virtual const OGMatrix& GetWorldTransform () const;
-
-private:
-
-    IOGModel*               m_pModel;
-    OGNode*                 m_pParentNode;
-    std::vector<OGNode*>    m_ChildNodes;
 };
 
 #endif

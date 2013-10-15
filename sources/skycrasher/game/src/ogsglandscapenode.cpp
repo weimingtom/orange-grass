@@ -58,14 +58,14 @@ void COGSgLandscapeNode::Render ()
     if (!m_bActive)
         return;
 
-    m_pRenderable->Render(m_World, 0, 0.0f);
+    m_pRenderable->Render(m_World, 0, 0.0f, 0.0f);
 }
 
 
 // render all nodes.
 void COGSgLandscapeNode::RenderAll ()
 {
-    m_pRenderable->Render(m_World, 0, 0.0f);
+    m_pRenderable->Render(m_World, 0, 0.0f, 0.0f);
 }
 
 

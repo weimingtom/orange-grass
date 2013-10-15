@@ -100,11 +100,6 @@ void COGActorBot::OnAddedToManager ()
 {
     COGActor::OnAddedToManager();
 	m_pSg->AddNode(m_pNode);
-    if (m_pModel->HasSubmeshesOfType(OG_SUBMESH_PROPELLER))
-    {
-        m_pSg->AddTransparentNode(m_pNode);
-    }
-
 	m_pPhysicalObject->AddCollisionListener(this);
 
     if (m_pNodeDestruction)

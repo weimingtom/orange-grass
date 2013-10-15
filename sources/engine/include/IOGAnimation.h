@@ -21,6 +21,12 @@ struct IOGAnimation
     bool looped;
 };
 
+struct IOGProcAnimation
+{
+    std::string name;
+    float speed;
+};
+
 struct OGAnimationCfg
 {
     std::map<std::string, IOGAnimation> anim_list;

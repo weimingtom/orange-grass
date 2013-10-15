@@ -35,7 +35,7 @@ COGSgNode::COGSgNode (IOGModel* _pRenderable, IOGPhysicalObject* _pPhysics)
     m_fBlend = 0.0f;
 
     unsigned int NumOBBs = _pRenderable->GetNumRenderables();
-    m_TransformedOBBs.reserve(_pRenderable->GetNumRenderables());
+    m_TransformedOBBs.reserve(NumOBBs);
     for (unsigned int i = 0; i < NumOBBs; ++i)
     {
         IOGObb obb;
@@ -99,18 +99,7 @@ void COGSgNode::Render ()
         return;
 
     const OGMatrix& mWorld = m_pPhysics->GetWorldTransform();
-    m_pRenderable->Render(mWorld, m_AnimFrame, m_fBlend);
-}
-
-
-// render transparent parts.
-void COGSgNode::RenderTransparent ()
-{
-    if (!m_bActive)
-        return;
-
-    const OGMatrix& mWorld = m_pPhysics->GetWorldTransform();
-    m_pRenderable->RenderTransparentParts(mWorld, m_AnimFrame, m_fBlend, m_fSpin);
+    m_pRenderable->Render(mWorld, m_AnimFrame, m_fBlend, m_fSpin);
 }
 
 
@@ -148,22 +137,3 @@ void COGSgNode::Activate (bool _bActive)
 {
     m_bActive = _bActive;
 }
-
-
-OGNode::OGNode(IOGModel* _pModel)
-    : m_pModel(_pModel)
-    , m_pParentNode(NULL)
-{
-
-}
-
-
-OGNode::~OGNode ()
-{
-}
-
-
-//// get world transform.
-//const OGMatrix& OGNode::GetWorldTransform () const
-//{
-//}

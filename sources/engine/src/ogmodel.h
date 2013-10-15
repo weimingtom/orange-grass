@@ -33,13 +33,7 @@ public:
     virtual void Unload ();
 
     // Render mesh.
-    virtual void Render (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend);
-
-    // Render solid parts of the mesh.
-    virtual void RenderSolidParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend);
-
-    // Render transparent parts of the mesh.
-    virtual void RenderTransparentParts (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend, float _fSpin);
+    virtual void Render (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend, float _fSpin);
 
     // Check if has submeshes of the following type
     virtual bool HasSubmeshesOfType(SubMeshType _Type) const;

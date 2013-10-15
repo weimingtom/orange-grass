@@ -1,11 +1,11 @@
 /*
- *  OGShadowModelShader.cpp
- *  OrangeGrass
- *
- *  Created by Viacheslav Bogdanov on 11.11.09.
- *  Copyright 2009 __MyCompanyName__. All rights reserved.
- *
- */
+*  OGShadowModelShader.cpp
+*  OrangeGrass
+*
+*  Created by Viacheslav Bogdanov on 11.11.09.
+*  Copyright 2009 __MyCompanyName__. All rights reserved.
+*
+*/
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogshadowmodelshader.h"
@@ -23,7 +23,7 @@ COGShadowModelShader::~COGShadowModelShader ()
 
 
 // load shaders.
-bool COGShadowModelShader::Load (const std::string& _VertShader, const std::string& _FragmentShader)
+bool COGShadowModelShader::Load (OGShaderID _Id, const std::string& _VertShader, const std::string& _FragmentShader)
 {
     if(ShaderLoadFromFile(_FragmentShader.c_str(), GL_FRAGMENT_SHADER, &m_uiFragShader) == 0)
         return false;
@@ -36,6 +36,8 @@ bool COGShadowModelShader::Load (const std::string& _VertShader, const std::stri
 
     m_uiMVPMatrixLoc = glGetUniformLocation(m_uiId, "MVPMatrix");
 
+    m_Id = _Id;
+
     return true;
 }
 
@@ -43,9 +45,9 @@ bool COGShadowModelShader::Load (const std::string& _VertShader, const std::stri
 // unload shaders.
 void COGShadowModelShader::Unload ()
 {
-	glDeleteProgram(m_uiId);
-	glDeleteShader(m_uiVertShader);
-	glDeleteShader(m_uiFragShader);
+    glDeleteProgram(m_uiId);
+    glDeleteShader(m_uiVertShader);
+    glDeleteShader(m_uiFragShader);
 }
 
 
@@ -61,7 +63,7 @@ void COGShadowModelShader::Apply ()
 // setup the shader.
 void COGShadowModelShader::Setup ()
 {
-	glUseProgram(m_uiId);
+    glUseProgram(m_uiId);
 }
 
 

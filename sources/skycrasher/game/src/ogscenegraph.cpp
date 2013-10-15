@@ -1,11 +1,11 @@
 /*
- *  ogscenegraph.mm
- *  OrangeGrass
- *
- *  Created by Viacheslav Bogdanov on 12.11.09.
- *  Copyright 2009 __MyCompanyName__. All rights reserved.
- *
- */
+*  ogscenegraph.mm
+*  OrangeGrass
+*
+*  Created by Viacheslav Bogdanov on 12.11.09.
+*  Copyright 2009 __MyCompanyName__. All rights reserved.
+*
+*/
 #include "Game.h"
 #include "ogscenegraph.h"
 #include "ogsgnode.h"
@@ -16,29 +16,28 @@
 
 COGSceneGraph::COGSceneGraph () : m_pLandscapeNode(NULL)
 {
-	m_pGlobalVars = GetGlobalVars();
-	m_fViewDistance = m_pGlobalVars->GetFVar("view_distance");
+    m_pGlobalVars = GetGlobalVars();
+    m_fViewDistance = m_pGlobalVars->GetFVar("view_distance");
 }
 
 
 COGSceneGraph::~COGSceneGraph ()
 {
-	Clear();
+    Clear();
 }
 
 
 // Clear scene graph
 void COGSceneGraph::Clear ()
 {
-	OG_SAFE_DELETE(m_pLandscapeNode);
-	ClearNodesList(m_NodesList);
-	ClearNodesList(m_EffectNodesList);
-	ClearNodesList(m_TransparentNodesList);
-	TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
-	for (; s_iter != m_StaticNodes.end(); ++s_iter)
-	{
-		ClearNodesList(s_iter->second);
-	}
+    OG_SAFE_DELETE(m_pLandscapeNode);
+    ClearNodesList(m_NodesList);
+    ClearNodesList(m_EffectNodesList);
+    TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
+    for (; s_iter != m_StaticNodes.end(); ++s_iter)
+    {
+        ClearNodesList(s_iter->second);
+    }
 }
 
 
@@ -76,22 +75,15 @@ void COGSceneGraph::AddNode (IOGSgNode* _pNode)
 // Add static scene graph node
 void COGSceneGraph::AddStaticNode (IOGSgNode* _pNode, IOGTexture* _pTexture)
 {
-	TStaticNodesMap::iterator entry = m_StaticNodes.find(_pTexture);
-	if (entry != m_StaticNodes.end())
-	{
-		entry->second.push_back(_pNode);
-	}
-	else
-	{
-		m_StaticNodes[_pTexture].push_back(_pNode);
-	}
-}
-
-
-// Add transparent scene graph node
-void COGSceneGraph::AddTransparentNode (IOGSgNode* _pNode)
-{
-    m_TransparentNodesList.push_back(_pNode);
+    TStaticNodesMap::iterator entry = m_StaticNodes.find(_pTexture);
+    if (entry != m_StaticNodes.end())
+    {
+        entry->second.push_back(_pNode);
+    }
+    else
+    {
+        m_StaticNodes[_pTexture].push_back(_pNode);
+    }
 }
 
 
@@ -99,7 +91,7 @@ void COGSceneGraph::AddTransparentNode (IOGSgNode* _pNode)
 void COGSceneGraph::AddLandscapeNode (IOGSgNode* _pNode)
 {
     OG_SAFE_DELETE(m_pLandscapeNode);
-	m_pLandscapeNode = _pNode;
+    m_pLandscapeNode = _pNode;
 }
 
 
@@ -120,15 +112,13 @@ void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
     {
     case OG_RENDERABLE_MODEL:
         {
-	        RemoveNodeFromList(_pNode, m_NodesList);
-            RemoveNodeFromList(_pNode, m_TransparentNodesList);
-
-	        TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
-	        for (; s_iter != m_StaticNodes.end(); ++s_iter)
-	        {
-		        if (RemoveNodeFromList(_pNode, s_iter->second))
-			        return;
-	        }
+            RemoveNodeFromList(_pNode, m_NodesList);
+            TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
+            for (; s_iter != m_StaticNodes.end(); ++s_iter)
+            {
+                if (RemoveNodeFromList(_pNode, s_iter->second))
+                    return;
+            }
         }
         break;
 
@@ -140,8 +130,8 @@ void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
 
     case OG_RENDERABLE_EFFECT:
         {
-	        if (RemoveNodeFromList(_pNode, m_EffectNodesList))
-		        return;
+            if (RemoveNodeFromList(_pNode, m_EffectNodesList))
+                return;
         }
         break;
     }
@@ -154,7 +144,7 @@ void COGSceneGraph::Update (unsigned long _ElapsedTime)
     TNodesList::iterator iter = m_EffectNodesList.begin();
     for (; iter != m_EffectNodesList.end(); ++iter)
     {
-		IOGSgNode* pNode = (*iter);
+        IOGSgNode* pNode = (*iter);
         pNode->Update(_ElapsedTime);
     }
 }
@@ -163,60 +153,45 @@ void COGSceneGraph::Update (unsigned long _ElapsedTime)
 // Render scene graph.
 void COGSceneGraph::RenderScene (IOGCamera* _pCamera)
 {
-	RenderNodesList(_pCamera, m_NodesList);
-	TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
-	for (; s_iter != m_StaticNodes.end(); ++s_iter)
-	{
-		RenderNodesList(_pCamera, s_iter->second);
-	}
+    RenderNodesList(_pCamera, m_NodesList, false);
+    TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
+    for (; s_iter != m_StaticNodes.end(); ++s_iter)
+    {
+        RenderNodesList(_pCamera, s_iter->second, false);
+    }
 }
 
 
 // Render landscape.
 void COGSceneGraph::RenderLandscape (IOGCamera* _pCamera)
 {
-	if (m_pLandscapeNode)
-	{
+    if (m_pLandscapeNode)
+    {
         m_pLandscapeNode->Render();
-	}
+    }
 }
 
 
 // Render effects.
 void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
 {
-	const OGMatrix& mView = _pCamera->GetViewMatrix();
+    const OGMatrix& mView = _pCamera->GetViewMatrix();
 
     OGVec3 vUp, vRight, vLook;
-	MatrixGetBasis(vRight, vUp, vLook, mView);
-	vUp.normalize();
-	vRight.normalize();
-	vLook.normalize();
+    MatrixGetBasis(vRight, vUp, vLook, mView);
+    vUp.normalize();
+    vRight.normalize();
+    vLook.normalize();
 
     TNodesList::iterator iter = m_EffectNodesList.begin();
     for (; iter != m_EffectNodesList.end(); ++iter)
     {
-		COGSgEffectNode* pNode = (COGSgEffectNode*)(*iter);
-		if (IsVisible(_pCamera, pNode))
-		{
-			pNode->SetBillboardVectors(vLook, vUp, vRight);
-			pNode->Render();
-		}
-    }
-}
-
-
-// Render transparent nodes.
-void COGSceneGraph::RenderTransparentNodes (IOGCamera* _pCamera)
-{
-    TNodesList::iterator iter = m_TransparentNodesList.begin();
-    for (; iter != m_TransparentNodesList.end(); ++iter)
-    {
-		COGSgNode* pNode = (COGSgNode*)(*iter);
-		if (IsVisible(_pCamera, pNode))
-		{
-			pNode->RenderTransparent();
-		}
+        COGSgEffectNode* pNode = (COGSgEffectNode*)(*iter);
+        if (IsVisible(_pCamera, pNode))
+        {
+            pNode->SetBillboardVectors(vLook, vUp, vRight);
+            pNode->Render();
+        }
     }
 }
 
@@ -224,18 +199,18 @@ void COGSceneGraph::RenderTransparentNodes (IOGCamera* _pCamera)
 // Render all effects.
 void COGSceneGraph::RenderAllEffects (IOGCamera* _pCamera)
 {
-	const OGMatrix& mView = _pCamera->GetViewMatrix();
+    const OGMatrix& mView = _pCamera->GetViewMatrix();
 
     OGVec3 vUp, vRight, vLook;
-	MatrixGetBasis(vRight, vUp, vLook, mView);
-	vUp.normalize();
-	vRight.normalize();
-	vLook.normalize();
+    MatrixGetBasis(vRight, vUp, vLook, mView);
+    vUp.normalize();
+    vRight.normalize();
+    vLook.normalize();
 
     TNodesList::iterator iter = m_EffectNodesList.begin();
     for (; iter != m_EffectNodesList.end(); ++iter)
     {
-		COGSgEffectNode* pNode = (COGSgEffectNode*)(*iter);
+        COGSgEffectNode* pNode = (COGSgEffectNode*)(*iter);
         pNode->SetBillboardVectors(vLook, vUp, vRight);
         pNode->Render();
     }
@@ -245,77 +220,60 @@ void COGSceneGraph::RenderAllEffects (IOGCamera* _pCamera)
 // Render the whole scene.
 void COGSceneGraph::RenderAll (IOGCamera* _pCamera)
 {
-	if (m_pLandscapeNode)
-	{
-		((COGSgLandscapeNode*)m_pLandscapeNode)->RenderAll();
-	}
-
-	RenderWholeNodesList(_pCamera, m_NodesList);
-	TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
-	for (; s_iter != m_StaticNodes.end(); ++s_iter)
-	{
-		RenderWholeNodesList(_pCamera, s_iter->second);
-	}
-
-	TNodesList::iterator iter = m_TransparentNodesList.begin();
-    for (; iter != m_TransparentNodesList.end(); ++iter)
+    if (m_pLandscapeNode)
     {
-        ((COGSgNode*)(*iter))->RenderTransparent();
-	}
+        ((COGSgLandscapeNode*)m_pLandscapeNode)->RenderAll();
+    }
+
+    RenderNodesList(_pCamera, m_NodesList, true);
+    TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
+    for (; s_iter != m_StaticNodes.end(); ++s_iter)
+    {
+        RenderNodesList(_pCamera, s_iter->second, true);
+    }
 }
 
 
 // Remove node from list
 bool COGSceneGraph::RemoveNodeFromList(IOGSgNode* _pNode, TNodesList& _List)
 {
-	TNodesList::iterator iter = std::find(_List.begin(), _List.end(), _pNode);
-	if (iter != _List.end())
-	{
-		_List.erase(iter);
-		return true;
-	}
-	return false;
+    TNodesList::iterator iter = std::find(_List.begin(), _List.end(), _pNode);
+    if (iter != _List.end())
+    {
+        _List.erase(iter);
+        return true;
+    }
+    return false;
 }
 
 
 // clear nodes list
 void COGSceneGraph::ClearNodesList(TNodesList& _List)
 {
-	_List.clear();
+    _List.clear();
 }
 
 
 // render nodes list
-void COGSceneGraph::RenderNodesList(IOGCamera* _pCamera, TNodesList& _List)
+void COGSceneGraph::RenderNodesList(IOGCamera* _pCamera, TNodesList& _List, bool _bForceRender)
 {
     TNodesList::iterator iter = _List.begin();
     for (; iter != _List.end(); ++iter)
     {
-		IOGSgNode* pNode = (*iter);
-		if (IsVisible(_pCamera, pNode))
-		{
-			pNode->Render();
-		}
+        IOGSgNode* pNode = (*iter);
+        if (_bForceRender || IsVisible(_pCamera, pNode))
+        {
+            pNode->Render();
+        }
     }
-}
-
-
-// render whole nodes list
-void COGSceneGraph::RenderWholeNodesList(IOGCamera* _pCamera, TNodesList& _List)
-{
-    TNodesList::iterator iter = _List.begin();
-    for (; iter != _List.end(); ++iter)
-    {
-        (*iter)->Render();
-	}
 }
 
 
 // check object visibility
 bool COGSceneGraph::IsVisible(const IOGCamera* _pCamera, const IOGSgNode* _pNode) const
 {
-	if (!_pNode->GetOBB().m_bTransformed)
-		return true;
+    if (!_pNode->GetOBB().m_bTransformed)
+        return true;
 
-	return _pCamera->GetFrustum().CheckObb(_pNode->GetOBB());
+    return _pCamera->GetFrustum().CheckObb(_pNode->GetOBB());
 }

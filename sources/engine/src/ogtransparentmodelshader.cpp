@@ -23,7 +23,7 @@ COGTransparentModelShader::~COGTransparentModelShader ()
 
 
 // load shaders.
-bool COGTransparentModelShader::Load (const std::string& _VertShader, const std::string& _FragmentShader)
+bool COGTransparentModelShader::Load (OGShaderID _Id, const std::string& _VertShader, const std::string& _FragmentShader)
 {
     if(ShaderLoadFromFile(_FragmentShader.c_str(), GL_FRAGMENT_SHADER, &m_uiFragShader) == 0)
         return false;
@@ -36,18 +36,20 @@ bool COGTransparentModelShader::Load (const std::string& _VertShader, const std:
 
     m_uiMVPMatrixLoc = glGetUniformLocation(m_uiId, "MVPMatrix");
     m_uiMVMatrixLoc = glGetUniformLocation(m_uiId, "MVMatrix");
-	m_uiLightDirLoc = glGetUniformLocation(m_uiId, "LightDirection");
-	m_uiTextureLoc = glGetUniformLocation(m_uiId, "sTexture");
+    m_uiLightDirLoc = glGetUniformLocation(m_uiId, "LightDirection");
+    m_uiTextureLoc = glGetUniformLocation(m_uiId, "sTexture");
 
     m_uiFogEndLoc = glGetUniformLocation(m_uiId, "FogEnd");
-	m_uiFogRcpDiffLoc = glGetUniformLocation(m_uiId, "FogRcpEndStartDiff");
-	m_uiFogColorLoc = glGetUniformLocation(m_uiId, "FogColor");
-	m_uiFogEnabled = glGetUniformLocation(m_uiId, "FogEnabled");
-    
+    m_uiFogRcpDiffLoc = glGetUniformLocation(m_uiId, "FogRcpEndStartDiff");
+    m_uiFogColorLoc = glGetUniformLocation(m_uiId, "FogColor");
+    m_uiFogEnabled = glGetUniformLocation(m_uiId, "FogEnabled");
+
     m_uiAlphaReference = glGetUniformLocation(m_uiId, "AlphaReference");
 
-	m_uiMaterialAmbient = glGetUniformLocation(m_uiId, "MaterialAmbient");
-	m_uiMaterialDiffuse = glGetUniformLocation(m_uiId, "MaterialDiffuse");
+    m_uiMaterialAmbient = glGetUniformLocation(m_uiId, "MaterialAmbient");
+    m_uiMaterialDiffuse = glGetUniformLocation(m_uiId, "MaterialDiffuse");
+
+    m_Id = _Id;
 
     return true;
 }
@@ -56,9 +58,9 @@ bool COGTransparentModelShader::Load (const std::string& _VertShader, const std:
 // unload shaders.
 void COGTransparentModelShader::Unload ()
 {
-	glDeleteProgram(m_uiId);
-	glDeleteShader(m_uiVertShader);
-	glDeleteShader(m_uiFragShader);
+    glDeleteProgram(m_uiId);
+    glDeleteShader(m_uiVertShader);
+    glDeleteShader(m_uiFragShader);
 }
 
 
@@ -83,17 +85,17 @@ void COGTransparentModelShader::Apply ()
 // setup the shader.
 void COGTransparentModelShader::Setup ()
 {
-	glUseProgram(m_uiId);
+    glUseProgram(m_uiId);
     glUniform1i(m_uiTextureLoc, 0);
 
     float fFogStart = m_pFog->GetStart();
-	float fFogEnd = m_pFog->GetEnd();
+    float fFogEnd = m_pFog->GetEnd();
     OGVec4 vFogColor = m_pFog->GetColor();
 
-	const float fFogRcpEndStartDiff = 1.0f / (fFogEnd - fFogStart);
+    const float fFogRcpEndStartDiff = 1.0f / (fFogEnd - fFogStart);
 
     glUniform1f(m_uiFogEndLoc, fFogEnd);
-	glUniform1f(m_uiFogRcpDiffLoc, fFogRcpEndStartDiff);
+    glUniform1f(m_uiFogRcpDiffLoc, fFogRcpEndStartDiff);
     glUniform3fv(m_uiFogColorLoc, 1, OGVec3(vFogColor.x, vFogColor.y, vFogColor.z).ptr());
     glUniform1f(m_uiFogEnabled, m_pFog->IsEnabled() ? 1.0f : 0.0f);
 }

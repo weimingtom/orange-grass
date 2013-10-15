@@ -1,11 +1,11 @@
 /*
- *  OGShadowedSceneShader.cpp
- *  OrangeGrass
- *
- *  Created by Viacheslav Bogdanov on 11.11.09.
- *  Copyright 2009 __MyCompanyName__. All rights reserved.
- *
- */
+*  OGShadowedSceneShader.cpp
+*  OrangeGrass
+*
+*  Created by Viacheslav Bogdanov on 11.11.09.
+*  Copyright 2009 __MyCompanyName__. All rights reserved.
+*
+*/
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogshadowedsceneshader.h"
@@ -23,7 +23,7 @@ COGShadowedSceneShader::~COGShadowedSceneShader ()
 
 
 // load shaders.
-bool COGShadowedSceneShader::Load (const std::string& _VertShader, const std::string& _FragmentShader)
+bool COGShadowedSceneShader::Load (OGShaderID _Id, const std::string& _VertShader, const std::string& _FragmentShader)
 {
     if(ShaderLoadFromFile(_FragmentShader.c_str(), GL_FRAGMENT_SHADER, &m_uiFragShader) == 0)
         return false;
@@ -39,9 +39,11 @@ bool COGShadowedSceneShader::Load (const std::string& _VertShader, const std::st
     m_uiShadowMVPMatrixLoc = glGetUniformLocation(m_uiId, "ShadowMVPMatrix");
 
     m_uiFogEndLoc = glGetUniformLocation(m_uiId, "FogEnd");
-	m_uiFogRcpDiffLoc = glGetUniformLocation(m_uiId, "FogRcpEndStartDiff");
-	m_uiFogColorLoc = glGetUniformLocation(m_uiId, "FogColor");
-	m_uiFogEnabled = glGetUniformLocation(m_uiId, "FogEnabled");
+    m_uiFogRcpDiffLoc = glGetUniformLocation(m_uiId, "FogRcpEndStartDiff");
+    m_uiFogColorLoc = glGetUniformLocation(m_uiId, "FogColor");
+    m_uiFogEnabled = glGetUniformLocation(m_uiId, "FogEnabled");
+
+    m_Id = _Id;
 
     return true;
 }
@@ -50,9 +52,9 @@ bool COGShadowedSceneShader::Load (const std::string& _VertShader, const std::st
 // unload shaders.
 void COGShadowedSceneShader::Unload ()
 {
-	glDeleteProgram(m_uiId);
-	glDeleteShader(m_uiVertShader);
-	glDeleteShader(m_uiFragShader);
+    glDeleteProgram(m_uiId);
+    glDeleteShader(m_uiVertShader);
+    glDeleteShader(m_uiFragShader);
 }
 
 
@@ -72,16 +74,16 @@ void COGShadowedSceneShader::Apply ()
 // setup the shader.
 void COGShadowedSceneShader::Setup ()
 {
-	glUseProgram(m_uiId);
+    glUseProgram(m_uiId);
 
     float fFogStart = m_pFog->GetStart();
-	float fFogEnd = m_pFog->GetEnd();
+    float fFogEnd = m_pFog->GetEnd();
     OGVec4 vFogColor = m_pFog->GetColor();
 
-	const float fFogRcpEndStartDiff = 1.0f / (fFogEnd - fFogStart);
+    const float fFogRcpEndStartDiff = 1.0f / (fFogEnd - fFogStart);
 
     glUniform1f(m_uiFogEndLoc, fFogEnd);
-	glUniform1f(m_uiFogRcpDiffLoc, fFogRcpEndStartDiff);
+    glUniform1f(m_uiFogRcpDiffLoc, fFogRcpEndStartDiff);
     glUniform3fv(m_uiFogColorLoc, 1, OGVec3(vFogColor.x, vFogColor.y, vFogColor.z).ptr());
     glUniform1f(m_uiFogEnabled, m_pFog->IsEnabled() ? 1.0f : 0.0f);
 }

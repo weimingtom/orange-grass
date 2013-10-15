@@ -49,4 +49,21 @@ protected:
 	bool			m_bPlaying;
 };
 
+
+class COGRotationAnimation
+{
+public:
+    COGRotationAnimation();
+    virtual ~COGRotationAnimation ();
+    virtual void Start();
+    virtual void Stop();
+    virtual bool IsPlaying() { return m_bPlaying; }
+    virtual float GetProgress() { return m_fProgress; }
+    virtual void Update(unsigned long _ElapsedTime, OGMatrix& _mOut, const OGMatrix& _mIn);
+
+protected:
+    float   m_fProgress;
+    bool    m_bPlaying;
+};
+
 #endif

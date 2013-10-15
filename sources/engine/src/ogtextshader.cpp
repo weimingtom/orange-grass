@@ -1,11 +1,11 @@
 /*
- *  OGTextShader.cpp
- *  OrangeGrass
- *
- *  Created by Viacheslav Bogdanov on 11.11.09.
- *  Copyright 2009 __MyCompanyName__. All rights reserved.
- *
- */
+*  OGTextShader.cpp
+*  OrangeGrass
+*
+*  Created by Viacheslav Bogdanov on 11.11.09.
+*  Copyright 2009 __MyCompanyName__. All rights reserved.
+*
+*/
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogtextshader.h"
@@ -23,7 +23,7 @@ COGTextShader::~COGTextShader ()
 
 
 // load shaders.
-bool COGTextShader::Load (const std::string& _VertShader, const std::string& _FragmentShader)
+bool COGTextShader::Load (OGShaderID _Id, const std::string& _VertShader, const std::string& _FragmentShader)
 {
     if(ShaderLoadFromFile(_FragmentShader.c_str(), GL_FRAGMENT_SHADER, &m_uiFragShader) == 0)
         return false;
@@ -35,7 +35,9 @@ bool COGTextShader::Load (const std::string& _VertShader, const std::string& _Fr
         return false;
 
     m_uiMVPMatrixLoc = glGetUniformLocation(m_uiId, "MVPMatrix");
-	m_uiTextureLoc = glGetUniformLocation(m_uiId, "sTexture");
+    m_uiTextureLoc = glGetUniformLocation(m_uiId, "sTexture");
+
+    m_Id = _Id;
 
     return true;
 }
@@ -44,9 +46,9 @@ bool COGTextShader::Load (const std::string& _VertShader, const std::string& _Fr
 // unload shaders.
 void COGTextShader::Unload ()
 {
-	glDeleteProgram(m_uiId);
-	glDeleteShader(m_uiVertShader);
-	glDeleteShader(m_uiFragShader);
+    glDeleteProgram(m_uiId);
+    glDeleteShader(m_uiVertShader);
+    glDeleteShader(m_uiFragShader);
 }
 
 
@@ -59,7 +61,7 @@ void COGTextShader::Apply ()
 // setup the shader.
 void COGTextShader::Setup ()
 {
-	glUseProgram(m_uiId);
+    glUseProgram(m_uiId);
     glUniform1i(m_uiTextureLoc, 0);
     glUniformMatrix4fv(m_uiMVPMatrixLoc, 1, GL_FALSE, m_mProjection.f);
 }

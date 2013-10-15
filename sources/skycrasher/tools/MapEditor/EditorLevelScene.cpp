@@ -168,7 +168,6 @@ void CEditorLevelScene::RenderScene ()
 
         m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
 		m_pSg->RenderScene(m_pCamera);
-	    m_pSg->RenderTransparentNodes(m_pCamera);
         if (m_EditorMode == EDITMODE_OBJECTS)
         {
             if (m_pCurActor)

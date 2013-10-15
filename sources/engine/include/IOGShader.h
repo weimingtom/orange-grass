@@ -17,22 +17,36 @@
 #include "IOGCamera.h"
 
 
+enum OGShaderID
+{
+    OG_SHADER_NO = 0,
+    OG_SHADER_COLOREFFECT,
+    OG_SHADER_MODEL,
+    OG_SHADER_TRANSPARENTMODEL,
+    OG_SHADER_SHADOWEDSCENE,
+    OG_SHADER_SHADOWMODEL,
+    OG_SHADER_SPRITE,
+    OG_SHADER_TEXT,
+    OG_SHADERS_MAX
+};
+
+
 class IOGShader
 {
 public:
-	virtual ~IOGShader() {}
+    virtual ~IOGShader() {}
 
     // load shaders.
-    virtual bool Load (const std::string& _VertShader, const std::string& _FragmentShader) = 0;
+    virtual bool Load (OGShaderID _Id, const std::string& _VertShader, const std::string& _FragmentShader) = 0;
 
     // unload shaders.
     virtual void Unload () = 0;
-		
-	// apply the shader.
-	virtual void Apply () = 0;
-		
-	// setup the shader.
-	virtual void Setup () = 0;
+
+    // apply the shader.
+    virtual void Apply () = 0;
+
+    // setup the shader.
+    virtual void Setup () = 0;
 
     // set model matrix
     virtual void SetModelMatrix (const OGMatrix& _mModel) = 0;
@@ -42,7 +56,7 @@ public:
 
     // set projection matrix
     virtual void SetProjectionMatrix (const OGMatrix& _mProj) = 0;
-    
+
     // set alpha test
     virtual void EnableAlphaTest (bool _bEnabled) = 0;    
 
@@ -54,6 +68,9 @@ public:
 
     // set camera
     virtual void SetCamera (IOGCamera* _pCamera) = 0;
+
+    // get shader id
+    virtual OGShaderID GetShaderID () const = 0;
 };
 
 

@@ -53,6 +53,9 @@ public:
     // Get combined AABB
     virtual const IOGAabb& GetAABB () const { return *m_aabb; }
 
+    // Get vertex buffer
+    virtual IOGVertexBuffers* GetVertexBuffer () { return m_buffer; }
+
     // Get ray intersection
     virtual bool GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos);
 

@@ -318,21 +318,21 @@ void COGRenderer::StartRenderMode(OGRenderMode _Mode)
     switch(m_Mode)
     {
     case OG_RENDERMODE_GEOMETRY:
-        m_pCurShader = m_pShaderMgr->GetShader(OG_SHADER_MODEL);
-        glDisable(GL_CULL_FACE);
-        glEnable(GL_DEPTH_TEST);
-        SetViewMatrix(m_pCamera->GetViewMatrix());
+        //m_pCurShader = m_pShaderMgr->GetShader(OG_SHADER_MODEL);
+        //glDisable(GL_CULL_FACE);
+        //glEnable(GL_DEPTH_TEST);
+        //SetViewMatrix(m_pCamera->GetViewMatrix());
 
-        m_pCurShader->SetCamera(m_pCamera);
-        m_pCurShader->SetProjectionMatrix(m_mProjection);
-        m_pCurShader->SetViewMatrix(m_mView);
-        m_pCurShader->SetLighting(m_pFog, m_pLightMgr);
-        m_pCurShader->Setup();
+        //m_pCurShader->SetCamera(m_pCamera);
+        //m_pCurShader->SetProjectionMatrix(m_mProjection);
+        //m_pCurShader->SetViewMatrix(m_mView);
+        //m_pCurShader->SetLighting(m_pFog, m_pLightMgr);
+        //m_pCurShader->Setup();
 
-        EnableLight(true);
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);
+        //EnableLight(true);
+        //glEnableVertexAttribArray(0);
+        //glEnableVertexAttribArray(1);
+        //glEnableVertexAttribArray(2);
         break;
 
     case OG_RENDERMODE_EFFECTS:
@@ -425,11 +425,12 @@ void COGRenderer::FinishRenderMode()
     switch(m_Mode)
     {
     case OG_RENDERMODE_GEOMETRY:
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(2);
+        glDisable(GL_CULL_FACE);
+        glDisable(GL_BLEND);
+        glEnable(GL_DEPTH_TEST);
+        SetViewMatrix(m_pCamera->GetViewMatrix());
+        EnableLight(true);
+        FlushRenderQueue();
         break;
 
     case OG_RENDERMODE_EFFECTS:
@@ -456,23 +457,25 @@ void COGRenderer::FinishRenderMode()
         break;
 
     case OG_RENDERMODE_SHADOWMAP:
+        FlushRenderQueue();
         m_pRT->End();
         glViewport(0, 0, m_Width, m_Height);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(2);
+        //glBindBuffer(GL_ARRAY_BUFFER, 0);
+        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        //glDisableVertexAttribArray(0);
+        //glDisableVertexAttribArray(1);
+        //glDisableVertexAttribArray(2);
         Reset();
         break;
 
     case OG_RENDERMODE_SHADOWEDSCENE:
+        FlushRenderQueue();
         glDisable(GL_BLEND);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(2);
+        //glBindBuffer(GL_ARRAY_BUFFER, 0);
+        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        //glDisableVertexAttribArray(0);
+        //glDisableVertexAttribArray(1);
+        //glDisableVertexAttribArray(2);
         break;
     }
 }
@@ -489,6 +492,117 @@ void COGRenderer::RenderMesh (void* _pMesh)
         m_pCurMesh = (IOGVertexBuffers*)_pMesh;
         m_pCurMesh->Apply();
     }
+    m_pCurMesh->Render();
+}
+
+
+// add render job.
+void COGRenderer::Render (
+    IOGTexture* _pTexture,
+    IOGMaterial* _pMaterial,
+    IOGVertexBuffers* _pMesh,
+    OGMatrix _mTransform,
+    OGBlendType _Blend,
+    OGShaderID _ShaderID)
+{
+    std::vector<RenderJob>* pCurQueue = NULL;
+    switch (_Blend)
+    {
+    case OG_BLEND_SOLID:
+        pCurQueue = &m_RenderQueue.OpaqueObjs;
+        break;
+
+    case OG_BLEND_ALPHABLEND:
+    case OG_BLEND_ALPHAADD:
+    case OG_BLEND_ALPHAONE:
+        pCurQueue = &m_RenderQueue.BlendedObjs;
+        break;
+
+    case OG_BLEND_ALPHATEST:
+        pCurQueue = &m_RenderQueue.AlphaTestObjs;
+        break;
+
+    default:
+        return;
+    }
+
+    RenderJob curJob;
+    curJob.Blend = _Blend;
+    curJob.mTransform = _mTransform;
+    curJob.pTexture = _pTexture;
+    curJob.pMaterial = _pMaterial;
+    curJob.pMesh = _pMesh;
+    curJob.ShaderID = _ShaderID;
+    pCurQueue->push_back(curJob);
+}
+
+
+// do actual rendering here
+void COGRenderer::FlushRenderQueue()
+{
+    //m_pCurShader = NULL;
+    //glDisable(GL_CULL_FACE);
+    //glDisable(GL_BLEND);
+    //glEnable(GL_DEPTH_TEST);
+    //SetViewMatrix(m_pCamera->GetViewMatrix());
+
+    //EnableLight(true);
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
+
+    for (auto it = m_RenderQueue.OpaqueObjs.begin(); it != m_RenderQueue.OpaqueObjs.end(); ++it)
+    {
+        DoRenderJob(*it);
+    }
+    for (auto it = m_RenderQueue.AlphaTestObjs.begin(); it != m_RenderQueue.AlphaTestObjs.end(); ++it)
+    {
+        DoRenderJob(*it);
+    }
+    for (auto it = m_RenderQueue.BlendedObjs.begin(); it != m_RenderQueue.BlendedObjs.end(); ++it)
+    {
+        DoRenderJob(*it);
+    }
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(2);
+    m_RenderQueue.OpaqueObjs.clear();
+    m_RenderQueue.AlphaTestObjs.clear();
+    m_RenderQueue.BlendedObjs.clear();
+}
+
+
+// do rendering of the particular mesh
+void COGRenderer::DoRenderJob(const RenderJob& _rj)
+{
+    if (m_Mode == OG_RENDERMODE_GEOMETRY)
+    {
+        if (!m_pCurShader || m_pCurShader->GetShaderID() != _rj.ShaderID)
+        {
+            m_pCurShader = m_pShaderMgr->GetShader(_rj.ShaderID);
+            m_pCurShader->SetCamera(m_pCamera);
+            m_pCurShader->SetProjectionMatrix(m_mProjection);
+            m_pCurShader->SetViewMatrix(m_mView);
+            m_pCurShader->SetLighting(m_pFog, m_pLightMgr);
+            m_pCurShader->Setup();
+        }
+
+        SetMaterial(_rj.pMaterial);
+        SetBlend(_rj.Blend);
+        SetTexture(_rj.pTexture);
+    }
+
+    if (_rj.pMesh != m_pCurMesh)
+    {
+        m_pCurMesh = _rj.pMesh;
+        m_pCurMesh->Apply();
+    }
+
+    m_pCurShader->SetModelMatrix(_rj.mTransform);
+    m_pCurShader->Apply();
     m_pCurMesh->Render();
 }
 

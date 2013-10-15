@@ -1,11 +1,11 @@
 /*
- *  OGSpriteShader.cpp
- *  OrangeGrass
- *
- *  Created by Viacheslav Bogdanov on 11.11.09.
- *  Copyright 2009 __MyCompanyName__. All rights reserved.
- *
- */
+*  OGSpriteShader.cpp
+*  OrangeGrass
+*
+*  Created by Viacheslav Bogdanov on 11.11.09.
+*  Copyright 2009 __MyCompanyName__. All rights reserved.
+*
+*/
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
 #include "ogspriteshader.h"
@@ -14,10 +14,10 @@
 
 COGSpriteShader::COGSpriteShader ()
 {
-	m_uiVertShader = 0;
-	m_uiFragShader = 0;
+    m_uiVertShader = 0;
+    m_uiFragShader = 0;
     m_uiId = 0;
-	m_uiMVPMatrixLoc = 0;
+    m_uiMVPMatrixLoc = 0;
     m_uiTextureLoc = 0;
 }
 
@@ -28,7 +28,7 @@ COGSpriteShader::~COGSpriteShader ()
 
 
 // load shaders.
-bool COGSpriteShader::Load (const std::string& _VertShader, const std::string& _FragmentShader)
+bool COGSpriteShader::Load (OGShaderID _Id, const std::string& _VertShader, const std::string& _FragmentShader)
 {
     if(ShaderLoadFromFile(_FragmentShader.c_str(), GL_FRAGMENT_SHADER, &m_uiFragShader) == 0)
         return false;
@@ -40,7 +40,9 @@ bool COGSpriteShader::Load (const std::string& _VertShader, const std::string& _
         return false;
 
     m_uiMVPMatrixLoc = glGetUniformLocation(m_uiId, "MVPMatrix");
-	m_uiTextureLoc = glGetUniformLocation(m_uiId, "sTexture");
+    m_uiTextureLoc = glGetUniformLocation(m_uiId, "sTexture");
+
+    m_Id = _Id;
 
     return true;
 }
@@ -49,9 +51,9 @@ bool COGSpriteShader::Load (const std::string& _VertShader, const std::string& _
 // unload shaders.
 void COGSpriteShader::Unload ()
 {
-	glDeleteProgram(m_uiId);
-	glDeleteShader(m_uiVertShader);
-	glDeleteShader(m_uiFragShader);
+    glDeleteProgram(m_uiId);
+    glDeleteShader(m_uiVertShader);
+    glDeleteShader(m_uiFragShader);
 }
 
 
@@ -64,7 +66,7 @@ void COGSpriteShader::Apply ()
 // setup the shader.
 void COGSpriteShader::Setup ()
 {
-	glUseProgram(m_uiId);
+    glUseProgram(m_uiId);
     glUniform1i(m_uiTextureLoc, 0);
     glUniformMatrix4fv(m_uiMVPMatrixLoc, 1, GL_FALSE, m_mProjection.f);
 }
