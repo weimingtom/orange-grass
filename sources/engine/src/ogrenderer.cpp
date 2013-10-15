@@ -589,10 +589,6 @@ void COGRenderer::DoRenderJob(const RenderJob& _rj)
             m_pCurShader->SetLighting(m_pFog, m_pLightMgr);
             m_pCurShader->Setup();
         }
-
-        SetMaterial(_rj.pMaterial);
-        SetBlend(_rj.Blend);
-        SetTexture(_rj.pTexture);
     }
 
     if (_rj.pMesh != m_pCurMesh)
@@ -601,6 +597,13 @@ void COGRenderer::DoRenderJob(const RenderJob& _rj)
         m_pCurMesh->Apply();
     }
 
+    if (m_Mode != OG_RENDERMODE_SHADOWEDSCENE)
+    {
+        SetMaterial(_rj.pMaterial);
+        SetTexture(_rj.pTexture);
+    }
+
+    SetBlend(_rj.Blend);
     m_pCurShader->SetModelMatrix(_rj.mTransform);
     m_pCurShader->Apply();
     m_pCurMesh->Render();
