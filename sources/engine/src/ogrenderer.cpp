@@ -682,8 +682,8 @@ void COGRenderer::DisplayString (const OGVec2& _vPos,
     unsigned int Colour, 
     const char * const pszFormat, ...)
 {
-    va_list	args;
-    static char	Text[5120+1];
+    va_list args;
+    static char Text[5120+1];
     va_start(args, pszFormat);
     vsprintf(Text, pszFormat, args);
     va_end(args);

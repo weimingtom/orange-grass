@@ -10,7 +10,7 @@
 #include "Game.h"
 
 
-static bool g_bShadowsEnabled = true;
+static bool g_bShadowsEnabled = false;
 
 
 CGameScreenController::CGameScreenController() :	m_pGlobalVars(NULL),
@@ -155,17 +155,6 @@ void CGameScreenController::RenderScene ()
         return;
     }
 
-    m_pRenderer->ClearFrame(OGVec4(0.3f, 0.3f, 0.4f, 1.0f));
-
-    m_pRenderer->EnableFog(true);
-    m_pRenderer->EnableLight(true);
-
-    m_pRenderer->PushGroupMarker(std::string("Rendering landscape geometry"));
-    m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
-    m_pSg->RenderLandscape(m_pCamera);
-    m_pRenderer->FinishRenderMode();
-    m_pRenderer->PopGroupMarker();
-
     if (g_bShadowsEnabled)
     {
         m_pRenderer->PushGroupMarker(std::string("Shadow map generation"));
@@ -177,7 +166,21 @@ void CGameScreenController::RenderScene ()
         m_pSg->RenderScene(m_pCamera);
         m_pRenderer->FinishRenderMode();
         m_pRenderer->PopGroupMarker();
+    }
 
+    m_pRenderer->ClearFrame(OGVec4(0.3f, 0.3f, 0.4f, 1.0f));
+
+    m_pRenderer->EnableFog(true);
+    m_pRenderer->EnableLight(true);
+
+    m_pRenderer->PushGroupMarker(std::string("Rendering landscape geometry"));
+    m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
+    m_pSg->RenderLandscape(m_pCamera);
+    m_pRenderer->FinishRenderMode();
+    m_pRenderer->PopGroupMarker();
+    
+    if (g_bShadowsEnabled)
+    {
         m_pRenderer->PushGroupMarker(std::string("Shadow map generation"));
         m_pRenderer->StartRenderMode(OG_RENDERMODE_SHADOWEDSCENE);
         m_pSg->RenderLandscape(m_pCamera);

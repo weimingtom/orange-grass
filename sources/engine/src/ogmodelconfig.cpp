@@ -85,7 +85,6 @@ bool COGModelConfig::LoadConfig (const std::string& _ConfigFile)
         IOGGroupNode* pAnimationNode = m_pReader->OpenGroupNode(pSource, pAnimationsNode, "Animation");
         while (pAnimationNode != NULL)
         {
-            //OGAnimationCfg::Anim anim;
             IOGAnimation anim;
             anim.name = m_pReader->ReadStringParam(pAnimationNode, "name");
             anim.start_frame = (unsigned int)m_pReader->ReadIntParam(pAnimationNode, "start_frame");
