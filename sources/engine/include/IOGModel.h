@@ -15,6 +15,7 @@
 #include "IOGMesh.h"
 #include "IOGMath.h"
 #include "IOGObb.h"
+#include "IOGModelSkeleton.h"
 #include <vector>
 
 
@@ -35,29 +36,20 @@ public:
     // Get material
     virtual IOGMaterial* GetMaterial () = 0;
 
+    // Get model skeleton
+    virtual IOGModelSkeleton* GetModelSkeleton () = 0;
+
     // Get mesh
     virtual const std::vector<IOGMesh*>& GetMeshes () const = 0;
 
     // Render mesh.
-    virtual void Render (const OGMatrix& _mWorld, unsigned int _Frame, float _fBlend, float _fSpin) = 0;
-
-    // Check if has submeshes of the following type
-    virtual bool HasSubmeshesOfType(SubMeshType _Type) const = 0;
-
-    // Get num renderable parts.
-    virtual unsigned int GetNumRenderables () const = 0;
+    virtual void Render (const OGMatrix& _mWorld, unsigned int _MeshId) = 0;
 
     // Get combined AABB
     virtual const IOGAabb& GetAABB () const = 0;
 
-    // Get part's transformed OBB after applying animation
-    virtual bool GetTransformedOBB (IOGObb& _obb, unsigned int _Part, unsigned int _Frame, float _fBlend, const OGMatrix& _mWorld) = 0;
-
     // Get animation
     virtual IOGAnimation* GetAnimation (const std::string& _Alias) = 0;
-
-    // Get active point
-    virtual bool GetActivePoint (IOGActivePoint& _point, const std::string& _Alias, unsigned int _Frame, float _fBlend) = 0;
 
     // Get ray intersection
     virtual bool GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos) = 0;

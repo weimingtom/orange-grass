@@ -82,6 +82,8 @@
     <ClCompile Include="src\GameScreenController.cpp" />
     <ClCompile Include="src\GameSystem.cpp" />
     <ClCompile Include="src\LoadScreenController.cpp" />
+    <ClCompile Include="src\ogbakedanimation.cpp" />
+    <ClCompile Include="src\ogprocedureanimation.cpp" />
     <ClCompile Include="src\StartMenuScreenController.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\ogactormanager.cpp" />
@@ -121,7 +123,6 @@
     <ClCompile Include="src\ogstaticphysicalobject.cpp" />
     <ClCompile Include="src\oglevel.cpp" />
     <ClCompile Include="src\oglevelmanager.cpp" />
-    <ClCompile Include="src\oganimationcontroller.cpp" />
     <ClCompile Include="src\ogscenegraph.cpp" />
     <ClCompile Include="src\ogsgeffectnode.cpp" />
     <ClCompile Include="src\ogsglandscapenode.cpp" />
@@ -132,6 +133,8 @@
     <ClInclude Include="src\GameScreenController.h" />
     <ClInclude Include="src\GameSystem.h" />
     <ClInclude Include="src\LoadScreenController.h" />
+    <ClInclude Include="src\ogbakedanimation.h" />
+    <ClInclude Include="src\ogprocedureanimation.h" />
     <ClInclude Include="src\StartMenuScreenController.h" />
     <ClInclude Include="include\Game.h" />
     <ClInclude Include="include\IOGAppSettings.h" />
@@ -151,7 +154,6 @@
     <ClInclude Include="include\IOGPhysicalObject.h" />
     <ClInclude Include="include\IOGPhysicalParams.h" />
     <ClInclude Include="include\IOGPhysics.h" />
-    <ClInclude Include="include\IOGAnimationController.h" />
     <ClInclude Include="include\IOGSceneGraph.h" />
     <ClInclude Include="include\IOGSgNode.h" />
     <ClInclude Include="include\IOGLevel.h" />
@@ -193,7 +195,6 @@
     <ClInclude Include="src\ogstaticphysicalobject.h" />
     <ClInclude Include="src\oglevel.h" />
     <ClInclude Include="src\oglevelmanager.h" />
-    <ClInclude Include="src\oganimationcontroller.h" />
     <ClInclude Include="src\ogscenegraph.h" />
     <ClInclude Include="src\ogsgeffectnode.h" />
     <ClInclude Include="src\ogsglandscapenode.h" />

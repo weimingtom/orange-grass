@@ -4,7 +4,7 @@ LOCAL_C_INCLUDES += sources/engine/include
 LOCAL_SRC_FILES +=  $(ENGINEPATH)/ogcamera.cpp \
                     $(ENGINEPATH)/ogcoloreffectshader.cpp \
                     $(ENGINEPATH)/ogeffect.cpp \
-                    $(ENGINEPATH)/oganimationset.cpp \
+                    $(ENGINEPATH)/ogmodelskeleton.cpp \
                     $(ENGINEPATH)/ogeffectsmanager.cpp \
                     $(ENGINEPATH)/ogemitter.cpp \
                     $(ENGINEPATH)/ogemitteranimatedbb.cpp \

@@ -21,7 +21,8 @@ LOCAL_SRC_FILES +=  $(GAMEPATH)/Game.cpp \
                     $(GAMEPATH)/ogactorplayer.cpp \
                     $(GAMEPATH)/ogactorstatic.cpp \
                     $(GAMEPATH)/ogairphysicalobject.cpp \
-                    $(GAMEPATH)/oganimationcontroller.cpp \
+                    $(GAMEPATH)/ogbakedanimation.cpp \
+                    $(GAMEPATH)/ogprocedureanimation.cpp \
                     $(GAMEPATH)/ogappsettings.cpp \
                     $(GAMEPATH)/ogbonusphysicalobject.cpp \
                     $(GAMEPATH)/ogbotfallingworker.cpp \

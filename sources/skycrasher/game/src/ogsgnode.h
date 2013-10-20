@@ -11,7 +11,7 @@
 
 #include "IOGMath.h"
 #include "IOGSgNode.h"
-#include "IOGAnimationController.h"
+#include "IOGAnimation.h"
 
 
 class COGSgNode : public IOGSgNode
@@ -28,9 +28,6 @@ public:
     // Get OBB
     virtual const IOGObb& GetOBB () const;
 
-    // Get transformed OBBs list
-    virtual const std::vector<IOGObb>& GetTransformedOBBs () const {return m_TransformedOBBs;}
-
     // render.
     virtual void Render ();
 
@@ -42,9 +39,6 @@ public:
 
     // Get type of the renderable.
     virtual RenderableType GetRenderableType () const {return OG_RENDERABLE_MODEL;}
-
-    // get animation controller.
-    virtual IOGAnimationController* GetAnimator () { return m_pAnimator;}
 
     // start animation.
     virtual void StartAnimation (const std::string& _Alias);
@@ -60,14 +54,15 @@ public:
 
 protected:
 
-    IOGModel*               m_pRenderable;
-    IOGPhysicalObject*      m_pPhysics;
-    IOGAnimationController* m_pAnimator;
-    bool                    m_bActive;
-    unsigned int            m_AnimFrame;
-    float                   m_fSpin;
-    std::vector<IOGObb>     m_TransformedOBBs;
-    float                   m_fBlend;
+    IOGModel*                   m_pRenderable;
+    IOGModelSkeleton*           m_pSkeleton;
+    IOGPhysicalObject*          m_pPhysics;
+    bool                        m_bActive;
+
+    IOGAnim*                    m_pBakedAnimation;
+    IOGAnim*                    m_pProcedureAnimation;
+
+    std::vector<OGSgMeshNode>   m_MeshNodes;
 };
 
 #endif

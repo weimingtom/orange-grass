@@ -53,6 +53,9 @@
     <Filter Include="Source Files\Source Files\Core">
       <UniqueIdentifier>{f1abb94c-6ca3-452b-9249-2f85ba6d01b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Source Files\Animation">
+      <UniqueIdentifier>{93231ce0-a73c-4109-b0d9-e015cdbe5989}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GameScreenController.cpp">
@@ -181,9 +184,6 @@
     <ClCompile Include="src\oglevelmanager.cpp">
       <Filter>Source Files\Source Files\Level</Filter>
     </ClCompile>
-    <ClCompile Include="src\oganimationcontroller.cpp">
-      <Filter>Source Files\Source Files\SceneGraph</Filter>
-    </ClCompile>
     <ClCompile Include="src\ogscenegraph.cpp">
       <Filter>Source Files\Source Files\SceneGraph</Filter>
     </ClCompile>
@@ -198,6 +198,12 @@
     </ClCompile>
     <ClCompile Include="src\ogappsettings.cpp">
       <Filter>Source Files\Source Files\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogbakedanimation.cpp">
+      <Filter>Source Files\Source Files\Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ogprocedureanimation.cpp">
+      <Filter>Source Files\Source Files\Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -266,9 +272,6 @@
     </ClInclude>
     <ClInclude Include="include\IOGPhysics.h">
       <Filter>Source Files\Interfaces\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="include\IOGAnimationController.h">
-      <Filter>Source Files\Interfaces\SceneGraph</Filter>
     </ClInclude>
     <ClInclude Include="include\IOGSceneGraph.h">
       <Filter>Source Files\Interfaces\SceneGraph</Filter>
@@ -393,9 +396,6 @@
     <ClInclude Include="src\oglevelmanager.h">
       <Filter>Source Files\Source Files\Level</Filter>
     </ClInclude>
-    <ClInclude Include="src\oganimationcontroller.h">
-      <Filter>Source Files\Source Files\SceneGraph</Filter>
-    </ClInclude>
     <ClInclude Include="src\ogscenegraph.h">
       <Filter>Source Files\Source Files\SceneGraph</Filter>
     </ClInclude>
@@ -410,6 +410,12 @@
     </ClInclude>
     <ClInclude Include="src\ogappsettings.h">
       <Filter>Source Files\Source Files\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogbakedanimation.h">
+      <Filter>Source Files\Source Files\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogprocedureanimation.h">
+      <Filter>Source Files\Source Files\Animation</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

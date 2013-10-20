@@ -79,7 +79,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\oganimationset.cpp" />
+    <ClCompile Include="src\ogmodelskeleton.cpp" />
     <ClCompile Include="src\ogmodelconfig.cpp" />
     <ClCompile Include="src\OrangeGrass.cpp" />
     <ClCompile Include="src\ogfog.cpp" />
@@ -153,8 +153,9 @@
     <ClInclude Include="include\IOGAnimationManager.h" />
     <ClInclude Include="include\IOGGeometry.h" />
     <ClInclude Include="include\IOGMesh.h" />
+    <ClInclude Include="include\IOGModelSkeleton.h" />
     <ClInclude Include="include\IOGRenderTypes.h" />
-    <ClInclude Include="src\oganimationset.h" />
+    <ClInclude Include="src\ogmodelskeleton.h" />
     <ClInclude Include="src\ogfog.h" />
     <ClInclude Include="src\oglight.h" />
     <ClInclude Include="src\ogmaterial.h" />

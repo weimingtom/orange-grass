@@ -1,5 +1,5 @@
 /*
-*  oganimationset.cpp
+*  ogmodelskeleton.cpp
 *  OrangeGrass
 *
 *  Created by Viacheslav Bogdanov on 08.11.09.
@@ -8,38 +8,38 @@
 */
 
 #include "OrangeGrass.h"
-#include "oganimationset.h"
+#include "ogmodelskeleton.h"
 
 
-COGAnimationSet::COGAnimationSet()
+COGModelSkeleton::COGModelSkeleton()
     : m_NumFrames (0)
 {
 }
 
 
-COGAnimationSet::~COGAnimationSet()
+COGModelSkeleton::~COGModelSkeleton()
 {
     Clear();
 }
 
 
-void COGAnimationSet::Clear()
+void COGModelSkeleton::Clear()
 {
     m_NumFrames = 0;
-    std::for_each(m_Nodes.begin(), m_Nodes.end(), [](AnimationNode* m) { OG_SAFE_DELETE(m); });
+    std::for_each(m_Nodes.begin(), m_Nodes.end(), [](OGModelNode* m) { OG_SAFE_DELETE(m); });
     m_Nodes.clear();
 }
 
 
-void COGAnimationSet::SetNumFrames(unsigned int _NumFrames)
+void COGModelSkeleton::SetNumFrames(unsigned int _NumFrames)
 {
     m_NumFrames = _NumFrames;
 }
 
 
-AnimationNode* COGAnimationSet::AddNode(int _Idx, int _IdxParent, const float* _pfAnimMatrix)
+OGModelNode* COGModelSkeleton::AddNode(int _Idx, int _IdxParent, const float* _pfAnimMatrix)
 {
-    AnimationNode* pNode = new AnimationNode();
+    OGModelNode* pNode = new OGModelNode();
     pNode->nIdxParent = _IdxParent;
     pNode->nIdx = _Idx;
     const OGMatrix* pSrcMatrixArr = (const OGMatrix*)_pfAnimMatrix;
@@ -64,14 +64,14 @@ AnimationNode* COGAnimationSet::AddNode(int _Idx, int _IdxParent, const float* _
 }
 
 
-AnimationNode* COGAnimationSet::BuildSG ()
+OGModelNode* COGModelSkeleton::BuildSG ()
 {
     bool bRootCreated = false;
-    AnimationNode* pRoot = NULL;
+    OGModelNode* pRoot = NULL;
     size_t n = m_Nodes.size();
     for (size_t i = 0; i < n; ++i)
     {
-        AnimationNode* pCurNode = m_Nodes[i];
+        OGModelNode* pCurNode = m_Nodes[i];
         pCurNode->nIdx = i;
         int curParent = pCurNode->nIdxParent;
         if (curParent == -1)
@@ -84,7 +84,7 @@ AnimationNode* COGAnimationSet::BuildSG ()
                 }
                 else
                 {
-                    AnimationNode* pSingleRootNode = new AnimationNode();
+                    OGModelNode* pSingleRootNode = new OGModelNode();
                     OGMatrix mIdentity;
                     MatrixIdentity(mIdentity);
                     pSingleRootNode->mTransformList.push_back(mIdentity);
@@ -105,7 +105,7 @@ AnimationNode* COGAnimationSet::BuildSG ()
         }
         else
         {
-            AnimationNode* pNodeParent = m_Nodes[curParent];
+            OGModelNode* pNodeParent = m_Nodes[curParent];
             pNodeParent->nIdx = curParent;
             AttachChild(pNodeParent, pCurNode);
         }
@@ -114,9 +114,9 @@ AnimationNode* COGAnimationSet::BuildSG ()
 }
 
 
-void COGAnimationSet::GetWorldMatrix(OGMatrix& _mOut, unsigned int _NodeId, unsigned int _Frame, float _fBlend) const
+void COGModelSkeleton::GetWorldMatrix(OGMatrix& _mOut, unsigned int _NodeId, unsigned int _Frame) const
 {
-    AnimationNode* pNode = m_Nodes[_NodeId];
+    OGModelNode* pNode = m_Nodes[_NodeId];
     if (pNode->mTransformList.size() > _Frame)
         _mOut = pNode->mTransformList[_Frame];
     else
@@ -126,12 +126,28 @@ void COGAnimationSet::GetWorldMatrix(OGMatrix& _mOut, unsigned int _NodeId, unsi
         return;
 
     OGMatrix mTmp;
-    GetWorldMatrix(mTmp, pNode->nIdxParent, _Frame, _fBlend);
+    GetWorldMatrix(mTmp, pNode->nIdxParent, _Frame);
     MatrixMultiply(_mOut, _mOut, mTmp);
 }
 
 
-void COGAnimationSet::AttachChild(AnimationNode* _pParent, AnimationNode* _pChild)
+unsigned int COGModelSkeleton::GetNumNodes () const
+{
+    return (unsigned int)m_Nodes.size();
+}
+
+
+const OGModelNode* COGModelSkeleton::GetNode (unsigned int _NodeId) const
+{
+    if (_NodeId < m_Nodes.size())
+    {
+        return m_Nodes[_NodeId];
+    }
+    return NULL;
+}
+
+
+void COGModelSkeleton::AttachChild(OGModelNode* _pParent, OGModelNode* _pChild)
 {
     _pChild->pParent = _pParent;
     _pChild->nIdxParent = _pParent->nIdx;

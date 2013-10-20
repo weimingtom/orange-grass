@@ -13,6 +13,7 @@
 COGSgLandscapeNode::COGSgLandscapeNode ()
     : m_pRenderable(NULL)
     , m_bActive(false)
+    , m_pSkeleton(NULL)
 {
 }
 
@@ -20,15 +21,31 @@ COGSgLandscapeNode::COGSgLandscapeNode ()
 COGSgLandscapeNode::COGSgLandscapeNode (IOGModel* _pRenderable) 
     : m_pRenderable(_pRenderable)
     , m_bActive(true)
+    , m_pSkeleton(NULL)
 {
     m_OBB.Create(m_pRenderable->GetAABB());
     MatrixIdentity(m_World);
+
+    m_pSkeleton = m_pRenderable->GetModelSkeleton();
+    if (m_pSkeleton)
+    {
+        unsigned int NumMeshNodes = m_pSkeleton->GetNumNodes();
+        m_MeshNodes.reserve(NumMeshNodes);
+        for (unsigned int i = 0; i < NumMeshNodes; ++i)
+        {
+            OGSgMeshNode node;
+            node.pSkeletonNode = m_pSkeleton->GetNode(i);
+            m_MeshNodes.push_back(node);
+        }
+    }
 }
 
 
 COGSgLandscapeNode::~COGSgLandscapeNode () 
 {
+    m_MeshNodes.clear();
     m_pRenderable = NULL;
+    m_pSkeleton = NULL;
 }
 
 
@@ -49,6 +66,14 @@ const IOGObb& COGSgLandscapeNode::GetOBB () const
 // update transform.
 void COGSgLandscapeNode::Update (unsigned long _ElapsedTime)
 {
+    OGMatrix mNodeWorld;
+    unsigned int NumMeshNodes = m_MeshNodes.size();
+    for (unsigned int i = 0; i < NumMeshNodes; ++i)
+    {
+        OGSgMeshNode& curNode = m_MeshNodes[i];
+        m_pSkeleton->GetWorldMatrix(mNodeWorld, i, 0);
+        MatrixMultiply(curNode.mTransform, mNodeWorld, m_World);
+    }
 }
 
 
@@ -58,14 +83,26 @@ void COGSgLandscapeNode::Render ()
     if (!m_bActive)
         return;
 
-    m_pRenderable->Render(m_World, 0, 0.0f, 0.0f);
+    unsigned int NumMeshNodes = m_MeshNodes.size();
+    for (unsigned int i = 0; i < NumMeshNodes; ++i)
+    {
+        OGSgMeshNode& curNode = m_MeshNodes[i];
+        if (curNode.pSkeletonNode->BodyType != OG_SUBMESH_DUMMY && curNode.pSkeletonNode->BodyType != OG_SUBMESH_ACTPOINT)
+            m_pRenderable->Render(curNode.mTransform, i);
+    }
 }
 
 
 // render all nodes.
 void COGSgLandscapeNode::RenderAll ()
 {
-    m_pRenderable->Render(m_World, 0, 0.0f, 0.0f);
+    unsigned int NumMeshNodes = m_MeshNodes.size();
+    for (unsigned int i = 0; i < NumMeshNodes; ++i)
+    {
+        OGSgMeshNode& curNode = m_MeshNodes[i];
+        if (curNode.pSkeletonNode->BodyType != OG_SUBMESH_DUMMY && curNode.pSkeletonNode->BodyType != OG_SUBMESH_ACTPOINT)
+            m_pRenderable->Render(curNode.mTransform, i);
+    }
 }
 
 

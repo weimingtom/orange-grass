@@ -21,11 +21,31 @@ struct IOGAnimation
     bool looped;
 };
 
-struct IOGProcAnimation
+
+class IOGAnim
 {
-    std::string name;
-    float speed;
+public:
+    virtual ~IOGAnim () {}
+
+    // start animation
+    virtual void Start(IOGAnimation* _pAnimation) = 0;
+
+    // stop animation
+    virtual void Stop() = 0;
+
+    // check if  animation is playing
+    virtual bool IsPlaying() = 0;
+
+    // get animation progress
+    virtual float GetProgress() = 0;
+
+    // update animation step (for baked animation)
+    virtual void Update(unsigned long _ElapsedTime) = 0;
+
+    // update animation step (for procedure animation)
+    virtual void Update(unsigned long _ElapsedTime, OGMatrix& _mOut, const OGMatrix& _mIn) = 0;
 };
+
 
 struct OGAnimationCfg
 {

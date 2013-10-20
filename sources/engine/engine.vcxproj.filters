@@ -272,7 +272,7 @@
     <ClCompile Include="src\ogmodelconfig.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="src\oganimationset.cpp">
+    <ClCompile Include="src\ogmodelskeleton.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
@@ -583,7 +583,10 @@
     <ClInclude Include="include\IOGAnimationManager.h">
       <Filter>Interface\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\oganimationset.h">
+    <ClInclude Include="include\IOGModelSkeleton.h">
+      <Filter>Interface\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogmodelskeleton.h">
       <Filter>Source Files\Graphics</Filter>
     </ClInclude>
   </ItemGroup>

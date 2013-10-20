@@ -8,48 +8,47 @@
  */
 #include "Game.h"
 #include "ogsgnode.h"
-#include "oganimationcontroller.h"
-
-
-COGSgNode::COGSgNode () 
-    : m_pRenderable(NULL)
-    , m_pPhysics(NULL)
-    , m_pAnimator(NULL)
-    , m_bActive(false)
-{
-    m_AnimFrame = 0;
-    m_fSpin = 0.0f;
-    m_fBlend = 0.0f;
-}
+#include "ogbakedanimation.h"
+#include "ogprocedureanimation.h"
 
 
 COGSgNode::COGSgNode (IOGModel* _pRenderable, IOGPhysicalObject* _pPhysics) 
     : m_pRenderable(_pRenderable)
     , m_pPhysics(_pPhysics)
-    , m_pAnimator(NULL)
+    , m_pBakedAnimation(NULL)
+    , m_pProcedureAnimation(NULL)
     , m_bActive(true)
 {
-    m_pAnimator = new COGAnimationController();
-    m_AnimFrame = 0;
-    m_fSpin = 0.0f;
-    m_fBlend = 0.0f;
+    m_pBakedAnimation = new COGBakedAnimation();
 
-    unsigned int NumOBBs = _pRenderable->GetNumRenderables();
-    m_TransformedOBBs.reserve(NumOBBs);
-    for (unsigned int i = 0; i < NumOBBs; ++i)
+    m_pSkeleton = m_pRenderable->GetModelSkeleton();
+    if (m_pSkeleton)
     {
-        IOGObb obb;
-        m_TransformedOBBs.push_back(obb);
+        unsigned int NumMeshNodes = m_pSkeleton->GetNumNodes();
+        m_MeshNodes.reserve(NumMeshNodes);
+        for (unsigned int i = 0; i < NumMeshNodes; ++i)
+        {
+            OGSgMeshNode node;
+            node.pSkeletonNode = m_pSkeleton->GetNode(i);
+            if (node.pSkeletonNode->BodyType == OG_SUBMESH_PROPELLER && !m_pProcedureAnimation)
+            {
+                m_pProcedureAnimation = new COGRotationAnimation();
+                m_pProcedureAnimation->Start(NULL);
+            }
+            m_MeshNodes.push_back(node);
+        }
     }
 }
 
 
 COGSgNode::~COGSgNode () 
 {
-    m_TransformedOBBs.clear();
+    m_MeshNodes.clear();
     m_pRenderable = NULL;
+    m_pSkeleton = NULL;
     m_pPhysics = NULL;
-    OG_SAFE_DELETE(m_pAnimator);
+    OG_SAFE_DELETE(m_pBakedAnimation);
+    OG_SAFE_DELETE(m_pProcedureAnimation);
 }
 
 
@@ -73,20 +72,38 @@ void COGSgNode::Update (unsigned long _ElapsedTime)
     if (!m_bActive)
         return;
 
-    m_fSpin += 0.5f;
+    m_pBakedAnimation->Update(_ElapsedTime);
+    unsigned int AnimFrame = (unsigned int)m_pBakedAnimation->GetProgress();
 
-    if (m_pAnimator->GetCurrentAnimation())
+    OGMatrix mNodeWorld;
+    const OGMatrix& mWorld = m_pPhysics->GetWorldTransform();
+    unsigned int NumMeshNodes = m_MeshNodes.size();
+    for (unsigned int i = 0; i < NumMeshNodes; ++i)
     {
-        m_pAnimator->UpdateAnimation(_ElapsedTime);
-        float fFrame = m_pAnimator->GetCurrentAnimationProgress();
-        m_AnimFrame = (unsigned int)fFrame;
-        m_fBlend = fFrame - m_AnimFrame;
+        OGSgMeshNode& curNode = m_MeshNodes[i];
+        m_pSkeleton->GetWorldMatrix(mNodeWorld, i, AnimFrame);
 
-        const OGMatrix& mWorld = m_pPhysics->GetWorldTransform();
-        unsigned int NumOBBs = m_TransformedOBBs.size();
-        for (unsigned int i = 0; i < NumOBBs; ++i)
+        if (curNode.pSkeletonNode->BodyType == OG_SUBMESH_PROPELLER)
         {
-            m_pRenderable->GetTransformedOBB(m_TransformedOBBs[i], i, m_AnimFrame, m_fBlend, mWorld);
+            if (m_pProcedureAnimation)
+            {
+                m_pProcedureAnimation->Update(_ElapsedTime, mNodeWorld, mNodeWorld);
+            }
+        }
+        MatrixMultiply(curNode.mTransform, mNodeWorld, mWorld);
+
+        if (curNode.pSkeletonNode->BodyType != OG_SUBMESH_DUMMY && curNode.pSkeletonNode->BodyType != OG_SUBMESH_ACTPOINT)
+        {
+            curNode.OBB.Create(((IOGMesh*)curNode.pSkeletonNode->pBody)->GetAABB());
+            curNode.OBB.UpdateTransform(curNode.mTransform);
+        }
+        if (curNode.pSkeletonNode->BodyType == OG_SUBMESH_ACTPOINT)
+        {
+            if (curNode.pSkeletonNode->pBody)
+            {
+                IOGActivePoint* pPoint = (IOGActivePoint*)curNode.pSkeletonNode->pBody;
+                MatrixVecMultiply(curNode.vCenter, pPoint->pos, mNodeWorld);
+            }
         }
     }
 }
@@ -98,8 +115,13 @@ void COGSgNode::Render ()
     if (!m_bActive)
         return;
 
-    const OGMatrix& mWorld = m_pPhysics->GetWorldTransform();
-    m_pRenderable->Render(mWorld, m_AnimFrame, m_fBlend, m_fSpin);
+    unsigned int NumMeshNodes = m_MeshNodes.size();
+    for (unsigned int i = 0; i < NumMeshNodes; ++i)
+    {
+        OGSgMeshNode& curNode = m_MeshNodes[i];
+        if (curNode.pSkeletonNode->BodyType != OG_SUBMESH_DUMMY && curNode.pSkeletonNode->BodyType != OG_SUBMESH_ACTPOINT)
+            m_pRenderable->Render(curNode.mTransform, i);
+    }
 }
 
 
@@ -113,22 +135,33 @@ IOGPhysicalObject* COGSgNode::GetPhysics ()
 // Get active point
 bool COGSgNode::GetActivePoint (OGVec3& _point, const std::string& _Alias)
 {
-    IOGActivePoint pt;
-    if (!m_pRenderable->GetActivePoint(pt, _Alias, m_AnimFrame, m_fBlend))
-        return false;
+    unsigned int NumMeshNodes = m_MeshNodes.size();
+    for (unsigned int i = 0; i < NumMeshNodes; ++i)
+    {
+        OGSgMeshNode& curNode = m_MeshNodes[i];
+        if (curNode.pSkeletonNode->BodyType == OG_SUBMESH_ACTPOINT)
+        {
+            if (curNode.pSkeletonNode->pBody)
+            {
+                IOGActivePoint* pPoint = (IOGActivePoint*)curNode.pSkeletonNode->pBody;
+                if ( pPoint->alias.compare(_Alias) == 0)
+                {
+                    _point = curNode.vCenter;
+                    return true;
+                }
+            }
+        }
+    }
 
-    _point = pt.pos;
-    return true;
+    return false;
 }
 
 
 // start animation.
 void COGSgNode::StartAnimation (const std::string& _Alias)
 {
-    m_AnimFrame = 0;
     IOGAnimation* pAnim = m_pRenderable->GetAnimation(_Alias);
-    if (pAnim)
-        m_pAnimator->StartAnimation(pAnim);
+    m_pBakedAnimation->Start(pAnim);
 }
 
 
