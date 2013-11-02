@@ -16,7 +16,7 @@
 #include "IOGSettingsReader.h"
 #include "IOGMaterial.h"
 #include "IOGAnimation.h"
-#include "IOGMesh.h"
+#include "IOGModel.h"
 
 
 class COGModelConfig
@@ -25,37 +25,30 @@ public:
     COGModelConfig();
     ~COGModelConfig();
 
-	// Load model configuration
-	bool LoadConfig (const std::string& _ConfigFile);
+    // Load model configuration
+    bool LoadConfig (const std::string& _ConfigFile);
 
-	// Save params
-	bool SaveConfig ();
-
-    // Get material config
-    OGMaterialCfg* GetMaterialConfig ();
+    // Save params
+    bool SaveConfig ();
 
     // Get animation config
     OGAnimationCfg* GetAnimationConfig ();
 
-    // Get mesh config
-    OGMeshCfg* GetMeshConfig ();
-
-    // Update material config
-    void UpdateMaterialConfig (const OGMaterialCfg& _cfg);
+    // Get model config
+    OGModelCfg* GetModelConfig ();
 
     // Update animation config
     void UpdateAnimationConfig (const OGAnimationCfg& _cfg);
 
-    // Update mesh config
-    void UpdateMeshConfig (const OGMeshCfg& _cfg);
+    // Update model config
+    void UpdateModelConfig (const OGModelCfg& _cfg);
 
 private:
-	IOGSettingsReader*	m_pReader;
+    IOGSettingsReader*  m_pReader;
     std::string         m_ConfigFile;
 
-    OGMaterialCfg*      m_pMaterialCfg;
     OGAnimationCfg*     m_pAnimationCfg;
-    OGMeshCfg*          m_pMeshCfg;
+    OGModelCfg*         m_pModelCfg;
 };
 
 

@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<Mesh file="Models/units/plane_small/plane_small.POD" />
-<Material texture="units" blend="solid">
-    <Ambient r="0.34" g="0.34" b="0.34" a="1" />
-    <Diffuse r="1" g="1" b="1" a="1" />
-    <Specular r="0" g="0" b="0" a="0" />
-</Material>
+<Model file="Models/units/plane_small/plane_small.POD">
+    <Mesh>
+        <Material texture="units" blend="solid">
+            <Ambient r="0.34" g="0.34" b="0.34" a="1" />
+            <Diffuse r="1" g="1" b="1" a="1" />
+            <Specular r="0" g="0" b="0" a="0" />
+        </Material>
+    </Mesh>
+    <Mesh>
+        <Material texture="units" blend="blend">
+            <Ambient r="0.34" g="0.34" b="0.34" a="1" />
+            <Diffuse r="1" g="1" b="1" a="1" />
+            <Specular r="0" g="0" b="0" a="0" />
+        </Material>
+    </Mesh>
+</Model>

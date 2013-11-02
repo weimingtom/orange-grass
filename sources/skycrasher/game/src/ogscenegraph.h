@@ -37,7 +37,7 @@ public:
     virtual void AddNode (IOGSgNode* _pNode);
 
     // Add static scene graph node
-    virtual void AddStaticNode (IOGSgNode* _pNode, IOGTexture* _pTexture);
+    virtual void AddStaticNode (IOGSgNode* _pNode);
 
     // Add landscape scene graph node
     virtual void AddLandscapeNode (IOGSgNode* _pNode);
@@ -68,7 +68,6 @@ public:
 
 private:
     typedef std::list<IOGSgNode*>               TNodesList;
-    typedef std::map<IOGTexture*, TNodesList>   TStaticNodesMap;
 
 private:
 
@@ -87,7 +86,7 @@ private:
 private:
     IOGGlobalVarsTable* m_pGlobalVars;
     IOGSgNode*          m_pLandscapeNode;
-    TStaticNodesMap     m_StaticNodes;
+    TNodesList          m_StaticNodes;
     TNodesList          m_NodesList;
     TNodesList          m_EffectNodesList;
     float               m_fViewDistance;

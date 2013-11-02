@@ -22,18 +22,18 @@ COGActorStatic::~COGActorStatic()
 
 // Create actor.
 bool COGActorStatic::Create (IOGActorParams* _pParams,
-							 const OGVec3& _vPos,
-							 const OGVec3& _vRot,
-							 const OGVec3& _vScale)
+                             const OGVec3& _vPos,
+                             const OGVec3& _vRot,
+                             const OGVec3& _vScale)
 {
-	m_pParams = _pParams;
+    m_pParams = _pParams;
 
-	m_pModel = GetResourceMgr()->GetModel(OG_RESPOOL_GAME, m_pParams->model_alias);
-	
+    m_pModel = GetResourceMgr()->GetModel(OG_RESPOOL_GAME, m_pParams->model_alias);
+    
     m_pPhysicalObject = m_pPhysics->CreateObject(&m_pParams->physics, m_pModel->GetAABB(), this);
-	m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);
+    m_pPhysicalObject->SetWorldTransform(_vPos, _vRot, _vScale);
 
-	m_pNode = m_pSg->CreateNode(m_pModel, m_pPhysicalObject);
+    m_pNode = m_pSg->CreateNode(m_pModel, m_pPhysicalObject);
 
     return true;
 }
@@ -43,5 +43,5 @@ bool COGActorStatic::Create (IOGActorParams* _pParams,
 void COGActorStatic::OnAddedToManager ()
 {
     COGActor::OnAddedToManager();
-	m_pSg->AddStaticNode(m_pNode, m_pModel->GetTexture());
+    m_pSg->AddStaticNode(m_pNode);
 }

@@ -11,6 +11,12 @@
 
 
 COGMesh::COGMesh ()
+    : m_aabb(NULL)
+    , m_buffer(NULL)
+    , m_pCfg(NULL)
+    , m_type(OG_SUBMESH_DUMMY)
+    , m_pTexture(NULL)
+    , m_pMaterial(NULL)
 {
     m_pRenderer = GetRenderer();
 }
@@ -23,6 +29,7 @@ COGMesh::~COGMesh()
 
 // Load resource
 bool COGMesh::Load (
+    OGMeshCfg* _pCfg,
     const char* _pName,
     SubMeshType _Type,
     unsigned int _Part,
@@ -33,12 +40,18 @@ bool COGMesh::Load (
     const void* _pIndexData, 
     unsigned int _NumIndices)
 {
+    m_pCfg = _pCfg;
     m_name = std::string(_pName);
     m_type = _Type;
     m_part = _Part;
     m_buffer = m_pRenderer->CreateVertexBuffer(_pVertexData, _NumVertices, 
         _NumFaces, _Stride, _pIndexData, _NumIndices);
     m_aabb = new IOGAabb();
+
+    m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, m_pCfg->material_cfg.texture_alias.c_str());
+    m_pMaterial = m_pRenderer->CreateMaterial();
+    m_pMaterial->LoadConfig(&m_pCfg->material_cfg);
+
     return true;
 }
 
@@ -46,8 +59,11 @@ bool COGMesh::Load (
 // Unload resource.
 void COGMesh::Unload ()
 {
+    m_pCfg = NULL;
     OG_SAFE_DELETE(m_buffer);
     OG_SAFE_DELETE(m_aabb);
+    OG_SAFE_DELETE(m_pMaterial);
+    m_pTexture = NULL;
     m_faces.clear();
 }
 
@@ -55,8 +71,8 @@ void COGMesh::Unload ()
 // Render mesh.
 void COGMesh::Render (const OGMatrix& _mWorld)
 {
-    m_pRenderer->SetModelMatrix(_mWorld);
-    m_pRenderer->RenderMesh(m_buffer);
+    OGBlendType blend = m_pMaterial->GetBlend();
+    m_pRenderer->Render(m_pTexture, m_pMaterial, m_buffer, _mWorld, blend, OG_SHADER_MODEL);
 }
 
 

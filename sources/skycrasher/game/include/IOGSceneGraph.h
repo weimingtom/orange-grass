@@ -44,7 +44,7 @@ public:
     virtual void AddEffectNode (IOGSgNode* _pNode) = 0;
 
     // Add static scene graph node
-    virtual void AddStaticNode (IOGSgNode* _pNode, IOGTexture* _pTexture) = 0;
+    virtual void AddStaticNode (IOGSgNode* _pNode) = 0;
 
     // Remove scene graph node
     virtual void RemoveNode (IOGSgNode* _pNode) = 0;

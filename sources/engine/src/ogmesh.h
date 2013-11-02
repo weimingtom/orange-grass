@@ -25,6 +25,7 @@ public:
 
     // Load mesh.
     virtual bool Load (
+        OGMeshCfg* _pCfg,
         const char* _pName,
         SubMeshType _Type,
         unsigned int _Part,
@@ -53,8 +54,11 @@ public:
     // Get combined AABB
     virtual const IOGAabb& GetAABB () const { return *m_aabb; }
 
-    // Get vertex buffer
-    virtual IOGVertexBuffers* GetVertexBuffer () { return m_buffer; }
+    // Get texture
+    virtual IOGTexture* GetTexture () { return m_pTexture; }
+
+    // Get material
+    virtual IOGMaterial* GetMaterial () { return m_pMaterial; }
 
     // Get ray intersection
     virtual bool GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos);
@@ -70,6 +74,9 @@ protected:
     IOGAabb*            m_aabb;
     IOGVertexBuffers*   m_buffer;
     std::vector<OGFace> m_faces;
+    OGMeshCfg*          m_pCfg;
+    IOGTexture*         m_pTexture;
+    IOGMaterial*        m_pMaterial;
 
     IOGRenderer*    m_pRenderer;
 };

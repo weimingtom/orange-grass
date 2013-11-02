@@ -14,7 +14,6 @@
 #include "IOGRenderer.h"
 #include "IOGSettingsReader.h"
 #include "ogmesh.h"
-#include <map>
 #include <list>
 #include "ogmodelconfig.h"
 #include "ogmodelskeleton.h"
@@ -44,12 +43,6 @@ public:
     // Get model alias
     virtual const std::string& GetAlias () const { return m_ResourceAlias; }
 
-    // Get texture
-    virtual IOGTexture* GetTexture () { return m_pTexture; }
-
-    // Get material
-    virtual IOGMaterial* GetMaterial () { return m_pMaterial; }
-
     // Get model skeleton
     virtual IOGModelSkeleton* GetModelSkeleton () { return &m_Skeleton; }
 
@@ -67,8 +60,6 @@ public:
 
 private:
 
-    IOGTexture*                     m_pTexture;
-    IOGMaterial*                    m_pMaterial;
     IOGAabb                         m_AABB;
     IOGRenderer*                    m_pRenderer;
     COGModelConfig                  m_Cfg;

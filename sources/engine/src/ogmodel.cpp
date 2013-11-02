@@ -13,8 +13,6 @@
 
 
 COGModel::COGModel() 
-    : m_pTexture(NULL)
-    , m_pMaterial(NULL)
 {
     m_pRenderer = GetRenderer();
 }
@@ -44,15 +42,16 @@ bool COGModel::Load ()
     m_Cfg.LoadConfig(m_ResourceFile);
 
     CPVRTModelPOD* pScene = new CPVRTModelPOD();
-    if (!pScene->ReadFromFile(m_Cfg.GetMeshConfig()->mesh_file.c_str()))
+    if (!pScene->ReadFromFile(m_Cfg.GetModelConfig()->model_file.c_str()))
     {
-        OG_LOG_ERROR("Failed to load mesh from file %s", m_Cfg.GetMeshConfig()->mesh_file.c_str());
+        OG_LOG_ERROR("Failed to load mesh from file %s", m_Cfg.GetModelConfig()->model_file.c_str());
         return false;
     }
     pScene->SetFrame(0);
 
     m_Meshes.reserve(pScene->nNumMeshNode);
     m_Skeleton.SetNumFrames(pScene->nNumFrame);
+    unsigned int numMeshes = 0;
 
     for(unsigned int i = 0; i < pScene->nNumNode; ++i)
     {
@@ -88,10 +87,11 @@ bool COGModel::Load ()
             default:
                 {
                     COGMesh* pMesh = new COGMesh();
-                    if (!pMesh->Load(subMeshName.c_str(), sbmtype, i/*pNode->nIdx*/, Mesh.pInterleaved, Mesh.nNumVertex, 
+                    OGMeshCfg* pMeshCfg = &m_Cfg.GetModelConfig()->mesh_cfg[numMeshes];
+                    if (!pMesh->Load(pMeshCfg, subMeshName.c_str(), sbmtype, i, Mesh.pInterleaved, Mesh.nNumVertex, 
                         Mesh.nNumFaces, Mesh.sVertex.nStride, Mesh.sFaces.pData, PVRTModelPODCountIndices(Mesh)))
                     {
-                        OG_LOG_ERROR("Failed to load model's mesh %s", m_Cfg.GetMeshConfig()->mesh_file.c_str());
+                        OG_LOG_ERROR("Failed to load model's mesh %s", m_Cfg.GetModelConfig()->model_file.c_str());
                         OG_SAFE_DELETE(pMesh);
                         return false;
                     }
@@ -103,6 +103,7 @@ bool COGModel::Load ()
                     pMesh->CalculateGeometry(mModel);
                     m_AABB.EmbraceAABB(pMesh->GetAABB());
                     m_Meshes.push_back(pMesh);
+                    ++numMeshes;
                 }
                 break;
             }
@@ -117,10 +118,6 @@ bool COGModel::Load ()
     OG_SAFE_DELETE(pScene);
 
     OGModelNode* pRootNode = m_Skeleton.BuildSG();
-
-    m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, m_Cfg.GetMaterialConfig()->texture_alias.c_str());
-    m_pMaterial = m_pRenderer->CreateMaterial();
-    m_pMaterial->LoadConfig(m_Cfg.GetMaterialConfig());
 
     m_LoadState = OG_RESSTATE_LOADED;
     return true;
@@ -142,8 +139,6 @@ void COGModel::Unload ()
         return;
     }
 
-    OG_SAFE_DELETE(m_pMaterial);
-
     std::for_each(m_Meshes.begin(), m_Meshes.end(), [](IOGMesh* m) { m->Unload(); OG_SAFE_DELETE(m); });
     m_Meshes.clear();
     std::for_each(m_ActivePoints.begin(), m_ActivePoints.end(), [](IOGActivePoint* p) { OG_SAFE_DELETE(p); });
@@ -158,12 +153,7 @@ void COGModel::Unload ()
 // Render mesh.
 void COGModel::Render (const OGMatrix& _mWorld, unsigned int _MeshId)
 {
-    OGBlendType blend = m_pMaterial->GetBlend();
-    if (m_Meshes[_MeshId]->GetType() == OG_SUBMESH_PROPELLER)
-    {
-        blend = OG_BLEND_ALPHABLEND;
-    }
-    m_pRenderer->Render(m_pTexture, m_pMaterial, m_Meshes[_MeshId]->GetVertexBuffer(), _mWorld, blend, OG_SHADER_MODEL);
+    m_Meshes[_MeshId]->Render(_mWorld);
 }
 
 

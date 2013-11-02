@@ -228,9 +228,9 @@ void CViewerScene::SetupModel(ResourceItem* _pModelItem)
     }
 
     const char* pModelAlias = _pModelItem->name;
-	if (pModelAlias != NULL)
-	{
-		m_pCurActor = m_pActorMgr->CreateActor(pModelAlias, OGVec3(0,0,0), OGVec3(0,0,0), OGVec3(1,1,1));
+    if (pModelAlias != NULL)
+    {
+        m_pCurActor = m_pActorMgr->CreateActor(pModelAlias, OGVec3(0,0,0), OGVec3(0,0,0), OGVec3(1,1,1));
         m_pActorMgr->AddActor(m_pCurActor);
         m_pCurActor->Activate(true);
 
@@ -245,20 +245,23 @@ void CViewerScene::SetupModel(ResourceItem* _pModelItem)
                 cmd.SetEventCustomData(MeshLoadEventData(subMeshes[n]->GetName(), (unsigned int)n, _pModelItem->GetId()));
                 GetEventHandlersTable()->FireEvent(EVENTID_MESHLOAD, &cmd);
             }
-        }
 
-        IOGMaterial* pMaterial = pModel->GetMaterial();
-        if (pMaterial)
-        {
-            CommonToolEvent<MtlLoadEventData> cmd(EVENTID_MTLLOAD);
-            cmd.SetEventCustomData(MtlLoadEventData(
-                pMaterial->GetAmbient().x,
-                pMaterial->GetDiffuse().x,
-                pMaterial->GetSpecular().x,
-                pMaterial->GetBlend()));
-            GetEventHandlersTable()->FireEvent(EVENTID_MTLLOAD, &cmd);
+            if (numSubMeshes > 0)
+            {
+                IOGMaterial* pMaterial = subMeshes[0]->GetMaterial();
+                if (pMaterial)
+                {
+                    CommonToolEvent<MtlLoadEventData> cmd(EVENTID_MTLLOAD);
+                    cmd.SetEventCustomData(MtlLoadEventData(
+                        pMaterial->GetAmbient().x,
+                        pMaterial->GetDiffuse().x,
+                        pMaterial->GetSpecular().x,
+                        pMaterial->GetBlend()));
+                    GetEventHandlersTable()->FireEvent(EVENTID_MTLLOAD, &cmd);
+                }
+            }
         }
-	}
+    }
 }
 
 
@@ -268,16 +271,19 @@ void CViewerScene::AdjustMaterial(MtlType _type, float _val)
     if (m_pCurActor)
     {
         IOGModel* pModel = m_pResourceMgr->GetModel(OG_RESPOOL_GAME, m_pCurActor->GetParams()->model_alias);
+        const std::vector<IOGMesh*>& subMeshes = pModel->GetMeshes();
+        IOGMaterial* pMaterial = subMeshes[0]->GetMaterial();
+
         switch(_type)
         {
         case MTLTYPE_DIF:
-            pModel->GetMaterial()->SetDiffuse(OGVec4(_val, _val, _val, 1.0f));
+            pMaterial->SetDiffuse(OGVec4(_val, _val, _val, 1.0f));
             break;
         case MTLTYPE_AMB:
-            pModel->GetMaterial()->SetAmbient(OGVec4(_val, _val, _val, 1.0f));
+            pMaterial->SetAmbient(OGVec4(_val, _val, _val, 1.0f));
             break;
         case MTLTYPE_SPC:
-            pModel->GetMaterial()->SetSpecular(OGVec4(_val, _val, _val, 1.0f));
+            pMaterial->SetSpecular(OGVec4(_val, _val, _val, 1.0f));
             break;
         }
     }

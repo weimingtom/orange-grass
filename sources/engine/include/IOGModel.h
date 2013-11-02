@@ -19,6 +19,13 @@
 #include <vector>
 
 
+struct OGModelCfg
+{
+    std::string             model_file;
+    std::vector<OGMeshCfg>  mesh_cfg;
+};
+
+
 class IOGModel
 {
 public:
@@ -29,12 +36,6 @@ public:
 
     // Save params
     virtual bool SaveParams () = 0;
-
-    // Get texture
-    virtual IOGTexture* GetTexture () = 0;
-
-    // Get material
-    virtual IOGMaterial* GetMaterial () = 0;
 
     // Get model skeleton
     virtual IOGModelSkeleton* GetModelSkeleton () = 0;

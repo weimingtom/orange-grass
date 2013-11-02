@@ -10,10 +10,9 @@
 #include "ogmodelconfig.h"
 
 
-COGModelConfig::COGModelConfig() :
-m_pMaterialCfg (NULL),
-    m_pAnimationCfg (NULL),
-    m_pMeshCfg (NULL)
+COGModelConfig::COGModelConfig() 
+    : m_pAnimationCfg (NULL)
+    , m_pModelCfg(NULL)
 {
     m_pReader = GetSettingsReader();
 }
@@ -21,9 +20,8 @@ m_pMaterialCfg (NULL),
 
 COGModelConfig::~COGModelConfig()
 {
-    OG_SAFE_DELETE (m_pMaterialCfg);
     OG_SAFE_DELETE (m_pAnimationCfg);
-    OG_SAFE_DELETE (m_pMeshCfg);
+    OG_SAFE_DELETE (m_pModelCfg);
 }
 
 
@@ -39,44 +37,50 @@ bool COGModelConfig::LoadConfig (const std::string& _ConfigFile)
     m_ConfigFile = _ConfigFile;
 
     // delete old configs
-    OG_SAFE_DELETE (m_pMaterialCfg);
     OG_SAFE_DELETE (m_pAnimationCfg);
-    OG_SAFE_DELETE (m_pMeshCfg);
+    OG_SAFE_DELETE (m_pModelCfg);
 
-    IOGGroupNode* pMeshNode = m_pReader->OpenGroupNode(pSource, NULL, "Mesh");
-    if (pMeshNode != NULL)
+    IOGGroupNode* pModelNode = m_pReader->OpenGroupNode(pSource, NULL, "Model");
+    if (pModelNode != NULL)
     {
-        m_pMeshCfg = new OGMeshCfg;
-        m_pMeshCfg->mesh_file = GetResourceMgr()->GetFullPath(m_pReader->ReadStringParam(pMeshNode, "file"));
+        m_pModelCfg = new OGModelCfg;
+        m_pModelCfg->model_file = GetResourceMgr()->GetFullPath(m_pReader->ReadStringParam(pModelNode, "file"));
+
+        IOGGroupNode* pMeshNode = m_pReader->OpenGroupNode(pSource, pModelNode, "Mesh");
+        while (pMeshNode != NULL)
+        {
+            OGMeshCfg meshCfg;
+            IOGGroupNode* pMaterialNode = m_pReader->OpenGroupNode(pSource, pMeshNode, "Material");
+            if (pMaterialNode != NULL)
+            {
+                meshCfg.material_cfg.texture_alias = m_pReader->ReadStringParam(pMaterialNode, "texture");
+                meshCfg.material_cfg.blend_type = ParseBlendType(m_pReader->ReadStringParam(pMaterialNode, "blend"));
+                IOGGroupNode* pAmbientNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Ambient");
+                if (pAmbientNode)
+                {
+                    meshCfg.material_cfg.material_ambient = m_pReader->ReadVec4Param(pAmbientNode, "r", "g", "b", "a");
+                    m_pReader->CloseGroupNode(pAmbientNode);
+                }
+                IOGGroupNode* pDiffuseNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Diffuse");
+                if (pDiffuseNode)
+                {
+                    meshCfg.material_cfg.material_diffuse = m_pReader->ReadVec4Param(pDiffuseNode, "r", "g", "b", "a");
+                    m_pReader->CloseGroupNode(pDiffuseNode);
+                }
+                IOGGroupNode* pSpecularNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Specular");
+                if (pSpecularNode)
+                {
+                    meshCfg.material_cfg.material_specular = m_pReader->ReadVec4Param(pSpecularNode, "r", "g", "b", "a");
+                    m_pReader->CloseGroupNode(pSpecularNode);
+                }
+                m_pReader->CloseGroupNode(pMaterialNode);
+            }
+            m_pModelCfg->mesh_cfg.push_back(meshCfg);
+            pMeshNode = m_pReader->ReadNextNode(pMeshNode);
+        }
         m_pReader->CloseGroupNode(pMeshNode);
     }
-
-    IOGGroupNode* pMaterialNode = m_pReader->OpenGroupNode(pSource, NULL, "Material");
-    if (pMaterialNode != NULL)
-    {
-        m_pMaterialCfg = new OGMaterialCfg;
-        m_pMaterialCfg->texture_alias = m_pReader->ReadStringParam(pMaterialNode, "texture");
-        m_pMaterialCfg->blend_type = ParseBlendType(m_pReader->ReadStringParam(pMaterialNode, "blend"));
-        IOGGroupNode* pAmbientNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Ambient");
-        if (pAmbientNode)
-        {
-            m_pMaterialCfg->material_ambient = m_pReader->ReadVec4Param(pAmbientNode, "r", "g", "b", "a");
-            m_pReader->CloseGroupNode(pAmbientNode);
-        }
-        IOGGroupNode* pDiffuseNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Diffuse");
-        if (pDiffuseNode)
-        {
-            m_pMaterialCfg->material_diffuse = m_pReader->ReadVec4Param(pDiffuseNode, "r", "g", "b", "a");
-            m_pReader->CloseGroupNode(pDiffuseNode);
-        }
-        IOGGroupNode* pSpecularNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Specular");
-        if (pSpecularNode)
-        {
-            m_pMaterialCfg->material_specular = m_pReader->ReadVec4Param(pSpecularNode, "r", "g", "b", "a");
-            m_pReader->CloseGroupNode(pSpecularNode);
-        }
-        m_pReader->CloseGroupNode(pMaterialNode);
-    }
+    m_pReader->CloseGroupNode(pModelNode);
 
     IOGGroupNode* pAnimationsNode = m_pReader->OpenGroupNode(pSource, NULL, "Animations");
     if (pAnimationsNode)
@@ -105,53 +109,8 @@ bool COGModelConfig::LoadConfig (const std::string& _ConfigFile)
 // Save params
 bool COGModelConfig::SaveConfig ()
 {
-    IOGSettingsSource* pSource = m_pReader->OpenSource(m_ConfigFile);
-    if (!pSource)
-    {
-        OG_LOG_ERROR("Failed to load model config file %s", m_ConfigFile.c_str());
-        return false;
-    }
-
-    if (m_pMaterialCfg)
-    {
-        IOGGroupNode* pMaterialNode = m_pReader->OpenGroupNode(pSource, NULL, "Material");
-        if (pMaterialNode != NULL)
-        {
-            IOGGroupNode* pAmbientNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Ambient");
-            if (pAmbientNode)
-            {
-                m_pReader->WriteVec4Param(pAmbientNode, "r", "g", "b", "a", m_pMaterialCfg->material_ambient);
-                m_pReader->CloseGroupNode(pAmbientNode);
-            }
-            IOGGroupNode* pDiffuseNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Diffuse");
-            if (pDiffuseNode)
-            {
-                m_pReader->WriteVec4Param(pDiffuseNode, "r", "g", "b", "a", m_pMaterialCfg->material_diffuse);
-                m_pReader->CloseGroupNode(pDiffuseNode);
-            }
-            IOGGroupNode* pSpecularNode = m_pReader->OpenGroupNode(pSource, pMaterialNode, "Specular");
-            if (pSpecularNode)
-            {
-                m_pReader->WriteVec4Param(pSpecularNode, "r", "g", "b", "a", m_pMaterialCfg->material_specular);
-                m_pReader->CloseGroupNode(pSpecularNode);
-            }
-        }
-    }
-
-    if (!m_pReader->SaveSource(pSource, m_ConfigFile))
-    {
-        OG_LOG_ERROR("Failed to save model config file %s", m_ConfigFile.c_str());
-        return false;
-    }
-
+    // TODO: implement
     return true;
-}
-
-
-// Get material config
-OGMaterialCfg* COGModelConfig::GetMaterialConfig ()
-{
-    return m_pMaterialCfg;
 }
 
 
@@ -162,21 +121,10 @@ OGAnimationCfg* COGModelConfig::GetAnimationConfig ()
 }
 
 
-// Get mesh config
-OGMeshCfg* COGModelConfig::GetMeshConfig ()
+// Get model config
+OGModelCfg* COGModelConfig::GetModelConfig ()
 {
-    return m_pMeshCfg;
-}
-
-
-// Update material config
-void COGModelConfig::UpdateMaterialConfig (const OGMaterialCfg& _cfg)
-{
-    if (!m_pMaterialCfg)
-    {
-        m_pMaterialCfg = new OGMaterialCfg;
-    }
-    *m_pMaterialCfg = _cfg;
+    return m_pModelCfg;
 }
 
 
@@ -191,12 +139,12 @@ void COGModelConfig::UpdateAnimationConfig (const OGAnimationCfg& _cfg)
 }
 
 
-// Update mesh config
-void COGModelConfig::UpdateMeshConfig (const OGMeshCfg& _cfg)
+// Update model config
+void COGModelConfig::UpdateModelConfig (const OGModelCfg& _cfg)
 {
-    if (!m_pMeshCfg)
+    if (!m_pModelCfg)
     {
-        m_pMeshCfg = new OGMeshCfg;
+        m_pModelCfg = new OGModelCfg;
     }
-    *m_pMeshCfg = _cfg;
+    *m_pModelCfg = _cfg;
 }

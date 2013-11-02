@@ -11,12 +11,13 @@
 
 #include "IOGGeometry.h"
 #include "IOGVertexBuffers.h"
+#include "IOGMaterial.h"
 #include <vector>
 
 
 struct OGMeshCfg
 {
-    std::string mesh_file;
+    OGMaterialCfg   material_cfg;
 };
 
 
@@ -43,8 +44,11 @@ public:
     // Get combined AABB
     virtual const IOGAabb& GetAABB () const = 0;
 
-    // Get vertex buffer
-    virtual IOGVertexBuffers* GetVertexBuffer () = 0;
+    // Get texture
+    virtual IOGTexture* GetTexture () = 0;
+
+    // Get material
+    virtual IOGMaterial* GetMaterial () = 0;
 
     // Get ray intersection
     virtual bool GetRayIntersection (const OGVec3& _vRayPos, const OGVec3& _vRayDir, OGVec3* _pOutPos) = 0;

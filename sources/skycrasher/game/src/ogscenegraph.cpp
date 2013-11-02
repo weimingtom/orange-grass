@@ -33,11 +33,7 @@ void COGSceneGraph::Clear ()
     OG_SAFE_DELETE(m_pLandscapeNode);
     ClearNodesList(m_NodesList);
     ClearNodesList(m_EffectNodesList);
-    TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
-    for (; s_iter != m_StaticNodes.end(); ++s_iter)
-    {
-        ClearNodesList(s_iter->second);
-    }
+    ClearNodesList(m_StaticNodes);
 }
 
 
@@ -73,17 +69,9 @@ void COGSceneGraph::AddNode (IOGSgNode* _pNode)
 
 
 // Add static scene graph node
-void COGSceneGraph::AddStaticNode (IOGSgNode* _pNode, IOGTexture* _pTexture)
+void COGSceneGraph::AddStaticNode (IOGSgNode* _pNode)
 {
-    TStaticNodesMap::iterator entry = m_StaticNodes.find(_pTexture);
-    if (entry != m_StaticNodes.end())
-    {
-        entry->second.push_back(_pNode);
-    }
-    else
-    {
-        m_StaticNodes[_pTexture].push_back(_pNode);
-    }
+    m_StaticNodes.push_back(_pNode);
 }
 
 
@@ -113,12 +101,8 @@ void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
     case OG_RENDERABLE_MODEL:
         {
             RemoveNodeFromList(_pNode, m_NodesList);
-            TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
-            for (; s_iter != m_StaticNodes.end(); ++s_iter)
-            {
-                if (RemoveNodeFromList(_pNode, s_iter->second))
-                    return;
-            }
+            if (RemoveNodeFromList(_pNode, m_StaticNodes))
+                return;
         }
         break;
 
@@ -141,7 +125,8 @@ void COGSceneGraph::RemoveNode (IOGSgNode* _pNode)
 // Update scene graph.
 void COGSceneGraph::Update (unsigned long _ElapsedTime)
 {
-    m_pLandscapeNode->Update(_ElapsedTime);
+    if (m_pLandscapeNode)
+        m_pLandscapeNode->Update(_ElapsedTime);
 
     TNodesList::iterator iter = m_EffectNodesList.begin();
     for (; iter != m_EffectNodesList.end(); ++iter)
@@ -156,11 +141,7 @@ void COGSceneGraph::Update (unsigned long _ElapsedTime)
 void COGSceneGraph::RenderScene (IOGCamera* _pCamera)
 {
     RenderNodesList(_pCamera, m_NodesList, false);
-    TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
-    for (; s_iter != m_StaticNodes.end(); ++s_iter)
-    {
-        RenderNodesList(_pCamera, s_iter->second, false);
-    }
+    RenderNodesList(_pCamera, m_StaticNodes, false);
 }
 
 
@@ -228,11 +209,7 @@ void COGSceneGraph::RenderAll (IOGCamera* _pCamera)
     }
 
     RenderNodesList(_pCamera, m_NodesList, true);
-    TStaticNodesMap::iterator s_iter= m_StaticNodes.begin();
-    for (; s_iter != m_StaticNodes.end(); ++s_iter)
-    {
-        RenderNodesList(_pCamera, s_iter->second, true);
-    }
+    RenderNodesList(_pCamera, m_StaticNodes, true);
 }
 
 
