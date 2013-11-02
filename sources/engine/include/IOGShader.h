@@ -58,7 +58,7 @@ public:
     virtual void SetProjectionMatrix (const OGMatrix& _mProj) = 0;
 
     // set alpha test
-    virtual void EnableAlphaTest (bool _bEnabled) = 0;    
+    virtual void EnableAlphaTest (bool _bEnabled) = 0;
 
     // set light and fog
     virtual void SetLighting (IOGFog* _pFog, IOGLightMgr* _pLightMgr) = 0;

@@ -49,7 +49,7 @@ public:
     virtual void SetCamera (IOGCamera* _pCamera) {}
 
     // set alpha test
-    virtual void EnableAlphaTest (bool _bEnabled);
+    virtual void EnableAlphaTest (bool _bEnabled) {}
 
     // get shader id
     virtual OGShaderID GetShaderID () const { return m_Id; }
@@ -64,10 +64,6 @@ protected:
 
     OGShaderID  m_Id;
 
-    // alpha test
-    float       m_fAlphaRef;
-    bool        m_bAlphaTest;
-
     unsigned int m_uiVertShader;
     unsigned int m_uiFragShader;
     unsigned int m_uiId;
@@ -79,7 +75,6 @@ protected:
     unsigned int m_uiFogRcpDiffLoc;
     unsigned int m_uiFogColorLoc;
     unsigned int m_uiFogEnabled;
-    unsigned int m_uiAlphaReference;
 
     unsigned int m_uiMaterialAmbient;
     unsigned int m_uiMaterialDiffuse;

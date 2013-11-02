@@ -97,7 +97,7 @@ void COGTransparentModelShader::Setup ()
     glUniform1f(m_uiFogEndLoc, fFogEnd);
     glUniform1f(m_uiFogRcpDiffLoc, fFogRcpEndStartDiff);
     glUniform3fv(m_uiFogColorLoc, 1, OGVec3(vFogColor.x, vFogColor.y, vFogColor.z).ptr());
-    glUniform1f(m_uiFogEnabled, m_pFog->IsEnabled() ? 1.0f : 0.0f);
+    glUniform1i(m_uiFogEnabled, m_pFog->IsEnabled());
 }
 
 

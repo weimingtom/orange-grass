@@ -12,7 +12,7 @@
 #include "ogshader.h"
 
 
-COGModelShader::COGModelShader () : m_bAlphaTest(false)
+COGModelShader::COGModelShader ()
 {
 }
 
@@ -43,8 +43,6 @@ bool COGModelShader::Load (OGShaderID _Id, const std::string& _VertShader, const
     m_uiFogRcpDiffLoc = glGetUniformLocation(m_uiId, "FogRcpEndStartDiff");
     m_uiFogColorLoc = glGetUniformLocation(m_uiId, "FogColor");
     m_uiFogEnabled = glGetUniformLocation(m_uiId, "FogEnabled");
-
-    m_uiAlphaReference = glGetUniformLocation(m_uiId, "AlphaReference");
 
     m_uiMaterialAmbient = glGetUniformLocation(m_uiId, "MaterialAmbient");
     m_uiMaterialDiffuse = glGetUniformLocation(m_uiId, "MaterialDiffuse");
@@ -138,18 +136,4 @@ void COGModelShader::SetMaterial (IOGMaterial* _pMaterial)
 
     glUniform3fv(m_uiMaterialAmbient, 1, OGVec3(vAmbient.x, vAmbient.y, vAmbient.z).ptr());
     glUniform3fv(m_uiMaterialDiffuse, 1, OGVec3(vDiffuse.x, vDiffuse.y, vDiffuse.z).ptr());
-}
-
-
-// set alpha test
-void COGModelShader::EnableAlphaTest (bool _bEnabled)
-{
-    m_bAlphaTest = _bEnabled;
-    if (m_bAlphaTest)
-    {
-        m_fAlphaRef = 0.5f;
-    }
-    else
-        m_fAlphaRef = 0;
-    glUniform1f(m_uiAlphaReference, m_fAlphaRef);
 }

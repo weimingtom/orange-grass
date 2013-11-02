@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <Model file="Models/units/helicopter_big/helicopter_big.POD">
-    <Mesh>
+    <Mesh shader="model">
         <Material texture="units" blend="solid">
             <Ambient r="0.7" g="0.7" b="0.7" a="1" />
             <Diffuse r="0.98" g="0.98" b="0.98" a="1" />
             <Specular r="0.61" g="0.61" b="0.61" a="1" />
         </Material>
     </Mesh>
-    <Mesh>
+    <Mesh shader="model">
         <Material texture="units" blend="blend">
             <Ambient r="0.7" g="0.7" b="0.7" a="1" />
             <Diffuse r="0.98" g="0.98" b="0.98" a="1" />

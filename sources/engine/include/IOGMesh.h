@@ -12,11 +12,13 @@
 #include "IOGGeometry.h"
 #include "IOGVertexBuffers.h"
 #include "IOGMaterial.h"
+#include "IOGShader.h"
 #include <vector>
 
 
 struct OGMeshCfg
 {
+    OGShaderID      shaderID;
     OGMaterialCfg   material_cfg;
 };
 

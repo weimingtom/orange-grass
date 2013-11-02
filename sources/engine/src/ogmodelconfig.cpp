@@ -50,6 +50,8 @@ bool COGModelConfig::LoadConfig (const std::string& _ConfigFile)
         while (pMeshNode != NULL)
         {
             OGMeshCfg meshCfg;
+            meshCfg.shaderID = ParseShaderId(m_pReader->ReadStringParam(pMeshNode, "shader"));
+
             IOGGroupNode* pMaterialNode = m_pReader->OpenGroupNode(pSource, pMeshNode, "Material");
             if (pMaterialNode != NULL)
             {
