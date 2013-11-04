@@ -31,7 +31,7 @@ bool COGModelConfig::LoadConfig (const std::string& _ConfigFile)
     IOGSettingsSource* pSource = m_pReader->OpenSource(_ConfigFile);
     if (!pSource)
     {
-        OG_LOG_ERROR("Failed to load model config file %s", _ConfigFile.c_str());
+        //OG_LOG_ERROR("Failed to load model config file %s", _ConfigFile.c_str());
         return false;
     }
     m_ConfigFile = _ConfigFile;

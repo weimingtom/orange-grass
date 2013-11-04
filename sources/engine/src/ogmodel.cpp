@@ -138,10 +138,15 @@ void COGModel::Unload ()
     {
         return;
     }
-
-    std::for_each(m_Meshes.begin(), m_Meshes.end(), [](IOGMesh* m) { m->Unload(); OG_SAFE_DELETE(m); });
+    for (auto it = m_Meshes.begin(); it != m_Meshes.end(); ++it)
+    {
+        (*it)->Unload(); OG_SAFE_DELETE((*it));
+    }
     m_Meshes.clear();
-    std::for_each(m_ActivePoints.begin(), m_ActivePoints.end(), [](IOGActivePoint* p) { OG_SAFE_DELETE(p); });
+    for( auto it = m_ActivePoints.begin(); it != m_ActivePoints.end(); ++it)
+    {
+        OG_SAFE_DELETE(*it);
+    }
     m_ActivePoints.clear();
 
     m_Skeleton.Clear();
