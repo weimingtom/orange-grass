@@ -47,4 +47,5 @@ LOCAL_SRC_FILES +=  $(ENGINEPATH)/ogcamera.cpp \
                     $(ENGINEPATH)/ogtexture.cpp \
                     $(ENGINEPATH)/ogvector.cpp \
                     $(ENGINEPATH)/ogvertexbuffers.cpp \
+                    $(ENGINEPATH)/ogdynvertexbuffers.cpp \
                     $(ENGINEPATH)/OrangeGrass.cpp
