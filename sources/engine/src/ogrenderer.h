@@ -47,6 +47,9 @@ public:
         const void* _pIndexData, 
         unsigned int _NumIndices);
 
+    // Create vertex buffer for effects.
+    virtual IOGDynVertexBuffers* CreateDynVertexBuffer (unsigned int _NumVertices);
+
     // add rendering command.
     virtual void SetTexture (IOGTexture* _pTexture);
 
@@ -86,11 +89,8 @@ public:
     // finish rendering mode.
     virtual void FinishRenderMode();
 
-    // add rendering command.
-    virtual void RenderMesh (void* _pMesh);
-
     // add render job.
-    virtual void Render (
+    virtual void RenderStatic (
         IOGTexture* _pTexture,
         IOGMaterial* _pMaterial,
         IOGVertexBuffers* _pMesh,

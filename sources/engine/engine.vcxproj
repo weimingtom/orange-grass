@@ -79,6 +79,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\ogdynvertexbuffers.cpp" />
     <ClCompile Include="src\ogmodelskeleton.cpp" />
     <ClCompile Include="src\ogmodelconfig.cpp" />
     <ClCompile Include="src\OrangeGrass.cpp" />
@@ -151,10 +152,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\IOGAnimationManager.h" />
+    <ClInclude Include="include\IOGDynVertexBuffers.h" />
     <ClInclude Include="include\IOGGeometry.h" />
     <ClInclude Include="include\IOGMesh.h" />
     <ClInclude Include="include\IOGModelSkeleton.h" />
     <ClInclude Include="include\IOGRenderTypes.h" />
+    <ClInclude Include="src\ogdynvertexbuffers.h" />
     <ClInclude Include="src\ogmodelskeleton.h" />
     <ClInclude Include="src\ogfog.h" />
     <ClInclude Include="src\oglight.h" />

@@ -72,7 +72,7 @@ void COGMesh::Unload ()
 void COGMesh::Render (const OGMatrix& _mWorld)
 {
     OGBlendType blend = m_pMaterial->GetBlend();
-    m_pRenderer->Render(m_pTexture, m_pMaterial, m_buffer, _mWorld, blend, m_pCfg->shaderID);
+    m_pRenderer->RenderStatic(m_pTexture, m_pMaterial, m_buffer, _mWorld, blend, m_pCfg->shaderID);
 }
 
 

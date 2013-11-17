@@ -275,6 +275,9 @@
     <ClCompile Include="src\ogmodelskeleton.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
+    <ClCompile Include="src\ogdynvertexbuffers.cpp">
+      <Filter>Source Files\Graphics\Renderer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ogfog.h">
@@ -588,6 +591,12 @@
     </ClInclude>
     <ClInclude Include="src\ogmodelskeleton.h">
       <Filter>Source Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogdynvertexbuffers.h">
+      <Filter>Source Files\Graphics\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="include\IOGDynVertexBuffers.h">
+      <Filter>Interface\Graphics</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

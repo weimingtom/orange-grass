@@ -15,6 +15,7 @@
 #include "IOGCamera.h"
 #include "IOGFog.h"
 #include "IOGVertexBuffers.h"
+#include "IOGDynVertexBuffers.h"
 #include "IOGShader.h"
 
 
@@ -32,7 +33,10 @@ public:
         unsigned int _Height,
         float _fZNear,
         float _fZFar,
-        float _fFOV	) = 0;
+        float _fFOV) = 0;
+
+    // Create vertex buffer for effects.
+    virtual IOGDynVertexBuffers* CreateDynVertexBuffer (unsigned int _NumVertices) = 0;
 
     // Create vertex buffer for mesh.
     virtual IOGVertexBuffers* CreateVertexBuffer (
@@ -67,11 +71,8 @@ public:
     // get projection matrix.
     virtual void GetProjectionMatrix (OGMatrix& _mProjection) = 0;
 
-    // add rendering command.
-    virtual void RenderMesh (void* _pMesh) = 0;
-
     // add render job.
-    virtual void Render (
+    virtual void RenderStatic (
         IOGTexture* _pTexture,
         IOGMaterial* _pMaterial,
         IOGVertexBuffers* _pMesh,

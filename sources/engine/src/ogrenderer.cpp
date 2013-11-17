@@ -15,6 +15,7 @@
 #include "ogmaterial.h"
 #include "ogsprite.h"
 #include "ogvertexbuffers.h"
+#include "ogdynvertexbuffers.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -152,6 +153,13 @@ IOGVertexBuffers* COGRenderer::CreateVertexBuffer (
     unsigned int _NumIndices)
 {
     return new COGVertexBuffers(_pVertexData, _NumVertices, _NumFaces, _Stride, _pIndexData, _NumIndices);
+}
+
+
+// Create vertex buffer for effects.
+IOGDynVertexBuffers* COGRenderer::CreateDynVertexBuffer (unsigned int _NumVertices)
+{
+    return new COGDynVertexBuffers(_NumVertices);
 }
 
 
@@ -344,8 +352,11 @@ void COGRenderer::StartRenderMode(OGRenderMode _Mode)
         m_pCurShader->SetCamera(m_pCamera);
         m_pCurShader->SetProjectionMatrix(m_mProjection);
         m_pCurShader->SetViewMatrix(m_mView);
+        MatrixIdentity(m_mWorld);
+        m_pCurShader->SetModelMatrix(m_mWorld);
         m_pCurShader->SetLighting(m_pFog, m_pLightMgr);
         m_pCurShader->Setup();
+        m_pCurShader->Apply();
 
         EnableLight(false);
         glEnableVertexAttribArray(0);
@@ -481,23 +492,8 @@ void COGRenderer::FinishRenderMode()
 }
 
 
-// add rendering command.
-void COGRenderer::RenderMesh (void* _pMesh)
-{
-    m_pCurShader->SetModelMatrix(m_mWorld);
-    m_pCurShader->Apply();
-
-    if ((IOGVertexBuffers*)_pMesh != m_pCurMesh)
-    {
-        m_pCurMesh = (IOGVertexBuffers*)_pMesh;
-        m_pCurMesh->Apply();
-    }
-    m_pCurMesh->Render();
-}
-
-
 // add render job.
-void COGRenderer::Render (
+void COGRenderer::RenderStatic (
     IOGTexture* _pTexture,
     IOGMaterial* _pMaterial,
     IOGVertexBuffers* _pMesh,
