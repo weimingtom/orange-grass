@@ -12,7 +12,9 @@
 #include "ogshader.h"
 
 
-COGShadowedSceneShader::COGShadowedSceneShader () : m_pFog(NULL)
+COGShadowedSceneShader::COGShadowedSceneShader () 
+    : m_pFog(NULL)
+    , m_pLightMgr(NULL)
 {
 }
 
@@ -37,11 +39,18 @@ bool COGShadowedSceneShader::Load (OGShaderID _Id, const std::string& _VertShade
     m_uiMVPMatrixLoc = glGetUniformLocation(m_uiId, "MVPMatrix");
     m_uiMVMatrixLoc = glGetUniformLocation(m_uiId, "MVMatrix");
     m_uiShadowMVPMatrixLoc = glGetUniformLocation(m_uiId, "ShadowMVPMatrix");
+    m_uiProjMatrixLoc = glGetUniformLocation(m_uiId, "ProjMatrix");
+    m_uiLightDirLoc = glGetUniformLocation(m_uiId, "LightDirection");
+    m_uiTextureLoc = glGetUniformLocation(m_uiId, "sTexture");
+    m_uiShadowTextureLoc = glGetUniformLocation(m_uiId, "sShadowTexture");
 
     m_uiFogEndLoc = glGetUniformLocation(m_uiId, "FogEnd");
     m_uiFogRcpDiffLoc = glGetUniformLocation(m_uiId, "FogRcpEndStartDiff");
     m_uiFogColorLoc = glGetUniformLocation(m_uiId, "FogColor");
     m_uiFogEnabled = glGetUniformLocation(m_uiId, "FogEnabled");
+
+    m_uiMaterialAmbient = glGetUniformLocation(m_uiId, "MaterialAmbient");
+    m_uiMaterialDiffuse = glGetUniformLocation(m_uiId, "MaterialDiffuse");
 
     m_Id = _Id;
 
@@ -68,6 +77,15 @@ void COGShadowedSceneShader::Apply ()
     glUniformMatrix4fv(m_uiMVPMatrixLoc, 1, GL_FALSE, m_mMVP.f);
 
     glUniformMatrix4fv(m_uiShadowMVPMatrixLoc, 1, GL_FALSE, m_mShadowMVP.f);
+
+    glUniformMatrix4fv(m_uiProjMatrixLoc, 1, GL_FALSE, m_mProjection.f);
+
+    OGMatrix mInvModel;
+    MatrixInverse(mInvModel, m_mModel);
+    OGVec3 vTransformedLightDir;
+    MatrixVec3Multiply(vTransformedLightDir, m_pLightMgr->GetLight(0)->vPosition, mInvModel);
+    vTransformedLightDir.normalize();
+    glUniform3fv(m_uiLightDirLoc, 1, vTransformedLightDir.ptr());
 }
 
 
@@ -76,16 +94,18 @@ void COGShadowedSceneShader::Setup ()
 {
     glUseProgram(m_uiId);
 
+    glUniform1i(m_uiTextureLoc, 0);
+    glUniform1i(m_uiShadowTextureLoc, 1);
+
     float fFogStart = m_pFog->GetStart();
     float fFogEnd = m_pFog->GetEnd();
     OGVec4 vFogColor = m_pFog->GetColor();
-
     const float fFogRcpEndStartDiff = 1.0f / (fFogEnd - fFogStart);
 
     glUniform1f(m_uiFogEndLoc, fFogEnd);
     glUniform1f(m_uiFogRcpDiffLoc, fFogRcpEndStartDiff);
     glUniform3fv(m_uiFogColorLoc, 1, OGVec3(vFogColor.x, vFogColor.y, vFogColor.z).ptr());
-    glUniform1f(m_uiFogEnabled, m_pFog->IsEnabled() ? 1.0f : 0.0f);
+    glUniform1i(m_uiFogEnabled, m_pFog->IsEnabled());
 }
 
 
@@ -114,5 +134,17 @@ void COGShadowedSceneShader::SetProjectionMatrix (const OGMatrix& _mProj)
 void COGShadowedSceneShader::SetLighting (IOGFog* _pFog, IOGLightMgr* _pLightMgr)
 {
     m_pFog = _pFog;
-    m_mShadowMVP = _pLightMgr->GetShadowMatrix();
+    m_pLightMgr = _pLightMgr;
+    m_mShadowMVP = m_pLightMgr->GetShadowMatrix();
+}
+
+
+// set material
+void COGShadowedSceneShader::SetMaterial (IOGMaterial* _pMaterial)
+{
+    const OGVec4& vAmbient = _pMaterial->GetAmbient();
+    const OGVec4& vDiffuse = _pMaterial->GetDiffuse();
+
+    glUniform3fv(m_uiMaterialAmbient, 1, OGVec3(vAmbient.x, vAmbient.y, vAmbient.z).ptr());
+    glUniform3fv(m_uiMaterialDiffuse, 1, OGVec3(vDiffuse.x, vDiffuse.y, vDiffuse.z).ptr());
 }

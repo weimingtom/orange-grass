@@ -110,7 +110,7 @@ void COGSgNode::Update (unsigned long _ElapsedTime)
 
 
 // render.
-void COGSgNode::Render ()
+void COGSgNode::Render (IOGCamera* _pCamera, OGRenderPass _Pass)
 {
     if (!m_bActive)
         return;
@@ -120,7 +120,21 @@ void COGSgNode::Render ()
     {
         OGSgMeshNode& curNode = m_MeshNodes[i];
         if (curNode.pSkeletonNode->BodyType != OG_SUBMESH_DUMMY && curNode.pSkeletonNode->BodyType != OG_SUBMESH_ACTPOINT)
-            m_pRenderable->Render(curNode.mTransform, i);
+        {
+            bool bContributes = false;
+            if (_Pass == OG_RENDERPASS_SHADOWMAP)
+            {
+                bContributes = curNode.pSkeletonNode->SceneProps & OG_SCENEPROP_SHADOWCASTER;
+            }
+            else
+            {
+                bContributes = true;
+            }
+            if (bContributes)
+            {
+                m_pRenderable->Render(curNode.mTransform, i, _Pass);
+            }
+        }
     }
 }
 

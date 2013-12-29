@@ -15,8 +15,8 @@
 
 enum OGLightType
 {
-	OG_LIGHT_DIRECTIONAL,
-	OG_LIGHT_POINT
+    OG_LIGHT_DIRECTIONAL,
+    OG_LIGHT_POINT
 };
 
 
@@ -27,29 +27,32 @@ struct IOGLight
     OGVec4 vSpecularColor;
     float fIntensity;
     OGVec3 vPosition;
-	OGLightType type;
+    OGLightType type;
 };
 
 
 class IOGLightMgr
 {
 public:
-	virtual ~IOGLightMgr () {}
-    
+    virtual ~IOGLightMgr () {}
+
     // destroy all lights.
     virtual void Clear () = 0;
-    
-	// add light.
-	virtual IOGLight* CreateLight () = 0;
 
-	// destroy light.
-	virtual void DestroyLight (IOGLight* _pLight) = 0;
+    // add light.
+    virtual IOGLight* CreateLight () = 0;
 
-	// get light.
-	virtual IOGLight* GetLight (unsigned int _Id) = 0;
+    // destroy light.
+    virtual void DestroyLight (IOGLight* _pLight) = 0;
 
-	// update global lighting.
-	virtual void UpdateGlobalLight (IOGCamera* _pCamera) = 0;
+    // get light.
+    virtual IOGLight* GetLight (unsigned int _Id) = 0;
+
+    // get global light camera.
+    virtual IOGCamera* GetLightCamera () = 0;
+
+    // update global lighting.
+    virtual void UpdateGlobalLight (IOGCamera* _pCamera) = 0;
 
     // get global lighting view matrix.
     virtual const OGMatrix& GetGlobalLightViewMatrix () const = 0;

@@ -32,7 +32,7 @@ public:
     virtual void Unload ();
 
     // Render mesh.
-    virtual void Render (const OGMatrix& _mWorld, unsigned int _MeshId);
+    virtual void Render (const OGMatrix& _mWorld, unsigned int _MeshId, OGRenderPass _Pass);
 
     // Get type of the renderable.
     virtual RenderableType GetRenderableType () const { return OG_RENDERABLE_MODEL; }

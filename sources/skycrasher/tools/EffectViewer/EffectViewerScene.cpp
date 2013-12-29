@@ -140,33 +140,27 @@ void CEffectViewerScene::Update (unsigned long _ElapsedTime)
 // Render controller scene
 void CEffectViewerScene::RenderScene ()
 {
-	m_pRenderer->ClearFrame(OGVec4(0.3f, 0.3f, 0.4f, 1.0f));
+    m_pRenderer->SetClearColor(OGVec4(0.3f, 0.3f, 0.4f, 1.0f));
 
-	RenderHelpers();
+    m_pSg->RenderScene(m_pCamera);
 
-	m_pRenderer->EnableLight(false);
-    m_pRenderer->StartRenderMode(OG_RENDERMODE_EFFECTS);
-    m_pSg->RenderAllEffects(m_pCamera);
-	m_pRenderer->FinishRenderMode();
+    unsigned long Verts; 
+    unsigned long Faces;
+    unsigned long TextureSwitches;
+    unsigned long VBOSwitches;
+    unsigned long DrawCalls;
+    GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, VBOSwitches, DrawCalls);
+    m_pRenderer->DisplayString(OGVec2(85.0f, 2.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
+    m_pRenderer->DisplayString(OGVec2(85.0f, 6.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
+    m_pRenderer->DisplayString(OGVec2(85.0f,10.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
+    m_pRenderer->DisplayString(OGVec2(85.0f,14.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
+    m_pRenderer->DisplayString(OGVec2(85.0f,18.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
+    GetStatistics()->Reset();
 
-	m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
-	unsigned long Verts; 
-	unsigned long Faces;
-	unsigned long TextureSwitches;
-	unsigned long VBOSwitches;
-	unsigned long DrawCalls;
-	GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, VBOSwitches, DrawCalls);
-	m_pRenderer->DisplayString(OGVec2(85.0f, 2.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
-	m_pRenderer->DisplayString(OGVec2(85.0f, 6.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
-	m_pRenderer->DisplayString(OGVec2(85.0f,10.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
-	m_pRenderer->DisplayString(OGVec2(85.0f,14.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
-	m_pRenderer->DisplayString(OGVec2(85.0f,18.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
-	GetStatistics()->Reset();
-	m_pRenderer->FinishRenderMode();
+    RenderHelpers();
+    m_pRenderer->DrawScene();
 
-	m_pRenderer->Reset();
-
-	glFlush();
+    glFlush();
 }
 
 

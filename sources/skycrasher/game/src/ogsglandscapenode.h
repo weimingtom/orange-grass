@@ -29,10 +29,7 @@ public:
     virtual const IOGObb& GetOBB () const;
 
     // render.
-    virtual void Render ();
-
-    // render all nodes.
-    void RenderAll ();
+    virtual void Render (IOGCamera* _pCamera, OGRenderPass _Pass);
 
     // update transform.
     virtual void Update (unsigned long _ElapsedTime);

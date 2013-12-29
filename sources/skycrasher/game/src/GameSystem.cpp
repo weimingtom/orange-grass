@@ -1,55 +1,55 @@
 /*
- *  GameSystem.h
- *  OrangeGrass
- *
- *  Created by Viacheslav Bogdanov on 11.11.09.
- *  Copyright 2009 __MyCompanyName__. All rights reserved.
- *
- */
+*  GameSystem.h
+*  OrangeGrass
+*
+*  Created by Viacheslav Bogdanov on 11.11.09.
+*  Copyright 2009 __MyCompanyName__. All rights reserved.
+*
+*/
 #include "GameSystem.h"
 #include "Game.h"
 #include "LoadScreenController.h"
 #include "GameScreenController.h"
 
 
-///	@brief Constructor.
+/// @brief Constructor.
 CGameSystem::CGameSystem () :   m_pLoadScreen(NULL),
-                                m_pGameScreen(NULL),
-                                m_pCurScreen(NULL)
+    m_pGameScreen(NULL),
+    m_pCurScreen(NULL)
 {
     m_State = SYSSTATE_ACTIVE;
     m_pLoadScreen = new CLoadScreenController();
     m_pGameScreen = new CGameScreenController();
 
-	m_ScreenSequence.push_back(m_pLoadScreen);
-	m_ScreenSequence.push_back(m_pGameScreen);
+    m_ScreenSequence.push_back(m_pLoadScreen);
+    m_ScreenSequence.push_back(m_pGameScreen);
 
-	m_CurModel = -1;
+    m_CurModel = -1;
 
-	GetAppSettings()->Init("settings.xml");
-	GetAppSettings()->InitScreenMode();
+    GetAppSettings()->Init("settings.xml");
+    GetAppSettings()->InitScreenMode();
 
-	m_pGlobalVars = GetGlobalVars();
-	m_fFOV = m_pGlobalVars->GetFVar("FOV");
-	m_fZNear = m_pGlobalVars->GetFVar("z_near");
-	m_fZFar = m_pGlobalVars->GetFVar("z_far");
-	m_ScrWidth = m_pGlobalVars->GetIVar("view_width");
-	m_ScrHeight = m_pGlobalVars->GetIVar("view_height");
+    m_pGlobalVars = GetGlobalVars();
+    m_fFOV = m_pGlobalVars->GetFVar("FOV");
+    m_fZNear = m_pGlobalVars->GetFVar("z_near");
+    m_fZFar = m_pGlobalVars->GetFVar("z_far");
+    m_ScrWidth = m_pGlobalVars->GetIVar("view_width");
+    m_ScrHeight = m_pGlobalVars->GetIVar("view_height");
     GetRenderer()->SetViewport(m_ScrWidth, m_ScrHeight, m_fZNear, m_fZFar, m_fFOV);
-	m_pResourceMgr = GetResourceMgr();
+    m_pResourceMgr = GetResourceMgr();
 
-	ChangeModel(1, 0, 0);
+    ChangeModel(1, 0, 0);
 }
 
 
-///	@brief Destructor.
+/// @brief Destructor.
 CGameSystem::~CGameSystem ()
 {
-	Exit();
+    Exit();
 }
 
 
-///	@brief Exit from the program.
+/// @brief Exit from the program.
 void CGameSystem::Exit ()
 {
     OG_SAFE_DELETE(m_pLoadScreen);
@@ -59,96 +59,96 @@ void CGameSystem::Exit ()
 }
 
 
-///	@brief Change screen model.
+/// @brief Change screen model.
 /// @param _Model screen model id.
 /// @param _Param screen model parameter #1.
 /// @param _Param2 screen model parameter #2.
 void CGameSystem::ChangeModel ( int _Model, int _Param, int _Param2 )
 {
-	switch (_Model)
-	{
-	case 1:
-		{
-			if (m_ScreenSequence.empty())
-			{
-				Exit();
-				return;
-			}
+    switch (_Model)
+    {
+    case 1:
+        {
+            if (m_ScreenSequence.empty())
+            {
+                Exit();
+                return;
+            }
 
-			if (m_CurModel >= (int)m_ScreenSequence.size() - 1)
-			{
-				m_CurModel = -1;
-			}
-			++m_CurModel;
-			m_pCurScreen = m_ScreenSequence[m_CurModel];
-			if (m_pCurScreen->Init())
-			{
-		        OG_LOG_INFO("Activating screen model...");
-				m_pCurScreen->Activate();
-			}
-			else
-			{
-				ChangeModel(-1, 0, 0);
-				return;
-			}
-		}
-		break;
+            if (m_CurModel >= (int)m_ScreenSequence.size() - 1)
+            {
+                m_CurModel = -1;
+            }
+            ++m_CurModel;
+            m_pCurScreen = m_ScreenSequence[m_CurModel];
+            if (m_pCurScreen->Init())
+            {
+                OG_LOG_INFO("Activating screen model...");
+                m_pCurScreen->Activate();
+            }
+            else
+            {
+                ChangeModel(-1, 0, 0);
+                return;
+            }
+        }
+        break;
 
-	case -1:
-		{
-			if (m_CurModel <= 0)
-			{
-				Exit();
-				return;
-			}
-			else
-			{
-				--m_CurModel;
-				m_pCurScreen = m_ScreenSequence[m_CurModel];
-				if (m_pCurScreen->Init())
-				{
-			        OG_LOG_INFO("Activating screen model...");
-					m_pCurScreen->Activate();
-				}
-				else
-				{
-					ChangeModel(-1, 0, 0);
-					return;
-				}
-			}
-		}
-		break;
-	}
+    case -1:
+        {
+            if (m_CurModel <= 0)
+            {
+                Exit();
+                return;
+            }
+            else
+            {
+                --m_CurModel;
+                m_pCurScreen = m_ScreenSequence[m_CurModel];
+                if (m_pCurScreen->Init())
+                {
+                    OG_LOG_INFO("Activating screen model...");
+                    m_pCurScreen->Activate();
+                }
+                else
+                {
+                    ChangeModel(-1, 0, 0);
+                    return;
+                }
+            }
+        }
+        break;
+    }
 }
 
 
-///	@brief Update screen model.
+/// @brief Update screen model.
 /// @param _ElapsedTime frame elapsed time in msec.
 void CGameSystem::Update ( unsigned long _ElapsedTime )
 {
     if (!m_pCurScreen)
         return;
 
-    m_pCurScreen->Update (_ElapsedTime);
     ControllerState state = m_pCurScreen->GetState();
-	switch (state)
-	{
-	case CSTATE_INACTIVE:
+    switch (state)
+    {
+    case CSTATE_INACTIVE:
         OG_LOG_INFO("Changing screen model...");
         ChangeModel(1, 0, 0);
-		break;
+        break;
 
-	case CSTATE_FAILED:
+    case CSTATE_FAILED:
         ChangeModel(-1, 0, 0);
-		break;
+        break;
 
-	default:
-		break;
-	}
+    default:
+        break;
+    }
+    m_pCurScreen->Update (_ElapsedTime);
 }
 
 
-///	@brief Draw screen model.
+/// @brief Draw screen model.
 void CGameSystem::Draw ()
 {
     if (!m_pCurScreen)
@@ -160,7 +160,7 @@ void CGameSystem::Draw ()
 }
 
 
-///	@brief Get state of the game controller.
+/// @brief Get state of the game controller.
 /// @return return code.
 SystemState CGameSystem::GetControllerState () const
 {
@@ -187,7 +187,7 @@ void CGameSystem::OnKeyUp ( int _KeyCode )
 /// @param _Y y coordinate.
 void CGameSystem::OnPointerDown ( int _X, int _Y )
 {
-	GetInput()->OnPointerDown(_X, _Y);
+    GetInput()->OnPointerDown(_X, _Y);
 }
 
 
@@ -196,7 +196,7 @@ void CGameSystem::OnPointerDown ( int _X, int _Y )
 /// @param _Y y coordinate.
 void CGameSystem::OnPointerUp ( int _X, int _Y )
 {
-	GetInput()->OnPointerUp(_X, _Y);
+    GetInput()->OnPointerUp(_X, _Y);
 }
 
 
@@ -205,7 +205,7 @@ void CGameSystem::OnPointerUp ( int _X, int _Y )
 /// @param _Y y coordinate.
 void CGameSystem::OnPointerMove ( int _X, int _Y )
 {
-	GetInput()->OnPointerMove(_X, _Y);
+    GetInput()->OnPointerMove(_X, _Y);
 }
 
 

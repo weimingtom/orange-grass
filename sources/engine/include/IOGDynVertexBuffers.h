@@ -18,8 +18,14 @@ public:
     // apply buffers.
     virtual void Apply () const = 0;
 
+    // map buffer geometry.
+    virtual void Map () = 0;
+
+    // unmap buffer geometry.
+    virtual void Unmap () = 0;
+
     // update buffer geometry.
-    virtual void Update (const void* _pBuff, unsigned int _Size) = 0;
+    virtual void Update (unsigned int _Offset, const void* _pBuff, unsigned int _Size) = 0;
 
     // render buffer geometry.
     virtual void Render () const = 0;

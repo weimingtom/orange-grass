@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <Model file="Models/Land_objects_02/bush/bush_01.POD">
-    <Mesh shader="transparentmodel">
+    <Mesh shader="transparentmodel" shadowcaster="1" shadowreceiver="1">
         <Material texture="land_02_objs" blend="test">
             <Ambient r="0.3" g="0.3" b="0.3" a="1" />
             <Diffuse r="1" g="1" b="1" a="1" />

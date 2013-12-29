@@ -12,7 +12,7 @@
 
 COGEffect::COGEffect()
 {
-	m_Status = OG_EFFECTSTATUS_INACTIVE;
+    m_Status = OG_EFFECTSTATUS_INACTIVE;
 }
 
 
@@ -26,12 +26,12 @@ void COGEffect::Init(OGEffectType _Type, const std::string& _File)
 {
     m_Type = _Type;
 
-	IOGSettingsReader* pReader = GetSettingsReader();
-	IOGEffectsManager* pEffectsMgr = GetEffectsManager();
+    IOGSettingsReader* pReader = GetSettingsReader();
+    IOGEffectsManager* pEffectsMgr = GetEffectsManager();
 
     IOGSettingsSource* pSource = pReader->OpenSource(GetResourceMgr()->GetFullPath(_File));
-	if (!pSource)
-		return;
+    if (!pSource)
+        return;
 
     IOGGroupNode* pEffectNode = pReader->OpenGroupNode(pSource, NULL, "Effect");
     if (pEffectNode)
@@ -66,28 +66,28 @@ void COGEffect::Init(OGEffectType _Type, const std::string& _File)
 // Update.
 void COGEffect::Update (unsigned long _ElapsedTime)
 {
-	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
-		return;
+    if (m_Status == OG_EFFECTSTATUS_INACTIVE)
+        return;
 
     TEmittersList::iterator iter = m_Emitters.begin();
     for (; iter != m_Emitters.end(); ++iter)
     {
         (*iter)->Update(_ElapsedTime);
     }
-	m_Status = m_pMasterEmitter->GetStatus();
+    m_Status = m_pMasterEmitter->GetStatus();
 }
 
 
 // Render.
-void COGEffect::Render (const OGMatrix& _mWorld)
+void COGEffect::Render (const OGMatrix& _mWorld, OGRenderPass _Pass)
 {
-	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
-		return;
+    if (m_Status == OG_EFFECTSTATUS_INACTIVE)
+        return;
 
     TEmittersList::iterator iter = m_Emitters.begin();
     for (; iter != m_Emitters.end(); ++iter)
     {
-        (*iter)->Render(_mWorld, m_vCameraLook, m_vCameraUp, m_vCameraRight);
+        (*iter)->Render(_mWorld, m_vCameraLook, m_vCameraUp, m_vCameraRight, _Pass);
     }
 }
 
@@ -96,8 +96,8 @@ void COGEffect::Render (const OGMatrix& _mWorld)
 void COGEffect::SetBillboardVectors (const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight)
 {
     m_vCameraLook = _vLook;
-	m_vCameraUp = _vUp;
-	m_vCameraRight = _vRight;
+    m_vCameraUp = _vUp;
+    m_vCameraRight = _vRight;
 }
 
 
@@ -115,8 +115,8 @@ void COGEffect::SetDirection (const OGVec3& _vDir)
 // Update position.
 void COGEffect::UpdatePosition (const OGVec3& _vPosition)
 {
-	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
-		return;
+    if (m_Status == OG_EFFECTSTATUS_INACTIVE)
+        return;
 
     TEmittersList::iterator iter = m_Emitters.begin();
     for (; iter != m_Emitters.end(); ++iter)
@@ -129,7 +129,7 @@ void COGEffect::UpdatePosition (const OGVec3& _vPosition)
 // Start.
 void COGEffect::Start ()
 {
-	m_Status = OG_EFFECTSTATUS_STARTED;
+    m_Status = OG_EFFECTSTATUS_STARTED;
     TEmittersList::iterator iter = m_Emitters.begin();
     for (; iter != m_Emitters.end(); ++iter)
     {
@@ -141,10 +141,10 @@ void COGEffect::Start ()
 // Stop.
 void COGEffect::Stop ()
 {
-	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
-		return;
+    if (m_Status == OG_EFFECTSTATUS_INACTIVE)
+        return;
 
-	m_Status = OG_EFFECTSTATUS_STOPPED;
+    m_Status = OG_EFFECTSTATUS_STOPPED;
 
     TEmittersList::iterator iter = m_Emitters.begin();
     for (; iter != m_Emitters.end(); ++iter)
@@ -160,7 +160,7 @@ void COGEffect::SetStartFinishPositions (const OGVec3& _vStartPos, const OGVec3&
     TEmittersList::iterator iter = m_Emitters.begin();
     for (; iter != m_Emitters.end(); ++iter)
     {
-    	(*iter)->SetStartFinishPositions(_vStartPos, _vFinishPos);
+        (*iter)->SetStartFinishPositions(_vStartPos, _vFinishPos);
     }
 }
 

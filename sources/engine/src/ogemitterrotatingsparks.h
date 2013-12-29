@@ -16,28 +16,28 @@
 class COGEmitterRotatingSparks : public COGEmitter
 {
 public:
-	COGEmitterRotatingSparks();
-	virtual ~COGEmitterRotatingSparks();
+    COGEmitterRotatingSparks();
+    virtual ~COGEmitterRotatingSparks();
 
-	// Initialize emitter.
-	virtual void Init(IOGGroupNode* _pNode);
+    // Initialize emitter.
+    virtual void Init(IOGGroupNode* _pNode);
 
-	// Update.
-	virtual void Update (unsigned long _ElapsedTime);
+    // Update.
+    virtual void Update (unsigned long _ElapsedTime);
 
-	// Render.
-	virtual void Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight);
+    // Render.
+    virtual void Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight, OGRenderPass _Pass);
 
-	// Start.
-	virtual void Start ();
+    // Start.
+    virtual void Start ();
 
-	// Stop.
-	virtual void Stop ();
+    // Stop.
+    virtual void Stop ();
 
-	// Get effect type.
+    // Get effect type.
     virtual OGEmitterType GetType() const { return s_Type; }
 
-	// Get effect type.
+    // Get effect type.
     virtual const std::string& GetAlias() const { return s_Alias; }
 
 protected:
@@ -45,25 +45,26 @@ protected:
     struct ParticleFormat
     {
         bool    bDirty;
-	    float	scale;
+        float   scale;
         float   angle;
         float   tilt;
         int     axis;
-	    OGVec3	offset;
-	    BBVert	pVertices[4];
+        OGVec3  offset;
+        TBBVertexEntry verts;
     };
 
 protected:
 
-	std::vector<ParticleFormat>	m_BBList;
+    IOGVertexBuffers*           m_pVBO;
+    std::vector<ParticleFormat> m_BBList;
 
     std::string     m_Texture;
     unsigned int    m_MappingId;
-	unsigned int	m_NumParticles;
-	float			m_fAlphaInc;
-	float           m_fScaleInc;
-	float           m_fInitialScale;
-	OGVec4			m_color;
+    unsigned int    m_NumParticles;
+    float           m_fAlphaInc;
+    float           m_fScaleInc;
+    float           m_fInitialScale;
+    OGVec4          m_color;
 
 public:
 

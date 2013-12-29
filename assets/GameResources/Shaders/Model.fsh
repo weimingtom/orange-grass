@@ -3,6 +3,7 @@ precision mediump float;
 #endif
 
 uniform sampler2D sTexture;
+
 uniform vec3 FogColor;
 uniform bool FogEnabled;
 

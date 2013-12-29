@@ -69,10 +69,13 @@ void COGMesh::Unload ()
 
 
 // Render mesh.
-void COGMesh::Render (const OGMatrix& _mWorld)
+void COGMesh::Render (const OGMatrix& _mWorld, OGRenderPass _Pass)
 {
     OGBlendType blend = m_pMaterial->GetBlend();
-    m_pRenderer->RenderStatic(m_pTexture, m_pMaterial, m_buffer, _mWorld, blend, m_pCfg->shaderID);
+    OGShaderID shaderID = m_pCfg->shaderID;
+    if (_Pass == OG_RENDERPASS_SHADOWMAP)
+        shaderID = OG_SHADER_SHADOWMODEL;
+    m_pRenderer->RenderStatic(m_pTexture, m_pMaterial, m_buffer, _mWorld, blend, shaderID, _Pass);
 }
 
 

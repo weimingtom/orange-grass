@@ -16,38 +16,42 @@ OGEmitterType COGEmitterScrollingRay::s_Type = OG_EMITTER_SCROLLINGRAY;
 
 COGEmitterScrollingRay::COGEmitterScrollingRay()
 {
-	m_Texture = std::string("effects");
-	m_MappingStartId = 13;
-	m_MappingFinishId = 14;
-	m_color = OGVec4(1.0f, 1.0f, 1.0f, 1.0f);
-	m_fSegment = 50.0f;
-	m_fScale = 8.0f;
-	m_fSpeed = 1.0f;
+    m_pVBO = NULL;
 
-	AddStringParam("texture", &m_Texture);
-	AddIntParam("mapping_start", &m_MappingStartId);
-	AddIntParam("mapping_finish", &m_MappingFinishId);
-	AddFloatParam("segment", &m_fSegment);
-	AddFloatParam("scale", &m_fScale);
-	AddFloatParam("speed", &m_fSpeed);
-	AddColorParam("color", &m_color);
+    m_Texture = std::string("effects");
+    m_MappingStartId = 13;
+    m_MappingFinishId = 14;
+    m_color = OGVec4(1.0f, 1.0f, 1.0f, 1.0f);
+    m_fSegment = 50.0f;
+    m_fScale = 8.0f;
+    m_fSpeed = 1.0f;
+
+    AddStringParam("texture", &m_Texture);
+    AddIntParam("mapping_start", &m_MappingStartId);
+    AddIntParam("mapping_finish", &m_MappingFinishId);
+    AddFloatParam("segment", &m_fSegment);
+    AddFloatParam("scale", &m_fScale);
+    AddFloatParam("speed", &m_fSpeed);
+    AddColorParam("color", &m_color);
 }
 
 
 COGEmitterScrollingRay::~COGEmitterScrollingRay()
 {
+    OG_SAFE_DELETE(m_pVBO);
 }
 
 
 // Initialize emitter.
 void COGEmitterScrollingRay::Init(IOGGroupNode* _pNode)
 {
-	LoadParams(_pNode);
+    LoadParams(_pNode);
 
-	m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, m_Texture);
+    m_pTexture = GetResourceMgr()->GetTexture(OG_RESPOOL_GAME, m_Texture);
     m_Blend = OG_BLEND_ALPHAONE;
+    m_pVBO = m_pRenderer->CreateDynVertexBuffer(2*60);
 
-	m_bPositionUpdated = false;
+    m_bPositionUpdated = false;
     m_bPosReady = false;
 
     m_Frames.reserve(m_MappingFinishId - m_MappingStartId + 1);
@@ -61,8 +65,8 @@ void COGEmitterScrollingRay::Init(IOGGroupNode* _pNode)
 // Update.
 void COGEmitterScrollingRay::Update (unsigned long _ElapsedTime)
 {
-	if (m_Status == OG_EFFECTSTATUS_INACTIVE || !m_bPosReady)
-		return;
+    if (m_Status == OG_EFFECTSTATUS_INACTIVE || !m_bPosReady)
+        return;
 
     bool bAdd = false;
     float fNewSegScale = 0.0f;
@@ -78,12 +82,13 @@ void COGEmitterScrollingRay::Update (unsigned long _ElapsedTime)
             if (seg.scale + fAdd > 1.0f)
             {
                 float fMove = seg.scale + fAdd - 1.0f;
-                
+
                 bAdd = true;
                 fNewSegScale = fMove;
 
                 if (ScrollSegment(seg, fMove))
                 {
+                    GetEffectsManager()->ReleaseParticle(seg.verts);
                     iter = m_BBList.erase(iter);
                     continue;
                 }
@@ -104,6 +109,7 @@ void COGEmitterScrollingRay::Update (unsigned long _ElapsedTime)
 
             if (ScrollSegment(seg, m_fSpeed))
             {
+                GetEffectsManager()->ReleaseParticle(seg.verts);
                 iter = m_BBList.erase(iter);
                 continue;
             }
@@ -121,41 +127,47 @@ void COGEmitterScrollingRay::Update (unsigned long _ElapsedTime)
 
 
 // Render.
-void COGEmitterScrollingRay::Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight)
+void COGEmitterScrollingRay::Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight, OGRenderPass _Pass)
 {
-	if (m_Status == OG_EFFECTSTATUS_INACTIVE || !m_bPosReady)
-		return;
+    if (m_Status == OG_EFFECTSTATUS_INACTIVE || !m_bPosReady)
+        return;
 
-    OGMatrix mId; 
-    MatrixIdentity(mId);
-    m_pRenderer->SetModelMatrix(mId);
-	m_pRenderer->SetBlend(m_Blend);
-	m_pRenderer->SetTexture(m_pTexture);
-
+    unsigned int vertOffset = 0;
+    m_pVBO->Map();
     std::list<ParticleFormat>::iterator iter = m_BBList.begin();
     for (; iter != m_BBList.end(); ++iter)
     {
         ParticleFormat& particle = (*iter);
-		m_pRenderer->DrawEffectBuffer(&particle.pVertices[0], 0, 4);
+        BBVert* pVert = (*particle.verts);
+        m_pVBO->Update(vertOffset, pVert, 4*sizeof(BBVert));
+        vertOffset += 4*sizeof(BBVert);
     }
+    m_pVBO->Unmap();
+    m_pRenderer->RenderEffect(m_pTexture, m_pVBO, m_Blend, OG_SHADER_COLOREFFECT, _Pass);
 }
 
 
 // Start.
 void COGEmitterScrollingRay::Start ()
 {
-	m_Status = OG_EFFECTSTATUS_STARTED;
+    m_Status = OG_EFFECTSTATUS_STARTED;
 }
 
 
 // Stop.
 void COGEmitterScrollingRay::Stop ()
 {
-	if (m_Status == OG_EFFECTSTATUS_INACTIVE)
-		return;
+    if (m_Status == OG_EFFECTSTATUS_INACTIVE)
+        return;
+
+    for(auto it = m_BBList.begin(); it != m_BBList.end(); ++it)
+    {
+        GetEffectsManager()->ReleaseParticle(it->verts);
+    }
+    m_BBList.clear();
 
     m_bPosReady = false;
-	m_Status = OG_EFFECTSTATUS_INACTIVE;
+    m_Status = OG_EFFECTSTATUS_INACTIVE;
 }
 
 
@@ -187,10 +199,12 @@ bool COGEmitterScrollingRay::AddSegment (float _fPos, float _fScale)
 {
     bool bLast = false;
     ParticleFormat newseg;
-    newseg.pVertices[0].c = m_color;
-    newseg.pVertices[1].c = m_color;
-    newseg.pVertices[2].c = m_color;
-    newseg.pVertices[3].c = m_color;
+    newseg.verts = GetEffectsManager()->AddParticle();
+    BBVert* pV = (*newseg.verts);
+    pV[0].c = m_color;
+    pV[1].c = m_color;
+    pV[2].c = m_color;
+    pV[3].c = m_color;
     newseg.frame = (unsigned int)GetRandomRange(0, m_Frames.size());
     newseg.pos = _fPos;
     newseg.start = 1.0f - _fScale;
@@ -234,16 +248,17 @@ void COGEmitterScrollingRay::UpdateSegment (ParticleFormat& _Segment)
     OGVec3 vFinish = m_vStartPos + m_Direction * (_Segment.pos + m_fSegment * _Segment.scale);
     OGVec3 vSRight = OGVec3(1,0,0) * m_fScale;
 
-    _Segment.pVertices[0].p = vFinish + vSRight;
-    _Segment.pVertices[1].p = vFinish - vSRight;
-    _Segment.pVertices[2].p = vStart + vSRight;
-    _Segment.pVertices[3].p = vStart - vSRight;
+    BBVert* pV = (*_Segment.verts);
+    pV[0].p = vFinish + vSRight;
+    pV[1].p = vFinish - vSRight;
+    pV[2].p = vStart + vSRight;
+    pV[3].p = vStart - vSRight;
 
     IOGMapping* pMapping = m_Frames[_Segment.frame];
     float t0y = pMapping->t0.y + (pMapping->t1.y - pMapping->t0.y) * _Segment.start;
     float t1y = pMapping->t0.y + (pMapping->t1.y - pMapping->t0.y) * _Segment.end;
-    _Segment.pVertices[0].t = OGVec2(pMapping->t1.x, t1y);
-    _Segment.pVertices[1].t = OGVec2(pMapping->t0.x, t1y);
-    _Segment.pVertices[2].t = OGVec2(pMapping->t1.x, t0y);
-    _Segment.pVertices[3].t = OGVec2(pMapping->t0.x, t0y);
+    pV[0].t = OGVec2(pMapping->t1.x, t1y);
+    pV[1].t = OGVec2(pMapping->t0.x, t1y);
+    pV[2].t = OGVec2(pMapping->t1.x, t0y);
+    pV[3].t = OGVec2(pMapping->t0.x, t0y);
 }

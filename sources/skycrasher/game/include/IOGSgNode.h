@@ -33,7 +33,7 @@ public:
     virtual void Update (unsigned long _ElapsedTime) = 0;
 
     // render.
-    virtual void Render () = 0;
+    virtual void Render (IOGCamera* _pCamera, OGRenderPass _Pass) = 0;
 
     // get world transform.
     virtual const OGMatrix& GetWorldTransform () const = 0;

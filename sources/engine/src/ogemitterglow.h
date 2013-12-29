@@ -16,49 +16,50 @@
 class COGEmitterGlow : public COGEmitter
 {
 public:
-	COGEmitterGlow();
-	virtual ~COGEmitterGlow();
+    COGEmitterGlow();
+    virtual ~COGEmitterGlow();
 
-	// Initialize emitter.
-	virtual void Init (IOGGroupNode* _pNode);
+    // Initialize emitter.
+    virtual void Init (IOGGroupNode* _pNode);
 
-	// Update.
-	virtual void Update (unsigned long _ElapsedTime);
+    // Update.
+    virtual void Update (unsigned long _ElapsedTime);
 
-	// Render.
-	virtual void Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight);
+    // Render.
+    virtual void Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight, OGRenderPass _Pass);
 
-	// Start.
-	virtual void Start ();
+    // Start.
+    virtual void Start ();
 
-	// Stop.
-	virtual void Stop ();
+    // Stop.
+    virtual void Stop ();
 
-	// Get effect type.
+    // Get effect type.
     virtual OGEmitterType GetType() const { return s_Type; }
 
-	// Get effect type.
+    // Get effect type.
     virtual const std::string& GetAlias() const { return s_Alias; }
 
 protected:
 
-	struct ParticleFormat
-	{
-		float	scale;
-		float   angle;
-		BBVert	pVertices[4];
-	};
+    struct ParticleFormat
+    {
+        float   scale;
+        float   angle;
+        TBBVertexEntry verts;
+    };
 
 protected:
 
-    ParticleFormat	m_Glow;
+    IOGVertexBuffers*   m_pVBO;
+    ParticleFormat      m_Glow;
 
     std::string     m_Texture;
     unsigned int    m_MappingId;
-	OGVec4			m_color;
-	float			m_fInitialScale;
-	float			m_fInitialAngleMin;
-	float			m_fInitialAngleMax;
+    OGVec4          m_color;
+    float           m_fInitialScale;
+    float           m_fInitialAngleMin;
+    float           m_fInitialAngleMax;
 
 public:
 

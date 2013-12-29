@@ -15,7 +15,6 @@
 #include "IOGCamera.h"
 #include "IOGFog.h"
 #include "IOGVertexBuffers.h"
-#include "IOGDynVertexBuffers.h"
 #include "IOGShader.h"
 
 
@@ -35,8 +34,14 @@ public:
         float _fZFar,
         float _fFOV) = 0;
 
+    // set clear color.
+    virtual void SetClearColor (const OGVec4& _vColor) = 0;
+
+    // set fog state.
+    virtual void EnableFog (bool _bEnable) = 0;
+
     // Create vertex buffer for effects.
-    virtual IOGDynVertexBuffers* CreateDynVertexBuffer (unsigned int _NumVertices) = 0;
+    virtual IOGVertexBuffers* CreateDynVertexBuffer (unsigned int _NumFaces) = 0;
 
     // Create vertex buffer for mesh.
     virtual IOGVertexBuffers* CreateVertexBuffer (
@@ -46,24 +51,6 @@ public:
         unsigned int _Stride, 
         const void* _pIndexData, 
         unsigned int _NumIndices) = 0;
-
-    // add rendering command.
-    virtual void SetTexture (IOGTexture* _pTexture) = 0;
-
-    // add rendering command.
-    virtual void SetMaterial (IOGMaterial* _pMaterial) = 0;
-
-    // add rendering command.
-    virtual void SetBlend (OGBlendType _Blend) = 0;
-
-    // set model matrix.
-    virtual void SetModelMatrix (const OGMatrix& _mModel) = 0;
-
-    // set view matrix.
-    virtual void SetViewMatrix (const OGMatrix& _mView) = 0;
-
-    // get model matrix.
-    virtual void GetModelMatrix (OGMatrix& _mModel) = 0;
 
     // get view matrix.
     virtual void GetViewMatrix (OGMatrix& _mView) = 0;
@@ -78,16 +65,19 @@ public:
         IOGVertexBuffers* _pMesh,
         OGMatrix _mTransform,
         OGBlendType _Blend,
-        OGShaderID _ShaderID) = 0;
+        OGShaderID _ShaderID,
+        OGRenderPass _Pass) = 0;
 
-    // clear frame buffer with the given color
-    virtual void ClearFrame (const OGVec4& _vClearColor) = 0;
+    // add render job.
+    virtual void RenderEffect (
+        IOGTexture* _pTexture,
+        IOGVertexBuffers* _pMesh,
+        OGBlendType _Blend,
+        OGShaderID _ShaderID,
+        OGRenderPass _Pass) = 0;
 
     // Get scene light.
     virtual IOGLightMgr* GetLightMgr () = 0;
-
-    // Enable scene light.
-    virtual void EnableLight (bool _bEnable) = 0;
 
     // Get main camera.
     virtual IOGCamera* GetCamera () = 0;
@@ -98,18 +88,6 @@ public:
     // Create material.
     virtual IOGMaterial* CreateMaterial () = 0;
 
-    // Enable scene fog.
-    virtual void EnableFog (bool _bEnable) = 0;
-
-    // Enable color channel.
-    virtual void EnableColor (bool _bEnable) = 0;
-
-    // start rendering mode.
-    virtual void StartRenderMode(OGRenderMode _Mode) = 0;
-
-    // finish rendering mode.
-    virtual void FinishRenderMode() = 0;
-
     // reset renderer pipeline.
     virtual void Reset () = 0;
 
@@ -119,14 +97,8 @@ public:
     // Display string.
     virtual void DisplayString (const OGVec2& _vPos, float _fScale, unsigned int Colour, const char * const pszFormat, ...) = 0;
 
-    // Draw effects buffer.
-    virtual void DrawEffectBuffer (void* _pBuffer, int _StartId, int _NumVertices) = 0;
-
-    // Draw sprite buffer.
-    virtual void DrawSpriteBuffer (void* _pBuffer, int _StartId, int _NumVertices) = 0;
-
-    // Draw render target.
-    virtual void DrawRT () = 0;
+    // Draw scene.
+    virtual void DrawScene () = 0;
 
     // Debug - insert event marker.
     virtual void InsertEventMarker (const std::string& _MarkerStr) = 0;

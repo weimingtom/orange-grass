@@ -44,7 +44,7 @@ public:
     virtual const std::vector<IOGMesh*>& GetMeshes () const = 0;
 
     // Render mesh.
-    virtual void Render (const OGMatrix& _mWorld, unsigned int _MeshId) = 0;
+    virtual void Render (const OGMatrix& _mWorld, unsigned int _MeshId, OGRenderPass _Pass) = 0;
 
     // Get combined AABB
     virtual const IOGAabb& GetAABB () const = 0;

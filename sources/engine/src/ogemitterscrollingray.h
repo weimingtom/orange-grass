@@ -17,34 +17,34 @@
 class COGEmitterScrollingRay : public COGEmitter
 {
 public:
-	COGEmitterScrollingRay();
-	virtual ~COGEmitterScrollingRay();
+    COGEmitterScrollingRay();
+    virtual ~COGEmitterScrollingRay();
 
-	// Initialize emitter.
-	virtual void Init(IOGGroupNode* _pNode);
+    // Initialize emitter.
+    virtual void Init(IOGGroupNode* _pNode);
 
-	// Update.
-	virtual void Update (unsigned long _ElapsedTime);
+    // Update.
+    virtual void Update (unsigned long _ElapsedTime);
 
-	// Set start and finish positions.
-	virtual void SetStartFinishPositions (const OGVec3& _vStartPos, const OGVec3& _vFinishPos);
+    // Set start and finish positions.
+    virtual void SetStartFinishPositions (const OGVec3& _vStartPos, const OGVec3& _vFinishPos);
 
-	// Set direction.
+    // Set direction.
     virtual void SetDirection (const OGVec3& _vDir) {}
 
-	// Render.
-	virtual void Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight);
+    // Render.
+    virtual void Render (const OGMatrix& _mWorld, const OGVec3& _vLook, const OGVec3& _vUp, const OGVec3& _vRight, OGRenderPass _Pass);
 
-	// Start.
-	virtual void Start ();
+    // Start.
+    virtual void Start ();
 
-	// Stop.
-	virtual void Stop ();
+    // Stop.
+    virtual void Stop ();
 
-	// Get effect type.
+    // Get effect type.
     virtual OGEmitterType GetType() const { return s_Type; }
 
-	// Get effect type.
+    // Get effect type.
     virtual const std::string& GetAlias() const { return s_Alias; }
 
 protected:
@@ -52,15 +52,15 @@ protected:
     struct ParticleFormat
     {
         unsigned int    frame;
-	    float	        start;
+        float           start;
         float           end;
         float           scale;
         float           pos;
-	    BBVert	        pVertices[4];
+        TBBVertexEntry  verts;
     };
 
-	// Add segment. Returns true if last segment on ray.
-	bool AddSegment (float _fPos, float _fScale);
+    // Add segment. Returns true if last segment on ray.
+    bool AddSegment (float _fPos, float _fScale);
 
     // Scroll segment. Returns true if needs to be removed.
     bool ScrollSegment (ParticleFormat& _Segment, float _fScrollValue);
@@ -71,10 +71,10 @@ protected:
 protected:
 
     std::vector<IOGMapping*>    m_Frames;
-    std::list<ParticleFormat>	m_BBList;
+    std::list<ParticleFormat>   m_BBList;
 
-    OGVec3                        m_vStartPos;
-    OGVec3                        m_vFinishPos;
+    OGVec3                      m_vStartPos;
+    OGVec3                      m_vFinishPos;
     bool                        m_bPosReady;
     float                       m_fRayLength;
 
@@ -84,7 +84,9 @@ protected:
     float           m_fSegment;
     float           m_fScale;
     float           m_fSpeed;
-	OGVec4			m_color;
+    OGVec4          m_color;
+
+    IOGVertexBuffers*   m_pVBO;
 
 public:
 

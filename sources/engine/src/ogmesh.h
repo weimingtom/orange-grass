@@ -40,7 +40,7 @@ public:
     virtual void Unload ();
 
     // Render mesh.
-    virtual void Render (const OGMatrix& _mWorld);
+    virtual void Render (const OGMatrix& _mWorld, OGRenderPass _Pass);
 
     // Get type
     virtual SubMeshType GetType() const { return m_type; }

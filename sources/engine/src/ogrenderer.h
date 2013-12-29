@@ -30,6 +30,12 @@ public:
     // initialize renderer.
     virtual bool Init ();
 
+    // set clear color.
+    virtual void SetClearColor (const OGVec4& _vColor);
+
+    // set fog state.
+    virtual void EnableFog (bool _bEnable);
+
     // set viewport.
     virtual void SetViewport (
         unsigned int _Width, 
@@ -48,22 +54,7 @@ public:
         unsigned int _NumIndices);
 
     // Create vertex buffer for effects.
-    virtual IOGDynVertexBuffers* CreateDynVertexBuffer (unsigned int _NumVertices);
-
-    // add rendering command.
-    virtual void SetTexture (IOGTexture* _pTexture);
-
-    // add rendering command.
-    virtual void SetMaterial (IOGMaterial* _pMaterial);
-
-    // add rendering command.
-    virtual void SetBlend (OGBlendType _Blend);
-
-    // set model matrix.
-    virtual void SetModelMatrix (const OGMatrix& _mModel);
-
-    // set view matrix.
-    virtual void SetViewMatrix (const OGMatrix& _mView);
+    virtual IOGVertexBuffers* CreateDynVertexBuffer (unsigned int _NumFaces);
 
     // get model matrix.
     virtual void GetModelMatrix (OGMatrix& _mModel);
@@ -74,21 +65,6 @@ public:
     // get projection matrix.
     virtual void GetProjectionMatrix (OGMatrix& _mProjection);
 
-    // Enable scene light.
-    virtual void EnableLight (bool _bEnable);
-
-    // Enable scene fog.
-    virtual void EnableFog (bool _bEnable);
-
-    // Enable color channel.
-    virtual void EnableColor (bool _bEnable);
-
-    // start rendering mode.
-    virtual void StartRenderMode(OGRenderMode _Mode);
-
-    // finish rendering mode.
-    virtual void FinishRenderMode();
-
     // add render job.
     virtual void RenderStatic (
         IOGTexture* _pTexture,
@@ -96,10 +72,16 @@ public:
         IOGVertexBuffers* _pMesh,
         OGMatrix _mTransform,
         OGBlendType _Blend,
-        OGShaderID _ShaderID);
+        OGShaderID _ShaderID,
+        OGRenderPass _Pass);
 
-    // clear frame buffer with the given color
-    virtual void ClearFrame (const OGVec4& _vClearColor);
+    // add render job.
+    virtual void RenderEffect (
+        IOGTexture* _pTexture,
+        IOGVertexBuffers* _pMesh,
+        OGBlendType _Blend,
+        OGShaderID _ShaderID,
+        OGRenderPass _Pass);
 
     // Create material.
     virtual IOGMaterial* CreateMaterial ();
@@ -126,14 +108,8 @@ public:
         unsigned int Colour, 
         const char * const pszFormat, ...);
 
-    // Draw effects buffer.
-    virtual void DrawEffectBuffer (void* _pBuffer, int _StartId, int _NumVertices);
-
-    // Draw sprite buffer.
-    virtual void DrawSpriteBuffer (void* _pBuffer, int _StartId, int _NumVertices);
-
-    // Draw render target.
-    virtual void DrawRT ();
+    // Draw scene.
+    virtual void DrawScene ();
 
     // Debug - insert event marker.
     virtual void InsertEventMarker (const std::string& _MarkerStr);
@@ -174,51 +150,69 @@ protected:
             OpaqueObjs.reserve(64);
             AlphaTestObjs.reserve(64);
             BlendedObjs.reserve(64);
+            EffectObjs.reserve(64);
+            m_pCamera = NULL;
+        }
+
+        void Clear()
+        {
+            OpaqueObjs.clear();
+            AlphaTestObjs.clear();
+            BlendedObjs.clear();
+            EffectObjs.clear();
         }
 
         std::vector<RenderJob>  OpaqueObjs;
         std::vector<RenderJob>  AlphaTestObjs;
         std::vector<RenderJob>  BlendedObjs;
+        std::vector<RenderJob>  EffectObjs;
+
+        OGMatrix                m_mView;
+        OGMatrix                m_mProjection;
+        IOGCamera*              m_pCamera;
     };
 
     // do actual rendering here
     void FlushRenderQueue();
 
     // do rendering of the particular mesh
-    void DoRenderJob(const RenderJob& _rj);
+    void DoRenderJob(const RenderJob& _rj, RenderQueue* _pQueue);
+
+    // set current blend mode
+    void SetBlend(OGBlendType _blend);
 
 protected:
 
     IOGTexture*         m_pCurTexture;
     IOGMaterial*        m_pCurMaterial;
     IOGVertexBuffers*   m_pCurMesh;
+    IOGShader*          m_pCurShader;
     OGBlendType         m_CurBlend;
+
     IOGStatistics*      m_pStats;
     IOGShaderManager*   m_pShaderMgr;
     IOGFog*             m_pFog;
     IOGLightMgr*        m_pLightMgr;
     IOGCamera*          m_pCamera;
     COGTextRenderer*    m_pText;
-    COGRenderTarget*    m_pRT;
+    COGRenderTarget*    m_pShadowMapRT;
     OGMatrix            m_mOrthoProj;
     OGMatrix            m_mProjection;
     OGMatrix            m_mTextProj;
     OGMatrix            m_mView;
+    OGMatrix            m_mWorld;
+    OGVec4              m_vClearColor;
+    bool                m_bFogEnabled;
+
     unsigned int        m_Width; 
     unsigned int        m_Height;
     float               m_fZNear;
     float               m_fZFar;
     float               m_fFOV;
     bool                m_bLandscapeMode;
-    OGRenderMode        m_Mode;
 
-    OGMatrix            m_mWorld;
-    bool                m_bLightEnabled;
-    bool                m_bFogEnabled;
-
-    IOGShader*          m_pCurShader;
-
-    RenderQueue         m_RenderQueue;
+    RenderQueue         m_SceneQueue;
+    RenderQueue         m_ShadowMapQueue;
 };
 
 #endif

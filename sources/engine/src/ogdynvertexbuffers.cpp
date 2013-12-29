@@ -13,44 +13,26 @@
 
 COGDynVertexBuffers::~COGDynVertexBuffers ()
 {
-    if (m_pIndexData)
-        free(m_pIndexData);
     if (m_pVertexData)
         free(m_pVertexData);
     if (m_VBO != 0)
         glDeleteBuffers(1, &m_VBO);
-    if (m_IBO != 0)
-        glDeleteBuffers(1, &m_IBO);
 }
 
 
-COGDynVertexBuffers::COGDynVertexBuffers (unsigned int _NumIndices)
+COGDynVertexBuffers::COGDynVertexBuffers (unsigned int _NumFaces)
 {
     m_pVertexData = NULL;
     glGenBuffers(1, &m_VBO);
-    glGenBuffers(1, &m_IBO);
 
     m_Stride = 36;
-    m_NumIndices = _NumIndices;
     m_NumFaces = 0;
+    m_NumVertices = 0;
 
-    unsigned int IBOSize = m_NumIndices * sizeof(GLshort);
-    m_pIndexData = malloc(IBOSize);
-    GLshort* pBuff = (GLshort*)m_pIndexData;
-    for (size_t i = 0; i < m_NumIndices; i+=6)
-    {
-        pBuff[0] = i;
-        pBuff[1] = i+1;
-        pBuff[2] = i+2;
-        pBuff[3] = i+2;
-        pBuff[4] = i+3;
-        pBuff[5] = i;
-        pBuff += 6;
-    }
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, IBOSize, m_pIndexData, GL_STATIC_DRAW);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    m_MaxFaces = _NumFaces;
+    m_MaxVertices = (m_MaxFaces * 2) * 4;
+    m_MaxVBOSize = m_Stride * m_MaxVertices;
+    m_pVertexData = malloc(m_MaxVBOSize);
 
     m_pStats = GetStatistics();
 }
@@ -60,7 +42,6 @@ COGDynVertexBuffers::COGDynVertexBuffers (unsigned int _NumIndices)
 void COGDynVertexBuffers::Apply () const
 {
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, m_Stride, (const void*)(0));
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, m_Stride, (const void*)(12));
@@ -71,24 +52,41 @@ void COGDynVertexBuffers::Apply () const
 }
 
 
-// update buffer geometry.
-void COGDynVertexBuffers::Update (const void* _pBuff, unsigned int _Size)
+// map buffer geometry.
+void COGDynVertexBuffers::Map ()
 {
-    if (_Size > 0)
-    {
-        if (m_pVertexData)
-        {
-            free(m_pVertexData);
-            m_pVertexData = NULL;
-        }
-        m_pVertexData = malloc(_Size);
-        memcpy(m_pVertexData, _pBuff, _Size);
+    m_NumVertices = 0;
+    m_NumFaces = 0;
+    //memset(m_pVertexData, 0, m_MaxVBOSize);
+}
 
-        m_NumVertices = _Size / m_Stride;
-        m_NumFaces = m_NumVertices / 4;
-        glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        glBufferData(GL_ARRAY_BUFFER, _Size, m_pVertexData, GL_DYNAMIC_DRAW);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+// unmap buffer geometry.
+void COGDynVertexBuffers::Unmap ()
+{
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBufferData(GL_ARRAY_BUFFER, m_NumVertices * m_Stride, m_pVertexData, GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+
+// update buffer geometry.
+void COGDynVertexBuffers::Update (unsigned int _Offset, const void* _pBuff, unsigned int _Size)
+{
+    if (_Offset + _Size <= m_MaxVBOSize)
+    {
+        unsigned char* pDst = (unsigned char*)m_pVertexData + _Offset;
+        memcpy(pDst, _pBuff, _Size);
+
+        unsigned int numVertices = _Size / m_Stride;
+        unsigned int numFaces = numVertices / 2;
+        m_NumVertices += numVertices;
+        m_NumFaces += numFaces;
+    }
+    else
+    {
+        m_NumVertices = m_NumVertices;
+        return;
     }
 }
 
@@ -98,10 +96,12 @@ void COGDynVertexBuffers::Render () const
 {
     if (m_NumFaces > 0)
     {
-        glDrawElements(GL_TRIANGLES, m_NumFaces * 3, GL_UNSIGNED_SHORT, 0);
+        for (unsigned int i = 0; i < m_NumFaces / 2; ++i)
+            glDrawArrays(GL_TRIANGLE_STRIP, i*4, 4);
 #ifdef STATISTICS
         m_pStats->AddVertexCount(m_NumVertices, m_NumFaces);
         m_pStats->AddDrawCall();
 #endif
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 }

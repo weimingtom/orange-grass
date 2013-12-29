@@ -10,7 +10,7 @@
 #include "ogsgeffectnode.h"
 
 
-COGSgEffectNode::COGSgEffectNode () :   
+COGSgEffectNode::COGSgEffectNode () :
     m_pRenderable(NULL),
     m_pPhysics(NULL),
     m_bActive(false)
@@ -18,7 +18,7 @@ COGSgEffectNode::COGSgEffectNode () :
 }
 
 
-COGSgEffectNode::COGSgEffectNode (IOGEffect* _pRenderable, IOGPhysicalObject* _pPhysics) :   
+COGSgEffectNode::COGSgEffectNode (IOGEffect* _pRenderable, IOGPhysicalObject* _pPhysics) :
     m_pRenderable(_pRenderable),
     m_pPhysics(_pPhysics),
     m_bActive(true)
@@ -50,21 +50,21 @@ const IOGObb& COGSgEffectNode::GetOBB () const
 // update transform.
 void COGSgEffectNode::Update (unsigned long _ElapsedTime)
 {
-	if (!m_bActive)
-		return;
+    if (!m_bActive)
+        return;
 
     m_pRenderable->Update(_ElapsedTime);
 }
 
 
 // render.
-void COGSgEffectNode::Render ()
+void COGSgEffectNode::Render (IOGCamera* _pCamera, OGRenderPass _Pass)
 {
-	if (!m_bActive)
-		return;
+    if (!m_bActive)
+        return;
 
     const OGMatrix& mWorld = m_pPhysics->GetWorldTransform();
-    m_pRenderable->Render(mWorld);
+    m_pRenderable->Render(mWorld, _Pass);
 }
 
 
@@ -91,7 +91,7 @@ void COGSgEffectNode::StartAnimation (const std::string& _Alias)
 // Set active state
 void COGSgEffectNode::Activate (bool _bActive)
 {
-	m_bActive = _bActive;
+    m_bActive = _bActive;
 }
 
 

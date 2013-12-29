@@ -38,23 +38,20 @@ PFNGLGETOBJECTLABELEXTPROC glGetObjectLabelEXT;
 }
 #endif
 
-COGSprite::SprVert g_RTVertices[4];
-
 
 COGRenderer::COGRenderer () :   m_pCurTexture(NULL),
                                 m_pCurMaterial(NULL),
                                 m_pCurMesh(NULL),
+                                m_pCurShader(NULL),
                                 m_CurBlend(OG_BLEND_NO),
                                 m_pFog(NULL),
                                 m_pLightMgr(NULL),
                                 m_pCamera(NULL),
                                 m_pText(NULL),
-                                m_pRT(NULL),
+                                m_pShadowMapRT(NULL),
+                                m_bFogEnabled(false),
                                 m_bLandscapeMode(false)
 {
-    m_bLightEnabled = false;
-    m_bFogEnabled = false;
-
     m_pStats = GetStatistics();
     m_pShaderMgr = GetShaderManager();
 }
@@ -65,7 +62,7 @@ COGRenderer::~COGRenderer ()
     m_pShaderMgr->Destroy();
 
     OG_SAFE_DELETE(m_pText);
-    OG_SAFE_DELETE(m_pRT);
+    OG_SAFE_DELETE(m_pShadowMapRT);
     OG_SAFE_DELETE(m_pFog);
     OG_SAFE_DELETE(m_pLightMgr);
     OG_SAFE_DELETE(m_pCamera);
@@ -83,7 +80,6 @@ bool COGRenderer::Init ()
     glGetObjectLabelEXT = (PFNGLGETOBJECTLABELEXTPROC) eglGetProcAddress("glGetObjectLabelEXT");
 #endif
 
-    glClearColor(0.3f, 0.3f, 0.4f, 1.0f);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
@@ -96,6 +92,20 @@ bool COGRenderer::Init ()
     if (!m_pShaderMgr->Init())
         return false;
     return true;
+}
+
+// set clear color.
+void COGRenderer::SetClearColor (const OGVec4& _vColor)
+{
+    m_vClearColor = _vColor;
+    glClearColor(m_vClearColor.x, m_vClearColor.y, m_vClearColor.z, m_vClearColor.w);
+}
+
+
+// set fog state.
+void COGRenderer::EnableFog (bool _bEnable)
+{
+    m_bFogEnabled = _bEnable;
 }
 
 
@@ -138,8 +148,9 @@ void COGRenderer::SetViewport (
         m_mTextProj.f[5] = -2.0f/(m_Height);
     }
 
-    m_pCamera->SetupViewport(m_mProjection, m_fFOV);
-    m_pRT = new COGRenderTarget();
+    m_pCamera->SetupViewport(m_mProjection);
+    m_pShadowMapRT = new COGRenderTarget();
+    m_pShadowMapRT->Init(1024);
 }
 
 
@@ -157,23 +168,9 @@ IOGVertexBuffers* COGRenderer::CreateVertexBuffer (
 
 
 // Create vertex buffer for effects.
-IOGDynVertexBuffers* COGRenderer::CreateDynVertexBuffer (unsigned int _NumVertices)
+IOGVertexBuffers* COGRenderer::CreateDynVertexBuffer (unsigned int _NumFaces)
 {
-    return new COGDynVertexBuffers(_NumVertices);
-}
-
-
-// set model matrix.
-void COGRenderer::SetModelMatrix (const OGMatrix& _mModel)
-{
-    m_mWorld = _mModel;
-}
-
-
-// set view matrix.
-void COGRenderer::SetViewMatrix (const OGMatrix& _mView)
-{
-    m_mView = _mView;
+    return new COGDynVertexBuffers(_NumFaces);
 }
 
 
@@ -198,90 +195,239 @@ void COGRenderer::GetProjectionMatrix (OGMatrix& _mProjection)
 }
 
 
-// Enable scene light.
-void COGRenderer::EnableLight (bool _bEnable)
+// add render job.
+void COGRenderer::RenderStatic (
+    IOGTexture* _pTexture,
+    IOGMaterial* _pMaterial,
+    IOGVertexBuffers* _pMesh,
+    OGMatrix _mTransform,
+    OGBlendType _Blend,
+    OGShaderID _ShaderID,
+    OGRenderPass _Pass)
 {
-    m_bLightEnabled = _bEnable;
-}
-
-
-// Enable scene fog.
-void COGRenderer::EnableFog (bool _bEnable)
-{
-    m_pFog->SetEnabled(_bEnable);
-}
-
-
-// Enable color channel.
-void COGRenderer::EnableColor (bool _bEnable)
-{
-    GLboolean enabled = _bEnable ? GL_TRUE : GL_FALSE;
-    glColorMask(enabled, enabled, enabled, enabled);
-}
-
-
-// add rendering command.
-void COGRenderer::SetTexture (IOGTexture* _pTexture)
-{
-    switch (m_Mode)
+    RenderQueue* pCurQueue = NULL;
+    switch(_Pass)
     {
-    case OG_RENDERMODE_SHADOWEDSCENE:
-        return;
-    default:
+    case OG_RENDERPASS_SCENE:
+        pCurQueue = &m_SceneQueue;
         break;
+
+    case OG_RENDERPASS_SHADOWMAP:
+        pCurQueue = &m_ShadowMapQueue;
+        break;
+
+    default:
+        return;
     }
 
-    if (_pTexture != m_pCurTexture)
+    std::vector<RenderJob>* pCurObjList = NULL;
+    switch (_Blend)
     {
-#ifdef STATISTICS
-        m_pStats->AddTextureSwitch();
-#endif
-        m_pCurTexture = _pTexture;
+    case OG_BLEND_SOLID:
+        pCurObjList = &pCurQueue->OpaqueObjs;
+        break;
+
+    case OG_BLEND_ALPHABLEND:
+    case OG_BLEND_ALPHAADD:
+    case OG_BLEND_ALPHAONE:
+        pCurObjList = &pCurQueue->BlendedObjs;
+        break;
+
+    case OG_BLEND_ALPHATEST:
+        pCurObjList = &pCurQueue->AlphaTestObjs;
+        break;
+
+    default:
+        return;
+    }
+
+    RenderJob curJob;
+    curJob.Blend = _Blend;
+    curJob.mTransform = _mTransform;
+    curJob.pTexture = _pTexture;
+    curJob.pMaterial = _pMaterial;
+    curJob.pMesh = _pMesh;
+    curJob.ShaderID = _ShaderID;
+    pCurObjList->push_back(curJob);
+}
+
+
+// add render job.
+void COGRenderer::RenderEffect (
+    IOGTexture* _pTexture,
+    IOGVertexBuffers* _pMesh,
+    OGBlendType _Blend,
+    OGShaderID _ShaderID,
+    OGRenderPass _Pass)
+{
+    RenderQueue* pCurQueue = NULL;
+    switch(_Pass)
+    {
+    case OG_RENDERPASS_SCENE:
+        pCurQueue = &m_SceneQueue;
+        break;
+
+    case OG_RENDERPASS_SHADOWMAP:
+        pCurQueue = &m_ShadowMapQueue;
+        break;
+
+    default:
+        return;
+    }
+
+    RenderJob curJob;
+    curJob.Blend = _Blend;
+    MatrixIdentity(curJob.mTransform);
+    curJob.pTexture = _pTexture;
+    curJob.pMaterial = NULL;
+    curJob.pMesh = _pMesh;
+    curJob.ShaderID = _ShaderID;
+    pCurQueue->EffectObjs.push_back(curJob);
+}
+
+
+// Draw scene.
+void COGRenderer::DrawScene ()
+{
+    m_mView = m_pCamera->GetViewMatrix();
+    FlushRenderQueue();
+    Reset();
+}
+
+
+// do actual rendering here
+void COGRenderer::FlushRenderQueue()
+{
+    glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glEnableVertexAttribArray(2);
+
+    // Render shadow map
+    if (m_pShadowMapRT->Begin())
+    {
+        m_ShadowMapQueue.m_mProjection = m_pLightMgr->GetGlobalLightProjMatrix();
+        m_ShadowMapQueue.m_mView = m_pLightMgr->GetGlobalLightViewMatrix();
+        m_ShadowMapQueue.m_pCamera = m_pLightMgr->GetLightCamera();
+
+        m_pFog->SetEnabled(false);
+        for (auto it = m_ShadowMapQueue.OpaqueObjs.begin(); it != m_ShadowMapQueue.OpaqueObjs.end(); ++it)
+        {
+            DoRenderJob(*it, &m_ShadowMapQueue);
+        }
+        for (auto it = m_ShadowMapQueue.AlphaTestObjs.begin(); it != m_ShadowMapQueue.AlphaTestObjs.end(); ++it)
+        {
+            DoRenderJob(*it, &m_ShadowMapQueue);
+        }
+        for (auto it = m_ShadowMapQueue.BlendedObjs.begin(); it != m_ShadowMapQueue.BlendedObjs.end(); ++it)
+        {
+            DoRenderJob(*it, &m_ShadowMapQueue);
+        }
+        m_pShadowMapRT->End();
+    }
+    m_ShadowMapQueue.Clear();
+
+    // Rendering scene
+    m_SceneQueue.m_mProjection = m_mProjection;
+    m_SceneQueue.m_mView = m_mView;
+    m_SceneQueue.m_pCamera = m_pCamera;
+
+    glViewport(0, 0, m_Width, m_Height);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, m_pShadowMapRT->GetTextureId());
+    glActiveTexture(GL_TEXTURE0);
+
+    m_pFog->SetEnabled(m_bFogEnabled);
+
+    for (auto it = m_SceneQueue.OpaqueObjs.begin(); it != m_SceneQueue.OpaqueObjs.end(); ++it)
+    {
+        DoRenderJob(*it, &m_SceneQueue);
+    }
+    for (auto it = m_SceneQueue.AlphaTestObjs.begin(); it != m_SceneQueue.AlphaTestObjs.end(); ++it)
+    {
+        DoRenderJob(*it, &m_SceneQueue);
+    }
+    for (auto it = m_SceneQueue.BlendedObjs.begin(); it != m_SceneQueue.BlendedObjs.end(); ++it)
+    {
+        DoRenderJob(*it, &m_SceneQueue);
+    }
+
+    m_pFog->SetEnabled(false);
+
+    glDisable(GL_CULL_FACE);
+    glDisable(GL_DEPTH_TEST);
+    for (auto it = m_SceneQueue.EffectObjs.begin(); it != m_SceneQueue.EffectObjs.end(); ++it)
+    {
+        DoRenderJob(*it, &m_SceneQueue);
+    }
+    glEnable(GL_DEPTH_TEST);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+    glDisableVertexAttribArray(2);
+    m_SceneQueue.Clear();
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glActiveTexture(GL_TEXTURE0);
+
+    // Rendering text
+    m_pCurShader = m_pShaderMgr->GetShader(OG_SHADER_TEXT);
+    SetBlend(OG_BLEND_ALPHABLEND);
+    m_pCurShader->SetProjectionMatrix(m_mTextProj);
+    m_pCurShader->Setup();
+    m_pText->Flush();
+}
+
+
+// do rendering of the particular mesh
+void COGRenderer::DoRenderJob(const RenderJob& _rj, RenderQueue* _pQueue)
+{
+    if (!m_pCurShader || m_pCurShader->GetShaderID() != _rj.ShaderID)
+    {
+        m_pCurShader = m_pShaderMgr->GetShader(_rj.ShaderID);
+        m_pCurShader->SetCamera(_pQueue->m_pCamera);
+        m_pCurShader->SetProjectionMatrix(_pQueue->m_mProjection);
+        m_pCurShader->SetViewMatrix(_pQueue->m_mView);
+        m_pCurShader->SetLighting(m_pFog, m_pLightMgr);
+        m_pCurShader->Setup();
+    }
+
+    if (_rj.pMesh != m_pCurMesh)
+    {
+        m_pCurMesh = _rj.pMesh;
+        m_pCurMesh->Apply();
+    }
+
+    if (_rj.pMaterial != NULL)
+    {
+        m_pCurMaterial = _rj.pMaterial;
+        m_pCurShader->SetMaterial(m_pCurMaterial);
+    }
+
+    if (_rj.pTexture != m_pCurTexture)
+    {
+        m_pCurTexture = _rj.pTexture;
         m_pCurTexture->Apply();
     }
+
+    SetBlend(_rj.Blend);
+
+    m_pCurShader->SetModelMatrix(_rj.mTransform);
+    m_pCurShader->Apply();
+    m_pCurMesh->Render();
 }
 
 
-// add rendering command.
-void COGRenderer::SetMaterial (IOGMaterial* _pMaterial)
+// set current blend mode
+void COGRenderer::SetBlend(OGBlendType _blend)
 {
-    switch (m_Mode)
+    if (m_CurBlend != _blend)
     {
-    case OG_RENDERMODE_SHADOWMAP:
-    case OG_RENDERMODE_SHADOWEDSCENE:
-        return;
-    default:
-        break;
-    }
-
-    if (_pMaterial != m_pCurMaterial)
-    {
-        m_pCurMaterial = _pMaterial;
-        if(m_Mode == OG_RENDERMODE_GEOMETRY)
-        {
-            m_pCurShader->SetMaterial(m_pCurMaterial);
-        }
-        SetBlend(m_pCurMaterial->GetBlend());
-    }
-}
-
-
-// add rendering command.
-void COGRenderer::SetBlend (OGBlendType _Blend)
-{
-    switch (m_Mode)
-    {
-    case OG_RENDERMODE_SHADOWMAP:
-    case OG_RENDERMODE_SHADOWEDSCENE:
-        return;
-    default:
-        break;
-    }
-
-    if (m_CurBlend != _Blend)
-    {
-        m_CurBlend = _Blend;
-
+        m_CurBlend = _blend;
         switch (m_CurBlend)
         {
         case OG_BLEND_NO:
@@ -319,301 +465,6 @@ void COGRenderer::SetBlend (OGBlendType _Blend)
 }
 
 
-// start rendering mode.
-void COGRenderer::StartRenderMode(OGRenderMode _Mode)
-{
-    m_Mode = _Mode;
-    switch(m_Mode)
-    {
-    case OG_RENDERMODE_GEOMETRY:
-        //m_pCurShader = m_pShaderMgr->GetShader(OG_SHADER_MODEL);
-        //glDisable(GL_CULL_FACE);
-        //glEnable(GL_DEPTH_TEST);
-        //SetViewMatrix(m_pCamera->GetViewMatrix());
-
-        //m_pCurShader->SetCamera(m_pCamera);
-        //m_pCurShader->SetProjectionMatrix(m_mProjection);
-        //m_pCurShader->SetViewMatrix(m_mView);
-        //m_pCurShader->SetLighting(m_pFog, m_pLightMgr);
-        //m_pCurShader->Setup();
-
-        //EnableLight(true);
-        //glEnableVertexAttribArray(0);
-        //glEnableVertexAttribArray(1);
-        //glEnableVertexAttribArray(2);
-        break;
-
-    case OG_RENDERMODE_EFFECTS:
-        m_pCurShader = m_pShaderMgr->GetShader(OG_SHADER_COLOREFFECT);
-        glDisable(GL_CULL_FACE);
-        glDisable(GL_DEPTH_TEST);
-        SetViewMatrix(m_pCamera->GetViewMatrix());
-
-        m_pCurShader->SetCamera(m_pCamera);
-        m_pCurShader->SetProjectionMatrix(m_mProjection);
-        m_pCurShader->SetViewMatrix(m_mView);
-        MatrixIdentity(m_mWorld);
-        m_pCurShader->SetModelMatrix(m_mWorld);
-        m_pCurShader->SetLighting(m_pFog, m_pLightMgr);
-        m_pCurShader->Setup();
-        m_pCurShader->Apply();
-
-        EnableLight(false);
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);
-        break;
-
-    case OG_RENDERMODE_SPRITES:
-        m_pCurShader = m_pShaderMgr->GetShader(OG_SHADER_SPRITE);
-        SetBlend(OG_BLEND_ALPHABLEND);
-        glDisable(GL_CULL_FACE);
-        glDisable(GL_DEPTH_TEST);
-
-        m_pCurShader->SetProjectionMatrix(m_mOrthoProj);
-        m_pCurShader->Setup();
-
-        EnableLight(false);
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);
-        break;
-
-    case OG_RENDERMODE_SHADOWMAP:
-        m_pCurShader = m_pShaderMgr->GetShader(OG_SHADER_SHADOWMODEL);
-        Reset();
-
-        m_pLightMgr->UpdateGlobalLight(m_pCamera);
-        glDisable(GL_BLEND);
-        glDisable(GL_CULL_FACE);
-        glEnable(GL_DEPTH_TEST);
-        m_pRT->Begin();
-
-        m_pCurShader->SetCamera(m_pCamera);
-        m_pCurShader->SetProjectionMatrix(m_pLightMgr->GetGlobalLightProjMatrix());
-        m_pCurShader->SetViewMatrix(m_pLightMgr->GetGlobalLightViewMatrix());
-        m_pCurShader->SetLighting(m_pFog, m_pLightMgr);
-        m_pCurShader->Setup();
-
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);
-        break;
-
-    case OG_RENDERMODE_SHADOWEDSCENE:
-        m_pCurShader = m_pShaderMgr->GetShader(OG_SHADER_SHADOWEDSCENE);
-        glDisable(GL_CULL_FACE);
-        glEnable(GL_DEPTH_TEST);
-        glEnable(GL_BLEND); 
-        glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-        glBindTexture(GL_TEXTURE_2D, m_pRT->GetTextureId());
-
-        m_pCurShader->SetCamera(m_pCamera);
-        m_pCurShader->SetProjectionMatrix(m_mProjection);
-        m_pCurShader->SetViewMatrix(m_mView);
-        m_pCurShader->SetLighting(m_pFog, m_pLightMgr);
-        m_pCurShader->Setup();
-
-        glEnableVertexAttribArray(0);
-        glEnableVertexAttribArray(1);
-        glEnableVertexAttribArray(2);
-        break;
-
-    case OG_RENDERMODE_TEXT:
-        m_pCurShader = m_pShaderMgr->GetShader(OG_SHADER_TEXT);
-        SetBlend(OG_BLEND_ALPHABLEND);
-
-        m_pCurShader->SetProjectionMatrix(m_mTextProj);
-        m_pCurShader->Setup();
-        break;
-    }
-}
-
-
-// finish rendering mode.
-void COGRenderer::FinishRenderMode()
-{
-    switch(m_Mode)
-    {
-    case OG_RENDERMODE_GEOMETRY:
-        glDisable(GL_CULL_FACE);
-        glDisable(GL_BLEND);
-        glEnable(GL_DEPTH_TEST);
-        SetViewMatrix(m_pCamera->GetViewMatrix());
-        EnableLight(true);
-        FlushRenderQueue();
-        break;
-
-    case OG_RENDERMODE_EFFECTS:
-        glEnable(GL_DEPTH_TEST);
-        glDisable(GL_BLEND); 
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(2);
-        break;
-
-    case OG_RENDERMODE_SPRITES:
-        glDisable(GL_BLEND); 
-        glEnable(GL_DEPTH_TEST);
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(2);
-        break;
-
-    case OG_RENDERMODE_TEXT:
-        m_pText->Flush();
-        glDisable(GL_BLEND); 
-        glEnable(GL_DEPTH_TEST);
-        //glEnable(GL_CULL_FACE);
-        break;
-
-    case OG_RENDERMODE_SHADOWMAP:
-        FlushRenderQueue();
-        m_pRT->End();
-        glViewport(0, 0, m_Width, m_Height);
-        //glBindBuffer(GL_ARRAY_BUFFER, 0);
-        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        //glDisableVertexAttribArray(0);
-        //glDisableVertexAttribArray(1);
-        //glDisableVertexAttribArray(2);
-        Reset();
-        break;
-
-    case OG_RENDERMODE_SHADOWEDSCENE:
-        FlushRenderQueue();
-        glDisable(GL_BLEND);
-        //glBindBuffer(GL_ARRAY_BUFFER, 0);
-        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-        //glDisableVertexAttribArray(0);
-        //glDisableVertexAttribArray(1);
-        //glDisableVertexAttribArray(2);
-        break;
-    }
-}
-
-
-// add render job.
-void COGRenderer::RenderStatic (
-    IOGTexture* _pTexture,
-    IOGMaterial* _pMaterial,
-    IOGVertexBuffers* _pMesh,
-    OGMatrix _mTransform,
-    OGBlendType _Blend,
-    OGShaderID _ShaderID)
-{
-    std::vector<RenderJob>* pCurQueue = NULL;
-    switch (_Blend)
-    {
-    case OG_BLEND_SOLID:
-        pCurQueue = &m_RenderQueue.OpaqueObjs;
-        break;
-
-    case OG_BLEND_ALPHABLEND:
-    case OG_BLEND_ALPHAADD:
-    case OG_BLEND_ALPHAONE:
-        pCurQueue = &m_RenderQueue.BlendedObjs;
-        break;
-
-    case OG_BLEND_ALPHATEST:
-        pCurQueue = &m_RenderQueue.AlphaTestObjs;
-        break;
-
-    default:
-        return;
-    }
-
-    RenderJob curJob;
-    curJob.Blend = _Blend;
-    curJob.mTransform = _mTransform;
-    curJob.pTexture = _pTexture;
-    curJob.pMaterial = _pMaterial;
-    curJob.pMesh = _pMesh;
-    curJob.ShaderID = _ShaderID;
-    pCurQueue->push_back(curJob);
-}
-
-
-// do actual rendering here
-void COGRenderer::FlushRenderQueue()
-{
-    //m_pCurShader = NULL;
-    //glDisable(GL_CULL_FACE);
-    //glDisable(GL_BLEND);
-    //glEnable(GL_DEPTH_TEST);
-    //SetViewMatrix(m_pCamera->GetViewMatrix());
-
-    //EnableLight(true);
-    glEnableVertexAttribArray(0);
-    glEnableVertexAttribArray(1);
-    glEnableVertexAttribArray(2);
-
-    for (auto it = m_RenderQueue.OpaqueObjs.begin(); it != m_RenderQueue.OpaqueObjs.end(); ++it)
-    {
-        DoRenderJob(*it);
-    }
-    for (auto it = m_RenderQueue.AlphaTestObjs.begin(); it != m_RenderQueue.AlphaTestObjs.end(); ++it)
-    {
-        DoRenderJob(*it);
-    }
-    for (auto it = m_RenderQueue.BlendedObjs.begin(); it != m_RenderQueue.BlendedObjs.end(); ++it)
-    {
-        DoRenderJob(*it);
-    }
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(2);
-    m_RenderQueue.OpaqueObjs.clear();
-    m_RenderQueue.AlphaTestObjs.clear();
-    m_RenderQueue.BlendedObjs.clear();
-}
-
-
-// do rendering of the particular mesh
-void COGRenderer::DoRenderJob(const RenderJob& _rj)
-{
-    if (m_Mode == OG_RENDERMODE_GEOMETRY)
-    {
-        if (!m_pCurShader || m_pCurShader->GetShaderID() != _rj.ShaderID)
-        {
-            m_pCurShader = m_pShaderMgr->GetShader(_rj.ShaderID);
-            m_pCurShader->SetCamera(m_pCamera);
-            m_pCurShader->SetProjectionMatrix(m_mProjection);
-            m_pCurShader->SetViewMatrix(m_mView);
-            m_pCurShader->SetLighting(m_pFog, m_pLightMgr);
-            m_pCurShader->Setup();
-        }
-    }
-
-    if (_rj.pMesh != m_pCurMesh)
-    {
-        m_pCurMesh = _rj.pMesh;
-        m_pCurMesh->Apply();
-    }
-
-    if (m_Mode != OG_RENDERMODE_SHADOWEDSCENE)
-    {
-        SetMaterial(_rj.pMaterial);
-        SetTexture(_rj.pTexture);
-    }
-
-    SetBlend(_rj.Blend);
-    m_pCurShader->SetModelMatrix(_rj.mTransform);
-    m_pCurShader->Apply();
-    m_pCurMesh->Render();
-}
-
-
-// clear frame buffer with the given color
-void COGRenderer::ClearFrame (const OGVec4& _vClearColor)
-{
-    glClearColor(_vClearColor.x, _vClearColor.y, _vClearColor.z, _vClearColor.w);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-
 // Get scene light.
 IOGLightMgr* COGRenderer::GetLightMgr ()
 {
@@ -648,6 +499,7 @@ void COGRenderer::Reset ()
     m_pCurTexture = NULL;
     m_pCurMaterial = NULL;
     m_pCurMesh = NULL;
+    m_pCurShader = NULL;
     m_CurBlend = OG_BLEND_NO;
 }
 
@@ -685,79 +537,6 @@ void COGRenderer::DisplayString (const OGVec2& _vPos,
     va_end(args);
 
     m_pText->DisplayText(_vPos.x,_vPos.y,_fScale, Colour, Text);
-}
-
-
-// Draw effects buffer.
-void COGRenderer::DrawEffectBuffer (void* _pBuffer, int _StartId, int _NumVertices)
-{
-    m_pCurShader->SetModelMatrix(m_mWorld);
-    m_pCurShader->Apply();
-
-    // vertex pointer
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 36, _pBuffer);
-    // texture coord pointer
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 36, (void*)((char *)_pBuffer + 12));
-    // color pointer
-    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 36, (void*)((char *)_pBuffer + 20));
-    glDrawArrays(GL_TRIANGLE_STRIP, _StartId, _NumVertices);
-
-#ifdef STATISTICS
-    m_pStats->AddVertexCount(_NumVertices, 1);
-    m_pStats->AddDrawCall();
-    m_pStats->AddVBOSwitch();
-#endif
-}
-
-
-// Draw sprite buffer.
-void COGRenderer::DrawSpriteBuffer (void* _pBuffer, int _StartId, int _NumVertices)
-{
-    // vertex pointer
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 32, _pBuffer);
-    // texture coord pointer
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 32, (void*)((char *)_pBuffer + 8));
-    // color pointer
-    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, 32, (void*)((char *)_pBuffer + 16));
-    glDrawArrays(GL_TRIANGLE_STRIP, _StartId, _NumVertices);
-
-#ifdef STATISTICS
-    m_pStats->AddVertexCount(_NumVertices, 1);
-    m_pStats->AddDrawCall();
-    m_pStats->AddVBOSwitch();
-#endif
-}
-
-
-// Draw render target.
-void COGRenderer::DrawRT ()
-{
-    float HalfScrWidth = (float)m_Width / 2;
-    float HalfScrHeight = (float)m_Height / 2;
-    OGVec4 Color = OGVec4(1.0f, 1.0f, 1.0f, 1.0f);
-    OGVec2 vSize = OGVec2((float)m_pRT->m_Size, (float)m_pRT->m_Size);
-    OGVec2 vPos = OGVec2(m_Width - vSize.x, 0);
-
-    float fLeft = -HalfScrWidth+vPos.x;
-    float fRight = -HalfScrWidth+vSize.x+vPos.x;
-    float fTop = HalfScrHeight-vSize.y-vPos.y;
-    float fBottom = HalfScrHeight-vPos.y;
-
-    g_RTVertices[0].p = OGVec2(fRight, fTop);	
-    g_RTVertices[0].t = OGVec2(1.0f, 0.0f); 
-    g_RTVertices[0].c = Color;
-    g_RTVertices[1].p = OGVec2(fLeft, fTop);	
-    g_RTVertices[1].t = OGVec2(0.0f, 0.0f); 
-    g_RTVertices[1].c = Color;
-    g_RTVertices[2].p = OGVec2(fRight, fBottom);	
-    g_RTVertices[2].t = OGVec2(1.0f, 1.0f); 
-    g_RTVertices[2].c = Color;
-    g_RTVertices[3].p = OGVec2(fLeft, fBottom);	
-    g_RTVertices[3].t = OGVec2(0.0f, 1.0f); 
-    g_RTVertices[3].c = Color;
-
-    glBindTexture(GL_TEXTURE_2D, m_pRT->GetTextureId());
-    DrawSpriteBuffer(g_RTVertices, 0, 4);
 }
 
 

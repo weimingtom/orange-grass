@@ -55,6 +55,18 @@ public:
     // index data
     virtual const void* GetIndexData () const { return m_pIndexData; }
 
+    // map buffer geometry.
+    virtual void Map () {}
+
+    // unmap buffer geometry.
+    virtual void Unmap () {}
+
+    // update buffer geometry.
+    virtual void Update (unsigned int _Offset, const void* _pBuff, unsigned int _Size) {}
+
+    // is dynamic
+    virtual bool IsDynamic() const { return false; }
+
 private:
 
     unsigned int    m_VBO;

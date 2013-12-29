@@ -10,6 +10,7 @@
 #define OGSCENEGRAPH_H_
 
 #include "IOGSceneGraph.h"
+#include "IOGRenderTypes.h"
 #include <list>
 #include <map>
 #include "IOGGlobalVarsTable.h"
@@ -54,20 +55,8 @@ public:
     // Render scene graph.
     virtual void RenderScene (IOGCamera* _pCamera);
 
-    // Render landscape.
-    virtual void RenderLandscape (IOGCamera* _pCamera);
-
-    // Render effects.
-    virtual void RenderEffects (IOGCamera* _pCamera);
-
-    // Render all effects.
-    virtual void RenderAllEffects (IOGCamera* _pCamera);
-
-    // Render the whole scene.
-    virtual void RenderAll (IOGCamera* _pCamera);
-
 private:
-    typedef std::list<IOGSgNode*>               TNodesList;
+    typedef std::list<IOGSgNode*>   TNodesList;
 
 private:
 
@@ -78,10 +67,13 @@ private:
     void ClearNodesList(TNodesList& _List);
 
     // render nodes list
-    void RenderNodesList(IOGCamera* _pCamera, TNodesList& _List, bool _bForceRender);
+    void RenderNodesList(IOGCamera* _pCamera, TNodesList& _List, OGRenderPass _Pass);
 
     // check object visibility
     bool IsVisible(const IOGCamera* _pCamera, const IOGSgNode* _pNode) const;
+
+    // Render effects.
+    void RenderEffects (IOGCamera* _pCamera, OGRenderPass _Pass);
 
 private:
     IOGGlobalVarsTable* m_pGlobalVars;

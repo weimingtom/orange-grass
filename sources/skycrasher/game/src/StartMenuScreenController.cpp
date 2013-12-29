@@ -119,24 +119,24 @@ void CStartMenuScreenController::Update (unsigned long _ElapsedTime)
 // Render controller scene
 void CStartMenuScreenController::RenderScene ()
 {
-	m_pRenderer->ClearFrame(OGVec4(0.0f, 0.0f, 0.0f, 1.0f));
-
-    if (m_State != CSTATE_ACTIVE)
-        return;
-
-	m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
-	m_pBack->Render(m_BackSprPos, m_BackSprSize);
-	m_pLogo->Render(m_LogoSprPos, m_LogoSprSize);
-    m_pNewBtn->Render();
-#ifdef WIN32
-    m_pExitBtn->Render();
-#endif
-	m_pRenderer->FinishRenderMode();
-
-	m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
-    m_pRenderer->DisplayString(m_DemoLabelPos, 0.3f, 0x7FFFFFFF, "Demo version: %d.%d", 0, 23);
-	m_pRenderer->FinishRenderMode();
-	m_pRenderer->Reset();
+//    m_pRenderer->SetClearColor(OGVec4(0.0f, 0.0f, 0.0f, 1.0f));
+//
+//    if (m_State != CSTATE_ACTIVE)
+//        return;
+//
+//    m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
+//    m_pBack->Render(m_BackSprPos, m_BackSprSize);
+//    m_pLogo->Render(m_LogoSprPos, m_LogoSprSize);
+//    m_pNewBtn->Render();
+//#ifdef WIN32
+//    m_pExitBtn->Render();
+//#endif
+//    m_pRenderer->FinishRenderMode();
+//
+//    m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
+//    m_pRenderer->DisplayString(m_DemoLabelPos, 0.3f, 0x7FFFFFFF, "Demo version: %d.%d", 0, 23);
+//    m_pRenderer->FinishRenderMode();
+//    m_pRenderer->Reset();
 }
 
 

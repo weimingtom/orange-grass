@@ -97,6 +97,7 @@ bool COGModel::Load ()
                     }
 
                     pAnimNode->pBody = pMesh;
+                    pAnimNode->SceneProps = pMeshCfg->sceneprops;
 
                     OGMatrix mModel;
                     pScene->GetWorldMatrix(mModel, *pNode);
@@ -156,9 +157,9 @@ void COGModel::Unload ()
 
 
 // Render mesh.
-void COGModel::Render (const OGMatrix& _mWorld, unsigned int _MeshId)
+void COGModel::Render (const OGMatrix& _mWorld, unsigned int _MeshId, OGRenderPass _Pass)
 {
-    m_Meshes[_MeshId]->Render(_mWorld);
+    m_Meshes[_MeshId]->Render(_mWorld, _Pass);
 }
 
 

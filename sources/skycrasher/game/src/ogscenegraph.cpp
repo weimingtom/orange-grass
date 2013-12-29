@@ -140,23 +140,24 @@ void COGSceneGraph::Update (unsigned long _ElapsedTime)
 // Render scene graph.
 void COGSceneGraph::RenderScene (IOGCamera* _pCamera)
 {
-    RenderNodesList(_pCamera, m_NodesList, false);
-    RenderNodesList(_pCamera, m_StaticNodes, false);
-}
-
-
-// Render landscape.
-void COGSceneGraph::RenderLandscape (IOGCamera* _pCamera)
-{
+    IOGCamera* pLightCam = GetRenderer()->GetLightMgr()->GetLightCamera();
     if (m_pLandscapeNode)
-    {
-        m_pLandscapeNode->Render();
-    }
+        m_pLandscapeNode->Render(pLightCam, OG_RENDERPASS_SHADOWMAP);
+    RenderNodesList(pLightCam, m_NodesList, OG_RENDERPASS_SHADOWMAP);
+    RenderNodesList(pLightCam, m_StaticNodes, OG_RENDERPASS_SHADOWMAP);
+
+    if (m_pLandscapeNode)
+        m_pLandscapeNode->Render(_pCamera, OG_RENDERPASS_SCENE);
+
+    RenderNodesList(_pCamera, m_NodesList, OG_RENDERPASS_SCENE);
+    RenderNodesList(_pCamera, m_StaticNodes, OG_RENDERPASS_SCENE);
+
+    RenderEffects(_pCamera, OG_RENDERPASS_SCENE);
 }
 
 
 // Render effects.
-void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
+void COGSceneGraph::RenderEffects (IOGCamera* _pCamera, OGRenderPass _Pass)
 {
     const OGMatrix& mView = _pCamera->GetViewMatrix();
 
@@ -173,43 +174,9 @@ void COGSceneGraph::RenderEffects (IOGCamera* _pCamera)
         if (IsVisible(_pCamera, pNode))
         {
             pNode->SetBillboardVectors(vLook, vUp, vRight);
-            pNode->Render();
+            pNode->Render(_pCamera, _Pass);
         }
     }
-}
-
-
-// Render all effects.
-void COGSceneGraph::RenderAllEffects (IOGCamera* _pCamera)
-{
-    const OGMatrix& mView = _pCamera->GetViewMatrix();
-
-    OGVec3 vUp, vRight, vLook;
-    MatrixGetBasis(vRight, vUp, vLook, mView);
-    vUp.normalize();
-    vRight.normalize();
-    vLook.normalize();
-
-    TNodesList::iterator iter = m_EffectNodesList.begin();
-    for (; iter != m_EffectNodesList.end(); ++iter)
-    {
-        COGSgEffectNode* pNode = (COGSgEffectNode*)(*iter);
-        pNode->SetBillboardVectors(vLook, vUp, vRight);
-        pNode->Render();
-    }
-}
-
-
-// Render the whole scene.
-void COGSceneGraph::RenderAll (IOGCamera* _pCamera)
-{
-    if (m_pLandscapeNode)
-    {
-        ((COGSgLandscapeNode*)m_pLandscapeNode)->RenderAll();
-    }
-
-    RenderNodesList(_pCamera, m_NodesList, true);
-    RenderNodesList(_pCamera, m_StaticNodes, true);
 }
 
 
@@ -234,15 +201,15 @@ void COGSceneGraph::ClearNodesList(TNodesList& _List)
 
 
 // render nodes list
-void COGSceneGraph::RenderNodesList(IOGCamera* _pCamera, TNodesList& _List, bool _bForceRender)
+void COGSceneGraph::RenderNodesList(IOGCamera* _pCamera, TNodesList& _List, OGRenderPass _Pass)
 {
     TNodesList::iterator iter = _List.begin();
     for (; iter != _List.end(); ++iter)
     {
         IOGSgNode* pNode = (*iter);
-        if (_bForceRender || IsVisible(_pCamera, pNode))
+        if (IsVisible(_pCamera, pNode))
         {
-            pNode->Render();
+            pNode->Render(_pCamera, _Pass);
         }
     }
 }

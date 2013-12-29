@@ -110,24 +110,25 @@ bool CEditorLevelScene::Init ()
 // Setup viewport
 void CEditorLevelScene::SetViewport (int _Width, int _Height)
 {
-	m_ResX = _Width;
-	m_ResY = _Height;
+    m_ResX = _Width;
+    m_ResY = _Height;
 
-	glViewport(0, 0, m_ResX, m_ResY);
-	if (m_bInited)
-	{
-		m_pRenderer->SetViewport(m_ResX, m_ResY, 4.0f, 4500.0f, 0.67f);
-	}
+    glViewport(0, 0, m_ResX, m_ResY);
+    if (m_bInited)
+    {
+        m_pRenderer->SetViewport(m_ResX, m_ResY, 4.0f, 4500.0f, 0.67f);
+    }
 }
 
 
 // Update controller
 void CEditorLevelScene::Update (unsigned long _ElapsedTime)
 {
-	GetPhysics()->UpdateAll(0);
+    GetPhysics()->UpdateAll(0);
     m_pActorMgr->UpdateEditor(33);
-	m_pCamera->Update();
-	m_mView = m_pCamera->GetViewMatrix();
+    m_pSg->Update(33);
+    m_pCamera->Update();
+    m_mView = m_pCamera->GetViewMatrix();
 
     if (m_pCurActor)
     {
@@ -140,69 +141,46 @@ void CEditorLevelScene::Update (unsigned long _ElapsedTime)
 // Render controller scene
 void CEditorLevelScene::RenderScene ()
 {
-	m_pRenderer->ClearFrame(OGVec4(0.3f, 0.3f, 0.4f, 1.0f));
+    m_pRenderer->SetClearColor(OGVec4(0.3f, 0.3f, 0.4f, 1.0f));
 
-	if (m_pCurLevel)
+    if (m_pCurLevel)
     {
-		m_pRenderer->EnableLight(true);
         if (m_CamMode == CAMMODE_GAME)
         {
             m_pRenderer->EnableFog(true);
         }
 
-		m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
-		m_pSg->RenderLandscape(m_pCamera);
-        m_pRenderer->FinishRenderMode();
-
-		m_pRenderer->StartRenderMode(OG_RENDERMODE_SHADOWMAP);
-	    m_pRenderer->ClearFrame(OGVec4(0.0f, 0.0f, 0.0f, 0.0f));
-		m_pRenderer->EnableColor(false);
-		m_pSg->RenderLandscape(m_pCamera);
-		m_pRenderer->EnableColor(true);
         m_pSg->RenderScene(m_pCamera);
-        m_pRenderer->FinishRenderMode();
-
-        m_pRenderer->StartRenderMode(OG_RENDERMODE_SHADOWEDSCENE);
-		m_pSg->RenderLandscape(m_pCamera);
-        m_pRenderer->FinishRenderMode();
-
-        m_pRenderer->StartRenderMode(OG_RENDERMODE_GEOMETRY);
-		m_pSg->RenderScene(m_pCamera);
         if (m_EditorMode == EDITMODE_OBJECTS)
         {
             if (m_pCurActor)
             {
-                m_pCurActor->GetSgNode()->Render();
+                m_pCurActor->GetSgNode()->Render(m_pCamera, OG_RENDERPASS_SCENE);
             }
         }
-        m_pRenderer->FinishRenderMode();
 
         if (m_CamMode == CAMMODE_GAME)
         {
             m_pRenderer->EnableFog(false);
         }
-		m_pRenderer->EnableLight(false);
     }
-
-	m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
-	unsigned long Verts; 
-	unsigned long Faces;
-	unsigned long TextureSwitches;
-	unsigned long VBOSwitches;
-	unsigned long DrawCalls;
-	GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, 
-		VBOSwitches, DrawCalls);
-	m_pRenderer->DisplayString(OGVec2(85.0f, 2.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
-	m_pRenderer->DisplayString(OGVec2(85.0f, 6.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
-	m_pRenderer->DisplayString(OGVec2(85.0f,10.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
-	m_pRenderer->DisplayString(OGVec2(85.0f,14.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
-	m_pRenderer->DisplayString(OGVec2(85.0f,18.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
-	GetStatistics()->Reset();
-	m_pRenderer->FinishRenderMode();
-
-    m_pRenderer->Reset();
+    /*
+    unsigned long Verts; 
+    unsigned long Faces;
+    unsigned long TextureSwitches;
+    unsigned long VBOSwitches;
+    unsigned long DrawCalls;
+    GetStatistics()->GetStatistics(Verts, Faces, TextureSwitches, VBOSwitches, DrawCalls);
+    m_pRenderer->DisplayString(OGVec2(85.0f, 2.0f), 0.4f, 0x7FFFFFFF, "Vertices: %d", Verts);
+    m_pRenderer->DisplayString(OGVec2(85.0f, 6.0f), 0.4f, 0x7FFFFFFF, "Faces: %d", Faces);
+    m_pRenderer->DisplayString(OGVec2(85.0f,10.0f), 0.4f, 0x7FFFFFFF, "Textures: %d", TextureSwitches);
+    m_pRenderer->DisplayString(OGVec2(85.0f,14.0f), 0.4f, 0x7FFFFFFF, "VBO: %d", VBOSwitches);
+    m_pRenderer->DisplayString(OGVec2(85.0f,18.0f), 0.4f, 0x7FFFFFFF, "DP: %d", DrawCalls);
+    GetStatistics()->Reset();
 
     RenderHelpers();
+    */
+    m_pRenderer->DrawScene();
 
     glFlush();
 }
@@ -211,25 +189,25 @@ void CEditorLevelScene::RenderScene ()
 // Render scene helpers.
 void CEditorLevelScene::RenderHelpers()
 {
-	glUseProgram(0);
+    glUseProgram(0);
 
-	m_pRenderer->GetProjectionMatrix(m_mProjection);
-	m_pRenderer->GetViewMatrix(m_mView);
+    m_pRenderer->GetProjectionMatrix(m_mProjection);
+    m_pRenderer->GetViewMatrix(m_mView);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(m_mProjection.f);
-	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(m_mView.f);
+    glMatrixMode(GL_PROJECTION);
+    glLoadMatrixf(m_mProjection.f);
+    glMatrixMode(GL_MODELVIEW);
+    glLoadMatrixf(m_mView.f);
     glDisable(GL_LIGHTING);
-	glDisable(GL_TEXTURE_2D);
+    glDisable(GL_TEXTURE_2D);
 
-	if (m_bShowAABB)
-	{
+    if (m_bShowAABB)
+    {
         if (m_pCurActor)
         {
             DrawOBB(m_pCurActor->GetPhysicalObject()->GetOBB());
         }
-	}
+    }
 
     if (m_pPickedActor)
     {
@@ -245,51 +223,51 @@ void CEditorLevelScene::RenderHelpers()
             DrawAABB(meshes[i]->GetAABB());
         }
 
-		DrawLevelRanges(m_pCurLevel->GetStartPosition(),
-			m_pCurLevel->GetFinishPosition(),
+        DrawLevelRanges(m_pCurLevel->GetStartPosition(),
+            m_pCurLevel->GetFinishPosition(),
             m_pCurLevel->GetActiveWidth(),
-			m_fAirBotHeight);
+            m_fAirBotHeight);
     }
 
     glEnable(GL_LIGHTING);
-	glEnable(GL_TEXTURE_2D);
+    glEnable(GL_TEXTURE_2D);
 }
 
 
 // Load level
 bool CEditorLevelScene::LoadLevel (const std::string& _LevelName)
 {
-	if (m_pCurLevel)
-	{
-		m_pLevelMgr->UnloadLevel();
-	}
-	
-	m_pCurLevel = m_pLevelMgr->LoadLevel(_LevelName);
-	if (m_pCurLevel == NULL)
-	{
-		return false;
-	}
-	
-	IOGActor* pPlayerActor = m_pActorMgr->GetPlayersActor();
-	OGVec3 vCraftPos = m_pCurLevel->GetStartPosition();
-	vCraftPos.y = m_fAirBotHeight;
-	if (!pPlayerActor)
-	{
-		pPlayerActor = m_pActorMgr->CreateActor(
-			std::string("helicopter_player"),
-			vCraftPos, 
+    if (m_pCurLevel)
+    {
+        m_pLevelMgr->UnloadLevel();
+    }
+
+    m_pCurLevel = m_pLevelMgr->LoadLevel(_LevelName);
+    if (m_pCurLevel == NULL)
+    {
+        return false;
+    }
+
+    IOGActor* pPlayerActor = m_pActorMgr->GetPlayersActor();
+    OGVec3 vCraftPos = m_pCurLevel->GetStartPosition();
+    vCraftPos.y = m_fAirBotHeight;
+    if (!pPlayerActor)
+    {
+        pPlayerActor = m_pActorMgr->CreateActor(
+            std::string("helicopter_player"),
+            vCraftPos, 
             OGVec3(0,0,0), 
             OGVec3(1,1,1));
-		m_pActorMgr->AddActor(pPlayerActor);
-	}
-	else
-	{
-		pPlayerActor->GetPhysicalObject()->SetPosition(vCraftPos);
-	}
+        m_pActorMgr->AddActor(pPlayerActor);
+    }
+    else
+    {
+        pPlayerActor->GetPhysicalObject()->SetPosition(vCraftPos);
+    }
 
     CameraMode(m_CamMode);
 
-	return true;
+    return true;
 }
 
 

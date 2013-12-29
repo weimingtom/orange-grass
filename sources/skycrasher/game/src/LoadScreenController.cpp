@@ -112,24 +112,11 @@ void CLoadScreenController::Update (unsigned long _ElapsedTime)
 // Render controller scene
 void CLoadScreenController::RenderScene ()
 {
-	m_pRenderer->ClearFrame(OGVec4(0.0f, 0.0f, 0.0f, 1.0f));
+    m_pRenderer->SetClearColor(OGVec4(0.0f, 0.0f, 0.0f, 1.0f));
+    m_pRenderer->DisplayString(m_LoadLabelPos, 0.5f, 0xFFFFFFFF, "Loading...");
+    m_pRenderer->DrawScene();
 
-	if (m_pLoadSpr)
-	{
-		m_pRenderer->StartRenderMode(OG_RENDERMODE_SPRITES);
-		m_pLoadSpr->Render(m_LoadSprPos, m_LoadSprSize);
-		m_pRenderer->FinishRenderMode();
-	}
-	else
-	{
-		m_pRenderer->StartRenderMode(OG_RENDERMODE_TEXT);
-		m_pRenderer->DisplayString(m_LoadLabelPos, 0.5f, 0xFFFFFFFF, "Loading...");
-		m_pRenderer->FinishRenderMode();
-	}
-
-	m_pRenderer->Reset();
-
-	m_bDisplayed = true;
+    m_bDisplayed = true;
 }
 
 

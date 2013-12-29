@@ -89,7 +89,6 @@ void COGModelShader::Setup ()
     float fFogStart = m_pFog->GetStart();
     float fFogEnd = m_pFog->GetEnd();
     OGVec4 vFogColor = m_pFog->GetColor();
-
     const float fFogRcpEndStartDiff = 1.0f / (fFogEnd - fFogStart);
 
     glUniform1f(m_uiFogEndLoc, fFogEnd);

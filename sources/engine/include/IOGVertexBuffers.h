@@ -24,6 +24,9 @@ public:
     // is indexed
     virtual bool IsIndexed() const = 0;
 
+    // is dynamic
+    virtual bool IsDynamic() const = 0;
+
     // number of vertices
     virtual unsigned int GetNumVertices () const = 0;
 
@@ -41,6 +44,15 @@ public:
 
     // index data
     virtual const void* GetIndexData () const = 0;
+
+    // map buffer geometry.
+    virtual void Map () = 0;
+
+    // unmap buffer geometry.
+    virtual void Unmap () = 0;
+
+    // update buffer geometry.
+    virtual void Update (unsigned int _Offset, const void* _pBuff, unsigned int _Size) = 0;
 };
 
 #endif

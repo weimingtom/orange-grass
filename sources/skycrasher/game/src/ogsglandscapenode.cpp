@@ -73,12 +73,17 @@ void COGSgLandscapeNode::Update (unsigned long _ElapsedTime)
         OGSgMeshNode& curNode = m_MeshNodes[i];
         m_pSkeleton->GetWorldMatrix(mNodeWorld, i, 0);
         MatrixMultiply(curNode.mTransform, mNodeWorld, m_World);
+        if (curNode.pSkeletonNode->BodyType != OG_SUBMESH_DUMMY && curNode.pSkeletonNode->BodyType != OG_SUBMESH_ACTPOINT)
+        {
+            curNode.OBB.Create(((IOGMesh*)curNode.pSkeletonNode->pBody)->GetAABB());
+            curNode.OBB.UpdateTransform(curNode.mTransform);
+        }
     }
 }
 
 
 // render.
-void COGSgLandscapeNode::Render ()
+void COGSgLandscapeNode::Render (IOGCamera* _pCamera, OGRenderPass _Pass)
 {
     if (!m_bActive)
         return;
@@ -88,20 +93,10 @@ void COGSgLandscapeNode::Render ()
     {
         OGSgMeshNode& curNode = m_MeshNodes[i];
         if (curNode.pSkeletonNode->BodyType != OG_SUBMESH_DUMMY && curNode.pSkeletonNode->BodyType != OG_SUBMESH_ACTPOINT)
-            m_pRenderable->Render(curNode.mTransform, i);
-    }
-}
-
-
-// render all nodes.
-void COGSgLandscapeNode::RenderAll ()
-{
-    unsigned int NumMeshNodes = m_MeshNodes.size();
-    for (unsigned int i = 0; i < NumMeshNodes; ++i)
-    {
-        OGSgMeshNode& curNode = m_MeshNodes[i];
-        if (curNode.pSkeletonNode->BodyType != OG_SUBMESH_DUMMY && curNode.pSkeletonNode->BodyType != OG_SUBMESH_ACTPOINT)
-            m_pRenderable->Render(curNode.mTransform, i);
+        {
+            if (_pCamera->GetFrustum().CheckObb(curNode.OBB))
+                m_pRenderable->Render(curNode.mTransform, i, _Pass);
+        }
     }
 }
 

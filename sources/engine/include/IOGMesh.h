@@ -20,6 +20,7 @@ struct OGMeshCfg
 {
     OGShaderID      shaderID;
     OGMaterialCfg   material_cfg;
+    unsigned int    sceneprops;
 };
 
 
@@ -32,7 +33,7 @@ public:
     virtual void Unload () = 0;
 
     // Render mesh.
-    virtual void Render (const OGMatrix& _mWorld) = 0;
+    virtual void Render (const OGMatrix& _mWorld, OGRenderPass _Pass) = 0;
 
     // Get type
     virtual SubMeshType GetType() const = 0;

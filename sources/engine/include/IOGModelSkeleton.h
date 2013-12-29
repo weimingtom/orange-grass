@@ -20,6 +20,7 @@ struct OGModelNode
         , nIdxParent(-1)
         , pParent(NULL)
         , pBody(NULL)
+        , SceneProps(0)
     {
     }
 
@@ -35,6 +36,7 @@ struct OGModelNode
     std::vector<OGModelNode*>   ChildNodes;
     void*                       pBody;
     SubMeshType                 BodyType;
+    unsigned int                SceneProps;
 };
 
 

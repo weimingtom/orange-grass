@@ -40,6 +40,13 @@ enum SubMeshType
 };
 
 
+enum OGSceneProps
+{
+    OG_SCENEPROP_SHADOWCASTER   = 1,
+    OG_SCENEPROP_SHADOWRECEIVER = 2,
+};
+
+
 struct IOGActivePoint
 {
     std::string     alias;

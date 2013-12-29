@@ -54,18 +54,6 @@ public:
 
     // Render scene graph.
     virtual void RenderScene (IOGCamera* _pCamera) = 0;
-
-    // Render landscape.
-    virtual void RenderLandscape (IOGCamera* _pCamera) = 0;
-
-    // Render effects.
-    virtual void RenderEffects (IOGCamera* _pCamera) = 0;
-
-    // Render all effects.
-    virtual void RenderAllEffects (IOGCamera* _pCamera) = 0;
-
-    // Render the whole scene - for editor.
-    virtual void RenderAll (IOGCamera* _pCamera) = 0;
 };
 
 #endif
