@@ -86,6 +86,7 @@ bool COGRenderTarget::Begin ()
 void COGRenderTarget::End ()
 {
     glBindFramebuffer(GL_FRAMEBUFFER, m_OriginalFBO);
+
     //glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
     glDepthMask(GL_TRUE);
 }

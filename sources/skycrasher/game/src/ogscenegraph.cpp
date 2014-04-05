@@ -141,14 +141,14 @@ void COGSceneGraph::Update (unsigned long _ElapsedTime)
 void COGSceneGraph::RenderScene (IOGCamera* _pCamera)
 {
     IOGCamera* pLightCam = GetRenderer()->GetLightMgr()->GetLightCamera();
-    if (m_pLandscapeNode)
-        m_pLandscapeNode->Render(pLightCam, OG_RENDERPASS_SHADOWMAP);
+    //if (m_pLandscapeNode)
+    //    m_pLandscapeNode->Render(pLightCam, OG_RENDERPASS_SHADOWMAP);
     RenderNodesList(pLightCam, m_NodesList, OG_RENDERPASS_SHADOWMAP);
+
     RenderNodesList(pLightCam, m_StaticNodes, OG_RENDERPASS_SHADOWMAP);
 
     if (m_pLandscapeNode)
         m_pLandscapeNode->Render(_pCamera, OG_RENDERPASS_SCENE);
-
     RenderNodesList(_pCamera, m_NodesList, OG_RENDERPASS_SCENE);
     RenderNodesList(_pCamera, m_StaticNodes, OG_RENDERPASS_SCENE);
 
