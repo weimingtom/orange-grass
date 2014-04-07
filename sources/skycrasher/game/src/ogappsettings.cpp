@@ -86,11 +86,11 @@ bool COGAppSettings::InitScreenMode ()
 	IOGGroupNode* pViewNode = m_pReader->OpenGroupNode(pSource, pRoot, "View");
 	if (pViewNode != NULL)
 	{
-		int ViewWidth = m_pReader->ReadIntParam(pViewNode, "view_width");
-		m_pGlobalVars->SetIVar("view_width", ViewWidth);
+		//int ViewWidth = m_pReader->ReadIntParam(pViewNode, "view_width");
+		//m_pGlobalVars->SetIVar("view_width", ViewWidth);
 
-		int ViewHeight = m_pReader->ReadIntParam(pViewNode, "view_height");
-		m_pGlobalVars->SetIVar("view_height", ViewHeight);
+		//int ViewHeight = m_pReader->ReadIntParam(pViewNode, "view_height");
+		//m_pGlobalVars->SetIVar("view_height", ViewHeight);
 
 		float fZNear = m_pReader->ReadFloatParam(pViewNode, "z_near");
 		m_pGlobalVars->SetFVar("z_near", fZNear);

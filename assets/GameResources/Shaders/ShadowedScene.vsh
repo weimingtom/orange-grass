@@ -28,12 +28,12 @@ varying vec3 FogIntensity;
 
 void main()
 {
-    //vec4 modelViewPos = MVMatrix * vec4(inVertex.x, inVertex.y, inVertex.z, 1.0);
-    //gl_Position = ProjMatrix * modelViewPos;
-    //// shadow map texture coords
+    vec4 modelViewPos = MVMatrix * vec4(inVertex.x, inVertex.y, inVertex.z, 1.0);
+    gl_Position = ProjMatrix * modelViewPos;
+    // shadow map texture coords
     //TexCoordShadow = ShadowMVPMatrix * modelViewPos;
 
-    gl_Position = MVPMatrix * inVertex;
+    //gl_Position = MVPMatrix * inVertex;
     //vec4 texCoordS = ShadowMVPMatrix * (inVertex + vec4(0.0, 1.0, 0.0, 0.0));
     TexCoordShadow = ShadowMVPMatrix * (inVertex + vec4(0.0, 1.0, 0.0, 0.0));//vec2(texCoordS.x, texCoordS.y);
 
