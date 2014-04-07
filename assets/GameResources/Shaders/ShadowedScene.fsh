@@ -18,7 +18,7 @@ void main()
 {
     vec4 texSColor = texture2DProj(sShadowTexture, TexCoordShadow);
     vec4 texColor = texture2D(sTexture, TexCoord);
-    vec3 texColorShaded = texColor.rgb * DiffuseLight - texSColor;
+    vec3 texColorShaded = texColor.rgb * DiffuseLight - texSColor.rgb;
 
     //float comp = (TexCoordShadow.z / TexCoordShadow.w) - 0.03;
     //float depth = texture2DProj(sShadowTexture, TexCoordShadow).r;
