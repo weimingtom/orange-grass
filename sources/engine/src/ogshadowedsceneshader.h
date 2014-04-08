@@ -70,7 +70,6 @@ protected:
     unsigned int    m_uiId;
     unsigned int    m_uiMVPMatrixLoc;
     unsigned int    m_uiMVMatrixLoc;
-    unsigned int    m_uiProjMatrixLoc;
     unsigned int    m_uiShadowMVPMatrixLoc;
     unsigned int    m_uiLightDirLoc;
     unsigned int    m_uiTextureLoc;

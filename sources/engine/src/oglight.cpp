@@ -20,7 +20,6 @@ COGLightMgr::COGLightMgr ()
     m_SMTexAdj.f[12] = 0.5f;
     m_SMTexAdj.f[13] = 0.5f;
     m_SMTexAdj.f[14] = 0.5f;
-    //MatrixPerspectiveFovRH(m_LightProj, 0.78539819f, 1.0f, 0.01f, 1000.0f, false);
     MatrixOrthoRH(m_LightProj, 400.0f, 400.0f, 0.01f, 1000.0f, false);
 
     m_pLightCamera = new COGCamera();
@@ -100,10 +99,6 @@ void COGLightMgr::UpdateGlobalLight (IOGCamera* _pCamera)
     m_pLightCamera->Setup(vEyePt, vLookAt, OGVec3(0, 0, -1));
     m_pLightCamera->Update();
     m_LightView = m_pLightCamera->GetViewMatrix();
-
-    OGMatrix viewInv;
-    MatrixInverse(viewInv, _pCamera->GetViewMatrix());
-    MatrixMultiply(viewInv, viewInv, m_LightView);
     MatrixMultiply(m_LightVP, m_LightView, m_LightProj);
     MatrixMultiply(m_ShadowMVP, m_LightVP, m_SMTexAdj);
 }

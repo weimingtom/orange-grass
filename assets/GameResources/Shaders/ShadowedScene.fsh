@@ -15,11 +15,10 @@ varying vec3 FogIntensity;
 
 void main()
 {
-    //vec4 texSColor = texture2DProj(sShadowTexture, TexCoordShadow);
     vec4 texColor = texture2D(sTexture, TexCoord);
-    vec3 texColorShaded = texColor.rgb * DiffuseLight;// - texSColor.rgb;
+    vec3 texColorShaded = texColor.rgb * DiffuseLight;
 
-    float comp = (TexCoordShadow.z / TexCoordShadow.w);// - 0.03;
+    float comp = (TexCoordShadow.z / TexCoordShadow.w);
     float depth = texture2DProj(sShadowTexture, TexCoordShadow).r;
     float shadowVal = comp <= depth ? 1.0 : 0.2;
 
@@ -29,7 +28,7 @@ void main()
     }
     else
     {
-        gl_FragColor.rgb = texColorShaded.rgb * /*texSColor.a **/ shadowVal;
+        gl_FragColor.rgb = texColorShaded.rgb * shadowVal;
     }
     gl_FragColor.a = texColor.a;
 }

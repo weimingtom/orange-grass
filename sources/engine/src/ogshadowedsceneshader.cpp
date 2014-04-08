@@ -39,7 +39,6 @@ bool COGShadowedSceneShader::Load (OGShaderID _Id, const std::string& _VertShade
     m_uiMVPMatrixLoc = glGetUniformLocation(m_uiId, "MVPMatrix");
     m_uiMVMatrixLoc = glGetUniformLocation(m_uiId, "MVMatrix");
     m_uiShadowMVPMatrixLoc = glGetUniformLocation(m_uiId, "ShadowMVPMatrix");
-    m_uiProjMatrixLoc = glGetUniformLocation(m_uiId, "ProjMatrix");
     m_uiLightDirLoc = glGetUniformLocation(m_uiId, "LightDirection");
     m_uiTextureLoc = glGetUniformLocation(m_uiId, "sTexture");
     m_uiShadowTextureLoc = glGetUniformLocation(m_uiId, "sShadowTexture");
@@ -77,8 +76,6 @@ void COGShadowedSceneShader::Apply ()
     glUniformMatrix4fv(m_uiMVPMatrixLoc, 1, GL_FALSE, m_mMVP.f);
 
     glUniformMatrix4fv(m_uiShadowMVPMatrixLoc, 1, GL_FALSE, m_mShadowMVP.f);
-
-    glUniformMatrix4fv(m_uiProjMatrixLoc, 1, GL_FALSE, m_mProjection.f);
 
     OGMatrix mInvModel;
     MatrixInverse(mInvModel, m_mModel);
