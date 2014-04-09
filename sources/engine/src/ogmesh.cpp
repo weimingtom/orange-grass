@@ -74,7 +74,7 @@ void COGMesh::Render (const OGMatrix& _mWorld, OGRenderPass _Pass)
     OGBlendType blend = m_pMaterial->GetBlend();
     OGShaderID shaderID = m_pCfg->shaderID;
     if (_Pass == OG_RENDERPASS_SHADOWMAP)
-        shaderID = OG_SHADER_SHADOWMODEL;
+        shaderID = m_pCfg->shadowShaderID;//OG_SHADER_SHADOWMODEL;
     m_pRenderer->RenderStatic(m_pTexture, m_pMaterial, m_buffer, _mWorld, blend, shaderID, _Pass);
 }
 

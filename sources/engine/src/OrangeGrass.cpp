@@ -49,6 +49,7 @@ void StartOrangeGrass(const std::string& _ResourcePath, bool _bSingleStorage)
     g_ShaderIdLookup["transparentmodel"] = OG_SHADER_TRANSPARENTMODEL;
     g_ShaderIdLookup["shadowedscene"] = OG_SHADER_SHADOWEDSCENE;
     g_ShaderIdLookup["shadowmodel"] = OG_SHADER_SHADOWMODEL;
+    g_ShaderIdLookup["shadowtransparentmodel"] = OG_SHADER_SHADOWTRANSPARENTMODEL;
     g_ShaderIdLookup["sprite"] = OG_SHADER_SPRITE;
     g_ShaderIdLookup["text"] = OG_SHADER_TEXT;
 

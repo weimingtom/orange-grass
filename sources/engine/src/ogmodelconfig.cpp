@@ -53,6 +53,7 @@ bool COGModelConfig::LoadConfig (const std::string& _ConfigFile)
             meshCfg.sceneprops = 0;
 
             meshCfg.shaderID = ParseShaderId(m_pReader->ReadStringParam(pMeshNode, "shader"));
+            meshCfg.shadowShaderID = ParseShaderId(m_pReader->ReadStringParam(pMeshNode, "shadowshader"));
             meshCfg.sceneprops = (m_pReader->ReadIntParam(pMeshNode, "shadowcaster") == 0) ? meshCfg.sceneprops : (meshCfg.sceneprops | OG_SCENEPROP_SHADOWCASTER);
             meshCfg.sceneprops = (m_pReader->ReadIntParam(pMeshNode, "shadowreceiver") == 0) ? meshCfg.sceneprops : (meshCfg.sceneprops | OG_SCENEPROP_SHADOWRECEIVER);
 

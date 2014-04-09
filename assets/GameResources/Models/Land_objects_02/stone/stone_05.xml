@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <Model file="Models/Land_objects_02/stone/stone_05.POD">
-    <Mesh shader="model" shadowcaster="1" shadowreceiver="1">
+    <Mesh shader="model" shadowshader="shadowmodel" shadowcaster="1" shadowreceiver="1">
         <Material texture="land_03" blend="solid">
             <Ambient r="0.12" g="0.12" b="0.12" a="1" />
             <Diffuse r="1" g="1" b="1" a="1" />

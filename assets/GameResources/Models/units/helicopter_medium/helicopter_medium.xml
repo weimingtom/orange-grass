@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <Model file="Models/units/helicopter_medium/helicopter_medium.POD">
-    <Mesh shader="model" shadowcaster="1" shadowreceiver="0">
+    <Mesh shader="model" shadowshader="shadowmodel" shadowcaster="1" shadowreceiver="0">
         <Material texture="units" blend="solid">
             <Ambient r="0.54" g="0.54" b="0.54" a="1" />
             <Diffuse r="0.91" g="0.91" b="0.91" a="1" />
             <Specular r="0" g="0" b="0" a="1" />
         </Material>
     </Mesh>
-    <Mesh shader="model" shadowcaster="0" shadowreceiver="0">
+    <Mesh shader="model" shadowshader="shadowmodel" shadowcaster="0" shadowreceiver="0">
         <Material texture="units" blend="blend">
             <Ambient r="0.54" g="0.54" b="0.54" a="1" />
             <Diffuse r="0.91" g="0.91" b="0.91" a="1" />

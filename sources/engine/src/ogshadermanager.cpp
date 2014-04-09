@@ -14,6 +14,7 @@
 #include "ogcoloreffectshader.h"
 #include "ogtextshader.h"
 #include "ogshadowmodelshader.h"
+#include "ogshadowtranspmodelshader.h"
 #include "ogshadowedsceneshader.h"
 #include "OrangeGrass.h"
 #include <algorithm>
@@ -33,7 +34,7 @@ COGShaderManager::~COGShaderManager ()
 bool COGShaderManager::Init ()
 {
     IOGResourceMgr* pResMgr = GetResourceMgr();
-	std::string ShaderPath = std::string("Shaders/");
+    std::string ShaderPath = std::string("Shaders/");
 
     m_ShaderStorage[OG_SHADER_NO] = NULL;
 
@@ -43,12 +44,12 @@ bool COGShaderManager::Init ()
     m_ShaderStorage[OG_SHADER_COLOREFFECT] = pColorEffectShader;
 
     IOGShader* pModelShader = new COGModelShader();
-	if (!pModelShader->Load(OG_SHADER_MODEL, pResMgr->GetFullPath(ShaderPath + std::string("Model.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("Model.fsh"))))
+    if (!pModelShader->Load(OG_SHADER_MODEL, pResMgr->GetFullPath(ShaderPath + std::string("Model.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("Model.fsh"))))
         return false;
     m_ShaderStorage[OG_SHADER_MODEL] = pModelShader;
 
     IOGShader* pTranspModelShader = new COGTransparentModelShader();
-	if (!pTranspModelShader->Load(OG_SHADER_TRANSPARENTMODEL, pResMgr->GetFullPath(ShaderPath + std::string("TransparentModel.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("TransparentModel.fsh"))))
+    if (!pTranspModelShader->Load(OG_SHADER_TRANSPARENTMODEL, pResMgr->GetFullPath(ShaderPath + std::string("TransparentModel.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("TransparentModel.fsh"))))
         return false;
     m_ShaderStorage[OG_SHADER_TRANSPARENTMODEL] = pTranspModelShader;
 
@@ -61,6 +62,11 @@ bool COGShaderManager::Init ()
     if (!pShadowModelShader->Load(OG_SHADER_SHADOWMODEL, pResMgr->GetFullPath(ShaderPath + std::string("ShadowModel.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("ShadowModel.fsh"))))
         return false;
     m_ShaderStorage[OG_SHADER_SHADOWMODEL] = pShadowModelShader;
+
+    IOGShader* pShadowTransparentModelShader = new COGShadowTransparentModelShader();
+    if (!pShadowTransparentModelShader->Load(OG_SHADER_SHADOWTRANSPARENTMODEL, pResMgr->GetFullPath(ShaderPath + std::string("ShadowTransparentModel.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("ShadowTransparentModel.fsh"))))
+        return false;
+    m_ShaderStorage[OG_SHADER_SHADOWTRANSPARENTMODEL] = pShadowTransparentModelShader;
 
     IOGShader* pSpriteShader = new COGSpriteShader();
     if (!pSpriteShader->Load(OG_SHADER_SPRITE, pResMgr->GetFullPath(ShaderPath + std::string("Sprite.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("Sprite.fsh"))))

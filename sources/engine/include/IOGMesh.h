@@ -19,6 +19,7 @@
 struct OGMeshCfg
 {
     OGShaderID      shaderID;
+    OGShaderID      shadowShaderID;
     OGMaterialCfg   material_cfg;
     unsigned int    sceneprops;
 };

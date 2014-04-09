@@ -16,17 +16,17 @@
 class COGShaderManager : public IOGShaderManager
 {
 public:
-	COGShaderManager ();
-	virtual ~COGShaderManager ();
+    COGShaderManager ();
+    virtual ~COGShaderManager ();
 
     // initialize shaders.
-	virtual bool Init ();
+    virtual bool Init ();
 
     // destroy shaders.
-	virtual void Destroy ();
+    virtual void Destroy ();
 
     // get shader.
-	virtual IOGShader* GetShader (OGShaderID _ShaderId);
+    virtual IOGShader* GetShader (OGShaderID _ShaderId);
 
     // get shader.
     virtual IOGShader* GetShader (const std::string& _ShaderAlias);
