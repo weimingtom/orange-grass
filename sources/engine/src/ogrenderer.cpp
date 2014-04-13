@@ -20,7 +20,7 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-#ifndef WIN32
+#ifdef __ANDROID_API__
 typedef void (GL_APIENTRYP PFNGLLABELOBJECTEXTPROC) (GLenum type, GLuint object, GLsizei length, const GLchar *label);
 typedef void (GL_APIENTRYP PFNGLGETOBJECTLABELEXTPROC) (GLenum type, GLuint object, GLsizei bufSize, GLsizei *length, GLchar *label);
 typedef void (GL_APIENTRYP PFNGLINSERTEVENTMARKEREXTPROC) (GLsizei length, const GLchar *marker);
@@ -72,7 +72,7 @@ COGRenderer::~COGRenderer ()
 // initialize renderer.
 bool COGRenderer::Init ()
 {
-#ifndef WIN32
+#ifdef __ANDROID_API__
     glInsertEventMarkerEXT = (PFNGLINSERTEVENTMARKEREXTPROC) eglGetProcAddress("glInsertEventMarkerEXT");
     glPushGroupMarkerEXT = (PFNGLPUSHGROUPMARKEREXTPROC) eglGetProcAddress("glPushGroupMarkerEXT");
     glPopGroupMarkerEXT = (PFNGLPOPGROUPMARKEREXTPROC) eglGetProcAddress("glPopGroupMarkerEXT");
@@ -543,7 +543,7 @@ void COGRenderer::DisplayString (const OGVec2& _vPos,
 // Debug - insert event marker.
 void COGRenderer::InsertEventMarker (const std::string& _MarkerStr)
 {
-#ifndef WIN32
+#ifdef __ANDROID_API__
     if (glInsertEventMarkerEXT)
         glInsertEventMarkerEXT(_MarkerStr.size()+1, _MarkerStr.c_str());
 #endif
@@ -553,7 +553,7 @@ void COGRenderer::InsertEventMarker (const std::string& _MarkerStr)
 // Debug - push group marker.
 void COGRenderer::PushGroupMarker (const std::string& _MarkerStr)
 {
-#ifndef WIN32
+#ifdef __ANDROID_API__
     if (glPushGroupMarkerEXT)
         glPushGroupMarkerEXT(_MarkerStr.size()+1, _MarkerStr.c_str());
 #endif
@@ -563,7 +563,7 @@ void COGRenderer::PushGroupMarker (const std::string& _MarkerStr)
 // Debug - pop group marker.
 void COGRenderer::PopGroupMarker ()
 {
-#ifndef WIN32
+#ifdef __ANDROID_API__
     if (glPopGroupMarkerEXT)
         glPopGroupMarkerEXT();
 #endif
@@ -573,7 +573,7 @@ void COGRenderer::PopGroupMarker ()
 // Debug - label object.
 void COGRenderer::LabelObject (unsigned int _ObjType, unsigned int _ObjId, const std::string& _ObjLabelStr)
 {
-#ifndef WIN32
+#ifdef __ANDROID_API__
     if (glLabelObjectEXT)
         glLabelObjectEXT(_ObjType, _ObjId, _ObjLabelStr.size()+1, _ObjLabelStr.c_str());
 #endif

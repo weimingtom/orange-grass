@@ -104,10 +104,6 @@ void GetResourcePathASCII(char* _pOutPath, int _PathLength)
     StartOrangeGrass(path, false);
     StartGameCore();
 	
-	shell = new CGameSystem();
-	if(!shell)
-		printf("InitApplication error\n");
-
     GetGlobalVars()->SetIVar("view_width", (int)rect.size.width);
     GetGlobalVars()->SetIVar("view_height", (int)rect.size.height);
     GetGlobalVars()->SetIVar("landscape", 0);
@@ -118,6 +114,10 @@ void GetResourcePathASCII(char* _pOutPath, int _PathLength)
 	ScrHeight = GetGlobalVars()->GetIVar("view_height");
     Landscape = (GetGlobalVars()->GetIVar("landscape") == 1) ? true : false;
 	
+    shell = new CGameSystem();
+	if(!shell)
+		printf("InitApplication error\n");
+    
     glDisable(GL_CULL_FACE);
     glViewport(0, 0, (int)rect.size.width, (int)rect.size.height);
     

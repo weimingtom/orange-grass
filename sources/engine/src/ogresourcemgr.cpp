@@ -114,13 +114,13 @@ bool COGResourceMgr::Load (OGResourcePool _PoolId)
 		pCurPool->m_ModelList[(*modeliter).alias] = pModel;
 	}
 
-    std::for_each(cfg.sprite_cfg_list.begin(), cfg.sprite_cfg_list.end(), [&](Cfg::SpriteResourceCfg s) 
+    for (auto s = cfg.sprite_cfg_list.begin(); s != cfg.sprite_cfg_list.end(); ++s)
     {
 		COGSprite* pSprite = new COGSprite ();
-		pSprite->Init (s.alias, s.texture, _PoolId);
-		pSprite->SetMapping(s.mapping);
-		pCurPool->m_SpriteList[s.alias] = pSprite;
-    });
+		pSprite->Init (s->alias, s->texture, _PoolId);
+		pSprite->SetMapping(s->mapping);
+		pCurPool->m_SpriteList[s->alias] = pSprite;
+    }
 
     pCurPool->m_bLoaded = true;
 	return true;
@@ -147,9 +147,9 @@ bool COGResourceMgr::Unload (OGResourcePool _PoolId)
 		return false;
 	}
 
-    std::for_each(pCurPool->m_TextureList.begin(), pCurPool->m_TextureList.end(), [&](std::pair<const std::string, COGTexture*> ti) {ReleaseTexture(ti.second);});
-    std::for_each(pCurPool->m_ModelList.begin(), pCurPool->m_ModelList.end(), [&](std::pair<const std::string, COGModel*> ti) {ReleaseModel(ti.second);});
-    std::for_each(pCurPool->m_SpriteList.begin(), pCurPool->m_SpriteList.end(), [&](std::pair<const std::string, COGSprite*> ti) {ReleaseSprite(ti.second);});
+    for (auto ti = pCurPool->m_TextureList.begin(); ti != pCurPool->m_TextureList.end(); ++ti) {ReleaseTexture(ti->second);}
+    for (auto ti = pCurPool->m_ModelList.begin(); ti != pCurPool->m_ModelList.end(); ++ti) {ReleaseModel(ti->second);}
+    for (auto ti = pCurPool->m_SpriteList.begin(); ti != pCurPool->m_SpriteList.end(); ++ti) {ReleaseSprite(ti->second);}
 
     pCurPool->m_bLoaded = false;
 	
@@ -410,13 +410,13 @@ bool COGResourceMgr::ClearPool (OGResourcePool _PoolId)
 		return false;
 	}
 
-    std::for_each(pCurPool->m_TextureList.begin(), pCurPool->m_TextureList.end(), [&](std::pair<const std::string, COGTexture*> ti) {OG_SAFE_DELETE(ti.second);});
+    for (auto ti = pCurPool->m_TextureList.begin(); ti != pCurPool->m_TextureList.end(); ++ti) {OG_SAFE_DELETE(ti->second);}
 	pCurPool->m_TextureList.clear();
 
-    std::for_each(pCurPool->m_ModelList.begin(), pCurPool->m_ModelList.end(), [&](std::pair<const std::string, COGModel*> ti) {OG_SAFE_DELETE(ti.second);});
+    for (auto ti = pCurPool->m_ModelList.begin(); ti != pCurPool->m_ModelList.end(); ++ti) {OG_SAFE_DELETE(ti->second);}
 	pCurPool->m_ModelList.clear();
 
-    std::for_each(pCurPool->m_SpriteList.begin(), pCurPool->m_SpriteList.end(), [&](std::pair<const std::string, COGSprite*> ti) {OG_SAFE_DELETE(ti.second);});
+    for (auto ti = pCurPool->m_SpriteList.begin(); ti != pCurPool->m_SpriteList.end(); ++ti) {OG_SAFE_DELETE(ti->second);}
 	pCurPool->m_SpriteList.clear();
 
     pCurPool->m_bLoaded = false;

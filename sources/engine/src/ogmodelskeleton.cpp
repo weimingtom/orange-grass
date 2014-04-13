@@ -26,7 +26,7 @@ COGModelSkeleton::~COGModelSkeleton()
 void COGModelSkeleton::Clear()
 {
     m_NumFrames = 0;
-    std::for_each(m_Nodes.begin(), m_Nodes.end(), [](OGModelNode* m) { OG_SAFE_DELETE(m); });
+    for (auto m = m_Nodes.begin(); m != m_Nodes.end(); ++m) { OG_SAFE_DELETE((*m)); }
     m_Nodes.clear();
 }
 

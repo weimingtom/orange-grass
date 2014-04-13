@@ -12,6 +12,9 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		28FD15000DC6FC520079059D /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD14FF0DC6FC520079059D /* OpenGLES.framework */; };
 		28FD15080DC6FC5B0079059D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 28FD15070DC6FC5B0079059D /* QuartzCore.framework */; };
+		B20F127518FA9F5B00370B1B /* ogdynvertexbuffers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B20F127318FA9F5B00370B1B /* ogdynvertexbuffers.cpp */; };
+		B20F127818FA9F8100370B1B /* ogshadowtranspmodelshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B20F127618FA9F8100370B1B /* ogshadowtranspmodelshader.cpp */; };
+		B20F127A18FAA21C00370B1B /* GameResources in Resources */ = {isa = PBXBuildFile; fileRef = B20F127918FAA21C00370B1B /* GameResources */; };
 		B211E47B14ACFF3C006DC372 /* POD.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B211E47714ACFF3C006DC372 /* POD.cpp */; };
 		B211E47C14ACFF3D006DC372 /* PVRTC.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B211E47914ACFF3C006DC372 /* PVRTC.cpp */; };
 		B211E48414ACFF68006DC372 /* tinystr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B211E47E14ACFF68006DC372 /* tinystr.cpp */; };
@@ -119,7 +122,6 @@
 		B299E7D61697078E00F3A6F9 /* ogshadermanager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B299E7D21697078E00F3A6F9 /* ogshadermanager.cpp */; };
 		B299E7D71697078E00F3A6F9 /* ogtransparentmodelshader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = B299E7D41697078E00F3A6F9 /* ogtransparentmodelshader.cpp */; };
 		B299E7DB16970A1300F3A6F9 /* EAGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = B211E4BD14AD0E36006DC372 /* EAGLView.m */; };
-		B2BD483112EBA15B005A7210 /* GameResources in Resources */ = {isa = PBXBuildFile; fileRef = B2BD473012EBA15B005A7210 /* GameResources */; };
 		B2E3706F14B0DEEB0036B723 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3704D14B0DEEB0036B723 /* ioapi.c */; };
 		B2E3707114B0DEEB0036B723 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3705114B0DEEB0036B723 /* unzip.c */; };
 		B2E3707214B0DEEB0036B723 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = B2E3705314B0DEEB0036B723 /* zip.c */; };
@@ -148,6 +150,11 @@
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* orangegrass_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = orangegrass_Prefix.pch; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* orangegrass-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "orangegrass-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		B20F127318FA9F5B00370B1B /* ogdynvertexbuffers.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogdynvertexbuffers.cpp; path = ../../../engine/src/ogdynvertexbuffers.cpp; sourceTree = "<group>"; };
+		B20F127418FA9F5B00370B1B /* ogdynvertexbuffers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogdynvertexbuffers.h; path = ../../../engine/src/ogdynvertexbuffers.h; sourceTree = "<group>"; };
+		B20F127618FA9F8100370B1B /* ogshadowtranspmodelshader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogshadowtranspmodelshader.cpp; path = ../../../engine/src/ogshadowtranspmodelshader.cpp; sourceTree = "<group>"; };
+		B20F127718FA9F8100370B1B /* ogshadowtranspmodelshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogshadowtranspmodelshader.h; path = ../../../engine/src/ogshadowtranspmodelshader.h; sourceTree = "<group>"; };
+		B20F127918FAA21C00370B1B /* GameResources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GameResources; path = ../../../../assets/GameResources; sourceTree = "<group>"; };
 		B211E47014ACFE9D006DC372 /* IOGFPSCounter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGFPSCounter.h; path = ../../../engine/include/IOGFPSCounter.h; sourceTree = "<group>"; };
 		B211E47114ACFEC7006DC372 /* IOGMatrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGMatrix.h; path = ../../../engine/include/IOGMatrix.h; sourceTree = "<group>"; };
 		B211E47214ACFEC7006DC372 /* IOGQuaternion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGQuaternion.h; path = ../../../engine/include/IOGQuaternion.h; sourceTree = "<group>"; };
@@ -173,9 +180,9 @@
 		B211E49314AD0062006DC372 /* ogmatrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ogmatrix.cpp; path = ../../../engine/src/ogmatrix.cpp; sourceTree = "<group>"; };
 		B211E49414AD0062006DC372 /* ogquaternion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ogquaternion.cpp; path = ../../../engine/src/ogquaternion.cpp; sourceTree = "<group>"; };
 		B211E49514AD0062006DC372 /* ogvector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ogvector.cpp; path = ../../../engine/src/ogvector.cpp; sourceTree = "<group>"; };
-		B211E49914AD00AE006DC372 /* ogshader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ogshader.cpp; path = ../../../engine/src/ogshader.cpp; sourceTree = "<group>"; };
+		B211E49914AD00AE006DC372 /* ogshader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogshader.cpp; path = ../../../engine/src/ogshader.cpp; sourceTree = "<group>"; };
 		B211E49A14AD00AE006DC372 /* ogshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogshader.h; path = ../../../engine/src/ogshader.h; sourceTree = "<group>"; };
-		B211E49B14AD00AE006DC372 /* ogshadowedsceneshader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ogshadowedsceneshader.cpp; path = ../../../engine/src/ogshadowedsceneshader.cpp; sourceTree = "<group>"; };
+		B211E49B14AD00AE006DC372 /* ogshadowedsceneshader.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogshadowedsceneshader.cpp; path = ../../../engine/src/ogshadowedsceneshader.cpp; sourceTree = "<group>"; };
 		B211E49C14AD00AE006DC372 /* ogshadowedsceneshader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogshadowedsceneshader.h; path = ../../../engine/src/ogshadowedsceneshader.h; sourceTree = "<group>"; };
 		B211E4A214AD00E5006DC372 /* ogresourcefile.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ogresourcefile.cpp; path = ../../../engine/src/ogresourcefile.cpp; sourceTree = "<group>"; };
 		B211E4A314AD00E5006DC372 /* ogresourcefile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogresourcefile.h; path = ../../../engine/src/ogresourcefile.h; sourceTree = "<group>"; };
@@ -413,7 +420,6 @@
 		B299E7D9169707C700F3A6F9 /* IOGResourceFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGResourceFile.h; path = ../../../engine/include/IOGResourceFile.h; sourceTree = "<group>"; };
 		B299E7DA169707C700F3A6F9 /* IOGShaderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IOGShaderManager.h; path = ../../../engine/include/IOGShaderManager.h; sourceTree = "<group>"; };
 		B299E7DC169727F500F3A6F9 /* orangegrass.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = orangegrass.entitlements; sourceTree = "<group>"; };
-		B2BD473012EBA15B005A7210 /* GameResources */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GameResources; path = ../../../../assets/GameResources; sourceTree = SOURCE_ROOT; };
 		B2E3704C14B0DEEB0036B723 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		B2E3704D14B0DEEB0036B723 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		B2E3704E14B0DEEB0036B723 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
@@ -445,7 +451,7 @@
 		B2E3706C14B0DEEB0036B723 /* zlib.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zlib.h; sourceTree = "<group>"; };
 		B2E3706D14B0DEEB0036B723 /* zutil.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zutil.c; sourceTree = "<group>"; };
 		B2E3706E14B0DEEB0036B723 /* zutil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zutil.h; sourceTree = "<group>"; };
-		B2EB606413AE3D780000B23D /* ogvertexbuffers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = ogvertexbuffers.cpp; path = ../../../engine/src/ogvertexbuffers.cpp; sourceTree = "<group>"; };
+		B2EB606413AE3D780000B23D /* ogvertexbuffers.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = ogvertexbuffers.cpp; path = ../../../engine/src/ogvertexbuffers.cpp; sourceTree = "<group>"; };
 		B2EB606513AE3D780000B23D /* ogvertexbuffers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ogvertexbuffers.h; path = ../../../engine/src/ogvertexbuffers.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -505,7 +511,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				B2BD473012EBA15B005A7210 /* GameResources */,
+				B20F127918FAA21C00370B1B /* GameResources */,
 				B2969C2512D3B884009BCE6D /* icon.png */,
 				8D1107310486CEB800E47090 /* orangegrass-Info.plist */,
 			);
@@ -770,6 +776,8 @@
 			isa = PBXGroup;
 			children = (
 				B2BD48DD12EBC366005A7210 /* Shaders */,
+				B20F127318FA9F5B00370B1B /* ogdynvertexbuffers.cpp */,
+				B20F127418FA9F5B00370B1B /* ogdynvertexbuffers.h */,
 				B2EB606413AE3D780000B23D /* ogvertexbuffers.cpp */,
 				B2EB606513AE3D780000B23D /* ogvertexbuffers.h */,
 				B2542A6F12D6ACF8000DE568 /* ogrenderer.cpp */,
@@ -816,6 +824,8 @@
 		B2BD48DD12EBC366005A7210 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				B20F127618FA9F8100370B1B /* ogshadowtranspmodelshader.cpp */,
+				B20F127718FA9F8100370B1B /* ogshadowtranspmodelshader.h */,
 				B299E7D21697078E00F3A6F9 /* ogshadermanager.cpp */,
 				B299E7D31697078E00F3A6F9 /* ogshadermanager.h */,
 				B299E7D41697078E00F3A6F9 /* ogtransparentmodelshader.cpp */,
@@ -1163,8 +1173,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				B2969C2612D3B884009BCE6D /* icon.png in Resources */,
-				B2BD483112EBA15B005A7210 /* GameResources in Resources */,
 				B2E3707C14B0DEEB0036B723 /* README in Resources */,
+				B20F127A18FAA21C00370B1B /* GameResources in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1234,6 +1244,7 @@
 				B27D10E61827B8A0004A71D1 /* ogmodelconfig.cpp in Sources */,
 				B2542AE312D6ACF8000DE568 /* ogresourcemgr.cpp in Sources */,
 				B2542AE412D6ACF8000DE568 /* ogscenegraph.cpp in Sources */,
+				B20F127518FA9F5B00370B1B /* ogdynvertexbuffers.cpp in Sources */,
 				B2542AE512D6ACF8000DE568 /* ogsettingsreader.cpp in Sources */,
 				B2542AE612D6ACF8000DE568 /* ogsgeffectnode.cpp in Sources */,
 				B2542AE712D6ACF8000DE568 /* ogsglandscapenode.cpp in Sources */,
@@ -1278,6 +1289,7 @@
 				B2E3707114B0DEEB0036B723 /* unzip.c in Sources */,
 				B2E3707214B0DEEB0036B723 /* zip.c in Sources */,
 				B2E3707314B0DEEB0036B723 /* adler32.c in Sources */,
+				B20F127818FA9F8100370B1B /* ogshadowtranspmodelshader.cpp in Sources */,
 				B2E3707414B0DEEB0036B723 /* compress.c in Sources */,
 				B2E3707514B0DEEB0036B723 /* crc32.c in Sources */,
 				B27D10E91827B8F9004A71D1 /* ogmodelskeleton.cpp in Sources */,

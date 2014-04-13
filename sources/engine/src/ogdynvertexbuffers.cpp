@@ -85,7 +85,6 @@ void COGDynVertexBuffers::Update (unsigned int _Offset, const void* _pBuff, unsi
     }
     else
     {
-        m_NumVertices = m_NumVertices;
         return;
     }
 }
