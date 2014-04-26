@@ -82,6 +82,7 @@
     <ClCompile Include="src\ogdynvertexbuffers.cpp" />
     <ClCompile Include="src\ogmodelskeleton.cpp" />
     <ClCompile Include="src\ogmodelconfig.cpp" />
+    <ClCompile Include="src\ogshadowedtranspsceneshader.cpp" />
     <ClCompile Include="src\ogshadowtranspmodelshader.cpp" />
     <ClCompile Include="src\OrangeGrass.cpp" />
     <ClCompile Include="src\ogfog.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="src\ogmodel.h" />
     <ClInclude Include="src\ogmodelconfig.h" />
     <ClInclude Include="src\ogrendertarget.h" />
+    <ClInclude Include="src\ogshadowedtranspsceneshader.h" />
     <ClInclude Include="src\ogshadowtranspmodelshader.h" />
     <ClInclude Include="src\ogsprite.h" />
     <ClInclude Include="src\ogtexture.h" />

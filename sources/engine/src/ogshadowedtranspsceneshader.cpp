@@ -1,5 +1,5 @@
 /*
-*  OGShadowedSceneShader.cpp
+*  OGShadowedTranspSceneShader.cpp
 *  OrangeGrass
 *
 *  Created by Viacheslav Bogdanov on 11.11.09.
@@ -8,24 +8,24 @@
 */
 #include "OpenGL2.h"
 #include "OrangeGrass.h"
-#include "ogshadowedsceneshader.h"
+#include "ogshadowedtranspsceneshader.h"
 #include "ogshader.h"
 
 
-COGShadowedSceneShader::COGShadowedSceneShader () 
+COGShadowedTranspSceneShader::COGShadowedTranspSceneShader () 
     : m_pFog(NULL)
     , m_pLightMgr(NULL)
 {
 }
 
 
-COGShadowedSceneShader::~COGShadowedSceneShader ()
+COGShadowedTranspSceneShader::~COGShadowedTranspSceneShader ()
 {
 }
 
 
 // load shaders.
-bool COGShadowedSceneShader::Load (OGShaderID _Id, const std::string& _VertShader, const std::string& _FragmentShader)
+bool COGShadowedTranspSceneShader::Load (OGShaderID _Id, const std::string& _VertShader, const std::string& _FragmentShader)
 {
     if(ShaderLoadFromFile(_FragmentShader.c_str(), GL_FRAGMENT_SHADER, &m_uiFragShader) == 0)
         return false;
@@ -48,17 +48,20 @@ bool COGShadowedSceneShader::Load (OGShaderID _Id, const std::string& _VertShade
     m_uiFogColorLoc = glGetUniformLocation(m_uiId, "FogColor");
     m_uiFogEnabled = glGetUniformLocation(m_uiId, "FogEnabled");
 
+    m_uiAlphaReference = glGetUniformLocation(m_uiId, "AlphaReference");
+
     m_uiMaterialAmbient = glGetUniformLocation(m_uiId, "MaterialAmbient");
     m_uiMaterialDiffuse = glGetUniformLocation(m_uiId, "MaterialDiffuse");
 
     m_Id = _Id;
+    m_fAlphaRef = 0.5f;
 
     return true;
 }
 
 
 // unload shaders.
-void COGShadowedSceneShader::Unload ()
+void COGShadowedTranspSceneShader::Unload ()
 {
     glDeleteProgram(m_uiId);
     glDeleteShader(m_uiVertShader);
@@ -67,7 +70,7 @@ void COGShadowedSceneShader::Unload ()
 
 
 // apply the shader.
-void COGShadowedSceneShader::Apply ()
+void COGShadowedTranspSceneShader::Apply ()
 {
     MatrixMultiply(m_mMV, m_mModel, m_mView);
     glUniformMatrix4fv(m_uiMVMatrixLoc, 1, GL_FALSE, m_mMV.f);
@@ -88,7 +91,7 @@ void COGShadowedSceneShader::Apply ()
 
 
 // setup the shader.
-void COGShadowedSceneShader::Setup ()
+void COGShadowedTranspSceneShader::Setup ()
 {
     glUseProgram(m_uiId);
 
@@ -108,43 +111,55 @@ void COGShadowedSceneShader::Setup ()
 
 
 // set model matrix
-void COGShadowedSceneShader::SetModelMatrix (const OGMatrix& _mModel)
+void COGShadowedTranspSceneShader::SetModelMatrix (const OGMatrix& _mModel)
 {
     m_mModel = _mModel;
 }
 
 
 // set view matrix
-void COGShadowedSceneShader::SetViewMatrix (const OGMatrix& _mView)
+void COGShadowedTranspSceneShader::SetViewMatrix (const OGMatrix& _mView)
 {
     m_mView = _mView;
 }
 
 
 // set projection matrix
-void COGShadowedSceneShader::SetProjectionMatrix (const OGMatrix& _mProj)
+void COGShadowedTranspSceneShader::SetProjectionMatrix (const OGMatrix& _mProj)
 {
     m_mProjection = _mProj;
 }
 
 
 // set light and fog
-void COGShadowedSceneShader::SetLighting (IOGFog* _pFog, IOGLightMgr* _pLightMgr)
+void COGShadowedTranspSceneShader::SetLighting (IOGFog* _pFog, IOGLightMgr* _pLightMgr)
 {
     m_pFog = _pFog;
     m_pLightMgr = _pLightMgr;
-
-    //MatrixMultiply(m_mShadowMVP, m_pLightMgr->GetShadowMatrix(), m_mModel);
-    //m_mShadowMVP = m_pLightMgr->GetShadowMatrix();
 }
 
 
 // set material
-void COGShadowedSceneShader::SetMaterial (IOGMaterial* _pMaterial)
+void COGShadowedTranspSceneShader::SetMaterial (IOGMaterial* _pMaterial)
 {
     const OGVec4& vAmbient = _pMaterial->GetAmbient();
     const OGVec4& vDiffuse = _pMaterial->GetDiffuse();
 
     glUniform3fv(m_uiMaterialAmbient, 1, OGVec3(vAmbient.x, vAmbient.y, vAmbient.z).ptr());
     glUniform3fv(m_uiMaterialDiffuse, 1, OGVec3(vDiffuse.x, vDiffuse.y, vDiffuse.z).ptr());
+    glUniform1f(m_uiAlphaReference, m_fAlphaRef);
+}
+
+
+// set alpha test
+void COGShadowedTranspSceneShader::EnableAlphaTest (bool _bEnabled)
+{
+    m_bAlphaTest = _bEnabled;
+    if (m_bAlphaTest)
+    {
+        m_fAlphaRef = 0.5f;
+    }
+    else
+        m_fAlphaRef = 0;
+    glUniform1f(m_uiAlphaReference, m_fAlphaRef);
 }

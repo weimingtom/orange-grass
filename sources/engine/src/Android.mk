@@ -36,6 +36,7 @@ LOCAL_SRC_FILES +=  $(ENGINEPATH)/ogcamera.cpp \
                     $(ENGINEPATH)/ogsettingsreader.cpp \
                     $(ENGINEPATH)/ogshader.cpp \
                     $(ENGINEPATH)/ogshadowedsceneshader.cpp \
+                    $(ENGINEPATH)/ogshadowedtranspsceneshader.cpp \
                     $(ENGINEPATH)/ogshadowmodelshader.cpp \
                     $(ENGINEPATH)/ogshadowtranspmodelshader.cpp \
                     $(ENGINEPATH)/ogtransparentmodelshader.cpp \

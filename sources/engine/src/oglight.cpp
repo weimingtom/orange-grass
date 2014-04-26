@@ -20,7 +20,7 @@ COGLightMgr::COGLightMgr ()
     m_SMTexAdj.f[12] = 0.5f;
     m_SMTexAdj.f[13] = 0.5f;
     m_SMTexAdj.f[14] = 0.5f;
-    MatrixOrthoRH(m_LightProj, 400.0f, 400.0f, 0.01f, 1000.0f, false);
+    MatrixOrthoRH(m_LightProj, 350.0f, 350.0f, 0.01f, 1000.0f, false);
 
     m_pLightCamera = new COGCamera();
     m_pLightCamera->SetupViewport(m_LightProj);
@@ -93,7 +93,7 @@ IOGCamera* COGLightMgr::GetLightCamera ()
 void COGLightMgr::UpdateGlobalLight (IOGCamera* _pCamera)
 {
     const OGVec3& vCameraPos = _pCamera->GetPosition();
-    OGVec3 vLookAt  = vCameraPos + (_pCamera->GetDirection() * 600.0f);
+    OGVec3 vLookAt  = vCameraPos + (_pCamera->GetDirection() * 350.0f);
     vLookAt.y = 0;
     OGVec3 vEyePt = vLookAt - OGVec3(0, -1, 0) * vCameraPos.y;
     m_pLightCamera->Setup(vEyePt, vLookAt, OGVec3(0, 0, -1));

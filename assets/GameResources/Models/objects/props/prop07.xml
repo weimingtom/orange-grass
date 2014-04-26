@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <Model file="Models/objects/props/prop07.POD">
-    <Mesh shader="model" shadowshader="shadowmodel" shadowcaster="1" shadowreceiver="1">
+    <Mesh shader="shadowedscene" shadowshader="shadowmodel" shadowcaster="1" shadowreceiver="1">
         <Material texture="objects" blend="solid">
             <Ambient r="0.5" g="0.5" b="0.5" a="1" />
             <Diffuse r="0.6" g="0.6" b="0.6" a="1" />

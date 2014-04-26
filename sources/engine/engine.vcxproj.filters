@@ -281,6 +281,9 @@
     <ClCompile Include="src\ogshadowtranspmodelshader.cpp">
       <Filter>Source Files\Graphics\Renderer\Shaders</Filter>
     </ClCompile>
+    <ClCompile Include="src\ogshadowedtranspsceneshader.cpp">
+      <Filter>Source Files\Graphics\Renderer\Shaders</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\ogfog.h">
@@ -602,6 +605,9 @@
       <Filter>Interface\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="src\ogshadowtranspmodelshader.h">
+      <Filter>Source Files\Graphics\Renderer\Shaders</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ogshadowedtranspsceneshader.h">
       <Filter>Source Files\Graphics\Renderer\Shaders</Filter>
     </ClInclude>
   </ItemGroup>

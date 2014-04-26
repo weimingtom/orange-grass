@@ -7,6 +7,7 @@ uniform sampler2D sShadowTexture;
 
 uniform vec3 FogColor;
 uniform bool FogEnabled;
+uniform float AlphaReference;
 
 varying vec3 DiffuseLight;
 varying vec2 TexCoord;
@@ -16,6 +17,11 @@ varying vec3 FogIntensity;
 void main()
 {
     vec4 texColor = texture2D(sTexture, TexCoord);
+    if (texColor.a < AlphaReference)
+    {
+        discard;
+    }
+    
     vec3 texColorShaded = texColor.rgb * DiffuseLight;
 
     float comp = (TexCoordShadow.z / TexCoordShadow.w) - 0.01;

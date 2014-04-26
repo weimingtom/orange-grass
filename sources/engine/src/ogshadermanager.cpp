@@ -16,6 +16,7 @@
 #include "ogshadowmodelshader.h"
 #include "ogshadowtranspmodelshader.h"
 #include "ogshadowedsceneshader.h"
+#include "ogshadowedtranspsceneshader.h"
 #include "OrangeGrass.h"
 #include <algorithm>
 
@@ -57,6 +58,11 @@ bool COGShaderManager::Init ()
     if (!pShadowedSceneShader->Load(OG_SHADER_SHADOWEDSCENE, pResMgr->GetFullPath(ShaderPath + std::string("ShadowedScene.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("ShadowedScene.fsh"))))
         return false;
     m_ShaderStorage[OG_SHADER_SHADOWEDSCENE] = pShadowedSceneShader;
+
+    IOGShader* pShadowedTranspSceneShader = new COGShadowedTranspSceneShader();
+    if (!pShadowedTranspSceneShader->Load(OG_SHADER_SHADOWEDTRANSPARENTSCENE, pResMgr->GetFullPath(ShaderPath + std::string("ShadowedTransparentScene.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("ShadowedTransparentScene.fsh"))))
+        return false;
+    m_ShaderStorage[OG_SHADER_SHADOWEDTRANSPARENTSCENE] = pShadowedTranspSceneShader;
 
     IOGShader* pShadowModelShader = new COGShadowModelShader();
     if (!pShadowModelShader->Load(OG_SHADER_SHADOWMODEL, pResMgr->GetFullPath(ShaderPath + std::string("ShadowModel.vsh")), pResMgr->GetFullPath(ShaderPath + std::string("ShadowModel.fsh"))))
