@@ -240,7 +240,9 @@ void COGActorManager::Update (unsigned long _ElapsedTime)
 		case OG_ACTOR_LANDBOT:
 		case OG_ACTOR_BONUS:
 			{
-				if (pCamera->GetFrustum().CheckObb(pActor->GetSgNode()->GetOBB()))
+                OGVec3 landProj = pActor->GetSgNode()->GetOBB().m_vCenter;
+                landProj.y = 0.0f;
+                if (pCamera->GetFrustum().CheckPoint(landProj))
 				{
 					if (!pActor->IsActive())
 						pActor->Activate(true);

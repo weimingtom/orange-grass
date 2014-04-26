@@ -150,7 +150,7 @@ void COGRenderer::SetViewport (
 
     m_pCamera->SetupViewport(m_mProjection);
     m_pShadowMapRT = new COGRenderTarget();
-    m_pShadowMapRT->Init(1024);
+    m_pShadowMapRT->Init(false, true, 512, 1024, 1);
 }
 
 
@@ -335,7 +335,7 @@ void COGRenderer::FlushRenderQueue()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glActiveTexture(GL_TEXTURE1);
-    glBindTexture(GL_TEXTURE_2D, m_pShadowMapRT->GetTextureId());
+    glBindTexture(GL_TEXTURE_2D, m_pShadowMapRT->GetDepthTextureId());
     glActiveTexture(GL_TEXTURE0);
 
     m_pFog->SetEnabled(m_bFogEnabled);
