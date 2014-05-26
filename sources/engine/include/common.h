@@ -1,5 +1,4 @@
 /*
- * IOGAabb.h
  * OrangeGrass
  * Copyright (C) 2009 Vyacheslav Bogdanov.
  * 
